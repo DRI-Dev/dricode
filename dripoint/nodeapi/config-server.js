@@ -9,6 +9,9 @@ if (!exports) {
 exports.environment = 'server';
 exports.server = 'server1';
 
+exports.CODE_ROOT_DIR = CODE_ROOT_DIR = __dirname.substring(0,__dirname.length - 16);
+exports.NODE_API_ROOT = NODE_API_ROOT = CODE_ROOT_DIR + 'dripoint/nodeapi/';
+exports.ETCORE_API_ROOT = ETCORE_API_ROOT = CODE_ROOT_DIR + 'dripoint/js/';
 
 (function (window) {
 

@@ -7,14 +7,15 @@ require('./config-server.js');
 // var c = require('../dripoint/Staff_local/saurabh/config-server.js');
 
 // MASTER files
-require('../dripoint/js/et-add.js');
-require('../dripoint/js/et-dto.js');
-require('../dripoint/js/et-security.js');
-require('../dripoint/js/et-utils.js');
-require('../dripoint/js/et-get.js');
-require('../dripoint/js/et-test.js');    
-require('../dripoint/js/et-query.js');
-require('../dripoint/js/et-unit_tests.js');
+
+require(ETCORE_API_ROOT + 'et-add.js');
+require(ETCORE_API_ROOT + 'et-dto.js');
+require(ETCORE_API_ROOT + 'et-security.js');
+require(ETCORE_API_ROOT + 'et-utils.js');
+require(ETCORE_API_ROOT + 'et-get.js');
+require(ETCORE_API_ROOT + 'et-test.js');    
+require(ETCORE_API_ROOT + 'et-query.js');
+require(ETCORE_API_ROOT + 'et-unit_tests.js');
 
 // require('../dripoint/Staff_local/saurabh/devjs/et-dto.js');
 // require('../dripoint/Staff_local/saurabh/devjs/et-security.js');

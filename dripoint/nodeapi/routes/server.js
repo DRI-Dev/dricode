@@ -10,11 +10,11 @@
 // var executethis = require('../../dripoint/test/executethis.js');
 
 // // MASTER copy files
-require('../../dripoint/js/et-utils.js');
-require('../../dripoint/js/et-get.js');
-require('../../dripoint/js/et-add.js');
-require('../../dripoint/js/et-query.js');
-var executethis = require('../../dripoint/js/executethis.js');
+require('../../js/et-utils.js');
+require('../../js/et-get.js');
+require('../../js/et-add.js');
+require('../../js/et-query.js');
+var executethis = require('../../js/executethis.js');
 
 // individual payground copy files
 // require('../../dripoint/Staff_local/saurabh/devjs/et-utils.js');
