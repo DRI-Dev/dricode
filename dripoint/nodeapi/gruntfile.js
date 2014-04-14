@@ -59,7 +59,7 @@ module.exports = function(grunt) {
           nodeArgs: ['--debug'],
           ignoredFiles: ['node_modules/**','lib/**', 'uploads/**'],
           env: {
-            PORT: '3000'
+            PORT: '3003'
           }
         }
       }

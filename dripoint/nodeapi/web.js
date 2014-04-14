@@ -41,7 +41,7 @@ var express = require('express')
  
  //// *********************** Express Application Configuration follows   *********************** 
 app.configure(function (){
-    app.set('port', process.env.PORT || 3000);  //test
+    app.set('port', process.env.PORT || 3003);  //test
 	app.enable('trust proxy');
     app.use(express.logger('dev'));
     app.use(express.bodyParser());
@@ -92,4 +92,4 @@ app.get('/echo',common.echo);
 
 app.get('/updateWidTest', common.updateWidTest);
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3003);

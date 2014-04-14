@@ -276,7 +276,7 @@ var config123 = function () {
     };
     configuration.LOOKUP_DIR = '../dripoint/';
     // configuration.LOOKUP_DIR = '../html/';// for testing
-    configuration.SERVICE_URL = 'http://localhost:3000/';
+    configuration.SERVICE_URL = 'http://localhost:3003/';
 
     return {
         "configuration": configuration
