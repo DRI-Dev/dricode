@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://code.jquery.com/jquery.min.js"></script>
+<link href="http://getbootstrap.com/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<script src="http://getbootstrap.com/dist/js/bootstrap.js"></script>
+  
+<script>
+$(function() {
+      $('button#submit').click(function(){
+        //alert($('#input').val());
+        ExecuteThisPost();
+      });
+        
+      
+function ExecuteThisPost()
+            {
+              var parameterList = [];
+              var parameterDTO = {};
+              var result;
+              var data = null;
+                      
+              parameterDTO.ExecuteThis = "extractThis";
+              parameterList.push(parameterDTO);
+          
+              parameterList = JSON.stringify(parameterList);
+              
+              
+              $.ajax({
+                  'method': 'PUT',
+                  'dataType': 'json',
+                  'headers' : {'Content-type':'Application/json'},
+                  'global': false,
+                  'cache': false,
+                  'async': false,
+                  'url': '/ExecuteThis',
+                  'data': $('#input').val(),
+                  'success': function(data) {
+                      if(data.error){
+                        result = " APPLICATION ERROR: "+JSON.stringify(data,null,2);
+                      }else{
+                        result = " SUCCESS: "+JSON.stringify(data,null,2);
+                      }
+
+                      // alert(result);
+                  },
+                  'error': function(result) {
+                      //alert('Failed\n--------' + result.error);
+                      //console.log(result.error);
+                      result = " FAILURE: "+JSON.stringify(result,null,2);
+                  }
+              });
+              console.log(result);
+              $('div#resultDiv').html('<p>'+ result +'</p>');
+            }  
+
+    
+});
+  </script>  
+ 
+<meta charset=utf-8 />
+<title>Test Page for API?</title>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+        <div class="col-md-12" clss="jumbotron">
+            <label><h3>Test the API , Insert JSON below </h3></label>
+            <div class="well">
+                <textarea id="input" class="span" cols="80" rows"4"> [{"ExecuteThis":"extractthis","Wid":"test1","x'":"y","z":"w", "preExecute" : "sayPreHello","postExecute" : "sayPostHello"}]</textarea>
+            </div>
+            <p>
+                <button id="submit" class="btn btn-lg btn-success">Submit</button>
+            </p>
+            <br>
+                <h4>Results below</h4>
+            
+            <div id="resultDiv" class="alert alert-dismissable alert-warning">
+                This section will be updated with the results of the call.
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

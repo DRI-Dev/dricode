@@ -1,0 +1,11 @@
+#curl -X PUT -H "content-type: application/json"  http://odesk.phaniram.c9.io/executethis --data '[{"ParameterName":"executeThis","ParameterValue":"multipleMongo"},{"ParameterName":"multiplewid","ParameterValue":"wid32"},{"ParameterName":"beginInboundParameters","ParameterValue":"wid1"},{"ParameterName":"y","ParameterValue":"2"}, {"ParameterName":"accesstoken","ParameterValue":"111111111"}]'
+
+#curl -X PUT -H "content-type: application/json"  http://odesk.phaniram.c9.io/executethis --data '[{"ParameterName":"executeThis","ParameterValue":"multipleMongo"},{"ParameterName":"multiplewid","ParameterValue":"wid32"},{"ParameterName":"beginInboundParameters","ParameterValue":"wid1"},{"ParameterName":"y","ParameterValue":"2"}, {"ParameterName":"accesstoken","ParameterValue":"111111111"}]'
+
+curl -X PUT -H "content-type: application/json"  http://odesk.phaniram.c9.io/executethis --data '[{"ParameterName":"executeThis","ParameterValue":"JavaScript"},{"ParameterName":"beginInboundParameters","ParameterValue":"wid1"},{"ParameterName":"y","ParameterValue":"2"}, {"ParameterName":"accesstoken","ParameterValue":"111111111"}]';
+
+#curl -X PUT -H "content-type: application/json"  http://odesk.phaniram.c9.io/executethis --data '[{"ParameterName":"executeThis","ParameterValue":"multipleMongo"},{"ParameterName":"multiplewid","ParameterValue":"wid2"},{"ParameterName":"beginInboundParameters","ParameterValue":"wid1"},{"ParameterName":"y","ParameterValue":"2"}, {"ParameterName":"accesstoken","ParameterValue":"111111111"}]'
+
+#curl -X PUT -H "content-type: application/json"  http://odesk.phaniram.c9.io/executethis --data '[{"ParameterName":"adddatawid","ParameterValue":"wid12"},{"ParameterName":"wid","ParameterValue":"wid1"},{"ParameterName":"executeThis","ParameterValue":"javascript"},{"ParameterName":"JS","ParameterValue":"value: function (x, y){ return x + y;}"},{"ParameterName":"x","ParameterValue":"1"},{"ParameterName":"y","ParameterValue":"2"}]'
+
+#curl -X PUT -H "content-type: application/json"  http://odesk.phaniram.c9.io/executethis --data '[{"ParameterName":"executeThis","ParameterValue":"DRI"},{"ParameterName":"beginInboundParameters","ParameterValue":"wid1"},{"ParameterName":"ExecuteWid","ParameterValue":"adddatawid"},{"ParameterName":"y","ParameterValue":"2"}, {"ParameterName":"accesstoken","ParameterValue":"111111111"}]'
