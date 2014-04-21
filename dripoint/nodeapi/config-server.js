@@ -2,171 +2,185 @@ var needle = require('needle');
 var twilio = require('twilio')('AC909f1981261f4461abbc7985bd202897', '7bb26fabe1f818f11f4a178359e0f19a');
 var spawn = require('child_process').spawn;
 
-if (!exports) {
-    var exports = {};
-}
+// if (!exports) {
+//     var exports = {};
+// }
+
 
 exports.environment = 'server';
 exports.server = 'server1';
 
-exports.CODE_ROOT_DIR = CODE_ROOT_DIR = __dirname.substring(0,__dirname.length - 16);
-exports.NODE_API_ROOT = NODE_API_ROOT = CODE_ROOT_DIR + 'dripoint/nodeapi/';
-exports.ETCORE_API_ROOT = ETCORE_API_ROOT = CODE_ROOT_DIR + 'dripoint/js/';
-
-(function (window) {
 
 
 
 
-    //     exports.clearLocalStorage = window.clearLocalStorage = clearLocalStorage = function clearLocalStorage() {
-    // //        proxyprinttodiv('clear clearLocalStorage', 'hi', 38);
-    //         //widMasterKey = "widmaster_";
-    //         localStore.clear();
-    //         //potentialwid = 0;
-    //         localStore.push("DRI", [{
-    //             "wid": "initialwid",
-    //             "initialwid": "hello from bootprocess"
-    //         }]);
-    //         localStore.push("DRIKEY", {
-    //             "initialwid": {
-    //                 "wid": "initialwid",
-    //                 "initialwid": "for key hello from bootprocess"
-    //             }
-    //         });
-    //     };
+//     exports.clearLocalStorage = window.clearLocalStorage = clearLocalStorage = function clearLocalStorage() {
+// //        proxyprinttodiv('clear clearLocalStorage', 'hi', 38);
+//         //widMasterKey = "widmaster_";
+//         localStore.clear();
+//         //potentialwid = 0;
+//         localStore.push("DRI", [{
+//             "wid": "initialwid",
+//             "initialwid": "hello from bootprocess"
+//         }]);
+//         localStore.push("DRIKEY", {
+//             "initialwid": {
+//                 "wid": "initialwid",
+//                 "initialwid": "for key hello from bootprocess"
+//             }
+//         });
+//     };
 
 
-    // *********** EVENTS **************************************************
-    exports.eventappinstall = eventappinstall = function eventappinstall() {
-        setdefaultparm();
-        if (exports.environment === 'server') {
-            clearLocalStorage()
-        }
-    };
-    exports.eventdeviceready = eventdeviceready = function eventdeviceready() {
-        if (Object.keys(config).length === 0) {
-            eventappinstall()
-        }
-        // start eventonemin, etc
-    };
-    exports.eventnewpage = eventnewpage = function eventnewpage() {};
-    exports.eventonline = eventonline = function eventonline() {};
-    exports.eventoffline = eventoffline = function eventoffline() {};
-    exports.eventonemin = eventonemin = function eventonemin() {};
-    exports.eventtenmin = eventtenmin = function eventtenmin() {};
-    exports.eventdaily = eventdaily = function eventdaily() {};
-    exports.eventmonthly = eventmonthly = function eventmonthly() {};
-    exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess() {};
-    exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail() {};
-    exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent() {};
-    exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent() {};
-    exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent() {};
-    exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent() {};
-    exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent() {};
-    exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent() {};
-    exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend() {};
-    exports.eventexecuteend = eventexecuteend = function eventexecuteend() {};
-
-
-    exports.Debug = Debug = 'false';
-    exports.debuglevel = debuglevel = 0;
-    exports.widMasterKey = widMasterKey = "widmaster_";
-    exports.test_results = test_results = {};
-    exports.potentialwid = potentialwid = 0;
-
-    //do not change these constants
-    exports.debugon = debugon = true;
-    exports.debugname = debugname = "";
-    exports.debugsubcat = debugsubcat = "";
-    exports.debugcat = debugcat = "";
-    exports.debugfilter = debugfilter = "";
-    exports.debugdestination = debugdestination = 1;
-    exports.debugcolor = debugcolor = 0;
-    exports.debugindent = debugindent = 0;
-    exports.environment = environment = 'server';
-
-
-
-    exports.debuglinenum = debuglinenum = 1;
-
-    // function etappinstall() { // exeucte only the first time app is installed -- once per lifetime
-    //     setappinstallparm();
-    //     if (exports.environment === 'server') {
-    //         clearLocalStorage();
-    //         addToLocalStorage("DRI", [{
-    //             "wid": "initialwid",
-    //             "initialwid": "hello from bootprocess"
-    //         }]);
-    //         addToLocalStorage("DRIKEY", {
-    //             "initialwid": {
-    //                 "wid": "initialwid",
-    //                 "initialwid": "for key hello from bootprocess"
-    //             }
-    //         });
-    //     }
-    // }
-
-    // function etappstarted() {} // execute only once per day when app is started
-
-    // function etappnewpage() {} // execute each time we go to new page
-
-
-
-    // //bootprocess();
-    // //exports.config = config = config123(); //moved by Bill per Roger
-
-    // function setappinstallparm() {}
-
-    function setdefaultparm() {
-        localStore.clear();
-        Debug = 'false'; // **** Saurabh ::  changed to make node compatible ****
-        debuglevel = 0;
-        widMasterKey = "widmaster_";
-        test_results = {};
-        potentialwid = 0;
-        debugon = false;
-        debugname = "";
-        debugsubcat = "";
-        debugcat = "";
-        debugfilter = "";
-        debugdestination = 1;
-        debugcolor = 0;
-        debugindent = 0;
-        debuglinenum = 1;
-        environment = "server";
-        exports.environment = environment;
-        test_results = {}; // can take out
-        debuglog = {};
-        exports.debuglog = debuglog;
-        exports.Debug = Debug;
-        exports.debuglevel = debuglevel;
-        exports.widMasterKey = widMasterKey;
-        exports.test_results = test_results;
-        exports.potentialwid = potentialwid;
-        exports.debugon = debugon;
-        exports.debugname = debugname;
-        exports.debugsubcat = debugsubcat;
-        exports.debugcat = debugcat =
-            exports.debugfilter = debugfilter;
-        exports.debugdestination = debugdestination;
-        exports.debugcolor = debugcolor;
-        exports.debugindent = debugindent;
-        exports.debuglinenum = debuglinenum;
+// *********** EVENTS **************************************************
+exports.eventappinstall = eventappinstall = function eventappinstall() {
+    setdefaultparm();
+    if (exports.environment === 'server') {
+        clearLocalStorage()
     }
-    exports.bootprocess = bootprocess = function bootprocess() {
-        setdefaultparm();
-        test_results = {};
-        //testAddWids();
-        //displayAllWids();
+};
+exports.eventdeviceready = eventdeviceready = function eventdeviceready() {
+    if (Object.keys(config).length === 0) {
+        eventappinstall()
     }
+    // start eventonemin, etc
 
-})(typeof window == "undefined" ? global : window);
+
+    // create needed dtos
+    // createalldtos({}, function (err, res) {
+    //     updatewid({
+    //         "wid": "initialwid",
+    //         "date": new Date()
+    //     }, function (err, res) {
+    //         callback(err, res);
+    //     });
+    // });
+};
+exports.eventnewpage = eventnewpage = function eventnewpage() {};
+exports.eventonline = eventonline = function eventonline() {};
+exports.eventoffline = eventoffline = function eventoffline() {};
+exports.eventonemin = eventonemin = function eventonemin() {};
+exports.eventtenmin = eventtenmin = function eventtenmin() {};
+exports.eventdaily = eventdaily = function eventdaily() {};
+exports.eventmonthly = eventmonthly = function eventmonthly() {};
+exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess() {};
+exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail() {};
+exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent() {};
+exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent() {};
+exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent() {};
+exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent() {};
+exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent() {};
+exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent() {};
+exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend() {};
+exports.eventexecuteend = eventexecuteend = function eventexecuteend() {};
+
+
+exports.Debug = Debug = 'false';
+exports.debuglevel = debuglevel = 0;
+exports.widMasterKey = widMasterKey = "widmaster_";
+exports.test_results = test_results = {};
+exports.potentialwid = potentialwid = 0;
+
+//do not change these constants
+exports.debugon = debugon = true;
+exports.debugname = debugname = "";
+exports.debugsubcat = debugsubcat = "";
+exports.debugcat = debugcat = "";
+exports.debugfilter = debugfilter = "";
+exports.debugdestination = debugdestination = 1;
+exports.debugcolor = debugcolor = 0;
+exports.debugindent = debugindent = 0;
+exports.environment = environment = 'server';
+
+
+
+exports.debuglinenum = debuglinenum = 1;
+
+// function etappinstall() { // exeucte only the first time app is installed -- once per lifetime
+//     setappinstallparm();
+//     if (exports.environment === 'server') {
+//         clearLocalStorage();
+//         addToLocalStorage("DRI", [{
+//             "wid": "initialwid",
+//             "initialwid": "hello from bootprocess"
+//         }]);
+//         addToLocalStorage("DRIKEY", {
+//             "initialwid": {
+//                 "wid": "initialwid",
+//                 "initialwid": "for key hello from bootprocess"
+//             }
+//         });
+//     }
+// }
+
+// function etappstarted() {} // execute only once per day when app is started
+
+// function etappnewpage() {} // execute each time we go to new page
+
+
+
+// //bootprocess();
+// //exports.config = config = config123(); //moved by Bill per Roger
+
+// function setappinstallparm() {}
+
+function setdefaultparm() {
+    localStore.clear();
+    Debug = 'false'; // **** Saurabh ::  changed to make node compatible ****
+    debuglevel = 0;
+    widMasterKey = "widmaster_";
+    test_results = {};
+    potentialwid = 0;
+    debugon = false;
+    debugname = "";
+    debugsubcat = "";
+    debugcat = "";
+    debugfilter = "";
+    debugdestination = 1;
+    debugcolor = 0;
+    debugindent = 0;
+    debuglinenum = 1;
+    environment = "server";
+    exports.environment = environment;
+    test_results = {}; // can take out
+    debuglog = {};
+    exports.debuglog = debuglog;
+    exports.Debug = Debug;
+    exports.debuglevel = debuglevel;
+    exports.widMasterKey = widMasterKey;
+    exports.test_results = test_results;
+    exports.potentialwid = potentialwid;
+    exports.debugon = debugon;
+    exports.debugname = debugname;
+    exports.debugsubcat = debugsubcat;
+    exports.debugcat = debugcat =
+        exports.debugfilter = debugfilter;
+    exports.debugdestination = debugdestination;
+    exports.debugcolor = debugcolor;
+    exports.debugindent = debugindent;
+    exports.debuglinenum = debuglinenum;
+}
+// exports.bootprocess = bootprocess = function bootprocess() {
+//     setdefaultparm();
+//     test_results = {};
+//     //testAddWids();
+//     //displayAllWids();
+// }
+
+
+
 
 
 var config123 = function () {
     var configuration = {};
 
     configuration.environment = 'server';
+    configuration.widmasterkey = 'widmasterkey'
+    configuration.defaultcollection = 'dricollection';
+    configuration.defaultdb = 'data';
+    configuration.defaultdatastore = 'mongo'
+    configuration.defaultkeycollection = 'dricollectionkey'
+    configuration.defaultmongodb = 'wikiwallettesting'
 
 
     configuration.preExecute = [];
@@ -235,10 +249,7 @@ var config123 = function () {
     // configuration.postExecute[3].dothis = 'server';
     // configuration.postExecute[3].params = {};
 
-    configuration.defaultcollection = 'dricollection';
-    configuration.defaultdb = 'data';
-    configuration.defaultdatastore = 'mongo'
-    configuration.defaultkeycollection = 'dricollectionkey'
+
 
 
     //    configuration.getwid = [];
@@ -262,21 +273,19 @@ var config123 = function () {
     //    configuration.getfrommongo[0].dothis = 'getfrommongo';
     //    configuration.getfrommongo[0].params = {};
 
-    configuration.defaultdatabasetable = 'wikiwallettesting'
+
 
 
 
     // configuration.MONGODB_URL = 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/';
-    configuration.MONGODB_URL = 'mongodb://localhost:27017/'
-    configuration.MONGODB_OPTIONS = {
-        'safe': true,
-        'server': true,
-        'auto_reconnect': true,
-        'pool': 5
-    };
-    configuration.LOOKUP_DIR = '../dripoint/';
-    // configuration.LOOKUP_DIR = '../html/';// for testing
-    configuration.SERVICE_URL = 'http://localhost:3003/';
+    // configuration.MONGODB_URL = 'mongodb://localhost:27017/'
+    // configuration.MONGODB_OPTIONS = {
+    //     'safe': true,
+    //     'server': true,
+    //     'auto_reconnect': true,
+    //     'pool': 5
+    // };
+   
 
     return {
         "configuration": configuration
@@ -696,6 +705,13 @@ exports.server2 = server2 = function server2(params, callback) {
 // //    proxyprinttodiv('Function updatewid in : saveobject II', saveobject, 1);
 //     return saveobject;
 // };
+
+
+eventdeviceready({}, function (err, res) {
+
+
+
+});
 
 sendsms({
     'tonumber': '+12313133930',

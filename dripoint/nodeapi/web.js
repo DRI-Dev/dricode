@@ -1,55 +1,28 @@
-
 // using common files at server side also
-
-// INDIVIDUAL PLAYGROUND copy
-var c = require('./config-server.js');
-require('./config-server.js');
-// var c = require('../dripoint/Staff_local/saurabh/config-server.js');
-
-// MASTER files
-
-require(ETCORE_API_ROOT + 'et-add.js');
-require(ETCORE_API_ROOT + 'et-dto.js');
-require(ETCORE_API_ROOT + 'et-security.js');
-require(ETCORE_API_ROOT + 'et-utils.js');
-require(ETCORE_API_ROOT + 'et-get.js');
-require(ETCORE_API_ROOT + 'et-test.js');    
-require(ETCORE_API_ROOT + 'et-query.js');
-require(ETCORE_API_ROOT + 'et-unit_tests.js');
-
-// require('../dripoint/Staff_local/saurabh/devjs/et-dto.js');
-// require('../dripoint/Staff_local/saurabh/devjs/et-security.js');
-// require('../dripoint/Staff_local/saurabh/devjs/et-utils.js');
-// require('../dripoint/Staff_local/saurabh/devjs/et-add.js');
-// require('../dripoint/Staff_local/saurabh/devjs/et-get.js');
-// require('../dripoint/Staff_local/saurabh/devjs/et-test.js');
-// require('../dripoint/Staff_local/saurabh/devjs/et-query.js');
-// require('../dripoint/Staff_local/saurabh/devjs/et-unit_tests.js');
-
-exports.configuration = configuration = c.config.configuration;
 exports.async = async = require('async');
 
-var express = require('express')
-  , app = express()
-  , request = require('request')
-  , common = require('./routes/common')
-  , server = require('./routes/server')
-  , driTemplate = require('./routes/driTemplate')
-  , driApi = require('./routes/driApi')
-  , convert = require('./routes/convert.js');
+var bc = require('./boxconfiguration.js');
 
- 
- //// *********************** Express Application Configuration follows   *********************** 
-app.configure(function (){
-    app.set('port', process.env.PORT || 3003);  //test
-	app.enable('trust proxy');
+var express = require('express'),
+    app = express(),
+    request = require('request'),
+    common = require('./routes/common'),
+    server = require('./routes/server'),
+    driTemplate = require('./routes/driTemplate'),
+    driApi = require('./routes/driApi'),
+    convert = require('./routes/convert.js');
+
+
+//// *********************** Express Application Configuration follows   *********************** 
+app.configure(function() {
+    app.enable('trust proxy');
     app.use(express.logger('dev'));
     app.use(express.bodyParser());
     app.use(express.methodOverride());
 
     // Add headers
     app.use(express.static(__dirname + '/../dripoint'));
-    app.use(function (req, res, next) {
+    app.use(function(req, res, next) {
 
         // Website you wish to allow to connect
         res.setHeader('Access-Control-Allow-Origin', '*');
@@ -75,21 +48,20 @@ app.configure(function (){
     app.engine('html', require('ejs').renderFile);
 });
 
-app.configure('development', function (){
+app.configure('development', function() {
     app.use(express.errorHandler());
 });
 
 //// *********************** Route Mapping for Application follows   ***********************
-app.get('/', common.index);
-app.get('/test', common.test);
 app.put('/executethis', server.putrunExecutethis);
 app.get('/executethis', server.getrunExecutethis);
 app.put('/buildtemplate', driTemplate.buildTemplate);
 app.put('/getdata', driApi.driGetData);
 app.put('/filetowid', convert.convertFileToWid);
-app.get('/echo',common.echo);
+app.get('/echo', common.echo);
 // app.get('/testget',server.testget);
 
-app.get('/updateWidTest', common.updateWidTest);
+console.log('server config is ' + bc.serverconfig.SERVER_PORT);
 
-app.listen(process.env.PORT || 3003);
+console.log('port is ' + bc.serverconfig.SERVER_PORT);
+app.listen(process.env.PORT || bc.serverconfig.SERVER_PORT);

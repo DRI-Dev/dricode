@@ -1,11 +1,9 @@
 var settings = {};
 
-exports.MONGODB_URL = 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/wikiwallettesting';
-// exports.MONGODB_URL = 'mongodb://localhost:27017/nodejsmtapi'
+// exports.MONGODB_URL = 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/wikiwallettesting';
+exports.MONGODB_URL = 'mongodb://localhost:27017/ttss'
 exports.MONGODB_OPTIONS = {'safe':true,'server':true,'auto_reconnect': true, 'pool': 5} ;
-exports.LOOKUP_DIR = '../dripoint/';
-// exports.LOOKUP_DIR = '../html/';// for testing
-exports.SERVICE_URL = 'http://localhost:3003/';
+
 
 exports.settings=settings;
 
