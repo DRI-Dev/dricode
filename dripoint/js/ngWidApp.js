@@ -1,5 +1,3 @@
-// did this comment make it to the server?
-
 if(!exports){ var exports = {}; }
 
 // call eventdeviceready from config to see if app needs to be installed
