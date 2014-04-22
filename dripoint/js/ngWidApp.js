@@ -673,7 +673,9 @@ if (typeof angular !== 'undefined') {
                 .get('executeService')
                 .executeThis(parameters, scope, function (err, results) {
                     if (results.html) {
-                        scope[parameters.wid || parameters.executethis].urlparams = ogUrlParams;
+                        var modelProp = parameters.wid || parameters.executethis;
+                        if (!scope[modelProp]) { scope[modelProp] = {}; }
+                        scope[modelProp].urlparams = ogUrlParams;
                     }
                 });
         }
