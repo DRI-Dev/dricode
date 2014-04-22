@@ -24,9 +24,9 @@ exports.eventappinstall = eventappinstall = function eventappinstall() {
         clearLocalStorage();
     }
 };
+
 exports.everyMinuteInterval = 0;
 exports.everyTenMinuteInterval = 0;
-
 exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
     setdefaultparm();
     if (!getFromLocalStorage(config.configuration.defaultkeycollection)) {
@@ -36,114 +36,222 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
     // start eventonemin, eventtenmin and save the interval value so 
     // you can use "clearInterval" in the future if desired to stop things
     var minutes = 60 * 1000;
-    exports.everyMinuteInterval = setInterval(exports.eventonemin, 12 * minutes);
-    exports.everyTenMinuteInterval = setInterval(exports.eventtenmin, 120 * minutes);
+    //exports.everyMinuteInterval = setInterval(exports.eventonemin,1000);
+    //exports.everyTenMinuteInterval = setInterval(exports.eventtenmin,10 * minutes);
 
-    // execute([{"executethis":"addwidmaster", 
-    //             "metadata.method":"systemdto",
-    //             "wid":"systemdto",
-    //             "expirationtimer":"string",
-    //             "expirationdate":"string",
-    //             "metadata.inherit.0": {"wid" : "systemdefault", "command" : { "dtotype":"", "adopt":"default"}}
-    //     },{
-    //         "executethis":"addwidmaster",
-    //         "wid":"systemdefault",
-    //         "metadata.method":"systemdto",
-    //         "expirationtimer":"90",
-    //         "expirationdate":"6/14/14"
-    //     }
-    //     ],
-    //     function (err, res) {
-    //         callback(err, res);
-    // });
-    // createalldtos({}, function (err, res) {
-    updatewid({
-        "wid": "initialwid",
-        "date": new Date()
-    }, function (err, res) {
-        callback(err, res);
-    });
-    // });
+    execute([{"executethis":"addwidmaster", 
+                "metadata.method":"systemdto",
+                "wid":"systemdto",
+                "expirationtimer":"string",
+                "expirationdate":"string",
+				"executecount":"integer",
+                "metadata.inherit.0": {"wid" : "systemdefault", "command" : { "dtotype":"", "adopt":"default"}}
+        },{
+            "executethis":"addwidmaster",
+            "wid":"systemdefault",
+            "metadata.method":"systemdto",
+            "expirationtimer":"90",
+            "expirationdate":"6/14/14"
+        }
+        ],
+        function (err, res) {
+            updatewid({"wid":"initialwid", "date": new Date()}, function (err, res) {
+                callback(err, res);
+                });
+        });
 };
 
-exports.eventnewpage = eventnewpage = function eventnewpage() {};
-exports.eventonline = eventonline = function eventonline() {};
-exports.eventoffline = eventoffline = function eventoffline() {};
-exports.eventonemin = eventonemin = function eventonemin() {};
-exports.eventtenmin = eventtenmin = function eventtenmin() {};
-exports.eventdaily = eventdaily = function eventdaily() {};
-exports.eventmonthly = eventmonthly = function eventmonthly() {};
-exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess() {};
-exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail() {};
-exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent() {};
-exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent() {};
-exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent() {};
-exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent() {};
-exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent() {};
-exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent() {};
-exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend() {};
+exports.eventnewpage = eventnewpage = function eventnewpage() {
+    processevent(arguments.callee.name, function (err, res) {
+        //cb(err, res);
+    });
 
+};
+
+exports.eventonline = eventonline = function eventonline(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventoffline = eventoffline = function eventoffline(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventonemin = eventonemin = function eventonemin() {
+    proxyprinttodiv("eventonemin", 'one sec', 99);
+    processevent(arguments.callee.name, function (err, res) {
+        //cb(err, res);
+    });
+};
+
+exports.eventtenmin = eventtenmin = function eventtenmin(params, cb) {    
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventdaily = eventdaily = function eventdaily(params, cb) {    
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventmonthly = eventmonthly = function eventmonthly(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
 
 exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters, cb) {
     processevent(arguments.callee.name, function (err, res) {
-        cb(err, res)
-    })
+        cb(err, res);
+    });
 };
 
 exports.processevent = processevent = function processevent(eventname, callback) {
-    var widlist = [];
-    var executelist = [];
-    geteventlist(eventname, function (err, eventlist) {
-        if (eventlist.length > 0) {
-            for (var eachexecute in eventlist) {
-                widlist.push(eachexecute)
-                executelist.push(eventlist[eachexecute])
-            }
-            execute(executelist, function (err, res) {
-                // maybe res has widlist results?
-                markasdone(widlist, eventname, function (err, res) {
-                    callback(err, res)
-                })
-            })
-        } else {
-            callback(null, {});
-        }
-    })
+    getexecutelist(eventname, "queuecollection", function (err, executelist) {
+        proxyprinttodiv("processeventqueue executelist", executelist, 17);
+        executelistfn(executelist, execute, function (err, res) {
+            deletelist(executelist, eventname, function (err, res) {
+                callback(err, res);
+                });
+            });
+        });
+    };
+
+exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, callback) {
+    async.mapSeries(listToDo, function (eachresult, cbMap) {
+        async.nextTick(function () {
+            fn(eachresult, function (err, res){
+                cbMap(err, res);
+            });
+        });
+    }, function (err, res) {
+        callback(err, res);
+    });
 };
 
-exports.geteventlist = geteventlist = function geteventlist(eventname, callback) {
-    var executeobject =
 
-    executeobject = {
-        "command": {
-            "result": "queryresult"
-        }
-    };
-    executeobject.command.collection = "queuecollection";
+exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eventtype, callback) {
+    proxyprinttodiv("getexecutelist eventname(collection)", eventname, 17);
+	proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
+	var executeobject = {"command": {"result": "queryresult"}};
+    var executelist=[];
+    executeobject.command.databasetable = eventtype;
+    executeobject.command.collection = eventname;
     executeobject.command.db = "queuedata";
-    executeobject.command.result = "queueresult";
+    //executeobject.command.result = "queueresult";
     executeobject["executethis"] = "querywid";
-    executeobject["mongorawquery"] = {
-        "$and": [{
-            "metadata": eventname
-        }]
-    };
-    execute(executeobject, function (err, eventlist) {
-        if (eventlist.length === 0) {
-            eventlist = []
+    executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
+	
+	proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
+	
+    execute(executeobject, function (err, res) {
+		proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
+        if (res.length === 0) {
+            executelist = [];
         }
-        callback(null, eventlist)
+        else if(res[0] && res[0]["queryresult"]){
+            for (var everyaction in res[0]["queryresult"]){
+				proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
+                //if (res[0]["queryresult"][everyaction]
+                executelist.push(res[0]["queryresult"][everyaction]);
+            }
+
+        }
+        callback(null, executelist);
     })
 };
 
-exports.markasdone = markasdone = function markasdone(widlist, callback) {
-    var executelist = [];
-    var executeobject = {};
-    for (eachwid in widlist) {
-        //deletewid
-        //executeobject
-    }
-}
+
+exports.deletelist = deletelist = function deletelist(listToDo, eventname, callback) {
+    proxyprinttodiv("deletelist listToDo", listToDo, 17);
+    var eachcmd={};
+    eachcmd["command"] = {
+            "fromdatabasetable":"queuecollection",
+            "fromdatastore": "",
+            "fromcollection":eventname,
+            "fromkeycollection":eventname+"key",
+            "fromdb":"queuedata",
+            "todatabasetable":"completedqueuecollection",
+            "todatastore": "",
+            "tocollection":eventname,
+            "tokeycollection":eventname+"key",
+            "todb":"queuedata",
+            "towid":"",
+            "delete":true
+        };
+
+    async.mapSeries(listToDo, function (eachresult, cbMap) {
+        async.nextTick(function () {
+            var eachaction=eachresult;
+            eachaction = extend(true, eachaction, eachcmd);
+            copywid(eachaction, function (err, res){
+                cbMap(err, res);
+            });
+        });
+    }, function (err, res) {
+        callback(err, res);
+    });
+};
+
 
 function setdefaultparm() {
 
@@ -174,12 +282,12 @@ function config123() {
     var configuration = {};
 
     configuration.environment = 'local';
-    configuration.widmasterkey = 'widmasterkey'
+    configuration.widmasterkey = 'widmasterkey';
     configuration.defaultcollection = 'dricollection';
     configuration.defaultdb = 'data';
-    configuration.defaultdatastore = 'localstorage'
-    configuration.defaultkeycollection = 'dricollectionkey'
-    configuration.defaultdatabasetable = 'wikiwallettesting'
+    configuration.defaultdatastore = 'localstorage';
+    configuration.defaultkeycollection = 'dricollectionkey';
+    configuration.defaultdatabasetable = 'wikiwallettesting';
 
     configuration.preExecute = [];
     configuration.preExecute[0] = {};
@@ -267,7 +375,7 @@ function config123() {
 
     return {
         "configuration": configuration
-    }
+    };
 }
 
 exports.getFromLocalStorage = window.getFromLocalStorage = getFromLocalStorage = function getFromLocalStorage(key) {
@@ -400,7 +508,7 @@ exports.server2 = window.server2 = server2 = function server2(params, callback) 
     proxyprinttodiv('Function server2 ------', params, 99);
     params.command.server = "server2";
     server(params, callback);
-}
+};
 
 exports.getDriApiData = getDriApiData = function getDriApiData(params, callback) {
     // set up object in syntax that driApi is expecting
@@ -468,9 +576,11 @@ exports.mquery = mquery = function mquery(inboundobj, command, callback) {
         var resultlist = [];
         //var collection = "DRI";
         //var keycollection = "DRIKEY";
-        var collection = config.configuration.defaultcollection
-        var keycollection = config.configuration.defaultkeycollection
-        var databasetable = config.configuration.defaultdatabasetable
+        var collection = config.configuration.defaultcollection;
+		//proxyprinttodiv("collection = ",collection,99);
+        var keycollection = config.configuration.defaultkeycollection;
+        var databasetable = config.configuration.defaultdatabasetable;
+		//proxyprinttodiv("db table = ",databasetable,99);
         var database = {};
         var keydatabase = {};
         var eachwid;

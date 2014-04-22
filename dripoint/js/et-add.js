@@ -205,7 +205,7 @@
                 if (err && Object.keys(err).length > 0) {
                     callback(err, res);
                 } else {
-                    try {
+                    //try {
                         dtoobject = res;
                         proxyprinttodiv("cleanadd getdtoobject res-------", dtoobject, 17);
 
@@ -214,15 +214,28 @@
                         var result_obj = {};
                         var output = {};
 
-                        if (!command) {
-                            command = {};
-                        }
-                        if (!command.deepfilter) {
-                            command.deepfilter = {};
-                        }
-                        if (!command.deepfilter.convert) {
-                            command.deepfilter.convert = false;
-                        }
+                        // if (!command) {
+                        //     command = {};
+                        // }
+                        // if (!command.deepfilter) {
+                        //     command.deepfilter = {};
+                        // }
+                        // if (!command.deepfilter.convert) {
+                        //     command.deepfilter.convert = false;
+                        // }
+
+                if (!command) {
+                    command = {};
+                }
+                if (!command.command) {
+                    command.command = {};
+                }
+                if (!command.command.deepfilter) {
+                    command.command.deepfilter = {};
+                }
+                if (!command.command.deepfilter.convert) {
+                    command.command.deepfilter.convert = false;
+                }
 
                         output.obj = object;
                         output.dtoobj = dtoobject;
@@ -276,19 +289,20 @@
                                 } // end else
                             });// end execute
                         } else { // if ==string
+                            proxyprinttodiv("cleanadd command", command, 17);
                             deepfilter(object, dtoobject, command, function (err, result_obj) {
                                 output.obj = result_obj;
                                 output.dtoobj = dtoobject;
                                 callback(null, output);
                             });
                         } //  end if (dto_to_get !== "string") 
-                    } // end try
-                    catch (err) {
-                        var finalobject = createfinalobject({
-                            "result": "cleanadd"
-                        }, {}, "cleanadd", err, inbound_parameters);
-                        callback(finalobject.err, finalobject.res);
-                    }
+                    //} // end try
+                    // catch (err) {
+                    //     var finalobject = createfinalobject({
+                    //         "result": "cleanadd"
+                    //     }, {}, "cleanadd", err, inbound_parameters);
+                    //     callback(finalobject.err, finalobject.res);
+                    // }
                 } // end else
             }); // end getdtoobject
         } // end try
@@ -945,6 +959,8 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
         // }
         proxyprinttodiv("addwid object", object, 18);
         proxyprinttodiv("addwid dtoobject", dtoobject, 18);
+        proxyprinttodiv("addwid object", object, 18);
+        proxyprinttodiv("addwid dtoobject", dtoobject, 18);
         proxyprinttodiv("addwid command", command, 18);
         var currentobject={};
         var currentinheritobject = {};
@@ -966,7 +982,7 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                              proxyprinttodiv("addwid step1 getwidmaster result", res, 18);
                              var getwidmasterres = {};
                              extend(true, getwidmasterres, res[0]); // master copy
-                             proxyprinttodiv("addwid step1 getwidmaster getwidmasterres", getwidmasterres, 99);
+                             proxyprinttodiv("addwid step1 getwidmaster getwidmasterres", getwidmasterres, 18);
                              //res = [{"wid":"wid1","metadata":{"method":"defaultdto"},"d":44,"command":{"inherit":{"data":{"c":99, "e":98, "g":7}}}}];      
                              //res = [{"wid":"wid1","metadata":{"method":"defaultdto"},"d":4, "f":6, "command":{"inherit":{"data":{"c":99, "e":98, "g":7}}}}];       
                              if (typeof res[0] === 'object' && Object.keys(res[0]).length !== 0) {
@@ -974,8 +990,10 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                                 if (res[0].command && res[0].command.inherit && res[0].command.inherit.data) {
                                     currentinheritobject = res[0].command.inherit.data;
                                     delete res[0].command.inherit.data;
-                                    var command = {"filterobject": {"type":"match"}};
-                                    var matches = filterobject(getwidmasterres, currentinheritobject, command);
+                                    //var command = {"filterobject": {"type":"match"}};
+                                    var matches = compareobjects(getwidmasterres, currentinheritobject, "equal");
+				                    matches = matches.andobj;
+                                    proxyprinttodiv("compareobjects return -- matches", matches, 18);
                                     // may need a recursive delete here
                                     if(Object.keys(matches).length > 0) {
                                         for (var key in matches) {
@@ -984,8 +1002,9 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                                     }
                                 }
                                 
-                                object = extend(true, object, getwidmasterres);
-                                proxyprinttodiv("addwid step1 getwidmaster getwidmasterres", object, 99);
+                                // object = extend(true, object, getwidmasterres); // wrong order
+                                object = extend(true, getwidmasterres, object);
+                                proxyprinttodiv("addwid step1 getwidmaster getwidmasterres", object, 18);
 
                                 step1_callback(null);
 
@@ -1002,12 +1021,15 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                 if (!command) {
                     command = {};
                 }
-                if (!command.deepfilter) {
-                    command.deepfilter = {};
+                if (!command.command) {
+                    command.command = {};
                 }
-                command.deepfilter.convert = true;
+                if (!command.command.deepfilter) {
+                    command.command.deepfilter = {};
+                }
+                command.command.deepfilter.convert = true;
 
-                if (!command.deepfilter.keepaddthis) { command.deepfilter.keepaddthis = true; }
+                // if (!command.command.deepfilter.keepaddthis) { command.command.deepfilter.keepaddthis = true; }
                 
                 // add wid = guid if its missing in input
                 if (!object.hasOwnProperty("wid")) {
@@ -1068,9 +1090,10 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                 step3_callback(null);   
             },
             function step4(step4_callback) {
+                delete command.command.deepfilter.convert
                 object["executethis"] = "updatewid";
                 // readd command params back in
-                extend(true, object, {"command": command});
+                extend(true, object, command);
                 proxyprinttodiv("addwid before updatewid ", object, 18);
                 execute(object, function (err, res) {
                     output = res; // or res[0]?

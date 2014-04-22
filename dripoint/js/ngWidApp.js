@@ -661,20 +661,20 @@ if (typeof angular !== 'undefined') {
         function finishProcess(parameters) {
             if (parameters.addthis) { parameters = widAppHelper.removeAddThis(parameters); }
 
-            if (parameters.wid) {
+            if (!parameters.executethis && parameters.wid) {
                 parameters.executethis = parameters.wid;
                 delete parameters['wid'];
             }
 
-            if (parameters.metadata) { delete parameters['metadata']; }
-
-            //TODO: after this execute call, add to the 'wid' (whatever is the wid in this next execute call
+            //TODO: after this execute call, if wid has 'html' property add to the 'wid' (whatever is the wid in this next execute call
             //TODO: in the data model, add what came back from widdata call and also what is in urlparams
             //TODO: also add a 'urlparams' property to the wid in the model and add the urlparams to it as well
             angular.injector(['ng', 'widApp'])
                 .get('executeService')
                 .executeThis(parameters, scope, function (err, results) {
-                    scope[parameters.wid || parameters.executethis].urlparams = ogUrlParams;
+                    if (results.html) {
+                        scope[parameters.wid || parameters.executethis].urlparams = ogUrlParams;
+                    }
                 });
         }
 
@@ -700,8 +700,6 @@ if (typeof angular !== 'undefined') {
             execute({executethis:'urlparams'}, function (err, urlResultArr) {
                 var processParams = widAppHelper.mergeNestedArray(urlResultArr);
 
-                if (processParams.addthis) { processParams = widAppHelper.removeAddThis(processParams); }
-
                 if (processParams.widdata) {
                     execute({executethis:processParams.widdata}, function (err, widdataResults) {
                         delete processParams['widdata'];
@@ -722,21 +720,25 @@ if (typeof angular !== 'undefined') {
         parameters.command.parameters.eventdata.element = $('<div>' + ele + '</div>').html();
         parameters.command.parameters.eventdata.originatingscreen = widAppHelper.getUrlParam('wid');
 
+        gatherParamsAndExecute(parameters, scope);
+
+
+
         // add urlparameters and inwid data to parameters
 //        parameters = extend(true, scope.inwid, scope.urlparams, parameters);
 
-        // TODO : get inwid everytime to always get the latest, don't store in data model
-
-        parameters = extend(true, scope.inwid, parameters); // not using urlparams for now as it causes conflicting wid properties at times.
-
-        angular.injector(['ng', 'widApp'])
-            .get('executeService')
-            .executeThis(parameters, scope, function (err, resultArray) {
-                if (err && Object.size(err) > 0) {
-                    console.log('error in execute process that was bound using links event binding => ');
-                    console.log(err.error);
-                }
-            });
+//        // TODO : get inwid everytime to always get the latest, don't store in data model
+//
+//        parameters = extend(true, scope.inwid, parameters); // not using urlparams for now as it causes conflicting wid properties at times.
+//
+//        angular.injector(['ng', 'widApp'])
+//            .get('executeService')
+//            .executeThis(parameters, scope, function (err, resultArray) {
+//                if (err && Object.size(err) > 0) {
+//                    console.log('error in execute process that was bound using links event binding => ');
+//                    console.log(err.error);
+//                }
+//            });
     }
 
     // adding a size function to Object's prototype

@@ -849,15 +849,18 @@ exports.ettestt6 = ettestt6 = function ettestt6(params, callback) {
 
 exports.ss1 = ss1 = function ss1(params, callback) {
     proxyprinttodiv('Function ss1 ', '--', 17);
-    execute(
-        [ 
-            {
-                "executethis":"sendsms", 
-                //"To":"+12145644732", 
-                "To": "+12313133930",
-                "Body":"test msg"
-            }
-        ], 
+    // execute(
+    //     [ 
+    //         {
+    //             "executethis":"sendsms", 
+    //               "tonumber": "+12145644732",
+    //               "msgbody": "This the server- I just restarted "
+    //             //"To":"+12145644732", 
+    //               //To": "+12313133930",
+    //             //"Body":"test msg"
+    //         }
+    //     ], 
+    sendsms({"To":"+12145644732", "Body":"test"},
         function (err, res) { 
             callback (err, res[0])
         }
