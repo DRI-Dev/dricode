@@ -102,6 +102,8 @@ function processExecuteTags($, callback) {
                 if (executeObj.onbuild) { delete executeObj['onbuild']; }
 
                 if (onbuild) {
+                    console.log('**$$**  processing execute, onbuild true.  Execute params => ' + JSON.stringify(executeObj));
+
                     execute(executeObj, function (err, resultArray) {
                         if (err && Object.size(err) > 0) { console.log('** error found => ' + JSON.stringify(err)); }
                         else {
@@ -135,6 +137,8 @@ function finishConvert($, screenwid, res) {
 //    $('widsection').each(function(i, ele) { });
 
     screenwid.html = $('body').html();
+
+    console.log('**>>** new screenwid execution parameters => ' + JSON.stringify(screenwid));
 
     execute(screenwid, function(err, resultsArray) {
         if (err && Object.size(err) > 0) { console.log('** htmlToScreenwid addwidmaster error => ' + JSON.stringify(err) + ' **'); }

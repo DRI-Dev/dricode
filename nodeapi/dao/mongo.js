@@ -1,11 +1,11 @@
 var SkinStore = require('connect-mongoskin'),
     mongoskin = require('mongoskin'),
     settings = require('../settings.js'),
-    db = mongoskin.db(settings.MONGODB_URL, settings.MONGODB_OPTIONS)
+    db = mongoskin.db(settings.MONGODB_URL, settings.MONGODB_OPTIONS);
     var bc = require('../boxconfiguration.js');
 
 var config = bc.config.config.configuration;
-console.log("TABLE _ NAME is " + config.defaultcollection)
+console.log("TABLE _ NAME is " + config.defaultcollection);
 var schemaToLookup = config.defaultcollection;
 
 
@@ -142,7 +142,6 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
             });
         }
     });
-
 };
 
 
@@ -164,19 +163,17 @@ exports.maddnew = maddnew = function maddnew(objToAdd, command, callback) {
     });
 };
 
-
-
-
-
 // DAO method to aupdate
 exports.mupdate = mupdate = function mupdate(finder, objToAdd, command, callback) {
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup = configuration.defaultcollection;
-
+    // updateData = objToAdd;
     var updateData = ConvertToDOTdri(objToAdd);
-    console.log('madd hit! '+ JSON.stringify(updateData));
+    console.log('mupdate hit! ' + JSON.stringify(updateData));
     db.collection(schemaToLookup).update({
         "wid": finder['wid']
-    }, {"$set": updateData}, function(err, res) {
+    }, {
+        "$set": updateData
+    }, function(err, res) {
         if (err) {
             callback(err, {
                 etstatus: {

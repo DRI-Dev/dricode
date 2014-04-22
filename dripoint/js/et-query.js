@@ -1670,20 +1670,18 @@
 
             filter_data = getcommand(parameters, // commandParams
             { 
-                "command":{"db": config.configuration.defaultdb},
-                "command":{"collection":config.configuration.defaultcollection},
-                "command":{"keycollection":config.configuration.defaultkeycollection},
-                "command":{"datastore" : config.configuration.defaultdatastore},
-                "command":{"databasetable":config.configuration.defaultdatabasetable},
-                "command":{"convertmethod": "toobject"}
+                "command.db": config.configuration.defaultdb,
+                "command.collection":config.configuration.defaultcollection,
+                "command.keycollection":config.configuration.defaultkeycollection,
+                "command.datastore" : config.configuration.defaultdatastore,
+                "command.convertmethod": ""
             },
             { // commandParams
-                "command":{"db": ""},
-                "command":{"collection":""},
-                "command":{"keycollection":""},
-                "command":{"datastore" : ""},
-                "command":{"databasetable":""},
-                "command":{"convertmethod": ""}
+                "command.db": "",
+                "command.collection":"",
+                "command.keycollection":"",
+                "command.datastore" : "",
+                "command.convertmethod": ""
             }, false);
             p[6] = filter_data.filteredobject;
 

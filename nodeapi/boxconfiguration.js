@@ -15,6 +15,16 @@ exports.configuration = configuration = config.configuration;
 // require('../dripoint/Staff_local/saurabh/devjs/et-unit_tests.js');
 // exports.executethis = require('../dripoint/Staff_local/saurabh/devjs/executethis.js');
 
+//require('../dripoint/devJS/et-dto.js');
+//require('../dripoint/devJS/et-security.js');
+//require('../dripoint/devJS/et-utils.js');
+//require('../dripoint/devJS/et-add.js');
+//require('../dripoint/devJS/et-get.js');
+//require('../dripoint/devJS/et-test.js');
+//require('../dripoint/devJS/et-query.js');
+//require('../dripoint/devJS/et-unit_tests.js');
+//exports.executethis = require('../dripoint/devJS/executethis.js');
+
 
 require('../dripoint/js/et-dto.js');
 require('../dripoint/js/et-security.js');
