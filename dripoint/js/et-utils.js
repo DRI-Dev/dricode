@@ -350,7 +350,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
 };
 //function getfrommongo(inputWidgetObject) {
 exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
-        function find_and_replace_addthis(obj) {
+    function find_and_replace_addthis(obj) {
         proxyprinttodiv('<<< Get_Clean find_and_replace_addthis obj >>>', obj, 38);
         var _in_obj;
 
@@ -383,7 +383,8 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
         } // for each_param
 
         return _in_obj;
-    } // end fn recurse
+    }
+
     try {
         var originalarguments = {};
         extend(true, originalarguments, inputWidgetObject);
