@@ -573,10 +573,8 @@ exports.convertfromdriformat = convertfromdriformat = function convertfromdrifor
             outobject = widobject[db] || {};
         }
 
-        if (widobject['wid']) {
+        if (widobject['wid'] && !outobject['wid']) {
             outobject['wid'] = widobject['wid'];
-        } else {
-            outobject['wid'] = "";
         }
 
         if (widobject['metadata']) {
