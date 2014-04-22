@@ -1296,9 +1296,9 @@
                                                                                 // if we come back with [{}] go to the next case,usally server
                                                                                 if (executeobject.executeflag === true) {
                                                                                     if ((res === undefined) ||
-                                                                                        (res && res[0] && isArray(res) && res[0]['metadata'] && res[0]['metadata']['expirationdate'] &&
+                                                                                        (isArray(res) && res[0]['metadata'] && res[0]['metadata']['expirationdate'] &&
                                                                                             new Date(res[0]['metadata']['expirationdate']) < new Date()) ||
-                                                                                        (res && isArray(res)) && (res.length === 1) && res[0] && (Object.keys(res[0]).length === 0)
+                                                                                        (isArray(res)) && (res.length === 1) && (Object.keys(res[0]).length === 0)
                                                                                         ) {
                                                                                         proxyprinttodiv("Try again hit wit res", res, 11);
                                                                                         whatallowexecute = true;
