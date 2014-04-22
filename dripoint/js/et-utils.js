@@ -229,7 +229,8 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
                     "db":config.configuration.defaultdb,
                     "databasetable":config.configuration.defaultdatabasetable,
                     "convertmethod":"toobject",
-                    "datamethod":"upsert"
+                    "datamethod":"upsert",
+                    "deepfilter" : {"keepaddthis":false}
                 }
             }, {
                 "command": {
@@ -246,6 +247,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
             true);
 
         var command = filter_data.filteredobject.command;
+        proxyprinttodiv('Function datastore inputWidgetObject', inputWidgetObject, 12);
         proxyprinttodiv('Function datastore filter_data', filter_data, 12);
         proxyprinttodiv('Function datastore command', command, 12);
         var datastore= command.datastore;
@@ -348,6 +350,40 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
 };
 //function getfrommongo(inputWidgetObject) {
 exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
+        function find_and_replace_addthis(obj) {
+        proxyprinttodiv('<<< Get_Clean find_and_replace_addthis obj >>>', obj, 38);
+        var _in_obj;
+
+        if (obj instanceof Array) {
+            _in_obj = [];
+            extend(true, _in_obj, obj);
+        } else {
+            _in_obj = {};
+            extend(true, _in_obj, obj);
+        }
+
+        proxyprinttodiv('<<< Get_Clean find_and_replace_addthis _in_obj >>>', _in_obj, 38);
+
+        if (_in_obj.hasOwnProperty("addthis")) {
+            var _add_this = _in_obj["addthis"];
+            delete _in_obj["addthis"];
+            for (var i in _add_this) {
+                if (_add_this.hasOwnProperty(i)) {
+                    _in_obj[i] = _add_this[i];
+                }
+            }
+        }
+
+        for (var each_param in _in_obj) {
+            if (_in_obj.hasOwnProperty(each_param)) {
+                if (isObject(_in_obj[each_param])) {
+                    _in_obj[each_param] = find_and_replace_addthis(_in_obj[each_param]);
+                }
+            }
+        } // for each_param
+
+        return _in_obj;
+    } // end fn recurse
     try {
         var originalarguments = {};
         extend(true, originalarguments, inputWidgetObject);
@@ -365,7 +401,8 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                     "keycollection":config.configuration.defaultcollection + "key",
                     "db":config.configuration.defaultdb,
                     "databasetable":config.configuration.defaultdatabasetable,
-                    "convertmethod":"toobject"
+                    "convertmethod":"toobject",
+                    "deepfilter" : {"keepaddthis":false}
                 }
             }, {
                 "command": {
@@ -374,7 +411,8 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                     "keycollection":"",
                     "db":"",
                     "databasetable":"",
-                    "convertmethod":""
+                    "convertmethod":"",
+                    "deepfilter" : {"keepaddthis":""}
                 }
             },
             true);
@@ -399,7 +437,9 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                 var keydatabase=getdatabaseinforesult.keydatabase;
                 proxyprinttodiv('Function getwid keydatabase', keydatabase,12);
                 output = keydatabase[widName];
-
+                //if (!command.command.keepaddthis) {
+                  //  output = find_and_replace_addthis(output) 
+                    //}
 
                 // if (!keydatabase.hasOwnProperty(widName)) {
                 //     err=createfinalobject(outobject, command, nameoffn, errorobject, initialparameters)
@@ -811,16 +851,16 @@ exports.deepfilter = deepfilter = function deepfilter(inputObj, dtoObjOpt, comma
     var totype;
     var keepaddthis;
     var inbound_parameters_110 = arguments;
-    if (command && command.deepfilter && command.deepfilter.convert===undefined) { //if command.deepfilter.convert undefined
+    if (command && command.command && command.command.deepfilter && command.command.deepfilter.convert===undefined) { //if command.deepfilter.convert undefined
         convert = false; //default value
-    } else { convert=command.deepfilter.convert; }
-    if (command && command.deepfilter && command.deepfilter.totype===undefined) { //if command.deepfilter.totype undefined
+    } else { convert=command.command.deepfilter.convert}
+    if (command && command.command && command.command.deepfilter && command.command.deepfilter.totype===undefined) { //if command.deepfilter.totype undefined
         totype = false; //default value
-    } else { totype=command.deepfilter.totype; }
+    } else { totype=command.command.deepfilter.totype; }
 
-    if (command && command.deepfilter && command.deepfilter.keepaddthis===undefined) { //if command.deepfilter.totype undefined
+    if (command && command.command && command.command.deepfilter && command.command.deepfilter.keepaddthis===undefined) { //if command.deepfilter.totype undefined
         keepaddthis = false; //default value -- normally will try to remove addthis at add and get
-    } else { keepaddthis=command.deepfilter.keepaddthis; }
+    } else { keepaddthis=command.command.deepfilter.keepaddthis; }
 
     proxyprinttodiv("deepfilter inputObj", inputObj, 41);
     proxyprinttodiv("deepfilter dtoObjOpt", dtoObjOpt, 41);
@@ -1175,7 +1215,7 @@ function createAlphanumericStringByLength(length){
 
 //deepfilter dataType=guid - to create new guid
 //ref : http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
-function createNewGuid(){
+exports.createNewGuid = createNewGuid = function createNewGuid(){
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 
@@ -1757,11 +1797,11 @@ function getRandomNumberByLength(length) {
 
         if (deleteflag) {
             output=splitobj.xorobj1
-            filteredobject = splitobj.orobj
+            filteredobject = splitobj.andobj
         }
         else { // if !deleteflag
             // output= // nothing to do to output
-            filteredobject = splitobj.orobj
+            filteredobject = splitobj.andobj
         }
 
         return {

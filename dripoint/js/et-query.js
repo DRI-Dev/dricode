@@ -1674,13 +1674,15 @@
                 "command":{"collection":config.configuration.defaultcollection},
                 "command":{"keycollection":config.configuration.defaultkeycollection},
                 "command":{"datastore" : config.configuration.defaultdatastore},
-                "command":{"convertmethod": ""}
+                "command":{"databasetable":config.configuration.defaultdatabasetable},
+                "command":{"convertmethod": "toobject"}
             },
             { // commandParams
                 "command":{"db": ""},
                 "command":{"collection":""},
                 "command":{"keycollection":""},
                 "command":{"datastore" : ""},
+                "command":{"databasetable":""},
                 "command":{"convertmethod": ""}
             }, false);
             p[6] = filter_data.filteredobject;

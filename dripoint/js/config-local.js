@@ -63,130 +63,130 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
 
 exports.eventnewpage = eventnewpage = function eventnewpage() {
     processevent(arguments.callee.name, function (err, res) {
-        //cb(err, res)
-    })
+        //cb(err, res);
+    });
 
-}
+};
 
 exports.eventonline = eventonline = function eventonline(params, cb) {
     processevent(arguments.callee.name, function (err, res) {
-        cb(err, res)
-    })
+        cb(err, res);
+    });
 };
 
 exports.eventoffline = eventoffline = function eventoffline(params, cb) {
     processevent(arguments.callee.name, function (err, res) {
-        cb(err, res)
-    })
+        cb(err, res);
+    });
 };
 
 exports.eventonemin = eventonemin = function eventonemin() {
     proxyprinttodiv("eventonemin", 'one sec', 99);
     processevent(arguments.callee.name, function (err, res) {
-        //cb(err, res)
-    })
+        //cb(err, res);
+    });
 };
 
 exports.eventtenmin = eventtenmin = function eventtenmin(params, cb) {    
     processevent(arguments.callee.name, function (err, res) {
-        cb(err, res)
-    })
+        cb(err, res);
+    });
 };
 
 exports.eventdaily = eventdaily = function eventdaily(params, cb) {    
     processevent(arguments.callee.name, function (err, res) {
-        cb(err, res)
-    })
+        cb(err, res);
+    });
 };
 
 exports.eventmonthly = eventmonthly = function eventmonthly(params, cb) {
     processevent(arguments.callee.name, function (err, res) {
-        cb(err, res)
-    })
+        cb(err, res);
+    });
 };
 
 exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess(params, cb) {
     processevent(arguments.callee.name, function (err, res) {
-        cb(err, res)
-    })
+        cb(err, res);
+    });
 };
 
 exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail(params, cb) {
     processevent(arguments.callee.name, function (err, res) {
-        cb(err, res)
-    })
+        cb(err, res);
+    });
 };
 
 exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent(params, cb) {
     processevent(arguments.callee.name, function (err, res) {
-        cb(err, res)
-    })
+        cb(err, res);
+    });
 };
 
 exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent(params, cb) {
     processevent(arguments.callee.name, function (err, res) {
-        cb(err, res)
-    })
+        cb(err, res);
+    });
 };
 
 exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent(params, cb) {
     processevent(arguments.callee.name, function (err, res) {
-        cb(err, res)
-    })
+        cb(err, res);
+    });
 };
 
 exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent(params, cb) {
     processevent(arguments.callee.name, function (err, res) {
-        cb(err, res)
-    })
+        cb(err, res);
+    });
 };
 
 exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent(params, cb) {
     processevent(arguments.callee.name, function (err, res) {
-        cb(err, res)
-    })
+        cb(err, res);
+    });
 };
 
 exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent(params, cb) {
     processevent(arguments.callee.name, function (err, res) {
-        cb(err, res)
-    })
+        cb(err, res);
+    });
 };
 
 exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend(params, cb) {
     processevent(arguments.callee.name, function (err, res) {
-        cb(err, res)
-    })
+        cb(err, res);
+    });
 };
 
 exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters, cb) {
     processevent(arguments.callee.name, function (err, res) {
-        cb(err, res)
-    })
-}
+        cb(err, res);
+    });
+};
 
 exports.processevent = processevent = function processevent(eventname, callback) {
     getexecutelist(eventname, "queuecollection", function (err, executelist) {
         proxyprinttodiv("processeventqueue executelist", executelist, 17);
         executelistfn(executelist, execute, function (err, res) {
             deletelist(executelist, eventname, function (err, res) {
-                callback(err, res)
-                })
-            })
-        })
-    }
+                callback(err, res);
+                });
+            });
+        });
+    };
 
 exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, callback) {
     async.mapSeries(listToDo, function (eachresult, cbMap) {
         async.nextTick(function () {
             fn(eachresult, function (err, res){
                 cbMap(err, res);
-            })
-        })
+            });
+        });
     }, function (err, res) {
-        callback(err, res)
-    })
-}
+        callback(err, res);
+    });
+};
 
 
 exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eventtype, callback) {
@@ -199,26 +199,26 @@ exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eve
     executeobject.command.db = "queuedata";
     //executeobject.command.result = "queueresult";
     executeobject["executethis"] = "querywid";
-    executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }} // find objects that are not empty
+    executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
 	
 	proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
 	
     execute(executeobject, function (err, res) {
 		proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
         if (res.length === 0) {
-            executelist = []
-            }
+            executelist = [];
+        }
         else if(res[0] && res[0]["queryresult"]){
             for (var everyaction in res[0]["queryresult"]){
 				proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
                 //if (res[0]["queryresult"][everyaction]
-                executelist.push(res[0]["queryresult"][everyaction])
-                }
-
+                executelist.push(res[0]["queryresult"][everyaction]);
             }
-        callback(null, executelist)
+
+        }
+        callback(null, executelist);
     })
-}
+};
 
 
 exports.deletelist = deletelist = function deletelist(listToDo, eventname, callback) {
@@ -241,16 +241,16 @@ exports.deletelist = deletelist = function deletelist(listToDo, eventname, callb
 
     async.mapSeries(listToDo, function (eachresult, cbMap) {
         async.nextTick(function () {
-            var eachaction=eachresult
-            eachaction = extend(true, eachaction, eachcmd)
+            var eachaction=eachresult;
+            eachaction = extend(true, eachaction, eachcmd);
             copywid(eachaction, function (err, res){
                 cbMap(err, res);
-            })
-        })
+            });
+        });
     }, function (err, res) {
-        callback(err, res)
-    })
-}
+        callback(err, res);
+    });
+};
 
 
 function setdefaultparm() {
@@ -282,12 +282,12 @@ function config123() {
     var configuration = {};
 
     configuration.environment = 'local';
-    configuration.widmasterkey = 'widmasterkey'
+    configuration.widmasterkey = 'widmasterkey';
     configuration.defaultcollection = 'dricollection';
     configuration.defaultdb = 'data';
-    configuration.defaultdatastore = 'localstorage'
-    configuration.defaultkeycollection = 'dricollectionkey'
-    configuration.defaultdatabasetable = 'wikiwallettesting'
+    configuration.defaultdatastore = 'localstorage';
+    configuration.defaultkeycollection = 'dricollectionkey';
+    configuration.defaultdatabasetable = 'wikiwallettesting';
 
     configuration.preExecute = [];
     configuration.preExecute[0] = {};
@@ -375,7 +375,7 @@ function config123() {
 
     return {
         "configuration": configuration
-    }
+    };
 }
 
 exports.getFromLocalStorage = window.getFromLocalStorage = getFromLocalStorage = function getFromLocalStorage(key) {
@@ -508,7 +508,7 @@ exports.server2 = window.server2 = server2 = function server2(params, callback) 
     proxyprinttodiv('Function server2 ------', params, 99);
     params.command.server = "server2";
     server(params, callback);
-}
+};
 
 exports.getDriApiData = getDriApiData = function getDriApiData(params, callback) {
     // set up object in syntax that driApi is expecting
@@ -576,10 +576,10 @@ exports.mquery = mquery = function mquery(inboundobj, command, callback) {
         var resultlist = [];
         //var collection = "DRI";
         //var keycollection = "DRIKEY";
-        var collection = config.configuration.defaultcollection
+        var collection = config.configuration.defaultcollection;
 		//proxyprinttodiv("collection = ",collection,99);
-        var keycollection = config.configuration.defaultkeycollection
-        var databasetable = config.configuration.defaultdatabasetable
+        var keycollection = config.configuration.defaultkeycollection;
+        var databasetable = config.configuration.defaultdatabasetable;
 		//proxyprinttodiv("db table = ",databasetable,99);
         var database = {};
         var keydatabase = {};

@@ -5815,7 +5815,7 @@ exports.testeventonemin3 = testeventonemin3 = function testeventonemin3(params, 
 
 
 
-exports.testeventoneminsimple1 = testeventoneminsimple1 = function testeventoneminsimple1(params, callback){
+exports.testhtmladd = testhtmladd = function testhtmladd(params, callback){
 	execute([{
 		"executethis":"updatewid",
 		"wid":"wid1",
@@ -6075,4 +6075,24 @@ exports.testfilternomatch1 = testfilternomatch1 = function testfilterkeymatch1(p
             callback(err, result);
         });
     }
+
+
+    exports.testhtmladd = testhtmladd = function testhtmladd(params, callback){
+    execute([{
+        "executethis":"addwidmaster",
+        "wid":"wid1",
+        "html":"<p>123</p>"
+    }, {
+        "executethis":"addwidmaster",
+        "wid":"wid1",
+        "addthis.command.htmlcleartargetid":"body"
+    }, {
+        "executethis":"getwidmaster",
+        "wid":"wid1"
+    }],
+    function (err, res) {
+      proxyprinttodiv('Full results: ', res, 99);
+      callback(err, res);
+    });
+}
 
