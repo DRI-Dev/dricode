@@ -1652,9 +1652,9 @@
                 "mongoexplain": "",
                 "mongosize": "",
                 "mongosetsortorder": "",
-                "mongowidmethod": "",
-                "command.db": "",
-                "command.convertmethod": ""
+                "mongowidmethod": ""
+                //"command.db": "",
+                //"command.convertmethod": ""
             }, true);
             p[4] = filter_data.output;
 
