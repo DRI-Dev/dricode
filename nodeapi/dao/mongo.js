@@ -118,13 +118,13 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
             // upsert
             // upsert saves the new came object after updating the existing object
 
-            // TODO :: FIX THIS , below line needed to avoid overwrites
 
-            console.log('** madd object before converttodotdri called => ' + JSON.stringify(entityToAdd));
-
-            entityToAdd = ConvertToDOTdri(entityToAdd);
-
-            console.log('** madd object after converttodotdri called => ' + JSON.stringify(entityToAdd));
+//            console.log('** madd object before converttodotdri called => ' + JSON.stringify(entityToAdd));
+//
+//            // TODO :: FIX THIS , below line needed to avoid overwrites
+//            entityToAdd = ConvertToDOTdri(entityToAdd);
+//
+//            console.log('** madd object after converttodotdri called => ' + JSON.stringify(entityToAdd));
             
             addOptions = {
                 "upsert": true
