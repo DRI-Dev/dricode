@@ -1511,7 +1511,8 @@
                     //params = {};
                     params["executethis"] = "getwid";
 //                    params["executethis"] = "getwidmaster";
-                    //params["command.convertmethod"] = "nowid";
+                    if (!params.command) {params.command={}}
+                    if (!params.command.keepaddthis) {params.command.keepaddthis=false}
                     params["wid"] = whatToDo;
 
                     // execute({"executethis":"getwid", "wid":whatToDo}, function (err, res) {
