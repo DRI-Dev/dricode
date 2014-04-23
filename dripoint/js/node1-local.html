@@ -733,16 +733,31 @@ copyright (c) 2014 DRI
     }
 
     function display_local_wid() {
+
         document.getElementById("local_data").innerHTML = "";
         var html = "";
-        // JSON.stringify(outobject, "-", 4);
-        // var db = JSON.parse(localStorage['DRIKEY']);
-        var db = JSON.stringify(JSON.parse(localStorage['DRIKEY']), "-", 4);
+        for (var key in localStorage) {
+            html += document.getElementById("local_data").innerHTML;
+            html += "<p><label style='color: red; font-size: 85%;'>" + key + "</label></p>";
+            html += "<label style='color: purple; font-size: 85%;'><pre>" + JSON.stringify(JSON.parse(localStorage.getItem(key)), '-', 4) + "</pre></label><br>";
+            html += "<br>";
+        }
+        document.getElementById("local_data").innerHTML = html;
+
+
+
+        // document.getElementById("local_data").innerHTML = "";
+        // var html = "";
+        // // JSON.stringify(outobject, "-", 4);
+        // var db = JSON.parse(localStorage['wikiwallettestingdricollectionkey']);
+        // // alert(JSON.stringify(db, '-', 4));
+        // // alert(JSON.stringify(db[0], '-', 4));
+        // // var db = JSON.stringify(JSON.parse(localStorage['DRIKEY']), "-", 4);
         // for (var i in db) {
-        //  html += "<label style='color: red; font-size: 85%;'>" + db[i].wid + "</label>   ";
-        //  html += "<label style='color: purple; font-size: 85%;'>" + JSON.stringify(db[i].data) + "</label><br><br>";
+        //     html += "<label style='color: red; font-size: 85%;'>" + i + "</label>   ";
+        //     html += "<label style='color: purple; font-size: 85%;'>" + JSON.stringify(db[i], '-', 4) + "</label><br><br>";
+        //     document.getElementById("local_data").innerHTML = html;
         // }
-        document.getElementById("local_data").innerHTML = db;
     }
 
     $("input[name='output_type']").change(function() {
