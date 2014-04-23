@@ -260,20 +260,20 @@ if (typeof angular !== 'undefined') {
 //                $scope.urlparameters = widAppHelper.queryStrToObj(location.search);
 //            }
 
-            // package current users info into the model
-            if (currentUser && currentUser.loggedin) {
-                dataService.user.getInfo(currentUser.at, function (results) {
-                    var info = JSON.parse(results.userinfo);
-                    $scope.userinfo = info;
-                    console.log('**ngModelData** data for current userinfo :');
-                    console.log($scope.userinfo);
-
-                    // update userid in local user object
-                    var user = dataService.user.getLocal();
-                    user.userid = info.UserId;
-                    dataService.user.putLocal(user.userid, user.at, user.loggedin);
-                });
-            }
+//            // package current users info into the model
+//            if (currentUser && currentUser.loggedin) {
+//                dataService.user.getInfo(currentUser.at, function (results) {
+//                    var info = JSON.parse(results.userinfo);
+//                    $scope.userinfo = info;
+//                    console.log('**ngModelData** data for current userinfo :');
+//                    console.log($scope.userinfo);
+//
+//                    // update userid in local user object
+//                    var user = dataService.user.getLocal();
+//                    user.userid = info.UserId;
+//                    dataService.user.putLocal(user.userid, user.at, user.loggedin);
+//                });
+//            }
 
 //            //<editor-fold desc='addDataWid section'>
 //
@@ -396,20 +396,20 @@ if (typeof angular !== 'undefined') {
 
             //<editor-fold desc='misc scoped helper functions'>
 
-            $scope.widFromUrl = function() {
-                if ($scope.urlparameters && $scope.urlparameters.wid) {
-                    return $scope[$scope.urlparameters.wid];
-                } else { return undefined; }
-            };
+//            $scope.widFromUrl = function() {
+//                if ($scope.urlparameters && $scope.urlparameters.wid) {
+//                    return $scope[$scope.urlparameters.wid];
+//                } else { return undefined; }
+//            };
 
             $scope.clearlogs = function() { $('#errorlog,#successlog').html(''); };
 
             $scope.listLength = function(list) { return Object.size(list); };
 
-            $scope.getRawHtml = function() {
-                $('#rawhtml').text(document.getElementsByTagName('html')[0].outerHTML);
-                $scope.showrawhtml = true;
-            };
+//            $scope.getRawHtml = function() {
+//                $('#rawhtml').text(document.getElementsByTagName('html')[0].outerHTML);
+//                $scope.showrawhtml = true;
+//            };
 
             //</editor-fold>
         }
