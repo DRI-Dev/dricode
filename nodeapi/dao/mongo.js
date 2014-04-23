@@ -8,7 +8,7 @@
 
 var SkinStore = require('connect-mongoskin'),
     mongoskin = require('mongoskin');
-require('../boxconfiguration.js');
+require('../config.js');
 
 var schemaToLookup = config.configuration.defaultcollection;
 var databaseToLookup = config.configuration.defaultdb;
