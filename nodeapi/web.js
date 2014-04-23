@@ -1,7 +1,8 @@
 // using common files at server side also
 exports.async = async = require('async');
 
-require('./boxconfiguration.js');
+require('./create_config.js');
+require('./config.js');
 
 exports.window = {"configuration":config.configuration};
 

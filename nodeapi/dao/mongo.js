@@ -5,7 +5,7 @@
 // remove window() wrapping (utils, execute)… put if !window then window=global  
 
 
-require('../boxconfiguration.js');
+require('../config.js');
 
 // settings and config variables are declared in boxconfiguration
 var SkinStore = require('connect-mongoskin'),

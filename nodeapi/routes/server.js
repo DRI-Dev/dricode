@@ -1,6 +1,6 @@
 // Server specific Routes here
 
-require('../boxconfiguration.js');
+require('../config.js');
 
 var async = require('async');
 
