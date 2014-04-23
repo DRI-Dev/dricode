@@ -21,9 +21,9 @@ require(DIR_TO_CORE_JS + 'et-unit_tests.js');
 exports.executethis = require(DIR_TO_CORE_JS + 'executethis.js');
 
 exports.serverconfig = serverconfig = {
-    SERVER_PORT: 3000,
+    SERVER_PORT: 3059,
     LOOKUP_DIR: '../dripoint/',
-    SERVICE_URL: 'http://localhost:3000/'
+    SERVICE_URL: 'http://localhost:3009/'
 }
 
 
