@@ -36,35 +36,31 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
     // start eventonemin, eventtenmin and save the interval value so 
     // you can use "clearInterval" in the future if desired to stop things
     var minutes = 60 * 1000;
-    exports.everyMinuteInterval = setInterval(exports.eventonemin, 12 * minutes);
-    exports.everyTenMinuteInterval = setInterval(exports.eventtenmin, 120 * minutes);
+    exports.everyMinuteInterval = setInterval(exports.eventonemin,1000000);
+    //exports.everyTenMinuteInterval = setInterval(exports.eventtenmin,10 * minutes);
 
-    // execute([{"executethis":"addwidmaster", 
-    //             "metadata.method":"systemdto",
-    //             "wid":"systemdto",
-    //             "expirationtimer":"string",
-    //             "expirationdate":"string",
-    //             "metadata.inherit.0": {"wid" : "systemdefault", "command" : { "dtotype":"", "adopt":"default"}}
-    //     },{
-    //         "executethis":"addwidmaster",
-    //         "wid":"systemdefault",
-    //         "metadata.method":"systemdto",
-    //         "expirationtimer":"90",
-    //         "expirationdate":"6/14/14"
-    //     }
-    //     ],
-    //     function (err, res) {
-    //         callback(err, res);
-    // });
-    // createalldtos({}, function (err, res) {
-    updatewid({
-        "wid": "initialwid",
-        "date": new Date()
-    }, function (err, res) {
-        callback(err, res);
-    });
-    // });
+    execute([{"executethis":"addwidmaster", 
+                "metadata.method":"systemdto",
+                "wid":"systemdto",
+                "expirationtimer":"string",
+                "expirationdate":"string",
+                "executecount":"integer",
+                "metadata.inherit.0": {"wid" : "systemdefault", "command" : { "dtotype":"", "adopt":"default"}}
+        },{
+            "executethis":"addwidmaster",
+            "wid":"systemdefault",
+            "metadata.method":"systemdto",
+            "expirationtimer":"90",
+            "expirationdate":"6/14/14"
+        }
+        ],
+        function (err, res) {
+            updatewid({"wid":"initialwid", "date": new Date()}, function (err, res) {
+                callback(err, res);
+                });
+        });
 };
+
 
 exports.eventnewpage = eventnewpage = function eventnewpage() {};
 exports.eventonline = eventonline = function eventonline() {};
@@ -91,59 +87,93 @@ exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters,
 };
 
 exports.processevent = processevent = function processevent(eventname, callback) {
-    var widlist = [];
-    var executelist = [];
-    geteventlist(eventname, function (err, eventlist) {
-        if (eventlist.length > 0) {
-            for (var eachexecute in eventlist) {
-                widlist.push(eachexecute)
-                executelist.push(eventlist[eachexecute])
-            }
-            execute(executelist, function (err, res) {
-                // maybe res has widlist results?
-                markasdone(widlist, eventname, function (err, res) {
-                    callback(err, res)
+    getexecutelist(eventname, "queuecollection", function (err, executelist) {
+        proxyprinttodiv("processeventqueue executelist", executelist, 17);
+        executelistfn(executelist, execute, function (err, res) {
+            deletelist(executelist, eventname, function (err, res) {
+                callback(err, res)
                 })
             })
-        } else {
-            callback(null, {});
-        }
-    })
-};
-
-exports.geteventlist = geteventlist = function geteventlist(eventname, callback) {
-    var executeobject =
-
-    executeobject = {
-        "command": {
-            "result": "queryresult"
-        }
-    };
-    executeobject.command.collection = "queuecollection";
-    executeobject.command.db = "queuedata";
-    executeobject.command.result = "queueresult";
-    executeobject["executethis"] = "querywid";
-    executeobject["mongorawquery"] = {
-        "$and": [{
-            "metadata": eventname
-        }]
-    };
-    execute(executeobject, function (err, eventlist) {
-        if (eventlist.length === 0) {
-            eventlist = []
-        }
-        callback(null, eventlist)
-    })
-};
-
-exports.markasdone = markasdone = function markasdone(widlist, callback) {
-    var executelist = [];
-    var executeobject = {};
-    for (eachwid in widlist) {
-        //deletewid
-        //executeobject
+        })
     }
+
+exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, callback) {
+    async.mapSeries(listToDo, function (eachresult, cbMap) {
+        async.nextTick(function () {
+            fn(eachresult, function (err, res){
+                cbMap(err, res);
+            })
+        })
+    }, function (err, res) {
+        callback(err, res)
+    })
 }
+
+
+exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eventtype, callback) {
+    proxyprinttodiv("getexecutelist eventname(collection)", eventname, 17);
+    proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
+    var executeobject = {"command": {"result": "queryresult"}};
+    var executelist=[];
+    executeobject.command.databasetable = eventtype;
+    executeobject.command.collection = eventname;
+    executeobject.command.db = "queuedata";
+    //executeobject.command.result = "queueresult";
+    executeobject["executethis"] = "querywid";
+    executeobject["mongorawquery"] = {"$and": [{ "wid" : "doesnotmatter"}]}// find objects that are not empty
+    
+    proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
+    
+    execute(executeobject, function (err, res) {
+        proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
+        if (res.length === 0) {
+            executelist = []
+            }
+        else if(res[0] && res[0]["queryresult"]){
+            for (var everyaction in res[0]["queryresult"]){
+                proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
+                //if (res[0]["queryresult"][everyaction]
+                executelist.push(res[0]["queryresult"][everyaction])
+                }
+
+            }
+        callback(null, executelist)
+    })
+}
+
+
+exports.deletelist = deletelist = function deletelist(listToDo, eventname, callback) {
+    proxyprinttodiv("deletelist listToDo", listToDo, 17);
+    var eachcmd={};
+    eachcmd["command"] = {
+            "fromdatabasetable":"queuecollection",
+            "fromdatastore": "",
+            "fromcollection":eventname,
+            "fromkeycollection":eventname+"key",
+            "fromdb":"queuedata",
+            "todatabasetable":"completedqueuecollection",
+            "todatastore": "",
+            "tocollection":eventname,
+            "tokeycollection":eventname+"key",
+            "todb":"queuedata",
+            "towid":"",
+            "delete":true
+        };
+
+    async.mapSeries(listToDo, function (eachresult, cbMap) {
+        async.nextTick(function () {
+            var eachaction=eachresult.wid
+            eachaction = extend(true, eachaction, eachcmd)
+            proxyprinttodiv("deletelist eachaction", eachaction, 99);
+            copywid(eachaction, function (err, res){
+                cbMap(err, res);
+            })
+        })
+    }, function (err, res) {
+        callback(err, res)
+    })
+}
+
 
 function setdefaultparm() {
 
