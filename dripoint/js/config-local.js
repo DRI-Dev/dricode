@@ -36,7 +36,11 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
     // start eventonemin, eventtenmin and save the interval value so 
     // you can use "clearInterval" in the future if desired to stop things
     var minutes = 60 * 1000;
+<<<<<<< HEAD
     //exports.everyMinuteInterval = setInterval(exports.eventonemin,1000);
+=======
+    exports.everyMinuteInterval = setInterval(exports.eventonemin,1000000);
+>>>>>>> master
     //exports.everyTenMinuteInterval = setInterval(exports.eventtenmin,10 * minutes);
 
     execute([{"executethis":"addwidmaster", 
@@ -44,7 +48,11 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
                 "wid":"systemdto",
                 "expirationtimer":"string",
                 "expirationdate":"string",
+<<<<<<< HEAD
 				"executecount":"integer",
+=======
+                "executecount":"integer",
+>>>>>>> master
                 "metadata.inherit.0": {"wid" : "systemdefault", "command" : { "dtotype":"", "adopt":"default"}}
         },{
             "executethis":"addwidmaster",
@@ -59,6 +67,7 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
                 callback(err, res);
                 });
         });
+<<<<<<< HEAD
 };
 
 exports.eventnewpage = eventnewpage = function eventnewpage() {
@@ -116,6 +125,27 @@ exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail
         cb(err, res);
     });
 };
+=======
+};
+
+
+exports.eventnewpage = eventnewpage = function eventnewpage() {};
+exports.eventonline = eventonline = function eventonline() {};
+exports.eventoffline = eventoffline = function eventoffline() {};
+exports.eventonemin = eventonemin = function eventonemin() {};
+exports.eventtenmin = eventtenmin = function eventtenmin() {};
+exports.eventdaily = eventdaily = function eventdaily() {};
+exports.eventmonthly = eventmonthly = function eventmonthly() {};
+exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess() {};
+exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail() {};
+exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent() {};
+exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent() {};
+exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent() {};
+exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent() {};
+exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent() {};
+exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent() {};
+exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend() {};
+>>>>>>> master
 
 exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent(params, cb) {
     processevent(arguments.callee.name, function (err, res) {
@@ -170,35 +200,58 @@ exports.processevent = processevent = function processevent(eventname, callback)
         proxyprinttodiv("processeventqueue executelist", executelist, 17);
         executelistfn(executelist, execute, function (err, res) {
             deletelist(executelist, eventname, function (err, res) {
+<<<<<<< HEAD
                 callback(err, res);
                 });
             });
         });
     };
+=======
+                callback(err, res)
+                })
+            })
+        })
+    }
+>>>>>>> master
 
 exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, callback) {
     async.mapSeries(listToDo, function (eachresult, cbMap) {
         async.nextTick(function () {
             fn(eachresult, function (err, res){
                 cbMap(err, res);
+<<<<<<< HEAD
             });
         });
     }, function (err, res) {
         callback(err, res);
     });
 };
+=======
+            })
+        })
+    }, function (err, res) {
+        callback(err, res)
+    })
+}
+>>>>>>> master
 
 
 exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eventtype, callback) {
     proxyprinttodiv("getexecutelist eventname(collection)", eventname, 17);
+<<<<<<< HEAD
 	proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
 	var executeobject = {"command": {"result": "queryresult"}};
+=======
+    proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
+    var executeobject = {"command": {"result": "queryresult"}};
+>>>>>>> master
     var executelist=[];
     executeobject.command.databasetable = eventtype;
     executeobject.command.collection = eventname;
     executeobject.command.db = "queuedata";
     //executeobject.command.result = "queueresult";
     executeobject["executethis"] = "querywid";
+<<<<<<< HEAD
     executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
 	
 	proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
@@ -217,8 +270,28 @@ exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eve
 
         }
         callback(null, executelist);
+=======
+    executeobject["mongorawquery"] = {"$and": [{ "wid" : "doesnotmatter"}]}// find objects that are not empty
+    
+    proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
+    
+    execute(executeobject, function (err, res) {
+        proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
+        if (res.length === 0) {
+            executelist = []
+            }
+        else if(res[0] && res[0]["queryresult"]){
+            for (var everyaction in res[0]["queryresult"]){
+                proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
+                //if (res[0]["queryresult"][everyaction]
+                executelist.push(res[0]["queryresult"][everyaction])
+                }
+
+            }
+        callback(null, executelist)
+>>>>>>> master
     })
-};
+}
 
 
 exports.deletelist = deletelist = function deletelist(listToDo, eventname, callback) {
@@ -241,6 +314,7 @@ exports.deletelist = deletelist = function deletelist(listToDo, eventname, callb
 
     async.mapSeries(listToDo, function (eachresult, cbMap) {
         async.nextTick(function () {
+<<<<<<< HEAD
             var eachaction=eachresult;
             eachaction = extend(true, eachaction, eachcmd);
             copywid(eachaction, function (err, res){
@@ -251,6 +325,20 @@ exports.deletelist = deletelist = function deletelist(listToDo, eventname, callb
         callback(err, res);
     });
 };
+
+=======
+            var eachaction=eachresult.wid
+            eachaction = extend(true, eachaction, eachcmd)
+            proxyprinttodiv("deletelist eachaction", eachaction, 99);
+            copywid(eachaction, function (err, res){
+                cbMap(err, res);
+            })
+        })
+    }, function (err, res) {
+        callback(err, res)
+    })
+}
+>>>>>>> master
 
 
 function setdefaultparm() {
