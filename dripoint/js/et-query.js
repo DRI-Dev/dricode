@@ -329,7 +329,7 @@
                                     var s = JSON.stringify(mQueryString);
                                     s.replace("data", environmentdb);
                                     mQueryString = JSON.parse(s);
-                                } 
+                                }
 
                                 // if (validParams(mQueryString)) {
                                 mquery(mQueryString, commandParams, function (err, res) {
@@ -554,7 +554,7 @@
 
                     item = ConvertFromDOTdri(item);
                     if (!database[item.wid]) {
-                        database[item.wid] = item
+                        database[item.wid] = item;
                     }
 
 
@@ -563,7 +563,7 @@
                     if (parmnameout !== "wid") {
                         widvalue = item[environmentdb][parmnameout];
                     } else {
-                        widvalue = "wid"
+                        widvalue = "wid";
                     }
 
                     proxyprinttodiv('querywid formatlist widvalue ', widvalue, 28);
@@ -598,7 +598,7 @@
                     1: output
                 }, 6);
 
-                return output
+                return output;
             }
         }
 
@@ -618,7 +618,7 @@
                 var todolist = [];
                 var excludeset = {};
                 if (aggParams["mongosetfieldsexclude"] && Object.keys(aggParams["mongosetfieldsexclude"]).length !== 0) {
-                    excludeset = aggParams["mongosetfieldsexclude"]
+                    excludeset = aggParams["mongosetfieldsexclude"];
                     proxyprinttodiv('querywid finalformatlist excludeset ', excludeset, 28);
                 }
 
@@ -636,7 +636,7 @@
                     }
 
                     var arrKeys = Object.keys(obj);
-                    console.log(arrKeys)
+                    console.log(arrKeys);
                     proxyprinttodiv('>>>>>>> querywid arrKeys  ', arrKeys, 28);
                     todolist = arrKeys;
                     async.mapSeries(todolist, function (wid, cbMap) {
@@ -1586,7 +1586,8 @@
             // throw ({'Sample_error': 'fishout'});
 
 
-            filter_data = tolowerparameters(parameters, {}, { // queParams
+            // filter_data = tolowerparameters(parameters, {}, { // queParams
+            filter_data = getcommand(parameters, {}, { // queParams
                 "mongowid": "",
                 "mongorawquery": "",
                 "mongoquerywid": "",
@@ -1595,7 +1596,8 @@
             }, false);
             p[0] = filter_data.filteredobject;
 
-            filter_data = tolowerparameters(parameters, {}, { // relParams
+            // filter_data = tolowerparameters(parameters, {}, { // relParams
+            filter_data = getcommand(parameters, {}, { // relParams
                 "mongorelationshipdirection": "",
                 "mongorelationshiptype": "",
                 "mongorelationshipmethod": "",
@@ -1607,13 +1609,15 @@
             }, false);
             p[1] = filter_data.filteredobject;
 
-            filter_data = tolowerparameters(parameters, {}, { // aggParams
+            // filter_data = tolowerparameters(parameters, {}, { // aggParams
+            filter_data = getcommand(parameters, {}, { // aggParams
                 "mongoaggregation": "",
                 "mongoaggquery": ""
             }, false);
             p[2] = filter_data.filteredobject;
 
-            filter_data = tolowerparameters(parameters, {}, { // addParams
+            // filter_data = tolowerparameters(parameters, {}, { // addParams
+            filter_data = getcommand(parameters, {}, { // addParams
                 "mongosetfieldsinclude": "",
                 "mongosetfieldsexclude": "",
                 "mongosetlimit": "",
@@ -1628,7 +1632,8 @@
             }, false);
             p[3] = filter_data.filteredobject;
 
-            filter_data = tolowerparameters(parameters, {}, { // xtrParams
+            // filter_data = tolowerparameters(parameters, {}, { // xtrParams
+            filter_data = getcommand(parameters, {}, { // xtrParams
                 "mongowid": "",
                 "mongorawquery": "",
                 "mongoquerywid": "",
@@ -1661,7 +1666,8 @@
             }, true);
             p[4] = filter_data.output;
 
-            filter_data = tolowerparameters(parameters, {}, { // relafterParams;
+            // filter_data = tolowerparameters(parameters, {}, { // relafterParams;
+            filter_data = getcommand(parameters, {}, { // relafterParams;
                 "mongowidmethod": ""
             }, false);
             p[5] = filter_data.filteredobject;
@@ -1671,23 +1677,44 @@
             //     "command.convertmethod": ""
             // }, false);
 
+            // filter_data = getcommand(parameters, // commandParams
+            // { 
+            //     "command":{"db": config.configuration.defaultdb},
+            //     "command":{"collection":config.configuration.defaultcollection},
+            //     "command":{"keycollection":config.configuration.defaultkeycollection},
+            //     "command":{"datastore" : config.configuration.defaultdatastore},
+            //     "command":{"databasetable":config.configuration.defaultdatabasetable},
+            //     "command":{"convertmethod": "toobject"}
+            // },
+            // { // commandParams
+            //     "command":{"db": ""},
+            //     "command":{"collection":""},
+            //     "command":{"keycollection":""},
+            //     "command":{"datastore" : ""},
+            //     "command":{"databasetable":""},
+            //     "command":{"convertmethod": ""}
+            // }, false);
             filter_data = getcommand(parameters, // commandParams
             { 
-                "command":{"db": config.configuration.defaultdb},
-                "command":{"collection":config.configuration.defaultcollection},
-                "command":{"keycollection":config.configuration.defaultkeycollection},
-                "command":{"datastore" : config.configuration.defaultdatastore},
-                "command":{"databasetable":config.configuration.defaultdatabasetable},
-                "command":{"convertmethod": "toobject"}
+                "command": {
+                    "datastore": config.configuration.defaultdatastore,
+                    "collection":config.configuration.defaultcollection,
+                    "keycollection":config.configuration.defaultkeycollection,
+                    "db":config.configuration.defaultdb,
+                    "databasetable":config.configuration.defaultdatabasetable,
+                    "convertmethod":"toobject"
+                }
             },
             { // commandParams
-                "command":{"db": ""},
-                "command":{"collection":""},
-                "command":{"keycollection":""},
-                "command":{"datastore" : ""},
-                "command":{"databasetable":""},
-                "command":{"convertmethod": ""}
-            }, false);
+                "command": {
+                    "datastore": "",
+                    "collection":"",
+                    "keycollection":"",
+                    "db":"",
+                    "databasetable":"",
+                    "convertmethod":""
+            }}, false);
+
             p[6] = filter_data.filteredobject;
 
             return p;

@@ -2570,7 +2570,7 @@ exports.ettestag1a = ettestag1a = function ettestag1a(params, callback) {
 exports.ettestag122 = ettestag122 = function ettestag122(params, callback) {
 var a = {"wid":"systemdefault","command":{"dtotype":"","adopt":"default","getwidmaster":{"inheritflag":"false","execute":"ConvertFromDOTdri"},"resultparameters":{"note":"string","wid":"sounddto","metadata":{"method":"sounddto"}}},"executethis":"getwidmaster"}
 proxyprinttodiv('>>>> before a', a, 99);
-var filter_data = tolowerparameters(a,{
+var filter_data = getcommand(a,{
                                 "command.internalcall": false
                                     //     // "beginexecute" : {"execute":"","parameters":{}},
                                     //     // "beforemidexecute" : {"execute":"","parameters":{}},
@@ -4181,7 +4181,7 @@ exports.lwr1 = lwr1 = function lwr1(params, callback) {
     var err;
     var result = {};
 
-    result = tolowerparameters(params, defaults, filter, true);
+    result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
 
@@ -4197,7 +4197,7 @@ exports.lwr2 = lwr2 = function lwr2(params, callback) {
     var err;
     var result = {};
 
-    result = tolowerparameters(params, defaults, filter, false);
+    result = getcommand(params, defaults, filter, false);
     callback(err, result);
 }
 
@@ -4212,7 +4212,7 @@ exports.lwr3 = lwr3 = function lwr3(params, callback) {
     var err;
     var result = {};
 
-    result = tolowerparameters(params, defaults, filter, true);
+    result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
 
@@ -4227,7 +4227,7 @@ exports.lwr4 = lwr4 = function lwr4(params, callback) {
     var err;
     var result = {};
 
-    result = tolowerparameters(params, defaults, filter, false);
+    result = getcommand(params, defaults, filter, false);
     callback(err, result);
 }
 
@@ -4242,7 +4242,7 @@ exports.lwr5 = lwr5 = function lwr5(params, callback) {
     var err;
     var result = {};
 
-    result = tolowerparameters(params, defaults, filter, true);
+    result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
 
@@ -4257,7 +4257,7 @@ exports.lwr6 = lwr6 = function lwr6(params, callback) {
     var err;
     var result = {};
 
-    result = tolowerparameters(params, defaults, filter, false);
+    result = getcommand(params, defaults, filter, false);
     callback(err, result);
 }
 
@@ -4268,7 +4268,7 @@ exports.lwr7 = lwr7 = function lwr7(params, callback) {
     var err;
     var result = {};
 
-    result = tolowerparameters(params, defaults, filter, true);
+    result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
 
@@ -4279,7 +4279,7 @@ exports.lwr8 = lwr8 = function lwr8(params, callback) {
     var err;
     var result = {};
 
-    result = tolowerparameters(params, defaults, filter, false);
+    result = getcommand(params, defaults, filter, false);
     callback(err, result);
 }
 
@@ -4294,7 +4294,7 @@ exports.lwr9 = lwr9 = function lwr9(params, callback) {
     var err;
     var result = {};
 
-    result = tolowerparameters(params, defaults, filter, true);
+    result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
 
@@ -4309,7 +4309,7 @@ exports.lwr10 = lwr10 = function lwr10(params, callback) {
     var err;
     var result = {};
 
-    result = tolowerparameters(params, defaults, filter, false);
+    result = getcommand(params, defaults, filter, false);
     callback(err, result);
 }
 
@@ -4325,7 +4325,7 @@ exports.lwr11 = lwr11 = function lwr11(params, callback) {
     var err;
     var result = {};
 
-    result = tolowerparameters(params, defaults, filter, true);
+    result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
 
@@ -4339,7 +4339,7 @@ exports.lwr12 = lwr12 = function lwr12(params, callback) {
                     "charlie":""};    var err;
     var result = {};
 
-    result = tolowerparameters(params, defaults, filter, false);
+    result = getcommand(params, defaults, filter, false);
     callback(err, result);
 }
 
@@ -4354,7 +4354,7 @@ exports.lwr13 = lwr13 = function lwr13(params, callback) {
     var err;
     var result = {};
 
-    result = tolowerparameters(params, defaults, filter, true);
+    result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
 
@@ -4369,7 +4369,7 @@ exports.lwr14 = lwr14 = function lwr14(params, callback) {
     var err;
     var result = {};
 
-    result = tolowerparameters(params, defaults, filter, false);
+    result = getcommand(params, defaults, filter, false);
     callback(err, result);
 }
 
@@ -4380,7 +4380,7 @@ exports.lwr15 = lwr15 = function lwr15(params, callback) {
     var err;
     var result = {};
 
-    result = tolowerparameters(params, defaults, filter, true);
+    result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
 
@@ -4391,7 +4391,7 @@ exports.lwr16 = lwr16 = function lwr16(params, callback) {
     var err;
     var result = {};
 
-    result = tolowerparameters(params, defaults, filter, false);
+    result = getcommand(params, defaults, filter, false);
     callback(err, result);
 }
 
