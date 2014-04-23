@@ -24,8 +24,7 @@ exports.serverconfig = serverconfig = {
     SERVER_PORT: 3000,
     LOOKUP_DIR: '../dripoint/',
     SERVICE_URL: 'http://localhost:3000/'
-}
-
+};
 
 // MONGODB_URL: 'mongodb://localhost:27017/',
 exports.settings = settings = {
@@ -38,4 +37,4 @@ exports.settings = settings = {
         'pool': 5
     }
 
-}
+};

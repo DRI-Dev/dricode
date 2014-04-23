@@ -5,39 +5,33 @@
 // remove window() wrapping (utils, execute)… put if !window then window=global  
 
 
-
-var SkinStore = require('connect-mongoskin'),
-    mongoskin = require('mongoskin');
 require('../boxconfiguration.js');
 
-var schemaToLookup = config.configuration.defaultcollection;
-var databaseToLookup = config.configuration.defaultdb;
-var mongoDatabaseToLookup = config.configuration.defaultmongodb;
+// settings and config variables are declared in boxconfiguration
+var SkinStore = require('connect-mongoskin'),
+    mongoskin = require('mongoskin'),
+    schemaToLookup = config.configuration.defaultcollection,
+    databaseToLookup = config.configuration.defaultdb,
+    mongoDatabaseToLookup = config.configuration.defaultmongodb,
+    dbConnectionsManager = {},
+    defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup;
 
-
-var dbConnectionsManager = {};
-var defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup;
 console.log(defaultDatabaseurl);
 dbConnectionsManager[mongoDatabaseToLookup] = mongoskin.db(defaultDatabaseurl, settings.MONGODB_OPTIONS);
-
-
 
 
 // DAO method to fetch unique an entry to specified collection:: the entry to be fetched is also specified :: 
 // the callback function on succesful addition is also specified
 exports.mquery = mquery = function mquery(objToFind, command, callback) {
-    (command && command.db) ? databaseToLookup = command.db : databaseToLookup = databaseToLookup;
-    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup = mongoDatabaseToLookup;
-    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup = schemaToLookup;
-
-
+    (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
+    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
+    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
     if (typeof objToFind === "string") {
         objToFind = JSON.parse(objToFind);
     }
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
-
         db.collection(schemaToLookup).find(objToFind).toArray(function(err, res) {
             if (err) {
                 printLogs('mquery', objToFind, err);
@@ -60,9 +54,9 @@ exports.mquery = mquery = function mquery(objToFind, command, callback) {
 };
 
 exports.mget = mget = function mget(objToFind, command, callback) {
-    (command && command.db) ? databaseToLookup = command.db : databaseToLookup = databaseToLookup;
-    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup = mongoDatabaseToLookup;
-    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup = schemaToLookup;
+    (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
+    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
+    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
     if (typeof objToFind === "string") {
         objToFind = JSON.parse(objToFind);
     }
@@ -86,17 +80,14 @@ exports.mget = mget = function mget(objToFind, command, callback) {
             }
         });
     });
-}
-
-
-
+};
 
 exports.madd = madd = function madd(entityToAdd, command, callback) {
-    (command && command.db) ? databaseToLookup = command.db : databaseToLookup = databaseToLookup;
-    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup = mongoDatabaseToLookup;
-    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup = schemaToLookup;
+    (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
+    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
+    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-    var addOptions = {}
+    var addOptions = {};
 
     var widVal = (entityToAdd['wid']);
     if (!widVal) {
@@ -131,9 +122,9 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
             // var entityToAdd = ConvertToDOTdri(entityToAdd);
             addOptions = {
                 "upsert": true
-            }
+            };
 
-            objToUpdate = {
+            var objToUpdate = {
                 "$set": entityToAdd
             };
         }
@@ -141,7 +132,7 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
         // upsert -- default
         addOptions = {
             "upsert": true
-        }
+        };
 
         objToUpdate = {
             "$set": entityToAdd
@@ -162,7 +153,6 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
 };
 
 // manage multiple mongo database connections
-
 function getConnection(mongoDatabaseToLookup, callback) {
     var databaseConnection;
     var err;
@@ -178,9 +168,6 @@ function getConnection(mongoDatabaseToLookup, callback) {
     }
     callback(err, databaseConnection);
 }
-
-
-
 
 function printLogs(fnname, input, output) {
 
