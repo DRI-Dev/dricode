@@ -31,14 +31,6 @@ if (typeof angular !== 'undefined') {
             for (var prop in obj) {
                 if (obj.hasOwnProperty(prop)) {
                     if (obj[prop] instanceof Object) {
-//                        console.log('********************************************');
-//                        console.log('**ngModelData** bind-able data for ' + prop + ' :');
-//                        console.log(obj[prop]);
-//                        console.log('********************************************');
-//
-//                        if (phase !== '$apply' && phase !== '$digest') {
-//                            scope.$apply(function() { scope[prop] = obj[prop]; });
-//                        } else { scope[prop] = obj[prop]; }
 
                         storeAllData(obj[prop], scope, prop);
                     } else {
@@ -67,50 +59,50 @@ if (typeof angular !== 'undefined') {
                         }
                     }
                 }
-            },
-
-            user: {
-                getLocal: function() {
-                    if (window.localStorage) {
-                        return JSON.parse(window.localStorage.getItem('driUser'));
-                    } else { return null; }
-                },
-
-                putLocal: function(userId, accessToken, isLoggedIn) {
-                    if (window.localStorage) {
-                        var driUser = {userid:userId,at:accessToken,loggedin:isLoggedIn};
-                        window.localStorage.setItem('driUser', JSON.stringify(driUser));
-                    }
-                },
-
-                removeLocal: function() {
-                    if (window.localStorage) {
-                        window.localStorage.removeItem('driUser');
-                    }
-                },
-
-                getInfo: function(accessToken, callback) {
-//                    var parameters = {parameterDTOs:[]};
-//                    parameters.parameterDTOs.push({ParameterName:'accesstoken',ParameterValue:accessToken});
-
-                    var parameters = {
-                        dri_action: 'getuserinfo?at=f52a89ed-7163-47de-901c-e8bd0b96b7ff',
-                        accesstoken: accessToken
-                    };
-
-                    return getDriApiData(parameters, function (err, results) {
-                        if (err && Object.size(err) > 0) { console.log('execute error => ' + JSON.stringify(err)); }
-                        else { callback(results); }
-                    });
-                },
-
-                getNewAt: function(callback) {
-                    return getDriApiData({dri_action:'getnewaccesstoken'}, function (err, results) {
-                        if (err && Object.size(err) > 0) { console.log('execute error => ' + JSON.stringify(err)); }
-                        else { callback(results); }
-                    });
-                }
             }
+
+//            user: {
+//                getLocal: function() {
+//                    if (window.localStorage) {
+//                        return JSON.parse(window.localStorage.getItem('driUser'));
+//                    } else { return null; }
+//                },
+//
+//                putLocal: function(userId, accessToken, isLoggedIn) {
+//                    if (window.localStorage) {
+//                        var driUser = {userid:userId,at:accessToken,loggedin:isLoggedIn};
+//                        window.localStorage.setItem('driUser', JSON.stringify(driUser));
+//                    }
+//                },
+//
+//                removeLocal: function() {
+//                    if (window.localStorage) {
+//                        window.localStorage.removeItem('driUser');
+//                    }
+//                },
+//
+//                getInfo: function(accessToken, callback) {
+////                    var parameters = {parameterDTOs:[]};
+////                    parameters.parameterDTOs.push({ParameterName:'accesstoken',ParameterValue:accessToken});
+//
+//                    var parameters = {
+//                        dri_action: 'getuserinfo?at=f52a89ed-7163-47de-901c-e8bd0b96b7ff',
+//                        accesstoken: accessToken
+//                    };
+//
+//                    return getDriApiData(parameters, function (err, results) {
+//                        if (err && Object.size(err) > 0) { console.log('execute error => ' + JSON.stringify(err)); }
+//                        else { callback(results); }
+//                    });
+//                },
+//
+//                getNewAt: function(callback) {
+//                    return getDriApiData({dri_action:'getnewaccesstoken'}, function (err, results) {
+//                        if (err && Object.size(err) > 0) { console.log('execute error => ' + JSON.stringify(err)); }
+//                        else { callback(results); }
+//                    });
+//                }
+//            }
         }
     });
 
@@ -177,17 +169,17 @@ if (typeof angular !== 'undefined') {
                     // send array to callback
                     if (callback instanceof Function) { callback(err, resultArray); }
                 });
-            },
-
-            executeOffer: function(parameters, callback) {
-                //            parameters.parameterDTOs.push({ParameterName:'apikey',ParameterValue:'2FFA4085C7994016913F8589B765D4E5'});
-                parameters.dri_action = 'executeofferid?at=f52a89ed-7163-47de-901c-e8bd0b96b7ff';
-
-                return getDriApiData(parameters, function(err, results) {
-                    if (err && Object.size(err) > 0) { console.log('getDriApiData error => ' + JSON.stringify(err)); }
-                    else { callback(results); }
-                });
             }
+
+//            executeOffer: function(parameters, callback) {
+//                //            parameters.parameterDTOs.push({ParameterName:'apikey',ParameterValue:'2FFA4085C7994016913F8589B765D4E5'});
+//                parameters.dri_action = 'executeofferid?at=f52a89ed-7163-47de-901c-e8bd0b96b7ff';
+//
+//                return getDriApiData(parameters, function(err, results) {
+//                    if (err && Object.size(err) > 0) { console.log('getDriApiData error => ' + JSON.stringify(err)); }
+//                    else { callback(results); }
+//                });
+//            }
         }
     });
 
@@ -260,63 +252,8 @@ if (typeof angular !== 'undefined') {
             var querystring = window.location.search,
                 urlParameters = widAppHelper.queryStrToObj(querystring.substring(1)),
                 currentUser = dataService.user.getLocal();
-//                processParams = {};
 
             gatherParamsAndExecute(urlParameters, $scope);
-
-//            // save url parameters to 'urlparams' wid
-//            if (urlParameters.wid) {
-//                if (!urlParameters.addthis) { urlParameters.addthis = {wid:urlParameters.wid}; }
-//                else { urlParameters.addthis.wid = urlParameters.wid; }
-//                delete urlParameters['wid'];
-//            }
-//
-//            if (urlParameters.executethis) {
-//                if (!urlParameters.addthis) { urlParameters.addthis = {executethis:urlParameters.executethis}; }
-//                else { urlParameters.addthis.executethis = urlParameters.executethis; }
-//                delete urlParameters['executethis'];
-//            }
-//
-//            var urlExecuteObj = extend(true, urlParameters, {executethis:'updatewid', wid:'urlparams'});
-//
-//            // TODO: make these execute calls their own function and all it from the callExecute() function
-//
-//            // get urlparams and inwid parameters and call executeThis with them
-//            // executeThis will check for screenwids to display
-//            execute(urlExecuteObj, function (err, addUrlResults) {
-//                execute({executethis:'urlparams'}, function (err, urlResultArr) {
-//                    var urlResultObj = widAppHelper.mergeNestedArray(urlResultArr);
-//
-//                    if (urlResultObj.addthis) { urlResultObj = widAppHelper.removeAddThis(urlResultObj); }
-//
-//                    $scope.urlparams = urlResultObj;
-//
-//                    processParams = extend(true, urlResultObj, processParams);
-//
-//                    execute({executethis:'inwid'}, function (err, inwidResultArr) {
-//                        var inwidResults = widAppHelper.mergeNestedArray(inwidResultArr);
-//                        if (inwidResults.wid && inwidResults.wid === 'inwid') { delete inwidResults['wid']; }
-//
-//                        processParams = extend(true, inwidResults, processParams);
-//
-//                        // TODO : clear inwid wid here
-//
-//                        if (processParams.addthis) { processParams = widAppHelper.removeAddThis(processParams); }
-//
-//                        if (processParams.wid) {
-//                            processParams.executethis = processParams.wid;
-//                            delete processParams['wid'];
-//                        }
-//
-//                        if (processParams.metadata) { delete processParams['metadata']; }
-//
-//                        //TODO: after this execute call, add to the 'wid' (whatever is the wid in this next execute call
-//                        //TODO: in the data model, add what came back from widdata call and also what is in urlparams
-//                        //TODO: also add a 'urlparams' property to the wid in the model and add the urlparams to it as well
-//                        executeService.executeThis(processParams, $scope);
-//                    });
-//                });
-//            });
 
 //            // package url parameters into model
 //            if (Object.size(widAppHelper.queryStrToObj(location.search)) > 0) {
@@ -671,7 +608,8 @@ if (typeof angular !== 'undefined') {
             //TODO: also add a 'urlparams' property to the wid in the model and add the urlparams to it as well
             angular.injector(['ng', 'widApp'])
                 .get('executeService')
-                .executeThis(parameters, scope, function (err, results) {
+                .executeThis(parameters, scope, function (err, resultset) {
+                    var results = widAppHelper.mergeNestedArray(resultset);
                     if (results.html) {
                         var modelProp = parameters.wid || parameters.executethis;
                         if (!scope[modelProp]) { scope[modelProp] = {}; }
@@ -723,24 +661,6 @@ if (typeof angular !== 'undefined') {
         parameters.command.parameters.eventdata.originatingscreen = widAppHelper.getUrlParam('wid');
 
         gatherParamsAndExecute(parameters, scope);
-
-
-
-        // add urlparameters and inwid data to parameters
-//        parameters = extend(true, scope.inwid, scope.urlparams, parameters);
-
-//        // TODO : get inwid everytime to always get the latest, don't store in data model
-//
-//        parameters = extend(true, scope.inwid, parameters); // not using urlparams for now as it causes conflicting wid properties at times.
-//
-//        angular.injector(['ng', 'widApp'])
-//            .get('executeService')
-//            .executeThis(parameters, scope, function (err, resultArray) {
-//                if (err && Object.size(err) > 0) {
-//                    console.log('error in execute process that was bound using links event binding => ');
-//                    console.log(err.error);
-//                }
-//            });
     }
 
     // adding a size function to Object's prototype
