@@ -126,7 +126,8 @@
             parameters = ConvertFromDOTdri(parameters);
 
             // this sends in a default command object 
-            var filter_data = tolowerparameters(parameters, {
+            // var filter_data = tolowerparameters(parameters, {
+            var filter_data = getcommand(parameters, {
                     "command": {
                         "getwidmaster": {
                             "inheritflag": "true",
