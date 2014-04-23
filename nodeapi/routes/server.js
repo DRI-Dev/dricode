@@ -40,7 +40,7 @@ function runExecuteThis(parameters, resp) {
 
     Debug = false;
     if (parameters.Debug) {
-        Debug = "true"
+        Debug = "true";
         delete parameters.Debug
     }
     global['execute'](parameters, function (err, results) {

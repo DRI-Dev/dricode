@@ -677,7 +677,10 @@
 
                                             proxyprinttodiv('querywid finalformatlist widrecord', convertfromdriformat(widrecord), 28);
                                             proxyprinttodiv('querywid finalformatlist extraparameters[wid]', extrarecord, 28);
-                                            widrecord = extend(true, widrecord, extrarecord);
+                                            // widrecord = extend(true, widrecord, extrarecord); // commented out by joe
+                                            // when extending widrecord data should overwrite extrarecord data
+                                            // also this should only append data from relationship records (linktype)
+                                            widrecord = extend(true, extrarecord, widrecord);
                                             proxyprinttodiv('querywid finalformatlist widrecord after ', widrecord, 28);
 
                                             if (commandParams.convertmethod === "toobject") {

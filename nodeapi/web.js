@@ -1,16 +1,16 @@
 // using common files at server side also
 exports.async = async = require('async');
-
-require('./boxconfiguration.js');
-
-exports.window = {"configuration":config.configuration};
+require('./create_config.js');
+var bc = require('./config.js');
 
 var express = require('express'),
     app = express(),
     request = require('request'),
+    common = require('./routes/common'),
     server = require('./routes/server'),
+    driTemplate = require('./routes/driTemplate'),
+    driApi = require('./routes/driApi'),
     convert = require('./routes/convert.js');
-
 
 
 //// *********************** Express Application Configuration follows   *********************** 
@@ -54,9 +54,14 @@ app.configure('development', function() {
 
 //// *********************** Route Mapping for Application follows   ***********************
 app.put('/executethis', server.putrunExecutethis);
+app.get('/executethis', server.getrunExecutethis);
+app.put('/buildtemplate', driTemplate.buildTemplate);
+app.put('/getdata', driApi.driGetData);
 app.put('/filetowid', convert.convertFileToWid);
+app.get('/echo', common.echo);
+// app.get('/testget',server.testget);
 
-console.log('server config is ' + serverconfig.SERVER_PORT);
+console.log('server config is ' + bc.serverconfig.SERVER_PORT);
 
-console.log('port is ' + serverconfig.SERVER_PORT);
-app.listen(process.env.PORT || serverconfig.SERVER_PORT);
+console.log('port is ' + bc.serverconfig.SERVER_PORT);
+app.listen(process.env.PORT || bc.serverconfig.SERVER_PORT);

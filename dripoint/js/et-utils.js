@@ -286,14 +286,14 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
  // extend, save
 
 
-                    var currentrecord = database[record]
+                    var currentrecord = database[record];
                     delete currentrecord.db;
-                    if (datamethod="upsert") {
-                        extend(true, addedobject, currentrecord)
-                        }
-                    else if (datamethod="insert") {
+                    if (datamethod === "upsert") {
+                        extend(true, addedobject, currentrecord);
+                    }
+                    else if (datamethod === "insert") {
                         // do nothing -- default
-                        }
+                    }
 
                     database[record] = addedobject;
                     proxyprinttodiv('Function addtomongo found', database[record],12);
@@ -848,6 +848,7 @@ exports.deepfilter = deepfilter = function deepfilter(inputObj, dtoObjOpt, comma
 
     //console.log("<< in deepfilter >>");
     var modifiedObj = {};
+    // copying inputobj into modifiedObj
     extend(true, modifiedObj, inputObj);
     var convert;
     var totype;
@@ -1791,16 +1792,16 @@ function getRandomNumberByLength(length) {
 
         proxyprinttodiv("getcommand after lowercase", output, 88);
         // deeply adopt defaults
-        output = extend(true, defaults_object, parameters)
+        output = extend(true, defaults_object, parameters);
 
         proxyprinttodiv("getcommand after extend defaults&&", output, 88, true);
 
-        var splitobj = compareobjects(output, filter_object, "exists")
+        var splitobj = compareobjects(output, filter_object, "exists");
         proxyprinttodiv("getcommand after compareobjects splitobj", splitobj, 88, true);
 
         if (deleteflag) {
-            output=splitobj.xorobj1
-            filteredobject = splitobj.andobj
+            output=splitobj.xorobj1;
+            filteredobject = splitobj.andobj;
         }
         else { // if !deleteflag
             // output= // nothing to do to output
@@ -2031,7 +2032,7 @@ function getRandomNumberByLength(length) {
 
         for (var key in o2) {
             if (o2.hasOwnProperty(key)) {
-                if ((clonedObject[key] === undefined) || (clonedObject[key] == "")) {
+                if ((clonedObject[key] === undefined) || (clonedObject[key] === "")) {
                     clonedObject[key] = o2[key];
                 }
             }
@@ -2050,7 +2051,7 @@ function getRandomNumberByLength(length) {
     };
 
     exports.isSet = isSet = function isSet(val) {
-        return (val != undefined) && (val != null);
+        return (val !== undefined) && (val !== null);
     };
 
 
