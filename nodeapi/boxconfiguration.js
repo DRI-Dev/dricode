@@ -5,40 +5,35 @@ exports.config = require('./config-server.js');
 
 exports.configuration = configuration = config.configuration;
 
-// require('../dripoint/Staff_local/saurabh/devjs/et-dto.js');
-// require('../dripoint/Staff_local/saurabh/devjs/et-security.js');
-// require('../dripoint/Staff_local/saurabh/devjs/et-utils.js');
-// require('../dripoint/Staff_local/saurabh/devjs/et-add.js');
-// require('../dripoint/Staff_local/saurabh/devjs/et-get.js');
-// require('../dripoint/Staff_local/saurabh/devjs/et-test.js');
-// require('../dripoint/Staff_local/saurabh/devjs/et-query.js');
-// require('../dripoint/Staff_local/saurabh/devjs/et-unit_tests.js');
-// exports.executethis = require('../dripoint/Staff_local/saurabh/devjs/executethis.js');
+// console.log(JSON.stringify(config));
 
-//require('../dripoint/devJS/et-dto.js');
-//require('../dripoint/devJS/et-security.js');
-//require('../dripoint/devJS/et-utils.js');
-//require('../dripoint/devJS/et-add.js');
-//require('../dripoint/devJS/et-get.js');
-//require('../dripoint/devJS/et-test.js');
-//require('../dripoint/devJS/et-query.js');
-//require('../dripoint/devJS/et-unit_tests.js');
-//exports.executethis = require('../dripoint/devJS/executethis.js');
+// switch between the location of core files
+var DIR_TO_CORE_JS = '../dripoint/js/';
 
-
-require('../dripoint/js/et-dto.js');
-require('../dripoint/js/et-security.js');
-require('../dripoint/js/et-utils.js');
-require('../dripoint/js/et-add.js');
-require('../dripoint/js/et-get.js');
-require('../dripoint/js/et-test.js');
-require('../dripoint/js/et-query.js');
-require('../dripoint/js/et-unit_tests.js');
-exports.executethis = require('../dripoint/js/executethis.js');
-
+require(DIR_TO_CORE_JS + 'et-dto.js');
+require(DIR_TO_CORE_JS + 'et-security.js');
+exports.utils = require(DIR_TO_CORE_JS + 'et-utils.js');
+require(DIR_TO_CORE_JS + 'et-add.js');
+require(DIR_TO_CORE_JS + 'et-get.js');
+require(DIR_TO_CORE_JS + 'et-test.js');
+require(DIR_TO_CORE_JS + 'et-query.js');
+require(DIR_TO_CORE_JS + 'et-unit_tests.js');
+exports.executethis = require(DIR_TO_CORE_JS + 'executethis.js');
 
 exports.serverconfig = serverconfig = {
     SERVER_PORT: 3000,
     LOOKUP_DIR: '../dripoint/',
     SERVICE_URL: 'http://localhost:3000/'
+}
+
+exports.settings = settings = {
+
+    MONGODB_URL: 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/wikiwallettesting',
+    MONGODB_OPTIONS: {
+        'safe': true,
+        'server': true,
+        'auto_reconnect': true,
+        'pool': 5
+    }
+
 }

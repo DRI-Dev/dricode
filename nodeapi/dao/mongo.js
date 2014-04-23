@@ -1,45 +1,25 @@
+// require(config-local) not bc=require(config-local), 
+// otherwise functions inside config not available to execute, 
+//also any place where config is used might have an issue
+// propose naming of wid fns to include var =, reduce typing
+// remove window() wrapping (utils, execute)… put if !window then window=global  
+
+
+
 var SkinStore = require('connect-mongoskin'),
-    mongoskin = require('mongoskin'),
-    settings = require('../settings.js'),
-    db = mongoskin.db(settings.MONGODB_URL, settings.MONGODB_OPTIONS);
-    var bc = require('../boxconfiguration.js');
-
-var config = bc.config.config.configuration;
-console.log("TABLE _ NAME is " + config.defaultcollection);
-var schemaToLookup = config.defaultcollection;
+    mongoskin = require('mongoskin');
+require('../boxconfiguration.js');
 
 
-// DAO method to add an entry to specified schema:: the entry to be added is also specified :: 
-// the callback function on succesful addition is also specified
-// exports.madd = madd = function madd(objToAdd, command, callback) {
-//     // console.log('madd hit!');
-//     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup = configuration.defaultcollection;
+db = mongoskin.db(settings.MONGODB_URL, settings.MONGODB_OPTIONS);
+var schemaToLookup = config.configuration.defaultcollection;
+var databaseToLookup = config.configuration.defaultdb;
 
-//     if (!objToAdd['data']) {
-//         objToAdd['data'] = {}
-//     };
+console.log("TABLE _ NAME is " + config.configuration.defaultcollection);
+console.log("DATABASE _ NAME is " + config.configuration.defaultdb);
 
-//     var widName = objToAdd.wid;
-//     db.collection(schemaToLookup).update({
-//         "wid": widName
-//     }, objToAdd, {
-//         "upsert": true
-//     }, function (err, res) {
-//         // console.log(' ****** madd method in dao' + JSON.stringify(objToAdd));
-//         if (err) {
-//             printLogs('madd', objToAdd, err);
-//             callback(err, {
-//                 etstatus: {
-//                     status: "adderrror"
-//                 }
-//             });
-//         } else {
-//             printLogs('madd', objToAdd, objToAdd);
-//             callback(err, objToAdd);
-//         }
-//     });
 
-// };
+
 
 
 // DAO method to fetch unique an entry to specified collection:: the entry to be fetched is also specified :: 
@@ -72,8 +52,6 @@ exports.mquery = mquery = function mquery(objToFind, command, callback) {
     });
 };
 
-
-
 exports.mget = mget = function mget(objToFind, command, callback) {
 
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup = configuration.defaultcollection;
@@ -102,6 +80,95 @@ exports.mget = mget = function mget(objToFind, command, callback) {
 }
 
 
+
+
+exports.madd = madd = function madd(entityToAdd, command, callback) {
+
+    console.log('madd hit! entityToAdd -- ' + JSON.stringify(entityToAdd));
+    console.log('madd hit!  command -- ' + JSON.stringify(command));
+
+    var addOptions = {}
+
+    var widVal = (entityToAdd['wid']);
+    if (!widVal) {
+        widVal = (entityToAdd['Wid']);
+    }
+
+    widVal = {
+        "wid": widVal
+    };
+
+
+    if (command && command.collection) {
+        schemaToLookup = command.collection;
+    }
+
+    if (command && command.datastore) {
+        if (databaseToLookup !== command.db) {
+            // TODO :: switch db
+            databaseToLookup = command.db;
+        }
+    }
+
+
+    addOptions = {};
+    if (command && command.datamethod) {
+        if (command.datamethod === 'clear') {
+            // clear
+            // clear saves the new came object after clearing the existing object
+            // clear cleared the whole aid --all databases
+            objToUpdate = entityToAdd;
+            addOptions = {};
+        } else if (command.datamethod === 'insert') {
+            // insert
+            // insert cleraeted only the db being used
+            objToUpdate = {
+                "$set": entityToAdd
+            };
+
+
+        } else if (command.datamethod === 'upsert') {
+            // upsert
+            // upsert saves the new came object after updating the existing object
+            var entityToAdd = ConvertToDOTdri(entityToAdd);
+            addOptions = {
+                "upsert": true
+            }
+
+            objToUpdate = {
+                "$set": entityToAdd
+            };
+        }
+    } else {
+        // upsert -- default
+        addOptions = {
+            "upsert": true
+        }
+
+        objToUpdate = {
+            "$set": entityToAdd
+        };
+    }
+
+    db.collection(schemaToLookup).update(widVal, objToUpdate, addOptions, function(err, res) {
+        if (err) {
+            callback(err, {
+                etstatus: {
+                    status: "adderror"
+                }
+            });
+        } else {
+            console.log(' madd -- response  is -- ' + res);
+            console.log(' madd -- entityToAdd is -- ' + JSON.stringify(entityToAdd));
+            callback(err, entityToAdd);
+        }
+    });
+};
+
+
+
+
+
 function printLogs(fnname, input, output) {
     // console.log(' DAO :: ***************************');
     // console.log(' DAO :: >>>>>> ::: ' + fnname + ' begin ::: ');
@@ -112,110 +179,3 @@ function printLogs(fnname, input, output) {
     // console.log(' DAO :: >>>>>> ::: ' + fnname + ' end ::: ');
     // console.log(' DAO :: ***************************');
 }
-
-
-
-// // **** ADDED BY SAURABH *** SHALL BE USED INSTEAD OF ABOVE madd
-exports.madd = madd = function madd(entityToAdd, command, callback) {
-    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup = configuration.defaultcollection;
-
-    var widVal = (entityToAdd['wid']);
-    if (!widVal) {
-        widVal = (entityToAdd['Wid']);
-    }
-
-    mget({
-        "wid": widVal
-    }, command, function(err, returnedObject) {
-
-
-        // check if object is found
-        if (returnedObject) {
-            mupdate(returnedObject, entityToAdd, command, function(err, updatedObj) {
-                printLogs('madd', entityToAdd, updatedObj);
-                callback(err, updatedObj);
-            });
-        } else {
-            maddnew(entityToAdd, command, function(err, addedObj) {
-                printLogs('madd', entityToAdd, addedObj);
-                callback(err, addedObj);
-            });
-        }
-    });
-};
-
-
-// DAO method to add an entry to specified schema:: the entry to be added is also specified :: 
-// the callback function on succesful addition is also specified
-exports.maddnew = maddnew = function maddnew(objToAdd, command, callback) {
-    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup = configuration.defaultcollection;
-
-    db.collection(schemaToLookup).insert(objToAdd, function(err, res) {
-        if (err) {
-            callback(err, {
-                etstatus: {
-                    status: "adderrror"
-                }
-            });
-        } else {
-            callback(err, objToAdd);
-        }
-    });
-};
-
-// DAO method to aupdate
-exports.mupdate = mupdate = function mupdate(finder, objToAdd, command, callback) {
-    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup = configuration.defaultcollection;
-    // updateData = objToAdd;
-    var updateData = ConvertToDOTdri(objToAdd);
-    console.log('mupdate hit! ' + JSON.stringify(updateData));
-    db.collection(schemaToLookup).update({
-        "wid": finder['wid']
-    }, {
-        "$set": updateData
-    }, function(err, res) {
-        if (err) {
-            callback(err, {
-                etstatus: {
-                    status: "adderrror"
-                }
-            });
-        } else {
-            callback(err, objToAdd);
-        }
-    });
-};
-
-
-// // DAO method to add an entry to specified schema:: the entry to be added is also specified :: 
-// // the callback function on succesful addition is also specified
-// exports.madd = madd = function madd(objToAdd, command, callback) {
-//     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup = configuration.defaultcollection;
-
-
-//     delete objToAdd['executethis'];
-//     // console.log(' ****** addToMongo method in dao' + JSON.stringify(objToAdd));
-//     var widName = objToAdd.wid;
-
-//     db.collection(schemaToLookup).update({
-//         "wid": widName
-//     }, objToAdd, {
-//         "upsert": true
-//     }, function(err, res) {
-//         if (err) {
-
-//             callback(err, {
-//                 etstatus: {
-//                     status: "adderrror"
-//                 }
-//             });
-//         } else {
-//             callback(err, objToAdd);
-//         }
-//     });
-
-// };
-
-
-
-// };

@@ -2,9 +2,17 @@ var needle = require('needle');
 var twilio = require('twilio')('AC909f1981261f4461abbc7985bd202897', '7bb26fabe1f818f11f4a178359e0f19a');
 var spawn = require('child_process').spawn;
 
-// if (!exports) {
-//     var exports = {};
-// }
+var localStorage = exports.localStorage = {};
+
+
+
+
+
+// exports.settings = {"MONGODB_URL" : 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/wikiwallettesting',
+exports.settings = {"MONGODB_URL" : 'mongodb://localhost:27017/wikiwallettesting',
+"MONGODB_OPTIONS" : {'safe':true,'server':true,'auto_reconnect': true, 'pool': 5} }
+
+
 
 
 exports.environment = 'server';

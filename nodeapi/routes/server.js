@@ -1,30 +1,23 @@
 // Server specific Routes here
 
-var bc = require('../boxconfiguration.js');
-var executethis = bc.executethis;
+require('../boxconfiguration.js');
 
 var async = require('async');
 
+
 var mongoskin = require('mongoskin'),
-    config = require('../config-server.js'),
-    settings = require('../settings.js'),
     db = mongoskin.db(settings.MONGODB_URL, settings.MONGODB_OPTIONS),
     SkinStore = require('connect-mongoskin'),
     path = require('path'),
     dao = require('../dao/mongo.js'),
     superagent = require('superagent'),
-    filecheck = require('../scrapejob/scrape.js'),
     https = require('https'),
     querystring = require('querystring'),
     url = require('url'),
-    util = require('util'),
-    cheerio = require('cheerio');
+    util = require('util');
 // , drifn = require('../dao/dri_functions.js')
 
 
-if (!exports) {
-    exports = {};
-}
 
 
 exports.putrunExecutethis = function (req, resp) {
@@ -51,7 +44,7 @@ function runExecuteThis(parameters, resp) {
         Debug = "true"
         delete parameters.Debug
     }
-    executethis.execute(parameters, function (err, results) {
+    global['execute'](parameters, function (err, results) {
 
         if (Debug === 'true') {
             var tempoutput = {};
