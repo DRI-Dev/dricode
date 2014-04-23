@@ -341,7 +341,7 @@
                                     }
                                     if (eachitem === 'method') {
                                         if (dtotable[metadata.method]) {
-                                            tempobj = dtotable[metadata.method].command.dtolist
+                                            tempobj = dtotable[metadata.method].command.dtolist;
                                         }
                                     }
                                     if (tempobj) {
