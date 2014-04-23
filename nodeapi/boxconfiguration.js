@@ -26,9 +26,11 @@ exports.serverconfig = serverconfig = {
     SERVICE_URL: 'http://localhost:3000/'
 }
 
+
+// MONGODB_URL: 'mongodb://localhost:27017/',
 exports.settings = settings = {
 
-    MONGODB_URL: 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/wikiwallettesting',
+    MONGODB_URL: 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/',
     MONGODB_OPTIONS: {
         'safe': true,
         'server': true,

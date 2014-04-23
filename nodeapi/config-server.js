@@ -4,41 +4,8 @@ var spawn = require('child_process').spawn;
 
 var localStorage = exports.localStorage = {};
 
-
-
-
-
-// exports.settings = {"MONGODB_URL" : 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/wikiwallettesting',
-exports.settings = {"MONGODB_URL" : 'mongodb://localhost:27017/wikiwallettesting',
-"MONGODB_OPTIONS" : {'safe':true,'server':true,'auto_reconnect': true, 'pool': 5} }
-
-
-
-
 exports.environment = 'server';
 exports.server = 'server1';
-
-
-
-
-
-//     exports.clearLocalStorage = window.clearLocalStorage = clearLocalStorage = function clearLocalStorage() {
-// //        proxyprinttodiv('clear clearLocalStorage', 'hi', 38);
-//         //widMasterKey = "widmaster_";
-//         localStore.clear();
-//         //potentialwid = 0;
-//         localStore.push("DRI", [{
-//             "wid": "initialwid",
-//             "initialwid": "hello from bootprocess"
-//         }]);
-//         localStore.push("DRIKEY", {
-//             "initialwid": {
-//                 "wid": "initialwid",
-//                 "initialwid": "for key hello from bootprocess"
-//             }
-//         });
-//     };
-
 
 // *********** EVENTS **************************************************
 exports.eventappinstall = eventappinstall = function eventappinstall() {

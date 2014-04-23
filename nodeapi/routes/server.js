@@ -6,7 +6,6 @@ var async = require('async');
 
 
 var mongoskin = require('mongoskin'),
-    db = mongoskin.db(settings.MONGODB_URL, settings.MONGODB_OPTIONS),
     SkinStore = require('connect-mongoskin'),
     path = require('path'),
     dao = require('../dao/mongo.js'),
@@ -127,15 +126,6 @@ function handleAddThisPersistence(nodeObjects, callback) {
     }
 }
 
-function callScrapeLogic(res, callback) {
-    var dirName = config.LOOKUP_DIR;
-    filecheck.run(dirName, function (returnJson) {
-        console.log(' json formatHTML array  ' + JSON.stringify(returnJson));
-        var objToJson = {};
-        objToJson.res = res;
-        callback(returnJson);
-    });
-}
 
 function cleanParameters(inboundParameters, paramsToClean) {
     var outBoundParameters = {};

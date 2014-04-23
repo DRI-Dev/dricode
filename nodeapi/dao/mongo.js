@@ -10,14 +10,15 @@ var SkinStore = require('connect-mongoskin'),
     mongoskin = require('mongoskin');
 require('../boxconfiguration.js');
 
-
-db = mongoskin.db(settings.MONGODB_URL, settings.MONGODB_OPTIONS);
 var schemaToLookup = config.configuration.defaultcollection;
 var databaseToLookup = config.configuration.defaultdb;
+var mongoDatabaseToLookup = config.configuration.defaultmongodb;
 
-console.log("TABLE _ NAME is " + config.configuration.defaultcollection);
-console.log("DATABASE _ NAME is " + config.configuration.defaultdb);
 
+var dbConnectionsManager = {};
+var defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup;
+console.log(defaultDatabaseurl);
+dbConnectionsManager[mongoDatabaseToLookup] = mongoskin.db(defaultDatabaseurl, settings.MONGODB_OPTIONS);
 
 
 
@@ -25,57 +26,65 @@ console.log("DATABASE _ NAME is " + config.configuration.defaultdb);
 // DAO method to fetch unique an entry to specified collection:: the entry to be fetched is also specified :: 
 // the callback function on succesful addition is also specified
 exports.mquery = mquery = function mquery(objToFind, command, callback) {
-    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup = configuration.defaultcollection;
+    (command && command.db) ? databaseToLookup = command.db : databaseToLookup = databaseToLookup;
+    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup = mongoDatabaseToLookup;
+    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup = schemaToLookup;
+
+
 
     if (typeof objToFind === "string") {
         objToFind = JSON.parse(objToFind);
     }
 
+    getConnection(mongoDatabaseToLookup, function(err, db) {
 
-    db.collection(schemaToLookup).find(objToFind).toArray(function(err, res) {
-        if (err) {
-            printLogs('mquery', objToFind, err);
-            callback(err, {
-                etstatus: {
-                    status: 'queryerror'
-                }
-            });
-        } else {
-            if (res) {
-                printLogs('mquery', objToFind, res);
-                callback(err, res);
+        db.collection(schemaToLookup).find(objToFind).toArray(function(err, res) {
+            if (err) {
+                printLogs('mquery', objToFind, err);
+                callback(err, {
+                    etstatus: {
+                        status: 'queryerror'
+                    }
+                });
             } else {
-                printLogs('mquery', objToFind, []);
-                callback(err, []);
+                if (res) {
+                    printLogs('mquery', objToFind, res);
+                    callback(err, res);
+                } else {
+                    printLogs('mquery', objToFind, []);
+                    callback(err, []);
+                }
             }
-        }
+        });
     });
 };
 
 exports.mget = mget = function mget(objToFind, command, callback) {
-
-    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup = configuration.defaultcollection;
-
+    (command && command.db) ? databaseToLookup = command.db : databaseToLookup = databaseToLookup;
+    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup = mongoDatabaseToLookup;
+    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup = schemaToLookup;
     if (typeof objToFind === "string") {
         objToFind = JSON.parse(objToFind);
     }
     var widName = objToFind['wid'];
 
-    db.collection(schemaToLookup).find({
-        "wid": widName
-    }).toArray(function(err, res) {
-        if (err) {
-            printLogs('mget', widName, err);
-            callback(err, res);
-        } else {
-            if (res && res && res[0]) {
-                printLogs('mget', widName, res[0]);
-                callback(null, res[0]);
+    getConnection(mongoDatabaseToLookup, function(err, db) {
+        db.collection(schemaToLookup).find({
+            "wid": widName
+        }).toArray(function(err, res) {
+            if (err) {
+                printLogs('mget', widName, err);
+                callback(err, res);
             } else {
-                printLogs('mget', widName, null);
-                callback(null, null);
+                if (res && res && res[0]) {
+                    printLogs('mget', widName, res[0]);
+                    callback(null, res[0]);
+                } else {
+                    printLogs('mget', widName, null);
+                    callback(null, null);
+                }
             }
-        }
+        });
     });
 }
 
@@ -83,9 +92,9 @@ exports.mget = mget = function mget(objToFind, command, callback) {
 
 
 exports.madd = madd = function madd(entityToAdd, command, callback) {
-
-    console.log('madd hit! entityToAdd -- ' + JSON.stringify(entityToAdd));
-    console.log('madd hit!  command -- ' + JSON.stringify(command));
+    (command && command.db) ? databaseToLookup = command.db : databaseToLookup = databaseToLookup;
+    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup = mongoDatabaseToLookup;
+    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup = schemaToLookup;
 
     var addOptions = {}
 
@@ -97,19 +106,6 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
     widVal = {
         "wid": widVal
     };
-
-
-    if (command && command.collection) {
-        schemaToLookup = command.collection;
-    }
-
-    if (command && command.datastore) {
-        if (databaseToLookup !== command.db) {
-            // TODO :: switch db
-            databaseToLookup = command.db;
-        }
-    }
-
 
     addOptions = {};
     if (command && command.datamethod) {
@@ -130,7 +126,9 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
         } else if (command.datamethod === 'upsert') {
             // upsert
             // upsert saves the new came object after updating the existing object
-            var entityToAdd = ConvertToDOTdri(entityToAdd);
+
+            // TODO :: FIX THIS , below line needed to avoid overwrites
+            // var entityToAdd = ConvertToDOTdri(entityToAdd);
             addOptions = {
                 "upsert": true
             }
@@ -150,26 +148,45 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
         };
     }
 
-    db.collection(schemaToLookup).update(widVal, objToUpdate, addOptions, function(err, res) {
-        if (err) {
-            callback(err, {
-                etstatus: {
-                    status: "adderror"
-                }
-            });
-        } else {
-            console.log(' madd -- response  is -- ' + res);
-            console.log(' madd -- entityToAdd is -- ' + JSON.stringify(entityToAdd));
-            callback(err, entityToAdd);
-        }
+    getConnection(mongoDatabaseToLookup, function(err, db) {
+        db.collection(schemaToLookup).update(widVal, objToUpdate, addOptions, function(err, res) {
+            if (err) {
+                printLogs('madd', entityToAdd, {});
+                callback(err, {});
+            } else {
+                printLogs('madd', entityToAdd, entityToAdd);
+                callback(err, entityToAdd);
+            }
+        });
     });
 };
 
+// manage multiple mongo database connections
+
+function getConnection(mongoDatabaseToLookup, callback) {
+    var databaseConnection;
+    var err;
+    if (dbConnectionsManager[mongoDatabaseToLookup]) {
+        databaseConnection = dbConnectionsManager[mongoDatabaseToLookup];
+    } else {
+        databaseConnection = mongoskin.db(settings.MONGODB_URL + mongoDatabaseToLookup, settings.MONGODB_OPTIONS);
+        dbConnectionsManager[mongoDatabaseToLookup] = databaseConnection; // place in connections factory
+    }
+
+    if (!databaseConnection) {
+        err = "error in getting connection to " + mongoDatabaseToLookup;
+    }
+    callback(err, databaseConnection);
+}
 
 
 
 
 function printLogs(fnname, input, output) {
+
+    // console.log(" DAO :: "+fnname+"  TABLE _ NAME is " + schemaToLookup);
+    // console.log(" DAO :: "+fnname+"  DATABASE _ NAME is " + databaseToLookup);
+    // console.log(" DAO :: "+fnname+"  MONGO _ DATABASE _ NAME is " + mongoDatabaseToLookup);
     // console.log(' DAO :: ***************************');
     // console.log(' DAO :: >>>>>> ::: ' + fnname + ' begin ::: ');
     // console.log(' DAO :: >>>>>> ::: inputs ::: ');
