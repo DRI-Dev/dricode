@@ -250,8 +250,8 @@ if (typeof angular !== 'undefined') {
             $scope.data = {};
             $scope.ajax = {};
             var querystring = window.location.search,
-                urlParameters = widAppHelper.queryStrToObj(querystring.substring(1)),
-                currentUser = dataService.user.getLocal();
+                urlParameters = widAppHelper.queryStrToObj(querystring.substring(1));
+//                currentUser = dataService.user.getLocal();
 
             gatherParamsAndExecute(urlParameters, $scope);
 
