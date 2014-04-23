@@ -308,91 +308,91 @@ if (typeof angular !== 'undefined') {
 //
 //            //</editor-fold>
 
-            //<editor-fold desc='login section'>
-
-            $scope.loginGuid = '';
-
-            $scope.login1 = function() {
-                $scope.clearlogs();
-                var at = ''
-//                    , parameters = {parameterDTOs:[]}
-                    , user = dataService.user.getLocal()
-                    , parameters = {
-                        dri_action: 'login1',
-                        phonenumber: $('#phonenumber').val()
-                    };
-
-//                parameters.parameterDTOs.push({ParameterName:'phonenumber',ParameterValue:$('#phonenumber').val()});
-
-                if (user) { at = user.at; }
-                else {
-                    dataService.user.getNewAt(function(results) { at = results.accesstoken; });
-                    dataService.user.putLocal('', at, false);
-                }
-
-                $scope.ajax.loading = true;
-
-                getDriApiData(parameters, function (err, results) {
-                    if (err && Object.size(err) > 0) { console.log('getDriApiData error => ' + JSON.stringify(err)); }
-                    else {
-                        $('#pin,#pingrp').show();
-                        $('#phonegrp').hide();
-
-                        $scope.loginGuid = results.guid;
-                        $scope.ajax.loading = false;
-                    }
-                });
-            };
-
-            $scope.login2 = function() {
-                $scope.clearlogs();
-                var user = dataService.user.getLocal();
-//                var parameters = {parameterDTOs:[]};
-//                parameters.parameterDTOs.push({ParameterName:'accesstoken',ParameterValue:user.at},
-//                    {ParameterName:'pin',ParameterValue:$('#pin').val()},
-//                    {ParameterName:'guid',ParameterValue:$scope.loginGuid});
-
-                var getDriDataObj = {
-                    dri_action: 'login2',
-                    accesstoken: user.at,
-                    pin: $('#pin').val(),
-                    guid: $scope.loginGuid
-                };
-
-                $scope.ajax.loading = true;
-
-                getDriApiData(getDriDataObj, function(err, results) {
-                    if (err && Object.size(err) > 0) { console.log('getDriApiData error => ' + JSON.stringify(err)); }
-                    else {
-                        if (results.Succeeded === 'True') {
-                            dataService.user.putLocal('', user.at, true);
-                            $('#successlog').html("Thank you for logging into DRI!");
-                        } else {
-                            var error = results.Message !== '' ? results.Message : 'An error has occurred.';
-                            $('#errorlog').html(error);
-                        }
-
-                        $scope.ajax.loading = false;
-                        var returnUrl = widAppHelper.getUrlParam('returnUrl');
-                        if (returnUrl !== '') { window.location = returnUrl; }
-                    }
-                });
-            };
-
-            $scope.logout = function() {
-                dataService.user.removeLocal();
-                $('#successlog').html('You are now logged out.');
-                window.location = '../login.html';
-            };
-
-            $scope.cancelLogin = function() {
-                $scope.clearlogs();
-                $('#phonenumber,#pin').val('');
-                $('#pin,#pingrp').hide();
-                $('#phonegrp').show();
-            };
-
-            //</editor-fold>
+//            //<editor-fold desc='login section'>
+//
+//            $scope.loginGuid = '';
+//
+//            $scope.login1 = function() {
+//                $scope.clearlogs();
+//                var at = ''
+////                    , parameters = {parameterDTOs:[]}
+//                    , user = dataService.user.getLocal()
+//                    , parameters = {
+//                        dri_action: 'login1',
+//                        phonenumber: $('#phonenumber').val()
+//                    };
+//
+////                parameters.parameterDTOs.push({ParameterName:'phonenumber',ParameterValue:$('#phonenumber').val()});
+//
+//                if (user) { at = user.at; }
+//                else {
+//                    dataService.user.getNewAt(function(results) { at = results.accesstoken; });
+//                    dataService.user.putLocal('', at, false);
+//                }
+//
+//                $scope.ajax.loading = true;
+//
+//                getDriApiData(parameters, function (err, results) {
+//                    if (err && Object.size(err) > 0) { console.log('getDriApiData error => ' + JSON.stringify(err)); }
+//                    else {
+//                        $('#pin,#pingrp').show();
+//                        $('#phonegrp').hide();
+//
+//                        $scope.loginGuid = results.guid;
+//                        $scope.ajax.loading = false;
+//                    }
+//                });
+//            };
+//
+//            $scope.login2 = function() {
+//                $scope.clearlogs();
+//                var user = dataService.user.getLocal();
+////                var parameters = {parameterDTOs:[]};
+////                parameters.parameterDTOs.push({ParameterName:'accesstoken',ParameterValue:user.at},
+////                    {ParameterName:'pin',ParameterValue:$('#pin').val()},
+////                    {ParameterName:'guid',ParameterValue:$scope.loginGuid});
+//
+//                var getDriDataObj = {
+//                    dri_action: 'login2',
+//                    accesstoken: user.at,
+//                    pin: $('#pin').val(),
+//                    guid: $scope.loginGuid
+//                };
+//
+//                $scope.ajax.loading = true;
+//
+//                getDriApiData(getDriDataObj, function(err, results) {
+//                    if (err && Object.size(err) > 0) { console.log('getDriApiData error => ' + JSON.stringify(err)); }
+//                    else {
+//                        if (results.Succeeded === 'True') {
+//                            dataService.user.putLocal('', user.at, true);
+//                            $('#successlog').html("Thank you for logging into DRI!");
+//                        } else {
+//                            var error = results.Message !== '' ? results.Message : 'An error has occurred.';
+//                            $('#errorlog').html(error);
+//                        }
+//
+//                        $scope.ajax.loading = false;
+//                        var returnUrl = widAppHelper.getUrlParam('returnUrl');
+//                        if (returnUrl !== '') { window.location = returnUrl; }
+//                    }
+//                });
+//            };
+//
+//            $scope.logout = function() {
+//                dataService.user.removeLocal();
+//                $('#successlog').html('You are now logged out.');
+//                window.location = '../login.html';
+//            };
+//
+//            $scope.cancelLogin = function() {
+//                $scope.clearlogs();
+//                $('#phonenumber,#pin').val('');
+//                $('#pin,#pingrp').hide();
+//                $('#phonegrp').show();
+//            };
+//
+//            //</editor-fold>
 
             //<editor-fold desc='misc scoped helper functions'>
 
