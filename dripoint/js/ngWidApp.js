@@ -8,7 +8,7 @@ eventdeviceready({}, function (err, results) { });
 //<editor-fold desc="App, Factories, and Directives">
 
 if (typeof angular !== 'undefined') {
-    var widApp = angular.module('widApp', []);
+    var widApp = angular.module('widApp', ['ui.bootstrap']);
 
     widApp.factory('dataService', function($http, $compile) {
         var storeAllData = function(obj, scope, objName, callback) {
