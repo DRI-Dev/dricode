@@ -469,7 +469,12 @@
                                                         if (!_child_object["metadata"]["parentwid"]) {
                                                             _child_object["metadata"]["parentwid"] = {};
                                                         }
+
                                                         _child_object["metadata"]["parentwid"][_parent_wid] = _parent_method;
+
+                                                        if(_parent_object["metadata"]["parentwid"]) {
+                                                          _child_object["metadata"]["parentwid"] = extend(true, _parent_object["metadata"]["parentwid"], _child_object["metadata"]["parentwid"]);
+                                                        }
                                                     }
 
                                                     addwidobject(_child_object, _child_dto, _parent_wid, _parent_method, eachchild.dtotype, command, function (err, res) {
