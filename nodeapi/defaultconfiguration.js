@@ -21,16 +21,10 @@ require(DIR_TO_CORE_JS + 'et-unit_tests.js');
 exports.executethis = require(DIR_TO_CORE_JS + 'executethis.js');
 
 exports.serverconfig = serverconfig = {
-    SERVER_PORT: 3059,
+    SERVER_PORT: 3000,
     LOOKUP_DIR: '../dripoint/',
-<<<<<<< HEAD:nodeapi/defaultconfiguration.js
-    SERVICE_URL: 'http://localhost:3009/'
-}
-
-=======
     SERVICE_URL: 'http://localhost:3000/'
 };
->>>>>>> cc8d0a56932a002d889621c475e0324f65b86e6c:nodeapi/boxconfiguration.js
 
 // MONGODB_URL: 'mongodb://localhost:27017/',
 exports.settings = settings = {
@@ -43,8 +37,4 @@ exports.settings = settings = {
         'pool': 5
     }
 
-<<<<<<< HEAD:nodeapi/defaultconfiguration.js
-}
-=======
 };
->>>>>>> cc8d0a56932a002d889621c475e0324f65b86e6c:nodeapi/boxconfiguration.js
