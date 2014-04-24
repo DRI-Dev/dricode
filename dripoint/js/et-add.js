@@ -1093,7 +1093,9 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                 delete command.command.deepfilter.convert
                 object["executethis"] = "updatewid";
                 // readd command params back in
-                extend(true, object, command);
+                var tempcmd={}
+                tempcmd.command=command;
+                extend(true, object, tempcmd);
                 proxyprinttodiv("addwid before updatewid ", object, 18);
                 execute(object, function (err, res) {
                     output = res; // or res[0]?

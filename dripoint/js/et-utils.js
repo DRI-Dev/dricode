@@ -127,6 +127,20 @@ exports.copywid = copywid = copywid = function copywid(inputobj, callback) {
     var db="";
     var defaultdatastore;
 
+        if(!inputobj.command){inputobj.command={}};
+        if(!inputobj.command.environment){inputobj.command.environment={}};
+
+    inputobj = getcommand(inputobj, {
+                "command": {
+                    "datastore": inputobj.command.environment.datastore,
+                    "collection":inputobj.command.environment.collection,
+                    "keycollection":inputobj.command.environment.collection + "key",
+                    "db":inputobj.command.environment.db,
+                    "databasetable":inputobj.command.environment.databasetable
+                }
+            }, {},
+            false).output;
+
     var filter_data = getcommand(inputobj, {
             "command": {
                 "fromdatastore": config.configuration.defaultdatastore,
@@ -155,7 +169,8 @@ exports.copywid = copywid = copywid = function copywid(inputobj, callback) {
                 "todb":"",
                 "todatabasetable":"",
                 "towid":"",
-                "delete":""
+                "delete":"",
+                "environment":""
             }
         },
         true);
@@ -221,16 +236,18 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
         var keydatabase = {};
         //var defaultdatastore;
         //if (config.configuration.environment==="local") {defaultdatastore='localstorage';} else {defaultdatastore='mongo';}
+        if(!inputWidgetObject.command){inputWidgetObject.command={}};
+        if(!inputWidgetObject.command.environment){inputWidgetObject.command.environment={}};
         inputWidgetObject = getcommand(inputWidgetObject, {
                 "command": {
-                    "datastore": inputWidgetObject.environment.datastore,
-                    "collection":inputWidgetObject.environment.collection,
-                    "keycollection":inputWidgetObject.environment.collection + "key",
-                    "db":inputWidgetObject.environment.db,
-                    "databasetable":inputWidgetObject.environment.databasetable,
+                    "datastore": inputWidgetObject.command.environment.datastore,
+                    "collection":inputWidgetObject.command.environment.collection,
+                    "keycollection":inputWidgetObject.command.environment.collection + "key",
+                    "db":inputWidgetObject.command.environment.db,
+                    "databasetable":inputWidgetObject.command.environment.databasetable
                 }
             }, {},
-            false);
+            false).output;
         var filter_data = getcommand(inputWidgetObject, {
                 "command": {
                     "datastore": config.configuration.defaultdatastore,
@@ -250,7 +267,8 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
                     "db":"",
                     "databasetable":"",
                     "convertmethod":"",
-                    "datamethod":""
+                    "datamethod":"",
+                    "environment":""
                     // "deepfilter" : {"keepaddthis":""}
                 }
             },
@@ -405,16 +423,20 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
         //var defaultdatastore;
         //if (config.configuration.environment==="local") {defaultdatastore='localstorage';} else {defaultdatastore='mongo';}
 
+        if(!inputWidgetObject.command){inputWidgetObject.command={}};
+        if(!inputWidgetObject.command.environment){inputWidgetObject.command.environment={}};
+
+
         inputWidgetObject = getcommand(inputWidgetObject, {
                 "command": {
-                    "datastore": inputWidgetObject.environment.datastore,
-                    "collection":inputWidgetObject.environment.collection,
-                    "keycollection":inputWidgetObject.environment.collection + "key",
-                    "db":inputWidgetObject.environment.db,
-                    "databasetable":inputWidgetObject.environment.databasetable,
+                    "datastore": inputWidgetObject.command.environment.datastore,
+                    "collection":inputWidgetObject.command.environment.collection,
+                    "keycollection":inputWidgetObject.command.environment.collection + "key",
+                    "db":inputWidgetObject.command.environment.db,
+                    "databasetable":inputWidgetObject.command.environment.databasetable
                 }
             }, {},
-            false);
+            false).output;
         var filter_data = getcommand(inputWidgetObject, {
                 "command": {
                     "datastore": config.configuration.defaultdatastore,
@@ -435,22 +457,23 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                     "databasetable":"",
                     "convertmethod":"",
                     // "deepfilter" : {"keepaddthis":""}
-                    "keepaddthis":""
+                    "keepaddthis":"",
+                    "environment":""
                 }
             },
             true);
-        var command = filter_data.filteredobject;
+        var command = filter_data.filteredobject.command;
         proxyprinttodiv('Function datastore command -- get', filter_data, 12);
         proxyprinttodiv('Function datastore command -- get inputWidgetObject', inputWidgetObject, 12);
-        var datastore= command.command.datastore;
-        var collection = command.command.collection;
+        var datastore= command.datastore;
+        var collection = command.collection;
         // var keycollection = command.command.keycollection;
         var keycollection = collection + "key";
         command["keycollection"] = keycollection;
         proxyprinttodiv('Function datastore command -- get', command, 12);
-        var db = command.command.db;
-        var databasetable = command.command.databasetable;
-        var keepaddthis = command.command.keepaddthis
+        var db = command.db;
+        var databasetable = command.databasetable;
+        var keepaddthis = command.keepaddthis
         if (widName) {
             getdatabaseinforesult = getdatabaseinfo(command, datastore, collection, keycollection, db, databasetable);
             proxyprinttodiv('Function getwid getdatabaseinforesult', getdatabaseinforesult,12);

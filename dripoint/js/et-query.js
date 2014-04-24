@@ -1694,26 +1694,47 @@
             //     "command":{"databasetable":""},
             //     "command":{"convertmethod": ""}
             // }, false);
-            filter_data = getcommand(parameters, // commandParams
-            { 
+
+        
+        if(!parameters.command){parameters.command={}};
+        if(!parameters.command.environment){parameters.command.environment={}};
+
+        parameters = getcommand(parameters, {
+                "command": {
+                    "datastore": parameters.command.environment.datastore,
+                    "collection":parameters.command.environment.collection,
+                    "keycollection":parameters.command.environment.collection + "key",
+                    "db":parameters.command.environment.db,
+                    "databasetable":parameters.command.environment.databasetable
+                }
+            }, {},
+            false).output;
+
+        filter_data = getcommand(parameters, {
                 "command": {
                     "datastore": config.configuration.defaultdatastore,
                     "collection":config.configuration.defaultcollection,
-                    "keycollection":config.configuration.defaultkeycollection,
+                    "keycollection":config.configuration.defaultcollection + "key",
                     "db":config.configuration.defaultdb,
                     "databasetable":config.configuration.defaultdatabasetable,
-                    "convertmethod":"toobject"
+                    "convertmethod":"toobject",
+                    // "deepfilter" : {"keepaddthis":false}
+                    "keepaddthis":true
                 }
-            },
-            { // commandParams
+            }, {
                 "command": {
                     "datastore": "",
                     "collection":"",
                     "keycollection":"",
                     "db":"",
                     "databasetable":"",
-                    "convertmethod":""
-            }}, false);
+                    "convertmethod":"",
+                    // "deepfilter" : {"keepaddthis":""}
+                    "keepaddthis":"",
+                    "environment":""
+                }
+            },
+            true);
 
             p[6] = filter_data.filteredobject;
 
