@@ -1087,13 +1087,13 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                     }
                 }
                 //step3_callback(err, res)
-                step3_callback(null);   
+                step3_callback(null);
             },
             function step4(step4_callback) {
-                delete command.command.deepfilter.convert
+                delete command.command.deepfilter.convert;
                 object["executethis"] = "updatewid";
                 // readd command params back in
-                var tempcmd={}
+                var tempcmd={};
                 tempcmd.command=command;
                 extend(true, object, tempcmd);
                 proxyprinttodiv("addwid before updatewid ", object, 18);

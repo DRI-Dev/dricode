@@ -1352,8 +1352,8 @@
                                                                                 callback(err, res);
                                                                             } else {
                                                                                 proxyprinttodiv("executelist err from execution ", err, 11);
-                                                                                proxyprinttodiv("executelist result from execution ", res, 99);
-                                                                                proxyprinttodiv("executelist result from execution executeobject", executeobject.executeflag, 99);
+                                                                                proxyprinttodiv("executelist result from execution ", res, 11);
+                                                                                proxyprinttodiv("executelist result from execution executeobject", executeobject.executeflag, 11);
 
                                                                                 // This section helps control the iteration -- Joe
                                                                                 // ***********************************************
