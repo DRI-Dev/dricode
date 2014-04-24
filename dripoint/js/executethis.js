@@ -1053,11 +1053,11 @@
                 delete params['configuration'][configtarget];
                 // *** delete params['configuration'][configtarget][0];????????????? or above take out?
                 proxyprinttodiv("CreateDoList - incomingConfig ", incomingConfig, 11);
+                if (incomingConfig) {
+                    config0[configtarget] = incomingConfig; // ** Joe - only load incoming config if there is an incoming config
+                } // added by roger *******
             }
 
-            if (incomingConfig) {
-                config0[configtarget] = incomingConfig; // ** Joe - only load incoming config if there is an incoming config
-            } // added by roger *******
 
             // // If there is no config object for current target make one
             // *** Joe - moved above
