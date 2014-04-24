@@ -12,7 +12,7 @@ var SkinStore = require('connect-mongoskin'),
     mongoskin = require('mongoskin'),
     schemaToLookup = config.configuration.defaultcollection,
     databaseToLookup = config.configuration.defaultdb,
-    mongoDatabaseToLookup = config.configuration.defaultmongodb,
+    mongoDatabaseToLookup = config.configuration.defaultdatabsaetable,
     dbConnectionsManager = {},
     defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup;
 
@@ -83,6 +83,7 @@ exports.mget = mget = function mget(objToFind, command, callback) {
 };
 
 exports.madd = madd = function madd(entityToAdd, command, callback) {
+    console.log('MADD --- command is >>> '+ JSON.stringify(command));
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
@@ -179,7 +180,7 @@ function printLogs(fnname, input, output) {
 
     // console.log(" DAO :: "+fnname+"  TABLE _ NAME is " + schemaToLookup);
     // console.log(" DAO :: "+fnname+"  DATABASE _ NAME is " + databaseToLookup);
-    // console.log(" DAO :: "+fnname+"  MONGO _ DATABASE _ NAME is " + mongoDatabaseToLookup);
+    console.log(" DAO :: "+fnname+"  MONGO _ DATABASE _ NAME is " + mongoDatabaseToLookup);
     // console.log(' DAO :: ***************************');
     // console.log(' DAO :: >>>>>> ::: ' + fnname + ' begin ::: ');
     // console.log(' DAO :: >>>>>> ::: inputs ::: ');
