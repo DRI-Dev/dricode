@@ -66,10 +66,11 @@
             var extraparameters = {};
             //proxyprinttodiv('querywid convertmethod', convertmethod, 38);
             //proxyprinttodiv('querywid commandParams', commandParams, 38);
-            if (commandParams["db"]) {
+            // if (commandParams["db"]) {
+            if (false) {
                 environmentdb = commandParams["db"];
             } else {
-                environmentdb = config.configuration.defaultdb
+                environmentdb = config.configuration.defaultdb;
             }
             // if (config.configuration.environment==="local") {commandParams.datastore='localstorage';} 
             //                                             else {commandParams.datastore='mongo';}
@@ -684,9 +685,9 @@
                                             proxyprinttodiv('querywid finalformatlist widrecord after ', widrecord, 28);
 
                                             if (commandParams.convertmethod === "toobject") {
-                                                record[wid] = widrecord;
-                                            } else {
                                                 record[wid] = convertfromdriformat(widrecord, commandParams);
+                                            } else {
+                                                record[wid] = widrecord;
                                             }
                                             cb1(null);
                                         }
@@ -1736,7 +1737,7 @@
             },
             true);
 
-            p[6] = filter_data.filteredobject;
+            p[6] = filter_data.filteredobject.command; // Joe - removed command.command in mquery
 
             return p;
         } // end try

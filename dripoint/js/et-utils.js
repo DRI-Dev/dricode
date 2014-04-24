@@ -65,7 +65,7 @@ exports.getfromlocal = getfromlocal = function getfromlocal(inputWidgetObject) {
     //         output = {};
     //     }
     output = localStore.get(inputWidgetObject);
-    if (output == null) { output = {}; }
+    if (output === null) { output = {}; }
     proxyprinttodiv('getfromlocal output', output, 38);
     return output;
 };
@@ -127,8 +127,8 @@ exports.copywid = copywid = copywid = function copywid(inputobj, callback) {
     var db="";
     var defaultdatastore;
 
-        if(!inputobj.command){inputobj.command={}};
-        if(!inputobj.command.environment){inputobj.command.environment={}};
+        if(!inputobj.command){inputobj.command={};}
+        if(!inputobj.command.environment){inputobj.command.environment={};}
 
     inputobj = getcommand(inputobj, {
                 "command": {
@@ -181,20 +181,20 @@ exports.copywid = copywid = copywid = function copywid(inputobj, callback) {
     
     //fromwid, fromdb, fromcollection, fromdatastore, towid, todb, tocollection, todatastore, command,
     //1. call getwid fn with fromwid, fromdb, fromcollection, fromdatastore
-    var getwidinput = {"wid":inputobj.wid, 
-                        "command":{"db":filteredcommandobject.fromdb, 
-                        "collection":filteredcommandobject.fromcollection, 
-                        "datastore":filteredcommandobject.fromdatastore, 
+    var getwidinput = {"wid":inputobj.wid,
+                        "command":{"db":filteredcommandobject.fromdb,
+                        "collection":filteredcommandobject.fromcollection,
+                        "datastore":filteredcommandobject.fromdatastore,
                         "databasetable":filteredcommandobject.fromdatabasetable}};
     proxyprinttodiv('Function copywid getwidinput', getwidinput, 18);
     getwid(getwidinput, function (err, getwidresult){
         proxyprinttodiv('Function copywid getwidresult', getwidresult, 17);
         
         //2. call updatewid fn with get result wid, towid, todb, tocollection, todatastore
-        var updatewidinput = {"wid":inputobj.towid, 
-                                "command":{"db":filteredcommandobject.todb, 
-                                "collection":filteredcommandobject.tocollection, 
-                                "datastore":filteredcommandobject.todatastore, 
+        var updatewidinput = {"wid":inputobj.towid,
+                                "command":{"db":filteredcommandobject.todb,
+                                "collection":filteredcommandobject.tocollection,
+                                "datastore":filteredcommandobject.todatastore,
                                 "databasetable":filteredcommandobject.todatabasetable}};
         extend(true, updatewidinput, getwidresult);
         proxyprinttodiv('Function copywid updatewidinput', updatewidinput, 18);
@@ -205,21 +205,21 @@ exports.copywid = copywid = copywid = function copywid(inputobj, callback) {
             //if(inputobj["command"] && inputobj["command"]["delete"]===true){
             if(filteredcommandobject["delete"]){
                 proxyprinttodiv('Function copywid updatewidblankinput', updatewidblankinput, 18);
-                var updatewidblankinput = {"wid":inputobj.wid, 
-                                            "command":{"db":filteredcommandobject.fromdb, 
-                                            "collection":filteredcommandobject.fromcollection, 
+                var updatewidblankinput = {"wid":inputobj.wid,
+                                            "command":{"db":filteredcommandobject.fromdb,
+                                            "collection":filteredcommandobject.fromcollection,
                                             "datastore":filteredcommandobject.fromdatastore,
                                             "databasetable":filteredcommandobject.fromdatabasetable,
                                             "datamethod":"insert"}};
                 updatewid(updatewidblankinput, function (err, updatewidblankinputresult){
                     proxyprinttodiv('Function copywid updatewidblankinputresult', updatewidblankinputresult, 17);
                     callback(err, updatewidblankinputresult);
-                }); 
+                });
             }else{
                 callback(err, updatewidresult);
             }
         });
-    }); 
+    });
 };
 
 
@@ -236,8 +236,8 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
         var keydatabase = {};
         //var defaultdatastore;
         //if (config.configuration.environment==="local") {defaultdatastore='localstorage';} else {defaultdatastore='mongo';}
-        if(!inputWidgetObject.command){inputWidgetObject.command={}};
-        if(!inputWidgetObject.command.environment){inputWidgetObject.command.environment={}};
+        if(!inputWidgetObject.command){inputWidgetObject.command={};}
+        if(!inputWidgetObject.command.environment){inputWidgetObject.command.environment={};}
         inputWidgetObject = getcommand(inputWidgetObject, {
                 "command": {
                     "datastore": inputWidgetObject.command.environment.datastore,
@@ -423,8 +423,8 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
         //var defaultdatastore;
         //if (config.configuration.environment==="local") {defaultdatastore='localstorage';} else {defaultdatastore='mongo';}
 
-        if(!inputWidgetObject.command){inputWidgetObject.command={}};
-        if(!inputWidgetObject.command.environment){inputWidgetObject.command.environment={}};
+        if(!inputWidgetObject.command){inputWidgetObject.command={};}
+        if(!inputWidgetObject.command.environment){inputWidgetObject.command.environment={};}
 
 
         inputWidgetObject = getcommand(inputWidgetObject, {
@@ -473,7 +473,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
         proxyprinttodiv('Function datastore command -- get', command, 12);
         var db = command.db;
         var databasetable = command.databasetable;
-        var keepaddthis = command.keepaddthis
+        var keepaddthis = command.keepaddthis;
         if (widName) {
             getdatabaseinforesult = getdatabaseinfo(command, datastore, collection, keycollection, db, databasetable);
             proxyprinttodiv('Function getwid getdatabaseinforesult', getdatabaseinforesult,12);
@@ -485,7 +485,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                 output = keydatabase[widName];
 
                 if (!keepaddthis) {
-                   output = find_and_replace_addthis(output) 
+                   output = find_and_replace_addthis(output) ;
                 }
 
                 // if (!keydatabase.hasOwnProperty(widName)) {
@@ -897,12 +897,14 @@ exports.deepfilter = deepfilter = function deepfilter(inputObj, dtoObjOpt, comma
     var totype;
     // var keepaddthis;
     var inbound_parameters_110 = arguments;
-    if (command && command.command && command.command.deepfilter && command.command.deepfilter.convert===undefined) { //if command.deepfilter.convert undefined
+    // -- Convert --
+    if (command && command.deepfilter && command.deepfilter.convert === undefined) { //if command.deepfilter.convert undefined
         convert = false; //default value
-    } else { convert=command.command.deepfilter.convert}
-    if (command && command.command && command.command.deepfilter && command.command.deepfilter.totype===undefined) { //if command.deepfilter.totype undefined
+    } else { convert=command.deepfilter.convert; }
+    // -- toType --
+    if (command && command.deepfilter && command.deepfilter.totype === undefined) { //if command.deepfilter.totype undefined
         totype = false; //default value
-    } else { totype=command.command.deepfilter.totype; }
+    } else { totype=command.deepfilter.totype; }
 
     // if (command && command.command && command.command.deepfilter && command.command.deepfilter.keepaddthis===undefined) { //if command.deepfilter.totype undefined
     //     keepaddthis = false; //default value -- normally will try to remove addthis at add and get
@@ -957,7 +959,7 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
                                     inpVal = temparray;
                                 }
                                 if (isArray(dataType)) {
-                                    dataType = dataType[0]
+                                    dataType = dataType[0];
                                 }
                                 if (!modifiedObj[inpKey]) {
                                     modifiedObj[inpKey] = [];
@@ -1151,7 +1153,7 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
                                     async.nextTick(function () {
                                         recurseModObj(eachinputval, dataType, convert, totype, function (err, result) {
                                             modifiedObj[inpKey] = result;
-                                            cb1(null)
+                                            cb1(null);
                                         }); // recurse
                                     }); // next tick
                                 }); // mapseries
@@ -1264,7 +1266,7 @@ function createAlphanumericStringByLength(length){
 //ref : http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
 exports.createNewGuid = createNewGuid = function createNewGuid(){
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-}
+};
 
 function s4(){
     return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
@@ -1463,7 +1465,7 @@ function getRandomNumberByLength(length) {
 
         for (; i < length; i++) {
             // Only deal with non-null/undefined values
-            if ((options = arguments[i]) != null) {
+            if ((options = arguments[i]) !== null) {
                 // Extend the base object
                 for (var name in options) {
                     if (options.hasOwnProperty(name)) {
@@ -1597,7 +1599,7 @@ function getRandomNumberByLength(length) {
             };
             var widvalue = 1;
             if (parameters && parameters['widvalue']) {
-                widvalue = parseInt(parameters['widvalue'])
+                widvalue = parseInt(parameters['widvalue']);
             }
 
             execute(executeobject, function (err, result) {
@@ -1622,13 +1624,13 @@ function getRandomNumberByLength(length) {
                     }
                     catch (err) {
                         var finalobject = createfinalobject({"result": "getnewwid_execute"}, {}, "getnewwid_execute", err, result);
-                        console.log('** Error Caught in the getnewwid() function in'
-                            + ' et-utils.js during processing of execute() results ** => ' + err);
+                        console.log('** Error Caught in the getnewwid() function in' +
+                                    ' et-utils.js during processing of execute() results ** => ' + err);
                         console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
                         callback(finalobject.err, finalobject.res);
                     }
                 }
-            })
+            });
         } // end try
         catch (err) {
             var finalobject = createfinalobject({"result": "getnewwid"}, {}, "getnewwid", err, result);
@@ -1722,7 +1724,7 @@ function getRandomNumberByLength(length) {
                     }
                 }
             } else {
-                length = parameters.length
+                length = parameters.length;
             }
         } // end try
         catch (err) {

@@ -111,7 +111,7 @@
             true);
             proxyprinttodiv("addwidmaster filter_data", filter_data, 17);
             var _object = filter_data.output;
-            var command = filter_data.filteredobject;
+            var command = filter_data.filteredobject.command;
             var _dto_object;
 
             proxyprinttodiv("addwidmaster _object", _object, 17);
@@ -224,18 +224,15 @@
                         //     command.deepfilter.convert = false;
                         // }
 
-                if (!command) {
-                    command = {};
-                }
-                if (!command.command) {
-                    command.command = {};
-                }
-                if (!command.command.deepfilter) {
-                    command.command.deepfilter = {};
-                }
-                if (!command.command.deepfilter.convert) {
-                    command.command.deepfilter.convert = false;
-                }
+                        if (!command) {
+                            command = {};
+                        }
+                        if (!command.deepfilter) {
+                            command.deepfilter = {};
+                        }
+                        if (!command.deepfilter.convert) {
+                            command.deepfilter.convert = false;
+                        }
 
                         output.obj = object;
                         output.dtoobj = dtoobject;
@@ -1021,15 +1018,15 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                 if (!command) {
                     command = {};
                 }
-                if (!command.command) {
-                    command.command = {};
+                if (!command) {
+                    command = {};
                 }
-                if (!command.command.deepfilter) {
-                    command.command.deepfilter = {};
+                if (!command.deepfilter) {
+                    command.deepfilter = {};
                 }
-                command.command.deepfilter.convert = true;
+                command.deepfilter.convert = true;
 
-                // if (!command.command.deepfilter.keepaddthis) { command.command.deepfilter.keepaddthis = true; }
+                // if (!command.deepfilter.keepaddthis) { command.deepfilter.keepaddthis = true; }
                 
                 // add wid = guid if its missing in input
                 if (!object.hasOwnProperty("wid")) {
@@ -1090,7 +1087,7 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                 step3_callback(null);
             },
             function step4(step4_callback) {
-                delete command.command.deepfilter.convert;
+                delete command.deepfilter.convert;
                 object["executethis"] = "updatewid";
                 // readd command params back in
                 var tempcmd={};
