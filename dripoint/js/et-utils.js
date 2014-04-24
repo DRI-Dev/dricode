@@ -221,6 +221,16 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
         var keydatabase = {};
         //var defaultdatastore;
         //if (config.configuration.environment==="local") {defaultdatastore='localstorage';} else {defaultdatastore='mongo';}
+        inputWidgetObject = getcommand(inputWidgetObject, {
+                "command": {
+                    "datastore": inputWidgetObject.environment.datastore,
+                    "collection":inputWidgetObject.environment.collection,
+                    "keycollection":inputWidgetObject.environment.collection + "key",
+                    "db":inputWidgetObject.environment.db,
+                    "databasetable":inputWidgetObject.environment.databasetable,
+                }
+            }, {},
+            false);
         var filter_data = getcommand(inputWidgetObject, {
                 "command": {
                     "datastore": config.configuration.defaultdatastore,
@@ -395,6 +405,16 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
         //var defaultdatastore;
         //if (config.configuration.environment==="local") {defaultdatastore='localstorage';} else {defaultdatastore='mongo';}
 
+        inputWidgetObject = getcommand(inputWidgetObject, {
+                "command": {
+                    "datastore": inputWidgetObject.environment.datastore,
+                    "collection":inputWidgetObject.environment.collection,
+                    "keycollection":inputWidgetObject.environment.collection + "key",
+                    "db":inputWidgetObject.environment.db,
+                    "databasetable":inputWidgetObject.environment.databasetable,
+                }
+            }, {},
+            false);
         var filter_data = getcommand(inputWidgetObject, {
                 "command": {
                     "datastore": config.configuration.defaultdatastore,

@@ -52,28 +52,23 @@
 
 //&&
         function checkenviornment(environment, cb) {
-            if (Object.keys(environment).length === 0) {
-                if (config.configuration.environment==="local") {
-                    getwid({"wid":"environment"}, function (err, res) {
-                        if (Object.keys(res).length === 0) {
-                            var newenvironment={};
-                            newenvironment.wid="environment";
-                            newenvironment.accesstoken=createNewGuid();
-                            updatewid(newenvironment, function (err, res) {
-                                cb(null, newenvironment)
-                            });
+            if (config.configuration.environment==="local") {
+                //getwid({"wid":"environment"}, function (err, res) {
+                environment.wid="environment"
+                updatewid(environment, function (err, returnedenvironment) {    // update also does a get
+                    if (Object.keys(returnedenvironment).length === 0) {
+                        returnedenvironment.accesstoken=createNewGuid();
+                        updatewid(returnedenvironment, function (err, res) {
+                            cb(null, res)
+                        });
                         }
-                        else {
-                            cb(null, res);
+                    else { // if ac existed
+                        cb(null, returnedenvironment)
                         }
                     });
-                }
-                else {
-                    cb(null, {});
-                }
             }
             else {
-                cb(null, environment);
+                cb(null, {});
             }
         }
 
