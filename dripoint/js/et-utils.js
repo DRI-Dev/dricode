@@ -430,7 +430,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
         proxyprinttodiv('Function datastore command -- get', command, 12);
         var db = command.command.db;
         var databasetable = command.command.databasetable;
-
+        var keepaddthis = command.command.keepaddthis
         if (widName) {
             getdatabaseinforesult = getdatabaseinfo(command, datastore, collection, keycollection, db, databasetable);
             proxyprinttodiv('Function getwid getdatabaseinforesult', getdatabaseinforesult,12);
@@ -441,7 +441,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                 proxyprinttodiv('Function getwid keydatabase', keydatabase,12);
                 output = keydatabase[widName];
 
-                if (!command.keepaddthis) {
+                if (!keepaddthis) {
                    output = find_and_replace_addthis(output) 
                 }
 

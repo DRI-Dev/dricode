@@ -81,7 +81,7 @@ exports.eventoffline = eventoffline = function eventoffline(params, cb) {
 };
 
 exports.eventonemin = eventonemin = function eventonemin() {
-    proxyprinttodiv("eventonemin", 'one sec', 99);
+    proxyprinttodiv("eventonemin", 'one sec', 30);
     processevent(arguments.callee.name, function (err, res) {
         //cb(err, res);
     });
@@ -199,8 +199,8 @@ exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eve
     executeobject.command.db = "queuedata";
     //executeobject.command.result = "queueresult";
     executeobject["executethis"] = "querywid";
-    executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
-	
+    //executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
+    executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]}  	
 	proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
 	
     execute(executeobject, function (err, res) {
@@ -465,7 +465,7 @@ function test2(params, callback) {
 }
 
 exports.server = window.server = server = function server(params, callback) {
-    proxyprinttodiv('Function server ------', params, 99);
+    proxyprinttodiv('Function server ------', params, 30);
     try {
         var inbound_parameters = {};
         extend(true, inbound_parameters, params);
@@ -505,7 +505,7 @@ exports.server = window.server = server = function server(params, callback) {
 
 
 exports.server2 = window.server2 = server2 = function server2(params, callback) {
-    proxyprinttodiv('Function server2 ------', params, 99);
+    proxyprinttodiv('Function server2 ------', params, 30);
     params.command.server = "server2";
     server(params, callback);
 };
@@ -560,6 +560,7 @@ exports.mquery = mquery = function mquery(inboundobj, command, callback) {
         extend(true, inbound_parameters, inboundobj);
 
         proxyprinttodiv('Function inboundobj', inboundobj, 30);
+        proxyprinttodiv('Function command', command, 30);
 
         function IsJsonString(str) {
             try {
@@ -570,17 +571,20 @@ exports.mquery = mquery = function mquery(inboundobj, command, callback) {
             return true;
         }
 
-        var query = inboundobj;
+      var query = inboundobj;
         var outlist = [];
         var convertedlist = [];
         var resultlist = [];
         //var collection = "DRI";
         //var keycollection = "DRIKEY";
-        var collection = config.configuration.defaultcollection;
-		//proxyprinttodiv("collection = ",collection,99);
-        var keycollection = config.configuration.defaultkeycollection;
-        var databasetable = config.configuration.defaultdatabasetable;
-		//proxyprinttodiv("db table = ",databasetable,99);
+        //var collection = config.configuration.defaultcollection;
+        var collection = command.command.collection
+        //proxyprinttodiv("collection = ",collection,30);
+        //var keycollection = config.configuration.defaultkeycollection;
+        var keycollection = command.command.collection + "key"
+        //var databasetable = config.configuration.defaultdatabasetable;
+        var databasetable = command.command.databasetable
+        //proxyprinttodiv("db table = ",databasetable,30);
         var database = {};
         var keydatabase = {};
         var eachwid;
@@ -588,42 +592,37 @@ exports.mquery = mquery = function mquery(inboundobj, command, callback) {
         // TODO :: SAURABH COMMENTED FOR MAKING SECURITY WORK, FIX THIS AND UNCOMMENT
         // if (command.db) {db=command.db} // not needed
         // if (command.collection) {collection=command.collection}
-
+        proxyprinttodiv('Function databasetable + collection', databasetable + collection, 30);
         database = getFromLocalStorage(databasetable + collection);
-
         proxyprinttodiv('Function inlist', database, 30);
-        proxyprinttodiv('before IsJsonString', inboundobj, 30);
-        if (IsJsonString(inboundobj)) {
-            query = JSON.parse(inboundobj);
-        }
-        proxyprinttodiv('Function query', query, 30);
-        //proxyprinttodiv('Function query',  stringify(query),12);
+        if (database) {
+            proxyprinttodiv('before IsJsonString', inboundobj, 30);
+            if (IsJsonString(inboundobj)) {
+                query = JSON.parse(inboundobj);
+            }
+            proxyprinttodiv('Function query', query, 30);
+            //proxyprinttodiv('Function query',  stringify(query),12);
 
-        outlist = sift(query, database);
+            outlist = sift(query, database);
 
-        // if date exists , return in date descending order
-        outlist = outlist.sort(function (aObj, bObj) {
-            // var a = aObj["metadata"]["date"];
-            // var b = bObj["metadata"]["date"];
-            // if (a < b) return -1;
-            // if (a > b) return 1;
-            // return 0;
+            // if date exists , return in date descending order
+            outlist = outlist.sort(function (aObj, bObj) {
 
-            // descending order
-            // return bObj["metadata"]["date"] - aObj["metadata"]["date"];
-            // return (bObj["metadata"]["date"] > aObj["metadata"]["date"]) ? 1 : (bObj["metadata"]["date"] < aObj["metadata"]["date"]) ? -1 : 0;
-            // return Date.parse(bObj["metadata"]["date"]) - Date.parse(aObj["metadata"]["date"]);
-            return Date.parse(aObj["metadata"]["date"]) - Date.parse(bObj["metadata"]["date"]);
-        });
+                return Date.parse(aObj["metadata"]["date"]) - Date.parse(bObj["metadata"]["date"]);
+            });
 
-        // not sure if stuff below needed
-        keydatabase = getFromLocalStorage(databasetable + keycollection);
-        for (var eachrecord in outlist) {
-            eachwid = keydatabase[outlist[eachrecord]["wid"]];
-            resultlist.push(eachwid);
-        }
+            // not sure if stuff below needed
+            keydatabase = getFromLocalStorage(databasetable + keycollection);
+            for (var eachrecord in outlist) {
+                eachwid = keydatabase[outlist[eachrecord]["wid"]];
+                resultlist.push(eachwid);
+            }
+            }
+        else {
+            resultlist=[]
+            }
 
-        proxyprinttodiv('Function outlist', outlist, 30);
+        proxyprinttodiv('Function resultlist', resultlist, 99);
         callback(null, resultlist);
     } // end try
     catch (err) {
