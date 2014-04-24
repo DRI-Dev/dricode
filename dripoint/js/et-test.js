@@ -5755,7 +5755,7 @@ execute([
     }],
     function (err, res) {
       proxyprinttodiv('Full results: ', res, 99);
-      callback(err, result);
+      callback(err, res);
     });
 }
 
