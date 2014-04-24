@@ -5755,7 +5755,7 @@ execute([
     }],
     function (err, res) {
       proxyprinttodiv('Full results: ', res, 99);
-      callback(err, result);
+      callback(err, res);
     });
 }
 
@@ -5789,7 +5789,7 @@ execute([{
 	there should also be a a history of this in completedqueuecolletctin (save there)
 */
 exports.testeventonemin3 = testeventonemin3 = function testeventonemin3(params, callback){
-    debuglevel = 17;
+
 	execute([{
 		"executethis":"updatewid",
 		"wid":"wid1",
@@ -5808,8 +5808,11 @@ exports.testeventonemin3 = testeventonemin3 = function testeventonemin3(params, 
 		"command":{"databasetable":"queuecollection","db":"queuedata","collection":"eventonemin"}
     }],
     function (err, res) {
-      proxyprinttodiv('Full results: ', res, 99);
-      callback(err, res);
+        debuglevel = 11;
+        eventonemin({}, function (err, res) {
+			proxyprinttodiv('Full results: ', res, 99);
+			callback(err, res);          
+		});
     });
 }
 
@@ -6095,4 +6098,267 @@ exports.testfilternomatch1 = testfilternomatch1 = function testfilterkeymatch1(p
       callback(err, res);
     });
 }
-
+/*
+	exxports.codydto1 = codydto1 = function codydto1(params,callback){
+		execute([{
+			"executethis":"updatewid",
+			"wid":"codydto",
+			"metadata.method":"codydto",
+			"month":"string",
+			"day":"string"
+			},{
+			"executethis":"getwidmaster",
+			"wid":"codydto"
+			"metadata.method":"codydto"}],
+			function (err,res) {
+				proxyprinttodiv('codydto result: ', res[1], 99);
+				var result = logverify("codydto1_result", res[1], [{
+					"wid": "codydto",
+					"metadata.method": "codydto",
+					"month": "string",
+					"day": "string"
+				}]);
+				callback(err,result);
+			});
+	}
+			
+			
+	exports.addtocache1 = addtocache1 = function addtocache1(params,callback){
+		execute([{
+			"executethis":"codydto1"
+			},{
+			"executethis":"updatewid",
+			"wid":"cody1",
+			"metadata.method":"codydto",
+			"month":"July",
+			"data":"1st"
+			},{
+			"executethis":"getwidmaster",
+			"wid":"cody1"
+			"metadata.method":"codydto"
+			}],
+			function (err,res){
+				proxyprinttodiv('cody1 result: ', res[2], 99);
+				var result = logverify('addtocache1_result',res[2], [{
+					"wid":"cody1",
+					"metadata.method":"codydto",
+					"month":"July",
+					"data":"1st"
+				}]);
+				callback(err,result);
+			});
+	}
+	
+	exports.addtocache2 = addtocache2 = function addtocache2(params,callback){
+		execute([{
+			"executethis":"codydto1"
+			},{
+			"executethis":"updatewid",
+			"wid":"cody1",
+			"metadata.method":"codydto",
+			"month":"July",
+			"data":"1st"
+			},{
+			"executethis":"updatewid",
+			"wid":"cody2",
+			"metadata.method":"codydto",
+			"month":"August",
+			"data":"3rd"
+			},{
+			"executethis":"updatewid",
+			"wid":"cody3",
+			"metadata.method":"codydto",
+			"month":"November",
+			"data":"22nd"
+			},{
+			"executethis":"getwidmaster",
+			"wid":"cody1"
+			"metadata.method":"codydto"
+			},{
+			"executethis":"getwidmaster",
+			"wid":"cody2"
+			"metadata.method":"codydto"
+			},{
+			"executethis":"getwidmaster",
+			"wid":"cody3"
+			"metadata.method":"codydto"
+			}],
+			function (err,res){
+				proxyprinttodiv('cody1 result: ', res[2], 99);
+				var result = logverify('addtocache1_result',res[2], [{
+					"wid":"cody1",
+					"metadata.method":"codydto",
+					"month":"July",
+					"data":"1st"
+				}]);
+				if (result){
+					var result = logverify('addtocache1_result',res[2], [{
+						"wid":"cody2",
+						"metadata.method":"codydto",
+						"month":"August",
+						"data":"3rd"
+					}]);
+				}
+				if (result){
+					var result = logverify('addtocache1_result',res[2], [{
+						"wid":"cody1",
+						"metadata.method":"codydto",
+						"month":"July",
+						"data":"1st"
+					}]);
+				}
+				callback(err,result);
+			});
+	}
+	*/
+	
+	exports.testcache1 = testcache1 = function testcache1(params,callback){
+		execute([{
+			"executethis":"updatewid",
+			"wid":"codydto",
+			"metadata.method":"codydto",
+			"month":"string",
+			"day":"string"
+			},{
+			"executethis":"updatewid",
+			"wid":"cody1",
+			"metadata.method":"codydto",
+			"month":"June",
+			"day":"9th",
+			"command.cache":"True"
+			},{
+			"executethis":"updatewid",
+			"wid":"cody1",
+			"metadata.method":"codydto",
+			"month":"August"
+			},{
+			"executethis":"getwidmaster",
+			"wid":"cody1",
+			"metadata.method":"codydto"}],
+			function (err,res) {
+				proxyprinttodiv('cody1 result: ', res[2], 99);
+				var result = logverify("cody1_result", res[3], [{
+					"wid": "cody1",
+					"metadata.method": "codydto",
+					"month": "June",
+					"day": "9th"
+				}]);
+				callback(err,result);
+			});
+	}
+	
+	exports.testupdating1 = testupdating1 = function testupdating1(params,callback){
+		execute([{
+			"executethis":"updatewid",
+			"wid":"adto",
+			"metadata":{"method":"adto"},
+			"field1":"string",
+			"field2":"string"
+			},{
+			"executethis":"updatewid",
+			"wid":"awid1",
+			"metadata":{"method":"adto"},
+			"field1":"hello",
+			"field2":"world"
+			},{
+			"executethis":"updatewid",
+			"wid":"awid1",
+			"metadata":{"method":"adto"},
+			"field1":"goodbye"
+			},{
+			"executethis":"getwidmaster",
+			"wid":"awid1",
+			"metadata":{"method":"adto"}
+			}],
+			function (err,res){
+				proxyprinttodiv('adding adto: ',res[0],99);
+				proxyprinttodiv('adding awid1: ',res[1],99);
+				proxyprinttodiv('updating awid1: ',res[2],99);
+				proxyprinttodiv('awid1 get: ',res[3],99);
+			});
+	}
+	
+	/*
+	exports.testcache2 = testcache2 = function testcache2(params,callback){
+		execute([{
+			"executethis":"updatewid",
+			"wid":"codydto",
+			"metadata.method":"codydto",
+			"month":"string",
+			"day":"string"
+			},{
+			"executethis":"updatewid",
+			"wid":"cody1",
+			"metadata.method":"codydto",
+			"month":"June",
+			"day":"9th"
+			},{
+			"executethis":"updatewid",
+			"wid":"cody2",
+			"metadata.method":"codydto",
+			"month":"July",
+			"day":"11th"
+			},{
+			"executethis":"updatewid",
+			"wid":"cody3",
+			"metadata.method":"codydto",
+			"month":"August",
+			"day":"13th"
+			},{
+			"executethis":"updatewid",
+			"wid":"cody1",
+			"metadata.method":"codydto",
+			"month":"September"
+			},{
+			"executethis":"updatewid",
+			"wid":"cody2",
+			"metadata.method":"codydto",
+			"month":"October"
+			},{
+			"executethis":"updatewid",
+			"wid":"cody3",
+			"metadata.method":"codydto",
+			"month":"November"
+			},{
+			"executethis":"getwidmaster",
+			"wid":"cody1"
+			"metadata.method":"codydto"
+			},{
+			"executethis":"getwidmaster",
+			"wid":"cody2"
+			"metadata.method":"codydto"
+			},{
+			{
+			"executethis":"getwidmaster",
+			"wid":"cody3"
+			"metadata.method":"codydto"}],
+			function (err,res) {
+				proxyprinttodiv('cody1 result: ', res[7], 99);
+				proxyprinttodiv('cody2 result: ', res[8], 99);
+				proxyprinttodiv('cody3 result: ', res[9], 99);
+				var result = logverify('addtocache1_result',res[7], [{
+					"wid":"cody1",
+					"metadata.method":"codydto",
+					"month":"June",
+					"data":"9th"
+				}]);
+				if (result){
+					var result = logverify('addtocache1_result',res[8], [{
+						"wid":"cody2",
+						"metadata.method":"codydto",
+						"month":"July",
+						"data":"11th"
+					}]);
+				}
+				if (result){
+					var result = logverify('addtocache1_result',res[9], [{
+						"wid":"cody3",
+						"metadata.method":"codydto",
+						"month":"August",
+						"data":"13th"
+					}]);
+				}
+				callback(err,result);
+			});
+	}
+	*/

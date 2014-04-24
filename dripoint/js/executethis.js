@@ -32,17 +32,22 @@
 
 //##
         function hashobj(inobj) {
-            var obj={};
-            extend(true, obj, inobj);
-            delete inobj.executethis;
-            delete inobj.preexecute;
-            delete inobj.postexecute;
-            ///////delete inobj.command;
+            if (inobj.command && inobj.command.cache) {
+                var obj={};
+                extend(true, obj, inobj);
+                delete obj.executethis;
+                delete obj.preexecute;
+                delete obj.postexecute;
+                delete obj.command; // take out later
 
-            var result = sortObj( obj , function( a, b ){
-                return a.key < b.key  ;    
-            });
-            return JSON.stringify( result );
+                var result = sortObj( obj , function( a, b ){
+                    return a.key < b.key  ;    
+                });
+                return JSON.stringify( result );
+                }
+            else { // objkey = null if command.cache = false
+                return null;
+                }
         }
 
 //&&
@@ -120,6 +125,7 @@
                     proxyprinttodiv('>>>> execute incomingparams ', incomingparams, 11);
                     var filter_data = getcommand(incomingparams, {
                             "command": {
+                                "cache":false,
                                 "bundle":false,
                                 "level":0,
                                 "internalcall": true,
@@ -185,6 +191,7 @@
                             }
                         }, {
                             "command": {
+                                "cache":"x",
                                 "bundle":"x",
                                 "level":"x",
                                 "internalcall": "x",
@@ -333,7 +340,28 @@
 
                                                     proxyprinttodiv('>>>> execute inboundparms', inboundparms, 11);
 
-                                                    callback(null, command.overallresultparameters);
+                                                     if (!command.cache) {
+                                                        callback(null, command.overallresultparameters);
+                                                        }
+                                                    else {
+                                                        var expirationdate = new Date();
+                                                        expirationdate = new Date(expirationdate.getTime() + 1*60000);
+
+                                                        var recorddef = {   "wid":objkey,
+                                                                            "metadata":{"systemdto":{"expirationdate":expirationdate}},
+                                                                            "command" : {
+                                                                               "datastore": config.configuration.defaultdatastore,
+                                                                               "collection":"cache",
+                                                                               "keycollection":"cachekey",
+                                                                               "db" : config.configuration.defaultdb,
+                                                                               "databasetable":config.configuration.defaultdatabasetable
+                                                                               }
+                                                                           };
+                                                        recorddef =  extend(true, command.overallresultparameters, recorddef);
+                                                        updatewid(recorddef, function (err, res) {
+                                                            callback(null, command.overallresultparameters);
+                                                        })
+                                                        }
 
 //                                                async.mapSeries(command.overallresultparameters, function (eachresult, cbMap) {
 //                                                    async.nextTick(function () {
@@ -852,6 +880,40 @@
 
 
 
+    function checkcache (objkey, callback) {
+        if (objkey) {
+            proxyprinttodiv("checkcache objkey", objkey, 17);
+            var executeobject = {      "wid":objkey,
+                                       "command" : {
+                                       "cache":false,
+                                       "datastore": config.configuration.defaultdatastore,
+                                       "collection":"cache",
+                                       "keycollection":"cachekey",
+                                       "db" : config.configuration.defaultdb,
+                                       "databasetable":config.configuration.defaultdatabasetable
+                                       }};
+            executeobject["executethis"] = "getwid";
+            proxyprinttodiv("checkcache executeobject", executeobject, 17);
+            
+            execute(executeobject, function (err, res) {
+                //if (Object.keys(res).length > 0) {
+                if (res) {
+                    res=res[0]
+                    proxyprinttodiv("checkcache getwid res", res, 17);
+                    if (res && res.metadata && res.metadata.expirationdate 
+                        && res.metadata.expirationdate<new Date()){
+                        callback(null, res);
+                        }
+                    else {
+                        callback(null, null);
+                        }
+                    }
+                })
+            }
+        else { // !objectkey (i.e. if command.cache==false)
+            callback(null, null);
+            }
+        };
 
 
 
@@ -872,67 +934,77 @@
 
                 proxyprinttodiv("dothis - inboundparms", params, 11);
                 proxyprinttodiv("dothis - target ", target, 11);
-                proxyprinttodiv("dothis - callback ", String(callback), 11);
+                //proxyprinttodiv("dothis - callback ", String(callback), 11);
 
                 if (params["midexecute"] === "test4") { // for debug purposes
                     callback({
                         'test4': 'Reached test4 code.. dothisprocessor function '
                     });
                 } else {
-                    // Before we try to load our config we need to see if there is something to do
-                    // so we check to see if there is something on the right hand side for the target (pre, mid, post)
-                    if (params[target] !== undefined) {
 
-                        // it is possible the function sent in is a string or an actual function...we need to convert to string for config lookup
-                        if (params[target] instanceof Function) {
-                            targetname = params[target].name; // get the targetname
-                            targetfunction = params[target]; // get targetfunction (whole function)
-                        } // function was passed in
-                        else {
-                            targetname = params[target]; // get the targetname
-                            targetfunction = window[params[target]]; // get targetfunction (whole function)
-                        } // function name was passed in as string
+                    checkcache(objkey, function (err, res) {
 
-                        delete params[target]; // ** moved by Roger
-                        delete params[targetfunction]; // ** added by Roger
+                        if (res) {
+                            callback(err, res)
+                            }
+                        else {     
 
-                        howToDoList = CreateDoList(params, target, targetfunction); // generate list based on pre, mid, post
-                        // howToDoList = extend(howToDoList, tempHowToDoList);
+                            // Before we try to load our config we need to see if there is something to do
+                            // so we check to see if there is something on the right hand side for the target (pre, mid, post)
+                            if (params[target] !== undefined) {
 
-                        // check for err on the 'return' of an object from CreateDoList
-                        if (howToDoList.err) {
-                            throw (howToDoList.err.error);
+                                // it is possible the function sent in is a string or an actual function...we need to convert to string for config lookup
+                                if (params[target] instanceof Function) {
+                                    targetname = params[target].name; // get the targetname
+                                    targetfunction = params[target]; // get targetfunction (whole function)
+                                } // function was passed in
+                                else {
+                                    targetname = params[target]; // get the targetname
+                                    targetfunction = window[params[target]]; // get targetfunction (whole function)
+                                } // function name was passed in as string
+
+                                delete params[target]; // ** moved by Roger
+                                delete params[targetfunction]; // ** added by Roger
+
+                                howToDoList = CreateDoList(params, target, targetfunction); // generate list based on pre, mid, post
+                                // howToDoList = extend(howToDoList, tempHowToDoList);
+
+                                // check for err on the 'return' of an object from CreateDoList
+                                if (howToDoList.err) {
+                                    throw (howToDoList.err.error);
+                                }
+
+                                proxyprinttodiv("dothis - howToDoList ", howToDoList, 11);
+
+                                whatToDoList = CreateDoList(params, targetname, targetfunction); // generate list based on fn name
+                                // whatToDoList = extend(whatToDoList, tempWhatToDoList);
+
+                                // check for err on the 'return' of an object from CreateDoList
+                                if (whatToDoList.err) {
+                                    throw (whatToDoList.err.error);
+                                }
+
+                                proxyprinttodiv("dothis - whatToDoList ", whatToDoList, 11);
+                                executelist(howToDoList, whatToDoList, callback); // execute list
+
+                            } // params[target] undefined
+                            else { // execute the nextstage (mid or post), may need to remove target out of params
+                                if (params.hasOwnProperty('preexecute') && params.preexecute === undefined) {
+                                    delete params['preexecute'];
+                                }
+                                if (params.hasOwnProperty('midexecute') && params.midexecute === undefined) {
+                                    delete params['midexecute'];
+                                }
+                                if (params.hasOwnProperty('postexecute') && params.postexecute === undefined) {
+                                    delete params['postexecute'];
+                                }
+                                // err = {"Error": "here it is"};
+                                proxyprinttodiv("**Error - dothisprocessor ", err, 11);
+                                proxyprinttodiv("**executethis - params ", params, 11);
+                                callback(err, params);
+                            }
                         }
-
-                        proxyprinttodiv("dothis - howToDoList ", howToDoList, 11);
-
-                        whatToDoList = CreateDoList(params, targetname, targetfunction); // generate list based on fn name
-                        // whatToDoList = extend(whatToDoList, tempWhatToDoList);
-
-                        // check for err on the 'return' of an object from CreateDoList
-                        if (whatToDoList.err) {
-                            throw (whatToDoList.err.error);
-                        }
-
-                        proxyprinttodiv("dothis - whatToDoList ", whatToDoList, 11);
-                        executelist(howToDoList, whatToDoList, callback); // execute list
-
-                    } // params[target] undefined
-                    else { // execute the nextstage (mid or post), may need to remove target out of params
-                        if (params.hasOwnProperty('preexecute') && params.preexecute === undefined) {
-                            delete params['preexecute'];
-                        }
-                        if (params.hasOwnProperty('midexecute') && params.midexecute === undefined) {
-                            delete params['midexecute'];
-                        }
-                        if (params.hasOwnProperty('postexecute') && params.postexecute === undefined) {
-                            delete params['postexecute'];
-                        }
-                        // err = {"Error": "here it is"};
-                        proxyprinttodiv("**Error - dothisprocessor ", err, 11);
-                        proxyprinttodiv("**executethis - params ", params, 11);
-                        callback(err, params);
-                    }
+                }) // checkcache
                 } // else not test4
             } else {
                 callback(err, params);
@@ -1267,7 +1339,7 @@
                                                             // always will get something back, even if errorfn...so always execute and store resutls
                                                             proxyprinttodiv("executelist executeobject: ", executeobject, 11);
                                                             proxyprinttodiv("executelist executeobject.params: ", executeobject.params, 11);
-                                                            proxyprinttodiv("executelist executeobject.targetfn: ", String(executeobject.targetfn), 11);
+                                                            proxyprinttodiv("executelist executeobject.targetfn: ", String(executeobject.targetfn), 9);
                                                             if (typeof executeobject.targetfn === 'function') { // there was a chance of a non function getting in here -- Joe
                                                                 //authcall(executeobject, command, function (err, securitycheck) {
                                                                 proxyprinttodiv(">>>>>> executelist executeobject.params: ", executeobject.params, 11);
@@ -1285,8 +1357,8 @@
                                                                                 callback(err, res);
                                                                             } else {
                                                                                 proxyprinttodiv("executelist err from execution ", err, 11);
-                                                                                proxyprinttodiv("executelist result from execution ", res, 11);
-                                                                                proxyprinttodiv("executelist result from execution executeobject", executeobject.executeflag, 11);
+                                                                                proxyprinttodiv("executelist result from execution ", res, 99);
+                                                                                proxyprinttodiv("executelist result from execution executeobject", executeobject.executeflag, 99);
 
                                                                                 // This section helps control the iteration -- Joe
                                                                                 // ***********************************************
