@@ -66,10 +66,11 @@
             var extraparameters = {};
             //proxyprinttodiv('querywid convertmethod', convertmethod, 38);
             //proxyprinttodiv('querywid commandParams', commandParams, 38);
-            if (commandParams["db"]) {
+            // if (commandParams["db"]) {
+            if (false) {
                 environmentdb = commandParams["db"];
             } else {
-                environmentdb = config.configuration.defaultdb
+                environmentdb = config.configuration.defaultdb;
             }
             // if (config.configuration.environment==="local") {commandParams.datastore='localstorage';} 
             //                                             else {commandParams.datastore='mongo';}
@@ -684,9 +685,9 @@
                                             proxyprinttodiv('querywid finalformatlist widrecord after ', widrecord, 28);
 
                                             if (commandParams.convertmethod === "toobject") {
-                                                record[wid] = widrecord;
-                                            } else {
                                                 record[wid] = convertfromdriformat(widrecord, commandParams);
+                                            } else {
+                                                record[wid] = widrecord;
                                             }
                                             cb1(null);
                                         }
@@ -1694,28 +1695,49 @@
             //     "command":{"databasetable":""},
             //     "command":{"convertmethod": ""}
             // }, false);
-            filter_data = getcommand(parameters, // commandParams
-            { 
+
+        
+        if(!parameters.command){parameters.command={}};
+        if(!parameters.command.environment){parameters.command.environment={}};
+
+        parameters = getcommand(parameters, {
+                "command": {
+                    "datastore": parameters.command.environment.datastore,
+                    "collection":parameters.command.environment.collection,
+                    "keycollection":parameters.command.environment.collection + "key",
+                    "db":parameters.command.environment.db,
+                    "databasetable":parameters.command.environment.databasetable
+                }
+            }, {},
+            false).output;
+
+        filter_data = getcommand(parameters, {
                 "command": {
                     "datastore": config.configuration.defaultdatastore,
                     "collection":config.configuration.defaultcollection,
-                    "keycollection":config.configuration.defaultkeycollection,
+                    "keycollection":config.configuration.defaultcollection + "key",
                     "db":config.configuration.defaultdb,
                     "databasetable":config.configuration.defaultdatabasetable,
-                    "convertmethod":"toobject"
+                    "convertmethod":"toobject",
+                    // "deepfilter" : {"keepaddthis":false}
+                    "keepaddthis":true
                 }
-            },
-            { // commandParams
+            }, {
                 "command": {
                     "datastore": "",
                     "collection":"",
                     "keycollection":"",
                     "db":"",
                     "databasetable":"",
-                    "convertmethod":""
-            }}, false);
+                    "convertmethod":"",
+                    // "deepfilter" : {"keepaddthis":""}
+                    "keepaddthis":"",
+                    "environment":""
+                }
+            },
+            true);
 
-            p[6] = filter_data.filteredobject;
+            p[6] = filter_data.filteredobject.command; // Joe - removed command.command in mquery
 
             return p;
         } // end try

@@ -27,10 +27,10 @@ exports.serverconfig = serverconfig = {
 }
 
 
-// MONGODB_URL: 'mongodb://localhost:27017/',
+// MONGODB_URL: 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/',
 exports.settings = settings = {
 
-    MONGODB_URL: 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/',
+    MONGODB_URL: 'mongodb://localhost:27017/',
     MONGODB_OPTIONS: {
         'safe': true,
         'server': true,

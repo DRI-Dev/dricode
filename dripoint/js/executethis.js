@@ -1053,11 +1053,11 @@
                 delete params['configuration'][configtarget];
                 // *** delete params['configuration'][configtarget][0];????????????? or above take out?
                 proxyprinttodiv("CreateDoList - incomingConfig ", incomingConfig, 11);
+                if (incomingConfig) {
+                    config0[configtarget] = incomingConfig; // ** Joe - only load incoming config if there is an incoming config
+                } // added by roger *******
             }
 
-            if (incomingConfig) {
-                config0[configtarget] = incomingConfig; // ** Joe - only load incoming config if there is an incoming config
-            } // added by roger *******
 
             // // If there is no config object for current target make one
             // *** Joe - moved above
@@ -1352,8 +1352,8 @@
                                                                                 callback(err, res);
                                                                             } else {
                                                                                 proxyprinttodiv("executelist err from execution ", err, 11);
-                                                                                proxyprinttodiv("executelist result from execution ", res, 99);
-                                                                                proxyprinttodiv("executelist result from execution executeobject", executeobject.executeflag, 99);
+                                                                                proxyprinttodiv("executelist result from execution ", res, 11);
+                                                                                proxyprinttodiv("executelist result from execution executeobject", executeobject.executeflag, 11);
 
                                                                                 // This section helps control the iteration -- Joe
                                                                                 // ***********************************************

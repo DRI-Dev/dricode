@@ -578,12 +578,12 @@ exports.mquery = mquery = function mquery(inboundobj, command, callback) {
         //var collection = "DRI";
         //var keycollection = "DRIKEY";
         //var collection = config.configuration.defaultcollection;
-        var collection = command.command.collection
+        var collection = command.collection;
         //proxyprinttodiv("collection = ",collection,30);
         //var keycollection = config.configuration.defaultkeycollection;
-        var keycollection = command.command.collection + "key"
+        var keycollection = command.collection + "key";
         //var databasetable = config.configuration.defaultdatabasetable;
-        var databasetable = command.command.databasetable
+        var databasetable = command.databasetable;
         //proxyprinttodiv("db table = ",databasetable,30);
         var database = {};
         var keydatabase = {};
@@ -619,10 +619,10 @@ exports.mquery = mquery = function mquery(inboundobj, command, callback) {
             }
             }
         else {
-            resultlist=[]
-            }
+            resultlist = [];
+        }
 
-        proxyprinttodiv('Function resultlist', resultlist, 99);
+        proxyprinttodiv('Function resultlist', resultlist, 30);
         callback(null, resultlist);
     } // end try
     catch (err) {

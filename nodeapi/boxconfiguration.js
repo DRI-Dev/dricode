@@ -23,5 +23,19 @@ exports.executethis = require(DIR_TO_CORE_JS + 'executethis.js');
 exports.serverconfig = serverconfig = {
     SERVER_PORT: 3000,
     LOOKUP_DIR: '../dripoint/',
-    SERVICE_URL: 'http://localhost:3009/'
+    SERVICE_URL: 'http://localhost:3000/'
+}
+
+
+    // MONGODB_URL: 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/',
+exports.settings = settings = {
+
+MONGODB_URL: 'mongodb://localhost:27017/',
+    MONGODB_OPTIONS: {
+        'safe': true,
+        'server': true,
+        'auto_reconnect': true,
+        'pool': 5
+    }
+
 }

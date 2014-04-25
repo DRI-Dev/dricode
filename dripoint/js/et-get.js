@@ -1503,18 +1503,15 @@
                     if (!command) {
                         command = {};
                     }
-                    if (!command.command) {
-                        command.command = {};
+                    if (!command.deepfilter) {
+                        command.deepfilter = {};
                     }
-                    if (!command.command.deepfilter) {
-                        command.command.deepfilter = {};
-                    }
-                    if (!command.command.deepfilter.convert) {
-                        command.command.deepfilter.convert = true;
+                    if (!command.deepfilter.convert) {
+                        command.deepfilter.convert = true;
                     }
 
-                    // if (!command.command.deepfilter.keepaddthis) {
-                    //     command.command.deepfilter.keepaddthis = false;
+                    // if (!command.deepfilter.keepaddthis) {
+                    //     command.deepfilter.keepaddthis = false;
                     // }
 
                     deepfilter(resultObj, dtoobject, command, function (err, resultObj) { // changed by joe
