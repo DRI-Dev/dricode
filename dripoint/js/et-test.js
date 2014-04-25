@@ -5816,29 +5816,6 @@ exports.testeventonemin3 = testeventonemin3 = function testeventonemin3(params, 
     });
 }
 
-
-
-exports.testhtmladd = testhtmladd = function testhtmladd(params, callback){
-	execute([{
-		"executethis":"updatewid",
-		"wid":"wid1",
-		"addthis.executethis":"wid2",
-		"command":{"databasetable":"queuecollection","db":"queuedata","collection":"eventonemin"}
-    }, {
-		"executethis":"updatewid",
-		"wid":"wid2",
-		"addthis.executethis":"addwidmaster",
-		"addthis.wid":"wid3",
-		"addthis.a":"hello this is wid3",
-		"a":"hello this is wid2"
-    }],
-    function (err, res) {
-      proxyprinttodiv('Full results: ', res, 99);
-      callback(err, res);
-    });
-}
-
-
 exports.testfiltermerge1 = testfiltermerge1 = function testfiltermerge1(params,callback){
 	var obj1 = {"key1":"hello","key2":"world","key3":"how","key4":"are","key5":"you?"};
 	var obj2 = {"key1":"hi","key4":"how","key6":"are","key7":"you?"};
@@ -6362,3 +6339,107 @@ exports.testfilternomatch1 = testfilternomatch1 = function testfilterkeymatch1(p
 			});
 	}
 	*/
+
+// This is a 2 level test of the dtos...instantiate song1 with a songdto, and some sounddto values
+// failing due to a command object being sent back
+exports.ettestag9000 = ettestag9000 = function ettestag9000(params, callback) {
+    debuglevel=0;
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "notedto",
+            "metadata.method": "notedto",
+            "note": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "sounddto",
+            "metadata.method": "sounddto",
+            "note": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "songdto",
+            "metadata.method": "songdto",
+            "title": "string",
+            "metadata.sounddto.type": "onetomany"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_sound_to_song",
+            "metadata.method":"relationshipdto",
+            "primarywid": "songdto",
+            "secondarywid": "sounddto",
+            "primarymethod": "songdto",
+            "secondarymethod": "sounddto",
+            "linktype":"onetomany",
+            "relationshiptype": "attributes"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_sound_to_note",
+            "metadata.method":"relationshipdto",
+            "primarywid": "sounddto",
+            "secondarywid": "notedto",
+            "primarymethod": "sounddto",
+            "secondarymethod": "notedto",
+            "linktype":"onetomany",
+            "relationshiptype": "attributes"
+        }, {                       
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "songdto",
+            "title": "Highway to Hell",
+            "sounddto.wid":"ag3aflat",
+            "sounddto.notedto.wid": "Aflat",
+            "sounddto.notedto.note": "A flat"
+        }, {            
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "songdto",
+            "title": "Highway to Hell",
+            "sounddto.wid":"ag3bsharp",
+            "sounddto.noteddto.wid": "Bsharp",
+            "sounddto.noteddto.note": "B sharp"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "songdto",
+            "title": "Highway to Hell",
+            "sounddto.wid":"ag3cflat",
+            "sounddto.notedto.wid": "Cflat",
+            "sounddto.notedto.note": "C flat"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "song1"
+        }],
+        function (err, res) {
+             
+            proxyprinttodiv('Function ag3 result Full res', res, 17);
+            proxyprinttodiv('Function ag3 result ', res[6], 17);
+
+            res = logverify("ettestag3_result", res[6], [{
+                "title": "Highway to Hell",
+                "wid": "song1",
+                "metadata.method": "songdto",
+                "metadata.sounddto.type": "onetomany",
+                "sounddto.0.note": "A flat",
+                "sounddto.0.wid": "ag3aflat",
+                "sounddto.0.metadata.method": "sounddto",
+                "sounddto.0.metadata.parentwid.song1": "songdto",
+                "sounddto.1.note": "B sharp",
+                "sounddto.1.wid": "ag3bsharp",
+                "sounddto.1.metadata.method": "sounddto",
+                "sounddto.1.metadata.parentwid.song1": "songdto",
+                "sounddto.2.note": "C flat",
+                "sounddto.2.wid": "ag3cflat",
+                "sounddto.2.metadata.method": "sounddto",
+                "sounddto.2.metadata.parentwid.song1": "songdto"
+            }]);
+            debuglevel=0;
+            // execute({"executethis": "getwidmaster","wid": "songdto",
+            //       "command":{"getwidmaster":{"convertmethod":"dto",
+            //                               "execute":"ConvertFromDOTdri",
+            //                               "inheritflag":"true","dtotype":""}}}, function (err, res1) {
+            execute({"executethis": "getwidmaster","wid": "song1"}, function (err, res1) {
+                 proxyprinttodiv('Function ag3 result LAST ', res1, 99); 
+                callback(err, res); 
+                 
+             })
+        });
+}

@@ -157,10 +157,7 @@
     // exports.addwidmaster = addwidmaster = function addwidmaster(object, callback) {
     //     var inbound_parameters = {};
     //     inbound_parameters = JSON.parse(JSON.stringify(arguments));
-
-
     //     var _command = {};
-
     //     // Test for lowering parameters
     //     tolowerparameters(object, {
     //                                 "command":"",
@@ -467,7 +464,17 @@
                                                         _child_object["metadata"] = {}
                                                     }
                                                     if (!_child_object["metadata"]["method"]) {
-                                                        _child_object["metadata"]["method"] = eachchild.dtoname
+                                                        _child_object["metadata"]["method"] = eachchild.dtoname;
+                                                        // *** Adding parent wid data to child wid ***
+                                                        if (!_child_object["metadata"]["parentwid"]) {
+                                                            _child_object["metadata"]["parentwid"] = {};
+                                                        }
+
+                                                        _child_object["metadata"]["parentwid"][_parent_wid] = _parent_method;
+
+                                                        if(_parent_object["metadata"]["parentwid"]) {
+                                                          _child_object["metadata"]["parentwid"] = extend(true, _parent_object["metadata"]["parentwid"], _child_object["metadata"]["parentwid"]);
+                                                        }
                                                     }
 
                                                     addwidobject(_child_object, _child_dto, _parent_wid, _parent_method, eachchild.dtotype, command, function (err, res) {
