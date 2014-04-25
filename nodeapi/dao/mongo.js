@@ -83,6 +83,8 @@ exports.mget = mget = function mget(objToFind, command, callback) {
 };
 
 exports.madd = madd = function madd(entityToAdd, command, callback) {
+    console.log(' **%** madd() hit, command object => ' + JSON.stringify(command));
+
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
