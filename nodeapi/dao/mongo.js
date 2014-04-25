@@ -87,16 +87,9 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-    var addOptions = {}, objToUpdate;
-
-    var widVal = (entityToAdd['wid']);
-    if (!widVal) {
-        widVal = (entityToAdd['Wid']);
-    }
-
-    widVal = {
-        "wid": widVal
-    };
+    var addOptions = {},
+        objToUpdate = {},
+        widVal = {"wid": entityToAdd['wid']};
 
     addOptions = {};
     if (command && command.datamethod) {
@@ -104,7 +97,9 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
             // clear
             // clear saves the new came object after clearing the existing object
             // clear cleared the whole aid --all databases
-            objToUpdate = entityToAdd;
+            objToUpdate = {
+                "$unset": entityToAdd
+            };
             addOptions = {};
         } else if (command.datamethod === 'insert') {
             // insert
@@ -112,28 +107,17 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
             objToUpdate = {
                 "$set": entityToAdd
             };
-
-
         } else if (command.datamethod === 'upsert') {
             // upsert
             // upsert saves the new came object after updating the existing object
-
-
-//            console.log('** madd object before converttodotdri called => ' + JSON.stringify(entityToAdd));
-//
-//            // TODO :: FIX THIS , below line needed to avoid overwrites
-//            entityToAdd = ConvertToDOTdri(entityToAdd);
-//
-//            console.log('** madd object after converttodotdri called => ' + JSON.stringify(entityToAdd));
             
             addOptions = {
                 "upsert": true
             };
 
-//            objToUpdate = {
-//                "$set": entityToAdd
-//            };
-            objToUpdate = entityToAdd;
+            objToUpdate = {
+                "$set": entityToAdd
+            };
         }
     } else {
         // upsert -- default
@@ -141,10 +125,9 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
             "upsert": true
         };
 
-//        objToUpdate = {
-//            "$set": entityToAdd
-//        };
-        objToUpdate = entityToAdd;
+        objToUpdate = {
+            "$set": entityToAdd
+        };
     }
 
     console.log(' **%** about to update ' + JSON.stringify(widVal));
@@ -153,9 +136,11 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
     getConnection(mongoDatabaseToLookup, function(err, db) {
         db.collection(schemaToLookup).update(widVal, objToUpdate, addOptions, function(err, res) {
             if (err) {
+                console.log(' **%** error during update => ' + JSON.stringify(err));
                 printLogs('madd', entityToAdd, {});
                 callback(err, {});
             } else {
+                console.log(' **%** successful mongo update! result => ' + JSON.stringify(res));
                 printLogs('madd', entityToAdd, entityToAdd);
                 callback(err, entityToAdd);
             }
