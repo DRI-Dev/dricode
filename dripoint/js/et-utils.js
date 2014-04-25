@@ -1562,37 +1562,6 @@ function getRandomNumberByLength(length) {
     //     return res;
     // };
 
-    exports.ConvertToDOTdriTEST = ConvertToDOTdriTEST = function ConvertToDOTdriTEST(data, callback) { //dotize
-        var result = {};
-        console.log(' **%** convertodotdriTEST hit!');
-
-        data = JSON.parse(data.wid);
-
-        function recurse(cur, prop) {
-            if (Object(cur) !== cur) {
-                result[prop] = cur;
-            } else if (Array.isArray(cur)) {
-                for (var i = 0, l = cur.length; i < l; i++)
-                    recurse(cur[i], prop ? prop + "." + i : "" + i);
-                if (l == 0)
-                    result[prop] = [];
-            } else {
-                var isEmpty = true;
-                for (var p in cur) {
-                    if (cur.hasOwnProperty(p)) {
-                        isEmpty = false;
-                        recurse(cur[p], prop ? prop + "." + p : p);
-                    }
-                }
-                if (isEmpty)
-                    result[prop] = {};
-            }
-        }
-        recurse(data, "");
-//        return result;
-        callback(null, data);
-    };
-
     exports.ConvertToDOTdri = ConvertToDOTdri = function ConvertToDOTdri(data) { //dotize
         var result = {};
 
