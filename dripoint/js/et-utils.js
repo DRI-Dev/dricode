@@ -2143,10 +2143,10 @@ function getRandomNumberByLength(length) {
 
     exports.logverify = logverify = function logverify(test_name, data_object, assertion_object) {
         //To delete metadata.date method
-        if(data_object[0] && data_object[0]["metadata"] && data_object[0]["metadata"]["date"]){
+        if(data_object && data_object[0] && data_object[0]["metadata"] && data_object[0]["metadata"]["date"]){
             delete data_object[0]["metadata"]["date"];
         }
-        if(assertion_object[0] && assertion_object[0]["metadata"] && assertion_object[0]["metadata"]["date"]){
+        if(assertion_object &&assertion_object[0] && assertion_object[0]["metadata"] && assertion_object[0]["metadata"]["date"]){
             delete assertion_object[0]["metadata"]["date"];
         }
 
