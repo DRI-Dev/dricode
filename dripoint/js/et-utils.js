@@ -1564,6 +1564,7 @@ function getRandomNumberByLength(length) {
 
     exports.ConvertToDOTdriTEST = ConvertToDOTdriTEST = function ConvertToDOTdriTEST(data, callback) { //dotize
         var result = {};
+        console.log(' **%** convertodotdriTEST hit!');
 
         data = JSON.parse(data.jsondata);
 
