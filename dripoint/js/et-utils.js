@@ -1186,30 +1186,33 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
                                 }
                             } else {
                                 // to read wid obj via getwidmaster
-                                execute({
-                                    "executethis": dataType
-                                }, function (err, result) {
-                                    // If error, bounce out
-                                    if (err && Object.keys(err).length > 0) {
-                                        cbMap(err, result);
-                                    } else {
-                                        //try {
-                                        //proxyprinttodiv("getwidmaster result for wid  " + dataType, result, 41);
-                                        var widObj = result[0][0];
-                                        if (widObj) {
-                                            if (widObj.hasOwnProperty(inpVal)) {
-                                                modifiedObj[inpKey] = inpVal;
+                                if(dataType !== 'string') {
+                                    // proxyprinttodiv("recurseModObj - execute datatype", dataType, 99);
+                                    execute({
+                                        "executethis": dataType
+                                    }, function (err, result) {
+                                        // If error, bounce out
+                                        if (err && Object.keys(err).length > 0) {
+                                            cbMap(err, result);
+                                        } else {
+                                            //try {
+                                            //proxyprinttodiv("getwidmaster result for wid  " + dataType, result, 41);
+                                            var widObj = result[0][0];
+                                            if (widObj) {
+                                                if (widObj.hasOwnProperty(inpVal)) {
+                                                    modifiedObj[inpKey] = inpVal;
+                                                }
                                             }
+                                            proxyprinttodiv("recurseModObj - modifiedObj[inpKey] V ", modifiedObj[inpKey], 41);
+                                            cbMap(null);
+                                            //}
+                                            // catch (err) {
+                                            var finalobject = createfinalobject({"result": "recurseModObj_recurseModObj_II_execute"}, {}, "recurseModObj_recurseModObj_II_execute", err, result);
+                                            cbMap(finalobject.err, finalobject.res);
+                                            //}
                                         }
-                                        proxyprinttodiv("recurseModObj - modifiedObj[inpKey] V ", modifiedObj[inpKey], 41);
-                                        cbMap(null);
-                                        //}
-                                        // catch (err) {
-                                        var finalobject = createfinalobject({"result": "recurseModObj_recurseModObj_II_execute"}, {}, "recurseModObj_recurseModObj_II_execute", err, result);
-                                        cbMap(finalobject.err, finalobject.res);
-                                        //}
-                                    }
-                                });
+                                    });
+                                }
                             }
                             /*else {
                              //Doesn't match with dto -- Nullifying the param
