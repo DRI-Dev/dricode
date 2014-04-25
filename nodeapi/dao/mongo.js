@@ -89,12 +89,12 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
     // flatten out data for mongo call
-    console.log(' **%** entityToAdd before convertToDOTdri is called => ' + JSON.stringify(entityToAdd));
+//    console.log(' **%** entityToAdd before convertToDOTdri is called => ' + JSON.stringify(entityToAdd));
 //    entityToAdd = ConvertToDOTdri(entityToAdd);
 
-    entityToAdd = flatten(entityToAdd, {safe:true});
+//    entityToAdd = flatten(entityToAdd, {safe:true});
 
-    console.log(' **%** entityToAd after convertToDOTdri is called => ' + JSON.stringify(entityToAdd));
+//    console.log(' **%** entityToAd after convertToDOTdri is called => ' + JSON.stringify(entityToAdd));
 
     var addOptions = {};
 
