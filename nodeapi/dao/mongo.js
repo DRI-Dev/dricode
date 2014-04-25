@@ -92,9 +92,6 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
     var addOptions = {};
 
     var widVal = (entityToAdd['wid']);
-    if (!widVal) {
-        widVal = (entityToAdd['Wid']);
-    }
 
     widVal = {
         "wid": widVal
@@ -120,14 +117,6 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
             // upsert
             // upsert saves the new came object after updating the existing object
 
-
-//            console.log('** madd object before converttodotdri called => ' + JSON.stringify(entityToAdd));
-//
-//            // TODO :: FIX THIS , below line needed to avoid overwrites
-//            entityToAdd = ConvertToDOTdri(entityToAdd);
-//
-//            console.log('** madd object after converttodotdri called => ' + JSON.stringify(entityToAdd));
-            
             addOptions = {
                 "upsert": true
             };
@@ -146,6 +135,10 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
             "$set": entityToAdd
         };
     }
+
+    console.log(' **%** about to update ' + JSON.stringify(widVal));
+    console.log(' **%** with this object => ' + JSON.stringify(objToUpdate));
+    console.log(' **%** with these options => ' + JSON.stringify(addOptions));
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
         db.collection(schemaToLookup).update(widVal, objToUpdate, addOptions, function(err, res) {
