@@ -273,7 +273,8 @@
                 var dtoobject = {};
                 extend(true, dtoobject, inobj);
                 for (var eachparam in dtoobject) {
-                    if (dtoobject.hasOwnProperty(eachparam) && eachparam !== "command") {
+                    // if (dtoobject.hasOwnProperty(eachparam) && eachparam !== "command") {
+                    if (dtoobject.hasOwnProperty(eachparam)) {
                         if (isArray(dtoobject[eachparam])) {
                             var tempArray = [];
                             for (var eachitem in dtoobject[eachparam]) {
@@ -557,8 +558,8 @@
             } else { // if there is no dtoType or obj.wid then call back with a blank dtoObject
                 dtoobject = {};
                 //dtoobject = recurseobj(obj);
-                proxyprinttodiv("getdtoobject output2 -- dtoobject", dtoobject, 38);
                 dtoobject = recursestring(obj);
+                proxyprinttodiv("getdtoobject output2 -- dtoobject", dtoobject, 38);
                 callback(null, dtoobject);
             } // end else
         } // end try
