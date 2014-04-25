@@ -89,7 +89,7 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
     // flatten out data for mongo call
-    entityToAdd = flatten(entityToAdd);
+    entityToAdd = flatten(entityToAdd, {safe:true});
 
     var addOptions = {};
 
