@@ -83,12 +83,11 @@ exports.mget = mget = function mget(objToFind, command, callback) {
 };
 
 exports.madd = madd = function madd(entityToAdd, command, callback) {
-    console.log(' **%** madd() hit, command object => ' + JSON.stringify(command));
-
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
+    // flatten out data for mongo call
     entityToAdd = ConvertToDOTdri(entityToAdd);
 
     var addOptions = {};
@@ -137,10 +136,6 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
             "$set": entityToAdd
         };
     }
-
-    console.log(' **%** about to update ' + JSON.stringify(widVal));
-    console.log(' **%** with this object => ' + JSON.stringify(objToUpdate));
-    console.log(' **%** with these options => ' + JSON.stringify(addOptions));
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
         db.collection(schemaToLookup).update(widVal, objToUpdate, addOptions, function(err, res) {
