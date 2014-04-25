@@ -89,6 +89,8 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
+    entityToAdd = ConvertToDOTdri(entityToAdd);
+
     var addOptions = {};
 
     var widVal = (entityToAdd['wid']);
