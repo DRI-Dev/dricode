@@ -161,7 +161,7 @@
                                 "beforemidexecute": {
                                     "overallresultparametersrule": "waterfall",
                                     "queueparametersrule": "waterfall",
-                                    "resultrule": "waterfall",
+                                    "resultrule": "extendobject",
                                     "errorrule": "nullwaterfall"
                                 },
                                 "beforepostexecute": {
@@ -504,13 +504,13 @@
             current = {};
         }
         if (isArray(current)) {
-            current = current[0];
+            current = current[0]; 
         }
         overall = current;
         return overall;
     };
 
-    window.extendobject = function extendobjects(current, overall) {
+    window.extendobject = function extendobject(current, overall) {
         if (!current) {
             current = {};
         }
@@ -521,12 +521,12 @@
             overall = [{}];
         }
         var tempobject = overall[0];
-        extend(true, current, tempobject);
-        overall.push(tempobject);
+        overall = extend(true, current, tempobject);
+        //overall.push(tempobject);
         return overall;
     };
 
-    window.pushobject = function pushobjects(current, overall) {
+    window.pushobject = function pushobject(current, overall) {
         if (!current) {
             current = {};
         }
@@ -543,7 +543,7 @@
         return overall;
     };
 
-    window.pusharray = function pusharrays(current, overall) {
+    window.pusharray = function pusharray(current, overall) {
         if (!current) {
             current = {};
         }
