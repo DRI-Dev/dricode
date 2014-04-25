@@ -1566,7 +1566,7 @@ function getRandomNumberByLength(length) {
         var result = {};
         console.log(' **%** convertodotdriTEST hit!');
 
-        data = JSON.parse(data.jsondata);
+        data = JSON.parse(data.wid);
 
         function recurse(cur, prop) {
             if (Object(cur) !== cur) {
