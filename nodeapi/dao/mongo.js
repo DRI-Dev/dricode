@@ -130,9 +130,9 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
                 "upsert": true
             };
 
-            var objToUpdate = {
-                "$set": entityToAdd
-            };
+//            var objToUpdate = {
+//                "$set": entityToAdd
+//            };
         }
     } else {
         // upsert -- default
@@ -140,16 +140,16 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
             "upsert": true
         };
 
-        objToUpdate = {
-            "$set": entityToAdd
-        };
+//        objToUpdate = {
+//            "$set": entityToAdd
+//        };
     }
 
     console.log(' **%** about to update ' + JSON.stringify(widVal));
     console.log(' **%** with this object => ' + JSON.stringify(objToUpdate));
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
-        db.collection(schemaToLookup).update(widVal, objToUpdate, addOptions, function(err, res) {
+        db.collection(schemaToLookup).update(widVal, entityToAdd, addOptions, function(err, res) {
             if (err) {
                 printLogs('madd', entityToAdd, {});
                 callback(err, {});
