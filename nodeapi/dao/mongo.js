@@ -136,6 +136,7 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
 
     console.log(' **%** about to update ' + JSON.stringify(widVal));
     console.log(' **%** with this object => ' + JSON.stringify(objToUpdate));
+    console.log(' **%** with these options => ' + JSON.stringify(addOptions));
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
         db.collection(schemaToLookup).update(widVal, objToUpdate, addOptions, function(err, res) {
