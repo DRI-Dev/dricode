@@ -549,7 +549,10 @@
                         }
 
                         proxyprinttodiv("getdtoobject output1 AFTER -- dtoobject", dtoobject, 38);
+                        command = dtoobject.command;
+                        delete dtoobject.command
                         dtoobject = recursestring(dtoobject);
+                        dtoobject.command = command;
                         proxyprinttodiv("getdtoobject output1 -- dtotable", dtotable, 38);
                         //proxyprinttodiv("getdtoobject output1 -- dtolist", dtolist, 38);
                         callback(null, dtoobject);
@@ -558,7 +561,10 @@
             } else { // if there is no dtoType or obj.wid then call back with a blank dtoObject
                 dtoobject = {};
                 //dtoobject = recurseobj(obj);
+                command = dtoobject.command;
+                delete dtoobject.command;
                 dtoobject = recursestring(obj);
+                dtoobject.command = command;
                 proxyprinttodiv("getdtoobject output2 -- dtoobject", dtoobject, 38);
                 callback(null, dtoobject);
             } // end else

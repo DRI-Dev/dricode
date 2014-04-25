@@ -14,7 +14,8 @@ var SkinStore = require('connect-mongoskin'),
     databaseToLookup = config.configuration.defaultdb,
     mongoDatabaseToLookup = config.configuration.defaultmongodb,
     dbConnectionsManager = {},
-    defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup;
+    defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup,
+    flatten = require('flat').flatten;
 
 console.log(defaultDatabaseurl);
 dbConnectionsManager[mongoDatabaseToLookup] = mongoskin.db(defaultDatabaseurl, settings.MONGODB_OPTIONS);
@@ -88,7 +89,7 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
     // flatten out data for mongo call
-    entityToAdd = ConvertToDOTdri(entityToAdd);
+    entityToAdd = flatten(entityToAdd);
 
     var addOptions = {};
 

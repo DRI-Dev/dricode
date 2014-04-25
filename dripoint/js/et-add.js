@@ -235,7 +235,7 @@
                         output.dtoobj = dtoobject;
                         dto_to_get = dtoobject['metadata']['method'];
 
-                        if (dto_to_get !== "string") {
+                       if (dto_to_get !== "string") {
                             proxyprinttodiv("cleanadd dto_to_get", dto_to_get, 17);
                             execute({
                                 "executethis": "getwidmaster",

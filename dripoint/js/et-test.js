@@ -6058,23 +6058,34 @@ exports.testfilternomatch1 = testfilternomatch1 = function testfilterkeymatch1(p
 
 
     exports.testhtmladd = testhtmladd = function testhtmladd(params, callback){
-    execute([{
-        "executethis":"addwidmaster",
-        "wid":"wid1",
-        "html":"<p>123</p>"
-    }, {
-        "executethis":"addwidmaster",
-        "wid":"wid1",
-        "addthis.command.htmlcleartargetid":"body"
-    }, {
-        "executethis":"getwidmaster",
-        "wid":"wid1"
-    }],
-    function (err, res) {
-      proxyprinttodiv('Full results: ', res, 99);
-      callback(err, res);
-    });
-}
+        execute([{
+            "executethis":"addwidmaster",
+            "wid":"wid1",
+            "html":"<p>123</p>"
+        }, {
+            "executethis":"addwidmaster",
+            "wid":"wid1",
+            "addthis.command.htmlcleartargetid":"body"
+        }, {
+            "executethis":"getwidmaster",
+            "wid":"wid1"
+        }],
+        function (err, res) {
+          proxyprinttodiv('Full results: ', res, 99);
+          callback(err, res);
+        });
+    }
+
+    exports.testhtmladd2 = testhtmladd2 = function testhtmladd2(params, callback){
+        execute([{
+            "executethis":"getwidmaster",
+            "wid":"wid1"
+        }],
+        function (err, res) {
+          proxyprinttodiv('Full results: ', res, 99);
+          callback(err, res);
+        });
+    }
 /*
 	exxports.codydto1 = codydto1 = function codydto1(params,callback){
 		execute([{
