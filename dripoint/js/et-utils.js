@@ -1187,7 +1187,6 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
                             } else {
                                 // to read wid obj via getwidmaster
                                 if(dataType !== 'string') {
-                                    // proxyprinttodiv("recurseModObj - execute datatype", dataType, 99);
                                     execute({
                                         "executethis": dataType
                                     }, function (err, result) {
