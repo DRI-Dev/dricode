@@ -87,9 +87,13 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-    var addOptions = {},
-        objToUpdate = {},
-        widVal = {"wid": entityToAdd['wid']};
+    var addOptions = {};
+
+    var widVal = (entityToAdd['wid']);
+
+    widVal = {
+        "wid": widVal
+    };
 
     addOptions = {};
     if (command && command.datamethod) {
@@ -97,9 +101,7 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
             // clear
             // clear saves the new came object after clearing the existing object
             // clear cleared the whole aid --all databases
-            objToUpdate = {
-                "$unset": entityToAdd
-            };
+            objToUpdate = entityToAdd;
             addOptions = {};
         } else if (command.datamethod === 'insert') {
             // insert
@@ -107,15 +109,17 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
             objToUpdate = {
                 "$set": entityToAdd
             };
+
+
         } else if (command.datamethod === 'upsert') {
             // upsert
             // upsert saves the new came object after updating the existing object
-            
+
             addOptions = {
                 "upsert": true
             };
 
-            objToUpdate = {
+            var objToUpdate = {
                 "$set": entityToAdd
             };
         }
@@ -136,11 +140,9 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
     getConnection(mongoDatabaseToLookup, function(err, db) {
         db.collection(schemaToLookup).update(widVal, objToUpdate, addOptions, function(err, res) {
             if (err) {
-                console.log(' **%** error during update => ' + JSON.stringify(err));
                 printLogs('madd', entityToAdd, {});
                 callback(err, {});
             } else {
-                console.log(' **%** successful mongo update! result => ' + JSON.stringify(res));
                 printLogs('madd', entityToAdd, entityToAdd);
                 callback(err, entityToAdd);
             }
