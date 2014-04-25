@@ -88,7 +88,9 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
     // flatten out data for mongo call
-//    entityToAdd = ConvertToDOTdri(entityToAdd);
+    console.log(' **%** entityToAdd before convertToDOTdri is called => ' + JSON.stringify(entityToAdd));
+    entityToAdd = ConvertToDOTdri(entityToAdd);
+    console.log(' **%** entityToAd after convertToDOTdri is called => ' + JSON.stringify(entityToAdd));
 
     var addOptions = {};
 
