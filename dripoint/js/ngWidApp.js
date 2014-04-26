@@ -279,7 +279,7 @@ if (typeof angular !== 'undefined') {
                         $('#successlog').html('');
 
                         // call new page event in config-local
-                        eventnewpage();
+                        eventnewpage({}, function (err, results) { });
                     } else {
                         $('#' + screenWid.command.htmlcleartargetid).html('');
                     }
