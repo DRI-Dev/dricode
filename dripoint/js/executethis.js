@@ -1190,7 +1190,7 @@
     } // end CreateDolist
 
     function executelist(howToDoList, whatToDoList, callback) {
-        try {
+//        try {
             var inboundparms_116 = arguments;
 
             // throw ({'Sample error': 'executelist'});
@@ -1271,7 +1271,7 @@
 
             async.mapSeries(howToDoList, function (h, cbMapH) {
                     async.nextTick(function () {
-                        try {
+//                        try {
                             // throw ({'Sample error': 'executelist_async_nextTick'});
 
                             proxyprinttodiv("executelist begin how howallowexecute ", howallowexecute, 11);
@@ -1335,7 +1335,7 @@
                                                     if (err && Object.keys(err).length > 0) {
                                                         callback(err, executeobject);
                                                     } else {
-                                                        try {
+//                                                        try {
                                                             //var parameters = executeobject.params;
                                                             // always will get something back, even if errorfn...so always execute and store resutls
                                                             proxyprinttodiv("executelist executeobject: ", executeobject, 11);
@@ -1467,16 +1467,16 @@
                                                                 // cbMapW(null, "What Iteration");
                                                                 cbMapW(err, "What Iteration");
                                                             }
-                                                        } // end try
-                                                        catch (err) {
-                                                            var finalobject = createfinalobject({
-                                                                "result": "executelist_getexecuteobject(jsonConcat"
-                                                            }, {}, "executelist_getexecuteobject(jsonConcat", err, executeobject);
-                                                            console.log('** Error Caught in the executelist() function in executethis.js'
-                                                                + ' during processing of results from getexecuteobject() call ** => ' + err);
-                                                            console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
-                                                            cbMapW(finalobject.err, finalobject.res);
-                                                        }
+//                                                        } // end try
+//                                                        catch (err) {
+//                                                            var finalobject = createfinalobject({
+//                                                                "result": "executelist_getexecuteobject(jsonConcat"
+//                                                            }, {}, "executelist_getexecuteobject(jsonConcat", err, executeobject);
+//                                                            console.log('** Error Caught in the executelist() function in executethis.js'
+//                                                                + ' during processing of results from getexecuteobject() call ** => ' + err);
+//                                                            console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
+//                                                            cbMapW(finalobject.err, finalobject.res);
+//                                                        }
                                                     } // end else
                                                     // else ((howallowexecute) && (whatallowexecute))  ... do something else
                                                 }); //executeobject callback
@@ -1494,14 +1494,14 @@
                                     // cbMapH(err, "How Iteration");
                                     //console.log(' completed whatToDoList iteration in sync fashion.');
                                 });
-                        } // end try
-                        catch (err) {
-                            var finalobject = createfinalobject({"result": "executelist_async_nextTick"}, {}, "executelist_async_nextTick", err, h);
-                            console.log('** Error Caught in the executelist() function in'
-                                + ' executethis.js during mapSeries call on "howToDoList" ** => ' + err);
-                            console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
-                            cbMapH(finalobject.err, finalobject.res);
-                        }
+//                        } // end try
+//                        catch (err) {
+//                            var finalobject = createfinalobject({"result": "executelist_async_nextTick"}, {}, "executelist_async_nextTick", err, h);
+//                            console.log('** Error Caught in the executelist() function in'
+//                                + ' executethis.js during mapSeries call on "howToDoList" ** => ' + err);
+//                            console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
+//                            cbMapH(finalobject.err, finalobject.res);
+//                        }
                         // map w,
                     });
                 },
@@ -1519,13 +1519,13 @@
             // debugcolor--;
             x = getglobal("debugcolor") - 1;
             saveglobal("debugcolor", x);
-        } // end try
-        catch (err) {
-            var finalobject = createfinalobject({"result": "executelist"}, {}, "executelist", err, inboundparms_116);
-            console.log('** Error Caught in the executelist() function in executethis.js ** => ' + err);
-            console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
-            callback(finalobject.err, finalobject.res);
-        }
+//        } // end try
+//        catch (err) {
+//            var finalobject = createfinalobject({"result": "executelist"}, {}, "executelist", err, inboundparms_116);
+//            console.log('** Error Caught in the executelist() function in executethis.js ** => ' + err);
+//            console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
+//            callback(finalobject.err, finalobject.res);
+//        }
     } // end executelist
 
 
