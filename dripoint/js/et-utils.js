@@ -482,7 +482,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
             if ((datastore==='localstorage') || (datastore==='localstore')) {
                 var keydatabase=getdatabaseinforesult.keydatabase;
                 proxyprinttodiv('Function getwid keydatabase', keydatabase,12);
-                output = keydatabase[widName];
+                output = keydatabase[widName] || {};
                 proxyprinttodiv('Function getwid output', output,99);
                 if (!keepaddthis) { // i.e. remove add this
                     if (output.hasOwnProperty("addthis")) {
