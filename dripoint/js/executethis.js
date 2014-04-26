@@ -1530,7 +1530,7 @@
 
 
     function getexecuteobject(params, howToDo, whatToDo, whatToDoFn, callback) {
-        try {
+//        try {
             var inboundparms_117 = arguments;
 
             // throw ({'Sample error': 'getexecuteobject'});
@@ -1634,13 +1634,13 @@
                 executeflag: executeflag
             });
 
-        } // end try
-        catch (err) {
-            var finalobject = createfinalobject({"result": "getexecuteobject"}, {}, "getexecuteobject", err, inboundparms_117);
-            console.log('** Error Caught in the getexecuteobject() function in executethis.js ** => ' + err);
-            console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
-            callback(finalobject.err, finalobject.res);
-        }
+//        } // end try
+//        catch (err) {
+//            var finalobject = createfinalobject({"result": "getexecuteobject"}, {}, "getexecuteobject", err, inboundparms_117);
+//            console.log('** Error Caught in the getexecuteobject() function in executethis.js ** => ' + err);
+//            console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
+//            callback(finalobject.err, finalobject.res);
+//        }
     } // fn
 
     exports.executeerror = window.executeerror = executeerror = function executeerror(params, callback) {
