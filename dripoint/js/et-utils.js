@@ -413,7 +413,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
     //     return _in_obj;
     // }
 
-    try {
+//    try {
         var originalarguments = {};
         extend(true, originalarguments, inputWidgetObject);
         var err = null;
@@ -562,13 +562,13 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
             callback(err, output);
         }
     //callback(err, output);
-    } // end try
-    catch (err) {
-        var finalobject = createfinalobject({"result": "updatewid"}, {}, "updatewid", err, originalarguments);
-        console.log('** Error Caught in the getwid() function in et-utils.js ** => ' + err);
-        console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
-        callback(finalobject.err, finalobject.res);
-    }
+//    } // end try
+//    catch (err) {
+//        var finalobject = createfinalobject({"result": "updatewid"}, {}, "updatewid", err, originalarguments);
+//        console.log('** Error Caught in the getwid() function in et-utils.js ** => ' + err);
+//        console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
+//        callback(finalobject.err, finalobject.res);
+//    }
 }; //End of getfrommongo function
 
 
