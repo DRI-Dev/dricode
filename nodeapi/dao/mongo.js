@@ -15,7 +15,8 @@ var SkinStore = require('connect-mongoskin'),
     databaseToLookup = config.configuration.defaultdb,
     mongoDatabaseToLookup = config.configuration.defaultdatabsaetable,
     dbConnectionsManager = {},
-    defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup;
+    defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup,
+    flatten = require('flat').flatten;
 
 console.log(defaultDatabaseurl);
 dbConnectionsManager[mongoDatabaseToLookup] = mongoskin.db(defaultDatabaseurl, settings.MONGODB_OPTIONS);
@@ -89,6 +90,9 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
+    // flatten out data for mongo call
+    entityToAdd = flatten(entityToAdd, {safe:true});
+
     var addOptions = {};
 
     var widVal = (entityToAdd['wid']);
@@ -135,10 +139,6 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
             "$set": entityToAdd
         };
     }
-
-    console.log(' **%** about to update ' + JSON.stringify(widVal));
-    console.log(' **%** with this object => ' + JSON.stringify(objToUpdate));
-    console.log(' **%** with these options => ' + JSON.stringify(addOptions));
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
         db.collection(schemaToLookup).update(widVal, objToUpdate, addOptions, function(err, res) {
