@@ -893,27 +893,26 @@
             execute(executeobject, function (err, res) {
                 //if (Object.keys(res).length > 0) {
                 if (res) {
-                    res=res[0]
+                    res=res[0];
                     proxyprinttodiv("checkcache getwid res", res, 17);
                     if (res && res.metadata && res.metadata.expirationdate 
                         && res.metadata.expirationdate<new Date()){
                         callback(null, res);
-                        }
-                    else {
+                    } else {
                         callback(null, null);
-                        }
                     }
-                })
-            }
+                }
+            })
+        }
         else { // !objectkey (i.e. if command.cache==false)
             callback(null, null);
-            }
-        };
+        }
+    }
 
 
 
     function dothisprocessor(params, target, objkey, callback) {
-        try {
+//        try {
             var inboundparms_114 = arguments;
             //var err = {};
             var err = null;
@@ -1000,18 +999,18 @@
                                 callback(err, params);
                             }
                         }
-                }) // checkcache
+                }); // checkcache
                 } // else not test4
             } else {
                 callback(err, params);
             }
-        } // end try
-        catch (err) {
-            var finalobject = createfinalobject({"result": "dothisprocessor"}, {}, "dothisprocessor", err, inboundparms_114);
-            console.log('** Error Caught in the dothisprocessor() function in executethis.js ** => ' + err);
-            console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
-            callback(finalobject.err, finalobject.res);
-        }
+//        } // end try
+//        catch (err) {
+//            var finalobject = createfinalobject({"result": "dothisprocessor"}, {}, "dothisprocessor", err, inboundparms_114);
+//            console.log('** Error Caught in the dothisprocessor() function in executethis.js ** => ' + err);
+//            console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
+//            callback(finalobject.err, finalobject.res);
+//        }
     } // fn
 
     // based on a target fn and params this fn will create a sorted list of what to do -- params will be in list
@@ -1020,7 +1019,7 @@
         try {
             var inboundparms_115 = arguments;
             var params = {};
-            extend(true, params, inparams)
+            extend(true, params, inparams);
 
             if ((params === undefined) || (params === "")) {
                 params = {};
