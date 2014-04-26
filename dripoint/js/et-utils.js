@@ -2074,16 +2074,19 @@ function getRandomNumberByLength(length) {
 
     // Adds the key of object2 to object 1
     exports.jsonConcat = jsonConcat = function jsonConcat(o1, o2) {
-        var clonedObject = {};
-        extend(true, clonedObject, o1); // clone received params
 
-        for (var key in o2) {
-            if (o2.hasOwnProperty(key)) {
-                if ((clonedObject[key] === undefined) || (clonedObject[key] === "")) {
-                    clonedObject[key] = o2[key];
-                }
-            }
-        }
+        var clonedObject = extend(true, o1, o2)
+
+        //var clonedObject = {};
+        // extend(true, clonedObject, o1); // clone received params
+
+        // for (var key in o2) {
+        //     if (o2.hasOwnProperty(key)) {
+        //         if ((clonedObject[key] === undefined) || (clonedObject[key] === "")) {
+        //             clonedObject[key] = o2[key];
+        //         }
+        //     }
+        // }
         return clonedObject;
     };
 

@@ -1086,7 +1086,8 @@
                 for (var i = 0; i < config0[configtarget].length; i++) {
                     //try a concat
                     if ((params !== undefined) && (config0[configtarget][i].params !== undefined)) {
-                        config0[configtarget][i].params = jsonConcat(params, config0[configtarget][i].params); // concatenate with other pararms
+                        //config0[configtarget][i].params = jsonConcat(params, config0[configtarget][i].params); // concatenate with other pararms
+                        config0[configtarget][i].params = extend(true, params, config0[configtarget][i].params);
                     }
                     //config0[configtarget][i].params= params; ** took out and put above, we should not change 'params'
                 }
@@ -1188,8 +1189,6 @@
     function executelist(howToDoList, whatToDoList, callback) {
         try {
             var inboundparms_116 = arguments;
-            proxyprinttodiv("executelist - howToDoList ", howToDoList, 11);
-            proxyprinttodiv("executelist - whatToDoList ", whatToDoList, 11);
 
             // throw ({'Sample error': 'executelist'});
 
@@ -1264,7 +1263,8 @@
             var x = getglobal("debugcolor") + 1;
             saveglobal("debugcolor", x);
 
-
+            proxyprinttodiv("executelist - howToDoList ", howToDoList, 11);
+            proxyprinttodiv("executelist - whatToDoList ", whatToDoList, 11);
 
             async.mapSeries(howToDoList, function (h, cbMapH) {
                     async.nextTick(function () {
@@ -1323,21 +1323,24 @@
 
 
                                         if ((howallowexecute) && (whatallowexecute)) { //if both allowed to execute
-                                            getexecuteobject(jsonConcat(howToDoParams, whatToDoParams), howToDo, whatToDo, whatToDoFn,
+                                            //getexecuteobject(jsonConcat(howToDoParams, whatToDoParams), howToDo, whatToDo, whatToDoFn,
+                                            //var p = jsonConcat(howToDoParams, whatToDoParams)
+                                            var p = extend(true, howToDoParams, whatToDoParams);
+                                            getexecuteobject(p, howToDo, whatToDo, whatToDoFn,
                                                 function (err, executeobject) {
                                                     // If error, bounce out
                                                     if (err && Object.keys(err).length > 0) {
                                                         callback(err, executeobject);
                                                     } else {
                                                         try {
-                                                            var parameters = executeobject.params;
+                                                            //var parameters = executeobject.params;
                                                             // always will get something back, even if errorfn...so always execute and store resutls
                                                             proxyprinttodiv("executelist executeobject: ", executeobject, 11);
                                                             proxyprinttodiv("executelist executeobject.params: ", executeobject.params, 11);
                                                             proxyprinttodiv("executelist executeobject.targetfn: ", String(executeobject.targetfn), 9);
                                                             if (typeof executeobject.targetfn === 'function') { // there was a chance of a non function getting in here -- Joe
                                                                 //authcall(executeobject, command, function (err, securitycheck) {
-                                                                proxyprinttodiv(">>>>>> executelist executeobject.params: ", executeobject.params, 11);
+                                                                //proxyprinttodiv(">>>>>> executelist executeobject.params: ", executeobject.params, 11);
                                                                 // If error, bounce out
                                                                 if (err && Object.keys(err).length > 0) {
                                                                     callback(err, securitycheck);

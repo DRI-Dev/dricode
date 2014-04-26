@@ -6078,7 +6078,7 @@ exports.testfilternomatch1 = testfilternomatch1 = function testfilterkeymatch1(p
 
     exports.testhtmladd2 = testhtmladd2 = function testhtmladd2(params, callback){
         execute([{
-            "executethis":"getwidmaster",
+            "executethis":"getwid",
             "wid":"wid1"
         }],
         function (err, res) {
