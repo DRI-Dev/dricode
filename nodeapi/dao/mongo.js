@@ -18,8 +18,8 @@ var SkinStore = require('connect-mongoskin'),
     defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup,
     flatten = require('flat').flatten;
 
-console.log(defaultDatabaseurl);
 dbConnectionsManager[mongoDatabaseToLookup] = mongoskin.db(defaultDatabaseurl, settings.MONGODB_OPTIONS);
+// var adminConnection  = mongoskin.db(settings.BASE_DB_URL, settings.MONGODB_OPTIONS);
 
 
 // DAO method to fetch unique an entry to specified collection:: the entry to be fetched is also specified :: 
@@ -85,7 +85,7 @@ exports.mget = mget = function mget(objToFind, command, callback) {
 };
 
 exports.madd = madd = function madd(entityToAdd, command, callback) {
-    
+
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
@@ -155,33 +155,44 @@ exports.madd = madd = function madd(entityToAdd, command, callback) {
 };
 
 // manage multiple mongo database connections
+
 function getConnection(mongoDatabaseToLookup, callback) {
     var databaseConnection;
     var err;
     if (dbConnectionsManager[mongoDatabaseToLookup]) {
         databaseConnection = dbConnectionsManager[mongoDatabaseToLookup];
     } else {
-        databaseConnection = mongoskin.db(settings.MONGODB_URL + mongoDatabaseToLookup, settings.MONGODB_OPTIONS);
-        dbConnectionsManager[mongoDatabaseToLookup] = databaseConnection; // place in connections factory
-    }
+        // Use the admin database for the operation
+        var db = mongoskin.db("mongodb://localhost:27017/" + mongoDatabaseToLookup, settings.MONGODB_OPTIONS);
+        console.log(db);
+        var adminDb = db.admin();
 
-    if (!databaseConnection) {
-        err = "error in getting connection to " + mongoDatabaseToLookup;
+        // Add the new user to the admin database
+        adminDb.addUser('admin3', 'admin3', function(err, result) {
+
+            databaseConnection = mongoskin.db(settings.MONGODB_URL + mongoDatabaseToLookup, settings.MONGODB_OPTIONS);
+            dbConnectionsManager[mongoDatabaseToLookup] = databaseConnection; // place in connections factory
+        });
+
+
+        if (!databaseConnection) {
+            err = "error in getting connection to " + mongoDatabaseToLookup;
+        }
+        callback(err, databaseConnection);
     }
-    callback(err, databaseConnection);
 }
 
-function printLogs(fnname, input, output) {
+    function printLogs(fnname, input, output) {
 
-    // console.log(" DAO :: "+fnname+"  TABLE _ NAME is " + schemaToLookup);
-    // console.log(" DAO :: "+fnname+"  DATABASE _ NAME is " + databaseToLookup);
-    // console.log(" DAO :: "+fnname+"  MONGO _ DATABASE _ NAME is " + mongoDatabaseToLookup);
-    // console.log(' DAO :: ***************************');
-    // console.log(' DAO :: >>>>>> ::: ' + fnname + ' begin ::: ');
-    // console.log(' DAO :: >>>>>> ::: inputs ::: ');
-    // console.log(' DAO :: ' + JSON.stringify(input));
-    // console.log(' DAO :: >>>>>> ::: output ::: ');
-    // console.log(' DAO :: ' + JSON.stringify(output));
-    // console.log(' DAO :: >>>>>> ::: ' + fnname + ' end ::: ');
-    // console.log(' DAO :: ***************************');
-}
+        // console.log(" DAO :: "+fnname+"  TABLE _ NAME is " + schemaToLookup);
+        // console.log(" DAO :: "+fnname+"  DATABASE _ NAME is " + databaseToLookup);
+        // console.log(" DAO :: "+fnname+"  MONGO _ DATABASE _ NAME is " + mongoDatabaseToLookup);
+        // console.log(' DAO :: ***************************');
+        // console.log(' DAO :: >>>>>> ::: ' + fnname + ' begin ::: ');
+        // console.log(' DAO :: >>>>>> ::: inputs ::: ');
+        // console.log(' DAO :: ' + JSON.stringify(input));
+        // console.log(' DAO :: >>>>>> ::: output ::: ');
+        // console.log(' DAO :: ' + JSON.stringify(output));
+        // console.log(' DAO :: >>>>>> ::: ' + fnname + ' end ::: ');
+        // console.log(' DAO :: ***************************');
+    }

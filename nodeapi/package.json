@@ -24,7 +24,8 @@
     "sync": "~0.2.2",
     "superagent": "~0.15.7",
     "request": "~2.27.0",
-    "walk": "~2.2.1"
+    "walk": "~2.2.1",
+    "flat": "~1.2.1"
   },
   "devDependencies": {},
   "scripts": {

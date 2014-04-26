@@ -26,11 +26,17 @@ exports.serverconfig = serverconfig = {
     SERVICE_URL: 'http://localhost:3009/'
 }
 
+// DB_USER_ID: 'trugate',
+// DB_USER_PWD: 'tempalte-77',
+// DB_HOST_NAME:'ds045627.mongolab.com:45627',
 
-// MONGODB_URL: 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/',
+var DB_USER_ID = 'trugate';
+var DB_USER_PWD ='tempalte-77';
+var DB_HOST_NAME ='localhost:27017';
+var DB_URL = 'mongodb:'+DB_USER_ID+':'+DB_USER_PWD+'//:@'+DB_HOST_NAME+'/';
+exports.BASE_DB_URL = 'mongodb://:@'+DB_HOST_NAME+'/admin';
 exports.settings = settings = {
-
-    MONGODB_URL: 'mongodb://localhost:27017/',
+    MONGODB_URL: DB_URL,
     MONGODB_OPTIONS: {
         'safe': true,
         'server': true,
