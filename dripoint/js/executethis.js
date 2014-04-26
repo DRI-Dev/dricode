@@ -918,6 +918,7 @@
             //var err = {};
             var err = null;
             // if command.status=fail, check between dothis, do not execute
+
             if (params && ((!params.command) || (params.command && params.command.status !== 'fail'))) {
 
                 var whatToDoList,
@@ -1015,9 +1016,11 @@
 
     // based on a target fn and params this fn will create a sorted list of what to do -- params will be in list
 
-    function CreateDoList(params, configtarget, configfn) {
+    function CreateDoList(inparams, configtarget, configfn) {
         try {
             var inboundparms_115 = arguments;
+            var params = {};
+            extend(true, params, inparams)
 
             if ((params === undefined) || (params === "")) {
                 params = {};

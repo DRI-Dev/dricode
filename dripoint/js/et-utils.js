@@ -378,9 +378,9 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
 };
 //function getfrommongo(inputWidgetObject) {
 exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
-    //function find_and_replace_addthis(obj) {
-    //proxyprinttodiv('<<< Get_Clean find_and_replace_addthis obj >>>', obj, 38);
-    //     version below recurses
+    // function find_and_replace_addthis(obj) {
+    //     proxyprinttodiv('<<< Get_Clean find_and_replace_addthis obj >>>', obj, 38);
+    //     //version below recurses
     //     var _in_obj;
     //     if (obj instanceof Array) {
     //         _in_obj = [];
@@ -483,7 +483,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                 var keydatabase=getdatabaseinforesult.keydatabase;
                 proxyprinttodiv('Function getwid keydatabase', keydatabase,12);
                 output = keydatabase[widName];
-
+                proxyprinttodiv('Function getwid output', output,99);
                 if (!keepaddthis) { // i.e. remove add this
                     if (output.hasOwnProperty("addthis")) {
                         var _add_this = output["addthis"];
