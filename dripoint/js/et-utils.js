@@ -312,16 +312,16 @@ proxyprinttodiv('Function updatewid command  -- add', command, 99);
 
             for (var record in database) {
                 proxyprinttodiv('Function addtomongo database[record]', database[record],12);
-                if (database[record]["wid"] == widName) {
+                if (database[record]["wid"] === widName) {
 
 //  this is so we can have multiple db in one record—i.e read the record, delete only the db we are updating,
  // extend, save
 
 
                     var currentrecord = database[record];
-                    delete currentrecord.db;
+                    delete currentrecord[db];
                     if (datamethod === "upsert") {
-                        extend(true, addedobject, currentrecord);
+                        addedobject = extend(true, currentrecord, addedobject);
                     }
                     else if (datamethod === "insert") {
                         // do nothing -- default
@@ -417,7 +417,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
     //     return _in_obj;
     // }
 
-//    try {
+    try {
         var originalarguments = {};
         extend(true, originalarguments, inputWidgetObject);
         var err = null;
@@ -489,9 +489,18 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
             if ((datastore==='localstorage') || (datastore==='localstore')) {
                 var keydatabase=getdatabaseinforesult.keydatabase;
                 proxyprinttodiv('Function getwid keydatabase', keydatabase,12);
+// <<<<<<< HEAD
                 output = keydatabase[widName] || {};
                 proxyprinttodiv('Function getwid output', output,12);
                 if (!keepaddthis) { // i.e. remove add this
+// =======
+//                 output = keydatabase[widName];
+
+//                 if (!output) {output={}}
+
+//                 proxyprinttodiv('Function getwid output', output,99);
+//                 if (!keepaddthis && output) { // i.e. remove add this
+// >>>>>>> 66b6f3629d4808991ac8b984a89b65a4b9249391
                     if (output.hasOwnProperty("addthis")) {
                         var _add_this = output["addthis"];
                         delete output["addthis"];
@@ -512,32 +521,39 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
 
                 if (config.configuration.environment==="local") {
                     getfromangular(inputWidgetObject, function (err, resultobject) {
-                        if (!resultobject) { resultobject={}; }
-                        proxyprinttodiv('Function getwid from angularstorage', resultobject,12);
-                        output=extend(true, resultobject, output);
-                        proxyprinttodiv('Function getwid output', output,12);
-
-                        // make sure data is bundled properly for convertfromdriformat()
-                        for (var prop in output) {
-                            if (output.hasOwnProperty(prop)) {
-                                if (prop !== 'wid' && prop !== 'metadata' && prop !== 'converttodriformat' && prop !== db) {
-                                //if (prop !== 'wid' && prop !== 'metadata' && prop !== 'converttodriformat' && prop !== 'data') {
-                                    if (!output[db]) { output[db] = {}; }
-                                    output[db][prop] = output[prop];
-                                    delete output[prop];
+                        if (resultobject) { 
+                            resultobject={}; 
+                            if (output) { // resultobject && output
+                                output=extend(true, resultobject, output);
+                                }
+                            else { // resultobject && !output
+                                output=resultobject
                                 }
                             }
-                        }
+                            // if not resultobject then just leave output alone                         
 
-                        output=convertfromdriformat(output, command);
-                        proxyprinttodiv('Function getwid command.convertmethod >> 1', command.convertmethod,12);
-                        if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
-                            output =  ConvertFromDOTdri(output);
-                        }
+                        if (output) {
+                        // make sure data is bundled properly for convertfromdriformat()
+                            for (var prop in output) {
+                                if (output.hasOwnProperty(prop)) {
+                                    if (prop !== 'wid' && prop !== 'metadata' && prop !== 'converttodriformat' && prop !== db) {
+                                    //if (prop !== 'wid' && prop !== 'metadata' && prop !== 'converttodriformat' && prop !== 'data') {
+                                        if (!output[db]) { output[db] = {}; }
+                                        output[db][prop] = output[prop];
+                                        delete output[prop];
+                                    }
+                                }
+                            }
+                            output=convertfromdriformat(output, command);
+                            proxyprinttodiv('Function getwid command.convertmethod >> 1', command.convertmethod,12);
+                            if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
+                                output =  ConvertFromDOTdri(output);
+                                }
+                            } // if output
                         proxyprinttodiv('Function datastore command -- get output 1', output, 12);
                         callback(err, output);
                     });
-                } else {
+                } else { // if not local...this case makes no sense
                     output=convertfromdriformat(output, command);
                     if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
                         output =  ConvertFromDOTdri(output);
@@ -548,6 +564,14 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
             }
             else if (datastore==='mongo') {
                 mget(inputWidgetObject, command, function (err, output) {
+                    if (!keepaddthis && output) { // i.e. remove add this
+                        if (output.hasOwnProperty("addthis")) {
+                            var _add_this = output["addthis"];
+                            delete output["addthis"];
+                            output = extend(true, output,_add_this)
+                            }
+                        //output = find_and_replace_addthis(output) ;
+                    }
                     output=convertfromdriformat(output, command);
                     if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
                         output =  ConvertFromDOTdri(output);
@@ -556,7 +580,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                     callback(err, output);
                     //callback(err, resultobject);
                 });
-            } else {
+            } else { // if not mongo
                 output=convertfromdriformat(output, command);
                 if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
                     output =  ConvertFromDOTdri(output);
@@ -569,13 +593,13 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
             callback(err, output);
         }
     //callback(err, output);
-//    } // end try
-//    catch (err) {
-//        var finalobject = createfinalobject({"result": "updatewid"}, {}, "updatewid", err, originalarguments);
-//        console.log('** Error Caught in the getwid() function in et-utils.js ** => ' + err);
-//        console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
-//        callback(finalobject.err, finalobject.res);
-//    }
+    } // end try
+    catch (err) {
+        var finalobject = createfinalobject({"result": "updatewid"}, {}, "updatewid", err, originalarguments);
+        console.log('** Error Caught in the getwid() function in et-utils.js ** => ' + err);
+        console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
+        callback(finalobject.err, finalobject.res);
+    }
 }; //End of getfrommongo function
 
 
@@ -1603,7 +1627,7 @@ function getRandomNumberByLength(length) {
     };
 
 
-    exports.getnewwid = getnewwid = function getnewwid(parameters, callback) {
+/*    exports.getnewwid = getnewwid = function getnewwid(parameters, callback) {
         var inbound_parameters = arguments;
         try {
             //potentialwid++;
@@ -1653,7 +1677,7 @@ function getRandomNumberByLength(length) {
             console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
             callback(finalobject.err, finalobject.res);
         }
-    };
+    };*/
 
     // Strips the numbers from hash keys. It returns 3 arrays: input list, index list, and original input list.
     // Used by addWidParameters.
