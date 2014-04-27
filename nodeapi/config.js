@@ -28,12 +28,12 @@ exports.serverconfig = serverconfig = {
 
 // DB settings --- 5 hardcoded databases for now :: last 4 databases are right now local databases can be changed to any domain
 exports.settings = settings = {
-            // "DB_HOST_NAME": 'ds045627.mongolab.com:45627'
+            // "DB_HOST_NAME": 'localhost:27017'
     DB_SET: {
         "wikiwallettesting": {
             "DB_USER_ID": "trugate",
             "DB_USER_PWD": "tempalte-77",
-            "DB_HOST_NAME": 'localhost:27017'
+            "DB_HOST_NAME": 'ds045627.mongolab.com:45627'
         },
         "wikiwallettesting1": {
             "DB_USER_ID": "trugate1",
@@ -63,18 +63,3 @@ exports.settings = settings = {
         'pool': 5
     }
 };
-
-
-// // MONGODB_URL: 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/',
-// // MONGODB_URL: 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/',
-// exports.settings = settings = {
-
-//     MONGODB_URL: 'mongodb://trugate:tempalte-77@localhost:27017/',
-//     MONGODB_OPTIONS: {
-//         'safe': true,
-//         'server': true,
-//         'auto_reconnect': true,
-//         'pool': 5
-//     }
-
-// };

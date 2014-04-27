@@ -84,13 +84,144 @@ exports.mget = mget = function mget(objToFind, command, callback) {
     });
 };
 
+
+
+// // **** ADDED BY SAURABH *** SHALL BE USED INSTEAD OF ABOVE madd
+// exports.madd = madd = function madd(entityToAdd, command, callback) {
+//     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
+//     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
+//     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
+
+//     console.log(">>>>>>> COMMAND IS " + JSON.stringify(command));
+
+//     var widVal = (entityToAdd['wid']);
+//     if (!widVal) {
+//         widVal = (entityToAdd['Wid']);
+//     }
+
+//     mget({
+//         "wid": widVal
+//     }, command, function(err, returnedObject) {
+
+
+//         // check if object is found
+//         if (returnedObject) {
+//             mupdate(returnedObject, entityToAdd, command, {
+//                 "upsert": true
+//             }, function(err, updatedObj) {
+//                 printLogs('madd', entityToAdd, updatedObj);
+//                 callback(err, updatedObj);
+//             });
+//         } else {
+//             maddnew(entityToAdd, command, function(err, addedObj) {
+//                 printLogs('madd', entityToAdd, addedObj);
+//                 callback(err, addedObj);
+//             });
+//         }
+//     });
+// };
+
+
+// DAO method to add an entry to specified schema:: the entry to be added is also specified :: 
+// the callback function on succesful addition is also specified
+exports.maddnew = maddnew = function maddnew(objToAdd, command, callback) {
+    (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
+    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
+    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
+
+    getConnection(mongoDatabaseToLookup, function(err, db) {
+        db.collection(schemaToLookup).insert(objToAdd, function(err, res) {
+            if (err) {
+                callback(err, {
+                    etstatus: {
+                        status: "adderrror"
+                    }
+                });
+            } else {
+                callback(err, objToAdd);
+            }
+        });
+    });
+};
+
+// DAO method to aupdate
+exports.mupdate = mupdate = function mupdate(finder, objToAdd, command, options, callback) {
+    (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
+    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
+    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
+    // updateData = objToAdd;
+    getConnection(mongoDatabaseToLookup, function(err, db) {
+        // var updateData = ConvertToDOTdri(objToAdd);
+        console.log('mupdate hit! ' + JSON.stringify(objToAdd));
+        db.collection(schemaToLookup).update({
+            "wid": finder['wid']
+        }, {
+            "$set": objToAdd
+        }, options, function(err, res) {
+            if (err) {
+                callback(err, {
+                    etstatus: {
+                        status: "adderrror"
+                    }
+                });
+            } else {
+                callback(err, objToAdd);
+            }
+        });
+    });
+};
+
+
+
+
+// manage multiple mongo database connections
+
+function getConnection(mongoDatabaseToLookup, callback) {
+    var databaseConnection;
+    var err;
+    if (dbConnectionsManager[mongoDatabaseToLookup]) {
+        databaseConnection = dbConnectionsManager[mongoDatabaseToLookup];
+    } else {
+        var DB_HOST_NAME = settings.DB_SET[mongoDatabaseToLookup].DB_HOST_NAME;
+        var DB_USER_ID = settings.DB_SET[mongoDatabaseToLookup].DB_USER_ID;
+        var DB_USER_PWD = settings.DB_SET[mongoDatabaseToLookup].DB_USER_PWD;
+        var DB_URL = 'mongodb://' + DB_USER_ID + ':' + DB_USER_PWD + '@' + DB_HOST_NAME + '/' + mongoDatabaseToLookup;
+        console.log('DATABSE URL is ' + DB_URL);
+        databaseConnection = mongoskin.db(DB_URL, settings.MONGODB_OPTIONS);
+        dbConnectionsManager[mongoDatabaseToLookup] = databaseConnection; // place in connections factory
+    }
+
+    if (!databaseConnection) {
+        err = "error in getting connection to " + mongoDatabaseToLookup;
+    }
+    callback(err, databaseConnection);
+}
+
+function printLogs(fnname, input, output) {
+
+    // console.log(" DAO :: "+fnname+"  TABLE _ NAME is " + schemaToLookup);
+    // console.log(" DAO :: "+fnname+"  DATABASE _ NAME is " + databaseToLookup);
+    // console.log(" DAO :: "+fnname+"  MONGO _ DATABASE _ NAME is " + mongoDatabaseToLookup);
+    // console.log(' DAO :: ***************************');
+    // console.log(' DAO :: >>>>>> ::: ' + fnname + ' begin ::: ');
+    // console.log(' DAO :: >>>>>> ::: inputs ::: ');
+    // console.log(' DAO :: ' + JSON.stringify(input));
+    // console.log(' DAO :: >>>>>> ::: output ::: ');
+    // console.log(' DAO :: ' + JSON.stringify(output));
+    // console.log(' DAO :: >>>>>> ::: ' + fnname + ' end ::: ');
+    // console.log(' DAO :: ***************************');
+}
+
+
+
 exports.madd = madd = function madd(entityToAddIn, command, callback) {
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-    console.log('>>>>database >>> '+JSON.stringify(command));
-    var entityToAdd =entityToAddIn;
+    console.log('>>>>database >>> ' + JSON.stringify(command));
+
+    var entityToAdd = entityToAddIn;
     // var entityToAdd = {};
     // extend(true,entityToAdd, entityToAddIn);
     // console.log('>>>>entityToAdd >>> '+JSON.stringify(entityToAdd));
@@ -100,12 +231,12 @@ exports.madd = madd = function madd(entityToAddIn, command, callback) {
     // flatten out data for mongo call
 
 
-    entityToAdd[databaseToLookup] = flatten(entityToAdd[databaseToLookup], {
-        safe: true
-    });
+    // entityToAdd[databaseToLookup] = flatten(entityToAdd[databaseToLookup], {
+    //     safe: true
+    // });
 
 
-    console.log('>>>> entity added is ' +JSON.stringify(entityToAdd));
+    console.log('>>>> entity added is ' + JSON.stringify(entityToAdd));
 
     var addOptions = {};
 
@@ -155,54 +286,18 @@ exports.madd = madd = function madd(entityToAddIn, command, callback) {
         };
     }
 
-    getConnection(mongoDatabaseToLookup, function(err, db) {
-        db.collection(schemaToLookup).update(widVal, objToUpdate, addOptions, function(err, res) {
-            if (err) {
-                console.log(" error in updating " + err);
-                printLogs('madd', entityToAdd, {});
-                callback(err, {});
-            } else {
-                printLogs('madd', entityToAdd, entityToAdd);
-                callback(err, entityToAdd);
-            }
-        });
+    mget(widVal, command, function(err, returnedObject) {
+        // check if object is found
+        if (returnedObject) {
+            mupdate(returnedObject, entityToAdd, command, addOptions, function(err, updatedObj) {
+                printLogs('madd', entityToAdd, updatedObj);
+                callback(err, updatedObj);
+            });
+        } else {
+            maddnew(entityToAdd, command, function(err, addedObj) {
+                printLogs('madd', entityToAdd, addedObj);
+                callback(err, addedObj);
+            });
+        }
     });
 };
-
-// manage multiple mongo database connections
-
-function getConnection(mongoDatabaseToLookup, callback) {
-    var databaseConnection;
-    var err;
-    if (dbConnectionsManager[mongoDatabaseToLookup]) {
-        databaseConnection = dbConnectionsManager[mongoDatabaseToLookup];
-    } else {
-        var DB_HOST_NAME = settings.DB_SET[mongoDatabaseToLookup].DB_HOST_NAME;
-        var DB_USER_ID = settings.DB_SET[mongoDatabaseToLookup].DB_USER_ID;
-        var DB_USER_PWD = settings.DB_SET[mongoDatabaseToLookup].DB_USER_PWD;
-        var DB_URL = 'mongodb://' + DB_USER_ID + ':' + DB_USER_PWD + '@' + DB_HOST_NAME + '/' + mongoDatabaseToLookup;
-        console.log('DATABSE URL is '+ DB_URL);
-        databaseConnection = mongoskin.db(DB_URL , settings.MONGODB_OPTIONS);
-        dbConnectionsManager[mongoDatabaseToLookup] = databaseConnection; // place in connections factory
-    }
-
-    if (!databaseConnection) {
-        err = "error in getting connection to " + mongoDatabaseToLookup;
-    }
-    callback(err, databaseConnection);
-}
-
-function printLogs(fnname, input, output) {
-
-    // console.log(" DAO :: "+fnname+"  TABLE _ NAME is " + schemaToLookup);
-    // console.log(" DAO :: "+fnname+"  DATABASE _ NAME is " + databaseToLookup);
-    // console.log(" DAO :: "+fnname+"  MONGO _ DATABASE _ NAME is " + mongoDatabaseToLookup);
-    // console.log(' DAO :: ***************************');
-    // console.log(' DAO :: >>>>>> ::: ' + fnname + ' begin ::: ');
-    // console.log(' DAO :: >>>>>> ::: inputs ::: ');
-    // console.log(' DAO :: ' + JSON.stringify(input));
-    // console.log(' DAO :: >>>>>> ::: output ::: ');
-    // console.log(' DAO :: ' + JSON.stringify(output));
-    // console.log(' DAO :: >>>>>> ::: ' + fnname + ' end ::: ');
-    // console.log(' DAO :: ***************************');
-}

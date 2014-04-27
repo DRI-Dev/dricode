@@ -6454,3 +6454,22 @@ exports.ettestag9000 = ettestag9000 = function ettestag9000(params, callback) {
              })
         });
 }
+
+exports.testenv = testenv = function testenv(params,callback){
+        execute([{
+            "executethis":"updatewid",
+            "wid":"codydto",
+            "a":"b",
+            "command": {"environment": {"databasetable": "test"}}
+            }],
+            function (err,res) {
+                proxyprinttodiv('testenv result: ', res, 99);
+                // var result = logverify("cody1_result", res[3], [{
+                //     "wid": "cody1",
+                //     "metadata.method": "codydto",
+                //     "month": "June",
+                //     "day": "9th"
+                // }]);
+                callback(err,res);
+            });
+    }

@@ -134,7 +134,7 @@ exports.copywid = copywid = copywid = function copywid(inputobj, callback) {
                 "command": {
                     "datastore": inputobj.command.environment.datastore,
                     "collection":inputobj.command.environment.collection,
-                    "keycollection":inputobj.command.environment.collection + "key",
+                    //"keycollection":inputobj.command.environment.collection + "key",
                     "db":inputobj.command.environment.db,
                     "databasetable":inputobj.command.environment.databasetable
                 }
@@ -242,17 +242,18 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
                 "command": {
                     "datastore": inputWidgetObject.command.environment.datastore,
                     "collection":inputWidgetObject.command.environment.collection,
-                    "keycollection":inputWidgetObject.command.environment.collection + "key",
+                    //"keycollection":inputWidgetObject.command.environment.collection + "key",
                     "db":inputWidgetObject.command.environment.db,
                     "databasetable":inputWidgetObject.command.environment.databasetable
                 }
             }, {},
             false).output;
+                proxyprinttodiv('Function datastore inputWidgetObject I', inputWidgetObject, 99);
         var filter_data = getcommand(inputWidgetObject, {
                 "command": {
                     "datastore": config.configuration.defaultdatastore,
                     "collection":config.configuration.defaultcollection,
-                    "keycollection":config.configuration.defaultcollection + "key",
+                    //"keycollection":config.configuration.defaultcollection + "key",
                     "db":config.configuration.defaultdb,
                     "databasetable":config.configuration.defaultdatabasetable,
                     "convertmethod":"toobject",
@@ -275,6 +276,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
             true);
 
         var command = filter_data.filteredobject.command;
+        proxyprinttodiv('Function updatewid command  -- get', command, 12);
         proxyprinttodiv('Function datastore inputWidgetObject', inputWidgetObject, 12);
         proxyprinttodiv('Function datastore filter_data', filter_data, 12);
         proxyprinttodiv('Function datastore command', command, 12);
@@ -300,6 +302,8 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
                 //collection=getdatabaseinforesult.collection;
                 //keycollection=getdatabaseinforesult.keycollection;
 
+proxyprinttodiv('Function datastore command -- add inputWidgetObject addedobject', addedobject, 99);
+proxyprinttodiv('Function updatewid command  -- add', command, 99);
             if ((datastore==='localstorage') || (datastore==='localstore')) {
                 database=getdatabaseinforesult.database;
                 keydatabase=getdatabaseinforesult.keydatabase;
@@ -431,7 +435,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                 "command": {
                     "datastore": inputWidgetObject.command.environment.datastore,
                     "collection":inputWidgetObject.command.environment.collection,
-                    "keycollection":inputWidgetObject.command.environment.collection + "key",
+                    //"keycollection":inputWidgetObject.command.environment.collectionkey,
                     "db":inputWidgetObject.command.environment.db,
                     "databasetable":inputWidgetObject.command.environment.databasetable
                 }
@@ -441,7 +445,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                 "command": {
                     "datastore": config.configuration.defaultdatastore,
                     "collection":config.configuration.defaultcollection,
-                    "keycollection":config.configuration.defaultcollection + "key",
+                    //"keycollection":config.configuration.defaultcollection + "key",
                     "db":config.configuration.defaultdb,
                     "databasetable":config.configuration.defaultdatabasetable,
                     "convertmethod":"toobject",
@@ -463,6 +467,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
             },
             true);
         var command = filter_data.filteredobject.command;
+        proxyprinttodiv('Function getwid command  -- get', command, 12);
         proxyprinttodiv('Function datastore command -- get', filter_data, 12);
         proxyprinttodiv('Function datastore command -- get inputWidgetObject', inputWidgetObject, 12);
         var datastore= command.datastore;
@@ -479,11 +484,13 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
             proxyprinttodiv('Function getwid getdatabaseinforesult', getdatabaseinforesult,12);
             //var datastore = getdatabaseinforesult.datastore;
             //var db = getdatabaseinforesult.db;
+        //proxyprinttodiv('Function getwid command  -- get', command, 99);
+        //proxyprinttodiv('Function datastore command -- get inputWidgetObject', inputWidgetObject, 99);
             if ((datastore==='localstorage') || (datastore==='localstore')) {
                 var keydatabase=getdatabaseinforesult.keydatabase;
                 proxyprinttodiv('Function getwid keydatabase', keydatabase,12);
                 output = keydatabase[widName] || {};
-                proxyprinttodiv('Function getwid output', output,99);
+                proxyprinttodiv('Function getwid output', output,12);
                 if (!keepaddthis) { // i.e. remove add this
                     if (output.hasOwnProperty("addthis")) {
                         var _add_this = output["addthis"];

@@ -52,17 +52,30 @@
 
 //&&
         function checkenviornment(environment, cb) {
+            //cb(null,environment);
             if (config.configuration.environment==="local") {
                 //getwid({"wid":"environment"}, function (err, res) {
                 environment.wid="environment"
+                environment.command = {
+                    "datastore": config.configuration.defaultdatastore,
+                    "collection":config.configuration.defaultcollection,
+                    //"keycollection":config.configuration.defaultcollection + "key",
+                    "db":config.configuration.defaultdb,
+                    "databasetable":config.configuration.defaultdatabasetable,
+                    "convertmethod":"toobject",
+                    "datamethod":"upsert"
+                    }
+
                 updatewid(environment, function (err, returnedenvironment) {    // update also does a get
                     if (Object.keys(returnedenvironment).length === 0) {
                         returnedenvironment.accesstoken=createNewGuid();
                         updatewid(returnedenvironment, function (err, res) {
+                            res=res[config.configuration.defaultdb]
                             cb(null, res)
                         });
                         }
                     else { // if ac existed
+                        returnedenvironment=returnedenvironment[config.configuration.defaultdb]
                         cb(null, returnedenvironment)
                         }
                     });
@@ -194,7 +207,7 @@
                                 "resultparameters": "x",
                                 "result": "x",
                                 "execute": "x",
-                                "environment": "x",
+                                //"environment": "x",
                                 "inherit": "x",
                                 "executefilter": "x",
                                 "executelimit": "x",
@@ -224,8 +237,12 @@
                     proxyprinttodiv('>>>> execute command', command, 11, true);
                     proxyprinttodiv('>>>> execute inboundparms', inboundparms, 11, true);
 
-                    checkenviornment(command.environment, function (err, res) {
-                    command.environment=res;
+checkenviornment(inboundparms.command.environment, function (err, res) {
+    inboundparms.command.environment=res
+    proxyprinttodiv('>>>> execute inboundparms', inboundparms, 99);
+    //if (!inboundparms.command.environment) {delete inboundparms.command.environment}
+                    //checkenviornment(command.environment, function (err, res) {
+                    //command.environment=res;
 
                     if (command.multipleexecute.length > 0) {
                         proxyprinttodiv("execute - array params received ", inboundparms, 11);
@@ -278,6 +295,10 @@
                                                     callback(command.queueparameters, command.overallresultparameters);
                                                 } else {
 
+if (command.overallresultparameters.command) {
+    if (command.overallresultparameters.command.environment) {delete command.overallresultparameters.command.environment}
+    if (Object.keys(command.overallresultparameters.command).length ===0) {delete command.overallresultparameters.command}
+    }
                                                     proxyprinttodiv("execute - command.resultparameters ****", command.resultparameters, 11);
                                                     if (command.adopt) {
                                                         var copyOfInheritData = {};
