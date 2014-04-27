@@ -26,22 +26,55 @@ exports.serverconfig = serverconfig = {
     SERVICE_URL: 'http://localhost:3009/'
 }
 
-// DB_USER_ID: 'trugate',
-// DB_USER_PWD: 'tempalte-77',
-// DB_HOST_NAME:'ds045627.mongolab.com:45627',
-
-var DB_USER_ID = 'trugate';
-var DB_USER_PWD ='tempalte-77';
-var DB_HOST_NAME ='localhost:27017';
-var DB_URL = 'mongodb:'+DB_USER_ID+':'+DB_USER_PWD+'//:@'+DB_HOST_NAME+'/';
-exports.BASE_DB_URL = 'mongodb://:@'+DB_HOST_NAME+'/admin';
+// DB settings --- 5 hardcoded databases for now :: last 4 databases are right now local databases can be changed to any domain
 exports.settings = settings = {
-    MONGODB_URL: DB_URL,
+            // "DB_HOST_NAME": 'ds045627.mongolab.com:45627'
+    DB_SET: {
+        "wikiwallettesting": {
+            "DB_USER_ID": "trugate",
+            "DB_USER_PWD": "tempalte-77",
+            "DB_HOST_NAME": 'localhost:27017'
+        },
+        "wikiwallettesting1": {
+            "DB_USER_ID": "trugate1",
+            "DB_USER_PWD": "tempalte-78",
+            "DB_HOST_NAME": 'localhost:27017'
+        },
+        "wikiwallettesting2": {
+            "DB_USER_ID": "trugate2",
+            "DB_USER_PWD": "tempalte-79",
+            "DB_HOST_NAME": 'localhost:27017'
+        },
+        "wikiwallettesting3": {
+            "DB_USER_ID": "trugate",
+            "DB_USER_PWD": "tempalte-77",
+            "DB_HOST_NAME": 'localhost:27017'
+        },
+        "wikiwallettesting4": {
+            "DB_USER_ID": "trugate",
+            "DB_USER_PWD": "tempalte-77",
+            "DB_HOST_NAME": 'localhost:27017'
+        }
+    },
     MONGODB_OPTIONS: {
         'safe': true,
         'server': true,
         'auto_reconnect': true,
         'pool': 5
     }
-
 };
+
+
+// // MONGODB_URL: 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/',
+// // MONGODB_URL: 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/',
+// exports.settings = settings = {
+
+//     MONGODB_URL: 'mongodb://trugate:tempalte-77@localhost:27017/',
+//     MONGODB_OPTIONS: {
+//         'safe': true,
+//         'server': true,
+//         'auto_reconnect': true,
+//         'pool': 5
+//     }
+
+// };

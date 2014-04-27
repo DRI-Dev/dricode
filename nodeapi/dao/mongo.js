@@ -15,11 +15,11 @@ var SkinStore = require('connect-mongoskin'),
     databaseToLookup = config.configuration.defaultdb,
     mongoDatabaseToLookup = config.configuration.defaultdatabsaetable,
     dbConnectionsManager = {},
-    defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup,
+    // defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup,
     flatten = require('flat').flatten;
 
-dbConnectionsManager[mongoDatabaseToLookup] = mongoskin.db(defaultDatabaseurl, settings.MONGODB_OPTIONS);
-// var adminConnection  = mongoskin.db(settings.BASE_DB_URL, settings.MONGODB_OPTIONS);
+// console.log(defaultDatabaseurl);
+// dbConnectionsManager[mongoDatabaseToLookup] = mongoskin.db(defaultDatabaseurl, settings.MONGODB_OPTIONS);
 
 
 // DAO method to fetch unique an entry to specified collection:: the entry to be fetched is also specified :: 
@@ -84,18 +84,33 @@ exports.mget = mget = function mget(objToFind, command, callback) {
     });
 };
 
-exports.madd = madd = function madd(entityToAdd, command, callback) {
-
+exports.madd = madd = function madd(entityToAddIn, command, callback) {
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
+    console.log('>>>>database >>> '+JSON.stringify(command));
+    var entityToAdd =entityToAddIn;
+    // var entityToAdd = {};
+    // extend(true,entityToAdd, entityToAddIn);
+    // console.log('>>>>entityToAdd >>> '+JSON.stringify(entityToAdd));
+
+    // delete entityToAdd['metadata']['date'];
+    // delete entityToAdd['metadata']['expirationdate'];
     // flatten out data for mongo call
-    entityToAdd = flatten(entityToAdd, {safe:true});
+
+
+    entityToAdd[databaseToLookup] = flatten(entityToAdd[databaseToLookup], {
+        safe: true
+    });
+
+
+    console.log('>>>> entity added is ' +JSON.stringify(entityToAdd));
 
     var addOptions = {};
 
     var widVal = (entityToAdd['wid']);
+
 
     widVal = {
         "wid": widVal
@@ -162,37 +177,32 @@ function getConnection(mongoDatabaseToLookup, callback) {
     if (dbConnectionsManager[mongoDatabaseToLookup]) {
         databaseConnection = dbConnectionsManager[mongoDatabaseToLookup];
     } else {
-        // Use the admin database for the operation
-        var db = mongoskin.db("mongodb://localhost:27017/" + mongoDatabaseToLookup, settings.MONGODB_OPTIONS);
-        console.log(db);
-        var adminDb = db.admin();
-
-        // Add the new user to the admin database
-        adminDb.addUser('admin3', 'admin3', function(err, result) {
-
-            databaseConnection = mongoskin.db(settings.MONGODB_URL + mongoDatabaseToLookup, settings.MONGODB_OPTIONS);
-            dbConnectionsManager[mongoDatabaseToLookup] = databaseConnection; // place in connections factory
-        });
-
-
-        if (!databaseConnection) {
-            err = "error in getting connection to " + mongoDatabaseToLookup;
-        }
-        callback(err, databaseConnection);
+        var DB_HOST_NAME = settings.DB_SET[mongoDatabaseToLookup].DB_HOST_NAME;
+        var DB_USER_ID = settings.DB_SET[mongoDatabaseToLookup].DB_USER_ID;
+        var DB_USER_PWD = settings.DB_SET[mongoDatabaseToLookup].DB_USER_PWD;
+        var DB_URL = 'mongodb://' + DB_USER_ID + ':' + DB_USER_PWD + '@' + DB_HOST_NAME + '/' + mongoDatabaseToLookup;
+        console.log('DATABSE URL is '+ DB_URL);
+        databaseConnection = mongoskin.db(DB_URL , settings.MONGODB_OPTIONS);
+        dbConnectionsManager[mongoDatabaseToLookup] = databaseConnection; // place in connections factory
     }
+
+    if (!databaseConnection) {
+        err = "error in getting connection to " + mongoDatabaseToLookup;
+    }
+    callback(err, databaseConnection);
 }
 
-    function printLogs(fnname, input, output) {
+function printLogs(fnname, input, output) {
 
-        // console.log(" DAO :: "+fnname+"  TABLE _ NAME is " + schemaToLookup);
-        // console.log(" DAO :: "+fnname+"  DATABASE _ NAME is " + databaseToLookup);
-        // console.log(" DAO :: "+fnname+"  MONGO _ DATABASE _ NAME is " + mongoDatabaseToLookup);
-        // console.log(' DAO :: ***************************');
-        // console.log(' DAO :: >>>>>> ::: ' + fnname + ' begin ::: ');
-        // console.log(' DAO :: >>>>>> ::: inputs ::: ');
-        // console.log(' DAO :: ' + JSON.stringify(input));
-        // console.log(' DAO :: >>>>>> ::: output ::: ');
-        // console.log(' DAO :: ' + JSON.stringify(output));
-        // console.log(' DAO :: >>>>>> ::: ' + fnname + ' end ::: ');
-        // console.log(' DAO :: ***************************');
-    }
+    // console.log(" DAO :: "+fnname+"  TABLE _ NAME is " + schemaToLookup);
+    // console.log(" DAO :: "+fnname+"  DATABASE _ NAME is " + databaseToLookup);
+    // console.log(" DAO :: "+fnname+"  MONGO _ DATABASE _ NAME is " + mongoDatabaseToLookup);
+    // console.log(' DAO :: ***************************');
+    // console.log(' DAO :: >>>>>> ::: ' + fnname + ' begin ::: ');
+    // console.log(' DAO :: >>>>>> ::: inputs ::: ');
+    // console.log(' DAO :: ' + JSON.stringify(input));
+    // console.log(' DAO :: >>>>>> ::: output ::: ');
+    // console.log(' DAO :: ' + JSON.stringify(output));
+    // console.log(' DAO :: >>>>>> ::: ' + fnname + ' end ::: ');
+    // console.log(' DAO :: ***************************');
+}
