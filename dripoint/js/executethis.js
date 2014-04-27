@@ -65,8 +65,9 @@
                     "convertmethod":"toobject",
                     "datamethod":"upsert"
                     }
-
-                updatewid(environment, function (err, returnedenvironment) {    // update also does a get
+                proxyprinttodiv("execute - environment", environment, 11);
+                updatewid(environment, function (err, returnedenvironment) { 
+                    proxyprinttodiv("execute - environment II", environment, 11);   // update also does a get
                     if (Object.keys(returnedenvironment).length === 0) {
                         returnedenvironment.accesstoken=createNewGuid();
                         updatewid(returnedenvironment, function (err, res) {
@@ -75,6 +76,7 @@
                         });
                         }
                     else { // if ac existed
+                        proxyprinttodiv("execute - environment III", environment, 11);
                         returnedenvironment=returnedenvironment[config.configuration.defaultdb]
                         cb(null, returnedenvironment)
                         }
@@ -154,7 +156,7 @@
                                     "errorrule": "nullwaterfall"
                                 },
                                 "duringmultiple": {
-                                    "overallresultparametersrule": "pusharray",
+                                    "overallresultparametersrule": "pusharray",   // pushobject
                                     "queueparametersrule": "waterfall",
                                     "resultrule": "waterfall",
                                     "errorrule": "nullwaterfall"
@@ -231,16 +233,19 @@
                         },
                         true);
 
-                    proxyprinttodiv('>>>> execute filter_data', filter_data, 11, true);
-                    inboundparms = extend(true, filter_data.output, command.parameters);
-                    command = filter_data.filteredobject.command;
-                    proxyprinttodiv('>>>> execute command', command, 11, true);
-                    proxyprinttodiv('>>>> execute inboundparms', inboundparms, 11, true);
+                proxyprinttodiv('>>>> execute filter_data', filter_data, 11, true);
+                inboundparms = extend(true, filter_data.output, command.parameters);
+                command = filter_data.filteredobject.command;
+                proxyprinttodiv('>>>> execute command', command, 11, true);
+                proxyprinttodiv('>>>> execute inboundparms', inboundparms, 11, true);
 
-checkenviornment(inboundparms.command.environment, function (err, res) {
-    inboundparms.command.environment=res
-    proxyprinttodiv('>>>> execute inboundparms', inboundparms, 99);
-    //if (!inboundparms.command.environment) {delete inboundparms.command.environment}
+                checkenviornment(inboundparms.command.environment, function (err, res) {
+                    inboundparms.command.environment=res
+                    proxyprinttodiv('>>>> execute inboundparms I', inboundparms, 11);
+
+                    if (Object.keys(inboundparms.command.environment).length === 0) {delete inboundparms.command.environment}
+                    if (Object.keys(inboundparms.command).length === 0) {delete inboundparms.command}
+                    proxyprinttodiv('>>>> execute inboundparms II', inboundparms, 11);
                     //checkenviornment(command.environment, function (err, res) {
                     //command.environment=res;
 
@@ -294,11 +299,12 @@ checkenviornment(inboundparms.command.environment, function (err, res) {
                                                 if (command.currenterror && Object.keys(command.currenterror).length > 0) {
                                                     callback(command.queueparameters, command.overallresultparameters);
                                                 } else {
-
+proxyprinttodiv("execute - command **** I", command.overallresultparameters, 11);
 if (command.overallresultparameters.command) {
     if (command.overallresultparameters.command.environment) {delete command.overallresultparameters.command.environment}
     if (Object.keys(command.overallresultparameters.command).length ===0) {delete command.overallresultparameters.command}
     }
+
                                                     proxyprinttodiv("execute - command.resultparameters ****", command.resultparameters, 11);
                                                     if (command.adopt) {
                                                         var copyOfInheritData = {};
@@ -356,6 +362,7 @@ if (command.overallresultparameters.command) {
 
                                                     proxyprinttodiv('>>>> execute inboundparms', inboundparms, 11);
 
+proxyprinttodiv("execute - command **** II", command.overallresultparameters, 11);
                                                      if (!command.cache) {
                                                         callback(null, command.overallresultparameters);
                                                         }
@@ -557,9 +564,12 @@ if (command.overallresultparameters.command) {
         if (!overall) {
             overall = [];
         }
-        if (!isArray(overall)) {
-            overall.push(overall);
-        }
+        if (!isArray(overall)) 
+            {
+            var tempArray=[];
+            tempArray.push(overall)
+            overall=tempArray
+            } 
         overall.push(current);
         return overall;
     };
@@ -568,13 +578,18 @@ if (command.overallresultparameters.command) {
         if (!current) {
             current = {};
         }
-        //if (isArray(current)) {current = current[0];}
+        // if (isArray(current)) {
+        //     current = current[0];
+        // }
         if (!overall) {
             overall = [];
         }
-        if (!isArray(overall)) {
-            overall.push(overall);
-        }
+        if (!isArray(overall)) 
+            {
+            var tempArray=[];
+            tempArray.push(overall)
+            overall=tempArray
+            } 
         overall.push(current);
         return overall;
     };
@@ -673,7 +688,7 @@ if (command.overallresultparameters.command) {
                         "errorrule": "nullwaterfall"
                     },
                     "duringmultiple": {
-                        "overallresultparametersrule": "pusharray",
+                        "overallresultparametersrule": "pusharray",   //pushobject
                         "queueparametersrule": "waterfall",
                         "resultrule": "waterfall",
                         "errorrule": "nullwaterfall"
@@ -1377,7 +1392,7 @@ if (command.overallresultparameters.command) {
                                                                         callback(err, res);
                                                                     } else {
                                                                         proxyprinttodiv("executelist err from execution ", err, 11);
-                                                                        proxyprinttodiv("executelist result from execution ", res, 11);
+                                                                        proxyprinttodiv("executelist result from execution ", res, 99);
                                                                         proxyprinttodiv("executelist result from execution executeobject", executeobject.executeflag, 11);
 
                                                                         // This section helps control the iteration -- Joe
