@@ -378,42 +378,42 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
 };
 //function getfrommongo(inputWidgetObject) {
 exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
-    function find_and_replace_addthis(obj) {
-        proxyprinttodiv('<<< Get_Clean find_and_replace_addthis obj >>>', obj, 38);
-        var _in_obj;
+    // function find_and_replace_addthis(obj) {
+    //     proxyprinttodiv('<<< Get_Clean find_and_replace_addthis obj >>>', obj, 38);
+    //     //version below recurses
+    //     var _in_obj;
+    //     if (obj instanceof Array) {
+    //         _in_obj = [];
+    //         extend(true, _in_obj, obj);
+    //     } else {
+    //         _in_obj = {};
+    //         extend(true, _in_obj, obj);
+    //     }
 
-        if (obj instanceof Array) {
-            _in_obj = [];
-            extend(true, _in_obj, obj);
-        } else {
-            _in_obj = {};
-            extend(true, _in_obj, obj);
-        }
+    //     proxyprinttodiv('<<< Get_Clean find_and_replace_addthis _in_obj >>>', _in_obj, 38);
 
-        proxyprinttodiv('<<< Get_Clean find_and_replace_addthis _in_obj >>>', _in_obj, 38);
+    //     if (_in_obj.hasOwnProperty("addthis")) {
+    //         var _add_this = _in_obj["addthis"];
+    //         delete _in_obj["addthis"];
+    //         for (var i in _add_this) {
+    //             if (_add_this.hasOwnProperty(i)) {
+    //                 _in_obj[i] = _add_this[i];
+    //             }
+    //         }
+    //     }
 
-        if (_in_obj.hasOwnProperty("addthis")) {
-            var _add_this = _in_obj["addthis"];
-            delete _in_obj["addthis"];
-            for (var i in _add_this) {
-                if (_add_this.hasOwnProperty(i)) {
-                    _in_obj[i] = _add_this[i];
-                }
-            }
-        }
+    //     for (var each_param in _in_obj) {
+    //         if (_in_obj.hasOwnProperty(each_param)) {
+    //             if (isObject(_in_obj[each_param])) {
+    //                 _in_obj[each_param] = find_and_replace_addthis(_in_obj[each_param]);
+    //             }
+    //         }
+    //     } // for each_param
 
-        for (var each_param in _in_obj) {
-            if (_in_obj.hasOwnProperty(each_param)) {
-                if (isObject(_in_obj[each_param])) {
-                    _in_obj[each_param] = find_and_replace_addthis(_in_obj[each_param]);
-                }
-            }
-        } // for each_param
+    //     return _in_obj;
+    // }
 
-        return _in_obj;
-    }
-
-    try {
+//    try {
         var originalarguments = {};
         extend(true, originalarguments, inputWidgetObject);
         var err = null;
@@ -482,11 +482,17 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
             if ((datastore==='localstorage') || (datastore==='localstore')) {
                 var keydatabase=getdatabaseinforesult.keydatabase;
                 proxyprinttodiv('Function getwid keydatabase', keydatabase,12);
-                output = keydatabase[widName];
-
-                if (!keepaddthis) {
-                   output = find_and_replace_addthis(output) ;
-                }
+                output = keydatabase[widName] || {};
+                proxyprinttodiv('Function getwid output', output,99);
+                if (!keepaddthis) { // i.e. remove add this
+                    if (output.hasOwnProperty("addthis")) {
+                        var _add_this = output["addthis"];
+                        delete output["addthis"];
+                        output = extend(true, output,_add_this)
+                        }
+                    //output = find_and_replace_addthis(output) ;
+                    }
+              
 
                 // if (!keydatabase.hasOwnProperty(widName)) {
                 //     err=createfinalobject(outobject, command, nameoffn, errorobject, initialparameters)
@@ -556,13 +562,13 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
             callback(err, output);
         }
     //callback(err, output);
-    } // end try
-    catch (err) {
-        var finalobject = createfinalobject({"result": "updatewid"}, {}, "updatewid", err, originalarguments);
-        console.log('** Error Caught in the getwid() function in et-utils.js ** => ' + err);
-        console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
-        callback(finalobject.err, finalobject.res);
-    }
+//    } // end try
+//    catch (err) {
+//        var finalobject = createfinalobject({"result": "updatewid"}, {}, "updatewid", err, originalarguments);
+//        console.log('** Error Caught in the getwid() function in et-utils.js ** => ' + err);
+//        console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
+//        callback(finalobject.err, finalobject.res);
+//    }
 }; //End of getfrommongo function
 
 
@@ -2074,16 +2080,19 @@ function getRandomNumberByLength(length) {
 
     // Adds the key of object2 to object 1
     exports.jsonConcat = jsonConcat = function jsonConcat(o1, o2) {
-        var clonedObject = {};
-        extend(true, clonedObject, o1); // clone received params
 
-        for (var key in o2) {
-            if (o2.hasOwnProperty(key)) {
-                if ((clonedObject[key] === undefined) || (clonedObject[key] === "")) {
-                    clonedObject[key] = o2[key];
-                }
-            }
-        }
+        var clonedObject = extend(true, o1, o2)
+
+        //var clonedObject = {};
+        // extend(true, clonedObject, o1); // clone received params
+
+        // for (var key in o2) {
+        //     if (o2.hasOwnProperty(key)) {
+        //         if ((clonedObject[key] === undefined) || (clonedObject[key] === "")) {
+        //             clonedObject[key] = o2[key];
+        //         }
+        //     }
+        // }
         return clonedObject;
     };
 

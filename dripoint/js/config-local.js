@@ -29,6 +29,7 @@ exports.everyMinuteInterval = 0;
 exports.everyTenMinuteInterval = 0;
 exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
     setdefaultparm();
+    //debuglevel=11
     if (!getFromLocalStorage(config.configuration.defaultkeycollection)) {
         eventappinstall();
     }
@@ -61,9 +62,9 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
         });
 };
 
-exports.eventnewpage = eventnewpage = function eventnewpage() {
+exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
     processevent(arguments.callee.name, function (err, res) {
-        //cb(err, res);
+        cb(err, res);
     });
 
 };
@@ -166,10 +167,10 @@ exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters,
 };
 
 exports.processevent = processevent = function processevent(eventname, callback) {
-    getexecutelist(eventname, "queuecollection", function (err, executelist) {
-        proxyprinttodiv("processeventqueue executelist", executelist, 17);
-        executelistfn(executelist, execute, function (err, res) {
-            deletelist(executelist, eventname, function (err, res) {
+    getexecutelist(eventname, "queuecollection", function (err, executetodolist) {
+        proxyprinttodiv("processeventqueue executelist", executetodolist, 17);
+        executelistfn(executetodolist, execute, function (err, res) {
+            deletelist(executetodolist, eventname, function (err, res) {
                 callback(err, res);
                 });
             });
@@ -193,7 +194,7 @@ exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eve
     proxyprinttodiv("getexecutelist eventname(collection)", eventname, 17);
 	proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
 	var executeobject = {"command": {"result": "queryresult"}};
-    var executelist=[];
+    var executetodolist=[];
     executeobject.command.databasetable = eventtype;
     executeobject.command.collection = eventname;
     executeobject.command.db = "queuedata";
@@ -206,17 +207,17 @@ exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eve
     execute(executeobject, function (err, res) {
 		proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
         if (res.length === 0) {
-            executelist = [];
+            executetodolist = [];
         }
         else if(res[0] && res[0]["queryresult"]){
             for (var everyaction in res[0]["queryresult"]){
 				proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
                 //if (res[0]["queryresult"][everyaction]
-                executelist.push(res[0]["queryresult"][everyaction]);
+                executetodolist.push(res[0]["queryresult"][everyaction]);
             }
 
         }
-        callback(null, executelist);
+        callback(null, executetodolist);
     })
 };
 
