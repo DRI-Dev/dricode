@@ -31,8 +31,8 @@
         }
 
 //##
-        function hashobj(inobj) {
-            if (inobj.command && inobj.command.cache) {
+        function hashobj(inobj, command) {
+            if (command.cache) {
                 var obj={};
                 extend(true, obj, inobj);
                 delete obj.executethis;
@@ -237,7 +237,7 @@
                         delete inboundparms['executethis'];
 
 // ##
-                            var objkey = hashobj(inboundparms);
+                            var objkey = hashobj(inboundparms, command);
                             proxyprinttodiv("execute objkey", objkey, 11);
 
 
@@ -345,7 +345,7 @@
                                                         var recorddef = {   "wid":objkey,
                                                                             "metadata":{"systemdto":{"expirationdate":expirationdate}},
                                                                             "command" : {
-                                                                               "datastore": config.configuration.defaultdatastore,
+                                                                               "datastore": "localstorage",
                                                                                "collection":"cache",
                                                                                "keycollection":"cachekey",
                                                                                "db" : config.configuration.defaultdb,
