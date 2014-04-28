@@ -199,7 +199,7 @@ if (typeof angular !== 'undefined') {
             var querystring = window.location.search,
                 urlParameters = widAppHelper.queryStrToObj(querystring.substring(1));
 
-            executeParams(urlParameters);
+            executeGoto(urlParameters);
 
             $scope.clearlogs = function() { $('#errorlog,#successlog').html(''); };
 
@@ -377,7 +377,7 @@ if (typeof angular !== 'undefined') {
         }
     };
 
-    exports.executeParams = executeParams = function executeParams(urlParameters, callback) {
+    exports.executeGoto = executeGoto = function executeGoto(urlParameters, callback) {
         var ogUrlParams = extend(true, {}, urlParameters),
             scope = $('body').scope();
 
@@ -445,7 +445,7 @@ if (typeof angular !== 'undefined') {
         parameters.command.parameters.eventdata.element = $('<div>' + ele + '</div>').html();
         parameters.command.parameters.eventdata.originatingscreen = widAppHelper.getUrlParam('wid');
 
-        executeParams(parameters);
+        executeGoto(parameters);
     }
 
     // adding a size function to Object's prototype
