@@ -90,7 +90,7 @@
 
     exports.execute = window.execute = execute = function execute(incomingparams, callback) {
         var inboundparms_111 = arguments;
-        var inboundparms;
+        var inboundparms = inboundparms || {};
         var result, commandmultiple;
         var inarray = [];
         var command = {};
