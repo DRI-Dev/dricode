@@ -31,8 +31,8 @@
         }
 
 //##
-        function hashobj(inobj) {
-            if (inobj.command && inobj.command.cache) {
+        function hashobj(inobj, command) {
+            if (command.cache) {
                 var obj={};
                 extend(true, obj, inobj);
                 delete obj.executethis;
@@ -52,17 +52,32 @@
 
 //&&
         function checkenviornment(environment, cb) {
+            //cb(null,environment);
             if (config.configuration.environment==="local") {
                 //getwid({"wid":"environment"}, function (err, res) {
                 environment.wid="environment"
-                updatewid(environment, function (err, returnedenvironment) {    // update also does a get
+                environment.command = {
+                    "datastore": config.configuration.defaultdatastore,
+                    "collection":config.configuration.defaultcollection,
+                    //"keycollection":config.configuration.defaultcollection + "key",
+                    "db":config.configuration.defaultdb,
+                    "databasetable":config.configuration.defaultdatabasetable,
+                    "convertmethod":"toobject",
+                    "datamethod":"upsert"
+                    }
+                proxyprinttodiv("execute - environment", environment, 11);
+                updatewid(environment, function (err, returnedenvironment) { 
+                    proxyprinttodiv("execute - environment II", environment, 11);   // update also does a get
                     if (Object.keys(returnedenvironment).length === 0) {
                         returnedenvironment.accesstoken=createNewGuid();
                         updatewid(returnedenvironment, function (err, res) {
+                            res=res[config.configuration.defaultdb]
                             cb(null, res)
                         });
                         }
                     else { // if ac existed
+                        proxyprinttodiv("execute - environment III", environment, 11);
+                        returnedenvironment=returnedenvironment[config.configuration.defaultdb]
                         cb(null, returnedenvironment)
                         }
                     });
@@ -127,7 +142,7 @@
                                 "adopt": null,
                                 "resultparameters": {},
                                 "result": "",
-                                "execute": null,
+                                //"execute": null,
                                 "environment": {},
                                 "inherit": null,
                                 "executefilter": "",
@@ -141,7 +156,7 @@
                                     "errorrule": "nullwaterfall"
                                 },
                                 "duringmultiple": {
-                                    "overallresultparametersrule": "pusharray",
+                                    "overallresultparametersrule": "pusharray",   // pushobject
                                     "queueparametersrule": "waterfall",
                                     "resultrule": "waterfall",
                                     "errorrule": "nullwaterfall"
@@ -193,8 +208,8 @@
                                 "adopt": "x",
                                 "resultparameters": "x",
                                 "result": "x",
-                                "execute": "x",
-                                "environment": "x",
+                                //"execute": "x",
+                                //"environment": "x",
                                 "inherit": "x",
                                 "executefilter": "x",
                                 "executelimit": "x",
@@ -218,14 +233,21 @@
                         },
                         true);
 
-                    proxyprinttodiv('>>>> execute filter_data', filter_data, 11, true);
-                    inboundparms = extend(true, filter_data.output, command.parameters);
-                    command = filter_data.filteredobject.command;
-                    proxyprinttodiv('>>>> execute command', command, 11, true);
-                    proxyprinttodiv('>>>> execute inboundparms', inboundparms, 11, true);
+                proxyprinttodiv('>>>> execute filter_data', filter_data, 11, true);
+                inboundparms = extend(true, filter_data.output, command.parameters);
+                command = filter_data.filteredobject.command;
+                proxyprinttodiv('>>>> execute command', command, 11, true);
+                proxyprinttodiv('>>>> execute inboundparms', inboundparms, 11, true);
 
-                    checkenviornment(command.environment, function (err, res) {
-                    command.environment=res;
+                checkenviornment(inboundparms.command.environment, function (err, res) {
+                    inboundparms.command.environment=res
+                    proxyprinttodiv('>>>> execute inboundparms I', inboundparms, 11);
+
+                    if (Object.keys(inboundparms.command.environment).length === 0) {delete inboundparms.command.environment}
+                    if (Object.keys(inboundparms.command).length === 0) {delete inboundparms.command}
+                    proxyprinttodiv('>>>> execute inboundparms II', inboundparms, 11);
+                    //checkenviornment(command.environment, function (err, res) {
+                    //command.environment=res;
 
                     if (command.multipleexecute.length > 0) {
                         proxyprinttodiv("execute - array params received ", inboundparms, 11);
@@ -237,7 +259,7 @@
                         delete inboundparms['executethis'];
 
 // ##
-                            var objkey = hashobj(inboundparms);
+                            var objkey = hashobj(inboundparms, command);
                             proxyprinttodiv("execute objkey", objkey, 11);
 
 
@@ -277,6 +299,11 @@
                                                 if (command.currenterror && Object.keys(command.currenterror).length > 0) {
                                                     callback(command.queueparameters, command.overallresultparameters);
                                                 } else {
+proxyprinttodiv("execute - command **** I", command.overallresultparameters, 11);
+if (command.overallresultparameters.command) {
+    if (command.overallresultparameters.command.environment) {delete command.overallresultparameters.command.environment}
+    if (Object.keys(command.overallresultparameters.command).length ===0) {delete command.overallresultparameters.command}
+    }
 
                                                     proxyprinttodiv("execute - command.resultparameters ****", command.resultparameters, 11);
                                                     if (command.adopt) {
@@ -335,6 +362,7 @@
 
                                                     proxyprinttodiv('>>>> execute inboundparms', inboundparms, 11);
 
+proxyprinttodiv("execute - command **** II", command.overallresultparameters, 11);
                                                      if (!command.cache) {
                                                         callback(null, command.overallresultparameters);
                                                         }
@@ -345,7 +373,7 @@
                                                         var recorddef = {   "wid":objkey,
                                                                             "metadata":{"systemdto":{"expirationdate":expirationdate}},
                                                                             "command" : {
-                                                                               "datastore": config.configuration.defaultdatastore,
+                                                                               "datastore": "localstorage",
                                                                                "collection":"cache",
                                                                                "keycollection":"cachekey",
                                                                                "db" : config.configuration.defaultdb,
@@ -536,9 +564,12 @@
         if (!overall) {
             overall = [];
         }
-        if (!isArray(overall)) {
-            overall.push(overall);
-        }
+        if (!isArray(overall)) 
+            {
+            var tempArray=[];
+            tempArray.push(overall)
+            overall=tempArray
+            } 
         overall.push(current);
         return overall;
     };
@@ -547,13 +578,18 @@
         if (!current) {
             current = {};
         }
-        //if (isArray(current)) {current = current[0];}
+        // if (isArray(current)) {
+        //     current = current[0];
+        // }
         if (!overall) {
             overall = [];
         }
-        if (!isArray(overall)) {
-            overall.push(overall);
-        }
+        if (!isArray(overall)) 
+            {
+            var tempArray=[];
+            tempArray.push(overall)
+            overall=tempArray
+            } 
         overall.push(current);
         return overall;
     };
@@ -652,7 +688,7 @@
                         "errorrule": "nullwaterfall"
                     },
                     "duringmultiple": {
-                        "overallresultparametersrule": "pusharray",
+                        "overallresultparametersrule": "pusharray",   //pushobject
                         "queueparametersrule": "waterfall",
                         "resultrule": "waterfall",
                         "errorrule": "nullwaterfall"
@@ -893,31 +929,31 @@
             execute(executeobject, function (err, res) {
                 //if (Object.keys(res).length > 0) {
                 if (res) {
-                    res=res[0]
+                    res=res[0];
                     proxyprinttodiv("checkcache getwid res", res, 17);
                     if (res && res.metadata && res.metadata.expirationdate 
                         && res.metadata.expirationdate<new Date()){
                         callback(null, res);
-                        }
-                    else {
+                    } else {
                         callback(null, null);
-                        }
                     }
-                })
-            }
+                }
+            })
+        }
         else { // !objectkey (i.e. if command.cache==false)
             callback(null, null);
-            }
-        };
+        }
+    }
 
 
 
     function dothisprocessor(params, target, objkey, callback) {
-        try {
+//        try {
             var inboundparms_114 = arguments;
             //var err = {};
             var err = null;
             // if command.status=fail, check between dothis, do not execute
+
             if (params && ((!params.command) || (params.command && params.command.status !== 'fail'))) {
 
                 var whatToDoList,
@@ -999,25 +1035,27 @@
                                 callback(err, params);
                             }
                         }
-                }) // checkcache
+                }); // checkcache
                 } // else not test4
             } else {
                 callback(err, params);
             }
-        } // end try
-        catch (err) {
-            var finalobject = createfinalobject({"result": "dothisprocessor"}, {}, "dothisprocessor", err, inboundparms_114);
-            console.log('** Error Caught in the dothisprocessor() function in executethis.js ** => ' + err);
-            console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
-            callback(finalobject.err, finalobject.res);
-        }
+//        } // end try
+//        catch (err) {
+//            var finalobject = createfinalobject({"result": "dothisprocessor"}, {}, "dothisprocessor", err, inboundparms_114);
+//            console.log('** Error Caught in the dothisprocessor() function in executethis.js ** => ' + err);
+//            console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
+//            callback(finalobject.err, finalobject.res);
+//        }
     } // fn
 
     // based on a target fn and params this fn will create a sorted list of what to do -- params will be in list
 
-    function CreateDoList(params, configtarget, configfn) {
+    function CreateDoList(inparams, configtarget, configfn) {
         try {
             var inboundparms_115 = arguments;
+            var params = {};
+            extend(true, params, inparams);
 
             if ((params === undefined) || (params === "")) {
                 params = {};
@@ -1086,7 +1124,8 @@
                 for (var i = 0; i < config0[configtarget].length; i++) {
                     //try a concat
                     if ((params !== undefined) && (config0[configtarget][i].params !== undefined)) {
-                        config0[configtarget][i].params = jsonConcat(params, config0[configtarget][i].params); // concatenate with other pararms
+                        //config0[configtarget][i].params = jsonConcat(params, config0[configtarget][i].params); // concatenate with other pararms
+                        config0[configtarget][i].params = extend(true, params, config0[configtarget][i].params);
                     }
                     //config0[configtarget][i].params= params; ** took out and put above, we should not change 'params'
                 }
@@ -1186,10 +1225,8 @@
     } // end CreateDolist
 
     function executelist(howToDoList, whatToDoList, callback) {
-        try {
+//        try {
             var inboundparms_116 = arguments;
-            proxyprinttodiv("executelist - howToDoList ", howToDoList, 11);
-            proxyprinttodiv("executelist - whatToDoList ", whatToDoList, 11);
 
             // throw ({'Sample error': 'executelist'});
 
@@ -1264,11 +1301,12 @@
             var x = getglobal("debugcolor") + 1;
             saveglobal("debugcolor", x);
 
-
+            proxyprinttodiv("executelist - howToDoList ", howToDoList, 11);
+            proxyprinttodiv("executelist - whatToDoList ", whatToDoList, 11);
 
             async.mapSeries(howToDoList, function (h, cbMapH) {
                     async.nextTick(function () {
-                        try {
+//                        try {
                             // throw ({'Sample error': 'executelist_async_nextTick'});
 
                             proxyprinttodiv("executelist begin how howallowexecute ", howallowexecute, 11);
@@ -1293,209 +1331,193 @@
                             proxyprinttodiv("executelist whatToDoList ", whatToDoList, 11);
 
                             async.mapSeries(whatToDoList, function (w, cbMapW) {
-                                    async.nextTick(function () {
-                                        proxyprinttodiv("execute - I howallowexecute", howallowexecute, 11);
-                                        proxyprinttodiv("execute - I whatexecuteorder", whatallowexecute, 11);
-                                        proxyprinttodiv("execute - w", w, 11);
-                                        if (w[howToDo]) {
-                                            whatToDo = w[howToDo]; // try to get specific config for whatToDo
-                                        } else {
-                                            whatToDo = w['dothis']; // default
-                                        }
-                                        whatToDoFn = w['dofn'];
-                                        whatToDoParams = w['params'];
+                                async.nextTick(function () {
+                                    proxyprinttodiv("execute - I howallowexecute", howallowexecute, 11);
+                                    proxyprinttodiv("execute - I whatexecuteorder", whatallowexecute, 11);
+                                    proxyprinttodiv("execute - w", w, 11);
+                                    if (w[howToDo]) {
+                                        whatToDo = w[howToDo]; // try to get specific config for whatToDo
+                                    } else {
+                                        whatToDo = w['dothis']; // default
+                                    }
+                                    whatToDoFn = w['dofn'];
+                                    whatToDoParams = w['params'];
 
-                                        if ((whatToDoParams === undefined) || (whatToDoParams === "")) {
-                                            whatToDoParams = {};
-                                        }
-                                        proxyprinttodiv("execute - whatToDo", whatToDo, 11);
-                                        proxyprinttodiv("execute - w.executeorder", w.execute, 11);
+                                    if ((whatToDoParams === undefined) || (whatToDoParams === "")) {
+                                        whatToDoParams = {};
+                                    }
+                                    proxyprinttodiv("execute - whatToDo", whatToDo, 11);
+                                    proxyprinttodiv("execute - w.executeorder", w.execute, 11);
 
-                                        if (whatexecuteorder !== w.executeorder) {
-                                            // executeorder changed, reset whatallowexecute, other allow it to remain
-                                            whatallowexecute = true;
-                                        }
-                                        whatexecuteorder = w.executeorder;
+                                    if (whatexecuteorder !== w.executeorder) {
+                                        // executeorder changed, reset whatallowexecute, other allow it to remain
+                                        whatallowexecute = true;
+                                    }
+                                    whatexecuteorder = w.executeorder;
 
-                                        proxyprinttodiv("executelist end what howallowexecute ", howallowexecute, 11);
-                                        proxyprinttodiv("executelist end what whatallowexecute ", whatallowexecute, 11);
-                                        //debugfn("executelist", "executelist", "execute", "mid", getglobal("debugcolor"), getglobal("debugindent"), debugvars([1, 2, 3]));
+                                    proxyprinttodiv("executelist end what howallowexecute ", howallowexecute, 11);
+                                    proxyprinttodiv("executelist end what whatallowexecute ", whatallowexecute, 11);
+                                    //debugfn("executelist", "executelist", "execute", "mid", getglobal("debugcolor"), getglobal("debugindent"), debugvars([1, 2, 3]));
 
 
-                                        if ((howallowexecute) && (whatallowexecute)) { //if both allowed to execute
-                                            getexecuteobject(jsonConcat(howToDoParams, whatToDoParams), howToDo, whatToDo, whatToDoFn,
-                                                function (err, executeobject) {
-                                                    // If error, bounce out
-                                                    if (err && Object.keys(err).length > 0) {
-                                                        callback(err, executeobject);
-                                                    } else {
-                                                        try {
-                                                            var parameters = executeobject.params;
-                                                            // always will get something back, even if errorfn...so always execute and store resutls
-                                                            proxyprinttodiv("executelist executeobject: ", executeobject, 11);
-                                                            proxyprinttodiv("executelist executeobject.params: ", executeobject.params, 11);
-                                                            proxyprinttodiv("executelist executeobject.targetfn: ", String(executeobject.targetfn), 9);
-                                                            if (typeof executeobject.targetfn === 'function') { // there was a chance of a non function getting in here -- Joe
-                                                                //authcall(executeobject, command, function (err, securitycheck) {
-                                                                proxyprinttodiv(">>>>>> executelist executeobject.params: ", executeobject.params, 11);
-                                                                // If error, bounce out
-                                                                if (err && Object.keys(err).length > 0) {
-                                                                    callback(err, securitycheck);
-                                                                } else {
-                                                                    err = null; // Do not leave in the code
-                                                                    securitycheck = true;
-                                                                    if (securitycheck) {
-                                                                        executeobject.targetfn(executeobject.params, function (err, res) {
+                                    if ((howallowexecute) && (whatallowexecute)) { //if both allowed to execute
+                                        //getexecuteobject(jsonConcat(howToDoParams, whatToDoParams), howToDo, whatToDo, whatToDoFn,
+                                        //var p = jsonConcat(howToDoParams, whatToDoParams)
+                                        var p = extend(true, howToDoParams, whatToDoParams);
+                                        getexecuteobject(p, howToDo, whatToDo, whatToDoFn,
+                                            function (err, executeobject) {
+                                                // If error, bounce out
+                                                if (err && Object.keys(err).length > 0) {
+                                                    callback(err, executeobject);
+                                                } else {
+                                                    //var parameters = executeobject.params;
+                                                    // always will get something back, even if errorfn...so always execute and store resutls
+                                                    proxyprinttodiv("executelist executeobject: ", executeobject, 11);
+                                                    proxyprinttodiv("executelist executeobject.params: ", executeobject.params, 11);
+                                                    proxyprinttodiv("executelist executeobject.targetfn: ", String(executeobject.targetfn), 9);
+                                                    if (typeof executeobject.targetfn === 'function') { // there was a chance of a non function getting in here -- Joe
+                                                        //authcall(executeobject, command, function (err, securitycheck) {
+                                                        //proxyprinttodiv(">>>>>> executelist executeobject.params: ", executeobject.params, 11);
+                                                        // If error, bounce out
+                                                        if (err && Object.keys(err).length > 0) {
+                                                            callback(err, securitycheck);
+                                                        } else {
+                                                            err = null; // Do not leave in the code
+                                                            securitycheck = true;
+                                                            if (securitycheck) {
+                                                                executeobject.targetfn(executeobject.params, function (err, res) {
 
-                                                                            // If error, bounce out
-                                                                            if (err && Object.keys(err).length > 0) {
-                                                                                callback(err, res);
-                                                                            } else {
-                                                                                proxyprinttodiv("executelist err from execution ", err, 11);
-                                                                                proxyprinttodiv("executelist result from execution ", res, 11);
-                                                                                proxyprinttodiv("executelist result from execution executeobject", executeobject.executeflag, 11);
-
-                                                                                // This section helps control the iteration -- Joe
-                                                                                // ***********************************************
-                                                                                whatallowexecute = false;
-                                                                                howallowexecute = false;
-
-                                                                                // if we come back with [{}] go to the next case,usally server
-                                                                                if (executeobject.executeflag === true) {
-                                                                                    if ((res === undefined) ||
-                                                                                        (isArray(res) && res[0]['metadata'] && res[0]['metadata']['expirationdate'] &&
-                                                                                            new Date(res[0]['metadata']['expirationdate']) < new Date()) ||
-                                                                                        (isArray(res)) && (res.length === 1) && (Object.keys(res[0]).length === 0)
-                                                                                        ) {
-                                                                                        proxyprinttodiv("Try again hit wit res", res, 11);
-                                                                                        whatallowexecute = true;
-                                                                                        howallowexecute = true;
-                                                                                        executeobject.executeflag = false;
-                                                                                    }
-                                                                                }
-
-                                                                                // Remove expiration date on return
-                                                                                // ------------------------------------------------
-                                                                                // AG1 example res: {"data":{"note":"string"},"wid":"sounddto","metadata":{"method":"sounddto","date":"2014-03-17T13:55:26.832Z","expirationdate":"2014-03-17T13:55:26.832Z"}}
-                                                                                if ((res) && (Object.keys(res).length > 0) && (res['metadata']) && (res['metadata']['expirationdate'])) {
-                                                                                    delete res['metadata']['expirationdate'];
-                                                                                }
-                                                                                // ************************************************
-
-                                                                                // temp .. take out
-                                                                                if (res && res.js) {
-                                                                                    executeobject.executeflag = true;
-                                                                                }
-                                                                                // for an addthis situation
-                                                                                if (executeobject.executeflag === true) {
-                                                                                    if ((res) && (res.js)) {
-                                                                                        // TODO: do not leave this in production as is
-                                                                                        var fnstring = res.js;
-                                                                                        if (fnstring.indexOf("function") === 0) {
-                                                                                            fnstring = "(" + fnstring + ")()";
-                                                                                        }
-                                                                                        proxyprinttodiv("execute fnstring", fnstring, 11);
-                                                                                        eval(fnstring);
-                                                                                    } else {
-                                                                                        execute(res, function (err, res) {
-                                                                                            // If error, bounce out
-                                                                                            if (err && Object.keys(err).length > 0) {
-                                                                                                callback(err, res);
-                                                                                            } else {
-                                                                                                try {
-                                                                                                    // if executegetwid then execute with the results
-                                                                                                    proxyprinttodiv("Return from nested execution: ", res, 11);
-                                                                                                    outputResultsArr.push(res);
-                                                                                                    cbMapW(null, "What Iteration");
-                                                                                                    // cbMapW(err, "What Iteration");
-
-                                                                                                } // end try
-                                                                                                catch (err) {
-                                                                                                    var finalobject = createfinalobject({
-                                                                                                        "result": "executelist_executeobject.executeflag"
-                                                                                                    }, {}, "executelist_executeobject.executeflag", err, res);
-                                                                                                    cbMapW(finalobject.err, finalobject.res);
-                                                                                                }
-                                                                                            } // end else
-                                                                                        });
-                                                                                    }
-                                                                                } else {
-                                                                                    // executeflag=false
-                                                                                    // temp answer for a bug, if empty do not push onto ouputresultarray - joe
-                                                                                    if (res && (isArray(res)) && (res.length === 1) && res[0] && (Object.keys(res[0]).length === 0)) {
-                                                                                        cbMapW(null, "What Iteration");
-                                                                                    } else {
-                                                                                        outputResultsArr.push(res);
-                                                                                        cbMapW(null, "What Iteration");
-                                                                                    }
-
-                                                                                    //cbMapW(err, "What Iteration");
-                                                                                }
-                                                                            } // end else
-                                                                        });
+                                                                    // If error, bounce out
+                                                                    if (err && Object.keys(err).length > 0) {
+                                                                        callback(err, res);
                                                                     } else {
-                                                                        // security check failed
-                                                                        callback(err, {
-                                                                            'etstatus': 'unauthorized call.'
-                                                                        });
-                                                                        cbMapW(null, "What Iteration");
-                                                                    }
-                                                                } // end else
-                                                                //}); // end authcall
+                                                                        proxyprinttodiv("executelist err from execution ", err, 11);
+                                                                        proxyprinttodiv("executelist result from execution ", res, 99);
+                                                                        proxyprinttodiv("executelist result from execution executeobject", executeobject.executeflag, 11);
 
-                                                                // create a google spreadsheet with intended data
-                                                                // https://docs.google.com/spreadsheet/ccc?key=0AqSqNB4MEkB0dDZzZFE1bm1QRk8tYTBVNjZjWlpfSnc#gid=0
+                                                                        // This section helps control the iteration -- Joe
+                                                                        // ***********************************************
+                                                                        whatallowexecute = false;
+                                                                        howallowexecute = false;
 
-                                                                // executethis.js
-                                                                // Add the security check
-                                                                // line 752 if (executeobject.executeflag === false)
-                                                                // line 757 if (executeobject.executeflag === true)
+                                                                        // if we come back with [{}] go to the next case,usally server
+                                                                        if (executeobject.executeflag === true) {
+                                                                            if ((res === undefined) ||
+                                                                                (isArray(res) && res[0]['metadata'] && res[0]['metadata']['expirationdate'] &&
+                                                                                    new Date(res[0]['metadata']['expirationdate']) < new Date()) ||
+                                                                                (isArray(res)) && (res.length === 1) && (Object.keys(res[0]).length === 0)
+                                                                                ) {
+                                                                                proxyprinttodiv("Try again hit wit res", res, 11);
+                                                                                whatallowexecute = true;
+                                                                                howallowexecute = true;
+                                                                                executeobject.executeflag = false;
+                                                                            }
+                                                                        }
 
-                                                                // remember that in the future the permissions list will also return a function name to be called for checking security
+                                                                        // Remove expiration date on return
+                                                                        // ------------------------------------------------
+                                                                        // AG1 example res: {"data":{"note":"string"},"wid":"sounddto","metadata":{"method":"sounddto","date":"2014-03-17T13:55:26.832Z","expirationdate":"2014-03-17T13:55:26.832Z"}}
+                                                                        if ((res) && (Object.keys(res).length > 0) && (res['metadata']) && (res['metadata']['expirationdate'])) {
+                                                                            delete res['metadata']['expirationdate'];
+                                                                        }
+                                                                        // ************************************************
 
-                                                                // we will use level
+                                                                        // temp .. take out
+                                                                        if (res && res.js) {
+                                                                            executeobject.executeflag = true;
+                                                                        }
+                                                                        // for an addthis situation
+                                                                        if (executeobject.executeflag === true) {
+                                                                            if ((res) && (res.js)) {
+                                                                                // TODO: do not leave this in production as is
+                                                                                var fnstring = res.js;
+                                                                                if (fnstring.indexOf("function") === 0) {
+                                                                                    fnstring = "(" + fnstring + ")()";
+                                                                                }
+                                                                                proxyprinttodiv("execute fnstring", fnstring, 11);
+                                                                                eval(fnstring);
+                                                                            } else {
+                                                                                execute(res, function (err, res) {
+                                                                                    // If error, bounce out
+                                                                                    if (err && Object.keys(err).length > 0) {
+                                                                                        callback(err, res);
+                                                                                    } else {
+                                                                                        try {
+                                                                                            // if executegetwid then execute with the results
+                                                                                            proxyprinttodiv("Return from nested execution: ", res, 11);
+                                                                                            outputResultsArr.push(res);
+                                                                                            cbMapW(null, "What Iteration");
+                                                                                            // cbMapW(err, "What Iteration");
 
-                                                                // All wids include their wid as group.  They should also return their dto (metadata.method) as a group
-                                                            } // if executeobject.targetfn
-                                                            else {
-                                                                // cbMapW(null, "What Iteration");
-                                                                cbMapW(err, "What Iteration");
+                                                                                        } // end try
+                                                                                        catch (err) {
+                                                                                            var finalobject = createfinalobject({
+                                                                                                "result": "executelist_executeobject.executeflag"
+                                                                                            }, {}, "executelist_executeobject.executeflag", err, res);
+                                                                                            cbMapW(finalobject.err, finalobject.res);
+                                                                                        }
+                                                                                    } // end else
+                                                                                });
+                                                                            }
+                                                                        } else {
+                                                                            // executeflag=false
+                                                                            // temp answer for a bug, if empty do not push onto ouputresultarray - joe
+                                                                            if (res && (isArray(res)) && (res.length === 1) && res[0] && (Object.keys(res[0]).length === 0)) {
+                                                                                cbMapW(null, "What Iteration");
+                                                                            } else {
+                                                                                outputResultsArr.push(res);
+                                                                                cbMapW(null, "What Iteration");
+                                                                            }
+
+                                                                            //cbMapW(err, "What Iteration");
+                                                                        }
+                                                                    } // end else
+                                                                });
+                                                            } else {
+                                                                // security check failed
+                                                                callback(err, {
+                                                                    'etstatus': 'unauthorized call.'
+                                                                });
+                                                                cbMapW(null, "What Iteration");
                                                             }
-                                                        } // end try
-                                                        catch (err) {
-                                                            var finalobject = createfinalobject({
-                                                                "result": "executelist_getexecuteobject(jsonConcat"
-                                                            }, {}, "executelist_getexecuteobject(jsonConcat", err, executeobject);
-                                                            console.log('** Error Caught in the executelist() function in executethis.js'
-                                                                + ' during processing of results from getexecuteobject() call ** => ' + err);
-                                                            console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
-                                                            cbMapW(finalobject.err, finalobject.res);
-                                                        }
-                                                    } // end else
-                                                    // else ((howallowexecute) && (whatallowexecute))  ... do something else
-                                                }); //executeobject callback
-                                        } else {
-                                            cbMapW(null, "What Iteration");
-                                            // cbMapW(err, "What Iteration");
-                                        }
-                                    });
-                                },
+                                                        } // end else
+                                                        //}); // end authcall
 
-                                function (err, res) {
-                                    proxyprinttodiv("executelist end of what outputResultsArr ", outputResultsArr, 11);
+                                                        // create a google spreadsheet with intended data
+                                                        // https://docs.google.com/spreadsheet/ccc?key=0AqSqNB4MEkB0dDZzZFE1bm1QRk8tYTBVNjZjWlpfSnc#gid=0
 
-                                    cbMapH(null, "How Iteration");
-                                    // cbMapH(err, "How Iteration");
-                                    //console.log(' completed whatToDoList iteration in sync fashion.');
+                                                        // executethis.js
+                                                        // Add the security check
+                                                        // line 752 if (executeobject.executeflag === false)
+                                                        // line 757 if (executeobject.executeflag === true)
+
+                                                        // remember that in the future the permissions list will also return a function name to be called for checking security
+
+                                                        // we will use level
+
+                                                        // All wids include their wid as group.  They should also return their dto (metadata.method) as a group
+                                                    } // if executeobject.targetfn
+                                                    else {
+                                                        // cbMapW(null, "What Iteration");
+                                                        cbMapW(err, "What Iteration");
+                                                    }
+                                                } // end else
+                                                // else ((howallowexecute) && (whatallowexecute))  ... do something else
+                                            }); //executeobject callback
+                                    } else {
+                                        cbMapW(null, "What Iteration");
+                                        // cbMapW(err, "What Iteration");
+                                    }
                                 });
-                        } // end try
-                        catch (err) {
-                            var finalobject = createfinalobject({"result": "executelist_async_nextTick"}, {}, "executelist_async_nextTick", err, h);
-                            console.log('** Error Caught in the executelist() function in'
-                                + ' executethis.js during mapSeries call on "howToDoList" ** => ' + err);
-                            console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
-                            cbMapH(finalobject.err, finalobject.res);
-                        }
+                            },
+
+                            function (err, res) {
+                                proxyprinttodiv("executelist end of what outputResultsArr ", outputResultsArr, 11);
+
+                                cbMapH(null, "How Iteration");
+                                // cbMapH(err, "How Iteration");
+                                //console.log(' completed whatToDoList iteration in sync fashion.');
+                            });
                         // map w,
                     });
                 },
@@ -1513,18 +1535,18 @@
             // debugcolor--;
             x = getglobal("debugcolor") - 1;
             saveglobal("debugcolor", x);
-        } // end try
-        catch (err) {
-            var finalobject = createfinalobject({"result": "executelist"}, {}, "executelist", err, inboundparms_116);
-            console.log('** Error Caught in the executelist() function in executethis.js ** => ' + err);
-            console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
-            callback(finalobject.err, finalobject.res);
-        }
+//        } // end try
+//        catch (err) {
+//            var finalobject = createfinalobject({"result": "executelist"}, {}, "executelist", err, inboundparms_116);
+//            console.log('** Error Caught in the executelist() function in executethis.js ** => ' + err);
+//            console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
+//            callback(finalobject.err, finalobject.res);
+//        }
     } // end executelist
 
 
     function getexecuteobject(params, howToDo, whatToDo, whatToDoFn, callback) {
-        try {
+//        try {
             var inboundparms_117 = arguments;
 
             // throw ({'Sample error': 'getexecuteobject'});
@@ -1628,13 +1650,13 @@
                 executeflag: executeflag
             });
 
-        } // end try
-        catch (err) {
-            var finalobject = createfinalobject({"result": "getexecuteobject"}, {}, "getexecuteobject", err, inboundparms_117);
-            console.log('** Error Caught in the getexecuteobject() function in executethis.js ** => ' + err);
-            console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
-            callback(finalobject.err, finalobject.res);
-        }
+//        } // end try
+//        catch (err) {
+//            var finalobject = createfinalobject({"result": "getexecuteobject"}, {}, "getexecuteobject", err, inboundparms_117);
+//            console.log('** Error Caught in the getexecuteobject() function in executethis.js ** => ' + err);
+//            console.log('** finalobject created from error => ' + JSON.stringify(finalobject));
+//            callback(finalobject.err, finalobject.res);
+//        }
     } // fn
 
     exports.executeerror = window.executeerror = executeerror = function executeerror(params, callback) {

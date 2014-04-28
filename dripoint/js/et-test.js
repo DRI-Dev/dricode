@@ -6058,23 +6058,34 @@ exports.testfilternomatch1 = testfilternomatch1 = function testfilterkeymatch1(p
 
 
     exports.testhtmladd = testhtmladd = function testhtmladd(params, callback){
-    execute([{
-        "executethis":"addwidmaster",
-        "wid":"wid1",
-        "html":"<p>123</p>"
-    }, {
-        "executethis":"addwidmaster",
-        "wid":"wid1",
-        "addthis.command.htmlcleartargetid":"body"
-    }, {
-        "executethis":"getwidmaster",
-        "wid":"wid1"
-    }],
-    function (err, res) {
-      proxyprinttodiv('Full results: ', res, 99);
-      callback(err, res);
-    });
-}
+        execute([{
+            "executethis":"addwidmaster",
+            "wid":"wid1",
+            "html":"<p>123</p>"
+        }, {
+            "executethis":"addwidmaster",
+            "wid":"wid1",
+            "addthis.command.htmlcleartargetid":"body"
+        }, {
+            "executethis":"getwidmaster",
+            "wid":"wid1"
+        }],
+        function (err, res) {
+          proxyprinttodiv('Full results: ', res, 99);
+          callback(err, res);
+        });
+    }
+
+    exports.testhtmladd2 = testhtmladd2 = function testhtmladd2(params, callback){
+        execute([{
+            "executethis":"getwid",
+            "wid":"wid1"
+        }],
+        function (err, res) {
+          proxyprinttodiv('Full results: ', res, 99);
+          callback(err, res);
+        });
+    }
 /*
 	exxports.codydto1 = codydto1 = function codydto1(params,callback){
 		execute([{
@@ -6193,27 +6204,30 @@ exports.testfilternomatch1 = testfilternomatch1 = function testfilterkeymatch1(p
 		execute([{
 			"executethis":"updatewid",
 			"wid":"codydto",
-			"metadata.method":"codydto",
+			"metadata":{"method":"codydto"},
 			"month":"string",
 			"day":"string"
 			},{
 			"executethis":"updatewid",
 			"wid":"cody1",
-			"metadata.method":"codydto",
+			"metadata":{"method":"codydto"},
 			"month":"June",
 			"day":"9th",
-			"command.cache":"True"
+			"command":{"cache":"true"}
 			},{
 			"executethis":"updatewid",
 			"wid":"cody1",
-			"metadata.method":"codydto",
+			"metadata":{"method":"codydto"},
+			//"command":{"databasetable":"insert"},
 			"month":"August"
 			},{
 			"executethis":"getwidmaster",
 			"wid":"cody1",
-			"metadata.method":"codydto"}],
+			"metadata":{"method":"codydto"}}],
 			function (err,res) {
-				proxyprinttodiv('cody1 result: ', res[2], 99);
+				proxyprinttodiv('cody1 cache: ',res[1],99);
+				proxyprinttodiv('cody1 update: ',res[2],99);
+				proxyprinttodiv('cody1 result: ', res[3], 99);
 				var result = logverify("cody1_result", res[3], [{
 					"wid": "cody1",
 					"metadata.method": "codydto",
@@ -6224,7 +6238,7 @@ exports.testfilternomatch1 = testfilternomatch1 = function testfilterkeymatch1(p
 			});
 	}
 	
-	exports.testupdating1 = testupdating1 = function testupdating1(params,callback){
+	exports.testcache2 = testcache2 = function testcache2(params,callback){
 		execute([{
 			"executethis":"updatewid",
 			"wid":"adto",
@@ -6236,11 +6250,52 @@ exports.testfilternomatch1 = testfilternomatch1 = function testfilterkeymatch1(p
 			"wid":"awid1",
 			"metadata":{"method":"adto"},
 			"field1":"hello",
-			"field2":"world"
+			"field2":"world",
+			"command":{"cache":"true"}
 			},{
 			"executethis":"updatewid",
 			"wid":"awid1",
 			"metadata":{"method":"adto"},
+			"command":{"cache":"true"},
+			//"command":{"databasetable":"insert"},
+			"field1":"goodbye"
+			},{
+			"executethis":"getwidmaster",
+			"wid":"awid1",
+			"metadata":{"method":"adto"}
+			}],
+			function (err,res){
+				proxyprinttodiv('caching awid1: ',res[1],99);
+				proxyprinttodiv('updating awid1: ',res[2],99);
+				proxyprinttodiv('awid1 get: ',res[3],99);
+				var result = logverify("cody1_result", res[3], [{
+					"wid": "awid1",
+					"metadata.method": "adto",
+					"field1": "hello",
+					"field2": "world"
+				}]);
+				callback(err,result);
+			});
+	}
+	
+	exports.testupdating1 = testupdating1 = function testupdating1(params,callback){
+		execute([{
+			"executethis":"addwidmaster",
+			"wid":"adto",
+			"metadata":{"method":"adto"},
+			"field1":"string",
+			"field2":"string"
+			},{
+			"executethis":"addwidmaster",
+			"wid":"awid1",
+			"metadata":{"method":"adto"},
+			"field1":"hello",
+			"field2":"world"
+			},{
+			"executethis":"addwidmaster",
+			"wid":"awid1",
+			"metadata":{"method":"adto"},
+			//"command":{"databasetable":"insert"},
 			"field1":"goodbye"
 			},{
 			"executethis":"getwidmaster",
@@ -6252,6 +6307,40 @@ exports.testfilternomatch1 = testfilternomatch1 = function testfilterkeymatch1(p
 				proxyprinttodiv('adding awid1: ',res[1],99);
 				proxyprinttodiv('updating awid1: ',res[2],99);
 				proxyprinttodiv('awid1 get: ',res[3],99);
+				var result = logverify("cody1_result", res[3], [{
+					"wid": "awid1",
+					"metadata.method": "adto",
+					"field1": "goodbye",
+					"field2": "world"
+				}]);
+				callback(err,result);
+			});
+	}
+	
+	exports.mirrorparams = mirrorparams = function mirrorparams(args){
+		proxyprinttodiv('mirror params: ',args,99);
+		return args;
+	}
+	
+	exports.testpreexecute1 = testpreexecute1 = function testpreexecute1(params,callback){
+		execute([{
+				"executethis":"updatewid",
+				"wid":"wid1",
+				"a":"b"
+				},{
+				"preexecute":"getwidmaster",
+				"wid":"wid1",
+				"executethis":"mirrorparams",
+				"c":"d"
+				}],
+			function (err,res){
+				proxyprinttodiv('adding adto: ',res[1],99);
+				var result = logverify("cody1_result", res[1], [{
+					"wid": "wid1",
+					"a": "b",
+					"e": "f"
+				}]);
+				callback(err,result);
 			});
 	}
 	
@@ -6443,3 +6532,22 @@ exports.ettestag9000 = ettestag9000 = function ettestag9000(params, callback) {
              })
         });
 }
+
+exports.testenv = testenv = function testenv(params,callback){
+        execute([{
+            "executethis":"updatewid",
+            "wid":"codydto",
+            "a":"b",
+            "command": {"environment": {"databasetable": "test"}}
+            }],
+            function (err,res) {
+                proxyprinttodiv('testenv result: ', res, 99);
+                // var result = logverify("cody1_result", res[3], [{
+                //     "wid": "cody1",
+                //     "metadata.method": "codydto",
+                //     "month": "June",
+                //     "day": "9th"
+                // }]);
+                callback(err,res);
+            });
+    }

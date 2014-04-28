@@ -1,0 +1,12 @@
+      db.addUser({
+              user: "admin",
+              pwd: "admin",
+              customData: {
+                  employeeId: 12345
+              },
+              roles: ["readWrite"],
+              writeConcern: {
+                  w: "majority",
+                  wtimeout: 5000
+              }
+          })

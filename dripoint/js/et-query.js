@@ -1704,7 +1704,7 @@
                 "command": {
                     "datastore": parameters.command.environment.datastore,
                     "collection":parameters.command.environment.collection,
-                    "keycollection":parameters.command.environment.collection + "key",
+                    //"keycollection":parameters.command.environment.collection + "key",
                     "db":parameters.command.environment.db,
                     "databasetable":parameters.command.environment.databasetable
                 }
@@ -1715,7 +1715,7 @@
                 "command": {
                     "datastore": config.configuration.defaultdatastore,
                     "collection":config.configuration.defaultcollection,
-                    "keycollection":config.configuration.defaultcollection + "key",
+                    //"keycollection":config.configuration.defaultcollection + "key",
                     "db":config.configuration.defaultdb,
                     "databasetable":config.configuration.defaultdatabasetable,
                     "convertmethod":"toobject",
@@ -1726,7 +1726,7 @@
                 "command": {
                     "datastore": "",
                     "collection":"",
-                    "keycollection":"",
+                    //"keycollection":"",
                     "db":"",
                     "databasetable":"",
                     "convertmethod":"",
