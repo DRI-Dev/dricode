@@ -704,7 +704,7 @@ exports.getPropertyOrDefault = getPropertyOrDefault = function(params, propName,
         return defaultValue;
     }
 };
-exports.zapierPassthrough = zapierPassthrough = function(params, cb) {
+exports.zapier_passthrough = zapier_passthrough = function(params, cb) {
     //var zapURL = 'https://zapier.com/hooks/catch/gurm8/';
     //jQuery.getJSON(zapURL, onZapSent);
     var zapURL = getPropertyOrDefault(params, 'zapURL', '');
@@ -747,7 +747,7 @@ exports.zapierPassthrough = zapierPassthrough = function(params, cb) {
 
 };
 
-zapierPassthrough(
+zapier_passthrough(
     {'zapURL':'https://zapier.com/hooks/catch/gurm8/','zapParams':{'87':'This is fun'}}, 
     function(err, res) {
         console.log('The pass through function has ended.');
