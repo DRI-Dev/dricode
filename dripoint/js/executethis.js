@@ -242,8 +242,10 @@
                 inboundparms.command.environment=res;
                 proxyprinttodiv('>>>> execute inboundparms I', inboundparms, 11);
 
-                if (Object.keys(inboundparms.command.environment).length === 0) {delete inboundparms.command.environment}
-                if (Object.keys(inboundparms.command).length === 0) {delete inboundparms.command}
+                if (inboundparms.command
+                    && inboundparms.command.environment
+                    && Object.keys(inboundparms.command.environment).length === 0) {delete inboundparms.command.environment;}
+                if (inboundparms.command && Object.keys(inboundparms.command).length === 0) {delete inboundparms.command;}
                 proxyprinttodiv('>>>> execute inboundparms II', inboundparms, 11);
                 //checkenviornment(command.environment, function (err, res) {
                 //command.environment=res;
