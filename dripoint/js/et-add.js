@@ -667,7 +667,7 @@
                         addwid(inputrecord, dtoobject, command, function (err, addobject) {
                             // If error, bounce out
                             if (err && Object.keys(err).length > 0) {
-                                callback(err, addobject);
+                                step2_callback(err, addobject);
                             } else {
                                 try {
                                     addobject = addobject[0];
