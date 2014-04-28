@@ -199,7 +199,7 @@ if (typeof angular !== 'undefined') {
             var querystring = window.location.search,
                 urlParameters = widAppHelper.queryStrToObj(querystring.substring(1));
 
-            gatherParamsAndExecute(urlParameters, $scope);
+            executeParams(urlParameters);
 
             $scope.clearlogs = function() { $('#errorlog,#successlog').html(''); };
 
@@ -279,7 +279,7 @@ if (typeof angular !== 'undefined') {
                         $('#successlog').html('');
 
                         // call new page event in config-local
-                        eventnewpage();
+                        eventnewpage({}, function (err, results) { });
                     } else {
                         $('#' + screenWid.command.htmlcleartargetid).html('');
                     }
@@ -377,8 +377,9 @@ if (typeof angular !== 'undefined') {
         }
     };
 
-    exports.gatherParamsAndExecute = gatherParamsAndExecute = function gatherParamsAndExecute(urlParameters, scope) {
-        var ogUrlParams = extend(true, {}, urlParameters);
+    exports.executeParams = executeParams = function executeParams(urlParameters, callback) {
+        var ogUrlParams = extend(true, {}, urlParameters),
+            scope = $('body').scope();
 
         function finishProcess(parameters) {
             if (parameters.addthis) { parameters = widAppHelper.removeAddThis(parameters); }
@@ -396,7 +397,9 @@ if (typeof angular !== 'undefined') {
                         var modelProp = parameters.wid || parameters.executethis;
                         if (!scope[modelProp]) { scope[modelProp] = {}; }
                         scope[modelProp].urlparams = ogUrlParams;
-                    }
+
+                        if (callback instanceof Function) { callback(null, resultset); }
+                    } else { if (callback instanceof Function) { callback(null, resultset); } }
                 });
         }
 
@@ -442,7 +445,7 @@ if (typeof angular !== 'undefined') {
         parameters.command.parameters.eventdata.element = $('<div>' + ele + '</div>').html();
         parameters.command.parameters.eventdata.originatingscreen = widAppHelper.getUrlParam('wid');
 
-        gatherParamsAndExecute(parameters, scope);
+        executeParams(parameters);
     }
 
     // adding a size function to Object's prototype
