@@ -472,7 +472,7 @@ exports.server = window.server = server = function server(params, callback) {
         extend(true, inbound_parameters, params);
 
         console.log('execute server called with ' + JSON.stringify(params));
-        // delete params['configuration'];
+        delete params['configuration'];
         params = toLowerKeys(params);
         // if (params['midexecute']) {
         //     params['executethis'] = params['midexecute'];
