@@ -132,16 +132,28 @@
                         "getwidmaster": {
                             "inheritflag": "true",
                             "dtotype": "",
-                            "execute": "ConvertToDOTdri"
+                            "execute": "ConvertFromDOTdri",
+                            "convertmethod":""
                         }
                     }
                 },
                 //"dtotype":"", "execute":"ConvertFromDOTdri"}}}, 
                 {
-                    "command": ""
-                }, true);
+                    "command": {
+                        "getwidmaster": {
+                            "inheritflag": "",
+                            "dtotype": "",
+                            "execute": "",
+                            "convertmethod":""
+                        }
+                    }
+                }
+                // {
+                //     "command": ""
+                // }
+                , true);
 
-            proxyprinttodiv('getwidmaster filter_data', filter_data, 38);
+            proxyprinttodiv('getwidmaster filter_data', filter_data, 99);
 
             parameters = filter_data.output;
             command = filter_data.filteredobject.command;
@@ -157,7 +169,7 @@
                 if (err && Object.keys(err).length > 0) {
                     callback(err, res);
                 } else {
-                    proxyprinttodiv('getwidmaster command II', command, 38);
+                    proxyprinttodiv('getwidmaster command II', command, 99);
                     proxyprinttodiv('getwidmaster after get wid mongo command', command, 38);
                     proxyprinttodiv('getwidmaster res from getWidMongo', res, 38);
                     if ((res) && (Object.keys(res).length !== 0)) { //&& (res['metadata']) && (res['wid'] !== res['metadata']['method'])) {
@@ -1385,7 +1397,7 @@
                         var listToDo = [];
                         var inheritobject;
 
-                        if (bigdto && bigdto.command && bigdto.command.inherit && bigdto.command.inherit) {
+                        if (bigdto && bigdto.command && bigdto.command.inherit) {
 
 
                             listToDo = bigdto.command.inherit;

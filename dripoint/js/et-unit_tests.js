@@ -2632,7 +2632,7 @@ exports.ettestag2 = ettestag2 = function ettestag2(params, callback) {
             res = logverify("ettestag2_result", res[3], [{
                 "hue": "red",
                 "wid": "color1",
-                "metadata.method": "defaultdto" // changed by joe
+                "metadata" : {"method": "defaultdto"} // changed by joe
                 //"metadata": {"method":"colordto"}
             }]);
             callback(err, res);
@@ -2737,7 +2737,8 @@ debuglevel=0;
             "sounddto.note": "C flat"
         }, {
             "executethis": "getwidmaster",
-            "wid": "song1"
+            "wid": "song1",
+            "command" : {"getwidmaster" : { "execute":"ConvertToDOTdri"}}
          }
         ],
         // execute([{
