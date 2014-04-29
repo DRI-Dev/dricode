@@ -848,7 +848,7 @@ exports.ettestt6 = ettestt6 = function ettestt6(params, callback) {
 }
 
 exports.ss1 = ss1 = function ss1(params, callback) {
-    proxyprinttodiv('Function ss1 ', '--', 17);
+    proxyprinttodiv('Function ss1 ', '--', 99);
     // execute(
     //     [ 
     //         {
@@ -860,7 +860,7 @@ exports.ss1 = ss1 = function ss1(params, callback) {
     //             //"Body":"test msg"
     //         }
     //     ], 
-    sendsms({"To":"+12145644732", "Body":"test"},
+    sendsms({"to":"+12145644732", "body":"test"},
         function (err, res) { 
             callback (err, res[0])
         }
