@@ -410,7 +410,7 @@
 
                                             _child_object["metadata"]["parentwid"][_parent_wid] = _parent_method;
 
-                                            if(_parent_object && _parent_object["metadata"] && _parent_object["metadata"]["parentwid"]) {
+                                            if(_parent_object["metadata"] && _parent_object["metadata"]["parentwid"]) {
                                               _child_object["metadata"]["parentwid"] = extend(true, _parent_object["metadata"]["parentwid"], _child_object["metadata"]["parentwid"]);
                                             }
                                         }

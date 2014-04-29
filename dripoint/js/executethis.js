@@ -89,9 +89,8 @@
 
 
     exports.execute = window.execute = execute = function execute(incomingparams, callback) {
-        incomingparams = incomingparams || {};
         var inboundparms_111 = arguments;
-        var inboundparms = {};
+        var inboundparms;
         var result, commandmultiple;
         var inarray = [];
         var command = {};
@@ -243,14 +242,10 @@
                 inboundparms.command.environment=res;
                 proxyprinttodiv('>>>> execute inboundparms I', inboundparms, 11);
 
-                if (inboundparms.command) {
-                    if (inboundparms.command.environment && Object.keys(inboundparms.command.environment).length === 0) {
-                        delete inboundparms.command.environment
-                    }
-                    if (Object.keys(inboundparms.command).length === 0) {
-                        delete inboundparms.command
-                    }
-                }
+                if (inboundparms.command
+                    && inboundparms.command.environment
+                    && Object.keys(inboundparms.command.environment).length === 0) {delete inboundparms.command.environment;}
+                if (inboundparms.command && Object.keys(inboundparms.command).length === 0) {delete inboundparms.command;}
                 proxyprinttodiv('>>>> execute inboundparms II', inboundparms, 11);
                 //checkenviornment(command.environment, function (err, res) {
                 //command.environment=res;
