@@ -6,9 +6,6 @@
 //
 // getexecuteobject returns the status of a howToDo whatToDo combination
 //
-// config params
-// config dofn
-//
 
 (function (window) {
     // 'use strict';
@@ -52,39 +49,22 @@
 
 //&&
         function checkenviornment(environment, cb) {
-            //cb(null,environment);
             if (config.configuration.environment==="local") {
-                //getwid({"wid":"environment"}, function (err, res) {
-                environment.wid="environment"
-                environment.command = {
-                    "datastore": config.configuration.defaultdatastore,
-                    "collection":config.configuration.defaultcollection,
-                    //"keycollection":config.configuration.defaultcollection + "key",
-                    "db":config.configuration.defaultdb,
-                    "databasetable":config.configuration.defaultdatabasetable,
-                    "convertmethod":"toobject",
-                    "datamethod":"upsert"
+                proxyprinttodiv("execute - environment", environment, 99);   
+                var environmentwid = getfromlocal(config.configuration.e)
+                if (!environmentwid) {environmentwid={}}
+                proxyprinttodiv("execute - environmentwid", environmentwid, 99); 
+                //proxyprinttodiv("execute - environment db", config.configuration.defaultdb, 99); 
+                var environmentdata = {};
+                if (environmentwid) {
+                    environmentdata = environmentwid[config.configuration.defaultdb]
                     }
-                proxyprinttodiv("execute - environment", environment, 11);
-                updatewid(environment, function (err, returnedenvironment) { 
-                    proxyprinttodiv("execute - environment II", environment, 11);   // update also does a get
-                    if (Object.keys(returnedenvironment).length === 0) {
-                        returnedenvironment.accesstoken=createNewGuid();
-                        updatewid(returnedenvironment, function (err, res) {
-                            res=res[config.configuration.defaultdb]
-                            cb(null, res)
-                        });
-                        }
-                    else { // if ac existed
-                        proxyprinttodiv("execute - environment III", environment, 11);
-                        returnedenvironment=returnedenvironment[config.configuration.defaultdb]
-                        cb(null, returnedenvironment)
-                        }
-                    });
-            }
-            else {
-                cb(null, {});
-            }
+                environment = extend(true, config.configuration.d, environmentdata, environment)
+                if (!environment.accesstoken) {environment.accesstoken=createNewGuid()};
+                environmentwid[config.configuration.defaultdb]=environment
+                addtolocal(config.configuration.e, environmentwid) 
+                }
+            cb(null,environment);
         }
 
 
@@ -134,6 +114,7 @@
                 proxyprinttodiv('>>>> execute incomingparams ', incomingparams, 11);
                 var filter_data = getcommand(incomingparams, {
                         "command": {
+                            "convertmethod":"toobject",
                             "cache":false,
                             "bundle":false,
                             "level":0,
@@ -200,6 +181,7 @@
                         }
                     }, {
                         "command": {
+                            "convertmethod":"x",
                             "cache":"x",
                             "bundle":"x",
                             "level":"x",
@@ -247,8 +229,6 @@
                     && Object.keys(inboundparms.command.environment).length === 0) {delete inboundparms.command.environment;}
                 if (inboundparms.command && Object.keys(inboundparms.command).length === 0) {delete inboundparms.command;}
                 proxyprinttodiv('>>>> execute inboundparms II', inboundparms, 11);
-                //checkenviornment(command.environment, function (err, res) {
-                //command.environment=res;
 
                 if (command.multipleexecute.length > 0) {
                     proxyprinttodiv("execute - array params received ", inboundparms, 11);
@@ -363,6 +343,13 @@
 
                                                 proxyprinttodiv('>>>> execute inboundparms', inboundparms, 11);
 
+                                                if (command.convertmethod==="todot") {
+                                                    command.overallresultparameters=ConvertToDOTdri(command.overallresultparameters)
+                                                    }
+                                                if (command.convertmethod==="nocommand") {
+                                                    delete command.overallresultparameters.command
+                                                    }
+
                                                 proxyprinttodiv("execute - command **** II", command.overallresultparameters, 11);
                                                 if (!command.cache) {
                                                     callback(null, command.overallresultparameters);
@@ -386,29 +373,7 @@
                                                     });
                                                 }
 
-//                                                async.mapSeries(command.overallresultparameters, function (eachresult, cbMap) {
-//                                                    async.nextTick(function () {
-//
-//                                                        var expirationdate = new Date() + 2;
-//
-//                                                        var recorddef = {
-//                                                                            "command" : {
-//                                                                                "datastore": config.configuration.defaultdatastore,
-//                                                                                "collection":"cache",
-//                                                                                "keycollection":"cachekey",
-//                                                                                "db" : expirationdate,
-//                                                                                "databasetable":"cache"
-//                                                                                }
-//                                                                            };
-//
-//                                                        extend(true, recorddef, eachresult);
-//                                                        updatewid(recorddef, cbMap)
-//
-//                                                        }); // nexttick
-//                                                    }, // end of mapseries
-//                                                    function (err, res) {
-//                                                        callback(null, command.overallresultparameters);
-//                                                    });
+
 
 //                                                         // if (comand.queueparameters)  { // if not normal
 //                                                         //     if (command.bundle) {
@@ -1586,7 +1551,29 @@
         });
     }
 
-    // call bootprocess() for the first time after all dependencies have been loaded
-    //bootprocess();
+//                                                async.mapSeries(command.overallresultparameters, function (eachresult, cbMap) {
+//                                                    async.nextTick(function () {
+//
+//                                                        var expirationdate = new Date() + 2;
+//
+//                                                        var recorddef = {
+//                                                                            "command" : {
+//                                                                                "datastore": config.configuration.defaultdatastore,
+//                                                                                "collection":"cache",
+//                                                                                "keycollection":"cachekey",
+//                                                                                "db" : expirationdate,
+//                                                                                "databasetable":"cache"
+//                                                                                }
+//                                                                            };
+//
+//                                                        extend(true, recorddef, eachresult);
+//                                                        updatewid(recorddef, cbMap)
+//
+//                                                        }); // nexttick
+//                                                    }, // end of mapseries
+//                                                    function (err, res) {
+//                                                        callback(null, command.overallresultparameters);
+//                                                    });
+
 
 })(typeof window == "undefined" ? global : window);

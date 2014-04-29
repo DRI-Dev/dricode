@@ -290,13 +290,13 @@ exports.madd = madd = function madd(entityToAddIn, command, callback) {
         // check if object is found
         if (returnedObject) {
             mupdate(returnedObject, entityToAdd, command, addOptions, function(err, updatedObj) {
-                printLogs('madd', entityToAdd, entityToAdd);
-                callback(err, entityToAdd);
+                printLogs('madd', entityToAdd, updatedObj);
+                callback(err, updatedObj);
             });
         } else {
             maddnew(entityToAdd, command, function(err, addedObj) {
-                printLogs('madd', entityToAdd, entityToAdd);
-                callback(err, entityToAdd);
+                printLogs('madd', entityToAdd, addedObj);
+                callback(err, addedObj);
             });
         }
     });
