@@ -1,4 +1,4 @@
-var consolere = require('console-remote-client').connect('console.re','80','DRI-CHANNEL-NAME');
+var consolere = require('console-remote-client').connect('console.re','80','dev-dri');
 
 // copyright (c) 2014 DRI
 // if(typeof localStorage === "undefined"){

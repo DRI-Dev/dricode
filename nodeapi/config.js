@@ -9,6 +9,7 @@ exports.configuration = configuration = config.configuration;
 
 // switch between the location of core files
 var DIR_TO_CORE_JS = '../dripoint/js/';
+exports.CHANNELNAME = 'dev-dri'; //http://console.re/dev-dri
 
 require(DIR_TO_CORE_JS + 'et-dto.js');
 require(DIR_TO_CORE_JS + 'et-security.js');
