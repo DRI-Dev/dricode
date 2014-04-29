@@ -135,6 +135,7 @@ exports.copywid = copywid = copywid = function copywid(inputWidgetObject, callba
     // }
     // proxyprinttodiv('Function datastore inputWidgetObject 1', inputWidgetObject, 11);
     // inputWidgetObject.command = extend(true, inputWidgetObject.command, tempobj);
+    delete inputWidgetObject['command']['environment'];
 
 
     var filter_data = getcommand(inputWidgetObject, {
@@ -233,11 +234,14 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
     //if (config.configuration.environment==="local") {defaultdatastore='localstorage';} else {defaultdatastore='mongo';}
 
     proxyprinttodiv('Function datastore inputWidgetObject 0', inputWidgetObject, 11);
-    console.log('>>>inputWidgetObject.command.environment' +inputWidgetObject.command.environment)
+    // console.log('>>>inputWidgetObject.command.environment' +inputWidgetObject.command.environment)
     
     if (inputWidgetObject.command && Object.keys(inputWidgetObject.command.environment).length > 0) {
         inputWidgetObject.command = extend(false, inputWidgetObject.command.environment, inputWidgetObject.command)
+        if(inputWidgetObject)
+            delete inputWidgetObject['command']['environment'];
         }
+
 
     proxyprinttodiv('Function datastore inputWidgetObject 1', inputWidgetObject, 11);   
 
@@ -429,6 +433,9 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
     // }
     // proxyprinttodiv('Function datastore inputWidgetObject 1', inputWidgetObject, 11);
     // inputWidgetObject.command = extend(true, inputWidgetObject.command, tempobj);
+
+    delete inputWidgetObject['command']['environment'];
+
 
     var filter_data = getcommand(inputWidgetObject, {
             "command": {

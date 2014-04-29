@@ -1713,6 +1713,9 @@
         //         }
         //     }, {},
         //     false).output;
+        if(parameters)
+            delete parameters['command']['environment'];
+
 
         filter_data = getcommand(parameters, {
                 "command": {
