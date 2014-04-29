@@ -199,17 +199,17 @@ function getConnection(mongoDatabaseToLookup, callback) {
 
 function printLogs(fnname, input, output) {
 
-    // console.log(" DAO :: "+fnname+"  TABLE _ NAME is " + schemaToLookup);
-    // console.log(" DAO :: "+fnname+"  DATABASE _ NAME is " + databaseToLookup);
-    // console.log(" DAO :: "+fnname+"  MONGO _ DATABASE _ NAME is " + mongoDatabaseToLookup);
-    // console.log(' DAO :: ***************************');
-    // console.log(' DAO :: >>>>>> ::: ' + fnname + ' begin ::: ');
-    // console.log(' DAO :: >>>>>> ::: inputs ::: ');
-    // console.log(' DAO :: ' + JSON.stringify(input));
-    // console.log(' DAO :: >>>>>> ::: output ::: ');
-    // console.log(' DAO :: ' + JSON.stringify(output));
-    // console.log(' DAO :: >>>>>> ::: ' + fnname + ' end ::: ');
-    // console.log(' DAO :: ***************************');
+    console.log(" DAO :: "+fnname+"  TABLE _ NAME is " + schemaToLookup);
+    console.log(" DAO :: "+fnname+"  DATABASE _ NAME is " + databaseToLookup);
+    console.log(" DAO :: "+fnname+"  MONGO _ DATABASE _ NAME is " + mongoDatabaseToLookup);
+    console.log(' DAO :: ***************************');
+    console.log(' DAO :: >>>>>> ::: ' + fnname + ' begin ::: ');
+    console.log(' DAO :: >>>>>> ::: inputs ::: ');
+    console.log(' DAO :: ' + JSON.stringify(input));
+    console.log(' DAO :: >>>>>> ::: output ::: ');
+    console.log(' DAO :: ' + JSON.stringify(output));
+    console.log(' DAO :: >>>>>> ::: ' + fnname + ' end ::: ');
+    console.log(' DAO :: ***************************');
 }
 
 
