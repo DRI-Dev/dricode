@@ -49,6 +49,7 @@
 
 //&&
         function checkenviornment(environment, cb) {
+            environment = extend(true, config.configuration.d, environment)
             if (config.configuration.environment==="local") {
                 proxyprinttodiv("execute - environment", environment, 99);   
                 var environmentwid = getfromlocal(config.configuration.e)
@@ -59,7 +60,7 @@
                 if (environmentwid) {
                     environmentdata = environmentwid[config.configuration.defaultdb]
                     }
-                environment = extend(true, config.configuration.d, environmentdata, environment)
+                environment = extend(true, environmentdata, environment)
                 if (!environment.accesstoken) {environment.accesstoken=createNewGuid()};
                 environmentwid[config.configuration.defaultdb]=environment
                 addtolocal(config.configuration.e, environmentwid) 
