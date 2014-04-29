@@ -159,6 +159,15 @@ var config123 = function () {
     configuration.defaultmongodb = 'wikiwallettesting'
     configuration.defaultdatabsaetable = 'wikiwallettesting'
 
+    configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment"
+    configuration.d = {}
+    configuration.d.defaultcollection = configuration.defaultcollection
+    configuration.d.defaultdb = configuration.defaultdb
+    configuration.d.defaultdatastore = 'localstore'
+    configuration.d.defaultkeycollection = configuration.defaultkeycollection
+    configuration.d.defaultdatabasetable = configuration.defaultdatabasetable
+
+
 
     configuration.preExecute = [];
     configuration.preExecute[0] = {};
