@@ -233,6 +233,8 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
     //if (config.configuration.environment==="local") {defaultdatastore='localstorage';} else {defaultdatastore='mongo';}
 
     proxyprinttodiv('Function datastore inputWidgetObject 0', inputWidgetObject, 11);
+    console.log('>>>inputWidgetObject.command.environment' +inputWidgetObject.command.environment)
+    
     if (inputWidgetObject.command && Object.keys(inputWidgetObject.command.environment).length > 0) {
         inputWidgetObject.command = extend(false, inputWidgetObject.command.environment, inputWidgetObject.command)
         }
