@@ -2492,7 +2492,7 @@ exports.ettestag1 = ettestag1 = function ettestag1(params, callback) {
         function (err, res1) {
             proxyprinttodiv("Ag1  result ", res1, 99);
             // var res = res1[1]; //~~~ changed by SAURABH 
-            var res = res1[0];
+            var res = res1[1];
 
             proxyprinttodiv('Function ag1 expected res ', {
                 "note": "string",

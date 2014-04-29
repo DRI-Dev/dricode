@@ -289,6 +289,7 @@ function config123() {
     configuration.defaultdatastore = 'localstorage';
     configuration.defaultkeycollection = 'dricollectionkey';
     configuration.defaultdatabasetable = 'wikiwallettesting';
+    configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment"
 
     configuration.preExecute = [];
     configuration.preExecute[0] = {};
