@@ -378,8 +378,8 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
             addToLocalStorage(databasetable+"_"+collection+"_"+ widName, addedobject);
             //addtoangularstorage
             proxyprinttodiv('Function datastore command -- add addedobject end', addedobject, 12);
-//                callback(err, addedobject);
-            callback(err, {wid:widName});
+            callback(err, addedobject);
+            //callback(err, {wid:widName});
         }
         // else if (datastore==='angularstorage') { // if datastore == angularstorage
         //     }

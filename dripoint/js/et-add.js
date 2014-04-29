@@ -129,7 +129,8 @@
                         callback(err, res);
                     } else {
 //                                    res = pack_up_params(res, command, "addwidmaster");
-                        callback(null, _object);
+                        //callback(null, _object);
+                        callback(null, {wid: _object['wid']})
                     }
                 });
             } // end else
@@ -349,6 +350,7 @@
                 if (res['metadata']) {
                     _parent_method = res['metadata']['method'];
                 }
+
 
                 // Sample error
                 // throw ({'my error': 'red'});
