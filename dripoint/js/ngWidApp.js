@@ -65,6 +65,7 @@ if (typeof angular !== 'undefined') {
 
     widApp.factory('executeService', function($http, $compile, dataService) {
         var processExecuteResult = function(result, scope) {
+            if (!result) { result = {}; }
             if (result.addthis) { result = widAppHelper.removeAddThis(result);}
 
             // if not logged in at this point send browser to login.html
