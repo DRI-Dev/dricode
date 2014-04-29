@@ -282,7 +282,7 @@
                                                 callback(command.queueparameters, command.overallresultparameters);
                                             } else {
                                                 proxyprinttodiv("execute - command **** I", command.overallresultparameters, 11);
-                                                if (command.overallresultparameters.command) {
+                                                if (command.overallresultparameters && command.overallresultparameters.command) {
                                                     if (command.overallresultparameters.command.environment) {delete command.overallresultparameters.command.environment}
                                                     if (Object.keys(command.overallresultparameters.command).length ===0) {delete command.overallresultparameters.command}
                                                 }
