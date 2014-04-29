@@ -59,7 +59,7 @@
                 if (environmentwid) {
                     environmentdata = environmentwid[config.configuration.defaultdb]
                     }
-                environment = extend(true, environmentdata, environment)
+                environment = extend(true, config.configuration.d, environmentdata, environment)
                 if (!environment.accesstoken) {environment.accesstoken=createNewGuid()};
                 environmentwid[config.configuration.defaultdb]=environment
                 addtolocal(config.configuration.e, environmentwid) 
@@ -114,6 +114,7 @@
                 proxyprinttodiv('>>>> execute incomingparams ', incomingparams, 11);
                 var filter_data = getcommand(incomingparams, {
                         "command": {
+                            "convertmethod":"toobject",
                             "cache":false,
                             "bundle":false,
                             "level":0,
@@ -180,6 +181,7 @@
                         }
                     }, {
                         "command": {
+                            "convertmethod":"x",
                             "cache":"x",
                             "bundle":"x",
                             "level":"x",
@@ -340,6 +342,13 @@
                                                 }
 
                                                 proxyprinttodiv('>>>> execute inboundparms', inboundparms, 11);
+
+                                                if (command.convertmethod==="todot") {
+                                                    command.overallresultparameters=ConvertToDOTdri(command.overallresultparameters)
+                                                    }
+                                                if (command.convertmethod==="nocommand") {
+                                                    delete command.overallresultparameters.command
+                                                    }
 
                                                 proxyprinttodiv("execute - command **** II", command.overallresultparameters, 11);
                                                 if (!command.cache) {
