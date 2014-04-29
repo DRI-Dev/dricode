@@ -1,3 +1,5 @@
+var consolere = require('console-remote-client').connect('console.re','80','DRI-CHANNEL-NAME');
+
 // copyright (c) 2014 DRI
 // if(typeof localStorage === "undefined"){
 if (!exports) {
@@ -762,17 +764,22 @@ exports.proxyprinttodiv = proxyprinttodiv = function proxyprinttodiv(text, obj, 
     if (exports.environment === "local") {
         printToDiv(text, obj, debugone, pretty);
     } else {
-        if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 12)) {
-            // debuglinenum++;
-            var z = getglobal('debuglinenum');
-            z++;
-            saveglobal('debuglinenum', z);
+        if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
 
-            var tempobj = {};
-            tempobj["text"] = text;
-            tempobj["obj"] = obj;
-            tempobj["executethis"] = "printdiv";
-            addtolocal(g_debuglinenum, tempobj);
+
+            console.re.log(text);
+
+
+            // debuglinenum++;
+            // var z = getglobal('debuglinenum');
+            // z++;
+            // saveglobal('debuglinenum', z);
+
+            // var tempobj = {};
+            // tempobj["text"] = text;
+            // tempobj["obj"] = obj;
+            // tempobj["executethis"] = "printdiv";
+            // addtolocal(g_debuglinenum, tempobj);
         }
     }
 }
