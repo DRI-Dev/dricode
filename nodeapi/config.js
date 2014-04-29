@@ -21,9 +21,9 @@ require(DIR_TO_CORE_JS + 'et-unit_tests.js');
 exports.executethis = require(DIR_TO_CORE_JS + 'executethis.js');
 
 exports.serverconfig = serverconfig = {
-    SERVER_PORT: 3059,
+    SERVER_PORT: 3010,
     LOOKUP_DIR: '../dripoint/',
-    SERVICE_URL: 'http://localhost:3009/'
+    SERVICE_URL: 'http://localhost:3010/'
 }
 
 // DB settings --- 5 hardcoded databases for now :: last 4 databases are right now local databases can be changed to any domain

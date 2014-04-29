@@ -383,6 +383,7 @@ if (typeof angular !== 'undefined') {
 
         function finishProcess(parameters) {
             if (parameters.addthis) { parameters = widAppHelper.removeAddThis(parameters); }
+            if (parameters.wid && parameters.wid === 'urlparams') { delete parameters['wid']; }
 
             if (!parameters.executethis && parameters.wid) {
                 parameters.executethis = parameters.wid;
