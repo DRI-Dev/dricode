@@ -1696,26 +1696,32 @@
             //     "command":{"convertmethod": ""}
             // }, false);
 
-        
-        if(!parameters.command){parameters.command={}};
-        if(!parameters.command.environment){parameters.command.environment={}};
+        if (parameters.command && Object.keys(parameters.command.environment).length > 0) {
+            parameters.command = extend(false, parameters.command.environment, parameters.command)
+            }  
 
-        parameters = getcommand(parameters, {
-                "command": {
-                    "datastore": parameters.command.environment.datastore,
-                    "collection":parameters.command.environment.collection,
-                    "keycollection":parameters.command.environment.collection + "key",
-                    "db":parameters.command.environment.db,
-                    "databasetable":parameters.command.environment.databasetable
-                }
-            }, {},
-            false).output;
+        // if(!parameters.command){parameters.command={}};
+        // if(!parameters.command.environment){parameters.command.environment={}};
+
+        // parameters = getcommand(parameters, {
+        //         "command": {
+        //             "datastore": parameters.command.environment.datastore,
+        //             "collection":parameters.command.environment.collection,
+        //             //"keycollection":parameters.command.environment.collection + "key",
+        //             "db":parameters.command.environment.db,
+        //             "databasetable":parameters.command.environment.databasetable
+        //         }
+        //     }, {},
+        //     false).output;
+        if(parameters)
+            delete parameters['command']['environment'];
+
 
         filter_data = getcommand(parameters, {
                 "command": {
                     "datastore": config.configuration.defaultdatastore,
                     "collection":config.configuration.defaultcollection,
-                    "keycollection":config.configuration.defaultcollection + "key",
+                    //"keycollection":config.configuration.defaultcollection + "key",
                     "db":config.configuration.defaultdb,
                     "databasetable":config.configuration.defaultdatabasetable,
                     "convertmethod":"toobject",
@@ -1726,7 +1732,7 @@
                 "command": {
                     "datastore": "",
                     "collection":"",
-                    "keycollection":"",
+                    //"keycollection":"",
                     "db":"",
                     "databasetable":"",
                     "convertmethod":"",

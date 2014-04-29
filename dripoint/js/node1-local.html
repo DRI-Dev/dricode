@@ -305,68 +305,68 @@ copyright (c) 2014 DRI
             // and the clearlocalstoraget ...check box >>  function etappinstall()
             eventappinstall();
         }
-        eventnewpage();
 
-        //bootprocess();
-        // clearLocalStorage();
-        // Pulling values out of the debug area
-        saveglobal("debugname", $('#dbug_name').val());
-        saveglobal("debugcat", $('#dbug_category').val());
-        saveglobal("debugsubcat", $('#dbug_subcategory').val());
-        // debugfilter = $('#dbug_filter').val();
-        saveglobal("debugfilter", $('#dbug_filter').val());
-        if ($('#dbug_level').val() != "") debuglevel = parseInt($('#dbug_level').val());
+        eventnewpage({}, function (err, res) {
 
-        if ($('#dest_print').is(':checked') && !$('#dest_google').is(':checked')) saveglobal("debugdestination", 1);
-        if (!$('#dest_print').is(':checked') && $('#dest_google').is(':checked')) saveglobal("debugdestination", 2);
-        if ($('#dest_print').is(':checked') && $('#dest_google').is(':checked')) saveglobal("debugdestination", 3);
+            saveglobal("debugname", $('#dbug_name').val());
+            saveglobal("debugcat", $('#dbug_category').val());
+            saveglobal("debugsubcat", $('#dbug_subcategory').val());
+            // debugfilter = $('#dbug_filter').val();
+            saveglobal("debugfilter", $('#dbug_filter').val());
+            if ($('#dbug_level').val() != "") debuglevel = parseInt($('#dbug_level').val());
+
+            if ($('#dest_print').is(':checked') && !$('#dest_google').is(':checked')) saveglobal("debugdestination", 1);
+            if (!$('#dest_print').is(':checked') && $('#dest_google').is(':checked')) saveglobal("debugdestination", 2);
+            if ($('#dest_print').is(':checked') && $('#dest_google').is(':checked')) saveglobal("debugdestination", 3);
 
 
-        // localStorage.clear();
-        $('#resultDiv').text("");
-        $('#test_result_message').text("");
-        $('#divprint').text("");
-        var function_to_execute = $('#function_to_run').val();
+            // localStorage.clear();
+            $('#resultDiv').text("");
+            $('#test_result_message').text("");
+            $('#divprint').text("");
 
-        // check to make sure the test string is in the right format
-        // if(function_to_execute.indexOf("ettest") === -1) {
-        //  function_to_execute = "ettest" + function_to_execute;
-        // }
+            var function_to_execute = $('#function_to_run').val();
 
-        var my_execute_object = {
-            "executethis": function_to_execute
-        };
-        var data = $('#function_parameters').val();
-        if (data != "") {
-            data = JSON.parse(data);
-            if (Object.keys(data).length > 0) {
-                alert('adding: ' + data);
-                for (var d in data) {
-                    my_execute_object[d] = data[d];
+            // check to make sure the test string is in the right format
+            // if(function_to_execute.indexOf("ettest") === -1) {
+            //  function_to_execute = "ettest" + function_to_execute;
+            // }
+
+            var my_execute_object = {
+                "executethis": function_to_execute
+            };
+            var data = $('#function_parameters').val();
+            if (data != "") {
+                data = JSON.parse(data);
+                if (Object.keys(data).length > 0) {
+                    alert('adding: ' + data);
+                    for (var d in data) {
+                        my_execute_object[d] = data[d];
+                    }
                 }
             }
-        }
 
-        // if ($('#server_caller').prop('checked')) {       
-        if (isServer) {
-            my_execute_object['configuration'] = {
-                "midexecute": [{
-                    "dothis": "server",
-                    "tryorder": 0,
-                    "executeorder": 0,
-                    "params": {}
-                }]
-            };
-            my_execute_object['command.debug'] = 'true';
-            if(servername){
-                my_execute_object['command']={'server':servername};
+            // if ($('#server_caller').prop('checked')) {       
+            if (isServer) {
+                my_execute_object['configuration'] = {
+                    "midexecute": [{
+                        "dothis": "server",
+                        "tryorder": 0,
+                        "executeorder": 0,
+                        "params": {}
+                    }]
+                };
+                my_execute_object['command.debug'] = 'true';
+                if(servername){
+                    my_execute_object['command']={'server':servername};
+                }
             }
-        }
-        // Change the Clean local storage checkbox to 'unchecked'
-        $("#localStorageClean").prop('checked', false);
-        // ******** This actually executes the function and show the output ********
-        // alert('ex-object:\n' + JSON.stringify(my_execute_object,'-', 4));
-        execute(my_execute_object, show_function_output3);
+            // Change the Clean local storage checkbox to 'unchecked'
+            $("#localStorageClean").prop('checked', false);
+            // ******** This actually executes the function and show the output ********
+            // alert('ex-object:\n' + JSON.stringify(my_execute_object,'-', 4));
+            execute(my_execute_object, show_function_output3);
+        });
     }
 
     $('#execute_test').click(function() {

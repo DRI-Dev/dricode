@@ -1,6 +1,7 @@
 var needle = require('needle');
 var twilio = require('twilio')('AC909f1981261f4461abbc7985bd202897', '7bb26fabe1f818f11f4a178359e0f19a');
 var spawn = require('child_process').spawn;
+var url = require('url');
 
 var localStorage = exports.localStorage = {};
 
@@ -156,6 +157,16 @@ var config123 = function () {
     configuration.defaultdatastore = 'mongo'
     configuration.defaultkeycollection = 'dricollectionkey'
     configuration.defaultmongodb = 'wikiwallettesting'
+    configuration.defaultdatabasetable = 'wikiwallettesting'
+
+    configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment"
+    configuration.d = {}
+    configuration.d.defaultcollection = configuration.defaultcollection
+    configuration.d.defaultdb = configuration.defaultdb
+    configuration.d.defaultdatastore =  configuration.defaultdatastore
+    configuration.d.defaultkeycollection = configuration.defaultkeycollection
+    configuration.d.defaultdatabasetable = configuration.defaultdatabasetable
+
 
 
     configuration.preExecute = [];
@@ -694,3 +705,63 @@ sendsms({
 }, function (err, result) {
     //console.log('running');
 });
+
+exports.getPropertyOrDefault = getPropertyOrDefault = function(params, propName, defaultValue) {
+    if (params.hasOwnProperty(propName)) {
+        return params[propName];
+    } else {
+        return defaultValue;
+    }
+};
+exports.zapier_passthrough = zapier_passthrough = function(params, cb) {
+    //var zapURL = 'https://zapier.com/hooks/catch/gurm8/';
+    //jQuery.getJSON(zapURL, onZapSent);
+    var zapURL = getPropertyOrDefault(params, 'zapURL', '');
+    var zapParams = getPropertyOrDefault(params, 'zapParams', {} );
+
+    var urlObj = url.parse(zapURL);
+    var zapHost = urlObj.host;
+    var zapPort = 443;
+    var post_data = querystring.stringify(zapParams);
+    var post_options = {
+        host: zapHost,
+        port: zapPort,
+        path: zapURL,
+        method: 'POST',
+        strictSSL: false,
+        secureProtocol: 'SSLv3_client_method',
+        // auth: accountSid + ':' + authToken,
+        headers: {
+            'Content-type': 'application/x-www-form-urlencoded',
+            'Content-length': post_data.length
+        }
+    };
+    
+    // Setup the request
+    var post_request = https.request(post_options, function (res) {
+        res.setEncoding('utf8');
+        res.on('data', function (chunk) {
+            //            proxyprinttodiv('Response: ' + chunk);
+
+            // assumes response is 1 chunk
+            cb(null, {
+                "test": "success"
+            });
+        });
+    });
+
+    //post the data
+    post_request.write(post_data);
+    post_request.end();
+
+};
+
+zapier_passthrough(
+    {'zapURL':'https://zapier.com/hooks/catch/gurm8/','zapParams':{'87':'This is fun'}}, 
+    function(err, res) {
+        console.log('The pass through function has ended.');
+        console.log('God save the queen');
+    }
+); 
+
+

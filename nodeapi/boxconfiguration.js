@@ -23,5 +23,5 @@ exports.executethis = require(DIR_TO_CORE_JS + 'executethis.js');
 exports.serverconfig = serverconfig = {
     SERVER_PORT: 3000,
     LOOKUP_DIR: '../dripoint/',
-    SERVICE_URL: 'http://localhost:3009/'
+    SERVICE_URL: 'http://localhost:3000/'
 }

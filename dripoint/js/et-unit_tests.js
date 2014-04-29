@@ -2492,7 +2492,7 @@ exports.ettestag1 = ettestag1 = function ettestag1(params, callback) {
         function (err, res1) {
             proxyprinttodiv("Ag1  result ", res1, 99);
             // var res = res1[1]; //~~~ changed by SAURABH 
-            var res = res1[0];
+            var res = res1[1];
 
             proxyprinttodiv('Function ag1 expected res ', {
                 "note": "string",
@@ -2632,7 +2632,7 @@ exports.ettestag2 = ettestag2 = function ettestag2(params, callback) {
             res = logverify("ettestag2_result", res[3], [{
                 "hue": "red",
                 "wid": "color1",
-                "metadata.method": "defaultdto" // changed by joe
+                "metadata" : {"method": "defaultdto"} // changed by joe
                 //"metadata": {"method":"colordto"}
             }]);
             callback(err, res);
@@ -2737,7 +2737,8 @@ debuglevel=0;
             "sounddto.note": "C flat"
         }, {
             "executethis": "getwidmaster",
-            "wid": "song1"
+            "wid": "song1",
+            "command" : {"getwidmaster" : { "execute":"ConvertToDOTdri"}}
          }
         ],
         // execute([{
