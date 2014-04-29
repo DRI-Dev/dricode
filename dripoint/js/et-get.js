@@ -656,7 +656,7 @@
                         // If error, bounce out
                         if (err && Object.keys(err).length > 0) {
                             // callback(err, results);
-                            callback(err, res);
+                            cb(err, res);
                         } else {
                             proxyprinttodiv('Function getwidmongo getwid res', res, 38);
                             res = res[0];

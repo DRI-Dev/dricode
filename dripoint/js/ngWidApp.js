@@ -65,6 +65,7 @@ if (typeof angular !== 'undefined') {
 
     widApp.factory('executeService', function($http, $compile, dataService) {
         var processExecuteResult = function(result, scope) {
+            if (!result) { result = {}; }
             if (result.addthis) { result = widAppHelper.removeAddThis(result);}
 
             // if not logged in at this point send browser to login.html
@@ -383,6 +384,7 @@ if (typeof angular !== 'undefined') {
 
         function finishProcess(parameters) {
             if (parameters.addthis) { parameters = widAppHelper.removeAddThis(parameters); }
+            if (parameters.wid && parameters.wid === 'urlparams') { delete parameters['wid']; }
 
             if (!parameters.executethis && parameters.wid) {
                 parameters.executethis = parameters.wid;
@@ -406,13 +408,19 @@ if (typeof angular !== 'undefined') {
         // save url parameters to 'urlparams' wid
         // hide 'wid' and 'executethis' parameters behind addthis if found
         if (urlParameters.wid) {
-            if (!urlParameters.addthis) { urlParameters.addthis = {wid:urlParameters.wid}; }
+            if (!urlParameters.addthis) { urlParameters.addthis = { wid:urlParameters.wid}; }
             else { urlParameters.addthis.wid = urlParameters.wid; }
             delete urlParameters['wid'];
         }
 
+        if (urlParameters.preexecute) {
+            if (!urlParameters.addthis) { urlParameters.addthis = { preexecute:urlParameters.preexecute}; }
+            else { urlParameters.addthis.preexecute = urlParameters.preexecute; }
+            delete urlParameters['preexecute'];
+        }
+
         if (urlParameters.executethis) {
-            if (!urlParameters.addthis) { urlParameters.addthis = {executethis:urlParameters.executethis}; }
+            if (!urlParameters.addthis) { urlParameters.addthis = { executethis:urlParameters.executethis}; }
             else { urlParameters.addthis.executethis = urlParameters.executethis; }
             delete urlParameters['executethis'];
         }

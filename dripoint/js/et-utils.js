@@ -542,6 +542,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                     // if not resultobject then just leave output alone
 
                     if (output) {
+                        err = null;
                         // make sure data is bundled properly for convertfromdriformat()
                         for (var prop in output) {
                             if (output.hasOwnProperty(prop)) {

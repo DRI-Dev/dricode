@@ -344,11 +344,10 @@
                 callback(err, res);
             } else {
                 proxyprinttodiv("addrecord parentobj result :- ", res, 17);
-
-                _parent_object = res;
-                _parent_wid = res['wid'];
-                if (res['metadata']) {
-                    _parent_method = res['metadata']['method'];
+                // console.log(" ------------ "+ JSON.stringify(res))
+                var _parent_wid =  _parent_object['wid'];
+                if ( _parent_object['metadata']) {
+                    _parent_method =  _parent_object['metadata']['method'];
                 }
 
 
@@ -560,12 +559,14 @@
 
                     //proxyprinttodiv("parentrelationshiptype: ", parentrelationshiptype, 17);
 
-                    addwid(inputrecord, dtoobject, command, function (err, addobject) {
+                    addwid(inputrecord, dtoobject, command, function (err, res) {
                         // If error, bounce out
                         if (err && Object.keys(err).length > 0) {
                             step2_callback(err, addobject);
                         } else {
-                            addobject = addobject[0];
+                            // addobject = addobject[0];
+                            addobject = inputrecord;
+                            addobject['wid']=res['wid'];
                             proxyprinttodiv("addrecord input addobject :- ", addobject, 17);
 
                             reldto = {
@@ -987,7 +988,8 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                 extend(true, object, tempcmd);
                 proxyprinttodiv("addwid before updatewid ", object, 18);
                 execute(object, function (err, res) {
-                    output = res; // or res[0]?
+                    console.log(" ^^^^^ "+ JSON.stringify(res))
+                    output = res[0]; // or res[0]?
                     // If error, bounce out
                     if (err && Object.keys(err).length > 0) {
                         step4_callback(err, res);
