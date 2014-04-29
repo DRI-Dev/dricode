@@ -69,14 +69,14 @@ exports.mget = mget = function mget(objToFind, command, callback) {
             "wid": widName
         }).toArray(function(err, res) {
             if (err) {
-                printLogs('mget', widName, err);
+                // printLogs('mget', widName, err);
                 callback(err, res);
             } else {
                 if (res && res && res[0]) {
-                    printLogs('mget', widName, res[0]);
+                    // printLogs('mget', widName, res[0]);
                     callback(null, res[0]);
                 } else {
-                    printLogs('mget', widName, null);
+                    // printLogs('mget', widName, null);
                     callback(null, null);
                 }
             }
@@ -219,8 +219,8 @@ exports.madd = madd = function madd(entityToAddIn, command, callback) {
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-    console.log('>>>> entity added is ' + JSON.stringify(entityToAddIn));
-    console.log('>>>>database >>> ' + JSON.stringify(command));
+    // console.log('>>>> entity added is ' + JSON.stringify(entityToAddIn));
+    // console.log('>>>>database >>> ' + JSON.stringify(command));
 
     var entityToAdd = entityToAddIn;
     // var entityToAdd = {};
@@ -290,12 +290,12 @@ exports.madd = madd = function madd(entityToAddIn, command, callback) {
         // check if object is found
         if (returnedObject) {
             mupdate(returnedObject, entityToAdd, command, addOptions, function(err, updatedObj) {
-                printLogs('madd', entityToAdd, updatedObj);
+                // printLogs('madd', entityToAdd, updatedObj);
                 callback(err, updatedObj);
             });
         } else {
             maddnew(entityToAdd, command, function(err, addedObj) {
-                printLogs('madd', entityToAdd, addedObj);
+                // printLogs('madd', entityToAdd, addedObj);
                 callback(err, addedObj);
             });
         }
