@@ -293,7 +293,7 @@ function config123() {
     configuration.d = {}
     configuration.d.defaultcollection = configuration.defaultcollection
     configuration.d.defaultdb = configuration.defaultdb
-    configuration.d.defaultdatastore = configuration.defaultdatastore
+    configuration.d.defaultdatastore = 'localstore'
     configuration.d.defaultkeycollection = configuration.defaultkeycollection
     configuration.d.defaultdatabasetable = configuration.defaultdatabasetable
 
