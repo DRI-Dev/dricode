@@ -1,4 +1,6 @@
-var consolere = require('console-remote-client').connect('console.re','80','dev-dri');
+if (config.configuration.environment!=="local") {
+    var consolere = require('console-remote-client').connect('console.re','80','dev-dri');
+}
 
 // copyright (c) 2014 DRI
 // if(typeof localStorage === "undefined"){
