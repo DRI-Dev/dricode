@@ -219,6 +219,7 @@ exports.madd = madd = function madd(entityToAddIn, command, callback) {
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
+    console.log('>>>> entity added is ' + JSON.stringify(entityToAddIn));
     console.log('>>>>database >>> ' + JSON.stringify(command));
 
     var entityToAdd = entityToAddIn;
@@ -236,7 +237,6 @@ exports.madd = madd = function madd(entityToAddIn, command, callback) {
     // });
 
 
-    console.log('>>>> entity added is ' + JSON.stringify(entityToAdd));
 
     var addOptions = {};
 
@@ -290,13 +290,13 @@ exports.madd = madd = function madd(entityToAddIn, command, callback) {
         // check if object is found
         if (returnedObject) {
             mupdate(returnedObject, entityToAdd, command, addOptions, function(err, updatedObj) {
-                printLogs('madd', entityToAdd, updatedObj);
-                callback(err, updatedObj);
+                printLogs('madd', entityToAdd, entityToAdd);
+                callback(err, entityToAdd);
             });
         } else {
             maddnew(entityToAdd, command, function(err, addedObj) {
-                printLogs('madd', entityToAdd, addedObj);
-                callback(err, addedObj);
+                printLogs('madd', entityToAdd, entityToAdd);
+                callback(err, entityToAdd);
             });
         }
     });
