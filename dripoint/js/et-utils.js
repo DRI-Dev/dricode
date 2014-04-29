@@ -544,17 +544,15 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                                 }
                             }
                         }
-                        output=convertfromdriformat(output, command);
-
-                        if (output && Object.keys(output) > 0) {
-                            output = extend(true, originalarguments, output);
-                        }
-
-                        proxyprinttodiv('Function getwid command.convertmethod >> 1', command.convertmethod,12);
-
-                        if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
-                            output =  ConvertFromDOTdri(output);
-                        }
+                        output = convertfromdriformatenhanced(output, command, originalarguments);
+                        // output=convertfromdriformat(output, command);
+                        // if (output && Object.keys(output) > 0) {
+                        //     output = extend(true, originalarguments, output);
+                        // }
+                        // proxyprinttodiv('Function getwid command.convertmethod >> 1', command.convertmethod,12);
+                        // if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
+                        //     output =  ConvertFromDOTdri(output);
+                        // }
                     } // if output
                     else { // if no output
                         output={};
@@ -580,18 +578,17 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                     //callback(err, output);
                 });
             } else { // if not local...this case makes no sense
-                output=convertfromdriformat(output, command);
+                output = convertfromdriformatenhanced(output, command, originalarguments);
 
-                if (output && Object.keys(output) > 0) {
-                    output = extend(true, originalarguments, output);
-                }
+                // output=convertfromdriformat(output, command);
+                // if (output && Object.keys(output) > 0) {
+                //     output = extend(true, originalarguments, output);
+                // }
+                // proxyprinttodiv('Function datastore command -- get output 2', output, 99);
 
-                proxyprinttodiv('Function datastore command -- get output 2', output, 99);
-
-                if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
-                    output =  ConvertFromDOTdri(output);
-                }
-
+                // if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
+                //     output =  ConvertFromDOTdri(output);
+                // }
                 callback(null, output);
                 //callback(err, output);
             }
@@ -606,21 +603,23 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                     }
                     //output = find_and_replace_addthis(output) ;
                 }
-                output=convertfromdriformat(output, command);
-                output = extend(true, originalarguments, output);
-                if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
-                    output =  ConvertFromDOTdri(output);
-                }
-                proxyprinttodiv('Function datastore command -- get output 3', output, 12);
+                output = convertfromdriformatenhanced(output, command, originalarguments);
+                // output=convertfromdriformat(output, command);
+                // output = extend(true, originalarguments, output);
+                // if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
+                //     output =  ConvertFromDOTdri(output);
+                // }
+                // proxyprinttodiv('Function datastore command -- get output 3', output, 12);
                 callback(err, output);
                 //callback(err, resultobject);
             });
         } else { // if not mongo
-            output=convertfromdriformat(output, command);
-            output = extend(true, originalarguments, output);
-            if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
-                output =  ConvertFromDOTdri(output);
-            }
+            output = convertfromdriformatenhanced(output, command, originalarguments);
+            // output=convertfromdriformat(output, command);
+            // output = extend(true, originalarguments, output);
+            // if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
+            //     output =  ConvertFromDOTdri(output);
+            // }
             proxyprinttodiv('Function datastore command -- get output 4', output, 99);
             callback(null, output);
             //callback(err, output);
@@ -632,40 +631,16 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
     //callback(err, output);
 }; //End of getfrommongo function
 
-
-exports.converttodriformat = converttodriformat = function converttodriformat(inputObject, command) {
-    var inputWidgetObject = JSON.parse(JSON.stringify(inputObject));
-    delete inputWidgetObject['executethis'];
-    proxyprinttodiv('Function updatewid in : inputWidgetObject', inputWidgetObject, 12);
-    var saveobject = {};
-    var db = config.configuration.defaultdb;
-    var wid;
-    var metadata;
-    var date;
-    if (command && command.db) {
-        db = command.db;
-    }
-
-    inputWidgetObject['metadata.date'] = new Date();
-
-    inputWidgetObject = ConvertFromDOTdri(inputWidgetObject);
-    if (inputWidgetObject['wid']) {
-        wid = inputWidgetObject['wid'];
-        delete inputWidgetObject['wid'];
-    }
-    if (inputWidgetObject['metadata']) {
-        metadata = inputWidgetObject['metadata'];
-        delete inputWidgetObject['metadata'];
-    }
-
-    if (!metadata['expirationdate']) {metadata['expirationdate'] = new Date();}
-
-    saveobject[db] = inputWidgetObject;
-    saveobject['wid'] = wid;
-    saveobject['metadata'] = metadata;
-    proxyprinttodiv('Function updatewid in : saveobject II', saveobject, 12);
-    return saveobject;
-};
+exports.convertfromdriformatenhanced = convertfromdriformatenhanced = function convertfromdriformatenhanced(output, command, originalarguments) {
+    output=convertfromdriformat(output, command);
+    if (output && Object.keys(output) > 0) {
+        output = extend(true, originalarguments, output);
+        }
+    if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
+        output =  ConvertFromDOTdri(output);
+        }
+    return output
+}
 
 exports.convertfromdriformat = convertfromdriformat = function convertfromdriformat(widobject, command) {
     var outobject = {};
@@ -705,6 +680,43 @@ exports.convertfromdriformat = convertfromdriformat = function convertfromdrifor
         //outobject = ConvertToDOTdri(outobject);
     }
     return outobject;
+};
+
+
+
+
+exports.converttodriformat = converttodriformat = function converttodriformat(inputObject, command) {
+    var inputWidgetObject = JSON.parse(JSON.stringify(inputObject));
+    delete inputWidgetObject['executethis'];
+    proxyprinttodiv('Function updatewid in : inputWidgetObject', inputWidgetObject, 12);
+    var saveobject = {};
+    var db = config.configuration.defaultdb;
+    var wid;
+    var metadata;
+    var date;
+    if (command && command.db) {
+        db = command.db;
+    }
+
+    inputWidgetObject['metadata.date'] = new Date();
+
+    inputWidgetObject = ConvertFromDOTdri(inputWidgetObject);
+    if (inputWidgetObject['wid']) {
+        wid = inputWidgetObject['wid'];
+        delete inputWidgetObject['wid'];
+    }
+    if (inputWidgetObject['metadata']) {
+        metadata = inputWidgetObject['metadata'];
+        delete inputWidgetObject['metadata'];
+    }
+
+    if (!metadata['expirationdate']) {metadata['expirationdate'] = new Date();}
+
+    saveobject[db] = inputWidgetObject;
+    saveobject['wid'] = wid;
+    saveobject['metadata'] = metadata;
+    proxyprinttodiv('Function updatewid in : saveobject II', saveobject, 12);
+    return saveobject;
 };
 
 
