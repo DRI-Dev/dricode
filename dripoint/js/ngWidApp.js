@@ -107,6 +107,11 @@ if (typeof angular !== 'undefined') {
 
         return {
             executeThis: function(parameters, scope, callback) {
+                if (parameters.wid && !parameters.executethis) {
+                    parameters.executethis = parameters.wid;
+                    delete parameters['wid'];
+                }
+
                 execute(parameters, function (err, resultArray) {
                     for (var x = 0; x < resultArray.length; x++) {
                         if (Array.isArray(resultArray[x])) {
@@ -200,13 +205,11 @@ if (typeof angular !== 'undefined') {
             var querystring = window.location.search,
                 urlParameters = widAppHelper.queryStrToObj(querystring.substring(1));
 
-            executeGoto(urlParameters);
+            executeService.executeThis(urlParameters, $scope, function (err, resultset) { });
 
             $scope.clearlogs = function() { $('#errorlog,#successlog').html(''); };
 
             $scope.listLength = function(list) { return Object.size(list); };
-
-            //</editor-fold>
         }
     ]);
 
@@ -274,6 +277,21 @@ if (typeof angular !== 'undefined') {
 
                 // clear html from element if specified
                 if (screenWid.command.htmlcleartargetid) {
+                    // widdata to current wid if found
+                    if (screenWid.urlparams && screenWid.urlparams.widdata) {
+                        async.series([
+                            function(cb) {
+                                execute({executethis:screenWid.urlparams.widddata}, function (err, widdataRestults) {
+                                    // add widdata results to the screenwid in the data model
+                                    scope[screenWid.wid] =
+                                        extend(true, widAppHelper.mergeNestedArray(widdataRestults), scope[screenWid.wid]);
+                                });
+                            }
+                        ], function(err) {
+                            if (err) { console.log('error getting widdata and merging into data model => ' + err); }
+                        });
+                    }
+
                     if (screenWid.command.htmlcleartargetid === 'body') {
                         $('#default_view_loc').html('');
                         $('#errorlog').html('');
@@ -302,9 +320,6 @@ if (typeof angular !== 'undefined') {
                     $(ele).attr('processed', 'true');
                 }
             });
-
-//            // update screenwid in data model once executes have been processed
-//            updateScreenWidModel(screenWid.wid);
         },
 
         processExecute: function(ele, scope, compile) {
@@ -378,71 +393,74 @@ if (typeof angular !== 'undefined') {
         }
     };
 
-    exports.executeGoto = executeGoto = function executeGoto(urlParameters, callback) {
-        var ogUrlParams = extend(true, {}, urlParameters),
-            scope = $('body').scope();
-
-        function finishProcess(parameters) {
-            if (parameters.addthis) { parameters = widAppHelper.removeAddThis(parameters); }
-            if (parameters.wid && parameters.wid === 'urlparams') { delete parameters['wid']; }
-
-            if (!parameters.executethis && parameters.wid) {
-                parameters.executethis = parameters.wid;
-                delete parameters['wid'];
-            }
-
-            angular.injector(['ng', 'widApp'])
-                .get('executeService')
-                .executeThis(parameters, scope, function (err, resultset) {
-                    var results = widAppHelper.mergeNestedArray(resultset);
-                    if (results.html) {
-                        var modelProp = parameters.wid || parameters.executethis;
-                        if (!scope[modelProp]) { scope[modelProp] = {}; }
-                        scope[modelProp].urlparams = ogUrlParams;
-
-                        if (callback instanceof Function) { callback(null, resultset); }
-                    } else { if (callback instanceof Function) { callback(null, resultset); } }
-                });
-        }
-
-        // save url parameters to 'urlparams' wid
-        // hide 'wid' and 'executethis' parameters behind addthis if found
-        if (urlParameters.wid) {
-            if (!urlParameters.addthis) { urlParameters.addthis = { wid:urlParameters.wid}; }
-            else { urlParameters.addthis.wid = urlParameters.wid; }
-            delete urlParameters['wid'];
-        }
-
-        if (urlParameters.preexecute) {
-            if (!urlParameters.addthis) { urlParameters.addthis = { preexecute:urlParameters.preexecute}; }
-            else { urlParameters.addthis.preexecute = urlParameters.preexecute; }
-            delete urlParameters['preexecute'];
-        }
-
-        if (urlParameters.executethis) {
-            if (!urlParameters.addthis) { urlParameters.addthis = { executethis:urlParameters.executethis}; }
-            else { urlParameters.addthis.executethis = urlParameters.executethis; }
-            delete urlParameters['executethis'];
-        }
-
-        var addUrlParamsObj = extend(true, urlParameters, {executethis:'updatewid', wid:'urlparams'});
-
-        // get urlparams and inwid parameters and call executeThis with them
-        // executeThis will check for screenwids to display
-        execute(addUrlParamsObj, function (addUrlErr, addUrlResults) {
-            execute({executethis:'urlparams'}, function (err, urlResultArr) {
-                var processParams = widAppHelper.mergeNestedArray(urlResultArr);
-
-                if (processParams.widdata) {
-                    execute({executethis:processParams.widdata}, function (err, widdataResults) {
-                        delete processParams['widdata'];
-                        processParams = extend(true, widAppHelper.mergeNestedArray(widdataResults), processParams);
-                        finishProcess(processParams);
-                    });
-                } else { finishProcess(processParams); }
-            });
-        });
-    };
+//    exports.executeGoto = executeGoto = function executeGoto(urlParameters, callback) {
+//        var ogUrlParams = extend(true, {}, urlParameters),
+//            scope = $('body').scope();
+//
+//        function finishProcess(parameters) {
+//            if (parameters.addthis) { parameters = widAppHelper.removeAddThis(parameters); }
+//            if (parameters.wid && parameters.wid === 'urlparams') { delete parameters['wid']; }
+//
+//            if (!parameters.executethis && parameters.wid) {
+//                parameters.executethis = parameters.wid;
+//                delete parameters['wid'];
+//            }
+//
+//            angular.injector(['ng', 'widApp'])
+//                .get('executeService')
+//                .executeThis(parameters, scope, function (err, resultset) {
+//                    callback(null, resultset);
+//
+//                    var results = widAppHelper.mergeNestedArray(resultset);
+//
+//                    if (results.html) {
+//                        var modelProp = parameters.wid || parameters.executethis;
+//                        if (!scope[modelProp]) { scope[modelProp] = {}; }
+//                        scope[modelProp].urlparams = ogUrlParams;
+//
+//                        if (callback instanceof Function) { callback(null, resultset); }
+//                    } else { if (callback instanceof Function) { callback(null, resultset); } }
+//                });
+//        }
+//
+//        // save url parameters to 'urlparams' wid
+//        // hide 'wid' and 'executethis' parameters behind addthis if found
+//        if (urlParameters.wid) {
+//            if (!urlParameters.addthis) { urlParameters.addthis = { wid:urlParameters.wid}; }
+//            else { urlParameters.addthis.wid = urlParameters.wid; }
+//            delete urlParameters['wid'];
+//        }
+//
+//        if (urlParameters.preexecute) {
+//            if (!urlParameters.addthis) { urlParameters.addthis = { preexecute:urlParameters.preexecute}; }
+//            else { urlParameters.addthis.preexecute = urlParameters.preexecute; }
+//            delete urlParameters['preexecute'];
+//        }
+//
+//        if (urlParameters.executethis) {
+//            if (!urlParameters.addthis) { urlParameters.addthis = { executethis:urlParameters.executethis}; }
+//            else { urlParameters.addthis.executethis = urlParameters.executethis; }
+//            delete urlParameters['executethis'];
+//        }
+//
+//        var addUrlParamsObj = extend(true, urlParameters, {executethis:'updatewid', wid:'urlparams'});
+//
+//        // get urlparams and inwid parameters and call executeThis with them
+//        // executeThis will check for screenwids to display
+//        execute(addUrlParamsObj, function (addUrlErr, addUrlResults) {
+//            execute({executethis:'urlparams'}, function (err, urlResultArr) {
+//                var processParams = widAppHelper.mergeNestedArray(urlResultArr);
+//
+//                if (processParams.widdata) {
+//                    execute({executethis:processParams.widdata}, function (err, widdataResults) {
+//                        delete processParams['widdata'];
+//                        processParams = extend(true, widAppHelper.mergeNestedArray(widdataResults), processParams);
+//                        finishProcess(processParams);
+//                    });
+//                } else { finishProcess(processParams); }
+//            });
+//        });
+//    };
 
     function callExecute(ele) {
         var attrObj = NNMtoObj(ele.attributes),
@@ -453,7 +471,9 @@ if (typeof angular !== 'undefined') {
         parameters.command.parameters.eventdata.element = $('<div>' + ele + '</div>').html();
         parameters.command.parameters.eventdata.originatingscreen = widAppHelper.getUrlParam('wid');
 
-        executeGoto(parameters);
+        angular.injector(['ng', 'widApp'])
+            .get('executeService')
+            .executeThis(parameters, scope, function (err, resultset) { });
     }
 
     // adding a size function to Object's prototype
@@ -636,19 +656,6 @@ exports.htmlToScreenwid = htmlToScreenwid = function htmlToScreenwid(screenWidNa
         if (callback instanceof Function) { callback(resultArray); }
     });
 };
-
-//exports.updateScreenWidModel = updateScreenWidModel = function updateScreenWidModel(screenWidName) {
-//    var newScreenwid = {executethis:'addwidmaster',wid:screenWidName,html:$('body').html()};
-//
-//    if (typeof widforview !== 'undefined') { newScreenwid.widforview = widforview; }
-//    if (typeof widforbase !== 'undefined') { newScreenwid.widforbase = widforbase; }
-//    if (typeof widforbackground !== 'undefined') { newScreenwid.widforbackground = widforbackground; }
-//    if (typeof dataforview !== 'undefined') { newScreenwid.dataforview = JSON.stringify(dataforview); }
-//    if (typeof links !== 'undefined') { newScreenwid.links = JSON.stringify(links); }
-//
-//    // update screenwid in the data model
-//    addToAngular(screenWidName, newScreenwid);
-//};
 
 // calls callback function, passing in all html derived from passed in screenWid object
 exports.screenwidToHtml = screenwidToHtml = function screenwidToHtml(screenWid, callback) {
