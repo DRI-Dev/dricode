@@ -12,50 +12,16 @@
 
     var execute;
 
-//##
-        function sortObj( obj , callback ) {
-            var r = [] ;
-            for ( var i in obj ){
-                if ( obj.hasOwnProperty( i ) ) {
-                     r.push( { key: i , value : obj[i] } );
-                }
-            }
-
-            return r.sort( callback ).reduce( function( obj , n ){
-                obj[ n.key ] = n.value ;
-                return obj;
-            },{});
-        }
-
-//##
-        function hashobj(inobj, command) {
-            if (command.cache) {
-                var obj={};
-                extend(true, obj, inobj);
-                delete obj.executethis;
-                delete obj.preexecute;
-                delete obj.postexecute;
-                delete obj.command; // take out later
-
-                var result = sortObj( obj , function( a, b ){
-                    return a.key < b.key  ;    
-                });
-                return JSON.stringify( result );
-                }
-            else { // objkey = null if command.cache = false
-                return null;
-                }
-        }
 
 //&&
         function checkenviornment(environment, cb) {
             environment = extend(true, config.configuration.d, environment)
             if (config.configuration.environment==="local") {
-                proxyprinttodiv("execute - environment", environment, 99);   
+                proxyprinttodiv("execute - environment", environment, 11);   
                 var environmentwid = getfromlocal(config.configuration.e)
                 if (!environmentwid) {environmentwid={}}
-                proxyprinttodiv("execute - environmentwid", environmentwid, 99); 
-                //proxyprinttodiv("execute - environment db", config.configuration.defaultdb, 99); 
+                proxyprinttodiv("execute - environmentwid", environmentwid, 11); 
+                //proxyprinttodiv("execute - environment db", config.configuration.defaultdb, 11); 
                 var environmentdata = {};
                 if (environmentwid) {
                     environmentdata = environmentwid[config.configuration.defaultdb]
@@ -116,7 +82,7 @@
                 var filter_data = getcommand(incomingparams, {
                         "command": {
                             "convertmethod":"toobject",
-                            "cache":false,
+                            "skipcache":true,
                             "bundle":false,
                             "level":0,
                             "internalcall": true,
@@ -183,7 +149,7 @@
                     }, {
                         "command": {
                             "convertmethod":"x",
-                            "cache":"x",
+                            "skipcache":"x",
                             "bundle":"x",
                             "level":"x",
                             "internalcall": "x",
@@ -352,7 +318,7 @@
                                                     }
 
                                                 proxyprinttodiv("execute - command **** II", command.overallresultparameters, 11);
-                                                if (!command.cache) {
+                                                if (command.skipcache) {
                                                     callback(null, command.overallresultparameters);
                                                 } else {
                                                     var expirationdate = new Date();
@@ -820,7 +786,7 @@
             proxyprinttodiv("checkcache objkey", objkey, 17);
             var executeobject = {      "wid":objkey,
                                        "command" : {
-                                       "cache":false,
+                                       "skipcache":true,
                                        "datastore": config.configuration.defaultdatastore,
                                        "collection":"cache",
                                        "keycollection":"cachekey",
@@ -1279,7 +1245,7 @@
                                                             callback(err, res);
                                                         } else {
                                                             proxyprinttodiv("executelist err from execution ", err, 11);
-                                                            proxyprinttodiv("executelist result from execution ", res, 99);
+                                                            proxyprinttodiv("executelist result from execution ", res, 11);
                                                             proxyprinttodiv("executelist result from execution executeobject", executeobject.executeflag, 11);
 
                                                             // This section helps control the iteration -- Joe

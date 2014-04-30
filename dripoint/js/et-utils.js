@@ -506,7 +506,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                 }
             }
 
-            proxyprinttodiv('Function getwid output', output,99);
+            proxyprinttodiv('Function getwid output', output,12);
             if (!keepaddthis) { // i.e. remove add this
 
                 if (output.hasOwnProperty("addthis")) {
@@ -583,7 +583,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                         }
 
                     }
-                    proxyprinttodiv('Function datastore command -- get output 1', output, 99);
+                    proxyprinttodiv('Function datastore command -- get output 1', output, 12);
                     callback(null, output);
                     //callback(err, output);
                 });
@@ -630,7 +630,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
             // if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
             //     output =  ConvertFromDOTdri(output);
             // }
-            proxyprinttodiv('Function datastore command -- get output 4', output, 99);
+            proxyprinttodiv('Function datastore command -- get output 4', output, 12);
             callback(null, output);
             //callback(err, output);
         }
@@ -3552,6 +3552,41 @@ function getRandomNumberByLength(length) {
             xorobj2: xorobj2
         }
     }
+
+//##
+    exports.sortObj = sortObj = function sortObj( obj , callback ) {
+            var r = [] ;
+            for ( var i in obj ){
+                if ( obj.hasOwnProperty( i ) ) {
+                     r.push( { key: i , value : obj[i] } );
+                }
+            }
+
+            return r.sort( callback ).reduce( function( obj , n ){
+                obj[ n.key ] = n.value ;
+                return obj;
+            },{});
+        }
+
+//##
+    exports.hashobj = hashobj = function hashobj(inobj, command) {
+            if (!command || (command && !command.skipcache)) {
+                var obj={};
+                extend(true, obj, inobj);
+                delete obj.executethis;
+                delete obj.preexecute;
+                delete obj.postexecute;
+                delete obj.command; // take out later
+
+                var result = sortObj( obj , function( a, b ){
+                    return a.key < b.key  ;    
+                });
+                return JSON.stringify( result );
+                }
+            else { // objkey = null if command.cache = false
+                return null;
+                }
+        }
 
 
 

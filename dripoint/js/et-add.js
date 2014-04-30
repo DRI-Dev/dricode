@@ -488,21 +488,33 @@
         proxyprinttodiv("addrecord input relationshiptype :- ", relationshiptype, 17);
 
         var relobj = {};
+        var currentrelationshipobj=null
         var reldto = {};
         var executeobject = {};
-        var parentrelationshiptype;
-
 
         // if the incoming relationship is one to one
         async.series([
                 function step1(step1_callback) {
-                    if ((relationshiptype === "onetoone") || (relationshiptype === "manytoone")) { //|| (relationshiptype === "manytomany")
+                    if ((parentwid && inputrecord.wid) || (relationshiptype === "onetoone") || (relationshiptype === "manytoone")) { //|| (relationshiptype === "manytomany")
 
+                        if (parentwid && inputrecord.wid) {
+                           {//|| (relationshiptype === "manytomany")
+                            executeobject["executethis"] = "querywid";
+                            executeobject["command"] = {"result":"queryresult"};
+                            executeobject["mongorawquery"] = {
+                                "$and": [{
+                                    "data.primarywid": parentwid,
+                                    "data.secondarywid": inputrecord.wid
+                                }]
+                            };
+                        }
+                         
+                        }
                         proxyprinttodiv("addrecord async.series fired with relationshiptype -- ", relationshiptype, 17);
-                        if ((relationshiptype === "onetoone")
-                            || (relationshiptype === "manytomany")
+                        if (!executeobject && ((relationshiptype === "onetoone")
+                            //|| (relationshiptype === "manytomany")
                             || (relationshiptype === "onetomany")
-                            )
+                            ))
                         {//|| (relationshiptype === "manytomany")
                             executeobject["executethis"] = "querywid";
                             executeobject["command"] = {"result":"queryresult"};
@@ -517,32 +529,51 @@
                         // Sample error
 //                        throw ({'my_error': 'potatoes'});
 
-                        if (relationshiptype === "manytoone") {
+                        if (!executeobject && (relationshiptype === "manytoone")) {
                             executeobject["executethis"] = "querywid";
                             executeobject["command"] = {"result":"queryresult"};
                             executeobject["mongorawquery"] = {
                                 "$and": [{
-                                    "data.primarywid": inputrecord["metadata"]["method"],
-                                    "data.secondarymethod": parentwid
+                                    "data.primarymethod": inputrecord["metadata"]["method"],
+                                    //"data.primarywid": inputrecord["metadata"]["method"],
+                                    "data.secondarywid": parentwid
+                                    //"data.secondarymethod": parentwid
                                 }]
                             };
                         }
                         execute(executeobject, function (err, widset1) {
                             // If error, bounce out
-                            var widset=widset1[0]['queryresult'];
-                            if (!widset) {widset=[]}
+                            
                             if (err && Object.keys(err).length > 0) {
                                 step1_callback(err, widset);
                             } else {
-                                var widrecord;
-                                if ((widset.length > 0) && (relationshiptype === "onetoone")) { //|| (relationshiptype === "manytomany")
-                                    for (var wid in widset[0]) {
-                                        widrecord = widset[0][wid];
+                                var widset=widset1[0]['queryresult'];
+                                if (widset) {
+                                    for (wid in widset[0]) { // really should only be one record
+                                        currentrelationshipobj = widset[0][wid];
+                                        }
+                                    step1_callback(null);
                                     }
-                                    relobj['wid'] = wid;
-                                    inputrecord['wid'] = widrecord["secondarywid"];
-                                }
-                                step1_callback(null); // LM: Leave this null or break add
+                                else {
+                                    step1_callback(null); 
+                                    }
+
+                                // currentrelationshipobj=widset
+                                // var widrecord;
+                                // var wid
+                                // if ((widset.length > 0)) { //|| && (relationshiptype === "onetoone")(relationshiptype === "manytomany")
+                                //     for (wid in widset[0]) { // really should only be one record
+                                //         widrecord = widset[0][wid];
+                                //     }
+                                // relobj['wid'] = wid;
+                                // if (relationshiptype === "manytoone") {
+                                //     currentrelwid = widrecord["primarywid"];
+                                //     }
+                                // if (relationshiptype === "onetoone") {
+                                //     currentrelwid = widrecord["secondarywid"];
+                                //     }
+                                // }
+                                // step1_callback(null); // LM: Leave this null or break add
                             }
                         });
                     } else {
@@ -550,14 +581,7 @@
                     }
                 },
                 function step2(step2_callback) {
-                    // added by joe, seems roundabout but I wanted to keep sending in "" for most of the cases
-                    // if(relationshiptype !== "jsononetomany") {
-                    //     parentrelationshiptype = "";
-                    // } else {
-                    //     parentrelationshiptype = relationshiptype;
-                    // }
 
-                    //proxyprinttodiv("parentrelationshiptype: ", parentrelationshiptype, 17);
 
                     addwid(inputrecord, dtoobject, command, function (err, res) {
                         // If error, bounce out
@@ -565,8 +589,8 @@
                             step2_callback(err, addobject);
                         } else {
                             // addobject = addobject[0];
-                            addobject = inputrecord;
-                            addobject['wid']=res['wid'];
+                            addobject = inputrecord; // get copy of what was added from input recrod
+                            addobject['wid']=res['wid']; // get wid added from actual result
                             proxyprinttodiv("addrecord input addobject :- ", addobject, 17);
 
                             reldto = {
@@ -611,17 +635,26 @@
                                 proxyprinttodiv("addrecord input addobject['wid'] :- ", addobject['wid'], 17);
                                 proxyprinttodiv("addrecord input relobj ", relobj, 17);
 
-                                addwid(relobj, reldto, command, function (err, added_relation) {
-                                    // If error, bounce out
-                                    if (err && Object.keys(err).length > 0) {
-                                        // step2_callback(err, added_relation);
-                                        step2_callback(null, added_relation);
-                                    }else{
-                                        //
-                                        proxyprinttodiv("addrecord input added_relation :- ", added_relation, 17);
-                                        step2_callback(null, addobject);
+                                if (currentrelationshipobj) {
+                                    relobj.wid = currentrelationshipobj.wid
                                     }
-                                });
+                                if (hashobj(currentrelationshipobj)===hashobj(relobj)) { // if objects are the same
+                                    step2_callback(null) // then do not save
+                                    }
+                                else {
+                                    addwid(relobj, reldto, command, function (err, added_relation) {
+                                        // If error, bounce out
+                                        if (err && Object.keys(err).length > 0) {
+                                            // step2_callback(err, added_relation);
+                                            step2_callback(null, added_relation);
+                                        }else{
+                                            //
+                                            proxyprinttodiv("addrecord input added_relation :- ", added_relation, 17);
+                                            step2_callback(null, addobject);
+                                        }
+                                    });
+                                    } // else not hash
+
                             } else {
                                 step2_callback(null, addobject);
                             }
@@ -873,8 +906,8 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                              var getwidmasterres = {};
                              extend(true, getwidmasterres, res[0]); // master copy
                              proxyprinttodiv("addwid step1 getwidmaster getwidmasterres", getwidmasterres, 18);
-                             //res = [{"wid":"wid1","metadata":{"method":"defaultdto"},"d":44,"command":{"inherit":{"data":{"c":99, "e":98, "g":7}}}}];      
-                             //res = [{"wid":"wid1","metadata":{"method":"defaultdto"},"d":4, "f":6, "command":{"inherit":{"data":{"c":99, "e":98, "g":7}}}}];       
+                             //res = [{"wid":"wid1","metadata":{"method":"defaultdto"},"d":44,"command":{"inherit":{"data":{"c":17, "e":98, "g":7}}}}];      
+                             //res = [{"wid":"wid1","metadata":{"method":"defaultdto"},"d":4, "f":6, "command":{"inherit":{"data":{"c":17, "e":98, "g":7}}}}];       
                              if (typeof res[0] === 'object' && Object.keys(res[0]).length !== 0) {
                                 // if we have inherit data
                                 if (res[0].command && res[0].command.inherit && res[0].command.inherit.data) {

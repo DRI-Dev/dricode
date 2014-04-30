@@ -152,7 +152,7 @@
             // }
             , true);
 
-        proxyprinttodiv('getwidmaster filter_data', filter_data, 99);
+        proxyprinttodiv('getwidmaster filter_data', filter_data, 38);
 
         parameters = filter_data.output;
         command = filter_data.filteredobject.command;
@@ -168,7 +168,7 @@
             if (err && Object.keys(err).length > 0) {
                 callback(err, res);
             } else {
-                proxyprinttodiv('getwidmaster command II', command, 99);
+                proxyprinttodiv('getwidmaster command II', command, 38);
                 proxyprinttodiv('getwidmaster after get wid mongo command', command, 38);
                 proxyprinttodiv('getwidmaster res from getWidMongo', res, 38);
                 if ((res) && (Object.keys(res).length !== 0)) { //&& (res['metadata']) && (res['wid'] !== res['metadata']['method'])) {
