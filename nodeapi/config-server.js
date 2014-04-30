@@ -761,7 +761,7 @@ exports.zapier_passthrough = zapier_passthrough = function(params, cb) {
 };
 
 zapier_passthrough(
-    {'zapURL':'https://zapier.com/hooks/catch/gurm8/','zapParams':{'87':'This is fun'}}, 
+    {'zapURL':'https://zapier.com/hooks/catch/gurm8/','zapParams':{'87': __dirname}}, 
     function(err, res) {
         console.log('The pass through function has ended.');
         console.log('God save the queen');
