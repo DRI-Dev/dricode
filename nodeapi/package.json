@@ -25,7 +25,8 @@
     "superagent": "~0.15.7",
     "request": "~2.27.0",
     "walk": "~2.2.1",
-    "flat": "~1.2.1"
+    "flat": "~1.2.1",
+    "console-remote-client": "~0.2.5"
   },
   "devDependencies": {},
   "scripts": {

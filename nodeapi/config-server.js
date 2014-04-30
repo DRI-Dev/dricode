@@ -3,8 +3,8 @@ var twilio = require('twilio')('AC909f1981261f4461abbc7985bd202897', '7bb26fabe1
 var spawn = require('child_process').spawn;
 var url = require('url');
 
-var consolere = require('console-remote-client').connect('console.re','80','dev-dri');
-
+exports.consolere = require('console-remote-client').connect('console.re','80','dev-dri');
+exports.console = exports.consolere;
 
 
 var localStorage = exports.localStorage = {};
