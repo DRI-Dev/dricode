@@ -7816,7 +7816,7 @@ exports.testdb3a = testdb3a = function testdb3a(params, callback) {
 exports.testdb4a = testdb4a = function testdb4a(params, callback) {
     execute([{
             "executethis": "addwidmaster",
-            "wid": "db4adto"
+            "wid": "db4adto",
             "a": "b"
         }, {
             "executethis": "addwidmaster",
