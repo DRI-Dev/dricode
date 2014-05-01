@@ -199,9 +199,9 @@ exports.getConnection = getConnection = function getConnection(mongoDatabaseToLo
 
 function printLogs(fnname, input, output) {
 
-    console.log(" DAO :: " + fnname + "  TABLE _ NAME is " + schemaToLookup);
-    console.log(" DAO :: " + fnname + "  DATABASE _ NAME is " + databaseToLookup);
-    console.log(" DAO :: " + fnname + "  MONGO _ DATABASE _ NAME is " + mongoDatabaseToLookup);
+    // console.log(" DAO :: " + fnname + "  TABLE _ NAME is " + schemaToLookup);
+    // console.log(" DAO :: " + fnname + "  DATABASE _ NAME is " + databaseToLookup);
+    // console.log(" DAO :: " + fnname + "  MONGO _ DATABASE _ NAME is " + mongoDatabaseToLookup);
     // console.log(' DAO :: ***************************');
     // console.log(' DAO :: >>>>>> ::: ' + fnname + ' begin ::: ');
     // console.log(' DAO :: >>>>>> ::: inputs ::: ');

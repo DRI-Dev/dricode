@@ -7393,184 +7393,221 @@ exports.testpreexecute1 = testpreexecute1 = function testpreexecute1(params, cal
             callback(err, result);
         });
 
-    }
-	
-	exports.testcache1 = testcache1 = function testcache1(params,callback){
-		execute([{
-			"executethis":"updatewid",
-			"wid":"codydto",
-			"metadata":{"method":"codydto"},
-			"month":"string",
-			"day":"string"
-			},{
-			"executethis":"updatewid",
-			"wid":"cody1",
-			"metadata":{"method":"codydto"},
-			"month":"June",
-			"day":"9th",
-			"command":{"skipcache":"false"}
-			},{
-			"executethis":"updatewid",
-			"wid":"cody1",
-			"metadata":{"method":"codydto"},
-			//"command":{"databasetable":"insert"},
-			"month":"August"
-			},{
-			"executethis":"getwidmaster",
-			"wid":"cody1",
-			"metadata":{"method":"codydto"}}],
-			function (err,res) {
-				proxyprinttodiv('cody1 cache: ',res[1],99);
-				proxyprinttodiv('cody1 update: ',res[2],99);
-				proxyprinttodiv('cody1 result: ', res[3], 99);
-				var result = logverify("cody1_result", res[3], [{
-					"wid": "cody1",
-					"metadata.method": "codydto",
-					"month": "June",
-					"day": "9th"
-				}]);
-				callback(err,result);
-			});
-	}
-	
-	exports.testcache2 = testcache2 = function testcache2(params,callback){
-		execute([{
-			"executethis":"updatewid",
-			"wid":"adto",
-			"metadata":{"method":"adto"},
-			"field1":"string",
-			"field2":"string"
-			},{
-			"executethis":"updatewid",
-			"wid":"awid1",
-			"metadata":{"method":"adto"},
-			"field1":"hello",
-			"field2":"world",
-			"command":{"skipcache":"false"}
-			},{
-			"executethis":"updatewid",
-			"wid":"awid1",
-			"metadata":{"method":"adto"},
-			"command":{"skipcache":"false"},
-			//"command":{"databasetable":"insert"},
-			"field1":"goodbye"
-			},{
-			"executethis":"getwidmaster",
-			"wid":"awid1",
-			"metadata":{"method":"adto"}
-			}],
-			function (err,res){
-				proxyprinttodiv('caching awid1: ',res[1],99);
-				proxyprinttodiv('updating awid1: ',res[2],99);
-				proxyprinttodiv('awid1 get: ',res[3],99);
-				var result = logverify("cody1_result", res[3], [{
-					"wid": "awid1",
-					"metadata.method": "adto",
-					"field1": "hello",
-					"field2": "world"
-				}]);
-				callback(err,result);
-			});
-	}
-	
-	exports.testadding1 = testadding1 = function testadding1(params,callback){
-		debuglevel = 12;
-		execute([{
-			"executethis":"updatewid",
-			"wid":"adto",
-			"metadata":{"method":"adto"},
-			"field1":"string",
-			"field2":"string"
-			},{
-			"executethis":"updatewid",
-			"wid":"awid1",
-			"metadata":{"method":"adto"},
-			"field1":"hello",
-			"field2":"world"
-			},{
-			"executethis":"getwidmaster",
-			"wid":"awid1",
-			"metadata":{"method":"adto"}
-			}],
-			function (err,res){
-				proxyprinttodiv('adding adto: ',res[0],99);
-				proxyprinttodiv('adding awid1: ',res[1],99);
-				proxyprinttodiv('awid1 get: ',res[2],99);
-				var result = logverify("cody1_result", res[2], [{
-					"wid": "awid1",
-					"metadata.method": "adto",
-					"field1": "hello",
-					"field2": "world"
-				}]);
-				callback(err,result);
-			});
-	}
-	
-	exports.testupdating1 = testupdating1 = function testupdating1(params,callback){
-		execute([{
-			"executethis":"updatewid",
-			"wid":"adto",
-			"metadata":{"method":"adto"},
-			"field1":"string",
-			"field2":"string"
-			},{
-			"executethis":"updatewid",
-			"wid":"awid1",
-			"metadata":{"method":"adto"},
-			"field1":"hello",
-			"field2":"world"
-			},{
-			"executethis":"updatewid",
-			"wid":"awid1",
-			"metadata":{"method":"adto"},
-			//"command":{"databasetable":"insert"},
-			"field1":"goodbye"
-			},{
-			"executethis":"getwidmaster",
-			"wid":"awid1",
-			"metadata":{"method":"adto"}
-			}],
-			function (err,res){
-				proxyprinttodiv('adding adto: ',res[0],99);
-				proxyprinttodiv('adding awid1: ',res[1],99);
-				proxyprinttodiv('updating awid1: ',res[2],99);
-				proxyprinttodiv('awid1 get: ',res[3],99);
-				var result = logverify("cody1_result", res[3], [{
-					"wid": "awid1",
-					"metadata.method": "adto",
-					"field1": "goodbye",
-					"field2": "world"
-				}]);
-				callback(err,result);
-			});
-	}
-	
-	exports.mirrorparams = mirrorparams = function mirrorparams(args){
-		proxyprinttodiv('mirror params: ',args,99);
-		return args;
-	}
-	
-	exports.testpreexecute1 = testpreexecute1 = function testpreexecute1(params,callback){
-		execute([{
-				"executethis":"updatewid",
-				"wid":"wid1",
-				"a":"b"
-				},{
-				"preexecute":"getwidmaster",
-				"wid":"wid1",
-				"executethis":"mirrorparams",
-				"c":"d"
-				}],
-			function (err,res){
-				proxyprinttodiv('adding adto: ',res[1],99);
-				var result = logverify("cody1_result", res[1], [{
-					"wid": "wid1",
-					"a": "b",
-					"e": "f"
-				}]);
-				callback(err,result);
-			});
-	}
+}
+
+exports.testcache1 = testcache1 = function testcache1(params, callback) {
+    execute([{
+            "executethis": "updatewid",
+            "wid": "codydto",
+            "metadata": {
+                "method": "codydto"
+            },
+            "month": "string",
+            "day": "string"
+        }, {
+            "executethis": "updatewid",
+            "wid": "cody1",
+            "metadata": {
+                "method": "codydto"
+            },
+            "month": "June",
+            "day": "9th",
+            "command": {
+                "skipcache": "false"
+            }
+        }, {
+            "executethis": "updatewid",
+            "wid": "cody1",
+            "metadata": {
+                "method": "codydto"
+            },
+            //"command":{"databasetable":"insert"},
+            "month": "August"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "cody1",
+            "metadata": {
+                "method": "codydto"
+            }
+        }],
+        function(err, res) {
+            proxyprinttodiv('cody1 cache: ', res[1], 99);
+            proxyprinttodiv('cody1 update: ', res[2], 99);
+            proxyprinttodiv('cody1 result: ', res[3], 99);
+            var result = logverify("cody1_result", res[3], [{
+                "wid": "cody1",
+                "metadata.method": "codydto",
+                "month": "June",
+                "day": "9th"
+            }]);
+            callback(err, result);
+        });
+}
+
+exports.testcache2 = testcache2 = function testcache2(params, callback) {
+    execute([{
+            "executethis": "updatewid",
+            "wid": "adto",
+            "metadata": {
+                "method": "adto"
+            },
+            "field1": "string",
+            "field2": "string"
+        }, {
+            "executethis": "updatewid",
+            "wid": "awid1",
+            "metadata": {
+                "method": "adto"
+            },
+            "field1": "hello",
+            "field2": "world",
+            "command": {
+                "skipcache": "false"
+            }
+        }, {
+            "executethis": "updatewid",
+            "wid": "awid1",
+            "metadata": {
+                "method": "adto"
+            },
+            "command": {
+                "skipcache": "false"
+            },
+            //"command":{"databasetable":"insert"},
+            "field1": "goodbye"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "awid1",
+            "metadata": {
+                "method": "adto"
+            }
+        }],
+        function(err, res) {
+            proxyprinttodiv('caching awid1: ', res[1], 99);
+            proxyprinttodiv('updating awid1: ', res[2], 99);
+            proxyprinttodiv('awid1 get: ', res[3], 99);
+            var result = logverify("cody1_result", res[3], [{
+                "wid": "awid1",
+                "metadata.method": "adto",
+                "field1": "hello",
+                "field2": "world"
+            }]);
+            callback(err, result);
+        });
+}
+
+exports.testadding1 = testadding1 = function testadding1(params, callback) {
+    debuglevel = 12;
+    execute([{
+            "executethis": "updatewid",
+            "wid": "adto",
+            "metadata": {
+                "method": "adto"
+            },
+            "field1": "string",
+            "field2": "string"
+        }, {
+            "executethis": "updatewid",
+            "wid": "awid1",
+            "metadata": {
+                "method": "adto"
+            },
+            "field1": "hello",
+            "field2": "world"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "awid1",
+            "metadata": {
+                "method": "adto"
+            }
+        }],
+        function(err, res) {
+            proxyprinttodiv('adding adto: ', res[0], 99);
+            proxyprinttodiv('adding awid1: ', res[1], 99);
+            proxyprinttodiv('awid1 get: ', res[2], 99);
+            var result = logverify("cody1_result", res[2], [{
+                "wid": "awid1",
+                "metadata.method": "adto",
+                "field1": "hello",
+                "field2": "world"
+            }]);
+            callback(err, result);
+        });
+}
+
+exports.testupdating1 = testupdating1 = function testupdating1(params, callback) {
+    execute([{
+            "executethis": "updatewid",
+            "wid": "adto",
+            "metadata": {
+                "method": "adto"
+            },
+            "field1": "string",
+            "field2": "string"
+        }, {
+            "executethis": "updatewid",
+            "wid": "awid1",
+            "metadata": {
+                "method": "adto"
+            },
+            "field1": "hello",
+            "field2": "world"
+        }, {
+            "executethis": "updatewid",
+            "wid": "awid1",
+            "metadata": {
+                "method": "adto"
+            },
+            //"command":{"databasetable":"insert"},
+            "field1": "goodbye"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "awid1",
+            "metadata": {
+                "method": "adto"
+            }
+        }],
+        function(err, res) {
+            proxyprinttodiv('adding adto: ', res[0], 99);
+            proxyprinttodiv('adding awid1: ', res[1], 99);
+            proxyprinttodiv('updating awid1: ', res[2], 99);
+            proxyprinttodiv('awid1 get: ', res[3], 99);
+            var result = logverify("cody1_result", res[3], [{
+                "wid": "awid1",
+                "metadata.method": "adto",
+                "field1": "goodbye",
+                "field2": "world"
+            }]);
+            callback(err, result);
+        });
+}
+
+exports.mirrorparams = mirrorparams = function mirrorparams(args) {
+    proxyprinttodiv('mirror params: ', args, 99);
+    return args;
+}
+
+exports.testpreexecute1 = testpreexecute1 = function testpreexecute1(params, callback) {
+    execute([{
+            "executethis": "updatewid",
+            "wid": "wid1",
+            "a": "b"
+        }, {
+            "preexecute": "getwidmaster",
+            "wid": "wid1",
+            "executethis": "mirrorparams",
+            "c": "d"
+        }],
+        function(err, res) {
+            proxyprinttodiv('adding adto: ', res[1], 99);
+            var result = logverify("cody1_result", res[1], [{
+                "wid": "wid1",
+                "a": "b",
+                "e": "f"
+            }]);
+            callback(err, result);
+        });
+}
 
 
 // This is a 2 level test of the dtos...instantiate song1 with a songdto, and some sounddto values
@@ -7703,6 +7740,25 @@ exports.testenv = testenv = function testenv(params, callback) {
         });
 }
 
+// numerickeyerror
+exports.numerickeyerror = numerickeyerror = function numerickeyerror(params, callback) {
+    execute([{
+            "executethis": "updatewid",
+            "wid": "db1dto",
+            "2": {
+                "c": "d",
+                "d1": {
+                    "e1": "e2"
+                }
+            }
+        }],
+        function(err, res) {
+            proxyprinttodiv('db1dto result: ', res, 99);
+            callback(err, res);
+        });
+}
+
+
 
 // tests that db wids are updated fine -- overwrites do not happen -- using updatewid and getwid
 // command.datamethod = upsert(defaulted)
@@ -7711,23 +7767,43 @@ exports.testdb1 = testdb1 = function testdb1(params, callback) {
     execute([{
             "executethis": "updatewid",
             "wid": "db1dto",
-            "a": "b"
+            "command.collection": "data",
+            "a1": {
+                "a": "b",
+                "a1": {
+                    "b1": "b2"
+                }
+            }
         }, {
             "executethis": "updatewid",
             "wid": "db1dto",
-            "c": "d"
+            "command.collection": "data",
+            "a2": {
+                "c": "d",
+                "d1": {
+                    "e1": "e2"
+                }
+            }
         }, {
             "executethis": "getwid",
             "wid": "db1dto"
         }],
         function(err, res) {
             proxyprinttodiv('db1dto result: ', res, 99);
-            var result = logverify("db1dto_result", res[2], [{
-                "a": "b",
-                "c": "d",
+            var result = logverify("db1dto_result", res[2], {
+                "a1": {
+                    "a": "b",
+                    "a1": {
+                        "b1": "b2"
+                    },
+                    "c": "d",
+                    "d1": {
+                        "e1": "e2"
+                    }
+                },
                 "wid": "db1dto",
                 "metadata": {}
-            }]);
+            });
             callback(err, res);
         });
 }
@@ -7740,18 +7816,30 @@ exports.testdb2 = testdb2 = function testdb2(params, callback) {
     execute([{
             "executethis": "addwidmaster",
             "wid": "db2dto",
-            "a": "b"
+            "command.collection": "data",
+            "1": {
+                "a": "b",
+                "a1": {
+                    "b1": "b2"
+                }
+            }
         }, {
             "executethis": "addwidmaster",
             "wid": "db2dto",
-            "c": "d"
+            "command.collection": "data",
+            "2": {
+                "c": "d",
+                "d1": {
+                    "e1": "e2"
+                }
+            }
         }, {
             "executethis": "getwidmaster",
             "wid": "db2dto"
         }],
         function(err, res) {
             proxyprinttodiv('testdb2 result: ', res, 99);
-            
+
             callback(err, res);
         });
 }
@@ -7764,46 +7852,105 @@ exports.testdb3 = testdb3 = function testdb3(params, callback) {
     execute([{
             "executethis": "addwidmaster",
             "wid": "db3dto",
-            "command.datamethod":"upsert",
-            "a": "b"
+            "command.collection": "data",
+            "1": {
+                "a": "b",
+                "a1": {
+                    "b1": "b2"
+                }
+            }
         }, {
             "executethis": "addwidmaster",
             "wid": "db3dto",
-            "command.datamethod":"upsert",
-            "c": "d"
+            "command.datamethod": "upsert",
+            "command.collection": "data",
+            "2": {
+                "c": "d",
+                "d1": {
+                    "e1": "e2"
+                }
+            }
         }, {
             "executethis": "getwidmaster",
             "wid": "db3dto"
         }],
         function(err, res) {
             proxyprinttodiv('testdb3 result: ', res, 99);
-            
+
             callback(err, res);
         });
 }
 
 
-// tests that db wids are updated fine -- overwrites do not happen -- using updatewid and getwid
+
+// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
 // command.datamethod = upsert
-// same database, same sub-database
-exports.testdb3a = testdb3a = function testdb3a(params, callback) {
+// same database, same collection
+exports.testdb3a = testdb3a = function testdb3(params, callback) {
     execute([{
-            "executethis": "addwidmaster",
+            "executethis": "updatewid",
             "wid": "db3adto",
-            "command.datamethod":"upsert",
-            "a": "b"
+            "command.collection": "data",
+            "1": {
+                "a": "b",
+                "a1": {
+                    "b1": "b2"
+                }
+            }
         }, {
-            "executethis": "addwidmaster",
+            "executethis": "updatewid",
             "wid": "db3adto",
-            "command.datamethod":"upsert",
-            "c": "d"
+            "command.datamethod": "upsert",
+            "command.collection": "data",
+            "2": {
+                "c": "d",
+                "d1": {
+                    "e1": "e2"
+                }
+            }
         }, {
-            "executethis": "getwidmaster",
+            "executethis": "getwid",
             "wid": "db3adto"
         }],
         function(err, res) {
             proxyprinttodiv('testdb3a result: ', res, 99);
-            
+
+            callback(err, res);
+        });
+}
+
+// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
+// command.datamethod = upsert
+// same database, diff database
+exports.testdb3a = testdb3a = function testdb3(params, callback) {
+    execute([{
+            "executethis": "updatewid",
+            "wid": "db3adto",
+            "command.collection": "data",
+            "1": {
+                "a": "b",
+                "a1": {
+                    "b1": "b2"
+                }
+            }
+        }, {
+            "executethis": "updatewid",
+            "wid": "db3adto",
+            "command.datamethod": "upsert",
+            "command.collection": "test",
+            "2": {
+                "c": "d",
+                "d1": {
+                    "e1": "e2"
+                }
+            }
+        }, {
+            "executethis": "getwid",
+            "wid": "db3adto"
+        }],
+        function(err, res) {
+            proxyprinttodiv('testdb3a result: ', res, 99);
+
             callback(err, res);
         });
 }
@@ -7821,7 +7968,7 @@ exports.testdb4a = testdb4a = function testdb4a(params, callback) {
         }, {
             "executethis": "addwidmaster",
             "wid": "db4adto",
-            "command.datamethod":"clear",
+            "command.datamethod": "clear",
             "c": "d"
         }, {
             "executethis": "getwidmaster",
@@ -7829,7 +7976,7 @@ exports.testdb4a = testdb4a = function testdb4a(params, callback) {
         }],
         function(err, res) {
             proxyprinttodiv('testdb4a result: ', res, 99);
-            
+
             callback(err, res);
         });
 }
@@ -7840,12 +7987,12 @@ exports.testdb4 = testdb4 = function testdb4(params, callback) {
     execute([{
             "executethis": "addwidmaster",
             "wid": "db4dto",
-            "command.datamethod":"clear",
+            "command.datamethod": "clear",
             "a": "b"
         }, {
             "executethis": "addwidmaster",
             "wid": "db4dto",
-            "command.datamethod":"clear",
+            "command.datamethod": "clear",
             "c": "d"
         }, {
             "executethis": "getwidmaster",
@@ -7853,7 +8000,7 @@ exports.testdb4 = testdb4 = function testdb4(params, callback) {
         }],
         function(err, res) {
             proxyprinttodiv('testdb4 result: ', res, 99);
-            
+
             callback(err, res);
         });
 }
@@ -7868,12 +8015,12 @@ exports.testdb4 = testdb4 = function testdb4(params, callback) {
     execute([{
             "executethis": "addwidmaster",
             "wid": "db4dto",
-            "command.datamethod":"clear",
+            "command.datamethod": "clear",
             "a": "b"
         }, {
             "executethis": "addwidmaster",
             "wid": "db4dto",
-            "command.datamethod":"clear",
+            "command.datamethod": "clear",
             "c": "d"
         }, {
             "executethis": "getwidmaster",
@@ -7881,7 +8028,7 @@ exports.testdb4 = testdb4 = function testdb4(params, callback) {
         }],
         function(err, res) {
             proxyprinttodiv('testdb4 result: ', res, 99);
-            
+
             callback(err, res);
         });
 }
@@ -7899,7 +8046,7 @@ exports.testdb5 = testdb5 = function testdb5(params, callback) {
         }, {
             "executethis": "addwidmaster",
             "wid": "db5dto",
-            "command.datamethod":"insert",
+            "command.datamethod": "insert",
             "c": "d"
         }, {
             "executethis": "getwidmaster",
@@ -7907,8 +8054,7 @@ exports.testdb5 = testdb5 = function testdb5(params, callback) {
         }],
         function(err, res) {
             proxyprinttodiv('testdb5 result: ', res, 99);
-            
+
             callback(err, res);
         });
 }
-
