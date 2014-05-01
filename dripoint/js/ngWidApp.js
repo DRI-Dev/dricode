@@ -24,19 +24,29 @@ if (typeof angular !== 'undefined') {
                 if (!obj.hasOwnProperty('wid')) { obj.wid = thisWid; }
 
                 if (phase !== '$apply' && phase !== '$digest') {
-                    scope.$apply(function() { scope[thisWid] = obj; });
+                    scope.$apply(function() {
+                        if (scope.hasOwnProperty(thisWid)) { scope[thisWid] = extend(true, obj, scope[thisWid]); }
+                        else { scope[thisWid] = obj; }
+                    });
                 } else { scope[thisWid] = obj; }
             }
 
             for (var prop in obj) {
                 if (obj.hasOwnProperty(prop)) {
                     if (obj[prop] instanceof Object) {
-
                         storeAllData(obj[prop], scope, prop);
                     } else {
                         if (phase !== '$apply' && phase !== '$digest') {
-                            scope.$apply(function() { scope[prop] = obj[prop]; scope.data[prop] = obj[prop]; });
-                        } else { scope[prop] = obj[prop]; scope.data[prop] = obj[prop]; }
+                            scope.$apply(function() {
+                                if (scope.hasOwnProperty(prop)) { scope[prop] = extend(true, obj[prop], scope[prop]); }
+                                else { scope[prop] = obj[prop]; }
+                                scope.data[prop] = obj[prop];
+                            });
+                        } else {
+                            if (scope.hasOwnProperty(prop)) { scope[prop] = extend(true, obj[prop], scope[prop]); }
+                            else { scope[prop] = obj[prop]; }
+                            scope.data[prop] = obj[prop];
+                        }
                     }
                 }
             }
@@ -66,6 +76,8 @@ if (typeof angular !== 'undefined') {
     widApp.factory('executeService', function($http, $compile, dataService) {
         var processExecuteResult = function(result, scope) {
             if (!result) { result = {}; }
+            else { result = widAppHelper.mergeNestedArray(result); }
+
             if (result.addthis) { result = widAppHelper.removeAddThis(result);}
 
             // if not logged in at this point send browser to login.html
