@@ -90,39 +90,39 @@ exports.mget = mget = function mget(objToFind, command, callback) {
 
 
 // // **** ADDED BY SAURABH *** SHALL BE USED INSTEAD OF ABOVE madd
-exports.madd = madd = function madd(entityToAdd, command, callback) {
-    (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
-    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
-    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
+// exports.madd = madd = function madd(entityToAdd, command, callback) {
+//     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
+//     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
+//     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-    console.log(">>>>>>> COMMAND IS " + JSON.stringify(command));
+//     console.log(">>>>>>> COMMAND IS " + JSON.stringify(command));
 
-    var widVal = (entityToAdd['wid']);
-    if (!widVal) {
-        widVal = (entityToAdd['Wid']);
-    }
+//     var widVal = (entityToAdd['wid']);
+//     if (!widVal) {
+//         widVal = (entityToAdd['Wid']);
+//     }
 
-    mget({
-        "wid": widVal
-    }, command, function(err, returnedObject) {
+//     mget({
+//         "wid": widVal
+//     }, command, function(err, returnedObject) {
 
 
-        // check if object is found
-        if (returnedObject) {
-            mupdate(returnedObject, entityToAdd, command, {
-                "upsert": true
-            }, function(err, updatedObj) {
-                printLogs('madd', entityToAdd, updatedObj);
-                callback(err, updatedObj);
-            });
-        } else {
-            maddnew(entityToAdd, command, function(err, addedObj) {
-                printLogs('madd', entityToAdd, addedObj);
-                callback(err, addedObj);
-            });
-        }
-    });
-};
+//         // check if object is found
+//         if (returnedObject) {
+//             mupdate(returnedObject, entityToAdd, command, {
+//                 "upsert": true
+//             }, function(err, updatedObj) {
+//                 printLogs('madd', entityToAdd, updatedObj);
+//                 callback(err, updatedObj);
+//             });
+//         } else {
+//             maddnew(entityToAdd, command, function(err, addedObj) {
+//                 printLogs('madd', entityToAdd, addedObj);
+//                 callback(err, addedObj);
+//             });
+//         }
+//     });
+// };
 
 
 // DAO method to add an entry to specified schema:: the entry to be added is also specified :: 
@@ -154,26 +154,116 @@ exports.mupdate = mupdate = function mupdate(finder, objToAdd, command, options,
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
     // updateData = objToAdd;
     getConnection(mongoDatabaseToLookup, function(err, db) {
-        // var updateData = ConvertToDOTdri(objToAdd);
-        var updateData =flatten(objToAdd[databaseToLookup], {
-            safe: true
-        });
         console.log('mupdate hit! ' + JSON.stringify(objToAdd));
-        db.collection(schemaToLookup).update({
-            "wid": finder['wid']
-        }, {
-            "$set": updateData
-        }, options, function(err, res) {
-            if (err) {
-                callback(err, {
-                    etstatus: {
-                        status: "adderrror"
-                    }
-                });
-            } else {
-                callback(err, objToAdd);
+        // var objToUpdate = databaseToLookup[objToAdd];
+        db.collection(schemaToLookup).update(
+            finder,
+            objToAdd, options, function(err, res) {
+                if (err) {
+                    console.log(err);
+                    callback(err, {
+                        etstatus: {
+                            status: "adderrror"
+                        }
+                    });
+                } else {
+                    callback(err, objToAdd);
+                }
+            });
+    });
+};
+
+// test for updating -- add and then update nested data with overwrite not happening
+exports.mtest = mtest = function mtest(params, callback) {
+    var command = {
+        "db": "data",
+        "databasetable": "wikiwallettesting",
+        "collection": "dricollection"
+    }
+    objToAdd = {
+        "wid": "test1",
+        "data": {
+            "a1": {
+                "a2": "a3"
             }
+        }
+    };
+    finder = {
+        "wid": "test1"
+    };
+    objToUpdate = {
+        "data": {
+            "b1": {
+                "b2": "b3"
+            }
+        }
+    };
+
+    databaseToLookup = command.db || databaseToLookup;
+    mongoDatabaseToLookup = command.databasetable || mongoDatabaseToLookup;
+    schemaToLookup = command.collection || schemaToLookup;
+
+
+    getConnection(mongoDatabaseToLookup, function(err, db) {
+        db.collection(schemaToLookup).remove(finder, function(err, resp) {
+            console.log('mupdate hit! ' + JSON.stringify(objToAdd));
+
+            maddnew(objToAdd, command, function(err, res) {
+                // db.collection(schemaToLookup).insert(objToAdd, function(err, res) {
+                if (err) {
+                    console.log(err);
+                    callback(err, {
+                        etstatus: {
+                            status: "adderrror"
+                        }
+                    });
+                } else {
+                    // update
+
+                    objToUpdate = flatten(objToUpdate, {
+                        safe: true
+                    });
+
+                    options = {
+                        "upsert": true
+                    };
+
+
+                    mupdate(finder, {
+                        "$set": objToUpdate
+                    }, command, options, function(err, res) {
+                        // db.collection(schemaToLookup).update(finder, {
+                        //     "$set": objToUpdate
+                        // }, options, function(err, res) {
+                        if (err) {
+                            console.log(err);
+                            callback(err, {
+                                etstatus: {
+                                    status: "updateerrror"
+                                }
+                            });
+                        } else {
+                            mget(finder, command, function(err, res) {
+                                if (err) {
+                                    console.log(err);
+                                    callback(err, {
+                                        etstatus: {
+                                            status: "geterror"
+                                        }
+                                    });
+                                } else {
+                                    console.log(res);
+                                    callback(err, res);
+                                }
+                            });
+                        }
+                    });
+                }
+
+            });
         });
+
+
     });
 };
 
@@ -182,7 +272,7 @@ exports.mupdate = mupdate = function mupdate(finder, objToAdd, command, options,
 
 // manage multiple mongo database connections
 
-function getConnection(mongoDatabaseToLookup, callback) {
+exports.getConnection = getConnection =  function getConnection(mongoDatabaseToLookup, callback) {
     var databaseConnection;
     var err;
     if (dbConnectionsManager[mongoDatabaseToLookup]) {
@@ -205,9 +295,9 @@ function getConnection(mongoDatabaseToLookup, callback) {
 
 function printLogs(fnname, input, output) {
 
-    console.log(" DAO :: "+fnname+"  TABLE _ NAME is " + schemaToLookup);
-    console.log(" DAO :: "+fnname+"  DATABASE _ NAME is " + databaseToLookup);
-    console.log(" DAO :: "+fnname+"  MONGO _ DATABASE _ NAME is " + mongoDatabaseToLookup);
+    console.log(" DAO :: " + fnname + "  TABLE _ NAME is " + schemaToLookup);
+    console.log(" DAO :: " + fnname + "  DATABASE _ NAME is " + databaseToLookup);
+    console.log(" DAO :: " + fnname + "  MONGO _ DATABASE _ NAME is " + mongoDatabaseToLookup);
     // console.log(' DAO :: ***************************');
     // console.log(' DAO :: >>>>>> ::: ' + fnname + ' begin ::: ');
     // console.log(' DAO :: >>>>>> ::: inputs ::: ');
@@ -220,88 +310,88 @@ function printLogs(fnname, input, output) {
 
 
 
-// exports.madd = madd = function madd(entityToAddIn, command, callback) {
-//     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
-//     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
-//     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
+exports.madd = madd = function madd(entityToAddIn, command, callback) {
+    (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
+    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
+    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-//     // console.log('>>>> entity added is ' + JSON.stringify(entityToAddIn));
-//     // console.log('>>>>databaseToLookup >>> ' + databaseToLookup);
+    // console.log('>>>> entity added is ' + JSON.stringify(entityToAddIn));
+    // console.log('>>>>databaseToLookup >>> ' + databaseToLookup);
 
-//     var entityToAdd = entityToAddIn;
-//     // var entityToAdd = {};
-//     // extend(true,entityToAdd, entityToAddIn);
-//     console.log('>>>>entityToAdd >>> '+JSON.stringify(entityToAdd));
+    var entityToAdd = entityToAddIn;
+    // var entityToAdd = {};
+    // extend(true,entityToAdd, entityToAddIn);
+    console.log('>>>>entityToAdd >>> ' + JSON.stringify(entityToAdd));
 
-//     // delete entityToAdd['metadata']['date'];
-//     // delete entityToAdd['metadata']['expirationdate'];
-//     // flatten out data for mongo call
-
-
-//     // entityToAdd[databaseToLookup] = flatten(entityToAdd[databaseToLookup], {
-//     //     safe: true
-//     // });
+    // delete entityToAdd['metadata']['date'];
+    // delete entityToAdd['metadata']['expirationdate'];
+    // flatten out data for mongo call
 
 
-
-//     var addOptions = {};
-
-//     var widVal = (entityToAdd['wid']);
-
-
-//     widVal = {
-//         "wid": widVal
-//     };
-
-//     addOptions = {};
-//     if (command && command.datamethod) {
-//         if (command.datamethod === 'clear') {
-//             // clear
-//             // clear saves the new came object after clearing the existing object
-//             // clear cleared the whole aid --all databases
-//             objToUpdate = entityToAdd;
-//             addOptions = {};
-//         } else if (command.datamethod === 'insert') {
-//             // insert
-//             // insert cleraeted only the db being used
-//             objToUpdate = {
-//                 "$set": entityToAdd
-//             };
+    // entityToAdd[databaseToLookup] = flatten(entityToAdd[databaseToLookup], {
+    //     safe: true
+    // });
 
 
-//         } else if (command.datamethod === 'upsert') {
-//             // upsert
-//             // upsert saves the new came object after updating the existing object
 
-//             addOptions = {
-//                 "upsert": true
-//             };
+    var addOptions = {};
 
-//         }
-//     } else {
-//         // upsert -- default
-//         // entityToAdd[databaseToLookup] = flatten(entityToAdd[databaseToLookup], {
-//         //     safe: true
-//         // });
+    var widVal = (entityToAdd['wid']);
 
-//         addOptions = {
-//             // "upsert": true
-//         };
 
-//     }
+    widVal = {
+        "wid": widVal
+    };
 
-//     mget(widVal, command, function(err, returnedObject) {
-//         // check if object is found
-//         if (returnedObject) {
-//             mupdate(returnedObject, entityToAdd, command, addOptions, function(err, updatedObj) {
-//                 // printLogs('madd', entityToAdd, updatedObj);
-//                 callback(err, updatedObj);
-//             });
-//         } else {
-//             maddnew(entityToAdd, command, function(err, addedObj) {
-//                 // printLogs('madd', entityToAdd, addedObj);
-//                 callback(err, addedObj);
-//             });
-//         }
-//     });
-// };
+    addOptions = {};
+    if (command && command.datamethod) {
+        if (command.datamethod === 'clear') {
+            // clear
+            // clear saves the new came object after clearing the existing object
+            // clear cleared the whole aid --all databases
+            objToUpdate = entityToAdd;
+            addOptions = {};
+        } else if (command.datamethod === 'insert') {
+            // insert
+            // insert cleraeted only the db being used
+            objToUpdate = {
+                "$set": entityToAdd
+            };
+
+
+        } else if (command.datamethod === 'upsert') {
+            // upsert
+            // upsert saves the new came object after updating the existing object
+
+            addOptions = {
+                "upsert": true
+            };
+
+        }
+    } else {
+        // upsert -- default
+        entityToAdd = flatten(entityToAdd, {
+            safe: true
+        });
+
+        addOptions = {
+            "upsert": true
+        };
+
+    }
+
+    mget(widVal, command, function(err, returnedObject) {
+        // check if object is found
+        if (returnedObject) {
+            mupdate(returnedObject, entityToAdd, command, addOptions, function(err, entityToAdd) {
+                // printLogs('madd', entityToAdd, updatedObj);
+                callback(err, entityToAdd);
+            });
+        } else {
+            maddnew(entityToAdd, command, function(err, addedObj) {
+                // printLogs('madd', entityToAdd, addedObj);
+                callback(err, addedObj);
+            });
+        }
+    });
+};
