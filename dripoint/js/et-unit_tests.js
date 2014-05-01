@@ -848,7 +848,7 @@ exports.ettestt6 = ettestt6 = function ettestt6(params, callback) {
 }
 
 exports.ss1 = ss1 = function ss1(params, callback) {
-    proxyprinttodiv('Function ss1 ', '--', 17);
+    proxyprinttodiv('Function ss1 ', '--', 99);
     // execute(
     //     [ 
     //         {
@@ -860,7 +860,7 @@ exports.ss1 = ss1 = function ss1(params, callback) {
     //             //"Body":"test msg"
     //         }
     //     ], 
-    sendsms({"To":"+12145644732", "Body":"test"},
+    sendsms({"to":"+12145644732", "body":"test"},
         function (err, res) { 
             callback (err, res[0])
         }
@@ -2478,7 +2478,7 @@ exports.ettestag12 = ettestag12 = function ettestag12(params, callback) {
 // This will test the ability to write a dto to the db and retrieve it
 
 exports.ettestag1 = ettestag1 = function ettestag1(params, callback) {
-      //debuglevel = 11;
+    // debuglevel = 18;
     // eventappinstall();
     execute([{
             "executethis": "addwidmaster",

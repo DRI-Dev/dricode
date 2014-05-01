@@ -3,6 +3,10 @@ var twilio = require('twilio')('AC909f1981261f4461abbc7985bd202897', '7bb26fabe1
 var spawn = require('child_process').spawn;
 var url = require('url');
 
+exports.consolere = require('console-remote-client').connect('console.re','80','dev-dri');
+exports.consolere = exports.console;
+
+
 var localStorage = exports.localStorage = {};
 
 exports.environment = 'server';
@@ -757,7 +761,7 @@ exports.zapier_passthrough = zapier_passthrough = function(params, cb) {
 };
 
 zapier_passthrough(
-    {'zapURL':'https://zapier.com/hooks/catch/gurm8/','zapParams':{'87':'This is fun'}}, 
+    {'zapURL':'https://zapier.com/hooks/catch/gurm8/','zapParams':{'87': __dirname}}, 
     function(err, res) {
         console.log('The pass through function has ended.');
         console.log('God save the queen');

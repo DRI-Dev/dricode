@@ -8,6 +8,9 @@
 require('../config.js');
 
 
+// exports.console = console.re;
+
+
 // settings and config variables are declared in boxconfiguration
 var SkinStore = require('connect-mongoskin'),
     mongoskin = require('mongoskin'),
@@ -73,7 +76,7 @@ exports.mget = mget = function mget(objToFind, command, callback) {
                 callback(err, res);
             } else {
                 if (res && res && res[0]) {
-                    // printLogs('mget', widName, res[0]);
+                    printLogs('mget', widName, res);
                     callback(null, res[0]);
                 } else {
                     // printLogs('mget', widName, null);
@@ -151,32 +154,29 @@ exports.mupdate = mupdate = function mupdate(finder, objToAdd, command, options,
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
     // updateData = objToAdd;
     getConnection(mongoDatabaseToLookup, function(err, db) {
-        // var updateData = ConvertToDOTdri(objToAdd);
         console.log('mupdate hit! ' + JSON.stringify(objToAdd));
-        db.collection(schemaToLookup).update({
-            "wid": finder['wid']
-        }, {
-            "$set": objToAdd
-        }, options, function(err, res) {
-            if (err) {
-                callback(err, {
-                    etstatus: {
-                        status: "adderrror"
-                    }
-                });
-            } else {
-                callback(err, objToAdd);
-            }
-        });
+        // var objToUpdate = databaseToLookup[objToAdd];
+        db.collection(schemaToLookup).update(
+            finder,
+            objToAdd, options, function(err, res) {
+                if (err) {
+                    console.log(err);
+                    callback(err, {
+                        etstatus: {
+                            status: "adderrror"
+                        }
+                    });
+                } else {
+                    callback(err, objToAdd);
+                }
+            });
     });
 };
 
 
-
-
 // manage multiple mongo database connections
 
-function getConnection(mongoDatabaseToLookup, callback) {
+exports.getConnection = getConnection = function getConnection(mongoDatabaseToLookup, callback) {
     var databaseConnection;
     var err;
     if (dbConnectionsManager[mongoDatabaseToLookup]) {
@@ -199,9 +199,9 @@ function getConnection(mongoDatabaseToLookup, callback) {
 
 function printLogs(fnname, input, output) {
 
-    // console.log(" DAO :: "+fnname+"  TABLE _ NAME is " + schemaToLookup);
-    // console.log(" DAO :: "+fnname+"  DATABASE _ NAME is " + databaseToLookup);
-    // console.log(" DAO :: "+fnname+"  MONGO _ DATABASE _ NAME is " + mongoDatabaseToLookup);
+    // console.log(" DAO :: " + fnname + "  TABLE _ NAME is " + schemaToLookup);
+    // console.log(" DAO :: " + fnname + "  DATABASE _ NAME is " + databaseToLookup);
+    // console.log(" DAO :: " + fnname + "  MONGO _ DATABASE _ NAME is " + mongoDatabaseToLookup);
     // console.log(' DAO :: ***************************');
     // console.log(' DAO :: >>>>>> ::: ' + fnname + ' begin ::: ');
     // console.log(' DAO :: >>>>>> ::: inputs ::: ');
@@ -220,23 +220,11 @@ exports.madd = madd = function madd(entityToAddIn, command, callback) {
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
     // console.log('>>>> entity added is ' + JSON.stringify(entityToAddIn));
-    // console.log('>>>>database >>> ' + JSON.stringify(command));
+    // console.log('>>>>databaseToLookup >>> ' + databaseToLookup);
 
     var entityToAdd = entityToAddIn;
-    // var entityToAdd = {};
-    // extend(true,entityToAdd, entityToAddIn);
-    // console.log('>>>>entityToAdd >>> '+JSON.stringify(entityToAdd));
-
-    // delete entityToAdd['metadata']['date'];
-    // delete entityToAdd['metadata']['expirationdate'];
-    // flatten out data for mongo call
-
-
-    // entityToAdd[databaseToLookup] = flatten(entityToAdd[databaseToLookup], {
-    //     safe: true
-    // });
-
-
+    var entityToUpdate = entityToAddIn;
+    console.log('>>>>entityToAdd >>> ' + JSON.stringify(entityToAdd));
 
     var addOptions = {};
 
@@ -248,55 +236,75 @@ exports.madd = madd = function madd(entityToAddIn, command, callback) {
     };
 
     addOptions = {};
-    if (command && command.datamethod) {
-        if (command.datamethod === 'clear') {
-            // clear
-            // clear saves the new came object after clearing the existing object
-            // clear cleared the whole aid --all databases
-            objToUpdate = entityToAdd;
-            addOptions = {};
-        } else if (command.datamethod === 'insert') {
-            // insert
-            // insert cleraeted only the db being used
-            objToUpdate = {
-                "$set": entityToAdd
-            };
 
-
-        } else if (command.datamethod === 'upsert') {
-            // upsert
-            // upsert saves the new came object after updating the existing object
-
-            addOptions = {
-                "upsert": true
-            };
-
-            var objToUpdate = {
-                "$set": entityToAdd
-            };
-        }
+    if (command && command.datamethod === 'clear') {
+        // clear
+        // clear saves the new came object after clearing the existing object
+        // clear cleared the whole aid --all databases
+        objToUpdate = entityToAdd;
+        addOptions = {};
+    } else if (command && command.datamethod === 'insert') {
+        // insert
+        // insert cleraeted only the db being used
+        objToUpdate = {
+            "$set": entityToAdd
+        };
     } else {
+        // upsert
+        // upsert saves the new came object after updating the existing object
         // upsert -- default
+        entityToUpdate = flatten(entityToAdd, {
+            safe: true
+        });
+
         addOptions = {
             "upsert": true
         };
 
-        objToUpdate = {
-            "$set": entityToAdd
-        };
     }
+
 
     mget(widVal, command, function(err, returnedObject) {
         // check if object is found
         if (returnedObject) {
-            mupdate(returnedObject, entityToAdd, command, addOptions, function(err, updatedObj) {
-                // printLogs('madd', entityToAdd, updatedObj);
-                callback(err, updatedObj);
+            mupdate(widVal, {
+                "$set": entityToUpdate
+            }, command, addOptions, function(err, res) {
+                if (err) {
+                    console.log('DAO :: madd :: error in getting for add/updating -- ' + err);
+                    callback(err, {
+                        etstatus: {
+                            status: "updateerrror"
+                        }
+                    });
+                } else {
+                    mget(widVal, command, function(err, res) {
+                        if (err) {
+                            console.log('DAO :: madd :: error in getting post update -- ' + err);
+                            callback(err, {
+                                etstatus: {
+                                    status: "geterror"
+                                }
+                            });
+                        } else {
+                            console.log(res);
+                            callback(err, res);
+                        }
+                    });
+                }
             });
         } else {
-            maddnew(entityToAdd, command, function(err, addedObj) {
-                // printLogs('madd', entityToAdd, addedObj);
-                callback(err, addedObj);
+            maddnew(entityToAdd, command, function(err, res) {
+                if (err) {
+                    console.log('DAO :: madd :: error in adding -- ' +err);
+                    callback(err, {
+                        etstatus: {
+                            status: "adderrror"
+                        }
+                    });
+                } else {
+                    callback(err, res);
+                }
             });
         }
     });

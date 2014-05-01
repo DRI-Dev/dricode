@@ -315,14 +315,19 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
 
 
                     var currentrecord = database[record];
-                    delete currentrecord[db];
-                    if (datamethod === "upsert") {
+					if (datamethod === "upsert") {
+						//proxyprinttodiv('before upsert: ',addedobject,99);
                         addedobject = extend(true, currentrecord, addedobject);
-                    }
+						//proxyprinttodiv('after upsert: ',addedobject,99);
+					}
                     else if (datamethod === "insert") {
+                        delete currentrecord[db];
+                        addedobject = extend(true, currentrecord, addedobject);
+						proxyprinttodiv('got to insert: ',addedobject,99);
                         // do nothing -- default
                     }
 
+                    // default case is clear
                     database[record] = addedobject;
                     proxyprinttodiv('Function addtomongo found', database[record],12);
                     found = true;
@@ -330,6 +335,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
                 }
             }
 
+            
             if (!found) {
                 database.push(addedobject);
             }
@@ -349,7 +355,9 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
                 addtolocal(databasetable + keycollection, keydatabase);
             }
 
-            // addToAngular(widName, inputWidgetObject)
+            // upsert data in angular data model
+            addToAngular(widName, inputWidgetObject);
+            
             // the type of storage below is not needed
             addToLocalStorage(databasetable+"_"+collection+"_"+ widName, addedobject);
             //addtoangularstorage
@@ -506,7 +514,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                 }
             }
 
-            proxyprinttodiv('Function getwid output', output,99);
+            proxyprinttodiv('Function getwid output', output,12);
             if (!keepaddthis) { // i.e. remove add this
 
                 if (output.hasOwnProperty("addthis")) {
@@ -542,6 +550,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                     // if not resultobject then just leave output alone
 
                     if (output) {
+                        err = null;
                         // make sure data is bundled properly for convertfromdriformat()
                         for (var prop in output) {
                             if (output.hasOwnProperty(prop)) {
@@ -582,7 +591,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                         }
 
                     }
-                    proxyprinttodiv('Function datastore command -- get output 1', output, 99);
+                    proxyprinttodiv('Function datastore command -- get output 1', output, 12);
                     callback(null, output);
                     //callback(err, output);
                 });
@@ -629,7 +638,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
             // if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
             //     output =  ConvertFromDOTdri(output);
             // }
-            proxyprinttodiv('Function datastore command -- get output 4', output, 99);
+            proxyprinttodiv('Function datastore command -- get output 4', output, 12);
             callback(null, output);
             //callback(err, output);
         }
@@ -761,17 +770,22 @@ exports.proxyprinttodiv = proxyprinttodiv = function proxyprinttodiv(text, obj, 
     if (exports.environment === "local") {
         printToDiv(text, obj, debugone, pretty);
     } else {
-        if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 12)) {
-            // debuglinenum++;
-            var z = getglobal('debuglinenum');
-            z++;
-            saveglobal('debuglinenum', z);
+        if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
 
-            var tempobj = {};
-            tempobj["text"] = text;
-            tempobj["obj"] = obj;
-            tempobj["executethis"] = "printdiv";
-            addtolocal(g_debuglinenum, tempobj);
+
+            console.re.log(text);
+
+
+            // debuglinenum++;
+            // var z = getglobal('debuglinenum');
+            // z++;
+            // saveglobal('debuglinenum', z);
+
+            // var tempobj = {};
+            // tempobj["text"] = text;
+            // tempobj["obj"] = obj;
+            // tempobj["executethis"] = "printdiv";
+            // addtolocal(g_debuglinenum, tempobj);
         }
     }
 }
@@ -3546,6 +3560,41 @@ function getRandomNumberByLength(length) {
             xorobj2: xorobj2
         }
     }
+
+//##
+    exports.sortObj = sortObj = function sortObj( obj , callback ) {
+            var r = [] ;
+            for ( var i in obj ){
+                if ( obj.hasOwnProperty( i ) ) {
+                     r.push( { key: i , value : obj[i] } );
+                }
+            }
+
+            return r.sort( callback ).reduce( function( obj , n ){
+                obj[ n.key ] = n.value ;
+                return obj;
+            },{});
+        }
+
+//##
+    exports.hashobj = hashobj = function hashobj(inobj, command) {
+            if (command && command.skipcache) {
+                return null;
+            }
+            else {
+                var obj={};
+                extend(true, obj, inobj);
+                delete obj.executethis;
+                delete obj.preexecute;
+                delete obj.postexecute;
+                delete obj.command; // take out later
+
+                var result = sortObj( obj , function( a, b ){
+                    return a.key < b.key  ;    
+                });
+                return JSON.stringify( result );
+                }
+        }
 
 
 

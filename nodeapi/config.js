@@ -9,6 +9,7 @@ exports.configuration = configuration = config.configuration;
 
 // switch between the location of core files
 var DIR_TO_CORE_JS = '../dripoint/js/';
+exports.CHANNELNAME = 'dev-dri'; //http://console.re/dev-dri
 
 require(DIR_TO_CORE_JS + 'et-dto.js');
 require(DIR_TO_CORE_JS + 'et-security.js');
@@ -27,8 +28,8 @@ exports.serverconfig = serverconfig = {
 }
 
 // DB settings --- 5 hardcoded databases for now :: last 4 databases are right now local databases can be changed to any domain
+            // "DB_HOST_NAME": 'localhost:27017'
 exports.settings = settings = {
-    // "DB_HOST_NAME": 'localhost:27017'
     DB_SET: {
         "wikiwallettesting": {
             "DB_USER_ID": "trugate",
