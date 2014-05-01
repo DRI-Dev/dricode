@@ -222,7 +222,8 @@
                             command.currenterror = err;
                             command.currentresult = preResults;
                             processstage(command, "beforemidexecute");
-                            if (command.currenterror && Object.keys(command.currenterror).length > 0) {
+                            if (command.currenterror && Object.keys(command.currenterror).length > 0 
+                                && command.currenterror.errorname !== "notfound") {
                                 callback(command.queueparameters, command.overallresultparameters)
                             } else {
                                 proxyprinttodiv('command preResults', preResults, 11);
@@ -233,7 +234,8 @@
                                     command.currenterror = err;
                                     command.currentresult = midResults;
                                     processstage(command, "beforepostexecute");
-                                    if (command.currenterror && Object.keys(command.currenterror).length > 0) {
+                                    if (command.currenterror && Object.keys(command.currenterror).length > 0 
+                                        && command.currenterror.errorname !== "notfound") {
                                         callback(command.queueparameters, command.overallresultparameters)
                                     } else {
 //##
@@ -244,7 +246,8 @@
                                             command.currentresult = postResults;
                                             processstage(command, "beforeendexecute");
 
-                                            if (command.currenterror && Object.keys(command.currenterror).length > 0) {
+                                            if (command.currenterror && Object.keys(command.currenterror).length > 0
+                                                && command.currenterror.errorname !== "notfound") {
                                                 callback(command.queueparameters, command.overallresultparameters);
                                             } else {
                                                 proxyprinttodiv("execute - command **** I", command.overallresultparameters, 11);

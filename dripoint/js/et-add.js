@@ -95,7 +95,8 @@
                 "keycollection": config.configuration.defaultcollection + "key",
                 "db":config.configuration.defaultdb,
                 "databasetable":config.configuration.defaultdatabasetable,
-                "convertmethod":"toobject"
+                "convertmethod":"toobject",
+                "datamethod":"upsert"
             }
         }, {
             "command": {
@@ -104,7 +105,8 @@
                 "keycollection":"",
                 "db":"",
                 "databasetable":"",
-                "convertmethod":""
+                "convertmethod":"",
+                "datamethod":""
             }
         },
         true);
@@ -1017,6 +1019,7 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                 object["executethis"] = "updatewid";
                 // readd command params back in
                 var tempcmd={};
+                // getcommmand(inputobj, defaultobj, filterable, shouldremovefilterfrominputflag)
                 tempcmd.command=command;
                 extend(true, object, tempcmd);
                 proxyprinttodiv("addwid before updatewid ", object, 18);

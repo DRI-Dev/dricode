@@ -315,14 +315,19 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
 
 
                     var currentrecord = database[record];
-                    delete currentrecord[db];
-                    if (datamethod === "upsert") {
+					if (datamethod === "upsert") {
+						//proxyprinttodiv('before upsert: ',addedobject,99);
                         addedobject = extend(true, currentrecord, addedobject);
-                    }
+						//proxyprinttodiv('after upsert: ',addedobject,99);
+					}
                     else if (datamethod === "insert") {
+                        delete currentrecord[db];
+                        addedobject = extend(true, currentrecord, addedobject);
+						proxyprinttodiv('got to insert: ',addedobject,99);
                         // do nothing -- default
                     }
 
+                    // default case is clear
                     database[record] = addedobject;
                     proxyprinttodiv('Function addtomongo found', database[record],12);
                     found = true;
@@ -330,6 +335,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
                 }
             }
 
+            
             if (!found) {
                 database.push(addedobject);
             }
@@ -3570,7 +3576,10 @@ function getRandomNumberByLength(length) {
 
 //##
     exports.hashobj = hashobj = function hashobj(inobj, command) {
-            if (!command || (command && !command.skipcache)) {
+            if (command && command.skipcache) {
+                return null;
+            }
+            else {
                 var obj={};
                 extend(true, obj, inobj);
                 delete obj.executethis;
@@ -3582,9 +3591,6 @@ function getRandomNumberByLength(length) {
                     return a.key < b.key  ;    
                 });
                 return JSON.stringify( result );
-                }
-            else { // objkey = null if command.cache = false
-                return null;
                 }
         }
 
