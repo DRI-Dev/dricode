@@ -356,7 +356,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject
             }
 
             // upsert data in angular data model
-            addToAngular(widName, inputWidgetObject);
+            //addToAngular(widName, inputWidgetObject);
             
             // the type of storage below is not needed
             addToLocalStorage(databasetable+"_"+collection+"_"+ widName, addedobject);
