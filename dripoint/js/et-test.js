@@ -7763,7 +7763,7 @@ exports.numerickeyerror = numerickeyerror = function numerickeyerror(params, cal
 // tests that db wids are updated fine -- overwrites do not happen -- using updatewid and getwid
 // command.datamethod = upsert(defaulted)
 // same database, same sub-database
-exports.testdb1 = testdb1 = function testdb1(params, callback) {
+exports.tdb1 = tdb1 = function tdb1(params, callback) {
     execute([{
             "executethis": "updatewid",
             "wid": "db1dto",
@@ -7790,20 +7790,6 @@ exports.testdb1 = testdb1 = function testdb1(params, callback) {
         }],
         function(err, res) {
             proxyprinttodiv('db1dto result: ', res, 99);
-            var result = logverify("db1dto_result", res[2], {
-                "a1": {
-                    "a": "b",
-                    "a1": {
-                        "b1": "b2"
-                    },
-                    "c": "d",
-                    "d1": {
-                        "e1": "e2"
-                    }
-                },
-                "wid": "db1dto",
-                "metadata": {}
-            });
             callback(err, res);
         });
 }
@@ -7812,7 +7798,7 @@ exports.testdb1 = testdb1 = function testdb1(params, callback) {
 // tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
 // command.datamethod = upsert(defaulted)
 // same database, same sub-database
-exports.testdb2 = testdb2 = function testdb2(params, callback) {
+exports.tdb2 = tdb2 = function tdb2(params, callback) {
     execute([{
             "executethis": "addwidmaster",
             "wid": "db2dto",
@@ -7838,7 +7824,7 @@ exports.testdb2 = testdb2 = function testdb2(params, callback) {
             "wid": "db2dto"
         }],
         function(err, res) {
-            proxyprinttodiv('testdb2 result: ', res, 99);
+            proxyprinttodiv('tdb2 result: ', res, 99);
 
             callback(err, res);
         });

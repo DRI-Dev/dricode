@@ -236,7 +236,8 @@ exports.madd = madd = function madd(entityToAddIn, command, callback) {
     };
 
     addOptions = {};
-
+    console.log(" :: DAO :: command.datamethod -- "+JSON.stringify(command));
+    console.log(" :: DAO :: command.datamethod -- "+command.datamethod);
     if (command && command.datamethod === 'clear') {
         // clear
         // clear saves the new came object after clearing the existing object
