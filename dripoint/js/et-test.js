@@ -8066,3 +8066,111 @@ exports.stbd1h = stbd1h = function stbd1h(params, callback) {
             callback(err, res);
         });
 }
+
+
+
+// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
+// command.datamethod = "upsert"
+// command.collection = "new"
+// command.db = "da"
+// same database, diff colection, same sub-database
+exports.stbd1i = stbd1i = function stbd1i(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"upsert","collection":"dri2","db":"da"}},
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"upsert","collection":"dri2","db":"da"}},
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"upsert","db":"da","collection":"dri3"}},
+            "ac": {
+                "ac1": "ad1",
+                "ac2": {
+                    "ac21": "ad21"
+                }
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "command":{"environment":{"db":"da","collection":"dri2"}},
+            "wid": "db2dto"
+        }, {
+            "executethis": "getwidmaster",
+            "command":{"environment":{"db":"da","collection":"dri3"}},
+            "wid": "db2dto"
+        }],
+        function(err, res) {
+            proxyprinttodiv('stbd1i result: ', res, 99);
+
+            callback(err, res);
+        });
+}
+
+
+
+// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
+// command.datamethod = "upsert"
+// command.collection = "new"
+// command.db = "da"
+// diff database, same collection, same sub-database
+exports.stbd1j = stbd1j = function stbd1j(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"upsert","collection":"dri2","db":"da","databasetable":"wikiwallettesting2"}},
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"upsert","collection":"dri2","db":"da","databasetable":"dbwikiwallettesting2"}},
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"upsert","db":"da","collection":"dri2","databasetable":"wikiwallettesting1"}},
+            "ac": {
+                "ac1": "ad1",
+                "ac2": {
+                    "ac21": "ad21"
+                }
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "command":{"environment":{"db":"da","collection":"dri2","databasetable":"wikiwallettesting1"}},
+            "wid": "db2dto"
+        }, {
+            "executethis": "getwidmaster",
+            "command":{"environment":{"db":"da","collection":"dri2","databasetable":"wikiwallettesting2"}},
+            "wid": "db2dto"
+        }],
+        function(err, res) {
+            proxyprinttodiv('stbd1j result: ', res, 99);
+
+            callback(err, res);
+        });
+}
