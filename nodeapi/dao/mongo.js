@@ -272,7 +272,7 @@ exports.madd = madd = function madd(entityToAddIn, command, callback) {
                 "$set": entityToUpdate
             }, command, addOptions, function(err, res) {
                 if (err) {
-                    console.log('DAO :: madd :: error in getting for add/updating -- ' + err);
+                    console.log('DAO :: madd :: error in updating -- ' + err);
                     callback(err, {
                         etstatus: {
                             status: "updateerrror"

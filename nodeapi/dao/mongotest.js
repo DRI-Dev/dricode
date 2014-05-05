@@ -107,7 +107,7 @@ function addNupdate(finder, objToAdd, objToUpdate, command, callback) {
     schemaToLookup = command.collection || schemaToLookup;
 
 
-    getConnection(mongoDatabaseToLookup, function(err, db) {
+    db.getConnection(mongoDatabaseToLookup, function(err, db) {
         db.collection(schemaToLookup).remove(finder, function(err, resp) {
             console.log('mupdate hit! ' + JSON.stringify(objToAdd));
 

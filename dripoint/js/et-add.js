@@ -98,7 +98,8 @@
                 "db":config.configuration.defaultdb,
                 "databasetable":config.configuration.defaultdatabasetable,
                 "convertmethod":"toobject",
-                "datamethod":"upsert"
+                "datamethod":"upsert",
+                "environment":""
             }
         }, {
             "command": {
@@ -108,7 +109,8 @@
                 "db":"",
                 "databasetable":"",
                 "convertmethod":"",
-                "datamethod":""
+                "datamethod":"",
+                "environment":""
             }
         },
         true);
