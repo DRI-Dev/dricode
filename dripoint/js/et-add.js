@@ -88,6 +88,8 @@
         object = ConvertFromDOTdri(object);
         proxyprinttodiv("addwidmaster before", object, 17);
 
+        
+
         var filter_data = getcommand(object, {
             "command": {
                 "datastore": config.configuration.defaultdatastore,
@@ -96,7 +98,8 @@
                 "db":config.configuration.defaultdb,
                 "databasetable":config.configuration.defaultdatabasetable,
                 "convertmethod":"toobject",
-                "datamethod":"upsert"
+                "datamethod":"upsert",
+                "environment":""
             }
         }, {
             "command": {
@@ -106,14 +109,23 @@
                 "db":"",
                 "databasetable":"",
                 "convertmethod":"",
-                "datamethod":""
+                "datamethod":"",
+                "environment":""
             }
         },
         true);
+        
+
+
         proxyprinttodiv("addwidmaster filter_data", filter_data, 17);
         var _object = filter_data.output;
         var command = filter_data.filteredobject.command;
         var _dto_object;
+
+        // early in addwidmaster ...if mm=wid then add to command object data method:insert
+        if(object && object.metadata && object.metadata.method === object.wid){
+            command['datamethod']='insert';
+        }
 
         proxyprinttodiv("addwidmaster _object", _object, 17);
         cleanadd(_object, _dto_object, command, function (err, res) {

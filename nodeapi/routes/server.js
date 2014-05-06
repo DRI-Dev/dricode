@@ -5,11 +5,12 @@ require('../config.js');
 var async = require('async');
 
 
-var mongoskin = require('mongoskin'),
-    SkinStore = require('connect-mongoskin'),
-    path = require('path'),
-    dao = require('../dao/mongo.js'),
+// var mongoskin = require('mongoskin'),
+//     SkinStore = require('connect-mongoskin');
 
+var    path = require('path'),
+    // dao = require('../dao/alterdao.js'),
+    dao = require('../dao/mongo.js'),
     superagent = require('superagent'),
     https = require('https'),
     querystring = require('querystring'),

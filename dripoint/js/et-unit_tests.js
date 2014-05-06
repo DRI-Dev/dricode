@@ -2543,6 +2543,36 @@ exports.ettestag1a = ettestag1a = function ettestag1a(params, callback) {
         });
 }
 
+
+
+exports.ettestag1b = ettestag1b = function ettestag1b(params, callback) {
+    // debuglevel = 18;
+    // eventappinstall();
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "sounddto2",
+            "metadata.method": "sounddto2",
+            "note": "string"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "sounddto2"
+        }],
+        function (err, res1) {
+            proxyprinttodiv("Ag1b  result ", res1, 99);
+            // var res = res1[1]; //~~~ changed by SAURABH 
+            var res = res1[1];
+
+            proxyprinttodiv('Function ag1b expected res ', {
+                "note": "string",
+                "wid": "sounddto2",
+                "metadata.method": "sounddto2"
+            }, 99);
+            proxyprinttodiv('Function ag1b actual result ', res, 99);
+            res = logverify("ettestag1b_result", res, [{"wid":"sounddto2","metadata":{"method":"sounddto2"},"note":"string"}]);
+            callback(err, res);
+        });
+}
+
 // // This will test the ability to write a dto to the db, use that dto to write
 // // a wid with that dto, and get the results of getting that wid.
 // exports.ag211 = ag211 = function ag211(params, callback) {

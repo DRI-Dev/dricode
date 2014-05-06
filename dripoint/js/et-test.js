@@ -7763,25 +7763,23 @@ exports.numerickeyerror = numerickeyerror = function numerickeyerror(params, cal
 // tests that db wids are updated fine -- overwrites do not happen -- using updatewid and getwid
 // command.datamethod = upsert(defaulted)
 // same database, same sub-database
-exports.testdb1 = testdb1 = function testdb1(params, callback) {
+exports.stbd1a = stbd1a = function stbd1a(params, callback) {
     execute([{
             "executethis": "updatewid",
             "wid": "db1dto",
-            "command.collection": "data",
-            "a1": {
-                "a": "b",
-                "a1": {
-                    "b1": "b2"
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
                 }
             }
         }, {
             "executethis": "updatewid",
             "wid": "db1dto",
-            "command.collection": "data",
-            "a2": {
-                "c": "d",
-                "d1": {
-                    "e1": "e2"
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
                 }
             }
         }, {
@@ -7789,21 +7787,7 @@ exports.testdb1 = testdb1 = function testdb1(params, callback) {
             "wid": "db1dto"
         }],
         function(err, res) {
-            proxyprinttodiv('db1dto result: ', res, 99);
-            var result = logverify("db1dto_result", res[2], {
-                "a1": {
-                    "a": "b",
-                    "a1": {
-                        "b1": "b2"
-                    },
-                    "c": "d",
-                    "d1": {
-                        "e1": "e2"
-                    }
-                },
-                "wid": "db1dto",
-                "metadata": {}
-            });
+            proxyprinttodiv('stbd1a result: ', res, 99);
             callback(err, res);
         });
 }
@@ -7812,248 +7796,380 @@ exports.testdb1 = testdb1 = function testdb1(params, callback) {
 // tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
 // command.datamethod = upsert(defaulted)
 // same database, same sub-database
-exports.testdb2 = testdb2 = function testdb2(params, callback) {
+exports.stbd1b = stbd1b = function stbd1b(params, callback) {
     execute([{
             "executethis": "addwidmaster",
             "wid": "db2dto",
-            "command.collection": "data",
-            "1": {
-                "a": "b",
-                "a1": {
-                    "b1": "b2"
+            "command.collection":"data",
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
                 }
             }
         }, {
             "executethis": "addwidmaster",
             "wid": "db2dto",
-            "command.collection": "data",
-            "2": {
-                "c": "d",
-                "d1": {
-                    "e1": "e2"
+            "command.collection":"data",
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
                 }
             }
         }, {
             "executethis": "getwidmaster",
+            "command.collection":"data",
             "wid": "db2dto"
         }],
         function(err, res) {
-            proxyprinttodiv('testdb2 result: ', res, 99);
+            proxyprinttodiv('stbd1b result: ', res, 99);
 
             callback(err, res);
         });
 }
-
 
 // tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
 // command.datamethod = upsert
 // same database, same sub-database
-exports.testdb3 = testdb3 = function testdb3(params, callback) {
+exports.stbd1c = stbd1c = function stbd1c(params, callback) {
     execute([{
             "executethis": "addwidmaster",
-            "wid": "db3dto",
-            "command.collection": "data",
-            "1": {
-                "a": "b",
-                "a1": {
-                    "b1": "b2"
+            "wid": "db2dto",
+            "command.datamethod":"upsert",
+            "command.collection":"data",
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
                 }
             }
         }, {
             "executethis": "addwidmaster",
-            "wid": "db3dto",
-            "command.datamethod": "upsert",
-            "command.collection": "data",
-            "2": {
-                "c": "d",
-                "d1": {
-                    "e1": "e2"
+            "wid": "db2dto",
+            "command.datamethod":"upsert",
+            "command.collection":"data",
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
                 }
             }
         }, {
             "executethis": "getwidmaster",
-            "wid": "db3dto"
+            "command.collection":"data",
+            "wid": "db2dto"
         }],
         function(err, res) {
-            proxyprinttodiv('testdb3 result: ', res, 99);
+            proxyprinttodiv('stbd1c result: ', res, 99);
 
             callback(err, res);
         });
 }
-
-
-
-// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
-// command.datamethod = upsert
-// same database, same collection
-exports.testdb3a = testdb3a = function testdb3(params, callback) {
-    execute([{
-            "executethis": "updatewid",
-            "wid": "db3adto",
-            "command.collection": "data",
-            "1": {
-                "a": "b",
-                "a1": {
-                    "b1": "b2"
-                }
-            }
-        }, {
-            "executethis": "updatewid",
-            "wid": "db3adto",
-            "command.datamethod": "upsert",
-            "command.collection": "data",
-            "2": {
-                "c": "d",
-                "d1": {
-                    "e1": "e2"
-                }
-            }
-        }, {
-            "executethis": "getwid",
-            "wid": "db3adto"
-        }],
-        function(err, res) {
-            proxyprinttodiv('testdb3a result: ', res, 99);
-
-            callback(err, res);
-        });
-}
-
-// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
-// command.datamethod = upsert
-// same database, diff database
-exports.testdb3a = testdb3a = function testdb3(params, callback) {
-    execute([{
-            "executethis": "updatewid",
-            "wid": "db3adto",
-            "command.collection": "data",
-            "1": {
-                "a": "b",
-                "a1": {
-                    "b1": "b2"
-                }
-            }
-        }, {
-            "executethis": "updatewid",
-            "wid": "db3adto",
-            "command.datamethod": "upsert",
-            "command.collection": "test",
-            "2": {
-                "c": "d",
-                "d1": {
-                    "e1": "e2"
-                }
-            }
-        }, {
-            "executethis": "getwid",
-            "wid": "db3adto"
-        }],
-        function(err, res) {
-            proxyprinttodiv('testdb3a result: ', res, 99);
-
-            callback(err, res);
-        });
-}
-
-
 
 // tests that db wids are updated fine -- overwrites do not happen -- using updatewid and getwid
-// command.datamethod = clear
-// same database, same sub-database
-exports.testdb4a = testdb4a = function testdb4a(params, callback) {
+// command.datamethod = upsert
+// same database, different sub-database
+exports.stbd1d = stbd1d = function stbd1d(params, callback) {
     execute([{
-            "executethis": "addwidmaster",
-            "wid": "db4adto",
-            "a": "b"
+            "executethis": "updatewid",
+            "wid": "db2dto",
+            "command":{"datamethod":"upsert"},
+            "command":{"db":"data"},
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
         }, {
-            "executethis": "addwidmaster",
-            "wid": "db4adto",
-            "command.datamethod": "clear",
-            "c": "d"
+            "executethis": "updatewid",
+            "wid": "db2dto",
+            "command":{"datamethod":"upsert"},
+            "command":{"db":"test"},
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
         }, {
-            "executethis": "getwidmaster",
-            "wid": "db4adto"
+            "executethis": "getwid",
+            "command":{"datamethod":"upsert"},
+            "command":{"db":"data"},
+            "wid": "db2dto"
+        },{
+            "executethis": "getwid",
+            "command":{"db":"test"},
+            "wid": "db2dto"
         }],
         function(err, res) {
-            proxyprinttodiv('testdb4a result: ', res, 99);
+            proxyprinttodiv('stbd1d result: ', res, 99);
 
             callback(err, res);
         });
 }
-
-// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
-// command.datamethod = clear
-exports.testdb4 = testdb4 = function testdb4(params, callback) {
-    execute([{
-            "executethis": "addwidmaster",
-            "wid": "db4dto",
-            "command.datamethod": "clear",
-            "a": "b"
-        }, {
-            "executethis": "addwidmaster",
-            "wid": "db4dto",
-            "command.datamethod": "clear",
-            "c": "d"
-        }, {
-            "executethis": "getwidmaster",
-            "wid": "db4dto"
-        }],
-        function(err, res) {
-            proxyprinttodiv('testdb4 result: ', res, 99);
-
-            callback(err, res);
-        });
-}
-
-
-
 
 
 // tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
-// command.datamethod = clear
-exports.testdb4 = testdb4 = function testdb4(params, callback) {
+// command.datamethod = upsert
+// same database, different sub-database
+exports.stbd1e = stbd1e = function stbd1e(params, callback) {
     execute([{
             "executethis": "addwidmaster",
-            "wid": "db4dto",
-            "command.datamethod": "clear",
-            "a": "b"
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"upsert"}},
+            "command":{"environment":{"db":"data"}},
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
         }, {
             "executethis": "addwidmaster",
-            "wid": "db4dto",
-            "command.datamethod": "clear",
-            "c": "d"
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"upsert"}},
+            "command":{"environment":{"db":"test"}},
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
         }, {
             "executethis": "getwidmaster",
-            "wid": "db4dto"
+            "command":{"environment":{"db":"data"}},
+            "wid": "db2dto"
+        },{
+            "executethis": "getwidmaster",
+            "command":{"environment":{"db":"test"}},
+            "wid": "db2dto"
         }],
         function(err, res) {
-            proxyprinttodiv('testdb4 result: ', res, 99);
+            proxyprinttodiv('stbd1e result: ', res, 99);
 
             callback(err, res);
         });
 }
-
-
-
 
 // tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
 // command.datamethod = insert
-exports.testdb5 = testdb5 = function testdb5(params, callback) {
+// same database, different sub-database
+exports.stbd1f = stbd1f = function stbd1f(params, callback) {
     execute([{
             "executethis": "addwidmaster",
-            "wid": "db5dto",
-            "a": "b"
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"insert","db":"data"}},
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
         }, {
             "executethis": "addwidmaster",
-            "wid": "db5dto",
-            "command.datamethod": "insert",
-            "c": "d"
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"insert","db":"test"}},
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
         }, {
             "executethis": "getwidmaster",
-            "wid": "db5dto"
+            "command":{"environment":{"db":"data"}},
+            "wid": "db2dto"
+        },{
+            "executethis": "getwidmaster",
+            "command":{"environment":{"db":"test"}},
+            "wid": "db2dto"
         }],
         function(err, res) {
-            proxyprinttodiv('testdb5 result: ', res, 99);
+            proxyprinttodiv('stbd1f result: ', res, 99);
+
+            callback(err, res);
+        });
+}
+
+
+
+// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
+// command.datamethod = clear
+// same database, same sub-database
+exports.stbd1g = stbd1g = function stbd1g(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"insert","db":"data"}},
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"insert","db":"data"}},
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "command":{"environment":{"db":"data"}},
+            "wid": "db2dto"
+        }],
+        function(err, res) {
+            proxyprinttodiv('stbd1g result: ', res, 99);
+
+            callback(err, res);
+        });
+}
+
+// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
+// command.datamethod = clear
+// same database, same sub-database
+exports.stbd1h = stbd1h = function stbd1h(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"clear","db":"data"}},
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"clear","db":"data"}},
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "command":{"environment":{"db":"data"}},
+            "wid": "db2dto"
+        }],
+        function(err, res) {
+            proxyprinttodiv('stbd1h result: ', res, 99);
+
+            callback(err, res);
+        });
+}
+
+
+
+// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
+// command.datamethod = "upsert"
+// command.collection = "new"
+// command.db = "da"
+// same database, diff colection, same sub-database
+exports.stbd1i = stbd1i = function stbd1i(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"upsert","collection":"dri2","db":"da"}},
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"upsert","collection":"dri2","db":"da"}},
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"upsert","db":"da","collection":"dri3"}},
+            "ac": {
+                "ac1": "ad1",
+                "ac2": {
+                    "ac21": "ad21"
+                }
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "command":{"environment":{"db":"da","collection":"dri2"}},
+            "wid": "db2dto"
+        }, {
+            "executethis": "getwidmaster",
+            "command":{"environment":{"db":"da","collection":"dri3"}},
+            "wid": "db2dto"
+        }],
+        function(err, res) {
+            proxyprinttodiv('stbd1i result: ', res, 99);
+
+            callback(err, res);
+        });
+}
+
+
+
+// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
+// command.datamethod = "upsert"
+// command.collection = "new"
+// command.db = "da"
+// diff database, same collection, same sub-database
+exports.stbd1j = stbd1j = function stbd1j(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"upsert","collection":"dri2","db":"da","databasetable":"wikiwallettesting2"}},
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"upsert","collection":"dri2","db":"da","databasetable":"dbwikiwallettesting2"}},
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command":{"environment":{"datamethod":"upsert","db":"da","collection":"dri2","databasetable":"wikiwallettesting1"}},
+            "ac": {
+                "ac1": "ad1",
+                "ac2": {
+                    "ac21": "ad21"
+                }
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "command":{"environment":{"db":"da","collection":"dri2","databasetable":"wikiwallettesting1"}},
+            "wid": "db2dto"
+        }, {
+            "executethis": "getwidmaster",
+            "command":{"environment":{"db":"da","collection":"dri2","databasetable":"wikiwallettesting2"}},
+            "wid": "db2dto"
+        }],
+        function(err, res) {
+            proxyprinttodiv('stbd1j result: ', res, 99);
 
             callback(err, res);
         });

@@ -37,6 +37,9 @@
     <script src="js/ngWidApp.js"></script>
     
     <script>
+    // line below added by Roger -- taken away from ngwidapp line 6
+     eventdeviceready({}, function (err, results) { });
+
         angular.element(document).ready(function() {
             angular.bootstrap(document, ['widApp']);
         });

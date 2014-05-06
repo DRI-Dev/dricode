@@ -4,7 +4,7 @@ var spawn = require('child_process').spawn;
 var url = require('url');
 
 exports.consolere = require('console-remote-client').connect('console.re','80','dev-dri');
-exports.consolere = exports.console;
+exports.console = exports.consolere;
 
 
 var localStorage = exports.localStorage = {};
