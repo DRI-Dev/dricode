@@ -136,31 +136,31 @@ if (typeof angular !== 'undefined') {
         }
     });
 
-    widApp.directive('ngBlur', function() {
-        return function(scope, elem, attrs) {
-            elem.bind('blur', function() {
-                var phase = scope.$root.$$phase;
-                if (phase !== '$apply' && phase !== '$digest') {
-                    scope.$apply(attrs.ngBlur);
-                } else { scope.$apply(attrs.ngBlur); }
-            });
-        };
-    });
+//    widApp.directive('ngBlur', function() {
+//        return function(scope, elem, attrs) {
+//            elem.bind('blur', function() {
+//                var phase = scope.$root.$$phase;
+//                if (phase !== '$apply' && phase !== '$digest') {
+//                    scope.$apply(attrs.ngBlur);
+//                } else { scope.$apply(attrs.ngBlur); }
+//            });
+//        };
+//    });
 
-    widApp.directive('appendcode', function($compile) {
-        return function(scope, element, attrs) {
-            scope.$watch(
-                function(scope) {
-                    return scope.$eval(attrs.appendcode);
-                },
-                function(html) {
-                    element.html(html);
-                    var contents = element.contents();
-                    $compile(contents)(scope);
-                }
-            );
-        }
-    });
+//    widApp.directive('appendcode', function($compile) {
+//        return function(scope, element, attrs) {
+//            scope.$watch(
+//                function(scope) {
+//                    return scope.$eval(attrs.appendcode);
+//                },
+//                function(html) {
+//                    element.html(html);
+//                    var contents = element.contents();
+//                    $compile(contents)(scope);
+//                }
+//            );
+//        }
+//    });
 
     widApp.directive('draggable', function($document) {
         return function(scope, element, attr) {
@@ -201,11 +201,14 @@ if (typeof angular !== 'undefined') {
     widApp.controller('widCtrl', ['$scope', '$compile', 'dataService', 'executeService',
         function($scope, $compile, dataService, executeService) {
             $scope.data = {};
-            $scope.ajax = {};
+
             var querystring = window.location.search,
                 urlParameters = widAppHelper.queryStrToObj(querystring.substring(1));
 
             executeService.executeThis(urlParameters, $scope, function (err, resultset) { });
+
+            // package url parameters into model
+            if (Object.size(urlParameters) > 0) { $scope.urlparams = urlParameters; }
 
             $scope.clearlogs = function() { $('#errorlog,#successlog').html(''); };
 
@@ -393,75 +396,6 @@ if (typeof angular !== 'undefined') {
         }
     };
 
-//    exports.executeGoto = executeGoto = function executeGoto(urlParameters, callback) {
-//        var ogUrlParams = extend(true, {}, urlParameters),
-//            scope = $('body').scope();
-//
-//        function finishProcess(parameters) {
-//            if (parameters.addthis) { parameters = widAppHelper.removeAddThis(parameters); }
-//            if (parameters.wid && parameters.wid === 'urlparams') { delete parameters['wid']; }
-//
-//            if (!parameters.executethis && parameters.wid) {
-//                parameters.executethis = parameters.wid;
-//                delete parameters['wid'];
-//            }
-//
-//            angular.injector(['ng', 'widApp'])
-//                .get('executeService')
-//                .executeThis(parameters, scope, function (err, resultset) {
-//                    callback(null, resultset);
-//
-//                    var results = widAppHelper.mergeNestedArray(resultset);
-//
-//                    if (results.html) {
-//                        var modelProp = parameters.wid || parameters.executethis;
-//                        if (!scope[modelProp]) { scope[modelProp] = {}; }
-//                        scope[modelProp].urlparams = ogUrlParams;
-//
-//                        if (callback instanceof Function) { callback(null, resultset); }
-//                    } else { if (callback instanceof Function) { callback(null, resultset); } }
-//                });
-//        }
-//
-//        // save url parameters to 'urlparams' wid
-//        // hide 'wid' and 'executethis' parameters behind addthis if found
-//        if (urlParameters.wid) {
-//            if (!urlParameters.addthis) { urlParameters.addthis = { wid:urlParameters.wid}; }
-//            else { urlParameters.addthis.wid = urlParameters.wid; }
-//            delete urlParameters['wid'];
-//        }
-//
-//        if (urlParameters.preexecute) {
-//            if (!urlParameters.addthis) { urlParameters.addthis = { preexecute:urlParameters.preexecute}; }
-//            else { urlParameters.addthis.preexecute = urlParameters.preexecute; }
-//            delete urlParameters['preexecute'];
-//        }
-//
-//        if (urlParameters.executethis) {
-//            if (!urlParameters.addthis) { urlParameters.addthis = { executethis:urlParameters.executethis}; }
-//            else { urlParameters.addthis.executethis = urlParameters.executethis; }
-//            delete urlParameters['executethis'];
-//        }
-//
-//        var addUrlParamsObj = extend(true, urlParameters, {executethis:'updatewid', wid:'urlparams'});
-//
-//        // get urlparams and inwid parameters and call executeThis with them
-//        // executeThis will check for screenwids to display
-//        execute(addUrlParamsObj, function (addUrlErr, addUrlResults) {
-//            execute({executethis:'urlparams'}, function (err, urlResultArr) {
-//                var processParams = widAppHelper.mergeNestedArray(urlResultArr);
-//
-//                if (processParams.widdata) {
-//                    execute({executethis:processParams.widdata}, function (err, widdataResults) {
-//                        delete processParams['widdata'];
-//                        processParams = extend(true, widAppHelper.mergeNestedArray(widdataResults), processParams);
-//                        finishProcess(processParams);
-//                    });
-//                } else { finishProcess(processParams); }
-//            });
-//        });
-//    };
-
     function callExecute(ele) {
         var attrObj = NNMtoObj(ele.attributes),
             parameters = extend(true, {command:{parameters:{eventdata:{}}}}, JSON.parse(attrObj.etparams)),
@@ -600,9 +534,12 @@ if (typeof angular !== 'undefined') {
     exports.addToAngular = addToAngular = function addToAngular(name, obj) {
         var scope = $('body').scope();
 
-        angular.injector(['ng', 'widApp'])
-            .get('dataService')
-            .storeData(obj, scope, name);
+        if (scope.hasOwnProperty(name)) { scope[name] = extend(true, obj, scope[name]); }
+        else {
+            angular.injector(['ng', 'widApp'])
+                .get('dataService')
+                .storeData(obj, scope, name);
+        }
     };
 
     // call executeService.executeThis from legacy (non angularJS) code
@@ -687,4 +624,4 @@ exports.screenwidToHtml = screenwidToHtml = function screenwidToHtml(screenWid, 
 
         callback(htmlString);
     });
-};if(!exports){ var exports = {}; }
+};
