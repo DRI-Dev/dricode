@@ -207,8 +207,8 @@ if (typeof angular !== 'undefined') {
 
             executeService.executeThis(urlParameters, $scope, function (err, resultset) { });
 
-            // package url parameters into model
-            if (Object.size(urlParameters) > 0) { $scope.urlparams = urlParameters; }
+            // package initial url parameters into model
+            if (Object.size(urlParameters) > 0) { $scope.urlparams = widAppHelper.queryStrToObj(querystring.substring(1)); }
 
             $scope.clearlogs = function() { $('#errorlog,#successlog').html(''); };
 
