@@ -8174,3 +8174,42 @@ exports.stbd1j = stbd1j = function stbd1j(params, callback) {
             callback(err, res);
         });
 }
+
+
+exports.find_category_server = find_category_server = function find_category_server(inputobj, callback) {
+                execute([
+                    {
+                        "executethis": "querywid",
+                        "mongorawquery": {"$and": [{"data.category": "storage"}]},
+                        //"mongorawprojection": {"data.address": 1 },
+                        "configuration": {
+                           "midexecute": [{
+                               "dothis": "server",
+                               "tryorder": "0",
+                               "executeorder": "0",
+                               "params": {}
+                           }]
+                       }
+                    }
+                ], function (err, res) { callback( null, res[0]); });
+            }
+
+exports.find_category_local = find_category_local = function find_category_local(inputobj, callback) {
+    execute([
+        {
+            "executethis": "querywid",
+            "mongorawquery": {"$and": [{"data.category": "storage"}]}
+            // ,"mongorawprojection": {"data.address": 1 },
+         
+        }
+    ], function (err, res) { callback( null, res[0]); });
+}
+
+exports.load_query2 = load_query2 = function load_query2(inputobj, callback) {
+    execute([
+        {
+            "executethis": "querywid",
+            "mongorawquery": {"wid": "sample1"}
+        }
+    ], function (err, res) { callback( null, res[0]); });
+}
