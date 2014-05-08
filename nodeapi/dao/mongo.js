@@ -16,7 +16,7 @@ var SkinStore = require('connect-mongoskin'),
     mongoskin = require('mongoskin'),
     schemaToLookup = config.configuration.defaultcollection,
     databaseToLookup = config.configuration.defaultdb,
-    mongoDatabaseToLookup = config.configuration.defaultdatabsaetable,
+    mongoDatabaseToLookup = config.configuration.defaultdatabasetable,
     dbConnectionsManager = {},
     // defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup,
     flatten = require('flat').flatten;
@@ -71,6 +71,52 @@ exports.mquery = mquery = function mquery(objToFind, projection, command, callba
         });
     });
 };
+
+exports.mquery2 = mquery2 = function mquery2(objToFind, projection, command, callback) {
+    console.log('-->>-->> Inputs to mquery2 objToFind:\n' + 
+                JSON.stringify(objToFind, '-', 4) + '\nCommand: \n' +
+                JSON.stringify(command, '-', 4));
+    console.log("\nPROJECTION in mongo.js mquery2: " + JSON.stringify(projection));
+    (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
+    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
+    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
+
+    if (typeof objToFind === "string") {
+        objToFind = JSON.parse(objToFind);
+    }
+
+    if (typeof projection === "string") {
+        projection = JSON.parse(projection);
+    }
+
+                // console.log('-]-]-]-] Inputs to mquery2 objToFind:\n' + 
+                // JSON.stringify(objToFind, '-', 4));
+                // console.log('\n-]-] Inputs to mquery2 projection:\n' + 
+                // JSON.stringify(projection, '-', 4));
+
+    getConnection(mongoDatabaseToLookup, function(err, db) {
+        db.collection(schemaToLookup).find(objToFind, projection).toArray(function(err, res) {
+
+            if (err) {
+                printLogs('mquery2', objToFind, err);
+                callback(err, {
+                    etstatus: {
+                        status: 'queryerror'
+                    }
+                });
+            } else {
+                if (res) {
+                    printLogs('mquery2', objToFind, res);
+                    callback(err, res);
+                } else {
+                    printLogs('mquery2', objToFind, []);
+                    callback(err, []);
+                }
+            }
+        });
+    });
+};
+
 
 // ORIGINAL MQUERY
 // exports.mquery = mquery = function mquery(objToFind, command, callback) {

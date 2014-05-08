@@ -8213,3 +8213,22 @@ exports.load_query2 = load_query2 = function load_query2(inputobj, callback) {
         }
     ], function (err, res) { callback( null, res[0]); });
 }
+
+exports.mq2_test = mq2_test = function mq2_test(inputobj, callback) {
+            
+    var raw_query_object = {"$and": [{"data.category": "storage"}]};
+    var projection_object = {"data.address": 1 };
+    var command_object = {
+        "datastore": "mongo",
+        "collection": "dricollection",
+        "db": "data",
+        "databasetable": "wikiwallettesting",
+        "convertmethod": "toobject",
+        "deepaddthis": true
+    }
+
+    mquery2(raw_query_object, projection_object, null, 
+        function (err, res) { 
+            callback( null, res) 
+        })
+}
