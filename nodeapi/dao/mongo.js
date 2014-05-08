@@ -27,7 +27,11 @@ var SkinStore = require('connect-mongoskin'),
 
 // DAO method to fetch unique an entry to specified collection:: the entry to be fetched is also specified :: 
 // the callback function on succesful addition is also specified
-exports.mquery = mquery = function mquery(objToFind, command, callback) {
+exports.mquery = mquery = function mquery(objToFind, projection, command, callback) {
+    console.log('-->>-->> Inputs to mquery objToFind:\n' + 
+                JSON.stringify(objToFind, '-', 4) + '\nCommand: \n' +
+                JSON.stringify(command, '-', 4));
+    console.log("\nPROJECTION in mongo.js mquery: " + JSON.stringify(projection));
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
@@ -36,8 +40,18 @@ exports.mquery = mquery = function mquery(objToFind, command, callback) {
         objToFind = JSON.parse(objToFind);
     }
 
+    if (typeof projection === "string") {
+        projection = JSON.parse(projection);
+    }
+
+                // console.log('-]-]-]-] Inputs to mquery objToFind:\n' + 
+                // JSON.stringify(objToFind, '-', 4));
+                // console.log('\n-]-] Inputs to mquery projection:\n' + 
+                // JSON.stringify(projection, '-', 4));
+
     getConnection(mongoDatabaseToLookup, function(err, db) {
-        db.collection(schemaToLookup).find(objToFind).toArray(function(err, res) {
+        db.collection(schemaToLookup).find(objToFind, projection).toArray(function(err, res) {
+
             if (err) {
                 printLogs('mquery', objToFind, err);
                 callback(err, {
@@ -57,6 +71,45 @@ exports.mquery = mquery = function mquery(objToFind, command, callback) {
         });
     });
 };
+
+// ORIGINAL MQUERY
+// exports.mquery = mquery = function mquery(objToFind, command, callback) {
+//     console.log('-->>-->> Inputs to mquery objToFind:\n' + 
+//                 JSON.stringify(objToFind, '-', 4) + '\nCommand: \n' +
+//                 JSON.stringify(command, '-', 4));
+//     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
+//     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
+//     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
+
+//     if (typeof objToFind === "string") {
+//         objToFind = JSON.parse(objToFind);
+//     }
+
+//     getConnection(mongoDatabaseToLookup, function(err, db) {
+//         db.collection(schemaToLookup).find(objToFind).toArray(function(err, res) {
+
+//                 console.log('-->>-->> Inputs to mquery objToFind:\n' + 
+//                 JSON.stringify(res, '-', 4));
+
+//             if (err) {
+//                 printLogs('mquery', objToFind, err);
+//                 callback(err, {
+//                     etstatus: {
+//                         status: 'queryerror'
+//                     }
+//                 });
+//             } else {
+//                 if (res) {
+//                     printLogs('mquery', objToFind, res);
+//                     callback(err, res);
+//                 } else {
+//                     printLogs('mquery', objToFind, []);
+//                     callback(err, []);
+//                 }
+//             }
+//         });
+//     });
+// };
 
 exports.mget = mget = function mget(objToFind, command, callback) {
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
