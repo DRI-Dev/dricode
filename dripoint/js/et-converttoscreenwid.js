@@ -1,6 +1,6 @@
 // copyright (c) 2014 DRI
 $(document).ready(function () {
-    var widName = widAppHelper.getUrlParam('wid'),
+    var widName = getUrlParam('wid'),
         params = {};
 
     if (typeof widforview !== 'undefined') { params.widforview = widforview; }
@@ -25,4 +25,11 @@ $(document).ready(function () {
             + widName + '">http://dripoint.com?wid = ' + widName + '</h4></div></div>');
         setTimeout(function() { window.location = 'http://dev.dripoint.com?wid=' + widName; },3500);
     });
+
+    function getUrlParam(name) {
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
 });
