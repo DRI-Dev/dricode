@@ -778,9 +778,9 @@ exports.printToDiv = printToDiv = function printToDiv(text, obj, debugone, prett
     //     }
 
     if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
-        printText = '<pre>' + text + '<br/>' + JSON.stringify(obj) + '</pre>';
+        printText = '<pre class="div_print">' + text + '<br/>' + JSON.stringify(obj) + '</pre>';
         if (pretty) {
-            printText = '<pre>' + text + '<br/>' + JSON.stringify(obj, "-", 4) + '</pre>';
+            printText = '<pre class="div_print">' + text + '<br/>' + JSON.stringify(obj, "-", 4) + '</pre>';
         }
         // console.log(text);
         // console.log(obj);
@@ -803,9 +803,8 @@ exports.proxyprinttodiv = proxyprinttodiv = function proxyprinttodiv(text, obj, 
     } else {
         if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
 
-
             console.re.log(text);
-
+            console.re.log(obj);
 
             // debuglinenum++;
             // var z = getglobal('debuglinenum');
