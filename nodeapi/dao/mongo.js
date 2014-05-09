@@ -186,7 +186,14 @@ exports.getConnection = getConnection = function getConnection(mongoDatabaseToLo
         var DB_HOST_NAME = settings.DB_SET[mongoDatabaseToLookup]['DB_HOST_NAME'];
         var DB_USER_ID = settings.DB_SET[mongoDatabaseToLookup]['DB_USER_ID'];
         var DB_USER_PWD = settings.DB_SET[mongoDatabaseToLookup]['DB_USER_PWD'];
-        var DB_URL = 'mongodb://' + DB_USER_ID + ':' + DB_USER_PWD + '@' + DB_HOST_NAME + '/' + mongoDatabaseToLookup;
+        var DB_URL;
+        if(DB_USER_ID && DB_USER_PWD){
+            DB_URL = 'mongodb://' + DB_USER_ID + ':' + DB_USER_PWD + '@' + DB_HOST_NAME + '/' + mongoDatabaseToLookup;
+
+        }else{
+            DB_URL = 'mongodb://' + DB_HOST_NAME + '/' + mongoDatabaseToLookup;
+
+        }
         console.log('DATABSE URL is ' + DB_URL);
         databaseConnection = mongoskin.db(DB_URL, settings.MONGODB_OPTIONS);
         dbConnectionsManager[mongoDatabaseToLookup] = databaseConnection; // place in connections factory

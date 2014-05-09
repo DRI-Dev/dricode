@@ -1047,7 +1047,9 @@ exports.testinheritdefault0 = testinheritdefault0 = function testinheritdefault0
     execute([{
             "executethis": "addwidmaster",
             "wid": "authordefault",
-            "metadata.method": "authordto",
+            "metadata": {
+				"method":"authordto"
+			},
             "name": "Alex",
             "age": "42"
         }, {
@@ -1078,7 +1080,9 @@ exports.testinheritdefault0 = testinheritdefault0 = function testinheritdefault0
 
             var result = logverify("testinheritdefault0_result", res[3], [{
                 "wid": "author1",
-                "metadata.method": "authordto",
+                "metadata":{
+					"method":"authordto",
+				},
                 "name": "Alex",
                 "age": "10"
             }]);
@@ -1123,7 +1127,15 @@ exports.testinheritdefault1 = testinheritdefault1 = function testinheritdefault1
             proxyprinttodiv('The author1 record: ', res[3], 99);
             var result = logverify("testinheritdefault0_result", res[3], [{
                 "wid": "author1",
-                "metadata.method": "authordto",
+                "metadata":{
+					"method":"authordto",
+					"inherit":[{
+						"wid":"authordefault",
+						"command":{
+							"dtotype":"",
+							"adopt":"default"}
+					}]
+				},
                 "name": "Alex",
                 "age": "42"
             }]);
@@ -1310,20 +1322,12 @@ exports.testinheritdefault3 = testinheritdefault3 = function testinheritdefault3
             "executethis": "addwidmaster",
             "wid": "author1",
             "metadata.method": "authordto"
-        }],
+        }, {
+			"executethis": "getwidmaster",
+			"wid":"author1"
+		}],
         function(err, res) {
-            proxyprinttodiv('Full results: ', res, 99);
-
-            proxyprinttodiv('The author1 record: ', res[2], 99);
-
-            debuglevel = 0;
-            execute({
-                "executethis": "getwidmaster",
-                "wid": "author1"
-            }, function(err, res1) {
-                proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
-                callback(err, res);
-            });
+            proxyprinttodiv('The author1 record: ', res[6], 99);
         });
 }
 
@@ -7579,6 +7583,87 @@ exports.testupdating1 = testupdating1 = function testupdating1(params, callback)
                 "field2": "world"
             }]);
             callback(err, result);
+        });
+}
+
+exports.testpermissiondefault1 = testpermissiondefault1 = function testpermissiondefault1(params, callback) {
+	execute([{
+			"executethis":"createalldtos"
+		},	{
+            "executethis": "addwidmaster",
+            "wid": "p1",
+            "metadata": {
+                "method": "permissiondto"
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "p1",
+            "metadata": {
+                "method": "permissiondto"
+            }
+        }],
+        function(err, res) {
+            proxyprinttodiv('adding permissiondto: ', res[1], 99);
+            var result = logverify("cody1_result", res[1], [{
+                "wid": "p1",
+                "metadata.method": "permissiondto",
+                "level":"0",
+				"metadata.db":"data",
+				"metadata.collection":"maincollection"
+            }]);
+			callback(err, result);
+        });
+}
+
+exports.testpermissiondefault2 = testpermissiondefault2 = function testpermissiondefault2(params, callback) {
+				execute([{
+                    // Create the permissiondto     
+                    "executethis": "addwidmaster",
+                    "wid": "permissiondto",
+                    "metadata.method": "permissiondto",
+                    "metadata.system.creator": "string",
+                    "level": "string",
+					"metadata.inherit.0": {
+						"wid" : "defaultuserpermission",
+						"command" : {
+							"dtotype":"",
+							"adopt":"default"
+						}
+					},
+                    "metadata.actiongroupdto.type": "manytomany",
+                    "metadata.usergroupdto.type": "manytomany",
+                    "metadata.db": "string",
+					"metadata.collection": "string"
+                }, {
+					// Create a default permissiondto
+					"executethis":"addwidmaster",
+					"wid":"defaultuserpermission",
+					"metadata.method":"permissiondto",
+					//"actiongroupdto.inherit.0":"",
+					//"usergroupdto.inherit.0":"",
+					"metadata.db":"cdata",
+					"metadata.collection":"cmaincollection",
+					"level":"0"
+				}, {
+					"executethis": "addwidmaster",
+					"wid": "p1",
+					"metadata": {
+						"method": "permissiondto"
+					}
+				}, {
+					"executethis": "getwidmaster",
+					"wid":"p1"
+				}],
+				function(err, res) {
+				proxyprinttodiv('adding permissiondto: ', res[3], 99);
+				var result = logverify("cody1_result", res[3], [{
+					"wid": "p1",
+					"metadata.method": "permissiondto",
+					"level":"0",
+					"metadata.db":"data",
+					"metadata.collection":"maincollection"
+				}]);
+				callback(err, result);
         });
 }
 
