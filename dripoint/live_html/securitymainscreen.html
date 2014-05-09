@@ -1,0 +1,113 @@
+<html>
+
+<head>
+</head>
+
+<body>
+    <!--     <execute onbuild="true" 
+        etparams='{"executethis": "sendsms", "to": "2313133930", "body":"xx zzThis is a message onbuild"}' >
+    </execute> -->
+    <div id='bodyid' style='margin:2em'>
+        <!-- test -->
+        <script>
+        debuglevel = 39;
+        </script>
+
+        <h3>Security Screen ::</h3>
+
+        <!--    Phone   : <input id='a_value' size='15' ng-model="screen1.phone">  
+
+    <br><br>
+    Message : <input id='b_value' size='30' ng-model="screen1.message">
+
+    <br><br>
+
+    A  :  {{screen1.phone}} + <br>
+    B  :  {{screen1.message}} = <br>
+    Sum:  {{numsum}}
+
+    <br><br> -->
+
+        <!-- 
+
+    createuserdata(userobj, securityobj, overrideobj, defaultobj, permissionobj, usergroupobj, actiongroupobj, environmentobj, callback) 
+
+    // userobj
+    {
+        "executethis": "createuserdata",
+        "fname": "userobj.fname",
+        "lname": "userobj.lname",
+        "phone": "userobj.phone",
+        "email": "userobj.email",
+        "address": "userobj.address",
+        "address2": "userobj.address2",
+        "city": "userobj.city",
+        "state": "userobj.state",
+        "zip": "userobj.zip",
+        "country": "userobj.country"
+    }
+
+    // security
+    
+
+ -->
+
+
+
+        <br/>
+        <ul>
+
+            <li>
+                <input id='createalldtos' type="button" onclick="callExecute(this)" etparams='{"executethis": "createalldtos"}' size='15' value="Create DTOs"></input>
+            </li>
+
+            <li>
+                <input id='setupdefaultdata' type="button" onclick="callExecute(this)" etparams='{"executethis": "setupdefaultdata"}' size='15' value="Setup Default DTOs"></input>
+            </li>
+
+
+            <li>First Name :: {{testuser.fname}}</li>
+            <li>Last Name :: {{testuser.lname}}</li>
+            <li>Email :: {{testuser.email}}</li>
+            <li>Address :: {{testuser.address}}</li>
+            <li>Address 2 :: {{testuser.address2}}</li>
+            <li>City :: {{testuser.city}}</li>
+            <li>State :: {{testuser.state}}</li>
+            <li>Zip :: {{testuser.zip}}</li>
+            <li>Country :: {{testuser.country}}</li>
+
+
+          <!--   <li>
+                <input id='generaluser' type="button" onclick="callExecute(this)" etparams='{"executethis": "createuserdata","wid":"general","fname": "Saurabh",
+        "lname": "Sharma","phone": "9873838958","email": "saurshaz@zmail.com","address": "112, Donald lynch Boulevard, MA","address2": "Marlborough","city": "Marlborrough","state": "MA","zip": "01752","country": "United States"}' size='15' value="Create General User"></input>
+            </li>
+
+            <li>First Name :: {{general.fname}}</li>
+            <li>Last Name :: {{general.lname}}</li>
+            <li>Email :: {{general.email}}</li>
+            <li>Address :: {{general.address}}</li>
+            <li>Address 2 :: {{general.address2}}</li>
+            <li>City :: {{general.city}}</li>
+            <li>State :: {{general.state}}</li>
+            <li>Zip :: {{general.zip}}</li>
+            <li>Country :: {{general.country}}</li>
+ -->
+            <li>
+                <input id='usersecurity' type="button" onclick="callExecute(this)" etparams='{"executethis": "createusersecurity","wid":"security","userwid": "general", "metadata.method": "securitydto", "ac":"99"}' size='15' value="Create Security Data"></input>
+            </li>
+            <li>First Name :: {{testuser.fname}}</li>
+            <li>Security AC :: {{testuser.securitydto.ac}}</li>
+
+
+            <li>
+                <input id='usersecurity' type="button" onclick="callExecute(this)" etparams='{"executethis": "createusersecurity","wid":"security","userwid": "general", "metadata.method": "securitydto", "ac":"99"}' size='15' value="Create Security Data"></input>
+            </li>
+        </ul>
+        <span>
+            {{testuser}}
+        </span>
+    </div>
+    <execute etparams='{"executethis":"debug-helper"}'></execute>
+</body>
+
+</html>
