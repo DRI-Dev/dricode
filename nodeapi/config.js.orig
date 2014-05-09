@@ -27,7 +27,6 @@ exports.serverconfig = serverconfig = {
 };
 
 // DB settings --- 5 hardcoded databases for now :: last 4 databases are right now local databases can be changed to any domain
-// "DB_HOST_NAME": 'localhost:27017'
             // "DB_USER_ID": "",
             // "DB_USER_PWD": "",
             // "DB_HOST_NAME": 'localhost:27017'
