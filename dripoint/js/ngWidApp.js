@@ -216,6 +216,9 @@ if (typeof angular !== 'undefined') {
         parameters.command.parameters.eventdata.element = $('<div>' + ele + '</div>').html();
         parameters.command.parameters.eventdata.originatingscreen = widAppHelper.getUrlParam('wid');
 
+        // cancel default html behavior
+        window.event.returnValue = false;
+
         angular.injector(['ng', 'widApp'])
             .get('executeService')
             .executeThis(parameters, scope, function (err, resultset) { });
