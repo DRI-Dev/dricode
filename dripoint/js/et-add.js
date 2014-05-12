@@ -276,8 +276,8 @@
     exports.addwidobject = addwidobject = function addwidobject(input, inputdto, parentwid, parentmethod, relationshiptype, command, callback) {
         var inbound_parameters_100 = arguments;
 
-        proxyprinttodiv("addwidobject input input :- ", input, 17);
-        proxyprinttodiv("addwidobject input inputdto :- ", inputdto, 17);
+        proxyprinttodiv("addwidobject input input :- ", input, 99);
+        proxyprinttodiv("addwidobject input inputdto :- ", inputdto, 99);
         proxyprinttodiv("addwidobject input command :- ", command, 17);
 
         var _parent_object = {};

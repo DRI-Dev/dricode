@@ -1,3 +1,4 @@
+// 'use strict';
 // copyright (c) 2014 DRI
     // require('../utils/addget.js');
     // require('../config.js');
@@ -45,19 +46,18 @@
                 throw (p.err.error);
             }
 
-            // console.log('object that came back from fishOut => ' + JSON.stringify(p);
+            console.log('object that came back from fishOut => ' + JSON.stringify(p));
             proxyprinttodiv('querywid parameters', parameters, 28);
             proxyprinttodiv('querywid p ', p, 28);
             var queParams = p[0];
             var relParams = p[1];
             var addParams = p[2];
             var aggParams = p[3];
+            proxyprinttodiv('querywid p aggParams', aggParams, 28);
 
             var xtrParams = p[4];
             var relafterParams = p[5];
             var commandParams = p[6];
-            var raw_projection = JSON.parse(p[7]["mongorawprojection"]);
-            console.log("QUERYWID PROJECTION: " + JSON.stringify(raw_projection));
             var ListOfLists = [];
             var database = {};
             var queryresults = {};
@@ -156,7 +156,7 @@
                                             proxyprinttodiv('Function MongoDataQuery singlemongoquery : ', mQueryString, 28);
                                             //mQueryString = output.substring(0, output.length - 1);
                                             // if (validParams(mQueryString)) {
-                                            mquery(mQueryString, raw_projection, commandParams, function (err, res) {
+                                            mquery(mQueryString, commandParams, function (err, res) {
                                                 // If error, bounce out
                                                 if (err && Object.keys(err).length > 0) {
                                                     cb(err, res);
@@ -281,7 +281,7 @@
                                                             proxyprinttodiv('querywid mQueryString init', mQueryString, 28);
 
                                                             // if (validParams(mQueryString)) {
-                                                            mquery(mQueryString, raw_projection, commandParams, function (err, res) {
+                                                            mquery(mQueryString, commandParams, function (err, res) {
                                                                 // If error, bounce out
                                                                 if (err && Object.keys(err).length > 0) {
                                                                     cb(err, res);
@@ -321,7 +321,6 @@
                                 console.log('mongorawquery => ' + JSON.stringify(queParams['mongorawquery']));
                                 mQueryString = queParams['mongorawquery'];
                                 console.log('mQueryString at step01 => ' + JSON.stringify(mQueryString));
-
                                 debugfn("querywid before mQueryString1", "querywid", "query", "mid", getglobal("debugcolor"), getglobal("debugindent"), debugvars([5]));
                                 proxyprinttodiv('querywid mQueryString second', mQueryString, 28);
 
@@ -333,9 +332,9 @@
                                     s.replace("data", environmentdb);
                                     mQueryString = JSON.parse(s);
                                 }
-                                console.log('\nRAW_projection at RAW_query => ' + JSON.stringify(raw_projection));
+
                                 // if (validParams(mQueryString)) {
-                                mquery(mQueryString, raw_projection, commandParams, function (err, res) {
+                                mquery(mQueryString, commandParams, function (err, res) {
                                     // If error, bounce out
                                     if (err && Object.keys(err).length > 0) {
                                         cb(err, res);
@@ -408,7 +407,7 @@
                                 // console.log('mQueryString at step03 => ' + mQueryString);
 
                                 if (Object.keys(JSON.parse(mQueryString)).length > 0) {
-                                    mquery(mQueryString, raw_projection, commandParams, function (err, res) {
+                                    mquery(mQueryString, commandParams, function (err, res) {
                                         // If error, bounce out
                                         if (err && Object.keys(err).length > 0) {
                                             cb(err, res);
@@ -470,7 +469,7 @@
                                 debugfn("step04", "querywid", "query", "mid", getglobal("debugcolor"), getglobal("debugindent"), debugvars([5]));
 
                                 if (Object.keys(JSON.parse(mQueryString)).length > 0) {
-                                    mquery(mQueryString, raw_projection, commandParams, function (err, res) {
+                                    mquery(mQueryString, commandParams, function (err, res) {
                                         // If error, bounce out
                                         if (err && Object.keys(err).length > 0) {
                                             cb(err, res);
@@ -683,7 +682,8 @@
                                             // widrecord = extend(true, widrecord, extrarecord); // commented out by joe
                                             // when extending widrecord data should overwrite extrarecord data
                                             // also this should only append data from relationship records (linktype)
-                                            widrecord = extend(true, extrarecord, widrecord);
+                                            // widrecord = extend(true, extrarecord, widrecord);// Commented by Suarabh
+                                            widrecord = extend(true, widrecord, extrarecord);
                                             proxyprinttodiv('querywid finalformatlist widrecord after ', widrecord, 28);
 
                                             if (commandParams.convertmethod === "toobject") {
@@ -1581,7 +1581,6 @@
 
     function fishOut(parameters) {
         try {
-            console.log("FISHOUT: INCOMING PARAMETERS:\n" + JSON.stringify(parameters, null, 4));
             var inbound_parameters_121 = arguments;
 
             var p = [];
@@ -1751,12 +1750,6 @@
             true);
 
             p[6] = filter_data.filteredobject.command; // Joe - removed command.command in mquery
-
-            // Fishes out the projection...the fields that you want to include or exclude
-            filter_data = getcommand(parameters, {}, { 
-                "mongorawprojection": ""
-            }, false);
-            p[7] = filter_data.filteredobject;
 
             return p;
         } // end try

@@ -1,3 +1,5 @@
+// 'use strict';
+
 // copyright (c) 2014 DRI
 // execute is the asynchronous version  has an etbypass option
 // executelist executes list (howToDoList and whatToDoList).  It accepts a structure as in config
@@ -738,11 +740,11 @@
     //             for (var i = 0; i < filteredParams.length; i++) {
     //                 var params = filteredParams[i];
     //                 proxyprinttodiv("executethismultiple - waterfall -- iteration - params ", params, 11);
-    //                 var func = getFunction(params);
+    //                 var func = getfunction (params);
     //                 fnArray.push(func);
     //             }
 
-    //             function getFunction(params) {
+    //             function getfunction (params) {
     //                 return function (cb1) {
     //                     executeone(params, function (err, res) {
     //                         // proxyprinttodiv("executethismultiple - iteration - eachtodo  ", eachtodo, 11);
@@ -1147,10 +1149,11 @@
         var whatexecuteorder;
         var howtryorder;
         var whattryorder;
+        var securitycheck;
 
         howallowexecute = true;
         howexecuteorder = 1;
-        resultsArr = [];
+        var resultsArr = [];
 
         // saveglobal("debugname", "executelist");
         // debugcolor++;
