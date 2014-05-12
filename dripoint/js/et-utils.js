@@ -4,7 +4,7 @@ if (!exports) {
     var exports = {};
 }
 
-exports.localStore = localStore = function() {
+exports.localStore = localStore = function () {
     var json = {};
 
     function clear() {
@@ -200,7 +200,7 @@ exports.copywid = copywid = copywid = function copywid(inputWidgetObject, callba
         }
     };
     proxyprinttodiv('Function copywid getwidinput', getwidinput, 18);
-    getwid(getwidinput, function(err, getwidresult) {
+    getwid(getwidinput, function (err, getwidresult) {
         proxyprinttodiv('Function copywid getwidresult', getwidresult, 17);
 
         //2. call updatewid fn with get result wid, towid, todb, tocollection, todatastore
@@ -215,7 +215,7 @@ exports.copywid = copywid = copywid = function copywid(inputWidgetObject, callba
         };
         extend(true, updatewidinput, getwidresult);
         proxyprinttodiv('Function copywid updatewidinput', updatewidinput, 18);
-        updatewid(updatewidinput, function(err, updatewidresult) {
+        updatewid(updatewidinput, function (err, updatewidresult) {
             proxyprinttodiv('Function copywid updatewidresult', updatewidresult, 17);
 
             //3. call updatewid with blank record, fromwid, fromdb, fromcollection, fromdatastore if command.delete
@@ -232,7 +232,7 @@ exports.copywid = copywid = copywid = function copywid(inputWidgetObject, callba
                         "datamethod": "insert"
                     }
                 };
-                updatewid(updatewidblankinput, function(err, updatewidblankinputresult) {
+                updatewid(updatewidblankinput, function (err, updatewidblankinputresult) {
                     proxyprinttodiv('Function copywid updatewidblankinputresult', updatewidblankinputresult, 17);
                     callback(err, updatewidblankinputresult);
                 });
@@ -380,8 +380,8 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
                 addtolocal(databasetable + keycollection, keydatabase);
             }
 
-            // upsert data in angular data model if we are on an angular page
-            if (angular) { addToAngular(widName, convertfromdriformat(addedobject)); }
+            // upsert data in angular data model
+            //addToAngular(widName, inputWidgetObject);
 
             // the type of storage below is not needed
             addToLocalStorage(databasetable + "_" + collection + "_" + widName, addedobject);
@@ -393,7 +393,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
         // else if (datastore==='angularstorage') { // if datastore == angularstorage
         //     }
         else if (datastore === 'mongo') { // if datastore == mongo
-            madd(addedobject, command, function(err, res) {
+            madd(addedobject, command, function (err, res) {
                 callback(err, res);
             });
         } else {
@@ -402,6 +402,63 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
     } else { // if no widName
         callback(null, {}); // should have better error here
     }
+};
+
+/*
+	deletewid()
+	- To move wid from original location to datasettable=driarchive, db=new Date()
+*/
+exports.deletewid = deletewid = deletewid = function deletewid(inputWidgetObject, callback) {
+	proxyprinttodiv('Function deletewid inputWidgetObject', inputWidgetObject, 17);
+
+    var err = null;
+    var widName = inputWidgetObject['wid'];
+
+    var filter_data = getcommand(inputWidgetObject, {
+            "command": {
+                "fromdatastore": config.configuration.defaultdatastore,
+                "fromcollection":config.configuration.defaultcollection,
+                "fromkeycollection":config.configuration.defaultkeycollection,
+                "fromdb":config.configuration.defaultdb,
+                "fromdatabasetable":config.configuration.defaultdatabasetable,
+                "todatastore": config.configuration.defaultdeletedatastore,
+                "tocollection":config.configuration.defaultdeletecollection,
+                "tokeycollection":config.configuration.defaultdeletekeycollection,
+                "todb":config.configuration.defaultdeletedb,
+                "todatabasetable":config.configuration.defaultdeletedatabasetable, /********/
+                "towid":"",
+                "delete":true 
+            }
+        }, {
+            "command": {
+                "fromdatastore": "",
+                "fromcollection":"",
+                "fromkeycollection":"",
+                "fromdb":"",
+                "fromdatabasetable":"",
+                "todatastore": "",
+                "tocollection":"",
+                "tokeycollection":"",
+                "todb":"",
+                "todatabasetable":"",
+                "towid":"",
+                "delete":"",
+                "environment":""
+            }
+        },
+        false);
+
+    inputWidgetObject = filter_data.output;
+	
+	if (widName) {
+		proxyprinttodiv('Function deletewid inputWidgetObject before copywid', inputWidgetObject,17);
+		copywid(inputWidgetObject, function(err, copiedobject){
+			proxyprinttodiv('Function deletewid copiedobject ', copiedobject, 17);
+			callback(err, copiedobject);
+		});
+	} else { // if no widName
+		callback(null, {}); // should have better error here
+	}	
 };
 
 //function getfrommongo(inputWidgetObject) {
@@ -564,7 +621,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
 
 
             if (config.configuration.environment === "local") {
-                getfromangular(inputWidgetObject, function(angularerr, resultobject) {
+                getfromangular(inputWidgetObject, function (angularerr, resultobject) {
                     if (!resultobject) {
                         resultobject = {};
                         if (output) { // resultobject && output
@@ -637,7 +694,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                 //callback(err, output);
             }
         } else if (datastore === 'mongo') {
-            mget(inputWidgetObject, command, function(err, output) {
+            mget(inputWidgetObject, command, function (err, output) {
                 if (!keepaddthis && output) { // i.e. remove add this
                     if (output.hasOwnProperty("addthis")) {
                         var _add_this = output["addthis"];
@@ -673,6 +730,131 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
     }
     //callback(err, output);
 }; //End of getfrommongo function
+
+//To get parents
+exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, callback) {
+	proxyprinttodiv('Function getrelatedrecords obj', obj, 17);
+	
+    // we send in {widlist : [wid1, wid2, wid3], command.reltype:parent}
+    var filter_data = getcommand(obj, { // create defaults
+            "widlist":[],
+            "command": {
+                "reltype": "parent",
+                "recurse" : true,
+				"result" : "recordresult"
+                }}, {},false);
+    obj = filter_data.output;   
+    var widlist = obj["widlist"];
+	proxyprinttodiv('Function getrelatedrecords widlist', widlist, 17);
+    if (widlist.length===0) {
+        var res = {};
+        res[obj.command.result]=widlist
+        callback(null, res)
+        }
+    else {
+        var reltype = obj.command.reltype
+        var recurse = obj.command.recurse
+        for (var index in widlist) { //we need to query every item in the incomming list
+			var widName = widlist[index];
+            var executeobject = {};
+            executeobject["executethis"] = "querywid";
+            executeobject["command"] = {"result":"queryresult"};
+            if (reltype==='parent') {
+                executeobject["mongorawquery"] = {"$and": [{"data.secondarywid": widName}]}
+                }
+            else {
+                executeobject["mongorawquery"] = {"$and": [{"data.primarywid": widName}]}
+                }
+			proxyprinttodiv('Function getrelatedrecords query', executeobject, 17);		
+            execute(executeobject, function (err, res) {
+				proxyprinttodiv('Function getrelatedrecords query res', res, 17);
+                if (err && (Object.keys(err).length) > 0) {
+                    callback({}, widlist);
+                } else {
+                    if (res && (Object.keys(res).length) > 0) { 
+						var recurselist = [];
+						proxyprinttodiv('Function getrelatedrecords res', res, 17);
+						var resultlist = res[0].queryresult;
+						proxyprinttodiv('Function getrelatedrecords resultlist', resultlist, 17);
+						if(resultlist && resultlist.length>0) {
+							async.each(resultlist, function( wid, callback1) {
+								proxyprinttodiv('Function getrelatedrecords wid', wid, 17);
+								for(widkey in wid){
+									proxyprinttodiv('Function getrelatedrecords widkey', widkey, 17);
+									var eachrecord = wid[widkey];
+									proxyprinttodiv('Function getrelatedrecords eachrecord', eachrecord, 17);
+									
+									var eachwid;
+									if (reltype==='parent') {
+										eachwid = eachrecord.primarywid;
+									} else {
+										eachwid = eachrecord.secondarywid;
+									}							
+									
+									proxyprinttodiv('Function getrelatedrecords eachwid **', eachwid, 17);
+									recurselist.push(eachwid);
+                                    widlist.push(eachwid)
+									callback1();
+								}	
+							}, function(err){
+								 if (err && (Object.keys(err).length) > 0) {
+									callback({}, widlist);
+								} 
+							});		
+						} else {
+							var res = {};
+							res[obj.command.result]=widlist
+							proxyprinttodiv('Function getrelatedrecords callback1 with res', res, 17);
+							callback(null, res);
+						}
+
+						if(recurselist && recurselist.length>0 && (recurse===true)){
+							executeobject={}
+							executeobject.widlist=recurselist
+							executeobject.command={}
+							executeobject.command.reltype=reltype
+							executeobject.command.recurse=recurse
+							executeobject.command.result=obj.command.result
+							proxyprinttodiv('Function getrelatedrecords recurse object', executeobject, 17);
+							getrelatedrecords(executeobject, function (err, returnlist) {
+                                if (err && (Object.keys(err).length) > 0) {
+                                    callback({}, widlist);
+                                } else {
+                                    if (res && (Object.keys(res).length) > 0) { 
+        								for (var eachitem in returnlist[obj.command.result]) {
+        									widlist.push(returnlist[obj.command.result][eachitem])
+        								}
+        								proxyprinttodiv('Function getrelatedrecords callback2 with returnlist', returnlist, 17);
+        								var res = {};
+        								res[obj.command.result]=widlist
+        								proxyprinttodiv('Function getrelatedrecords callback2 with res', res, 17);
+        								callback(null, res);
+                                    } else {
+                                        var res = {};
+                                        res[obj.command.result]=widlist
+                                        proxyprinttodiv('Function getrelatedrecords callback2 with res', res, 17);
+                                        callback(null, res);
+                                        }
+                                    }
+    							});
+						} else {
+							var res = {};
+							res[obj.command.result]=widlist
+							proxyprinttodiv('Function getrelatedrecords callback4 with res', res, 17);
+							callback(null, res);
+						}
+					} else {
+						var res = {};
+						res[obj.command.result]=widlist						
+						proxyprinttodiv('Function getrelatedrecords callback5 with res', res, 17);
+						callback(null, res);
+					}
+                }
+            })
+        }
+    }
+}//End of getrelatedwids
+
 
 exports.convertfromdriformatenhanced = convertfromdriformatenhanced = function convertfromdriformatenhanced(output, command, originalarguments) {
     output = convertfromdriformat(output, command);
@@ -972,6 +1154,8 @@ function setbyindex(obj, str, val) {
 
 
 exports.deepfilter = deepfilter = function deepfilter(inputObj, dtoObjOpt, command, callback) {
+	 proxyprinttodiv("deepfilter inputObj", inputObj, 99);
+	 proxyprinttodiv("deepfilter command", command, 99);
     // function find_and_replace_addthis(obj) {
     //     proxyprinttodiv('<<< Get_Clean find_and_replace_addthis obj >>>', obj, 38);
     //     var _in_obj;
@@ -1036,7 +1220,7 @@ exports.deepfilter = deepfilter = function deepfilter(inputObj, dtoObjOpt, comma
     proxyprinttodiv("deepfilter dtoObjOpt", dtoObjOpt, 41);
 
     if (dtoObjOpt) {
-        recurseModObj(modifiedObj, dtoObjOpt, convert, totype, function(err, res) {
+        recurseModObj(modifiedObj, dtoObjOpt, convert, totype, function (err, res) {
             // if (!keepaddthis) {res = find_and_replace_addthis(res)}
             // If error, bounce out
             if (err && Object.keys(err).length > 0) {
@@ -1053,13 +1237,18 @@ exports.deepfilter = deepfilter = function deepfilter(inputObj, dtoObjOpt, comma
 };
 
 function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
-    proxyprinttodiv("recurseModObj - inputObject ", inputObject, 41);
-    proxyprinttodiv("recurseModObj - dtoObject ", dtoObject, 41);
+    proxyprinttodiv("recurseModObj - inputObject ", inputObject, 17);
+    proxyprinttodiv("recurseModObj - dtoObject ", dtoObject, 17);
+	
+	if(!dtoObject.command){
+		dtoObject["command"]="object";
+	}
+	
     var temparray = [];
     var modifiedObj = {};
     var todolist = [];
     if (dtoObject instanceof Object) {
-        Object.keys(dtoObject).forEach(function(inpKey) {
+        Object.keys(dtoObject).forEach(function (inpKey) {
             //for (eachkey in inputObject) {
             todolist.push(inpKey);
             //}
@@ -1067,71 +1256,78 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
     }
     proxyprinttodiv("recurseModObj - todolist ", todolist, 41);
 
-    async.mapSeries(todolist, function(inpKey, cbMap) {
+    async.mapSeries(todolist, function (inpKey, cbMap) {
             proxyprinttodiv("recurseModObj - modifiedObj ", modifiedObj, 41);
-            async.nextTick(function() {
+            async.nextTick(function () {
                 var inpVal = inputObject[inpKey];
-                if (inpVal && dtoObject.hasOwnProperty(inpKey)) {
+                //if (inpVal && dtoObject.hasOwnProperty(inpKey)) {
+				if (dtoObject.hasOwnProperty(inpKey)) {
                     var dataType = dtoObject[inpKey];
-                    //if (inpVal instanceof Array) {
-                    if ((isArray(inpVal)) || (isArray(dataType))) {
-                        if (!isArray(inpVal)) {
-                            temparray = [];
-                            temparray.push(inpVal);
-                            inpVal = temparray;
-                        }
-                        if (isArray(dataType)) {
-                            dataType = dataType[0];
-                        }
-                        if (!modifiedObj[inpKey]) {
-                            modifiedObj[inpKey] = [];
-                        }
-                        proxyprinttodiv("recurseModObj - before mapseries inpKey ", inpKey, 41);
-                        proxyprinttodiv("recurseModObj - before mapseries inpVal ", inpVal, 41);
-                        proxyprinttodiv("recurseModObj - before mapseries inpVal isArray", isArray(inpVal), 41);
-                        proxyprinttodiv("recurseModObj - before mapseries dataType ", dataType, 41);
-                        async.mapSeries(inpVal, function(eachinputval, cb1) { // step through each inpVal
-                                async.nextTick(function() {
-                                    proxyprinttodiv("recurseModObj - in mapseries eachinputval ", eachinputval, 41);
-                                    if (eachinputval) {
-                                        recurseModObj(eachinputval, dataType, convert, totype, function(err, result) {
-                                            // If error, bounce out
-                                            if (err && Object.keys(err).length > 0) {
-                                                cb1(err, result);
-                                            } else {
-                                                proxyprinttodiv("recurseModObj - in mapseries result ", result, 41);
-                                                if (Object.keys(result).length !== 0) {
-                                                    modifiedObj[inpKey].push(result);
-                                                    proxyprinttodiv("recurseModObj - modifiedObj[inpKey] ", modifiedObj[inpKey], 41);
-                                                    proxyprinttodiv("recurseModObj - modifiedObj ", modifiedObj, 41);
-                                                }
-                                                proxyprinttodiv("recurseModObj - after if ", modifiedObj[inpKey], 41);
-                                                cb1(null);
-                                            }
-                                        }); // recurse
-                                    } else {
-                                        modifiedObj[inpKey] = null;
-                                        proxyprinttodiv("recurseModObj - modifiedObj[inpKey] after undefined input ", modifiedObj[inpKey], 41);
-                                        cb1(null);
-                                    }
-                                    proxyprinttodiv("recurseModObj - between ", modifiedObj[inpKey], 41);
-                                }); // next tick
-                                proxyprinttodiv("recurseModObj - between II ", modifiedObj[inpKey], 41);
-                            },
-                            function(err, res) {
-                                // If error, bounce out
-                                if (err && Object.keys(err).length > 0) {
-                                    cbMap(err, res);
-                                } else {
-                                    proxyprinttodiv("recurseModObj - modifiedObj[inpKey] end nextTick ", modifiedObj[inpKey], 41);
-                                    cbMap(null);
-                                }
-                            });
-                    } else if (dataType === "boolean" || dataType === "string" || dataType === "number" ||
+                    ////if (inpVal instanceof Array) {
+
+
+                    // if ((isArray(inpVal)) && (isArray(dataType))) {
+                    //     if (!isArray(inpVal)) {
+                    //         temparray = [];
+                    //         temparray.push(inpVal);
+                    //         inpVal = temparray;
+                    //     }
+                    //     if (isArray(dataType)) {
+                    //         dataType = dataType[0];
+                    //     }
+                    //     if (!modifiedObj[inpKey]) {
+                    //         modifiedObj[inpKey] = [];
+                    //     }
+                    //     proxyprinttodiv("recurseModObj - before mapseries inpKey ", inpKey, 41);
+                    //     proxyprinttodiv("recurseModObj - before mapseries inpVal ", inpVal, 41);
+                    //     proxyprinttodiv("recurseModObj - before mapseries inpVal isArray", isArray(inpVal), 41);
+                    //     proxyprinttodiv("recurseModObj - before mapseries dataType ", dataType, 41);
+                    //     async.mapSeries(inpVal, function (eachinputval, cb1) { // step through each inpVal
+                    //             async.nextTick(function () {
+                    //                 proxyprinttodiv("recurseModObj - in mapseries eachinputval ", eachinputval, 41);
+                    //                 if (eachinputval) {
+                    //                     recurseModObj(eachinputval, dataType, convert, totype, function (err, result) {
+                    //                         // If error, bounce out
+                    //                         if (err && Object.keys(err).length > 0) {
+                    //                             cb1(err, result);
+                    //                         } else {
+                    //                             proxyprinttodiv("recurseModObj - in mapseries result ", result, 41);
+                    //                             if (Object.keys(result).length !== 0) {
+                    //                                 modifiedObj[inpKey].push(result);
+                    //                                 proxyprinttodiv("recurseModObj - modifiedObj[inpKey] ", modifiedObj[inpKey], 41);
+                    //                                 proxyprinttodiv("recurseModObj - modifiedObj ", modifiedObj, 41);
+                    //                             }
+                    //                             proxyprinttodiv("recurseModObj - after if ", modifiedObj[inpKey], 41);
+                    //                             cb1(null);
+                    //                         }
+                    //                     }); // recurse
+                    //                 } else {
+                    //                     modifiedObj[inpKey] = null;
+                    //                     proxyprinttodiv("recurseModObj - modifiedObj[inpKey] after undefined input ", modifiedObj[inpKey], 41);
+                    //                     cb1(null);
+                    //                 }
+                    //                 proxyprinttodiv("recurseModObj - between ", modifiedObj[inpKey], 41);
+                    //             }); // next tick
+                    //             proxyprinttodiv("recurseModObj - between II ", modifiedObj[inpKey], 41);
+                    //         },
+                    //         function (err, res) {
+                    //             // If error, bounce out
+                    //             if (err && Object.keys(err).length > 0) {
+                    //                 cbMap(err, res);
+                    //             } else {
+                    //                 proxyprinttodiv("recurseModObj - modifiedObj[inpKey] end nextTick ", modifiedObj[inpKey], 41);
+                    //                 cbMap(null);
+                    //             }
+                    //         });
+                    // } else 
+                        if (dataType === "boolean" || dataType === "string" || dataType === "number" ||
                         dataType === "date" || dataType === "integer" || dataType === "shortguid" ||
                         dataType === "guid" || dataType === "hash" || dataType === "phone" ||
-                        dataType === "random4") {
-
+                        dataType === "random4" || dataType === "object" || dataType === "array") {
+						proxyprinttodiv("recurseModObj - dataType ", dataType, 17);
+						proxyprinttodiv("recurseModObj - inpKey ", inpKey, 17);
+						proxyprinttodiv("recurseModObj - inpVal ", inpVal, 17);
+						
                         /*
                          For below cases,
                          if input provided, then no change
@@ -1286,6 +1482,16 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
                                     //modifiedObj[inpKey] = parseToPhoneFormat(inpVal);
                                 }
                                 break;
+							case "object":
+								if(inpVal && isObject(inpVal)){
+									modifiedObj[inpKey] = inpVal;
+								}
+								break;
+							case "array":
+								if(inpVal && isArray(inpVal)){
+									modifiedObj[inpKey] = inpVal;
+								}
+								break;
                         }
 
                         proxyprinttodiv("recurseModObj - modifiedObj[inpKey] I ", modifiedObj[inpKey], 41);
@@ -1293,20 +1499,80 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
                         //} else if(typeof inpVal === "object" &&  dataType === "object") {
                         //} else if((typeof inpVal === "object") &&  (typeof dataType === "object")) {  //Ignoring metadata property in input.
                     } else if (inpVal instanceof Array) {
-                        async.mapSeries(inpVal, function(eachinputval, cb1) {
-                            async.nextTick(function() {
-                                recurseModObj(eachinputval, dataType, convert, totype, function(err, result) {
-                                    modifiedObj[inpKey] = result;
-                                    cb1(null);
-                                }); // recurse
-                            }); // next tick
-                        }); // mapseries
-                        cbMap(null);
+
+
+
+                    //if ((isArray(inpVal)) && (isArray(dataType))) {
+                        if (!isArray(inpVal)) {
+                            temparray = [];
+                            temparray.push(inpVal);
+                            inpVal = temparray;
+                        }
+                        if (isArray(dataType)) {
+                            dataType = dataType[0];
+                        }
+                        if (!modifiedObj[inpKey]) {
+                            modifiedObj[inpKey] = [];
+                        }
+                        proxyprinttodiv("recurseModObj - before mapseries inpKey ", inpKey, 41);
+                        proxyprinttodiv("recurseModObj - before mapseries inpVal ", inpVal, 41);
+                        proxyprinttodiv("recurseModObj - before mapseries inpVal isArray", isArray(inpVal), 41);
+                        proxyprinttodiv("recurseModObj - before mapseries dataType ", dataType, 41);
+                        async.mapSeries(inpVal, function (eachinputval, cb1) { // step through each inpVal
+                                async.nextTick(function () {
+                                    proxyprinttodiv("recurseModObj - in mapseries eachinputval ", eachinputval, 41);
+                                    if (eachinputval) {
+                                        recurseModObj(eachinputval, dataType, convert, totype, function (err, result) {
+                                            // If error, bounce out
+                                            if (err && Object.keys(err).length > 0) {
+                                                cb1(err, result);
+                                            } else {
+                                                proxyprinttodiv("recurseModObj - in mapseries result ", result, 41);
+                                                if (Object.keys(result).length !== 0) {
+                                                    modifiedObj[inpKey].push(result);
+                                                    proxyprinttodiv("recurseModObj - modifiedObj[inpKey] ", modifiedObj[inpKey], 41);
+                                                    proxyprinttodiv("recurseModObj - modifiedObj ", modifiedObj, 41);
+                                                }
+                                                proxyprinttodiv("recurseModObj - after if ", modifiedObj[inpKey], 41);
+                                                cb1(null);
+                                            }
+                                        }); // recurse
+                                    } else {
+                                        modifiedObj[inpKey] = null;
+                                        proxyprinttodiv("recurseModObj - modifiedObj[inpKey] after undefined input ", modifiedObj[inpKey], 41);
+                                        cb1(null);
+                                    }
+                                    proxyprinttodiv("recurseModObj - between ", modifiedObj[inpKey], 41);
+                                }); // next tick
+                                proxyprinttodiv("recurseModObj - between II ", modifiedObj[inpKey], 41);
+                            },
+                            function (err, res) {
+                                // If error, bounce out
+                                if (err && Object.keys(err).length > 0) {
+                                    cbMap(err, res);
+                                } else {
+                                    proxyprinttodiv("recurseModObj - modifiedObj[inpKey] end nextTick ", modifiedObj[inpKey], 41);
+                                    cbMap(null);
+                                }
+                            });
+                    //} else 
+
+
+
+                        // async.mapSeries(inpVal, function (eachinputval, cb1) {
+                        //     async.nextTick(function () {
+                        //         recurseModObj(eachinputval, dataType, convert, totype, function (err, result) {
+                        //             modifiedObj[inpKey] = result;
+                        //             cb1(null);
+                        //         }); // recurse
+                        //     }); // next tick
+                        // }); // mapseries
+                        // cbMap(null);
                     } else if ((typeof inpVal === "object")) {
                         proxyprinttodiv("typeof inpVal (object) - ", inpVal, 41);
                         if (inpKey !== "metadata") { //Ignoring metadata property in input.
                             proxyprinttodiv("recurseModObj - modifiedObj[inpKey] II ", modifiedObj[inpKey], 41);
-                            recurseModObj(inpVal, dataType, convert, totype, function(err, result) {
+                            recurseModObj(inpVal, dataType, convert, totype, function (err, result) {
                                 // If error, bounce out
                                 if (err && Object.keys(err).length > 0) {
                                     cbMap(err, result);
@@ -1327,7 +1593,7 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
                         if (dataType !== 'string') {
                             execute({
                                 "executethis": dataType
-                            }, function(err, result) {
+                            }, function (err, result) {
                                 // If error, bounce out
                                 if (err && Object.keys(err).length > 0) {
                                     cbMap(err, result);
@@ -1362,7 +1628,7 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
             });
         },
 
-        function(err, res) {
+        function (err, res) {
             // If error, bounce out
             if (err && Object.keys(err).length > 0) {
                 callback(err, res);
@@ -1485,7 +1751,7 @@ function getRandomNumberByLength(length) {
 //     // addToLocalStorage("DRIKEY", {"initialwid" : {"wid":"initialwid", "initialwid":"for key hello from bootprocess"}});
 // };
 
-(function(window) {
+(function (window) {
 
     // Utility function to return json with all keys in lowercase
     exports.toLowerKeys = toLowerKeys = function toLowerKeys(obj) {
@@ -1511,7 +1777,7 @@ function getRandomNumberByLength(length) {
 
     /* lib.js functions */
 
-    var recurFunc = function(arr, val) {
+    var recurFunc = function (arr, val) {
         // stop condition
         if (arr.length <= 0) {
             return val;
@@ -2229,7 +2495,7 @@ function getRandomNumberByLength(length) {
         return obj !== null && typeof obj === 'object';
     };
 
-    exports.isFunction = isFunction = function isFunction(obj) {
+    exports.isFunction = isFunction = function isfunction (obj) {
         return typeof obj === 'function';
     };
 
@@ -2626,8 +2892,8 @@ function getRandomNumberByLength(length) {
             VALUE_UPDATED: 'updated',
             VALUE_DELETED: 'deleted',
             VALUE_UNCHANGED: 'unchanged',
-            map: function(obj1, obj2) {
-                if (this.isFunction(obj1) || this.isFunction(obj2)) {
+            map: function (obj1, obj2) {
+                if (this.isfunction (obj1) || this.isfunction (obj2)) {
                     throw 'Invalid argument. Function given, object expected.';
                 }
                 if (this.isValue(obj1) || this.isValue(obj2)) {
@@ -2644,7 +2910,7 @@ function getRandomNumberByLength(length) {
                             //console.log("val : " + obj1[key]);
                             continue;
                         }
-                        if (this.isFunction(obj1[key])) {
+                        if (this.isfunction (obj1[key])) {
                             continue;
                         }
                         var value2 = undefined;
@@ -2656,7 +2922,7 @@ function getRandomNumberByLength(length) {
                 }
                 for (var key2 in obj2) {
                     if (obj2.hasOwnProperty(key2)) {
-                        if (this.isFunction(obj2[key2]) || ('undefined' != typeof(diff[key2]))) {
+                        if (this.isfunction (obj2[key2]) || ('undefined' != typeof(diff[key2]))) {
                             continue;
                         }
                         diff[key2] = this.map(undefined, obj2[key2]);
@@ -2664,7 +2930,7 @@ function getRandomNumberByLength(length) {
                 }
                 return diff;
             },
-            compareValues: function(value1, value2) {
+            compareValues: function (value1, value2) {
                 //console.log("value1 : " + value1);
                 //console.log("value2 : " + value2);
 
@@ -2679,16 +2945,16 @@ function getRandomNumberByLength(length) {
                 }
                 return this.VALUE_UPDATED;
             },
-            isFunction: function(obj) {
+            isFunction: function (obj) {
                 return toString.apply(obj) === '[object Function]';
             },
-            isArray: function(obj) {
+            isArray: function (obj) {
                 return toString.apply(obj) === '[object Array]';
             },
-            isObject: function(obj) {
+            isObject: function (obj) {
                 return toString.apply(obj) === '[object Object]';
             },
-            isValue: function(obj) {
+            isValue: function (obj) {
                 return !this.isObject(obj) && !this.isArray(obj);
             }
         }
@@ -2696,7 +2962,7 @@ function getRandomNumberByLength(length) {
 
     exports.syntaxHighlight = syntaxHighlight = function syntaxHighlight(json) {
         json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
             var cls = 'number';
             if (/^"/.test(match)) {
                 if (/:$/.test(match)) {
@@ -2715,7 +2981,7 @@ function getRandomNumberByLength(length) {
 
 })(typeof window === "undefined" ? global : window);
 
-(function() {
+(function () {
     /*
      * Sift
      *
@@ -2728,7 +2994,7 @@ function getRandomNumberByLength(length) {
     /**
      */
 
-    var _convertDotToSubObject = function(keyParts, value) {
+    var _convertDotToSubObject = function (keyParts, value) {
 
         var subObject = {},
             currentValue = subObject;
@@ -2745,13 +3011,13 @@ function getRandomNumberByLength(length) {
     /**
      */
 
-    var _queryParser = new(function() {
+    var _queryParser = new(function () {
 
         /**
          * tests against data
          */
 
-        var priority = this.priority = function(statement, data) {
+        var priority = this.priority = function (statement, data) {
 
             var exprs = statement.exprs,
                 priority = 0;
@@ -2777,7 +3043,7 @@ function getRandomNumberByLength(length) {
          * parses a statement into something evaluable
          */
 
-        var parse = this.parse = function(statement, key) {
+        var parse = this.parse = function (statement, key) {
 
             //fixes sift(null, []) issue
             if (!statement) statement = {
@@ -2842,10 +3108,10 @@ function getRandomNumberByLength(length) {
             var stmt = {
                 exprs: testers,
                 k: key,
-                test: function(value) {
+                test: function (value) {
                     return !!~stmt.priority(value);
                 },
-                priority: function(value) {
+                priority: function (value) {
                     return priority(stmt, value);
                 }
             };
@@ -2882,42 +3148,42 @@ function getRandomNumberByLength(length) {
             /**
              */
 
-            $eq: function(a, b) {
+            $eq: function (a, b) {
                 return btop(a.test(b));
             },
 
             /**
              */
 
-            $ne: function(a, b) {
+            $ne: function (a, b) {
                 return btop(!a.test(b));
             },
 
             /**
              */
 
-            $lt: function(a, b) {
+            $lt: function (a, b) {
                 return btop(a > b);
             },
 
             /**
              */
 
-            $gt: function(a, b) {
+            $gt: function (a, b) {
                 return btop(a < b);
             },
 
             /**
              */
 
-            $lte: function(a, b) {
+            $lte: function (a, b) {
                 return btop(a >= b);
             },
 
             /**
              */
 
-            $gte: function(a, b) {
+            $gte: function (a, b) {
                 return btop(a <= b);
             },
 
@@ -2925,14 +3191,14 @@ function getRandomNumberByLength(length) {
             /**
              */
 
-            $exists: function(a, b) {
+            $exists: function (a, b) {
                 return btop(a === (b != null))
             },
 
             /**
              */
 
-            $in: function(a, b) {
+            $in: function (a, b) {
 
                 //intersecting an array
                 if (b instanceof Array) {
@@ -2952,7 +3218,7 @@ function getRandomNumberByLength(length) {
             /**
              */
 
-            $not: function(a, b) {
+            $not: function (a, b) {
                 if (!a.test) throw new Error("$not test should include an expression, not a value. Use $ne instead.");
                 return btop(!a.test(b));
             },
@@ -2960,7 +3226,7 @@ function getRandomNumberByLength(length) {
             /**
              */
 
-            $type: function(a, b, org) {
+            $type: function (a, b, org) {
 
                 //instanceof doesn't work for strings / boolean. instanceof works with inheritance
                 return org ? btop(org instanceof a || org.constructor == a) : -1;
@@ -2970,21 +3236,21 @@ function getRandomNumberByLength(length) {
              */
 
 
-            $nin: function(a, b) {
+            $nin: function (a, b) {
                 return~ _testers.$in(a, b) ? -1 : 0;
             },
 
             /**
              */
 
-            $mod: function(a, b) {
+            $mod: function (a, b) {
                 return b % a[0] == a[1] ? 0 : -1;
             },
 
             /**
              */
 
-            $all: function(a, b) {
+            $all: function (a, b) {
 
                 for (var i = a.length; i--;) {
                     if (b.indexOf(a[i]) == -1) return -1;
@@ -2996,14 +3262,14 @@ function getRandomNumberByLength(length) {
             /**
              */
 
-            $size: function(a, b) {
+            $size: function (a, b) {
                 return b ? btop(a == b.length) : -1;
             },
 
             /**
              */
 
-            $or: function(a, b) {
+            $or: function (a, b) {
 
                 var i = a.length,
                     p, n = i;
@@ -3020,7 +3286,7 @@ function getRandomNumberByLength(length) {
             /**
              */
 
-            $nor: function(a, b) {
+            $nor: function (a, b) {
 
                 var i = a.length,
                     n = i;
@@ -3037,7 +3303,7 @@ function getRandomNumberByLength(length) {
             /**
              */
 
-            $and: function(a, b) {
+            $and: function (a, b) {
 
                 for (var i = a.length; i--;) {
                     if (!~priority(a[i], b)) {
@@ -3051,7 +3317,7 @@ function getRandomNumberByLength(length) {
             /**
              */
 
-            $trav: function(a, b) {
+            $trav: function (a, b) {
 
 
 
@@ -3076,7 +3342,7 @@ function getRandomNumberByLength(length) {
             /**
              */
 
-            $eq: function(a) {
+            $eq: function (a) {
 
                 var fn;
 
@@ -3086,7 +3352,7 @@ function getRandomNumberByLength(length) {
                     fn = a;
                 } else {
 
-                    fn = function(b) {
+                    fn = function (b) {
                         if (b instanceof Array) {
                             return~ b.indexOf(a);
                         } else {
@@ -3104,14 +3370,14 @@ function getRandomNumberByLength(length) {
             /**
              */
 
-            $ne: function(a) {
+            $ne: function (a) {
                 return _prepare.$eq(a);
             }
         };
 
 
 
-        var _getExpr = function(type, key, value) {
+        var _getExpr = function (type, key, value) {
 
             var v = _comparable(value);
 
@@ -3132,11 +3398,11 @@ function getRandomNumberByLength(length) {
     })();
 
 
-    var getSelector = function(selector) {
+    var getSelector = function (selector) {
 
         if (!selector) {
 
-            return function(value) {
+            return function (value) {
                 return value;
             };
 
@@ -3148,13 +3414,13 @@ function getRandomNumberByLength(length) {
         throw new Error("Unknown sift selector " + selector);
     };
 
-    var sifter = function(query, selector) {
+    var sifter = function (query, selector) {
 
         //build the filter for the sifter
         var filter = _queryParser.parse(query);
 
         //the function used to sift through the given array
-        var self = function(target) {
+        var self = function (target) {
 
             var sifted = [],
                 results = [],
@@ -3178,7 +3444,7 @@ function getRandomNumberByLength(length) {
             }
 
             //sort the values
-            sifted.sort(function(a, b) {
+            sifted.sort(function (a, b) {
                 return a.priority > b.priority ? -1 : 1;
             });
 
@@ -3208,7 +3474,7 @@ function getRandomNumberByLength(length) {
      * @param rawSelector the selector for plucking data from the given target
      */
 
-    var sift = function(query, target, rawSelector) {
+    var sift = function (query, target, rawSelector) {
 
         //must be an array
         if (typeof target != "object") {
@@ -3228,11 +3494,11 @@ function getRandomNumberByLength(length) {
     };
 
 
-    sift.use = function(options) {
+    sift.use = function (options) {
         if (options.operators) sift.useOperators(options.operators);
     };
 
-    sift.useOperators = function(operators) {
+    sift.useOperators = function (operators) {
         for (var key in operators) {
             if (operators.hasOwnProperty(key)) {
                 sift.useOperator(key, operators[key]);
@@ -3240,7 +3506,7 @@ function getRandomNumberByLength(length) {
         }
     };
 
-    sift.useOperator = function(operator, optionsOrFn) {
+    sift.useOperator = function (operator, optionsOrFn) {
 
         var options = {};
 
@@ -3289,7 +3555,7 @@ function getRandomNumberByLength(length) {
         extend(true, c_assert, assert);
 
         // Call test_and_verify with the config parameters in the parameters
-        test_and_verify(testname, "execute", c_parameters, c_assert, database, command, function(err, res) {
+        test_and_verify(testname, "execute", c_parameters, c_assert, database, command, function (err, res) {
             // If error, bounce out
             if (err && Object.keys(err).length > 0) {
                 callback(err, result);
@@ -3309,7 +3575,7 @@ function getRandomNumberByLength(length) {
                 delete c_assert[0]["configuration"];
 
                 // Call test_and_verify with c_ verion -- actual config changed
-                test_and_verify("cc_" + testname, "execute", c_parameters, c_assert, database, command, function(err, res_2) {
+                test_and_verify("cc_" + testname, "execute", c_parameters, c_assert, database, command, function (err, res_2) {
                     // Add res to return data
                     results.push(res_2);
                     // Set the config back to normal
@@ -3332,7 +3598,7 @@ function getRandomNumberByLength(length) {
             addToLocalStorage("maincollection", JSON.parse(this_string));
         }
         if (parameters instanceof Array) {
-            parameters.push(function(err, res) {
+            parameters.push(function (err, res) {
                 // If error, bounce out
                 if (err && Object.keys(err).length > 0) {
                     cbMap(err, result);
@@ -3345,7 +3611,7 @@ function getRandomNumberByLength(length) {
         } else {
             window[fnname](
                 parameters,
-                function(err, res) {
+                function (err, res) {
                     // If error, bounce out
                     if (err && Object.keys(err).length > 0) {
                         cbMap(err, result);
@@ -3659,7 +3925,7 @@ function getRandomNumberByLength(length) {
             }
         }
 
-        return r.sort(callback).reduce(function(obj, n) {
+        return r.sort(callback).reduce(function (obj, n) {
             obj[n.key] = n.value;
             return obj;
         }, {});
@@ -3677,7 +3943,7 @@ function getRandomNumberByLength(length) {
             delete obj.postexecute;
             delete obj.command; // take out later
 
-            var result = sortObj(obj, function(a, b) {
+            var result = sortObj(obj, function (a, b) {
                 return a.key < b.key;
             });
             return JSON.stringify(result);
@@ -3685,7 +3951,7 @@ function getRandomNumberByLength(length) {
     }
 
 
-    exports.copyEnvironmentCommands = copyEnvironmentCommands = function(inputWidgetObject) {
+    exports.copyEnvironmentCommands = copyEnvironmentCommands = function (inputWidgetObject) {
         //now repeat that code in getwid, copywod, and bottom of query
         var tempObj = {};
         extend(true, tempObj, inputWidgetObject.command);

@@ -117,7 +117,7 @@
 //             };
 //     //var preamble=["spousedto"];
 //     var dtotype=["spousedto"];
-//     createdataforcommanddtotypadd(params, preambleflag, preamble, dtotypeflag, dtotype, executeobj, function(err, res){
+//     createdataforcommanddtotypadd(params, preambleflag, preamble, dtotypeflag, dtotype, executeobj, function (err, res){
 //         callback(err, res);
 //     });             
 //  }
@@ -690,24 +690,24 @@ function manytoonesetupdto(inherit, dtotype, callback) {
     }
 
     async.series([
-        function(cb1) {
+        function (cb1) {
 
-            execute(executeList, function(err, res) {
+            execute(executeList, function (err, res) {
                 proxyprinttodiv("manytoonesetupdto addwidmaster dto res -- ", res, 1, true);
                 cb1(err, res);
             });
         },
-        function(cb2) {
+        function (cb2) {
             var executeList = [{
                 "executethis": "getwidmaster",
                 "wid": "authordto",
             }];
-            execute(executeList, function(err, res) {
+            execute(executeList, function (err, res) {
                 proxyprinttodiv("getwidmaster authordto", res, 99);
                 cb2(err, res);
             });
         }
-    ], function(err, res) {
+    ], function (err, res) {
         callback(null, res);
     });
 }
@@ -735,19 +735,19 @@ function manytoonesetupdto(inherit, dtotype, callback) {
 
 function printlistmany(printlist, callback) {
     var executeobj = {};
-    async.mapSeries(printlist, function(eachprint, cbMap) {
+    async.mapSeries(printlist, function (eachprint, cbMap) {
         executeobj = {};
         executeobj["executethis"] = "getwidmaster";
         executeobj["wid"] = eachprint["wid"];
         executeobj["command.dtotype"] = eachprint["command.dtotype"];
         proxyprinttodiv("Function printlistmany input executeobj for getwidmaster", executeobj, 99, true);
-        execute(executeobj, function(err, res) {
+        execute(executeobj, function (err, res) {
             proxyprinttodiv("Function printlistmany output for getwidmaster " + eachprint["wid"] + " with command.dtotype=" + eachprint["command.dtotype"], executeobj, 99, true);
             proxyprinttodiv("Function printlistmany output = ", res, 99, true);
             cbMap(null);
             //callback(err, res);
         });
-    }, function(err, res) {
+    }, function (err, res) {
         callback(null, null)
     });
 }
@@ -986,9 +986,9 @@ function addauthorrecord(parentparmkey, c, childparmkey, d, relativepreamble, re
 
     executeobj["executethis"] = "addwidmaster";
     proxyprinttodiv("Function addauthorrecord input executeobj for addwidmaster", executeobj, 99, true);
-    execute(executeobj, function(err, res) {
+    execute(executeobj, function (err, res) {
         proxyprinttodiv("Function addauthorrecord output for addwidmaster", res, 99, true);
-        printlistmany(printlist[relgetlist], function(err, res) {
+        printlistmany(printlist[relgetlist], function (err, res) {
             callback(err, res);
         });
     });
@@ -1019,7 +1019,7 @@ exports.testupdatewid0 = testupdatewid0 = function testupdatewid0(params, callba
             "executethis": "getwidmaster",
             "wid": "author1"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
             proxyprinttodiv('The author1 record: ', res[3], 99);
 
@@ -1047,7 +1047,9 @@ exports.testinheritdefault0 = testinheritdefault0 = function testinheritdefault0
     execute([{
             "executethis": "addwidmaster",
             "wid": "authordefault",
-            "metadata.method": "authordto",
+            "metadata": {
+				"method":"authordto"
+			},
             "name": "Alex",
             "age": "42"
         }, {
@@ -1072,13 +1074,15 @@ exports.testinheritdefault0 = testinheritdefault0 = function testinheritdefault0
             "executethis": "getwidmaster",
             "wid": "author1"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
             proxyprinttodiv('The author1 record: ', res[3], 99);
 
             var result = logverify("testinheritdefault0_result", res[3], [{
                 "wid": "author1",
-                "metadata.method": "authordto",
+                "metadata":{
+					"method":"authordto",
+				},
                 "name": "Alex",
                 "age": "10"
             }]);
@@ -1118,12 +1122,20 @@ exports.testinheritdefault1 = testinheritdefault1 = function testinheritdefault1
             "executethis": "getwidmaster",
             "wid": "author1"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
             proxyprinttodiv('The author1 record: ', res[3], 99);
             var result = logverify("testinheritdefault0_result", res[3], [{
                 "wid": "author1",
-                "metadata.method": "authordto",
+                "metadata":{
+					"method":"authordto",
+					"inherit":[{
+						"wid":"authordefault",
+						"command":{
+							"dtotype":"",
+							"adopt":"default"}
+					}]
+				},
                 "name": "Alex",
                 "age": "42"
             }]);
@@ -1163,7 +1175,7 @@ exports.testinheritdefault2 = testinheritdefault2 = function testinheritdefault2
             }
             //"metadata.inherit.default":[{"widname" : "authordefault"}]
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
 
             proxyprinttodiv('The author1 record: ', res[2], 99);
@@ -1172,7 +1184,7 @@ exports.testinheritdefault2 = testinheritdefault2 = function testinheritdefault2
             execute({
                 "executethis": "getwidmaster",
                 "wid": "author1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -1233,7 +1245,7 @@ exports.testcommanddtotype = testcommanddtotype = function testcommanddtotype(pa
             // "wid":"1",
             // "command.dtotype":"authordto"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
 
 
@@ -1242,7 +1254,7 @@ exports.testcommanddtotype = testcommanddtotype = function testcommanddtotype(pa
                 "executethis": "getwidmaster",
                 "wid": "1",
                 "command.dtotype": "authordto"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -1310,20 +1322,12 @@ exports.testinheritdefault3 = testinheritdefault3 = function testinheritdefault3
             "executethis": "addwidmaster",
             "wid": "author1",
             "metadata.method": "authordto"
-        }],
-        function(err, res) {
-            proxyprinttodiv('Full results: ', res, 99);
-
-            proxyprinttodiv('The author1 record: ', res[2], 99);
-
-            debuglevel = 0;
-            execute({
-                "executethis": "getwidmaster",
-                "wid": "author1"
-            }, function(err, res1) {
-                proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
-                callback(err, res);
-            });
+        }, {
+			"executethis": "getwidmaster",
+			"wid":"author1"
+		}],
+        function (err, res) {
+            proxyprinttodiv('The author1 record: ', res[6], 99);
         });
 }
 
@@ -1383,7 +1387,7 @@ exports.testinheritdefault4 = testinheritdefault4 = function testinheritdefault4
             "wid": "author1",
             "metadata.method": "authordto"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
 
             proxyprinttodiv('The author1 record: ', res[2], 99);
@@ -1392,7 +1396,7 @@ exports.testinheritdefault4 = testinheritdefault4 = function testinheritdefault4
             execute({
                 "executethis": "getwidmaster",
                 "wid": "author1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -1455,7 +1459,7 @@ exports.testinheritdefault41 = testinheritdefault41 = function testinheritdefaul
             "wid": "author1",
             "metadata.method": "authordto"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
 
             proxyprinttodiv('The author1 record: ', res[2], 99);
@@ -1464,7 +1468,7 @@ exports.testinheritdefault41 = testinheritdefault41 = function testinheritdefaul
             execute({
                 "executethis": "getwidmaster",
                 "wid": "author1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -1527,7 +1531,7 @@ exports.testinheritdefault5 = testinheritdefault5 = function testinheritdefault5
             }
             // "metadata.inherit.default":[{"widname" : "authordefault"}]
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
 
             proxyprinttodiv('The author1 record: ', res[2], 99);
@@ -1536,7 +1540,7 @@ exports.testinheritdefault5 = testinheritdefault5 = function testinheritdefault5
             execute({
                 "executethis": "getwidmaster",
                 "wid": "author1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -1577,7 +1581,7 @@ exports.testinheritoverride0 = testinheritoverride0 = function testinheritoverri
             "wid": "author1",
             "metadata.method": "authordto"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
 
             proxyprinttodiv('The author1 record: ', res[2], 99);
@@ -1586,7 +1590,7 @@ exports.testinheritoverride0 = testinheritoverride0 = function testinheritoverri
             execute({
                 "executethis": "getwidmaster",
                 "wid": "author1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -1621,7 +1625,7 @@ exports.testinheritoverride1 = testinheritoverride1 = function testinheritoverri
             }
             // "metadata.inherit.override":[{"widname" : "authoroverride"}]
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
 
             proxyprinttodiv('The author1 record: ', res[2], 99);
@@ -1630,7 +1634,7 @@ exports.testinheritoverride1 = testinheritoverride1 = function testinheritoverri
             execute({
                 "executethis": "getwidmaster",
                 "wid": "author1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -1668,7 +1672,7 @@ exports.testinheritoverride2 = testinheritoverride2 = function testinheritoverri
             }
             // "metadata.inherit.override":[{"widname" : "authoroverride"}]
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
 
             proxyprinttodiv('The author1 record: ', res[2], 99);
@@ -1677,7 +1681,7 @@ exports.testinheritoverride2 = testinheritoverride2 = function testinheritoverri
             execute({
                 "executethis": "getwidmaster",
                 "wid": "author1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -1726,7 +1730,7 @@ exports.testinheritoverride3 = testinheritoverride3 = function testinheritoverri
             "wid": "author1",
             "metadata.method": "authordto"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
 
             proxyprinttodiv('The author1 record: ', res[2], 99);
@@ -1735,7 +1739,7 @@ exports.testinheritoverride3 = testinheritoverride3 = function testinheritoverri
             execute({
                 "executethis": "getwidmaster",
                 "wid": "author1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -1784,7 +1788,7 @@ exports.testinheritoverride4 = testinheritoverride4 = function testinheritoverri
             // "metadata.inherit.default.0":{"authordefault" : "authordto"},
             // "metadata.inherit.override.0":{"authoroverride" : "authordto"}
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
 
             proxyprinttodiv('The author1 record: ', res[2], 99);
@@ -1793,7 +1797,7 @@ exports.testinheritoverride4 = testinheritoverride4 = function testinheritoverri
             execute({
                 "executethis": "getwidmaster",
                 "wid": "author1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -1862,7 +1866,7 @@ exports.multiinheritoverride0 = multiinheritoverride0 = function multiinheritove
             "wid": "author1",
             "metadata.method": "authordto"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
 
             proxyprinttodiv('The author1 record: ', res[2], 99);
@@ -1871,7 +1875,7 @@ exports.multiinheritoverride0 = multiinheritoverride0 = function multiinheritove
             execute({
                 "executethis": "getwidmaster",
                 "wid": "author1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -1933,7 +1937,7 @@ exports.multiinheritoverride1 = multiinheritoverride1 = function multiinheritove
             "wid": "author1",
             "metadata.method": "authordto"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
 
             proxyprinttodiv('The author1 record: ', res[2], 99);
@@ -1942,7 +1946,7 @@ exports.multiinheritoverride1 = multiinheritoverride1 = function multiinheritove
             execute({
                 "executethis": "getwidmaster",
                 "wid": "author1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -2002,7 +2006,7 @@ exports.multiinheritoverride2 = multiinheritoverride2 = function multiinheritove
                 }
             }]
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
 
             proxyprinttodiv('The author1 record: ', res[2], 99);
@@ -2011,7 +2015,7 @@ exports.multiinheritoverride2 = multiinheritoverride2 = function multiinheritove
             execute({
                 "executethis": "getwidmaster",
                 "wid": "author1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -2075,7 +2079,7 @@ exports.multiinheritoverride3 = multiinheritoverride3 = function multiinheritove
             "age": "50",
             "bookdto.0.title": "My Little Pony"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
 
             proxyprinttodiv('The author1 record: ', res[2], 99);
@@ -2084,7 +2088,7 @@ exports.multiinheritoverride3 = multiinheritoverride3 = function multiinheritove
             execute({
                 "executethis": "getwidmaster",
                 "wid": "author1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -2122,7 +2126,7 @@ exports.testaddauthor1 = testaddauthor1 = function testaddauthor1() {
             "name": "Mary Sue",
             "bookdto.0.title": "Haunted Mansions"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
         }
     );
@@ -2168,7 +2172,7 @@ exports.testjsononetoone0 = testjsononetoone0 = function testjsononetoone0(param
             "spousedto.0.age": "28",
             "spousedto.0.hair": "blonde"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
 
             proxyprinttodiv('The author1 record: ', res[3], 99);
@@ -2177,7 +2181,7 @@ exports.testjsononetoone0 = testjsononetoone0 = function testjsononetoone0(param
             execute({
                 "executethis": "getwidmaster",
                 "wid": "author1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -2471,18 +2475,18 @@ exports.add999 = add999 = function add999(params, callback) {
         executeobj = extend(true, executeobj, params)
     }
 
-    manytoonesetupdto(params, 0, function(cb2) {
+    manytoonesetupdto(params, 0, function (cb2) {
         //debuglevel=17;
-        execute(executeobj, function(err, res) {
+        execute(executeobj, function (err, res) {
             proxyprinttodiv("result from data add ", res, 98, true);
             printlistmany([{
                 "wid": "wid1",
                 "command.dtotype": ""
-            }], function(err, res) {
+            }], function (err, res) {
                 execute({
                     "executethis": "getwidmaster",
                     "wid": "wid1"
-                }, function(err, res) {
+                }, function (err, res) {
                     proxyprinttodiv("result from data add ", res, 98, true);
                     callback(err, res);
                 })
@@ -2508,17 +2512,17 @@ exports.add999 = add999 = function add999(params, callback) {
 exports.etaddautoselectwid = etaddautoselectwid = function etaddautoselectwid(params, callback) {
     var c = "c";
     var d = "d";
-    manytoonesetupdto(params, 0, function(err, res) {
+    manytoonesetupdto(params, 0, function (err, res) {
 
         //parent,   c,  child, d, preamble, dto, getlist
-        addauthorrecord(0, c, 0, d, -1, -1, 2, function(err, res) {
-            addauthorrecord(0, c, 1, d, 0, -1, 2, function(err, res) {
-                addauthorrecord(0, c, 2, d, 1, -1, 2, function(err, res) {
-                    addauthorrecord(0, c, 3, d, 2, -1, 2, function(err, res) {
-                        addauthorrecord(0, c, 4, d, 3, -1, 2, function(err, res) {
-                            addauthorrecord(0, c, 5, d, 4, -1, 2, function(err, res) {
-                                addauthorrecord(0, c, 6, d, 5, -1, 2, function(err, res) {
-                                    addauthorrecord(0, c, 7, d, 6, -1, 1, function(err, res) {
+        addauthorrecord(0, c, 0, d, -1, -1, 2, function (err, res) {
+            addauthorrecord(0, c, 1, d, 0, -1, 2, function (err, res) {
+                addauthorrecord(0, c, 2, d, 1, -1, 2, function (err, res) {
+                    addauthorrecord(0, c, 3, d, 2, -1, 2, function (err, res) {
+                        addauthorrecord(0, c, 4, d, 3, -1, 2, function (err, res) {
+                            addauthorrecord(0, c, 5, d, 4, -1, 2, function (err, res) {
+                                addauthorrecord(0, c, 6, d, 5, -1, 2, function (err, res) {
+                                    addauthorrecord(0, c, 7, d, 6, -1, 1, function (err, res) {
                                         callback(err, res);
                                     });
                                 });
@@ -2547,17 +2551,17 @@ exports.etaddautoselectwid = etaddautoselectwid = function etaddautoselectwid(pa
 exports.etaddautoselectwid2 = etaddautoselectwid2 = function etaddautoselectwid2(params, callback) {
     var c = "c";
     var d = "d";
-    manytoonesetupdto(params, 1, function(err, res) {
+    manytoonesetupdto(params, 1, function (err, res) {
 
         //parent,   c,  child, d, preamble, dto, getlist
-        addauthorrecord(0, c, 0, d, -1, -1, 2, function(err, res) {
-            addauthorrecord(0, c, 1, d, 0, -1, 2, function(err, res) {
-                addauthorrecord(0, c, 2, d, 1, -1, 2, function(err, res) {
-                    addauthorrecord(0, c, 3, d, 2, -1, 2, function(err, res) {
-                        addauthorrecord(0, c, 4, d, 3, -1, 2, function(err, res) {
-                            addauthorrecord(0, c, 5, d, 4, -1, 2, function(err, res) {
-                                addauthorrecord(0, c, 6, d, 5, -1, 2, function(err, res) {
-                                    addauthorrecord(0, c, 7, d, 6, -1, 1, function(err, res) {
+        addauthorrecord(0, c, 0, d, -1, -1, 2, function (err, res) {
+            addauthorrecord(0, c, 1, d, 0, -1, 2, function (err, res) {
+                addauthorrecord(0, c, 2, d, 1, -1, 2, function (err, res) {
+                    addauthorrecord(0, c, 3, d, 2, -1, 2, function (err, res) {
+                        addauthorrecord(0, c, 4, d, 3, -1, 2, function (err, res) {
+                            addauthorrecord(0, c, 5, d, 4, -1, 2, function (err, res) {
+                                addauthorrecord(0, c, 6, d, 5, -1, 2, function (err, res) {
+                                    addauthorrecord(0, c, 7, d, 6, -1, 1, function (err, res) {
                                         callback(err, res);
                                     });
                                 });
@@ -2586,17 +2590,17 @@ exports.etaddautoselectwid2 = etaddautoselectwid2 = function etaddautoselectwid2
 exports.etaddmanualselectwid = etaddmanualselectwid = function etaddmanualselectwid(params, callback) {
     var c = "c";
     var d = "d";
-    manytoonesetupdto(params, 0, function(err, res) {
+    manytoonesetupdto(params, 0, function (err, res) {
 
         //parent,   c,   child, d, preamble, dto, getlist
-        addauthorrecord(0, c, 8, d, -1, -1, 2, function(err, res) {
-            addauthorrecord(0, c, 9, d, 0, -1, 2, function(err, res) {
-                addauthorrecord(0, c, 10, d, 1, -1, 2, function(err, res) {
-                    addauthorrecord(0, c, 11, d, 2, -1, 2, function(err, res) {
-                        addauthorrecord(0, c, 12, d, 3, -1, 2, function(err, res) {
-                            addauthorrecord(0, c, 13, d, 4, -1, 2, function(err, res) {
-                                addauthorrecord(0, c, 14, d, 5, -1, 2, function(err, res) {
-                                    addauthorrecord(0, c, 15, d, 6, -1, 0, function(err, res) {
+        addauthorrecord(0, c, 8, d, -1, -1, 2, function (err, res) {
+            addauthorrecord(0, c, 9, d, 0, -1, 2, function (err, res) {
+                addauthorrecord(0, c, 10, d, 1, -1, 2, function (err, res) {
+                    addauthorrecord(0, c, 11, d, 2, -1, 2, function (err, res) {
+                        addauthorrecord(0, c, 12, d, 3, -1, 2, function (err, res) {
+                            addauthorrecord(0, c, 13, d, 4, -1, 2, function (err, res) {
+                                addauthorrecord(0, c, 14, d, 5, -1, 2, function (err, res) {
+                                    addauthorrecord(0, c, 15, d, 6, -1, 0, function (err, res) {
                                         callback(err, res);
                                     });
                                 });
@@ -2626,17 +2630,17 @@ exports.etaddmanualselectwid = etaddmanualselectwid = function etaddmanualselect
 exports.etaddwithdtotype = etaddwithdtotype = function etaddwithdtotype(params, callback) {
     var c = "c";
     var d = "d";
-    manytoonesetupdto(params, 0, function(err, res) {
+    manytoonesetupdto(params, 0, function (err, res) {
 
         //parent,   c,   child, d, preamble, dto, getlist
-        addauthorrecord(0, c, 8, d, -1, 0, 2, function(err, res) {
-            addauthorrecord(0, c, 9, d, -1, 1, 2, function(err, res) {
-                addauthorrecord(0, c, 10, d, -1, 2, 2, function(err, res) {
-                    addauthorrecord(0, c, 11, d, -1, 3, 2, function(err, res) {
-                        addauthorrecord(0, c, 12, d, -1, 4, 2, function(err, res) {
-                            addauthorrecord(0, c, 13, d, -1, 5, 2, function(err, res) {
-                                addauthorrecord(0, c, 14, d, -1, 6, 2, function(err, res) {
-                                    addauthorrecord(0, c, 15, d, -1, 7, 0, function(err, res) {
+        addauthorrecord(0, c, 8, d, -1, 0, 2, function (err, res) {
+            addauthorrecord(0, c, 9, d, -1, 1, 2, function (err, res) {
+                addauthorrecord(0, c, 10, d, -1, 2, 2, function (err, res) {
+                    addauthorrecord(0, c, 11, d, -1, 3, 2, function (err, res) {
+                        addauthorrecord(0, c, 12, d, -1, 4, 2, function (err, res) {
+                            addauthorrecord(0, c, 13, d, -1, 5, 2, function (err, res) {
+                                addauthorrecord(0, c, 14, d, -1, 6, 2, function (err, res) {
+                                    addauthorrecord(0, c, 15, d, -1, 7, 0, function (err, res) {
                                         callback(err, res);
                                     });
                                 });
@@ -2665,17 +2669,17 @@ exports.etaddwithdtotype = etaddwithdtotype = function etaddwithdtotype(params, 
 exports.etadddtoandpreamble = etadddtoandpreamble = function etadddtoandpreamble(params, callback) {
     var c = "c";
     var d = "d";
-    manytoonesetupdto(params, 0, function(err, res) {
+    manytoonesetupdto(params, 0, function (err, res) {
 
         //parent,   c,   child, d, preamble, dto, getlist
-        addauthorrecord(0, c, 8, d, -1, 0, 2, function(err, res) {
-            addauthorrecord(0, c, 9, d, 0, 1, 2, function(err, res) {
-                addauthorrecord(0, c, 10, d, 1, 2, 2, function(err, res) {
-                    addauthorrecord(0, c, 11, d, 2, 3, 2, function(err, res) {
-                        addauthorrecord(0, c, 12, d, 3, 4, 2, function(err, res) {
-                            addauthorrecord(0, c, 13, d, 4, 5, 2, function(err, res) {
-                                addauthorrecord(0, c, 14, d, 5, 6, 2, function(err, res) {
-                                    addauthorrecord(0, c, 15, d, 6, 7, 0, function(err, res) {
+        addauthorrecord(0, c, 8, d, -1, 0, 2, function (err, res) {
+            addauthorrecord(0, c, 9, d, 0, 1, 2, function (err, res) {
+                addauthorrecord(0, c, 10, d, 1, 2, 2, function (err, res) {
+                    addauthorrecord(0, c, 11, d, 2, 3, 2, function (err, res) {
+                        addauthorrecord(0, c, 12, d, 3, 4, 2, function (err, res) {
+                            addauthorrecord(0, c, 13, d, 4, 5, 2, function (err, res) {
+                                addauthorrecord(0, c, 14, d, 5, 6, 2, function (err, res) {
+                                    addauthorrecord(0, c, 15, d, 6, 7, 0, function (err, res) {
                                         callback(err, res);
                                     });
                                 });
@@ -2706,43 +2710,43 @@ exports.etadddtoandpreamble = etadddtoandpreamble = function etadddtoandpreamble
 exports.etadd3big = etadd3big = function etadd3big(params, callback) {
     var c = "c";
     var d = "d";
-    manytoonesetupdto(params, 0, function(err, res) {
+    manytoonesetupdto(params, 0, function (err, res) {
 
         //parent,   c,   child, d, preamble, dto, getlist
-        addauthorrecord(0, c, 0, d, -1, -1, 2, function(err, res) {
-            addauthorrecord(0, c, 1, d, 0, -1, 2, function(err, res) {
-                addauthorrecord(0, c, 2, d, 1, -1, 2, function(err, res) {
-                    addauthorrecord(0, c, 3, d, 2, -1, 2, function(err, res) {
-                        addauthorrecord(0, c, 4, d, 3, -1, 2, function(err, res) {
-                            addauthorrecord(0, c, 5, d, 4, -1, 2, function(err, res) {
-                                addauthorrecord(0, c, 6, d, 5, -1, 2, function(err, res) {
-                                    addauthorrecord(0, c, 7, d, 6, -1, 0, function(err, res) {
+        addauthorrecord(0, c, 0, d, -1, -1, 2, function (err, res) {
+            addauthorrecord(0, c, 1, d, 0, -1, 2, function (err, res) {
+                addauthorrecord(0, c, 2, d, 1, -1, 2, function (err, res) {
+                    addauthorrecord(0, c, 3, d, 2, -1, 2, function (err, res) {
+                        addauthorrecord(0, c, 4, d, 3, -1, 2, function (err, res) {
+                            addauthorrecord(0, c, 5, d, 4, -1, 2, function (err, res) {
+                                addauthorrecord(0, c, 6, d, 5, -1, 2, function (err, res) {
+                                    addauthorrecord(0, c, 7, d, 6, -1, 0, function (err, res) {
 
                                         //c="x";
                                         d = "y";
 
                                         //parent,   c,   child, d, preamble, dto, getlist
-                                        addauthorrecord(0, c, 0, d, -1, -1, 2, function(err, res) {
-                                            addauthorrecord(0, c, 1, d, 0, -1, 2, function(err, res) {
-                                                addauthorrecord(0, c, 2, d, 1, -1, 2, function(err, res) {
-                                                    addauthorrecord(0, c, 3, d, 2, -1, 2, function(err, res) {
-                                                        addauthorrecord(0, c, 4, d, 3, -1, 2, function(err, res) {
-                                                            addauthorrecord(0, c, 5, d, 4, -1, 2, function(err, res) {
-                                                                addauthorrecord(0, c, 6, d, 5, -1, 2, function(err, res) {
-                                                                    addauthorrecord(0, c, 7, d, 6, -1, 0, function(err, res) {
+                                        addauthorrecord(0, c, 0, d, -1, -1, 2, function (err, res) {
+                                            addauthorrecord(0, c, 1, d, 0, -1, 2, function (err, res) {
+                                                addauthorrecord(0, c, 2, d, 1, -1, 2, function (err, res) {
+                                                    addauthorrecord(0, c, 3, d, 2, -1, 2, function (err, res) {
+                                                        addauthorrecord(0, c, 4, d, 3, -1, 2, function (err, res) {
+                                                            addauthorrecord(0, c, 5, d, 4, -1, 2, function (err, res) {
+                                                                addauthorrecord(0, c, 6, d, 5, -1, 2, function (err, res) {
+                                                                    addauthorrecord(0, c, 7, d, 6, -1, 0, function (err, res) {
 
                                                                         //c="w";
                                                                         d = "z";
 
                                                                         //parent,   c,   child, d, preamble, dto, getlist
-                                                                        addauthorrecord(0, c, 0, d, -1, -1, 2, function(err, res) {
-                                                                            addauthorrecord(0, c, 1, d, 0, -1, 2, function(err, res) {
-                                                                                addauthorrecord(0, c, 2, d, 1, -1, 2, function(err, res) {
-                                                                                    addauthorrecord(0, c, 3, d, 2, -1, 2, function(err, res) {
-                                                                                        addauthorrecord(0, c, 4, d, 3, -1, 2, function(err, res) {
-                                                                                            addauthorrecord(0, c, 5, d, 4, -1, 2, function(err, res) {
-                                                                                                addauthorrecord(0, c, 6, d, 5, -1, 2, function(err, res) {
-                                                                                                    addauthorrecord(0, c, 7, d, 6, -1, 0, function(err, res) {
+                                                                        addauthorrecord(0, c, 0, d, -1, -1, 2, function (err, res) {
+                                                                            addauthorrecord(0, c, 1, d, 0, -1, 2, function (err, res) {
+                                                                                addauthorrecord(0, c, 2, d, 1, -1, 2, function (err, res) {
+                                                                                    addauthorrecord(0, c, 3, d, 2, -1, 2, function (err, res) {
+                                                                                        addauthorrecord(0, c, 4, d, 3, -1, 2, function (err, res) {
+                                                                                            addauthorrecord(0, c, 5, d, 4, -1, 2, function (err, res) {
+                                                                                                addauthorrecord(0, c, 6, d, 5, -1, 2, function (err, res) {
+                                                                                                    addauthorrecord(0, c, 7, d, 6, -1, 0, function (err, res) {
                                                                                                         callback(err, res);
                                                                                                     });
                                                                                                 });
@@ -2799,21 +2803,21 @@ exports.etcreatedefaultdto1 = etcreatedefaultdto1 = function etcreatedefaultdto1
         "ownerdtooverride": []
     }
 
-    manytoonesetupdto(inheritparams, 0, function(err, res) {
+    manytoonesetupdto(inheritparams, 0, function (err, res) {
 
         //parent,   c,   child, d, preamble, dto, getlist
-        addauthorrecord(1, c, 8, d, -1, -1, 3, function(err, res) {
+        addauthorrecord(1, c, 8, d, -1, -1, 3, function (err, res) {
             //addauthorrecord(0,      c,      9,  d,   0,      -1,     0, function (err, res){
-            addauthorrecord(1, c, 10, d, 1, -1, 3, function(err, res) {
+            addauthorrecord(1, c, 10, d, 1, -1, 3, function (err, res) {
                 //addauthorrecord(0,      c,      11, d,   2,      -1,     0, function (err, res){
-                addauthorrecord(1, c, 12, d, 3, -1, 3, function(err, res) {
+                addauthorrecord(1, c, 12, d, 3, -1, 3, function (err, res) {
                     //addauthorrecord(0,      c,      13, d,   4,      -1,     0, function (err, res){
-                    addauthorrecord(1, c, 14, d, 5, -1, 3, function(err, res) {
+                    addauthorrecord(1, c, 14, d, 5, -1, 3, function (err, res) {
                         //addauthorrecord(0,      c,      15, d,   6,      -1,     0, function (err, res){
                         printlistmany([{
                             "wid": "wid1" + c,
                             "command.dtotype": ""
-                        }], function(err, res) {
+                        }], function (err, res) {
                             callback(err, res);
                         });
 
@@ -2858,21 +2862,21 @@ exports.etcreateinheritdefault1 = etcreateinheritdefault1 = function etcreateinh
         "ownerdtooverride": []
     }
 
-    manytoonesetupdto(inheritparams, 0, function(err, res) {
+    manytoonesetupdto(inheritparams, 0, function (err, res) {
 
         //parent,   c,   child, d, preamble, dto, getlist
-        addauthorrecord(2, c, 8, d, -1, -1, 4, function(err, res) {
+        addauthorrecord(2, c, 8, d, -1, -1, 4, function (err, res) {
             //addauthorrecord(0,      c,      9,  d,   0,      -1,     0, function (err, res){
-            addauthorrecord(2, c, 10, d, 1, -1, 4, function(err, res) {
+            addauthorrecord(2, c, 10, d, 1, -1, 4, function (err, res) {
                 //addauthorrecord(0,      c,      11, d,   2,      -1,     0, function (err, res){
-                addauthorrecord(2, c, 12, d, 3, -1, 4, function(err, res) {
+                addauthorrecord(2, c, 12, d, 3, -1, 4, function (err, res) {
                     //addauthorrecord(0,      c,      13, d,   4,      -1,     0, function (err, res){
-                    addauthorrecord(2, c, 14, d, 5, -1, 4, function(err, res) {
+                    addauthorrecord(2, c, 14, d, 5, -1, 4, function (err, res) {
                         //addauthorrecord(0,      c,      15, d,   6,      -1,     0, function (err, res){
                         printlistmany([{
                             "wid": "wid1" + c,
                             "command.dtotype": ""
-                        }], function(err, res) {
+                        }], function (err, res) {
                             callback(err, res);
                         });
                         //});
@@ -2954,7 +2958,7 @@ exports.testcreatealldtos = testcreatealldtos = function testcreatealldtos(param
         "usergroupdto.0.groupname": "user usergroup name"
     };
 
-    createalldtos(params, function(cb2) {
+    createalldtos(params, function (cb2) {
         var executeList = [];
 
         var executeObjForGet = {
@@ -2964,7 +2968,7 @@ exports.testcreatealldtos = testcreatealldtos = function testcreatealldtos(param
         //executeList.push(executeObjForGet);
         executeList.push(executeobj);
 
-        execute(executeList, function(err, res) {
+        execute(executeList, function (err, res) {
             proxyprinttodiv("result from data add ", res, 99, true);
 
             var printlist = [
@@ -2979,7 +2983,7 @@ exports.testcreatealldtos = testcreatealldtos = function testcreatealldtos(param
                 //{"wid":"wid1", "command.dtotype":"permissiondto"}
             ];
 
-            printlistmany(printlist, function(err, res) {
+            printlistmany(printlist, function (err, res) {
                 callback(err, res);
             })
         });
@@ -3017,7 +3021,7 @@ exports.ettestatoa = ettestatoa = function ettestatoa(params, callback) {
     }, {
         "executethis": "getwidmaster",
         "wid": "wid1"
-    }], function(err, res) {
+    }], function (err, res) {
         proxyprinttodiv('Function authordto result Full res', res, 17);
 
         proxyprinttodiv('Function authordto wid1 res[3] ', res[3], 98);
@@ -3117,7 +3121,7 @@ exports.addmerchantdtotest = addmerchantdtotest = function addmerchantdtotest(pa
                 }]
             }
         }],
-        function(err, resultArray) {
+        function (err, resultArray) {
             callback(err, resultArray)
         });
 }
@@ -3145,7 +3149,7 @@ exports.addloyaltydtotest = addloyaltydtotest = function addloyaltydtotest(param
                 }]
             }
         }],
-        function(err, resultArray) {
+        function (err, resultArray) {
             callback(err, resultArray)
         });
 }
@@ -3169,7 +3173,7 @@ exports.addmerchantloyaltyreltest = addmerchantloyaltyreltest = function addmerc
                 }]
             }
         }],
-        function(err, resultArray) {
+        function (err, resultArray) {
             callback(err, resultArray)
         });
 }
@@ -3181,7 +3185,7 @@ exports.step1Luke = step1Luke = function step1Luke(params, callback) {
         "metadata.method": "merchantsdto",
         "name": "luke's company"
 
-    }], function(err, resultArray) {
+    }], function (err, resultArray) {
         callback(err, resultArray)
     });
 }
@@ -3193,7 +3197,7 @@ function step1Joe(params, callback) {
         "wid": "merchgroup1",
         "metadata.method": "merchantsdto",
         "merchantdto.name": "joe's company"
-    }], function(err, resultArray) {
+    }], function (err, resultArray) {
         callback(err, resultArray)
     });
 }
@@ -3205,7 +3209,7 @@ function step1Bill(params, callback) {
         "wid": "merchgroup1",
         "metadata.method": "merchantsdto",
         "merchantdto.name": "bill's company"
-    }], function(err, resultArray) {
+    }], function (err, resultArray) {
         callback(err, resultArray)
     });
 }
@@ -3217,7 +3221,7 @@ function step2BillLoyalty(params, callback) {
         "wid": "loyaltygroup1",
         "metadata.method": "merchantdto",
         "loyaltydto.name": "bill's loyalty wid"
-    }], function(err, resultArray) {
+    }], function (err, resultArray) {
         callback(err, resultArray)
     });
 }
@@ -3229,7 +3233,7 @@ function step2JoeLoyalty(params, callback) {
         "wid": "loyaltygroup1",
         "metadata.method": "merchantdto",
         "loyaltydto.name": "Joe's loyalty wid"
-    }], function(err, resultArray) {
+    }], function (err, resultArray) {
         callback(err, resultArray)
     });
 }
@@ -3241,7 +3245,7 @@ function inputLoyalty(params, callback) {
         "wid": "loyaltygroup1",
         "metadata.method": "merchantdto",
         "loyaltydto.name": lname
-    }], function(err, resultArray) {
+    }], function (err, resultArray) {
         callback(err, resultArray)
     });
 }
@@ -3255,7 +3259,7 @@ function step3datanodto(params, callback) {
     }, {
         "executethis": "getwidmaster",
         "wid": "nodtowid"
-    }], function(err, resultArray) {
+    }], function (err, resultArray) {
         callback(err, resultArray)
     });
 }
@@ -3268,7 +3272,7 @@ exports.wraptest = wraptest = function wraptest(params, callback) {
         "command": {
             "result": "x"
         }
-    }, function(err, res) {
+    }, function (err, res) {
         proxyprinttodiv('Function wraptest result LAST ', res, 98);
         callback(err, res);
     });
@@ -3808,7 +3812,7 @@ exports.rrr = rrr = function rrr(params, callback) {
         }]
     }
 
-    recurseobjcontainer(obj, dtotable, function(err, res) {
+    recurseobjcontainer(obj, dtotable, function (err, res) {
         callback(err, res)
 
     });
@@ -3832,7 +3836,7 @@ exports.rrr2 = rrr2 = function rrr2(params, callback) {
 
     var dtotable = {}
 
-    recurseobjcontainer(obj, dtotable, function(err, res) {
+    recurseobjcontainer(obj, dtotable, function (err, res) {
         callback(err, res)
 
     });
@@ -3993,7 +3997,7 @@ exports.rrr3 = rrr3 = function rrr3(params, callback) {
         }]
     }
 
-    recurseobjcontainer(obj, dtotable, function(err, res) {
+    recurseobjcontainer(obj, dtotable, function (err, res) {
         callback(err, res)
 
     });
@@ -4021,7 +4025,7 @@ exports.rrr4 = rrr4 = function rrr4(params, callback) {
 
     var dtotable = {}
 
-    recurseobjcontainer(obj, dtotable, function(err, res) {
+    recurseobjcontainer(obj, dtotable, function (err, res) {
         callback(err, res)
 
     });
@@ -4282,7 +4286,7 @@ exports.rrr5 = rrr5 = function rrr5(params, callback) {
     }
 
     obj = ConvertFromDOTdri(obj);
-    recurseobjcontainer(obj, dtotable, function(err, res) {
+    recurseobjcontainer(obj, dtotable, function (err, res) {
         callback(err, res)
 
     });
@@ -4362,7 +4366,7 @@ exports.rrr7 = rrr7 = function rrr7(params, callback) {
 
     var dtotable = {};
 
-    recurseobjcontainer(obj, dtotable, function(err, res) {
+    recurseobjcontainer(obj, dtotable, function (err, res) {
         callback(err, res);
     });
 }
@@ -4409,7 +4413,7 @@ exports.rrr7 = rrr7 = function rrr7(params, callback) {
 exports.jstest1 = jstest1 = function jstest1(parameters, callback) {
     parameters.a = "3"
     parameters.b = "4"
-    jstest2(parameters, function(err, res) {
+    jstest2(parameters, function (err, res) {
         callback(err, res)
     })
 
@@ -4425,7 +4429,7 @@ exports.jstest3 = jstest3 = function jstest3(p, callback) {
     param.a = "3"
     param.b = "4"
     param.executethis = "add_numbers_server"
-    execute(param, function(err, res) {
+    execute(param, function (err, res) {
         callback(err, res)
     })
 
@@ -4434,7 +4438,7 @@ exports.jstest3 = jstest3 = function jstest3(p, callback) {
 exports.jstest4 = jstest4 = function jstest4(parameters, callback) {
     parameters.a = "3"
     parameters.b = "4"
-    jstest5(parameters, function(err, res) {
+    jstest5(parameters, function (err, res) {
         callback(err, res)
     })
 
@@ -4498,7 +4502,7 @@ exports.manytomanytest = manytomanytest = function manytomanytest(params, callba
             "bookdto.1.title": "Author3 Book2",
             "bookdto.2.title": "Author3 Book3"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv("manytomanytest addwidmaster result: ", res, 99);
             debuglevel = 38;
             execute([{
@@ -4510,7 +4514,7 @@ exports.manytomanytest = manytomanytest = function manytomanytest(params, callba
             }, {
                 "executethis": "getwidmaster",
                 "wid": "author3"
-            }], function(err, res1) {
+            }], function (err, res1) {
                 proxyprinttodiv("manytomanytest getwidmaster result: ", res1, 99);
                 callback(err, res1);
             });
@@ -4521,6 +4525,7 @@ exports.manytomanytest = manytomanytest = function manytomanytest(params, callba
         authortoauthor test
     */
 exports.authortoauthortest = authortoauthortest = function authortoauthortest(params, callback) {
+                debuglevel = 36;
     execute([{
             "executethis": "addwidmaster",
             "wid": "authordto",
@@ -4543,15 +4548,20 @@ exports.authortoauthortest = authortoauthortest = function authortoauthortest(pa
             "metadata.method": "authordto",
             "name": "author1",
             "authordto.authordto.authordto.name": "authortoauthor1"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "command.getwidmaster.convertmethod":"dto"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('authortoauthortest addwidmaster result: ', res, 99);
 
-            debuglevel = 38;
+
             execute({
                 "executethis": "getwidmaster",
                 "wid": "wid1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("authortoauthortest getwidmaster result: ", res1, 99);
                 callback(err, res);
             });
@@ -4580,7 +4590,7 @@ exports.addwidmasterex17data = addwidmasterex17data = function addwidmasterex17d
     }, {
         "executethis": "getwidmaster",
         "wid": "ex-17-data"
-    }], function(err, res1) {
+    }], function (err, res1) {
         proxyprinttodiv("addwidmasterex17data result: ", res1, 99);
         callback(err, res1);
     });
@@ -4604,7 +4614,7 @@ exports.addwidmasterblankguid = addwidmasterblankguid = function addwidmasterbla
     }, {
         "executethis": "getwidmaster",
         "wid": "addwidmasterblankguid"
-    }], function(err, res1) {
+    }], function (err, res1) {
         proxyprinttodiv("addwidmasterblankguid result: ", res1, 99);
         callback(err, res1);
     });
@@ -4623,7 +4633,7 @@ exports.etaddwidtest8 = etaddwidtest8 = function etaddwidtest8(parameters, callb
         "addthis.command": {
             "inherit": {}
         }
-    }], function(err, res1) {
+    }], function (err, res1) {
         var inputdto = {
             "wid": "string",
             "a": "string",
@@ -4650,7 +4660,7 @@ exports.etaddwidtest8 = etaddwidtest8 = function etaddwidtest8(parameters, callb
 
         var command = {};
 
-        addwid(inputobject, inputdto, command, function(err, res) {
+        addwid(inputobject, inputdto, command, function (err, res) {
             proxyprinttodiv("res --", res, 17);
             var actual_result = res;
             proxyprinttodiv("actual_result --", actual_result, 17);
@@ -4692,7 +4702,7 @@ exports.etaddwidtest9 = etaddwidtest9 = function etaddwidtest9(parameters, callb
         "addthis.command": {
             "inherit": {}
         }
-    }], function(err, res1) {
+    }], function (err, res1) {
         var inputdto = {
             "wid": "string",
             "a": "string",
@@ -4719,7 +4729,7 @@ exports.etaddwidtest9 = etaddwidtest9 = function etaddwidtest9(parameters, callb
 
         var command = {};
 
-        addwid(inputobject, inputdto, command, function(err, res) {
+        addwid(inputobject, inputdto, command, function (err, res) {
             proxyprinttodiv("res --", res, 17);
             var actual_result = res;
             proxyprinttodiv("actual_result --", actual_result, 17);
@@ -4765,7 +4775,7 @@ exports.etaddwidtest10 = etaddwidtest10 = function etaddwidtest10(parameters, ca
                 }
             }
         }
-    }], function(err, res1) {
+    }], function (err, res1) {
         var inputdto = {
             "wid": "string",
             "a": "string",
@@ -4792,7 +4802,7 @@ exports.etaddwidtest10 = etaddwidtest10 = function etaddwidtest10(parameters, ca
 
         var command = {};
 
-        addwid(inputobject, inputdto, command, function(err, res) {
+        addwid(inputobject, inputdto, command, function (err, res) {
             proxyprinttodiv("res --", res, 17);
             var actual_result = res;
             proxyprinttodiv("actual_result --", actual_result, 17);
@@ -4840,7 +4850,7 @@ exports.etaddwidtest11 = etaddwidtest11 = function etaddwidtest11(parameters, ca
                 }
             }
         }
-    }], function(err, res1) {
+    }], function (err, res1) {
         var inputdto = {
             "wid": "string",
             "a": "string",
@@ -4867,7 +4877,7 @@ exports.etaddwidtest11 = etaddwidtest11 = function etaddwidtest11(parameters, ca
 
         var command = {};
 
-        addwid(inputobject, inputdto, command, function(err, res) {
+        addwid(inputobject, inputdto, command, function (err, res) {
             proxyprinttodiv("res --", res, 17);
             var actual_result = res;
             proxyprinttodiv("actual_result --", actual_result, 17);
@@ -4952,7 +4962,7 @@ exports.etaddwidtodbdata = etaddwidtodbdata = function etaddwidtodbdata(paramete
                 "collection": "othercollection"
             }
         }],
-        function(err, res) {
+        function (err, res) {
             callback(err, res);
             proxyprinttodiv("res -- add", res, 17);
         });
@@ -4970,7 +4980,7 @@ exports.ettestag111 = ettestag111 = function ettestag111(params, callback) {
             "executethis": "getwidmaster",
             "wid": "sounddto"
         }],
-        function(err, res1) {
+        function (err, res1) {
             proxyprinttodiv("Ag1  result ", res1, 99);
             var res = res1[1]; //~~~ changed by SAURABH 
             //var res = res1[0];
@@ -5000,7 +5010,7 @@ exports.ettestag111 = ettestag111 = function ettestag111(params, callback) {
             "executethis": "getwidmaster",
             "wid": "sounddto"
         }],
-        function(err, res1) {
+        function (err, res1) {
             proxyprinttodiv("Ag1  result ", res1, 99);
             var res = res1[1]; //~~~ changed by SAURABH 
             //var res = res1[0];
@@ -5049,7 +5059,7 @@ exports.etgetfromdbdata = etgetfromdbdata = function etgetfromdbdata(parameters,
         "command": {
             "collection": "othercollection"
         }
-    }], function(err, res) {
+    }], function (err, res) {
         callback(err, res);
         proxyprinttodiv("res -- get", res, 17);
     });
@@ -5069,7 +5079,7 @@ exports.etupdategetcollection1 = etupdategetcollection1 = function etupdategetco
             "collection": "test"
         }
     };
-    updategetdatastore(updatecommand, getcommand, function(err, res) {
+    updategetdatastore(updatecommand, getcommand, function (err, res) {
         callback(err, res);
     });
 }
@@ -5088,7 +5098,7 @@ exports.etupdategetkeycollection1 = etupdategetkeycollection1 = function etupdat
             "keycollection": "test"
         }
     };
-    updategetdatastore(updatecommand, getcommand, function(err, res) {
+    updategetdatastore(updatecommand, getcommand, function (err, res) {
         callback(err, res);
     });
 }
@@ -5101,7 +5111,7 @@ exports.testusersystem = testusersystem = function testusersystem(params, callba
         "executethis": "getwidmaster",
         "command.convertmethod": "dto",
         "wid": "userdto"
-    }, function(err, res1) {
+    }, function (err, res1) {
         proxyprinttodiv("getwidmaster userdto result: ", res1, 99);
         var found = [];
         for (var prop in res1[0]) {
@@ -5142,7 +5152,7 @@ exports.adduserdto = adduserdto = function adduserdto(params, callback) {
         //"metadata.permissiondto.type": "onetomany",
         //"metadata.usergroupdto.type":"onetomany"},
 
-        function(err, res1) {
+        function (err, res1) {
             proxyprinttodiv("addwidmaster userdto result: ", res1, 99);
             callback(err, res1);
         }
@@ -5153,7 +5163,7 @@ exports.adduserdto = adduserdto = function adduserdto(params, callback) {
 
 
 exports.systemdinuserdto1 = systemdinuserdto1 = function systemdinuserdto1(params, callback) {
-    adduserdto(null, function(err, res) {
+    adduserdto(null, function (err, res) {
         execute({
                 // Create the userdto
                 "executethis": "addwidmaster",
@@ -5161,7 +5171,7 @@ exports.systemdinuserdto1 = systemdinuserdto1 = function systemdinuserdto1(param
                 "wid": "userdto",
                 "systemdto.expirationdate": "6/14/14"
             },
-            function(err, res) {
+            function (err, res) {
                 //proxyprinttodiv('Full results: ', res, 99);
 
                 //proxyprinttodiv('The userdto record: ', res[2], 99);
@@ -5170,7 +5180,7 @@ exports.systemdinuserdto1 = systemdinuserdto1 = function systemdinuserdto1(param
                 execute({
                     "executethis": "getwidmaster",
                     "wid": "userdto"
-                }, function(err, res1) {
+                }, function (err, res1) {
                     proxyprinttodiv("getwidmaster userdto result: ", res1, 99);
                     callback(err, res);
                 });
@@ -5188,7 +5198,7 @@ exports.systemdinuserwid1 = systemdinuserwid1 = function systemdinuserwid1(param
             "systemdto.expirationdate": "6/14/14",
             "systemdto.blahblah": "blah"
         }],
-        function(err, res) {
+        function (err, res) {
             //proxyprinttodiv('Full results: ', res, 99);
 
             //proxyprinttodiv('The userdto record: ', res[2], 99);
@@ -5197,7 +5207,7 @@ exports.systemdinuserwid1 = systemdinuserwid1 = function systemdinuserwid1(param
             execute({
                 "executethis": "getwidmaster",
                 "wid": "user1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster user1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -5247,7 +5257,7 @@ exports.deepsystemdto1 = deepsystemdto1 = function deepsystemdto1(params, callba
             "usergroupdto.groupname": "Everyone",
             //"usergroupdto.systemdto.expirationdate": "7/14/14"
         }],
-        function(err, res) {
+        function (err, res) {
             //proxyprinttodiv('Full results: ', res, 99);
 
             //proxyprinttodiv('The userdto record: ', res[2], 99);
@@ -5256,7 +5266,7 @@ exports.deepsystemdto1 = deepsystemdto1 = function deepsystemdto1(params, callba
             execute({
                 "executethis": "getwidmaster",
                 "wid": "user1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster user1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -5300,7 +5310,7 @@ exports.deepsystemdto2 = deepsystemdto2 = function deepsystemdto2(params, callba
             "secondarywid": "usergroupdto",
             "secondarymethod": "usergroupdto"
         }],
-        function(err, res) {
+        function (err, res) {
             //proxyprinttodiv('Full results: ', res, 99);
 
             //proxyprinttodiv('The userdto record: ', res[2], 99);
@@ -5310,7 +5320,7 @@ exports.deepsystemdto2 = deepsystemdto2 = function deepsystemdto2(params, callba
                 "executethis": "getwidmaster",
                 "command.getwidmaster.convertmethod": "dto",
                 "wid": "userdto"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster userdto result: ", res1, 99);
                 callback(err, res);
             });
@@ -5355,7 +5365,7 @@ exports.deepsystemdto3 = deepsystemdto3 = function deepsystemdto3(params, callba
             "secondarywid": "usergroupdto",
             "secondarymethod": "usergroupdto"
         }],
-        function(err, res) {
+        function (err, res) {
             //proxyprinttodiv('Full results: ', res, 99);
 
             //proxyprinttodiv('The userdto record: ', res[2], 99);
@@ -5365,7 +5375,7 @@ exports.deepsystemdto3 = deepsystemdto3 = function deepsystemdto3(params, callba
                 "executethis": "getwidmaster",
                 "command.getwidmaster.convertmethod": "dto",
                 "wid": "userdto"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster userdto result: ", res1, 99);
                 callback(err, res);
             });
@@ -5417,7 +5427,7 @@ exports.deepsystemdto4 = deepsystemdto4 = function deepsystemdto4(params, callba
             "usergroupdto.groupname": "Everyone",
             "usergroupdto.systemdto.expirationdate": "this should not show up in user1.usergroupdto.systemdto"
         }],
-        function(err, res) {
+        function (err, res) {
             //proxyprinttodiv('Full results: ', res, 99);
 
             //proxyprinttodiv('The userdto record: ', res[2], 99);
@@ -5426,7 +5436,7 @@ exports.deepsystemdto4 = deepsystemdto4 = function deepsystemdto4(params, callba
             execute({
                 "executethis": "getwidmaster",
                 "wid": "user1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster user1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -5434,14 +5444,14 @@ exports.deepsystemdto4 = deepsystemdto4 = function deepsystemdto4(params, callba
 }
 
 exports.testsysteminuserdto = testsysteminuserdto = function testsysteminuserdto(params, callback) {
-    adduserdto(null, function() {
+    adduserdto(null, function () {
 
         execute([{
                 "executethis": "getwidmaster",
                 "command.getwidmaster.convertmethod": "dto",
                 "wid": "userdto"
             }],
-            function(err, res1) {
+            function (err, res1) {
                 proxyprinttodiv("getwidmaster awesome userdto results: ", res1, 99);
                 callback(err, res1);
             });
@@ -5468,14 +5478,14 @@ exports.testdeepsystem1 = testdeepsystem1 = function testdeepsystem1(params, cal
             "usergroupdto.usergroupname": "everyone",
             "usergroupdto.systemdto.expirationdate": "hi from usergroup"
         }],
-        function(err, res) {
+        function (err, res) {
             // proxyprinttodiv('Full results: ', res, 99);
             // proxyprinttodiv('The userdto record: ', res[2], 99);
             // debuglevel = 0;
             execute({
                 "executethis": "getwidmaster",
                 "wid": "user1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster user1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -5491,23 +5501,23 @@ exports.datastore1 = datastore1 = function datastore1(params, callback) {
     debuglevel = 12;
 
     async.series([
-        function(cb1) {
+        function (cb1) {
             updatedatastore({
                 "wid": "sounddto",
                 "metadata.method": "sounddto",
                 "note": "string"
-            }, {}, function(err, res) {
+            }, {}, function (err, res) {
                 cb1(null);
             })
         },
-        function(cb1) {
+        function (cb1) {
             getfromdatastore({
                 "wid": "sounddto"
-            }, null, function(err, res) {
+            }, null, function (err, res) {
                 cb1(null);
             });
         }
-    ], function(err, res) {
+    ], function (err, res) {
         proxyprinttodiv('res', res, 34);
         callback(err, res);
     });
@@ -5522,7 +5532,7 @@ exports.datastore2 = datastore2 = function datastore2(params, callback) {
     debuglevel = 12;
 
     async.series([
-        function(cb1) {
+        function (cb1) {
             proxyprinttodiv('Function updatewid in : x', 'hi', 12);
             updatewid({
                 "wid": "sounddto",
@@ -5530,18 +5540,18 @@ exports.datastore2 = datastore2 = function datastore2(params, callback) {
                     "method": "sounddto"
                 },
                 "note": "string"
-            }, function(err, res) {
+            }, function (err, res) {
                 cb1(null);
             })
         },
-        function(cb1) {
+        function (cb1) {
             getwid({
                 "wid": "sounddto"
-            }, function(err, res) {
+            }, function (err, res) {
                 cb1(null);
             });
         }
-    ], function(err, res) {
+    ], function (err, res) {
         proxyprinttodiv('res', res, 34);
         callback(err, res);
     });
@@ -5612,7 +5622,7 @@ exports.datastore3 = datastore3 = function datastore3(parameters, callback) {
                 "collection": "testcollection"
             }
         }],
-        function(err, res) {
+        function (err, res) {
             callback(err, res);
             proxyprinttodiv("res -- add", res, 17);
         });
@@ -5634,13 +5644,13 @@ exports.datastore4 = datastore4 = function datastore4(parameters, callback) {
             "executethis": "getwid",
             "wid": "sounddto"
         }],
-        function(err, res) {
+        function (err, res) {
             callback(err, res);
             proxyprinttodiv("res -- add", res, 17);
         });
 }
 
-function datastorefunction(updatecommand, callback) {
+function datastorefunction (updatecommand, callback) {
     debuglevel = 12;
     eventappinstall();
 
@@ -5686,7 +5696,7 @@ function datastorefunction(updatecommand, callback) {
         executeArray.push(executeObj);
     }
 
-    execute(executeArray, function(err, res) {
+    execute(executeArray, function (err, res) {
         proxyprinttodiv("res -- add", res, 12);
         callback(err, res);
     });
@@ -5701,7 +5711,7 @@ exports.datastore5 = datastore5 = function datastore5(parameters, callback) {
     var updatecommand = {
         "db": "data"
     };
-    datastorefunction(updatecommand, function(err, res) {
+    datastorefunction (updatecommand, function (err, res) {
         callback(err, res);
     });
 }
@@ -5714,7 +5724,7 @@ exports.datastore6 = datastore6 = function datastore6(parameters, callback) {
     var updatecommand = {
         "db": "test"
     };
-    datastorefunction(updatecommand, function(err, res) {
+    datastorefunction (updatecommand, function (err, res) {
         callback(err, res);
     });
 }
@@ -5727,7 +5737,7 @@ exports.datastore7 = datastore7 = function datastore7(parameters, callback) {
     var updatecommand = {
         "db": ""
     };
-    datastorefunction(updatecommand, function(err, res) {
+    datastorefunction (updatecommand, function (err, res) {
         callback(err, res);
     });
 }
@@ -5740,7 +5750,7 @@ exports.datastore8 = datastore8 = function datastore8(parameters, callback) {
     var updatecommand = {
         "collection": "maincollection"
     };
-    datastorefunction(updatecommand, function(err, res) {
+    datastorefunction (updatecommand, function (err, res) {
         callback(err, res);
     });
 }
@@ -5753,7 +5763,7 @@ exports.datastore9 = datastore9 = function datastore9(parameters, callback) {
     var updatecommand = {
         "collection": "othercollection"
     };
-    datastorefunction(updatecommand, function(err, res) {
+    datastorefunction (updatecommand, function (err, res) {
         callback(err, res);
     });
 }
@@ -5766,7 +5776,7 @@ exports.datastore10 = datastore10 = function datastore10(parameters, callback) {
     var updatecommand = {
         "collection": ""
     };
-    datastorefunction(updatecommand, function(err, res) {
+    datastorefunction (updatecommand, function (err, res) {
         callback(err, res);
     });
 }
@@ -5779,7 +5789,7 @@ exports.datastore11 = datastore11 = function datastore11(parameters, callback) {
     var updatecommand = {
         "datastore": "localstorage"
     };
-    datastorefunction(updatecommand, function(err, res) {
+    datastorefunction (updatecommand, function (err, res) {
         callback(err, res);
     });
 }
@@ -5792,7 +5802,7 @@ exports.datastore12 = datastore12 = function datastore12(parameters, callback) {
     var updatecommand = {
         "datastore": "localstore"
     };
-    datastorefunction(updatecommand, function(err, res) {
+    datastorefunction (updatecommand, function (err, res) {
         callback(err, res);
     });
 }
@@ -5805,7 +5815,7 @@ exports.datastore13 = datastore13 = function datastore13(parameters, callback) {
     var updatecommand = {
         "datastore": "angular"
     };
-    datastorefunction(updatecommand, function(err, res) {
+    datastorefunction (updatecommand, function (err, res) {
         callback(err, res);
     });
 }
@@ -5818,7 +5828,7 @@ exports.datastore14 = datastore14 = function datastore14(parameters, callback) {
     var updatecommand = {
         "datastore": "mongo"
     };
-    datastorefunction(updatecommand, function(err, res) {
+    datastorefunction (updatecommand, function (err, res) {
         callback(err, res);
     });
 }
@@ -5832,7 +5842,7 @@ exports.datastore15 = datastore15 = function datastore15(parameters, callback) {
     var updatecommand = {
         "datastore": ""
     };
-    datastorefunction(updatecommand, function(err, res) {
+    datastorefunction (updatecommand, function (err, res) {
         callback(err, res);
     });
 }
@@ -5849,9 +5859,9 @@ exports.datastoreaddget1 = datastoreaddget1 = function datastoreaddget1(paramete
     var allPossibleCommandCollectionValues = ["maincollection", "othercollection", ""];
     var allPossibleCommandDataStoreValues = ["localstorage", "localstore", "angular", "mongo", ""];
 
-    async.each(allPossibleCommandDbValues, function(commandDb, callback1) {
-        async.each(allPossibleCommandCollectionValues, function(commandCollection, callback2) {
-            async.each(allPossibleCommandDataStoreValues, function(commandDataStore, callback3) {
+    async.each(allPossibleCommandDbValues, function (commandDb, callback1) {
+        async.each(allPossibleCommandCollectionValues, function (commandCollection, callback2) {
+            async.each(allPossibleCommandDataStoreValues, function (commandDataStore, callback3) {
                 var command = {
                     "db": commandDb,
                     "collection": commandCollection,
@@ -5872,7 +5882,7 @@ exports.datastoreaddget1 = datastoreaddget1 = function datastoreaddget1(paramete
                     "command": command
                 });
 
-                execute(executeArray, function(err, res) {
+                execute(executeArray, function (err, res) {
                     proxyprinttodiv(">> command <<", command, 17);
                     proxyprinttodiv("add result ", res[0], 17);
                     proxyprinttodiv("get result ", res[1], 17);
@@ -5906,7 +5916,7 @@ exports.datastoreaddget2 = datastoreaddget2 = function datastoreaddget2(paramete
         "f": "6",
         "command": command
     });
-    execute(executeArray, function(err, res) {
+    execute(executeArray, function (err, res) {
         proxyprinttodiv(">> add command <<", command, 17);
         proxyprinttodiv("add result ", res[0], 17);
     });
@@ -5915,9 +5925,9 @@ exports.datastoreaddget2 = datastoreaddget2 = function datastoreaddget2(paramete
     var allPossibleCommandCollectionValues = ["maincollection", "othercollection", ""];
     var allPossibleCommandDataStoreValues = ["localstorage", "localstore", "angular", "mongo", ""];
 
-    async.each(allPossibleCommandDbValues, function(commandDb, callback1) {
-        async.each(allPossibleCommandCollectionValues, function(commandCollection, callback2) {
-            async.each(allPossibleCommandDataStoreValues, function(commandDataStore, callback3) {
+    async.each(allPossibleCommandDbValues, function (commandDb, callback1) {
+        async.each(allPossibleCommandCollectionValues, function (commandCollection, callback2) {
+            async.each(allPossibleCommandDataStoreValues, function (commandDataStore, callback3) {
                 var command = {
                     "db": commandDb,
                     "collection": commandCollection,
@@ -5929,7 +5939,7 @@ exports.datastoreaddget2 = datastoreaddget2 = function datastoreaddget2(paramete
                     "wid": "wid1",
                     "command": command
                 });
-                execute(executeArray, function(err, res) {
+                execute(executeArray, function (err, res) {
                     proxyprinttodiv(">> get command <<", command, 17);
                     proxyprinttodiv("get result ", res[0], 17);
                     callback3();
@@ -5971,7 +5981,7 @@ exports.movewid1 = movewid1 = function movewid1(parameters, callback) {
         "wid": "wid1",
         "command": movecommand
     });
-    execute(executeArray, function(err, res) {
+    execute(executeArray, function (err, res) {
         proxyprinttodiv(">> add command <<", addcommand, 17);
         proxyprinttodiv("add result ", res[0], 17);
         proxyprinttodiv(">> move command <<", movecommand, 17);
@@ -6010,7 +6020,7 @@ exports.copywid1 = copywid1 = function copywid1(parameters, callback) {
         "wid": "wid1",
         "command": copycommand
     });
-    execute(executeArray, function(err, res) {
+    execute(executeArray, function (err, res) {
         proxyprinttodiv(">> add command <<", addcommand, 17);
         proxyprinttodiv("add result ", res[0], 17);
         proxyprinttodiv(">> copy command <<", copycommand, 17);
@@ -6037,7 +6047,7 @@ exports.addwidtest12 = addwidtest12 = function addwidtest12(parameters, callback
 
     var command = {};
 
-    addwid(inputobject, inputdto, command, function(err, res) {
+    addwid(inputobject, inputdto, command, function (err, res) {
         debuglevel = 17;
         proxyprinttodiv("res --", res, 17);
         var actual_result = res;
@@ -6073,7 +6083,7 @@ exports.etd21 = etd21 = function etd21(parameters, callback) {
         }
     };
 
-    deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
+    deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
         debuglevel = 17;
         proxyprinttodiv("res --", res, 17);
         var actual_result = res;
@@ -6122,7 +6132,7 @@ exports.copywid2 = copywid2 = function copywid2(parameters, callback) {
         "f": "7",
         "command": copycommand
     });
-    execute(executeArray, function(err, res) {
+    execute(executeArray, function (err, res) {
         proxyprinttodiv(">> add command <<", addcommand, 17);
         proxyprinttodiv("add result ", res[0], 17);
         proxyprinttodiv(">> copy command <<", copycommand, 17);
@@ -6184,7 +6194,7 @@ exports.getwidparents = getwidparents = function getwidparents(parameters, callb
         "executethis": "findparent",
         "wid": "book1"
     }];
-    execute(executeList, function(err, res) {
+    execute(executeList, function (err, res) {
         callback(err, res[6]);
     });
 }
@@ -6201,9 +6211,9 @@ exports.findparent = findparent = findparent = function findparent(inputobj, cal
             "data.secondarywid": wid
         }]
     };
-    execute(executeobject, function(err, res) {
+    execute(executeobject, function (err, res) {
         proxyprinttodiv("findparent res", res, 17);
-        findwidbyqueryresult(res, "primarywid", function(err, res) {
+        findwidbyqueryresult(res, "primarywid", function (err, res) {
             callback(err, res);
         });
     });
@@ -6250,7 +6260,7 @@ exports.getwidchilds = getwidchilds = function getwidchilds(parameters, callback
         "executethis": "findchild",
         "wid": "author1"
     }];
-    execute(executeList, function(err, res) {
+    execute(executeList, function (err, res) {
         callback(err, res[4]);
     });
 }
@@ -6267,9 +6277,9 @@ exports.findchild = findchild = findchild = function findchild(inputobj, callbac
             "data.primarywid": wid
         }]
     };
-    execute(executeobject, function(err, res) {
+    execute(executeobject, function (err, res) {
         proxyprinttodiv("findchild res", res, 17);
-        findwidbyqueryresult(res, "secondarywid", function(err, res) {
+        findwidbyqueryresult(res, "secondarywid", function (err, res) {
             callback(err, res);
         });
     });
@@ -6278,7 +6288,7 @@ exports.findchild = findchild = findchild = function findchild(inputobj, callbac
 function findwidbyqueryresult(queryresult, mongorawquerywidkey, callback) {
     var result = [];
     var primarywids = queryresult[0].queryresult;
-    async.each(primarywids, function(primarywid, callback) {
+    async.each(primarywids, function (primarywid, callback) {
         for (widkey in primarywid) {
             var wid = primarywid[widkey];
             var executeobject = {};
@@ -6291,12 +6301,12 @@ function findwidbyqueryresult(queryresult, mongorawquerywidkey, callback) {
                     "wid": wid[mongorawquerywidkey]
                 }]
             };
-            execute([executeobject], function(err, res) {
+            execute([executeobject], function (err, res) {
                 result.push(res);
                 callback();
             });
         }
-    }, function(err) {
+    }, function (err) {
         callback(err, result);
     });
 }
@@ -6318,7 +6328,7 @@ exports.filterobjecttest1 = filterobjecttest1 = function filterobjecttest1(param
         "wid": "guid"
     };
 
-    filterobject(inputobj, dtoobj, function(err, res) {
+    filterobject(inputobj, dtoobj, function (err, res) {
         proxyprinttodiv("filterobjecttest1 filterobject res", res, 17);
         callback(err, res);
     });
@@ -6330,7 +6340,7 @@ exports.filterobjecttest1 = filterobjecttest1 = function filterobjecttest1(param
 
 //     var command = {"deepfilter":{"convert":true,"keepaddthis":true}};
 
-//     deepfilter(obj, filterobject, command, function(err, res){
+//     deepfilter(obj, filterobject, command, function (err, res){
 //         proxyprinttodiv("res --", res, 17);
 //         var actual_result = res;
 //         proxyprinttodiv("actual_result --", actual_result, 17);                           
@@ -6397,7 +6407,7 @@ exports.getcollectionlengthtest1 = getcollectionlengthtest1 = function getcollec
         "executethis": "getcollectionlength",
         "command": getcollectionlengthcommand
     }];
-    execute(executeArray, function(err, res) {
+    execute(executeArray, function (err, res) {
         proxyprinttodiv(">> getcollectionlength command <<", getcollectionlengthcommand, 17);
         proxyprinttodiv("getcollectionlengthcommand result ", res[2], 17);
         callback(err, res);
@@ -6416,7 +6426,7 @@ exports.getcollectionlength = getcollectionlength = function getcollectionlength
             "data.d": "1"
         }]
     };
-    execute(executeobject, function(err, res) {
+    execute(executeobject, function (err, res) {
         proxyprinttodiv("getcollectionlength res", res, 17);
         callback(err, res);
     });
@@ -6447,7 +6457,7 @@ exports.deletecollectiontest1 = deletecollectiontest1 = function deletecollectio
         "executethis": "deletecollection",
         "command": deletecollectioncommand
     }];
-    execute(executeArray, function(err, res) {
+    execute(executeArray, function (err, res) {
         proxyprinttodiv(">> add command <<", addcommand, 17);
         proxyprinttodiv("add result ", res[0], 17);
         proxyprinttodiv(">> deletecollection command <<", deletecollectioncommand, 17);
@@ -6469,7 +6479,7 @@ exports.deletecollection = deletecollection = deletecollection = function delete
             "data.collection": collection
         }]
     };
-    execute(executeobject, function(err, res) {
+    execute(executeobject, function (err, res) {
         proxyprinttodiv("deletecollection res", res, 17);
         callback(err, res);
     });
@@ -6572,12 +6582,12 @@ exports.processeventtest1 = processeventtest1 = function processeventtest1(param
         "metadata": "eventonemin",
         "command": addeventcommand
     }];
-    execute(executeList, function(err, res) {
+    execute(executeList, function (err, res) {
         proxyprinttodiv("add events res ", res, 17);
 
         //To process an event
         var eventname = "processevent5";
-        processevent(eventname, function(err, res) {
+        processevent(eventname, function (err, res) {
             proxyprinttodiv("processevent res", res, 17);
             callback(err, res);
         });
@@ -6600,7 +6610,7 @@ exports.maincollection1test = maincollection1test = function maincollection1test
             "executethis": "getwidmaster",
             "wid": "wid1"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
             proxyprinttodiv('The wid1 record: ', res[1], 99);
 
@@ -6671,7 +6681,7 @@ exports.testeventdata1 = testeventdata1 = function testeventdata1(params, callba
             "executethis": "getwidmaster",
             "wid": "author1"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
             proxyprinttodiv('The author1 record: ', res[3], 99);
 
@@ -6698,7 +6708,7 @@ exports.testeventonemin1 = testeventonemin1 = function testeventonemin1(params, 
                 "collection": "eventonemin"
             }
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
             callback(err, res);
         });
@@ -6722,7 +6732,7 @@ exports.testeventonemin2 = testeventonemin2 = function testeventonemin2(params, 
         }, {
             "executethis": "wid1"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
             callback(err, res);
         });
@@ -6756,9 +6766,9 @@ exports.testeventonemin3 = testeventonemin3 = function testeventonemin3(params, 
                 "collection": "eventonemin"
             }
         }],
-        function(err, res) {
+        function (err, res) {
             debuglevel = 11;
-            eventonemin({}, function(err, res) {
+            eventonemin({}, function (err, res) {
                 proxyprinttodiv('Full results: ', res, 99);
                 callback(err, res);
             });
@@ -7006,7 +7016,7 @@ exports.filterobjecttest1 = function filterobjecttest1(parameters, callback) {
         "b": "2"
     };
 
-    filterobject(obj1, obj2, null, function(err, res) {
+    filterobject(obj1, obj2, null, function (err, res) {
         proxyprinttodiv("filterobjecttest1 filterobject res", res, 17);
         var actual_result = res;
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -7035,7 +7045,7 @@ exports.filterobjecttest2 = function filterobjecttest2(parameters, callback) {
         }
     }
 
-    filterobject(obj1, obj2, command, function(err, res) {
+    filterobject(obj1, obj2, command, function (err, res) {
         proxyprinttodiv("filterobjecttest1 filterobject res", res, 17);
         var actual_result = res;
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -7061,7 +7071,7 @@ exports.filterobjecttest3 = function filterobjecttest3(parameters, callback) {
         "c": "3"
     };
 
-    filterobject(obj1, obj2, null, function(err, res) {
+    filterobject(obj1, obj2, null, function (err, res) {
         proxyprinttodiv("filterobjecttest1 filterobject res", res, 17);
         var actual_result = res;
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -7089,7 +7099,7 @@ exports.testhtmladd = testhtmladd = function testhtmladd(params, callback) {
             "executethis": "getwidmaster",
             "wid": "wid1"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
             callback(err, res);
         });
@@ -7100,7 +7110,7 @@ exports.testhtmladd2 = testhtmladd2 = function testhtmladd2(params, callback) {
             "executethis": "getwid",
             "wid": "wid1"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
             callback(err, res);
         });
@@ -7254,7 +7264,7 @@ exports.testcache1 = testcache1 = function testcache1(params, callback) {
                 "method": "codydto"
             }
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('cody1 cache: ', res[1], 99);
             proxyprinttodiv('cody1 update: ', res[2], 99);
             proxyprinttodiv('cody1 result: ', res[3], 99);
@@ -7306,7 +7316,7 @@ exports.testcache2 = testcache2 = function testcache2(params, callback) {
                 "method": "adto"
             }
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('caching awid1: ', res[1], 99);
             proxyprinttodiv('updating awid1: ', res[2], 99);
             proxyprinttodiv('awid1 get: ', res[3], 99);
@@ -7352,7 +7362,7 @@ exports.testupdating1 = testupdating1 = function testupdating1(params, callback)
                 "method": "adto"
             }
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('adding adto: ', res[0], 99);
             proxyprinttodiv('adding awid1: ', res[1], 99);
             proxyprinttodiv('updating awid1: ', res[2], 99);
@@ -7383,7 +7393,7 @@ exports.testpreexecute1 = testpreexecute1 = function testpreexecute1(params, cal
             "executethis": "mirrorparams",
             "c": "d"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('adding adto: ', res[1], 99);
             var result = logverify("cody1_result", res[1], [{
                 "wid": "wid1",
@@ -7430,7 +7440,7 @@ exports.testcache1 = testcache1 = function testcache1(params, callback) {
                 "method": "codydto"
             }
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('cody1 cache: ', res[1], 99);
             proxyprinttodiv('cody1 update: ', res[2], 99);
             proxyprinttodiv('cody1 result: ', res[3], 99);
@@ -7482,7 +7492,7 @@ exports.testcache2 = testcache2 = function testcache2(params, callback) {
                 "method": "adto"
             }
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('caching awid1: ', res[1], 99);
             proxyprinttodiv('updating awid1: ', res[2], 99);
             proxyprinttodiv('awid1 get: ', res[3], 99);
@@ -7521,7 +7531,7 @@ exports.testadding1 = testadding1 = function testadding1(params, callback) {
                 "method": "adto"
             }
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('adding adto: ', res[0], 99);
             proxyprinttodiv('adding awid1: ', res[1], 99);
             proxyprinttodiv('awid1 get: ', res[2], 99);
@@ -7567,7 +7577,7 @@ exports.testupdating1 = testupdating1 = function testupdating1(params, callback)
                 "method": "adto"
             }
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('adding adto: ', res[0], 99);
             proxyprinttodiv('adding awid1: ', res[1], 99);
             proxyprinttodiv('updating awid1: ', res[2], 99);
@@ -7579,6 +7589,87 @@ exports.testupdating1 = testupdating1 = function testupdating1(params, callback)
                 "field2": "world"
             }]);
             callback(err, result);
+        });
+}
+
+exports.testpermissiondefault1 = testpermissiondefault1 = function testpermissiondefault1(params, callback) {
+	execute([{
+			"executethis":"createalldtos"
+		},	{
+            "executethis": "addwidmaster",
+            "wid": "p1",
+            "metadata": {
+                "method": "permissiondto"
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "p1",
+            "metadata": {
+                "method": "permissiondto"
+            }
+        }],
+        function (err, res) {
+            proxyprinttodiv('adding permissiondto: ', res[1], 99);
+            var result = logverify("cody1_result", res[1], [{
+                "wid": "p1",
+                "metadata.method": "permissiondto",
+                "level":"0",
+				"metadata.db":"data",
+				"metadata.collection":"maincollection"
+            }]);
+			callback(err, result);
+        });
+}
+
+exports.testpermissiondefault2 = testpermissiondefault2 = function testpermissiondefault2(params, callback) {
+				execute([{
+                    // Create the permissiondto     
+                    "executethis": "addwidmaster",
+                    "wid": "permissiondto",
+                    "metadata.method": "permissiondto",
+                    "metadata.system.creator": "string",
+                    "level": "string",
+					"metadata.inherit.0": {
+						"wid" : "defaultuserpermission",
+						"command" : {
+							"dtotype":"",
+							"adopt":"default"
+						}
+					},
+                    "metadata.actiongroupdto.type": "manytomany",
+                    "metadata.usergroupdto.type": "manytomany",
+                    "metadata.db": "string",
+					"metadata.collection": "string"
+                }, {
+					// Create a default permissiondto
+					"executethis":"addwidmaster",
+					"wid":"defaultuserpermission",
+					"metadata.method":"permissiondto",
+					//"actiongroupdto.inherit.0":"",
+					//"usergroupdto.inherit.0":"",
+					"metadata.db":"cdata",
+					"metadata.collection":"cmaincollection",
+					"level":"0"
+				}, {
+					"executethis": "addwidmaster",
+					"wid": "p1",
+					"metadata": {
+						"method": "permissiondto"
+					}
+				}, {
+					"executethis": "getwidmaster",
+					"wid":"p1"
+				}],
+				function (err, res) {
+				proxyprinttodiv('adding permissiondto: ', res[3], 99);
+				var result = logverify("cody1_result", res[3], [{
+					"wid": "p1",
+					"metadata.method": "permissiondto",
+					"level":"0",
+					"metadata.db":"cdata",
+					"metadata.collection":"cmaincollection"
+				}]);
+				callback(err, result);
         });
 }
 
@@ -7598,7 +7689,7 @@ exports.testpreexecute1 = testpreexecute1 = function testpreexecute1(params, cal
             "executethis": "mirrorparams",
             "c": "d"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('adding adto: ', res[1], 99);
             var result = logverify("cody1_result", res[1], [{
                 "wid": "wid1",
@@ -7678,7 +7769,7 @@ exports.ettestag9000 = ettestag9000 = function ettestag9000(params, callback) {
             "executethis": "getwidmaster",
             "wid": "song1"
         }],
-        function(err, res) {
+        function (err, res) {
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result ', res[6], 17);
@@ -7709,7 +7800,7 @@ exports.ettestag9000 = ettestag9000 = function ettestag9000(params, callback) {
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 99);
                 callback(err, res);
 
@@ -7728,7 +7819,7 @@ exports.testenv = testenv = function testenv(params, callback) {
                 }
             }
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('testenv result: ', res, 99);
             // var result = logverify("cody1_result", res[3], [{
             //     "wid": "cody1",
@@ -7752,7 +7843,7 @@ exports.numerickeyerror = numerickeyerror = function numerickeyerror(params, cal
                 }
             }
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('db1dto result: ', res, 99);
             callback(err, res);
         });
@@ -7786,7 +7877,7 @@ exports.stbd1a = stbd1a = function stbd1a(params, callback) {
             "executethis": "getwid",
             "wid": "db1dto"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('stbd1a result: ', res, 99);
             callback(err, res);
         });
@@ -7822,7 +7913,7 @@ exports.stbd1b = stbd1b = function stbd1b(params, callback) {
             "command.collection":"data",
             "wid": "db2dto"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('stbd1b result: ', res, 99);
 
             callback(err, res);
@@ -7860,7 +7951,7 @@ exports.stbd1c = stbd1c = function stbd1c(params, callback) {
             "command.collection":"data",
             "wid": "db2dto"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('stbd1c result: ', res, 99);
 
             callback(err, res);
@@ -7903,7 +7994,7 @@ exports.stbd1d = stbd1d = function stbd1d(params, callback) {
             "command":{"db":"test"},
             "wid": "db2dto"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('stbd1d result: ', res, 99);
 
             callback(err, res);
@@ -7946,7 +8037,7 @@ exports.stbd1e = stbd1e = function stbd1e(params, callback) {
             "command":{"environment":{"db":"test"}},
             "wid": "db2dto"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('stbd1e result: ', res, 99);
 
             callback(err, res);
@@ -7986,7 +8077,7 @@ exports.stbd1f = stbd1f = function stbd1f(params, callback) {
             "command":{"environment":{"db":"test"}},
             "wid": "db2dto"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('stbd1f result: ', res, 99);
 
             callback(err, res);
@@ -8024,7 +8115,7 @@ exports.stbd1g = stbd1g = function stbd1g(params, callback) {
             "command":{"environment":{"db":"data"}},
             "wid": "db2dto"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('stbd1g result: ', res, 99);
 
             callback(err, res);
@@ -8060,7 +8151,7 @@ exports.stbd1h = stbd1h = function stbd1h(params, callback) {
             "command":{"environment":{"db":"data"}},
             "wid": "db2dto"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('stbd1h result: ', res, 99);
 
             callback(err, res);
@@ -8114,7 +8205,7 @@ exports.stbd1i = stbd1i = function stbd1i(params, callback) {
             "command":{"environment":{"db":"da","collection":"dri3"}},
             "wid": "db2dto"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('stbd1i result: ', res, 99);
 
             callback(err, res);
@@ -8168,7 +8259,7 @@ exports.stbd1j = stbd1j = function stbd1j(params, callback) {
             "command":{"environment":{"db":"da","collection":"dri2","databasetable":"wikiwallettesting2"}},
             "wid": "db2dto"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('stbd1j result: ', res, 99);
 
             callback(err, res);
@@ -8223,4 +8314,442 @@ exports.mq2_test = mq2_test = function mq2_test(inputobj, callback) {
         function (err, res) { 
             callback( null, res) 
         })
+}
+
+// deletewid() test 
+// To test wid copied to command.datasettable="driarchive" or not
+exports.testdltwid1 = testdltwid1 = function testdltwid1(params, callback) {
+	debuglevel = 17;
+    execute([{
+		"executethis": "updatewid",
+		"wid": "testdeletewid1",
+		"a": "b"
+	}, {
+		"executethis": "deletewid",
+		"wid": "testdeletewid1"
+	}, {
+		"executethis": "getwid",
+		"wid": "testdeletewid1"
+	}],
+	function(err, res) {
+		proxyprinttodiv('testdeletewid1 result: ', res, 99);
+		callback(err, res);
+	});
+}
+// To test with copywid, command.environment debugging
+exports.testgetwid1 = testgetwid1 = function testgetwid1(params, callback) {
+	debuglevel = 17;
+    execute([{
+		"executethis": "getwid",
+		"wid": "testwid1"
+	}],
+	function(err, res) {
+		proxyprinttodiv('testgetwid1 result: ', res, 99);
+		callback(err, res);
+	});
+}
+
+//To test updatewid, getwid
+exports.testupdateget = testupdateget = function testupdateget(params, callback) {
+    execute([{	//dto add
+		"executethis": "updatewid",
+		"wid": "adto",
+		"metadata": {
+			"method": "adto"
+		},
+		"a": "string",
+		"b": "string"
+	}, {	//wid add
+		"executethis": "updatewid",
+		"wid": "awid1",
+		"metadata": {
+			"method": "adto"
+		},
+		"a": "hello",
+		"b": "world"
+	}, {	//wid update
+		"executethis": "updatewid",
+		"wid": "awid1",
+		"metadata": {
+			"method": "adto"
+		},
+		"a": "goodbye"
+	}, {	//get wid
+		"executethis": "getwidmaster",
+		"wid": "awid1",
+		"metadata": {
+			"method": "adto"
+		}
+	}],
+	function(err, res) {
+		proxyprinttodiv('adding adto: ', res[0], 99);
+		proxyprinttodiv('adding awid1: ', res[1], 99);
+		proxyprinttodiv('updating awid1: ', res[2], 99);
+		proxyprinttodiv('awid1 get: ', res[3], 99);
+		var result = logverify("testupdateget_result", res[3], [{
+			"wid": "awid1",
+			"metadata":{"method":"adto"},
+			"a": "goodbye",
+			"b": "world"
+		}]);
+		callback(err, result);
+	});
+}
+
+//To test copywid
+exports.testcopywid = testcopywid = function testcopywid(params, callback) {
+    debuglevel = 17;
+
+    var executeArray = [{	//updatewid
+        "executethis": "updatewid",
+        "wid": "wid1",
+        "a": "44",
+        "b": "6",
+        "command": {"collection": "test"}
+    }, {	//getwid
+		"executethis": "getwid",
+		"wid": "wid1",
+		"command": {"collection": "test"}
+	}, {	//getwid
+		"executethis": "getwid",
+		"wid": "wid1",
+		"command": {"collection": "test2"}
+	}, {	//copywid
+		"executethis": "copywid",
+        "wid": "wid1",
+		"command": {
+			fromdb: "data",
+			fromcollection: "test",
+			fromdatastore: "localstorage",
+			fromdatabasetable: "wikiwallettesting",
+			todb: "data",
+			tocollection: "test2",
+			todatastore: "localstorage",
+			todatabasetable: "wikiwallettesting"
+		}
+	}, {	//getwid
+		"executethis": "getwid",
+		"wid": "wid1",
+		"command": {"collection": "test2"}
+	}];
+
+    execute(executeArray, function(err, res) {
+        proxyprinttodiv("updatewid result with command.collection=test", res[0], 17);
+        proxyprinttodiv("getwid result with command.collection=test", res[1], 17);
+		proxyprinttodiv("getwid result with command.collection=test2", res[2], 17);
+		//proxyprinttodiv("copywid result with command.collection=test", res[3], 17);
+		//proxyprinttodiv("getwid result with command.collection=test2", res[4], 17);
+        callback(err, res);
+    });
+}
+
+
+// getrelatedrecords() test with one child
+exports.testgetrelatedrecords1 = testgetrelatedrecords1 = function testgetrelatedrecords1(params, callback) {
+	debuglevel = 17;
+	
+    execute([{	//authordto
+		"executethis": "addwidmaster",
+		"metadata.method": "authordto",
+		"wid": "authordto",
+		"name": "string",
+		"age": "string"
+	}, {    //bookdto
+		"executethis": "addwidmaster",
+		"metadata.method": "bookdto",
+		"wid": "bookdto",
+		"title": "string"
+	}, {    //authordto - bookdto
+		"executethis": "addwidmaster",
+		"wid": "rel_author_book",
+		"metadata.method": "relationshipdto",
+		"relationshiptype": "attributes",
+		"linktype": "onetomany",
+		"primarywid": "authordto",
+		"primarymethod": "authordto",
+		"secondarywid": "bookdto",
+		"secondarymethod": "bookdto"
+    }, {	//pagedto
+		"executethis": "addwidmaster",
+		"metadata.method": "pagedto",
+		"wid": "pagedto",
+		"pages": "string"
+	}, {    //bookdto - pagedto
+		"executethis": "addwidmaster",
+		"wid": "rel_book_page",
+		"metadata.method": "relationshipdto",
+		"relationshiptype": "attributes",
+		"linktype": "onetomany",
+		"primarywid": "bookdto",
+		"primarymethod": "bookdto",
+		"secondarywid": "pagedto",
+		"secondarymethod": "pagedto"
+    }, {    //author1
+        "executethis":"addwidmaster",
+        "metadata.method": "authordto",
+        "wid": "author1",
+        "name": "Author 1",
+        "age": "1",
+        //"bookdto.title":"book1"
+    }, {    //book1
+		"executethis":"addwidmaster",
+		"metadata.method": "bookdto",
+		"wid": "book1",
+		"title": "Book 1"
+	}, {    //page1
+		"executethis":"addwidmaster",
+		"metadata.method": "pagedto",
+		"wid": "page1",
+		"title": "Page 1"
+	}, {    //rel author1-book1
+		"executethis": "addwidmaster",
+		"wid": "rel_author1_book1",
+		"metadata.method": "relationshipdto",
+		"relationshiptype": "attributes",
+		"linktype": "onetomany",
+		"primarywid": "author1",
+		"primarymethod": "author1",
+		"secondarywid": "book1",
+		"secondarymethod": "book1"
+	}, {    //rel book1-page1
+		"executethis": "addwidmaster",
+		"wid": "rel_book1_page1",
+		"metadata.method": "relationshipdto",
+		"relationshiptype": "attributes",
+		"linktype": "onetomany",
+		"primarywid": "book1",
+		"primarymethod": "book1",
+		"secondarywid": "page1",
+		"secondarymethod": "page1"
+	}, {    //getwid author1
+        "executethis":"getwidmaster",
+        "wid": "author1"
+    }, {    //to get book1's parent author1
+        "executethis":"getrelatedrecords",
+        "widlist": ["book1"],
+		"command": {"reltype": "parent", "recurse":true}
+	}/*, {    //to get book1's parent author1
+        "executethis":"getrelatedrecords",
+        "widlist": ["page1"],
+		"command": {"reltype": "parent", "recurse":true}
+	}, {    //to get author1's children
+        "executethis":"getrelatedrecords",
+        "widlist": ["author1"],
+		"command": {"reltype": "child", "recurse":true}
+	}*/], function (err, res) {
+		callback(err, res);
+	});
+}
+
+// getrelatedrecords() test 
+// to test multiple children
+exports.testgetrelatedrecords2 = testgetrelatedrecords2 = function testgetrelatedrecords2(params, callback) {
+	debuglevel = 17;
+	
+	var executeList = [{	//testdto
+		"executethis": "addwidmaster",
+		"metadata.method": "testdto",
+		"wid": "testdto",
+		"a": "string"
+	}, {    //rel testdto-testdto
+		"executethis": "addwidmaster",
+        "wid": "rel_testdto_testdto",
+        "metadata.method": "relationshipdto",
+        "relationshiptype": "attributes",
+        "linktype": "onetomany",
+        "primarywid": "testdto",
+        "primarymethod": "testdto",
+        "secondarywid": "testdto",
+        "secondarymethod": "testdto"
+    }, {	//to add test1
+		"executethis":"addwidmaster",
+		"metadata.method": "testdto",
+		"wid": "test1",
+		"a": "1",
+		"testdto.a":"b"
+	}, {    //to get test1
+        "executethis":"getwidmaster",
+        "wid": "test1"
+	// }, {    //to get test1's children
+ //        "executethis":"getrelatedrecords",
+ //        "widlist": ["test1"],
+	// 	"command": {"reltype": "child", "recurse":true}
+	}/*, {    //test2
+		"executethis":"addwidmaster",
+		"metadata.method": "testdto",
+		"wid": "test2",
+		"a": "2"
+	}, {    //test3
+		"executethis":"addwidmaster",
+		"metadata.method": "testdto",
+		"wid": "test3",
+		"testdto.a": "3"
+	}, {    //test4
+		"executethis":"addwidmaster",
+		"metadata.method": "testdto",
+		"wid": "test4",
+		"testdto.a": "4"
+	}, {    //test5
+		"executethis":"addwidmaster",
+		"metadata.method": "testdto",
+		"wid": "test5",
+		"testdto.a": "5"
+	}, {    //test6
+		"executethis":"addwidmaster",
+		"metadata.method": "testdto",
+		"wid": "test6",
+		"testdto.testdto.a": "6"
+	}, {    //test7
+		"executethis":"addwidmaster",
+		"metadata.method": "testdto",
+		"wid": "test7",
+		"testdto.testdto.a": "10"
+	}, {    //test8
+		"executethis":"addwidmaster",
+		"metadata.method": "testdto",
+		"wid": "test8",
+		"testdto.testdto.testdto.a": "11"
+	}, {    //test9
+		"executethis":"addwidmaster",
+		"metadata.method": "testdto",
+		"wid": "test9",
+		"testdto.testdto.testdto.a": "12"
+	}, {    
+		"executethis":"getrelatedrecords",
+		"wid": "test3"
+	}, {    
+		"executethis":"getrelatedrecords",
+		"wid": "test6"
+	}, {    
+		"executethis":"getrelatedrecords",
+		"wid": "test9"
+	}*/];
+	execute(executeList, function (err, res) {
+        proxyprinttodiv("testgetrelatedrecords1", res, 99);
+		proxyprinttodiv("testgetrelatedrecords1 res[2]", res[2], 17);
+		proxyprinttodiv("testgetrelatedrecords1 res[5]", res[5], 17);
+		proxyprinttodiv("testgetrelatedrecords1 res[8]", res[8], 17);
+		callback(err, res);
+	});
+}
+
+/*
+-- amount of remaining local storage
+-- how many bytes is object using up	
+Reference -- http://glynrob.com/javascript/calculate-localstorage-space
+*/
+exports.calculatespace = calculatespace = function calculatespace(params, callback) {
+	debuglevel=17;
+	
+	
+	
+
+};
+
+
+exports.testcalculatespace = testcalculatespace = function testcalculatespace(params, callback) {
+	debuglevel = 17;	
+	var executeList = [{	//testdto
+		"executethis": "calculatespace",
+		"command": {"collection":"xyz"}
+	}];
+	execute(executeList, function (err, res) {
+        proxyprinttodiv("testcalculatespace res", res, 17);
+		callback(err, res);
+	});	
+}
+
+// To calculate the size in bytes of the data currently stored
+function sizeofAllStorage(){  
+	var size = 0;
+	var eachObjectSize = 0;
+	var eachObjectSizeInMB = 0
+	for (i=0; i<=localStorage.length-1; i++) {  
+		key = localStorage.key(i);  
+		eachObjectSize = lengthInUtf8Bytes(localStorage.getItem(key));
+		size += eachObjectSize;
+		eachObjectSizeInMB = Math.ceil((eachObjectSize/1024/1024)*100)/100
+		proxyprinttodiv("calculatespace size ("+ key +")", eachObjectSizeInMB, 17);
+	}  
+	return Math.ceil((size/1024/1024)*100)/100; // get into MB
+}
+function lengthInUtf8Bytes(str) {
+  // Matches only the 10.. bytes that are non-initial characters in a multi-byte sequence.
+  var m = encodeURIComponent(str).match(/%[89ABab]/g);
+  return str.length + (m ? m.length : 0);
+}
+
+//To get total storage size
+function totalStorageSize(){
+	var storeSpace = 0;
+	var maxMBToTest = 10;
+	localStorage.clear();
+	var i = 0;
+	var testPacket = new Array( 1025 ).join( "a" ); // create 1024 characters so 1KB
+	while (i<maxMBToTest){ // MB level
+		var t = 0;
+		while (t<1025){ // KB level
+			try {
+				localStorage.setItem(i+"|"+t, testPacket);
+			} catch( error ) {
+				var kbsaved = Math.floor(((t / 1024) * 100)); // calculate percentage of 1024
+				storeSpace = i+'.'+kbsaved; // add MB and KB values
+				storeSpace =  (Math.floor(storeSpace*100))/100; // rounds down the value
+				t = 1025;
+				i = maxMBToTest+1;
+			}
+			t++;
+		}
+		i++;
+	}
+	localStorage.clear();
+	return storeSpace;
+}
+
+/*
+    deepfilter should process command
+	To check dataType=object, dataType=array
+*/
+exports.etd15 = etd15 = function etd15(params, callback) {
+	debuglevel = 17;
+	async.series([
+	function step1(cb1){
+		var dtoObjOpt = {"o1":"object","a1":"array","q":{"w":{"e":"boolean"}},"b":[{"c":"string","c1":"boolean","c2":"boolean"}]};
+		var inputObj = {"o1":{"a":"b"},"a1":[{"a1":"b1"},{"a2":"b2"}],"q":{"w":{"e":"true"}},"b":[{"c":"one","c1":"true","c2":"x"}]};
+		var command = {"deepfilter":{"convert":"true"}};
+		deepfilter(inputObj, dtoObjOpt, command, function (err, res){
+			cb1(err, res);
+		});
+	}], function (err, res) {
+		proxyprinttodiv("res --", res, 17);
+		var actual_result = [res];
+		proxyprinttodiv("actual_result --", actual_result, 17);							  
+
+		var expected_result = [[{"o1":{"a":"b"},"a1":["hi","hi2"]}]];
+		proxyprinttodiv("expected_result --", expected_result, 17);
+
+//		res = logverify("etd15", actual_result, expected_result);
+		callback(err, res);
+	});
+}
+
+/*
+	guid, shortguid, random4
+*/
+exports.etdguid = etdguid = function etdguid(params, callback) {
+	debuglevel = 17;
+	async.series([
+	function step1(cb1){
+		var dtoObjOpt = {"g1":"guid","g2":"guid","sg1":"shortguid", "sg2":"shortguid","r1":"random4","r2":"random4"};
+		var inputObj = {"g2":"1111111-2222-33333-4444-5555555555","sg2":"1111-2222-3333-4444","r2":"1111"};
+		var command = {"deepfilter":{"convert":"true"}};
+		deepfilter(inputObj, dtoObjOpt, command, function (err, res){
+			cb1(err, res);
+		});
+	}], function (err, res) {
+		proxyprinttodiv("res --", res, 17);
+		var actual_result = [res];
+		proxyprinttodiv("actual_result --", actual_result, 17);
+		callback(err, res);
+	});
 }
