@@ -1,14 +1,15 @@
-if(!exports){ var exports = {}; } // defaulting global exports variable
+if(!exports){ var exports = {}; }
 
 // call eventdeviceready from config to see if app needs to be installed
 // call outside controller so it happens first
+
 eventdeviceready({}, function (err, results) { });
 
+//<editor-fold desc="App, Factories, and Directives">
+
 if (typeof angular !== 'undefined') {
-    // define main angularJS dri wid app
     var widApp = angular.module('widApp', ['ui.bootstrap']);
 
-    // angular data service which decides how incoming data is stored into the model
     widApp.factory('dataService', function($http, $compile) {
         var storeAllData = function(obj, scope, objName, callback) {
             var thisWid = objName ? objName : obj.wid ? obj.wid : undefined,
@@ -62,8 +63,6 @@ if (typeof angular !== 'undefined') {
         }
     });
 
-    // angular execute service, mainly an execute() wrapper 
-    // which processes results into the dri/angularJS universe
     widApp.factory('executeService', function($http, $compile, dataService) {
         var processExecuteResult = function(result, scope) {
             if (!result) { result = {}; }
@@ -137,7 +136,32 @@ if (typeof angular !== 'undefined') {
         }
     });
 
-    // html attribute that allows any html element to become draggable with the mouse
+//    widApp.directive('ngBlur', function() {
+//        return function(scope, elem, attrs) {
+//            elem.bind('blur', function() {
+//                var phase = scope.$root.$$phase;
+//                if (phase !== '$apply' && phase !== '$digest') {
+//                    scope.$apply(attrs.ngBlur);
+//                } else { scope.$apply(attrs.ngBlur); }
+//            });
+//        };
+//    });
+
+//    widApp.directive('appendcode', function($compile) {
+//        return function(scope, element, attrs) {
+//            scope.$watch(
+//                function(scope) {
+//                    return scope.$eval(attrs.appendcode);
+//                },
+//                function(html) {
+//                    element.html(html);
+//                    var contents = element.contents();
+//                    $compile(contents)(scope);
+//                }
+//            );
+//        }
+//    });
+
     widApp.directive('draggable', function($document) {
         return function(scope, element, attr) {
             var startX = 0, startY = 0, x = 0, y = 0;
@@ -170,31 +194,32 @@ if (typeof angular !== 'undefined') {
         };
     });
 
-    // main wid controller (powers dripoint.com landing spot)
+    //</editor-fold>
+
+    //<editor-fold desc="wid controller">
+
     widApp.controller('widCtrl', ['$scope', '$compile', 'dataService', 'executeService',
         function($scope, $compile, dataService, executeService) {
-            $scope.data = {}; // general catchall for all properties stored in model
+            $scope.data = {};
 
             var querystring = window.location.search,
                 urlParameters = widAppHelper.queryStrToObj(querystring.substring(1));
 
-            // default wid to 'startwid'
-            if (!urlParameters.wid) { urlParameters.wid = 'startwid'; }
-
-            // package url parameters into model
-            if (Object.size(urlParameters) > 0) { $scope.urlparams = extend(true, urlParameters); }
-
-            // process url parameters with angularExecute
             executeService.executeThis(urlParameters, $scope, function (err, resultset) { });
 
-            // clears success and error logs on page
+            // package original url parameters into model
+            if (Object.size(urlParameters) > 0) { $scope.urlparams = widAppHelper.queryStrToObj(querystring.substring(1)); }
+
             $scope.clearlogs = function() { $('#errorlog,#successlog').html(''); };
 
             $scope.listLength = function(list) { return Object.size(list); };
         }
     ]);
 
-    // helper object which contains helpful functions
+    //</editor-fold>
+
+    //<editor-fold desc="helper object and functions"
+
     var widAppHelper = {
         getUrlParam: function(name) {
             name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
@@ -371,7 +396,6 @@ if (typeof angular !== 'undefined') {
         }
     };
 
-    // angularExecute wrapper that is called from html elements
     function callExecute(ele) {
         var attrObj = NNMtoObj(ele.attributes),
             parameters = extend(true, {command:{parameters:{eventdata:{}}}}, JSON.parse(attrObj.etparams)),
@@ -404,7 +428,8 @@ if (typeof angular !== 'undefined') {
         return obj;
     }
 
-    // mostly processes wid names found in execute results
+    //</editor-fold>
+
     exports.etProcessScreenWid = etProcessScreenWid = function etProcessScreenWid(parameters, scope, callback) {
         var widforview = [],
             widforbase = [],
@@ -418,23 +443,21 @@ if (typeof angular !== 'undefined') {
         if (parameters.widforview) { widforview = parameters.widforview.split(','); delete parameters['widforview']; }
         else if (typeof widForView !== 'undefined') { widforview = widForView.split(','); }
 
-        if (widforview.length > 0) { scope.widforview = widforview; }
+        scope.widforview = widforview;
 
         if (parameters.widforbase) { widforbase = parameters.widforbase.split(','); delete parameters['widforbase']; }
         else if (typeof widForBase !== 'undefined') { widforbase = widForBase.split(','); }
 
-        if (widforbase.length > 0) { scope.widforbase = widforbase; }
+        scope.widforbase = widforbase;
 
         if (parameters.widforbackground) { widforbackground = parameters.widforbackground.split(','); delete parameters['widforbackground']; }
         else if (typeof widForBackground !== 'undefined') { widforbackground = widForBackground.split(','); }
 
-        if (widforbackground.length > 0) { scope.widforbackground = widforbackground; }
+        scope.widforbackground = widforbackground;
 
-        if (parameters.links) {
-            links = JSON.parse(parameters.links);
-            delete parameters['links'];
-            scope.links = links;
-        }
+        if (parameters.links) { links = JSON.parse(parameters.links); delete parameters['links']; }
+
+        scope.links = links;
 
         // handle action binding from links variable
         for (var i = 0; i < links.length; i++) {
@@ -530,7 +553,6 @@ if (typeof angular !== 'undefined') {
     };
 }
 
-// pulls object from scope (model) by wid name
 exports.getfromangular = getfromangular = function getfromangular(parameters, callback) {
     if ($ && $('body').scope) { callback(null, $('body').scope()[parameters.wid]); }
     else { callback(null); }

@@ -738,11 +738,11 @@
     //             for (var i = 0; i < filteredParams.length; i++) {
     //                 var params = filteredParams[i];
     //                 proxyprinttodiv("executethismultiple - waterfall -- iteration - params ", params, 11);
-    //                 var func = getFunction(params);
+    //                 var func = getfunction (params);
     //                 fnArray.push(func);
     //             }
 
-    //             function getFunction(params) {
+    //             function getfunction (params) {
     //                 return function (cb1) {
     //                     executeone(params, function (err, res) {
     //                         // proxyprinttodiv("executethismultiple - iteration - eachtodo  ", eachtodo, 11);

@@ -29,7 +29,7 @@ exports.filter1 = filter1 = function filter1(params, callback) {
                 }
             }
         }
-    }, function(err, res) {
+    }, function (err, res) {
         proxyprinttodiv('Function filter1 added  ttdto -- ', res, 37);
         callback(null);
     });
@@ -102,26 +102,26 @@ exports.createtestaction = createtestaction = function createtestaction(wid, act
 exports.createaction1 = createaction1 = function createaction1() {
 
     createtestaction("useraction1", "userdto", "read_stuff", "log_stuff", "err_obj");
-    addgrouptowid("useraction1", "actiondto", "bottom_action", function(err, res) {
+    addgrouptowid("useraction1", "actiondto", "bottom_action", function (err, res) {
         cb1(null);
     });
 
     createtestaction("useraction2", "userdto", "read_stuff", "log_stuff", "err_obj");
-    addgrouptowid("useraction2", "actiondto", "middle_action", function(err, res) {
+    addgrouptowid("useraction2", "actiondto", "middle_action", function (err, res) {
         cb1(null);
     });
 
     createtestaction("useraction3", "userdto", "read_stuff", "log_stuff", "err_obj");
-    addgrouptowid("useraction3", "actiondto", "top_action", function(err, res) {
+    addgrouptowid("useraction3", "actiondto", "top_action", function (err, res) {
         cb1(null);
     });
 
     //alert('next');
-    addgrouptowid("bottom_action", "groupdto", "middle_action", function(err, res) {
+    addgrouptowid("bottom_action", "groupdto", "middle_action", function (err, res) {
         cb1(null);
     });
     //alert('next');        
-    addgrouptowid("middle_action", "groupdto", "top_action", function(err, res) {
+    addgrouptowid("middle_action", "groupdto", "top_action", function (err, res) {
         cb1(null);
     });
 }
@@ -160,30 +160,30 @@ exports.createtestactiontype = createtestactiontype = function createtestactiont
 exports.createactiontype1 = createactiontype1 = function createactiontype1() {
 
     createtestactiontype("read_type", "read");
-    addgrouptowid("read_type", "actiontypedto", "read_write", function(err, res) {
+    addgrouptowid("read_type", "actiontypedto", "read_write", function (err, res) {
         cb1(null);
     });
 
     createtestactiontype("write_type", "write");
-    addgrouptowid("write_type", "actiontypedto", "read_write", function(err, res) {
+    addgrouptowid("write_type", "actiontypedto", "read_write", function (err, res) {
         cb1(null);
     });
 
     createtestactiontype("create_type", "create");
-    addgrouptowid("create_type", "actiontypedto", "create_delete", function(err, res) {
+    addgrouptowid("create_type", "actiontypedto", "create_delete", function (err, res) {
         cb1(null);
     });
 
     createtestactiontype("delete_type", "delete");
-    addgrouptowid("delete_type", "actiontypedto", "create_delete", function(err, res) {
+    addgrouptowid("delete_type", "actiontypedto", "create_delete", function (err, res) {
         cb1(null);
     });
 
-    addgrouptowid("read_write", "groupdto", "all_action_types", function(err, res) {
+    addgrouptowid("read_write", "groupdto", "all_action_types", function (err, res) {
         cb1(null);
     });
 
-    addgrouptowid("create_delete", "actiontypedto", "all_action_types", function(err, res) {
+    addgrouptowid("create_delete", "actiontypedto", "all_action_types", function (err, res) {
         cb1(null);
     });
 }
@@ -221,25 +221,25 @@ exports.createtestdata = createtestdata = function createtestdata(wid, data) {
 exports.createdata1 = createdata1 = function createdata1() {
 
     createtestdata("data1", "stuff0");
-    addgrouptowid("data1", "dbdto", "bottom_db", function(err, res) {
+    addgrouptowid("data1", "dbdto", "bottom_db", function (err, res) {
         cb1(null);
     });
 
     createtestactiontype("data1", "stuff1");
-    addgrouptowid("data1", "dbdto", "middle_db", function(err, res) {
+    addgrouptowid("data1", "dbdto", "middle_db", function (err, res) {
         cb1(null);
     });
 
     createtestactiontype("data1", "stuff2");
-    addgrouptowid("data1", "dbdto", "top_db", function(err, res) {
+    addgrouptowid("data1", "dbdto", "top_db", function (err, res) {
         cb1(null);
     });
 
-    addgrouptowid("bottom_db", "groupdto", "middle_db", function(err, res) {
+    addgrouptowid("bottom_db", "groupdto", "middle_db", function (err, res) {
         cb1(null);
     });
 
-    addgrouptowid("middle_db", "groupdto", "top_db", function(err, res) {
+    addgrouptowid("middle_db", "groupdto", "top_db", function (err, res) {
         cb1(null);
     });
 }
@@ -266,7 +266,7 @@ exports.test999 = test999 = function test999() {
             "executethis": "getwidmaster",
             "wid": "marysue"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('getwidmaster of marysue ', res, 35);
         }
     );
@@ -294,60 +294,60 @@ exports.test998 = test998 = function test998(parm, callback) {
     // saveglobal("debugcat", "");
     // saveglobal("debugsubcat", "code");
     async.series([
-        function(cb1) {
-            createsystemdtos({}, function(err, res) {
+        function (cb1) {
+            createsystemdtos({}, function (err, res) {
                 cb1(null);
             });
         },
-        function(cb1) {
-            createtestuser("user1", "user1ac", 99, function(err, res) {
+        function (cb1) {
+            createtestuser("user1", "user1ac", 99, function (err, res) {
                 cb1(null);
             });
         },
-        function(cb1) {
-            createtestuser("user2", "user2ac", 99, function(err, res) {
+        function (cb1) {
+            createtestuser("user2", "user2ac", 99, function (err, res) {
                 cb1(null);
             });
         },
-        function(cb1) {
+        function (cb1) {
             //userwid, granteegroup, actiongroup, dbgroup, levelgroup,
-            addpermission("user1", "user2", "createcoupon0", "data", 50, function(err, res) {
+            addpermission("user1", "user2", "createcoupon0", "data", 50, function (err, res) {
                 cb1(null);
             });
         },
-        function(cb1) {
-            addgrouptowid("user2", "userdto", "group1", function(err, res) {
+        function (cb1) {
+            addgrouptowid("user2", "userdto", "group1", function (err, res) {
                 cb1(null);
             });
         },
-        function(cb1) {
+        function (cb1) {
             //ac, actiongroup, targetaction, dbgroup
-            testsecurity("user2ac", "user1", "createcoupon0", "data", true, function(err, res) {
+            testsecurity("user2ac", "user1", "createcoupon0", "data", true, function (err, res) {
                 cb1(null);
             });
         },
-        function(cb1) {
-            addgrouptowid("anything0", "userdto", "createcoupon0", function(err, res) {
+        function (cb1) {
+            addgrouptowid("anything0", "userdto", "createcoupon0", function (err, res) {
                 cb1(null);
             });
         },
-        function(cb1) {
-            testsecurity("codyac0", "executethis", "createcoupon0", "data", true, function(err, res) {
+        function (cb1) {
+            testsecurity("codyac0", "executethis", "createcoupon0", "data", true, function (err, res) {
                 status = res;
                 cb1(null);
             });
         }
 
-    ], function(err, res) {
+    ], function (err, res) {
         execute({
             "executethis": "getwidmaster",
             "wid": "user1"
-        }, function(err, res) {
+        }, function (err, res) {
             proxyprinttodiv('test998 --- getwidmaster on user1 >>>>>> ', res, 35);
             execute({
                 "executethis": "getwidmaster",
                 "wid": "user2"
-            }, function(err, res) {
+            }, function (err, res) {
                 proxyprinttodiv('test998 --- getwidmaster on user2 >>>>>> ', res, 35);
                 callback(err, status);
             });
@@ -371,29 +371,29 @@ exports.test999 = test999 = function test999(parm, callback) {
     // saveglobal("debugcat", "");
     // saveglobal("debugsubcat", "code");
     async.series([
-        function(cb1) {
-            createsystemdtos({}, function(err, res) {
+        function (cb1) {
+            createsystemdtos({}, function (err, res) {
                 cb1(null);
             });
         },
-        function(cb1) {
-            createtestuser("user1", "user1ac", 99, function(err, res) {
+        function (cb1) {
+            createtestuser("user1", "user1ac", 99, function (err, res) {
                 cb1(null);
             });
         },
-        function(cb1) {
-            createtestuser("user2", "user2ac", 99, function(err, res) {
+        function (cb1) {
+            createtestuser("user2", "user2ac", 99, function (err, res) {
                 cb1(null);
             });
         },
-        function(cb1) {
+        function (cb1) {
 
-            addpermission("user1", "user2", "createcoupon0", "data", 50, function(err, res) {
+            addpermission("user1", "user2", "createcoupon0", "data", 50, function (err, res) {
                 cb1(null);
             });
         },
-        function(cb1) {
-            addgrouptowid("user2", "userdto", "group1", function(err, res) {
+        function (cb1) {
+            addgrouptowid("user2", "userdto", "group1", function (err, res) {
                 cb1(null);
             });
             // },
@@ -414,16 +414,16 @@ exports.test999 = test999 = function test999(parm, callback) {
             //     });
         }
 
-    ], function(err, res) {
+    ], function (err, res) {
         execute({
             "executethis": "getwidmaster",
             "wid": "user1"
-        }, function(err, res) {
+        }, function (err, res) {
             proxyprinttodiv('test999 --- getwidmaster on user1 >>>>>> ', res, 35);
             execute({
                 "executethis": "getwidmaster",
                 "wid": "user2"
-            }, function(err, res) {
+            }, function (err, res) {
                 proxyprinttodiv('test999 --- getwidmaster on user2 >>>>>> ', res, 35);
                 callback(err, status);
             });
@@ -447,50 +447,50 @@ exports.test1000 = test1000 = function test1000(parm, callback) {
     // saveglobal("debugcat", "");
     // saveglobal("debugsubcat", "code");
     async.series([
-            function(cb1) {
+            function (cb1) {
                 // setup schema data
-                createsystemdtos({}, function(err, res) {
+                createsystemdtos({}, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
+            function (cb1) {
                 // create testuser rogeruser0
-                createtestuser("rogeruser0", "rogerac0", 99, function(err, res) {
+                createtestuser("rogeruser0", "rogerac0", 99, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
+            function (cb1) {
                 // add permission for rogeruser0 
-                addpermission("codyuser1", "rogeruser0", "createcoupon0", "data", 99, function(err, res) {
+                addpermission("codyuser1", "rogeruser0", "createcoupon0", "data", 99, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                createtestuser("codyuser0", "codyac0", 99, function(err, res) {
+            function (cb1) {
+                createtestuser("codyuser0", "codyac0", 99, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addpermission("rogeruser0", "codyuser0", "createcoupon0", "data", 50, function(err, res) {
+            function (cb1) {
+                addpermission("rogeruser0", "codyuser0", "createcoupon0", "data", 50, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
+            function (cb1) {
                 // call security check without mygroup (for cody)
                 // _accesstoken, _mygroup, _actiongroup, _actiontypegroup, _dbgroup, _loginlevel
-                testsecurity("codyac0", undefined, "createcoupon0", "execute", "data", 99, function(err, res) {
+                testsecurity("codyac0", undefined, "createcoupon0", "execute", "data", 99, function (err, res) {
 
                     cb1(null);
                 });
             },
 
-            function(cb1) {
-                addgrouptowid("codyuser0", "userdto", "driemployeegroup0", function(err, res) {
+            function (cb1) {
+                addgrouptowid("codyuser0", "userdto", "driemployeegroup0", function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addpermission("rogeruser0", "codyuser0", "createcoupon0", "data", 50, function(err, res) {
+            function (cb1) {
+                addpermission("rogeruser0", "codyuser0", "createcoupon0", "data", 50, function (err, res) {
                     cb1(null);
                 });
                 // },
@@ -513,7 +513,7 @@ exports.test1000 = test1000 = function test1000(parm, callback) {
 
         ],
 
-        function(err, res) {
+        function (err, res) {
             callback(err, status);
 
         });
@@ -528,29 +528,29 @@ exports.test1001 = test1001 = function test1001(params, callback) {
     saveglobal("debugsubcat", "code");
     var status = false;
     async.series([
-            function(cb1) {
-                createtestuser("codyuser1", "codyac1", 99, function(err, res) {
+            function (cb1) {
+                createtestuser("codyuser1", "codyac1", 99, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                createtestuser("rogeruser1", "rogerac1", 99, function(err, res) {
+            function (cb1) {
+                createtestuser("rogeruser1", "rogerac1", 99, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addpermission("rogeruser1", "codyuser1", "executethis", "createcoupon1", "data", 50, function(err, res) {
+            function (cb1) {
+                addpermission("rogeruser1", "codyuser1", "executethis", "createcoupon1", "data", 50, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                testsecurity("codyac1", "executethis", "createcoupon1", "data", true, function(err, res) {
+            function (cb1) {
+                testsecurity("codyac1", "executethis", "createcoupon1", "data", true, function (err, res) {
                     status = res;
                     cb1(null);
                 });
             }
         ],
-        function(err, res) {
+        function (err, res) {
             console.log('created testdata for test1001 --  ' + JSON.stringify(res));
             callback(err, status);
         });
@@ -564,30 +564,30 @@ exports.test1002 = test1002 = function test1002(params, callback) {
     saveglobal("debugsubcat", "code");
     var status = false;
     async.series([
-            function(cb1) {
-                createtestuser("codyuser2", "codyac2", 0, function(err, res) {
+            function (cb1) {
+                createtestuser("codyuser2", "codyac2", 0, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                createtestuser("rogeruser2", "rogerac2", 99, function(err, res) {
+            function (cb1) {
+                createtestuser("rogeruser2", "rogerac2", 99, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addpermission("rogeruser2", "codyuser2", "executethis", "createcoupon2", "data", 50, function(err, res) {
+            function (cb1) {
+                addpermission("rogeruser2", "codyuser2", "executethis", "createcoupon2", "data", 50, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                testsecurity("codyac2", "executethis2", "createcoupon2", "data", false, function(err, res) {
+            function (cb1) {
+                testsecurity("codyac2", "executethis2", "createcoupon2", "data", false, function (err, res) {
                     proxyprinttodiv('after testsecurity -- ', res, 35);
                     status = res;
                     cb1(null);
                 });
             }
         ],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('created testdata for test1002 -- ', JSON.stringify(res), 35);
             console.log('created testdata for test1002 --  ' + JSON.stringify(res));
             callback(err, status);
@@ -603,34 +603,34 @@ exports.test1003 = test1003 = function test1003(params, callback) {
     saveglobal("debugsubcat", "code");
     var status = false;
     async.series([
-            function(cb1) {
-                createtestuser("codyuser3", "codyac3", 99, function(err, res) {
+            function (cb1) {
+                createtestuser("codyuser3", "codyac3", 99, function (err, res) {
                     cb1(err);
                 });
             },
-            function(cb1) {
-                createtestuser("rogeruser3", "rogerac3", 99, function(err, res) {
+            function (cb1) {
+                createtestuser("rogeruser3", "rogerac3", 99, function (err, res) {
                     cb1(err);
                 });
             },
-            function(cb1) {
-                addgrouptowid("codyuser3", "userdto", "driemployeesgroup3", function(err, res) {
+            function (cb1) {
+                addgrouptowid("codyuser3", "userdto", "driemployeesgroup3", function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addpermission("rogeruser3", "driemployeesgroup3", "executethis", "createdatawid3", "data", 50, function(err, res) {
+            function (cb1) {
+                addpermission("rogeruser3", "driemployeesgroup3", "executethis", "createdatawid3", "data", 50, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                testsecurity("codyac3", "executethis", "createdatawid3", "data", true, function(err, res) {
+            function (cb1) {
+                testsecurity("codyac3", "executethis", "createdatawid3", "data", true, function (err, res) {
                     status = res;
                     cb1(null);
                 });
             }
         ],
-        function(err, res) {
+        function (err, res) {
             console.log('created testdata for test1003 --  ' + JSON.stringify(res));
             callback(err, status);
         });
@@ -645,54 +645,54 @@ exports.test1004 = test1004 = function test1004(params, callback) {
     saveglobal("debugsubcat", "code");
     var status = false;
     async.series([
-            function(cb1) {
-                createtestuser("codyuser4", "codyac4", 99, function(err, res) {
+            function (cb1) {
+                createtestuser("codyuser4", "codyac4", 99, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                createtestuser("rogeruser4", "rogerac4", 99, function(err, res) {
+            function (cb1) {
+                createtestuser("rogeruser4", "rogerac4", 99, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                createtestuser("billuser4", "billac4", 99, function(err, res) {
+            function (cb1) {
+                createtestuser("billuser4", "billac4", 99, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addgrouptowid("codyuser4", "driemployeesgroup4", function(err, res) {
+            function (cb1) {
+                addgrouptowid("codyuser4", "driemployeesgroup4", function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addgrouptowid("billuser4", "userdto", "drimanagersgroup4", function(err, res) {
+            function (cb1) {
+                addgrouptowid("billuser4", "userdto", "drimanagersgroup4", function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addgrouptowid("rogeruser4", "userdto", "drimanagersgroup4", function(err, res) {
+            function (cb1) {
+                addgrouptowid("rogeruser4", "userdto", "drimanagersgroup4", function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addgrouptowid("drimanagersgroup4", "groupnamedto", "driemployeesgroup4", function(err, res) {
+            function (cb1) {
+                addgrouptowid("drimanagersgroup4", "groupnamedto", "driemployeesgroup4", function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addpermission("codyuser4", "drimanagersgroup4", "executethis", "editcoupon4", "data", 50, function(err, res) {
+            function (cb1) {
+                addpermission("codyuser4", "drimanagersgroup4", "executethis", "editcoupon4", "data", 50, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                testsecurity("billac4", "executethis", "createdatawid4", "data", true, function(err, res) {
+            function (cb1) {
+                testsecurity("billac4", "executethis", "createdatawid4", "data", true, function (err, res) {
                     status = res;
                     cb1(null);
                 });
             }
         ],
-        function(err, res) {
+        function (err, res) {
             console.log('created testdata for test1004 --  ' + JSON.stringify(res));
             callback(err, status);
         });
@@ -707,34 +707,34 @@ exports.test1005 = test1005 = function test1005(params, callback) {
     saveglobal("debugsubcat", "code");
     var status = false;
     async.series([
-            function(cb1) {
-                createtestuser("codyuser5", "codyac5", 0, function(err, res) {
+            function (cb1) {
+                createtestuser("codyuser5", "codyac5", 0, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                createtestuser("rogeruser5", "rogerac5", 99, function(err, res) {
+            function (cb1) {
+                createtestuser("rogeruser5", "rogerac5", 99, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addgrouptowid("codyuser5", "userdto", "driemployeesgroup5", function(err, res) {
+            function (cb1) {
+                addgrouptowid("codyuser5", "userdto", "driemployeesgroup5", function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addpermission("rogeruser5", "driemployeesgroup5", "executethis", "createdatawid5", "data", 50, function(err, res) {
+            function (cb1) {
+                addpermission("rogeruser5", "driemployeesgroup5", "executethis", "createdatawid5", "data", 50, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                testsecurity("codyac5", "executethis", "createdatawid5", "data", false, function(err, res) {
+            function (cb1) {
+                testsecurity("codyac5", "executethis", "createdatawid5", "data", false, function (err, res) {
                     status = res;
                     cb1(null);
                 });
             }
         ],
-        function(err, res) {
+        function (err, res) {
             console.log('created testdata for test1005 --  ' + JSON.stringify(res));
             callback(err, status);
         });
@@ -749,49 +749,49 @@ exports.test1006 = test1006 = function test1006(params, callback) {
     saveglobal("debugsubcat", "code");
     var status = false;
     async.series([
-            function(cb1) {
-                createtestuser("codyuser6", "codyac6", 99, function(err, res) {
+            function (cb1) {
+                createtestuser("codyuser6", "codyac6", 99, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                createtestuser("rogeruser6", "rogerac6", 99, function(err, res) {
+            function (cb1) {
+                createtestuser("rogeruser6", "rogerac6", 99, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                createtestuser("billuser6", "billac6", 99, function(err, res) {
+            function (cb1) {
+                createtestuser("billuser6", "billac6", 99, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addgrouptowid("codyuser6", "userdto", "driemployeesgroup6", function(err, res) {
+            function (cb1) {
+                addgrouptowid("codyuser6", "userdto", "driemployeesgroup6", function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addgrouptowid("billuser6", "userdto", "drimanagersgroup6", function(err, res) {
+            function (cb1) {
+                addgrouptowid("billuser6", "userdto", "drimanagersgroup6", function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addgrouptowid("rogeruser6", "userdto", "drimanagersgroup6", function(err, res) {
+            function (cb1) {
+                addgrouptowid("rogeruser6", "userdto", "drimanagersgroup6", function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addpermission("codyuser6", "drimanagersgroup6", "executethis", "editcoupon6", "data", 50, function(err, res) {
+            function (cb1) {
+                addpermission("codyuser6", "drimanagersgroup6", "executethis", "editcoupon6", "data", 50, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                testsecurity("billac6", "executethis", "editcoupon6", "data", true, function(err, res) {
+            function (cb1) {
+                testsecurity("billac6", "executethis", "editcoupon6", "data", true, function (err, res) {
                     status = res;
                     cb1(null);
                 });
             }
         ],
-        function(err, res) {
+        function (err, res) {
             console.log('created testdata for test1006 --  ' + JSON.stringify(res));
             callback(err, status);
         });
@@ -807,44 +807,44 @@ exports.test1007 = test1007 = function test1007(params, callback) {
     var status = false;
 
     async.series([
-            function(cb1) {
-                createtestuser("codyuser7", "codyac7", 99, function(err, res) {
+            function (cb1) {
+                createtestuser("codyuser7", "codyac7", 99, function (err, res) {
                     cb1(null);
                 });
             },
 
-            function(cb1) {
-                createtestuser("rogeruser7", "rogerac7", 99, function(err, res) {
+            function (cb1) {
+                createtestuser("rogeruser7", "rogerac7", 99, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addgrouptowid("codyuser7", "userdto", "driemployees7", function(err, res) {
-                    cb1(null);
-                });
-            },
-
-            function(cb1) {
-                addgrouptowid("driemployees7", "groupnamedto", "driusers7", function(err, res) {
+            function (cb1) {
+                addgrouptowid("codyuser7", "userdto", "driemployees7", function (err, res) {
                     cb1(null);
                 });
             },
 
-            function(cb1) {
-                addpermission("rogeruser7", "driusers7", "executethis", "readcoupon7", "data", 50, function(err, res) {
+            function (cb1) {
+                addgrouptowid("driemployees7", "groupnamedto", "driusers7", function (err, res) {
                     cb1(null);
                 });
             },
 
-            function(cb1) {
-                testsecurity("codyac7", "executethis", "readcoupon7", "data", true, function(err, res) {
+            function (cb1) {
+                addpermission("rogeruser7", "driusers7", "executethis", "readcoupon7", "data", 50, function (err, res) {
+                    cb1(null);
+                });
+            },
+
+            function (cb1) {
+                testsecurity("codyac7", "executethis", "readcoupon7", "data", true, function (err, res) {
                     status = res;
                     cb1(null);
                 });
             }
         ],
 
-        function(err, res) {
+        function (err, res) {
             console.log('created testdata for test1007 --  ' + JSON.stringify(res));
             callback(err, status);
         });
@@ -889,7 +889,7 @@ exports.testjsononetoone0 = testjsononetoone0 = function testjsononetoone0(param
             "age": "30",
             "metadata.spousedto.0": "spouse1"
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
 
             proxyprinttodiv('The author1 record: ', res[3], 99);
@@ -898,7 +898,7 @@ exports.testjsononetoone0 = testjsononetoone0 = function testjsononetoone0(param
             execute({
                 "executethis": "getwidmaster",
                 "wid": "author1"
-            }, function(err, res1) {
+            }, function (err, res1) {
                 proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
                 callback(err, res);
             });
@@ -912,45 +912,45 @@ exports.test1008 = test1008 = function test1008(params, callback) {
     saveglobal("debugsubcat", "code");
     var status = false;
     async.series([
-            function(cb1) {
-                createtestuser("codyuser8", "codyac8", 99, function(err, res) {
+            function (cb1) {
+                createtestuser("codyuser8", "codyac8", 99, function (err, res) {
                     cb1(null);
                 });
             },
 
-            function(cb1) {
+            function (cb1) {
 
-                createtestuser("rogeruser8", "rogerac8", 99, function(err, res) {
+                createtestuser("rogeruser8", "rogerac8", 99, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addgrouptowid("codyuser8", "userdto", "driemployees8", function(err, res) {
-                    cb1(null);
-                });
-            },
-
-            function(cb1) {
-                addgrouptowid("driemployees8", "groupnamedto", "driusers8", function(err, res) {
+            function (cb1) {
+                addgrouptowid("codyuser8", "userdto", "driemployees8", function (err, res) {
                     cb1(null);
                 });
             },
 
-            function(cb1) {
-                addpermission("rogeruser8", "driusers8", "executethis", "readcoupon8", "data", 50, function(err, res) {
+            function (cb1) {
+                addgrouptowid("driemployees8", "groupnamedto", "driusers8", function (err, res) {
                     cb1(null);
                 });
             },
 
-            function(cb1) {
-                testsecurity("codyac8", "executethis", "readcoupon8", "data", true, function(err, res) {
+            function (cb1) {
+                addpermission("rogeruser8", "driusers8", "executethis", "readcoupon8", "data", 50, function (err, res) {
+                    cb1(null);
+                });
+            },
+
+            function (cb1) {
+                testsecurity("codyac8", "executethis", "readcoupon8", "data", true, function (err, res) {
                     var status = res;
                     cb1(null);
                 });
             }
         ],
 
-        function(err, res) {
+        function (err, res) {
             console.log('created testdata for test1008 --  ' + JSON.stringify(res));
             callback(err, status);
         });
@@ -964,39 +964,39 @@ exports.test1008 = test1008 = function test1008(params, callback) {
 // Simple create user, add user to group with permission to create a coupon, and then try to execute createcoupon. This should succeed.
 exports.ctest1 = ctest1 = function ctest1(parm, callback) {
     var executeList = [
-        function(cb1) {
-            createtestuser("rogerboss", "bossac", "99", function(err, res) {
+        function (cb1) {
+            createtestuser("rogerboss", "bossac", "99", function (err, res) {
                 cb1(null);
             });
         },
 
-        function(cb1) {
-            createtestuser("codyuser", "codyac", "99", function(err, res) {
+        function (cb1) {
+            createtestuser("codyuser", "codyac", "99", function (err, res) {
                 cb1(null);
             });
         },
 
-        function(cb1) { // add codyuser to the driemployeesgroup
-            addgrouptowid("codyuser", "userdto", "driemployeegrp", function(err, res) {
+        function (cb1) { // add codyuser to the driemployeesgroup
+            addgrouptowid("codyuser", "userdto", "driemployeegrp", function (err, res) {
                 cb1(null);
             });
         },
 
-        function(cb1) { // rogerboss allows anyone in driemployees to executethis to cretecoupon
-            addpermission("rogerboss", "driemployeegrp", "createdricoupon", "test", "50", function(err, res) {
+        function (cb1) { // rogerboss allows anyone in driemployees to executethis to cretecoupon
+            addpermission("rogerboss", "driemployeegrp", "createdricoupon", "test", "50", function (err, res) {
                 cb1(null);
             });
         },
 
-        function(cb1) {
-            testsecurity("codyac", "executethis", "createdricoupon", "test", true, function(err, res) {
+        function (cb1) {
+            testsecurity("codyac", "executethis", "createdricoupon", "test", true, function (err, res) {
                 cb1(null);
             });
         }
     ];
 
 
-    async.series(executeList, function(err, res3) {
+    async.series(executeList, function (err, res3) {
         proxyprinttodiv('Function ctest1 --  >>>>>> FINAL >>>>>    -- ', res3, 35);
         callback(err, res3);
     });
@@ -1007,37 +1007,37 @@ exports.ctest2 = ctest2 = function ctest2(parm, callback) {
 
 
     var executeList = [
-        function(cb1) {
+        function (cb1) {
             createtestuser("rogerboss", "bossac", "99", cb1);
         },
 
-        function(cb1) {
+        function (cb1) {
             createtestuser("codyuser", "codyac", "99", cb1)
         },
-        function(cb1) {
+        function (cb1) {
             creategroup(driusergrp, cb1);
         },
 
-        function(cb1) { // add codyuser to the driusergrp
+        function (cb1) { // add codyuser to the driusergrp
             addgrouptowid("codyuser", "groupnamedto", "driusergrp", cb1);
         },
 
-        function(cb1) { // add driusers to the driemployeesgrp
+        function (cb1) { // add driusers to the driemployeesgrp
             addgrouptowid("driusergrp", "groupnamedto", "driemployeegrp", cb1);
         },
 
-        function(cb1) { // rogerboss allows anyone in driusergrp to executethis to cretecoupon
+        function (cb1) { // rogerboss allows anyone in driusergrp to executethis to cretecoupon
             addpermission("rogerboss", "driusergrp", "createdricoupon", "test", "50", cb1);
         },
 
-        function(cb1) {
+        function (cb1) {
             testsecurity("codyac", "executethis", "createdricoupon", "test", true, cb1);
         }
 
     ];
 
 
-    async.series(executeList, function(err, res3) {
+    async.series(executeList, function (err, res3) {
         proxyprinttodiv('Function ctest2 --  >>>>>> FINAL >>>>>    -- ', res3, 35);
         cb2(err, res3);
     });
@@ -1047,36 +1047,36 @@ exports.ctest2 = ctest2 = function ctest2(parm, callback) {
 exports.ctest3 = ctest3 = function ctest3(parm, callback) {
 
     var executeList = [
-        function(cb1) {
+        function (cb1) {
             createtestuser("rogerboss", "bossac", "99", cb1);
         },
 
-        function(cb1) {
+        function (cb1) {
             createtestuser("codyuser", "codyac", "99", cb1)
         },
-        function(cb1) {
+        function (cb1) {
             creategroup(driusergrp, cb1)
         },
 
-        function(cb1) { // add codyuser to the driusergrp
+        function (cb1) { // add codyuser to the driusergrp
             addgrouptowid("codyuser", "groupnamedto", "driusergrp", cb1);
         },
 
-        function(cb1) { // add driusers to the driemployeesgrp
+        function (cb1) { // add driusers to the driemployeesgrp
             addgrouptowid("driusergrp", "groupnamedto", "driemployeegrp", cb1);
         },
 
-        function(cb1) { // rogerboss allows anyone in driemployees to executethis to cretecoupon
+        function (cb1) { // rogerboss allows anyone in driemployees to executethis to cretecoupon
             addpermission("rogerboss", "driemployeegrp", "createdricoupon", "test", "50", cb1);
         },
 
-        function(cb1) {
+        function (cb1) {
             testsecurity("codyac", "executethis", "createdricoupon", "test", true, cb1);
         }
 
     ];
 
-    async.series(executeList, function(err, res3) {
+    async.series(executeList, function (err, res3) {
         proxyprinttodiv('Function ctest3 --  >>>>>> FINAL >>>>>    -- ', res3, 35);
         callback(err, res3);
     });
@@ -1085,27 +1085,27 @@ exports.ctest3 = ctest3 = function ctest3(parm, callback) {
 //EspressoBay gives ebemployeesgrp permission to executethis to createcoupon. Cody is not part of the ebemployeesgrp so he should not be able to execute createcoupon.
 exports.ctest4 = ctest4 = function ctest4(parm, callback) {
     var executeList = [
-        function(cb1) {
+        function (cb1) {
             createtestuser("espressobay", "espressoac", "99", cb1);
         },
 
-        function(cb1) {
+        function (cb1) {
             createtestuser("codyuser", "codyac", "99", cb1)
         },
-        function(cb1) {
+        function (cb1) {
             creategroup(ebemployeesgrp, cb1);
         },
 
-        function(cb1) { // espressobay allows anyone in ebemployeesgroup to executethis to cretecoupon
+        function (cb1) { // espressobay allows anyone in ebemployeesgroup to executethis to cretecoupon
             addpermission("espressobay", "ebemployeesgrp", "create_espressobay_coupon", "test", "50", cb1);
         },
 
-        function(cb1) {
+        function (cb1) {
             testsecurity("codyac", "executethis", "create_espressobay_coupon", "test", false, cb1);
         }
 
     ];
-    async.series(executeList, function(err, res3) {
+    async.series(executeList, function (err, res3) {
         proxyprinttodiv('Function ctest4 --  >>>>>> FINAL >>>>>    -- ', res3, 35);
         callback(err, res3);
     });
@@ -1116,53 +1116,53 @@ exports.ctest5 = ctest5 = function ctest5(parm, callback) {
 
 
     var executeList = [
-        function(cb1) {
+        function (cb1) {
             createtestuser("rogerboss", "bossac", "99", cb1);
         },
 
-        function(cb1) {
+        function (cb1) {
             createtestuser("codyuser", "codyac", "99", cb1)
         },
 
-        function(cb1) {
+        function (cb1) {
             createtestuser("billuser", "billac", "99", cb1)
         },
 
-        function(cb1) {
+        function (cb1) {
             creategroup(driemployeegrp, cb1);
         },
 
-        function(cb1) { // add codyuser to the driusergrp
+        function (cb1) { // add codyuser to the driusergrp
             addgrouptowid("codyuser", "groupnamedto", "driusergrp1", cb1);
         },
 
-        function(cb1) { // add billuser to the driusergrp
+        function (cb1) { // add billuser to the driusergrp
             addgrouptowid("billuser", "groupnamedto", "driusergrp2", cb1);
         },
 
-        function(cb1) { // add driusers1 to the driemployeesgrp
+        function (cb1) { // add driusers1 to the driemployeesgrp
             addgrouptowid("driusergrp1", "groupnamedto", "driemployeegrp", cb1);
         },
 
-        function(cb1) { // add driusers2 to the driemployeesgrp
+        function (cb1) { // add driusers2 to the driemployeesgrp
             addgrouptowid("driusergrp2", "groupnamedto", "driemployeegrp", cb1);
         },
 
-        function(cb1) { // rogerboss allows anyone in driemployeegrp to executethis to cretecoupon
+        function (cb1) { // rogerboss allows anyone in driemployeegrp to executethis to cretecoupon
             addpermission("rogerboss", "driemployeegrp", "createdricoupon", "test", "50", cb1);
         },
 
-        function(cb1) {
+        function (cb1) {
             testsecurity("codyac", "executethis", "createdricoupon", "test", true, cb1);
         },
 
-        function(cb1) {
+        function (cb1) {
             testsecurity("billac", "executethis", "createdricoupon", "test", true, cb1);
         }
 
     ];
 
-    async.series(executeList, function(err, res3) {
+    async.series(executeList, function (err, res3) {
         proxyprinttodiv('Function ctest5 --  >>>>>> FINAL >>>>>    -- ', res3, 35);
         callback(err, res3);
     });
@@ -1173,42 +1173,42 @@ exports.ctest6 = ctest6 = function ctest6(parm, callback) {
     debuglevel = 39;
 
     var executeList = [
-        function(cb1) {
-            createtestuser("rogerboss", "rogerac", "99", function(err, res) {
+        function (cb1) {
+            createtestuser("rogerboss", "rogerac", "99", function (err, res) {
                 cb1(null);
             });
         },
 
-        function(cb1) {
-            createtestuser("codyuser", "codyac", "49", function(err, res) {
+        function (cb1) {
+            createtestuser("codyuser", "codyac", "49", function (err, res) {
                 cb1(null);
             });
         },
 
-        function(cb1) { // add codyuser to the driusergrp
-            addgrouptowid("codyuser", "userdto", "driusergrp1", function(err, res) {
+        function (cb1) { // add codyuser to the driusergrp
+            addgrouptowid("codyuser", "userdto", "driusergrp1", function (err, res) {
                 cb1(null);
             });
         },
-        function(cb1) {
-            creategroup("driusergrp1", function(err, res) {
+        function (cb1) {
+            creategroup("driusergrp1", function (err, res) {
                 cb1(null);
             });
         },
-        function(cb1) { // rogerboss allows anyone in driemployees to executethis to cretecoupon
-            addpermission("rogerboss", "driusergrp1", "createcoupon", "data", "99", function(err, res) {
+        function (cb1) { // rogerboss allows anyone in driemployees to executethis to cretecoupon
+            addpermission("rogerboss", "driusergrp1", "createcoupon", "data", "99", function (err, res) {
                 cb1(null);
             });
         },
 
-        function(cb1) {
-            securitycheck("codyac", "executethis", "createcoupon", "test", false, function(err, res) {
+        function (cb1) {
+            sc("codyac", "executethis", "createcoupon", "test", false, function (err, res) {
                 cb1(null);
             });
         }
     ];
 
-    async.series(executeList, function(err, res3) {
+    async.series(executeList, function (err, res3) {
         proxyprinttodiv('Function ctest6 --  >>>>>> FINAL >>>>>    -- ', res3, 35);
         callback(err, res3);
     });
@@ -1217,20 +1217,20 @@ exports.ctest6 = ctest6 = function ctest6(parm, callback) {
 
 exports.ctest7 = ctest7 = function ctest7(parm, callback) {
     var executeList = [
-        function(cb1) {
+        function (cb1) {
             createsystemdtos({}, cb1);
         },
-        function(cb1) {
+        function (cb1) {
             createtestuser("rogerboss", "bossac", "99", cb1);
         },
-        function(cb1) {
+        function (cb1) {
             execute({
                 "executethis": "getwidmaster",
                 "wid": "rogerboss"
             }, cb1);
         }
     ];
-    async.series(executeList, function(err, res3) {
+    async.series(executeList, function (err, res3) {
         proxyprinttodiv('Function ctest7 --  >>>>>> FINAL >>>>>    -- ', res3, 99);
         callback(err, res3);
     });
@@ -1265,7 +1265,7 @@ exports.createtestuser = createtestuser = function createtestuser(userwid, ac, l
             "systemdto.categorydto.categoryname": "categoryname",
 
         }],
-        function(err, res) {
+        function (err, res) {
             proxyprinttodiv('Function createtestuser done --  >>>>>> added user >>>>>  for  -- ' + userwid, res, 35);
             // addsecurity(userwid, true, ac, loginlevel, function (err, res1) {
             //     proxyprinttodiv('Function addsecurity done --  >>>>>> added security >>>>>  for  -- ' + userwid, res1, 35);
@@ -1275,7 +1275,7 @@ exports.createtestuser = createtestuser = function createtestuser(userwid, ac, l
             execute({
                 "executethis": "getwidmaster",
                 "wid": userwid
-            }, function(err, res3) {
+            }, function (err, res3) {
                 proxyprinttodiv('Function createtestuser --  >>>>>> FINAL USER >>>>>    -- ' + userwid, res3, 35);
                 cb2(err, res3);
             })
@@ -1290,7 +1290,7 @@ exports.createtestuser = createtestuser = function createtestuser(userwid, ac, l
 // actiongroup says the type of wid the action is being tried upon
 // targetaction is the action being executed on the wid
 exports.testsecurity = testsecurity = function testsecurity(_accesstoken, _mygroup, _actiongroup, _actiontypegroup, _dbgroup, _loginlevel, callback) {
-    securitycheck(_accesstoken, _mygroup, _actiongroup, _actiontypegroup, _dbgroup, _loginlevel, function(err, res) {
+    sc(_accesstoken, _mygroup, _actiongroup, _actiontypegroup, _dbgroup, _loginlevel, function (err, res) {
         proxyprinttodiv('Function testsecurity done --  >>>>>>  >>>>>  for  securitycheck response -- ', res, 35);
         callback(err, res)
     });
@@ -1311,12 +1311,12 @@ exports.zx1 = zx1 = function zx1(parm, callback) {
     // saveglobal("debugcat", "");
     // saveglobal("debugsubcat", "code");
     async.series([
-            function(cb1) {
-                createtestuser("rogeruser0", "rogerac0", 99, function(err, res) {
+            function (cb1) {
+                createtestuser("rogeruser0", "rogerac0", 99, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
+            function (cb1) {
                 //alert('Entering execution phase...');
                 execute({
                     "executethis": "addwidmaster",
@@ -1326,29 +1326,29 @@ exports.zx1 = zx1 = function zx1(parm, callback) {
                     "systemdto.permissiondto.actiongroup": "createcoupon0",
                     "systemdto.permissiondto.dbgroup": "data",
                     "systemdto.permissiondto.levelgroup": "99"
-                }, function(err, res) {
+                }, function (err, res) {
                     proxyprinttodiv('added permissions to rogeruser0 >>>>>> ', res, 99);
                     cb1(null);
                 });
             },
-            function(cb1) {
+            function (cb1) {
                 execute({
                     "executethis": "getwidmaster",
                     "wid": "systemdto",
                     "metadata.method": "systemdto"
-                }, function(err, res) {
+                }, function (err, res) {
                     proxyprinttodiv('getwidmaster on systemdto ', res, 99);
                     cb1(null);
                 });
             },
 
-            function(cb1) {
-                createtestuser("codyuser0", "codyac0", 99, function(err, res) {
+            function (cb1) {
+                createtestuser("codyuser0", "codyac0", 99, function (err, res) {
                     cb1(null);
                 });
             },
-            function(cb1) {
-                addpermission("rogeruser0", "codyuser0", "createcoupon0", "data", 50, function(err, res) {
+            function (cb1) {
+                addpermission("rogeruser0", "codyuser0", "createcoupon0", "data", 50, function (err, res) {
                     cb1(null);
                 });
             }
@@ -1386,7 +1386,7 @@ exports.zx1 = zx1 = function zx1(parm, callback) {
             // }
 
         ],
-        function(err, res) {
+        function (err, res) {
             console.log('created testdata for zx1 --  ' + JSON.stringify(res));
             callback(err, status);
 
@@ -1397,7 +1397,7 @@ exports.zx1 = zx1 = function zx1(parm, callback) {
 exports.freshgroups1 = freshgroups1 = function freshgroups1(parm, callback) {
     debuglevel = 39;
 
-    getactionlist("", "getwidmaster", "", "", "", function(err, res) {
+    getactionlist("", "getwidmaster", "", "", "", function (err, res) {
         proxyprinttodiv('Function freshgroups -- res', res, 39);
         callback(err, res);
     });
@@ -1406,7 +1406,7 @@ exports.freshgroups1 = freshgroups1 = function freshgroups1(parm, callback) {
 exports.freshgroups2 = freshgroups2 = function freshgroups2(parm, callback) {
     debuglevel = 39;
 
-    getaccountlist("cody", "", "", "", "", function(err, res) {
+    getaccountlist("cody", "", "", "", "", function (err, res) {
         proxyprinttodiv('Function freshgroups2 -- res', res, 39);
         callback(err, res);
     });
@@ -1415,7 +1415,7 @@ exports.freshgroups2 = freshgroups2 = function freshgroups2(parm, callback) {
 exports.freshgroups3 = freshgroups3 = function freshgroups3(parm, callback) {
     debuglevel = 39;
 
-    getdblist("", "", "", "data", "", function(err, res) {
+    getdblist("", "", "", "data", "", function (err, res) {
         proxyprinttodiv('Function freshgroups3 -- res', res, 39);
         callback(err, res);
     });
@@ -1425,9 +1425,9 @@ exports.freshgroups4 = freshgroups4 = function freshgroups4(parm, callback) {
     debuglevel = 39;
     var arr = [];
     async.series([
-            function(cb1) {
+            function (cb1) {
                 // creste schema data
-                getgroupsrecursive("cody", "group", [], function(err, res) {
+                getgroupsrecursive("cody", "group", [], function (err, res) {
                     proxyprinttodiv('Function freshgroups4 -- res', res, 39);
                     arr = res;
                     cb1(null);
@@ -1435,7 +1435,7 @@ exports.freshgroups4 = freshgroups4 = function freshgroups4(parm, callback) {
             }
         ],
 
-        function(err, res) {
+        function (err, res) {
             console.log('Function fresh 3 -- add data and test --  ' + JSON.stringify(arr));
             callback(err, arr);
         });
@@ -1446,9 +1446,9 @@ exports.freshgroups5 = freshgroups5 = function freshgroups5(parm, callback) {
     debuglevel = 39;
     var arr = [];
     async.series([
-            function(cb1) {
+            function (cb1) {
                 // creste schema data
-                getgroupsrecursive("cody", "granteegroup", [], function(err, res) {
+                getgroupsrecursive("cody", "granteegroup", [], function (err, res) {
                     proxyprinttodiv('Function freshgroups4 -- res', res, 39);
                     arr = res;
                     cb1(null);
@@ -1456,7 +1456,7 @@ exports.freshgroups5 = freshgroups5 = function freshgroups5(parm, callback) {
             }
         ],
 
-        function(err, res) {
+        function (err, res) {
             console.log('Function fresh 3 -- add data and test --  ' + JSON.stringify(arr));
             callback(err, arr);
         });
@@ -1465,135 +1465,135 @@ exports.freshgroups5 = freshgroups5 = function freshgroups5(parm, callback) {
 
 function creategroupdata(cb) {
     async.series([
-        function(cb1) {
+        function (cb1) {
             // create groups driemployee
-            creategroup("driemployee", function(err, res) {
+            creategroup("driemployee", function (err, res) {
                 proxyprinttodiv('Function st2 fresh1 creategroup -- driemployee', res, 39);
                 cb1(null);
             });
         },
-        function(cb1) {
+        function (cb1) {
             // create groups drimanager
-            creategroup("drimanager", function(err, res) {
+            creategroup("drimanager", function (err, res) {
                 proxyprinttodiv('Function st2 fresh1 creategroup -- group -- drimanager', res, 39);
                 cb1(null);
             });
         },
-        function(cb1) {
+        function (cb1) {
             // create groups  "execute"
-            creategroup("execute", function(err, res) {
+            creategroup("execute", function (err, res) {
                 proxyprinttodiv('Function st2 fresh1 creategroup -- actiontype -- execute', res, 39);
                 cb1(null);
             });
         },
-        function(cb1) {
+        function (cb1) {
             // create groups  "clean"
-            creategroup("clean", function(err, res) {
+            creategroup("clean", function (err, res) {
                 proxyprinttodiv('Function st2 fresh1 creategroup -- actiontype -- clean', res, 39);
                 cb1(null);
             });
         },
-        function(cb1) {
+        function (cb1) {
             // create groups action --  default_dto_read
-            creategroup("addwidmaster", function(err, res) {
+            creategroup("addwidmaster", function (err, res) {
                 proxyprinttodiv('Function st2 fresh1 creategroup -- addwidmaster', res, 39);
                 cb1(null);
             });
         },
-        function(cb1) {
+        function (cb1) {
             // create groups action --  getwidmaster
-            creategroup("getwidmaster", function(err, res) {
+            creategroup("getwidmaster", function (err, res) {
                 proxyprinttodiv('Function st2 fresh1 creategroup -- getwidmaster', res, 39);
                 cb1(null);
             });
         },
-        function(cb1) {
+        function (cb1) {
             // create groups db --  data
-            creategroup("data", function(err, res) {
+            creategroup("data", function (err, res) {
                 proxyprinttodiv('Function st2 fresh1 creategroup -- data', res, 39);
                 cb1(null);
             });
         },
-        function(cb1) {
+        function (cb1) {
             // add group to wid -- addwidmaster to addwidmaster wid
             // wid, widmethod, groupname,grouptype, 
-            addgrouptowid("addwidmaster", "groupdto", "addwidmaster", "action", function(err, res) {
+            addgrouptowid("addwidmaster", "groupdto", "addwidmaster", "action", function (err, res) {
                 proxyprinttodiv('Function st2 fresh1 addgrouptowid added  group to wid -- addwidmaster to addwidmaster', res, 39);
                 cb1(null);
             });
         },
-        function(cb1) {
+        function (cb1) {
             // add group to wid -- getwidmaster to getwidmaster wid
-            addgrouptowid("getwidmaster", "groupdto", "getwidmaster", "action", function(err, res) {
+            addgrouptowid("getwidmaster", "groupdto", "getwidmaster", "action", function (err, res) {
                 proxyprinttodiv('Function st2 fresh1 addgrouptowid added  group to wid -- getwidmaster to getwidmaster', res, 39);
                 cb1(null);
             });
         },
 
-        function(cb1) {
+        function (cb1) {
             // add group to wid -- drimanager to roger wid
-            addgrouptowid("roger", "userdto", "drimanager", "group", function(err, res) {
+            addgrouptowid("roger", "userdto", "drimanager", "group", function (err, res) {
                 proxyprinttodiv('Function st2 fresh1 addgrouptowid added  group to wid -- drimanager to roger', res, 39);
                 cb1(null);
             });
         },
 
-        function(cb1) {
+        function (cb1) {
             // add group to wid -- driemployee to roger wid
-            addgrouptowid("roger", "userdto", "driemployee", "group", function(err, res) {
+            addgrouptowid("roger", "userdto", "driemployee", "group", function (err, res) {
                 proxyprinttodiv('Function st2 fresh1 addgrouptowid added  group to wid --  driemployee  to roger', res, 39);
                 cb1(null);
             });
         },
 
-        function(cb1) {
+        function (cb1) {
             // add group to wid -- driemployee to cody wid
-            addgrouptowid("cody", "userdto", "driemployee", "group", function(err, res) {
+            addgrouptowid("cody", "userdto", "driemployee", "group", function (err, res) {
                 proxyprinttodiv('Function st2 fresh1 addgrouptowid added  group to wid --  driemployee  to  cody', res, 39);
                 cb1(null);
             });
         }
-    ], function(err, res) {
+    ], function (err, res) {
         cb(err, res);
     })
 }
 
 function createpermissiondata(cb) {
     async.series([
-        function(cb1) {
+        function (cb1) {
             // addpermission -- add permission --- 
             // "execute" actiontype  ,for group "driemployee", for action "getwidmaster", for "data"
-            addpermission("cody", "driemployee", "getwidmaster", "execute", "data", 99, function(err, res) {
+            addpermission("cody", "driemployee", "getwidmaster", "execute", "data", 99, function (err, res) {
                 proxyprinttodiv('Function st2 fresh1 addpermission --  "execute" actiontype  ,for group "driemployee", for action "getwidmaster", for "db" ', res, 39);
                 cb1(null);
             });
         },
-        function(cb1) {
+        function (cb1) {
             // addpermission -- add permission --- 
             // "execute" actiontype  ,for group "drimanager", for action "addwidmaster", for "data"
             //userwid, granteegroup, actiongroup, actiontypegroup, dbgroup, levelgroup, 
-            addpermission("cody", "drimanager", "addwidmaster", "execute", "data", 99, function(err, res) {
+            addpermission("cody", "drimanager", "addwidmaster", "execute", "data", 99, function (err, res) {
                 proxyprinttodiv('Function st2 fresh1 addpermission --  "execute" actiontype  ,for group "drimanager", for action "addwidmaster", for "db"', res, 39);
                 cb1(null);
             });
         },
-        function(cb1) {
+        function (cb1) {
             // addpermission -- add permission --- 
             // "execute" actiontype  ,for group "drimanager", for action "addwidmaster", for "data"
-            addpermission("roger", "drimanager", "addwidmaster", "execute", "data", 99, function(err, res) {
+            addpermission("roger", "drimanager", "addwidmaster", "execute", "data", 99, function (err, res) {
                 proxyprinttodiv('Function st2 fresh1 addpermission --  "execute" actiontype  ,for group "drimanager", for action "addwidmaster", for "data" ', res, 39);
                 cb1(null);
             });
         },
-        function(cb1) {
+        function (cb1) {
             // addpermission -- add permission --- 
             // "execute" actiontype  ,for group "driemployee", for action "getwidmaster", for "data"
-            addpermission("cody", "cody", "getwidmaster", "execute", "data", 99, function(err, res) {
+            addpermission("cody", "cody", "getwidmaster", "execute", "data", 99, function (err, res) {
                 proxyprinttodiv('Function st2 fresh1 addpermission --  "execute" actiontype  ,for group "driemployee", for action "getwidmaster", for "db" ', res, 39);
                 cb1(null);
             });
         }
-    ], function(err, res) {
+    ], function (err, res) {
         cb(err, res);
     });
 }
@@ -1606,7 +1606,7 @@ function createpermissiondata(cb) {
 
 exports.gr1 = gr1 = function gr1(parm, callback) {
     var actionCreatorPermissions = [];
-    getmygroups("rogeruser", "permissiondto", "", actionCreatorPermissions, function(err, res) {
+    getmygroups("rogeruser", "permissiondto", "", actionCreatorPermissions, function (err, res) {
         proxyprinttodiv('Function gr1 permissions list -- ', actionCreatorPermissions, 39);
         cb1(null, "getwidmaster to get owner's permissions");
     });
@@ -1705,13 +1705,13 @@ exports.csd = csd = function csd(params, callback) {
         "secondarymethod": "grandchilddto",
         "linktype": "onetomany",
         "relationshiptype": "attributes"
-    }], function(err, res) {
+    }], function (err, res) {
 
         execute({
             // create data 
             "executethis": "getwidmaster",
             "wid": "parentwid1"
-        }, function(err, res) {
+        }, function (err, res) {
             // proxyprinttodiv('Function csd -- added all this -- ', res, 99);
             callback(err, res);
         });
@@ -1759,13 +1759,13 @@ exports.csd1 = csd1 = function csd1(params, callback) {
         "metadata.inherit.0.command.dtotype": "",
         "metadata.inherit.0.command.adopt": "default"
 
-    }], function(err, res) {
+    }], function (err, res) {
 
         execute({
             // create data 
             "executethis": "getwidmaster",
             "wid": "parentwid1"
-        }, function(err, res) {
+        }, function (err, res) {
             proxyprinttodiv('Function csd1 -- getwidmaster parentwid1 -- ', res, debuglevel);
             callback(err, res);
         });
@@ -1790,8 +1790,8 @@ exports.csd3 = csd3 = function csd3(params, callback) {
         "wid": "b1dto",
         "b11": "string"
 
-    }], function(err, res) {
-        createrelationship("a1dto", "b1dto", "onetoone", function(err, res) {
+    }], function (err, res) {
+        createrelationship("a1dto", "b1dto", "onetoone", function (err, res) {
 
             execute({
                 "executethis": "addwidmaster",
@@ -1799,14 +1799,112 @@ exports.csd3 = csd3 = function csd3(params, callback) {
                 "metadata.method": "a1dto",
                 "a11": "a11value",
                 "b1dto.b11": "b11value"
-            }, function(err, res) {
+            }, function (err, res) {
                 execute({
                     // create data 
                     "executethis": "getwidmaster",
-                    "wid": "a11wid"
-                }, function(err, res) {
+                    "wid": "a11wid",
+                    "convertmethod": "dto"
+                }, function (err, res) {
                     proxyprinttodiv('Function csd3 -- getwidmaster a11wid -- ', res, debuglevel);
                     callback(err, res);
+                });
+            });
+
+        });
+    });
+
+
+}
+
+
+/// check relationships adding
+exports.csd3 = csd3 = function csd3(params, callback) {
+    debuglevel = 67;
+    execute([{
+        "executethis": "addwidmaster",
+        "metadata.method": "a1dto",
+        "wid": "a1dto",
+        "a11": "string",
+        "metadata.b1dto.type": "onetoone"
+    }, {
+        "executethis": "addwidmaster",
+        "metadata.method": "b1dto",
+        "wid": "b1dto",
+        "b11": "string"
+
+    }], function (err, res) {
+        createrelationship("a1dto", "b1dto", "onetoone", function (err, res) {
+
+            execute({
+                "executethis": "addwidmaster",
+                "wid": "a11wid",
+                "metadata.method": "a1dto",
+                "a11": "a11value",
+                "b1dto.b11": "b11value"
+            }, function (err, res) {
+                execute({
+                    // create data 
+                    "executethis": "getwidmaster",
+                    "wid": "a11wid",
+                    "convertmethod": "dto"
+                }, function (err, res) {
+                    proxyprinttodiv('Function csd3 -- getwidmaster a11wid -- ', res, debuglevel);
+                    callback(err, res);
+                });
+            });
+
+        });
+    });
+
+
+}
+
+
+
+/// check relationships adding
+exports.csd4 = csd4 = function csd4(params, callback) {
+    debuglevel = 67;
+    execute([{
+        "executethis": "addwidmaster",
+        "metadata.method": "a1dto",
+        "wid": "a1dto",
+        "a11": "string",
+        "metadata.b1dto.type": "onetoone"
+    }, {
+        "executethis": "addwidmaster",
+        "metadata.method": "b1dto",
+        "wid": "b1dto",
+        "b11": "string"
+
+    }, {
+        "executethis": "addwidmaster",
+        "metadata.method": "c1dto",
+        "wid": "c1dto",
+        "c11": "string"
+
+    }], function (err, res) {
+        createrelationship("a1dto", "b1dto", "onetoone", function (err, res) {
+
+            createrelationship("b1dto", "c1dto", "onetoone", function (err, res) {
+
+                execute({
+                    "executethis": "addwidmaster",
+                    "wid": "a11wid",
+                    "metadata.method": "a1dto",
+                    "a11": "a11value",
+                    "b1dto.b11": "b11value",
+                    "b1dto.c1dto.c11": "c11value",
+                }, function (err, res) {
+                    execute({
+                        // create data 
+                        "executethis": "getwidmaster",
+                        "wid": "a11wid",
+                        "convertmethod": "dto"
+                    }, function (err, res) {
+                        proxyprinttodiv('Function csd4 -- getwidmaster a11wid -- ', res, debuglevel);
+                        callback(err, res);
+                    });
                 });
             });
 
@@ -1847,13 +1945,13 @@ exports.csd2 = csd2 = function csd2(params, callback) {
         "metadata.inherit.0.command.dtotype": "",
         "metadata.inherit.0.command.adopt": "override"
 
-    }], function(err, res) {
+    }], function (err, res) {
 
         execute({
             // create data 
             "executethis": "getwidmaster",
             "wid": "parentwid1"
-        }, function(err, res) {
+        }, function (err, res) {
             proxyprinttodiv('Function csd1 -- getwidmaster parentwid1 -- ', res, debuglevel);
             callback(err, res);
         });
@@ -1901,7 +1999,7 @@ exports.testcreatealldtos = testcreatealldtos = function testcreatealldtos(param
         "usergroupdto.0.groupname": "user usergroup name"
     };
 
-    createalldtos(params, function(cb2) {
+    createalldtos(params, function (cb2) {
         var executeList = [];
 
         var executeObjForGet = {
@@ -1911,7 +2009,7 @@ exports.testcreatealldtos = testcreatealldtos = function testcreatealldtos(param
         //executeList.push(executeObjForGet);
         executeList.push(executeobj);
 
-        execute(executeList, function(err, res) {
+        execute(executeList, function (err, res) {
             proxyprinttodiv("result from data add ", res, 99, true);
 
             var printlist = [
@@ -1926,7 +2024,7 @@ exports.testcreatealldtos = testcreatealldtos = function testcreatealldtos(param
                 //{"wid":"wid1", "command.dtotype":"permissiondto"}
             ];
 
-            printlistmany(printlist, function(err, res) {
+            printlistmany(printlist, function (err, res) {
                 callback(err, res);
             })
         });
@@ -1953,13 +2051,13 @@ exports.tp1 = tp1 = function tp1(parms, callback) {
         "level": "99"
     };
 
-    createalldtos(parms, function(err, res) {
-        execute(executeobj, function(err, res) {
+    createalldtos(parms, function (err, res) {
+        execute(executeobj, function (err, res) {
 
             execute({
                 "executethis": "getwidmaster",
                 "wid": "p1"
-            }, function(err, res) {
+            }, function (err, res) {
                 proxyprinttodiv("tp1 -- permissiondto p1 --  ", res, 39, true);
                 callback(err, res);
 
@@ -1981,13 +2079,13 @@ exports.agr1 = agr1 = function agr1(parms, callback) {
         "actiongroupname": "grou name"
     };
 
-    createalldtos(parms, function(err, res) {
-        execute(executeobj, function(err, res) {
+    createalldtos(parms, function (err, res) {
+        execute(executeobj, function (err, res) {
 
             execute({
                 "executethis": "getwidmaster",
                 "wid": "ag1"
-            }, function(err, res) {
+            }, function (err, res) {
                 proxyprinttodiv("ag1 --  --  ", res, 39, true);
                 callback(err, res);
 
@@ -2002,7 +2100,7 @@ exports.uw = uw = function uw(parms, callback) {
     // userdto
     debuglevel = 39;
 
-    createalldtos(parms, function(err, res) {
+    createalldtos(parms, function (err, res) {
 
         var executeobj = {
             "executethis": "addwidmaster",
@@ -2036,12 +2134,12 @@ exports.uw = uw = function uw(parms, callback) {
             "actiongroupdto.0.actiongroupname": "permission action group"
         };
 
-        execute(executeobj, function(err, res) {
+        execute(executeobj, function (err, res) {
 
             execute({
                 "executethis": "getwidmaster",
                 "wid": "uw"
-            }, function(err, res) {
+            }, function (err, res) {
                 proxyprinttodiv("uw --  --  ", res, 39, true);
                 callback(err, res);
 
@@ -2062,40 +2160,16 @@ exports.uw = uw = function uw(parms, callback) {
 // test recursive groups fetching
 exports.etgrp = etgrp = function etgrp(parm, callback) {
     debuglevel = 39;
-    asap({}, function(err, res) {
+    secy({}, function (err, res) {
         proxyprinttodiv('Function etgrp >>>>>  for  -- asap done', res, 39);
         var userobj = {
             "wid": "rogeruser"
         };
         var groupset = [];
-        getmygroups(userobj, "usergroupdto", "usergroupname", groupset, function(err, res) {
+        getmygroups(null, userobj, "usergroupdto", "usergroupname", groupset, function (err, res) {
             proxyprinttodiv('Function etgrp >>>>>  for  -- groupset', groupset, 39);
             callback(err, groupset);
         });
-    });
-}
-
-
-
-// security check function - -call after createalldtos, createdefaultdata
-exports.check = check = function check(params, callback) {
-    // what to test security on
-    var check1Set = {};
-    check1Set['ac'] = "defaultac";
-    check1Set['usergroup'] = null;
-    check1Set['actiongroup'] = "allactions";
-    check1Set['dbgroup'] = "data1";
-    check1Set['phone'] = "9873838958";
-    check1Set['server'] = "server1";
-    check1Set['collection'] = "collection1";
-    check1Set['datastore'] = "dbs";
-
-
-    // check security test 1
-    securitycheck(check1Set.ac, check1Set.usergroup, check1Set.phone, check1Set.actiongroup, check1Set.dbgroup, check1Set.collection, check1Set.server, check1Set.datastore, function(err, res) {
-        proxyprinttodiv('Function  se3  checked security ', res, 99);
-        status = res;
-        callback(err, res);
     });
 }
 

@@ -41,11 +41,11 @@
             "metadata.method": "userdto",
             "wid": "rogerwid"
         }],
-        function(err, res) {
+        function (err, res) {
             updatewid({
                 "wid": "initialwid",
                 "date": new Date()
-            }, function(err, res) {
+            }, function (err, res) {
                 callback(err, res);
             });
         });
