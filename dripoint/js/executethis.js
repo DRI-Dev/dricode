@@ -1,3 +1,5 @@
+// 'use strict';
+
 // copyright (c) 2014 DRI
 // execute is the asynchronous version  has an etbypass option
 // executelist executes list (howToDoList and whatToDoList).  It accepts a structure as in config
@@ -1147,10 +1149,11 @@
         var whatexecuteorder;
         var howtryorder;
         var whattryorder;
+        var securitycheck;
 
         howallowexecute = true;
         howexecuteorder = 1;
-        resultsArr = [];
+        var resultsArr = [];
 
         // saveglobal("debugname", "executelist");
         // debugcolor++;

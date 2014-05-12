@@ -281,8 +281,8 @@
             var dtoobject = {};
             extend(true, dtoobject, inobj);
             for (var eachparam in dtoobject) {
-                // if (dtoobject.hasOwnProperty(eachparam) && eachparam !== "command") {
-                if (dtoobject.hasOwnProperty(eachparam)) {
+                 if (dtoobject.hasOwnProperty(eachparam) && eachparam !== "command") {
+                //if (dtoobject.hasOwnProperty(eachparam)) {
                     if (isArray(dtoobject[eachparam])) {
                         var tempArray = [];
                         for (var eachitem in dtoobject[eachparam]) {

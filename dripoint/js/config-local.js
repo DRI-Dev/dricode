@@ -1,4 +1,5 @@
 // copyright (c) 2014 DRI 
+// 'use strict';
 if (!exports) {
     var exports = {};
 }
@@ -37,29 +38,31 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
     // start eventonemin, eventtenmin and save the interval value so 
     // you can use "clearInterval" in the future if desired to stop things
     var minutes = 60 * 1000;
+    var err,res = {};
+
     //exports.everyMinuteInterval = setInterval(exports.eventonemin,1000);
     //exports.everyTenMinuteInterval = setInterval(exports.eventtenmin,10 * minutes);
 
-    execute([{"executethis":"addwidmaster", 
-                "metadata.method":"systemdto",
-                "wid":"systemdto",
-                "expirationtimer":"string",
-                "expirationdate":"string",
-				"executecount":"integer",
-                "metadata.inherit.0": {"wid" : "systemdefault", "command" : { "dtotype":"", "adopt":"default"}}
-        },{
-            "executethis":"addwidmaster",
-            "wid":"systemdefault",
-            "metadata.method":"systemdto",
-            "expirationtimer":"90",
-            "expirationdate":"6/14/14"
-        }
-        ],
-        function (err, res) {
-            updatewid({"wid":"initialwid", "date": new Date()}, function (err, res) {
+    // execute([{"executethis":"addwidmaster", 
+    //             "metadata.method":"systemdto",
+    //             "wid":"systemdto",
+    //             "expirationtimer":"string",
+    //             "expirationdate":"string",
+				// "executecount":"integer",
+    //             "metadata.inherit.0": {"wid" : "systemdefault", "command" : { "dtotype":"", "adopt":"default"}}
+    //     },{
+    //         "executethis":"addwidmaster",
+    //         "wid":"systemdefault",
+    //         "metadata.method":"systemdto",
+    //         "expirationtimer":"90",
+    //         "expirationdate":"6/14/14"
+    //     }
+    //     ],
+    //     function (err, res) {
+    //         updatewid({"wid":"initialwid", "date": new Date()}, function (err, res) {
                 callback(err, res);
-                });
-        });
+        //         });
+        // });
 };
 
 exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
@@ -474,41 +477,42 @@ function test2(params, callback) {
 
 exports.server = window.server = server = function server(params, callback) {
     proxyprinttodiv('Function server ------', params, 30);
-    try {
-        var inbound_parameters = {};
-        extend(true, inbound_parameters, params);
+    callback(null,null)
+    // try {
+    //     var inbound_parameters = {};
+    //     extend(true, inbound_parameters, params);
 
-        console.log('execute server called with ' + JSON.stringify(params));
-        delete params['configuration'];
-        params = toLowerKeys(params);
-        // if (params['midexecute']) {
-        //     params['executethis'] = params['midexecute'];
-        //     delete params['midexecute'];
-        // }
-        // alert(JSON.stringify(params));
+    //     console.log('execute server called with ' + JSON.stringify(params));
+    //     delete params['configuration'];
+    //     params = toLowerKeys(params);
+    //     // if (params['midexecute']) {
+    //     //     params['executethis'] = params['midexecute'];
+    //     //     delete params['midexecute'];
+    //     // }
+    //     // alert(JSON.stringify(params));
 
-        // add accesstoken if user exists in localStorage
-        var currentUser = window.localStorage ? JSON.parse(window.localStorage.getItem('driUser')) : undefined;
-        if (currentUser) {
-            if (!params.etenvironment) {
-                params.etenvironment = {};
-            }
-            params.etenvironment.accesstoken = currentUser.at;
-        }
+    //     // add accesstoken if user exists in localStorage
+    //     var currentUser = window.localStorage ? JSON.parse(window.localStorage.getItem('driUser')) : undefined;
+    //     if (currentUser) {
+    //         if (!params.etenvironment) {
+    //             params.etenvironment = {};
+    //         }
+    //         params.etenvironment.accesstoken = currentUser.at;
+    //     }
 
-        executeAjax("", params, function (data) {
-            console.log("Return from server: " + JSON.stringify(data));
-            var err;
-            callback(null, data);
-        });
-    } // end try
-    catch (err) {
-        var finalobject =
-            createfinalobject({
-                "result": "server"
-            }, {}, "server", err, inbound_parameters);
-        callback(finalobject.err, finalobject.res);
-    }
+    //     executeAjax("", params, function (data) {
+    //         console.log("Return from server: " + JSON.stringify(data));
+    //         var err;
+    //         callback(null, data);
+    //     });
+    // } // end try
+    // catch (err) {
+    //     var finalobject =
+    //         createfinalobject({
+    //             "result": "server"
+    //         }, {}, "server", err, inbound_parameters);
+    //     callback(finalobject.err, finalobject.res);
+    // }
 };
 
 
