@@ -4189,7 +4189,7 @@ function func_b33(params, callback) {
 
 exports.err1 = err1 = function err1 (params, callback) {
     saveglobal("debugsubcat", "code");
-    execute({"executethis":"getwidmaster","wid":"1","command":{"parameters":{"test1":"1"},"status":"fail"}}, function(err, result){
+    execute({"executethis":"getwidmaster","wid":"1","command":{"parameters":{"test1":"1"},"status":"fail"}}, function (err, result){
         proxyprinttodiv('Function err1 result ', result, 17);
         // debugfn("offlinegetwid code generator END",                  "ag2",    "",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
     });
@@ -4197,7 +4197,7 @@ exports.err1 = err1 = function err1 (params, callback) {
 
 exports.wrapped1 = wrapped1 = function wrapped1 (params, callback) {
     saveglobal("debugsubcat", "code");
-    execute([{"executethis":"addwidmaster","wid":"1","a":"b"}, {"executethis":"getwidmaster","wid":"1","command":{"executeresult":"outer"}}], function(err, result){
+    execute([{"executethis":"addwidmaster","wid":"1","a":"b"}, {"executethis":"getwidmaster","wid":"1","command":{"executeresult":"outer"}}], function (err, result){
         proxyprinttodiv('Function wrapped1 result ', result, 99)
         // debugfn("offlinegetwid code generator END",                  "ag2",    "",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
 
@@ -4462,7 +4462,7 @@ exports.ettest_recurseModObj = ettest_recurseModObj = function ettest_recurseMod
                                                       "d":"date",
                                                       "q":{"w":{"e":"string"}},
                                                       "g":"boolean"
-                                                }, {}, function(err,res){
+                                                }, {}, function (err,res){
                                                       
                                                       proxyprinttodiv('recurseModObj inputObject', {
                                                             "metadata":{"method":"wid2"},
@@ -4664,7 +4664,7 @@ exports.ett1 = ett1 = function ett1(params, callback) {
             },
             function (callback2) {  //addwidmaster wid1
                   //n-times loop
-                  async.times(5, function(n, next){
+                  async.times(5, function (n, next){
                         var executeList = [{
                               "executethis": "addwidmaster",
                               "wid": "ttdto_wid"+n,
@@ -4675,13 +4675,13 @@ exports.ett1 = ett1 = function ett1(params, callback) {
                               proxyprinttodiv("Function t1 addwidmaster ttdto wid result -- ", res, 17);
 							  next(err, res);
                         });
-                  }, function(err, result) {	
+                  }, function (err, result) {	
                         callback2(null,result);
                   });
             },
             function (callback3) {  //getwidmaster
                   //n-times loop
-                  async.times(5, function(n, next){
+                  async.times(5, function (n, next){
                         var executeList = [{
                               "executethis": "getwidmaster",
                               "wid": "ttdto_wid"+n,
@@ -4690,7 +4690,7 @@ exports.ett1 = ett1 = function ett1(params, callback) {
                               proxyprinttodiv("Function t1 getwidmaster  result -- ", res, 17);
 							  next(err, res);
                         });
-                  }, function(err, result) {
+                  }, function (err, result) {
                         callback3(null, result);
                   });
             }
@@ -4733,7 +4733,7 @@ exports.t2 = t2 = function t2(params, callback) {
             },*/
             function (callback2) {  //addwidmaster wid1
                   //n-times loop
-                  async.times(5, function(n, next){
+                  async.times(5, function (n, next){
                         var executeList = [{
                               "executethis": "addwidmaster",
                               "wid": "ttdto_wid"+n,
@@ -4744,13 +4744,13 @@ exports.t2 = t2 = function t2(params, callback) {
                               proxyprinttodiv("Function t1 addwidmaster ttdto wid result -- ", res, 17);
 							  next(err, res);
                         });
-                  }, function(err, result) {
+                  }, function (err, result) {
                         callback2(null, result);
                   });
             }/*,
             function (callback3) {  //getwidmaster
                   //n-times loop
-                  async.times(5, function(n, next){
+                  async.times(5, function (n, next){
                         var executeList = [{
                               "executethis": "getwidmaster",
                               "wid": "ttdto_wid"+n,
@@ -4758,7 +4758,7 @@ exports.t2 = t2 = function t2(params, callback) {
                         execute(executeList, function (err, res) {
                               proxyprinttodiv("Function t1 getwidmaster  result -- ", res, 17);
                         });
-                  }, function(err, result) {
+                  }, function (err, result) {
                         callback3(null);
                   });
             }*/
@@ -4801,7 +4801,7 @@ exports.ett3 = ett3 = function ett3(params, callback) {
             },
             function (callback2) {  //addwidmaster wid1
                   //n-times loop
-                  async.times(1, function(n, next){
+                  async.times(1, function (n, next){
                         var executeList = [{
                               "executethis": "addwidmaster",
                               "wid": "ttdto_wid"+n,
@@ -4812,13 +4812,13 @@ exports.ett3 = ett3 = function ett3(params, callback) {
                               proxyprinttodiv("Function t1 addwidmaster ttdto wid result -- ", res, 17);
 							  next(err, res);
                         });
-                  }, function(err, result) {
+                  }, function (err, result) {
                         callback2(null, result);
                   });
             }/*,
             function (callback3) {  //getwidmaster
                   //n-times loop
-                  async.times(5, function(n, next){
+                  async.times(5, function (n, next){
                         var executeList = [{
                               "executethis": "getwidmaster",
                               "wid": "ttdto_wid"+n,
@@ -4826,7 +4826,7 @@ exports.ett3 = ett3 = function ett3(params, callback) {
                         execute(executeList, function (err, res) {
                               proxyprinttodiv("Function t1 getwidmaster  result -- ", res, 17);
                         });
-                  }, function(err, result) {
+                  }, function (err, result) {
                         callback3(null);
                   });
             }*/
@@ -9253,12 +9253,12 @@ exports.etar100 = etar100 = function etar100(params, callback) {
       */
       
       // n times loop
-      async.times(5, function(n, next){
+      async.times(5, function (n, next){
             addrecord(object, dtoobject, parentwid, parentmethod, relationshiptype, command, function (err, res) {
                 console.log( n + "addrecord! -- got res -->" + JSON.stringify(res));
 				next(err, res);
             });
-      }, function(err, res) {
+      }, function (err, res) {
             //after loop
 			proxyprinttodiv("res --", res, 17);
 			var actual_result = [res[4]];
@@ -9298,7 +9298,7 @@ exports.etd1 = etd1 = function etd1(params, callback) {
             var inputObj = {"metadata":{"method":"defaultdto"},"a":"aaa", "x":"test", "z":"ggg",
                                     "c":"30","d":"6/23/1912","q":{"w":{"e":"t"}},"g":"true", "b":[{"c":"one"}, {"d":"two"}],
                                     "x1":[{"y":"hello","d":"2/27/2014","b":[{"c":"one","c1":"50"}, {"c":"two","c1":"30"},{"c":"three","d":"30"}, {"cx":"two","c1x":"30"}]}]};
-            var command = {"command.deepfilter.convert":true};
+            var command = {"deepfilter":{"convert":true}};
               
             deepfilter(inputObj, dtoObjOpt, command, function (err, res){
                 proxyprinttodiv("after d1 deepfilter res", res, 17);
@@ -9347,7 +9347,7 @@ exports.etd2 = etd2 = function etd2(params, callback) {
             var inputObj = {"c":"30", "h":"hval", "g":"true","d":"6/25/1912", "q":{"w":{"e":"t"}}, "x":{"y":{"z":"string"}}};
             var command = {};
               
-            deepfilter(inputObj, dtoObjOpt, command, function(err, res){
+            deepfilter(inputObj, dtoObjOpt, command, function (err, res){
 				proxyprinttodiv("after d1 deepfilter res", res, 17);
 				  
 				proxyprinttodiv("res --", res, 17);
@@ -11220,18 +11220,19 @@ ettest1dot3dotjsonmany(result, function (err, r1) {
 	
 
 function testDeepFilterTests(command, callback){
-	debuglevel = 0;
 	async.series([
 		function (cb1){
 			var dtoObjOpt = {
-                        "b1":"boolean", "s1":"string", "n1":"number", "i1":"integer", "d1":"date", "sg1":"shortguid", "g1":"guid", "h1":"hash", "p1":"phone", "r1":"random4",
+                        "b1":"boolean", "s1":"string", "n1":"number", "i1":"integer", "d1":"date", "sg1":"shortguid", "g1":"guid", "h1":"hash", "p1":"phone", "r1":"random4",  
+						"g11":"guid", "sg11":"shortguid", "r11":"random4",	//To check if existing value, then don't touch
                         "b2":"boolean", "s2":"string", "n2":"number", "i2":"integer", "d2":"date", "sg2":"shortguid", "g2":"guid", "h2":"hash", "p2":"phone", "r2":"random4",
 				"b3":"boolean", "s3":"string", "n3":"number", "i3":"integer", "d3":"date", "sg3":"shortguid", "g3":"guid", "h3":"hash", "p3":"phone", "r3":"random4",
                         "b4":"boolean", "s4":"string", "n4":"number", "i4":"integer", "d4":"date", "sg4":"shortguid", "g4":"guid", "h4":"hash", "p4":"phone", "r4":"random4"
 					};
 			var inputObj = {
                         "b1":"false", "s1":"hello", "n1":"30", "i1":"40", "d1":"2/27/2014", "h1":"ff00ff","p1":"19998887777",
-                        "b2":false, "s2":"hello", "n2":30, "i2":40, "d2":"2014-02-27T18:30:00.000Z", "h2":"#ff00ff","p2":"+19998887777",
+                        "g11":"1111111-2222-33333-4444-5555555555", "sg11":"1111-2222-3333-4444", "r11":"1111", //To check if existing value, then don't touch
+						"b2":false, "s2":"hello", "n2":30, "i2":40, "d2":"2014-02-27T18:30:00.000Z", "h2":"#ff00ff","p2":"+19998887777",
 				"b3":"", "s3":"", "n3":"", "i3":"", "d3":"", "h3":"","p3":"",
                         "b4":"x", "s4":false, "n4":"x", "i4":"x", "d4":"x", "h4":"x","p4":"x"
                     };
@@ -11275,8 +11276,8 @@ function testDeepFilterTests(command, callback){
 	"command.deepfilter.convert":true, "command.deepfilter.totype":true
 */
 exports.etd16 = etd16 = function etd16(params, callback) {
-	var command = {"command.deepfilter.convert":true, "command.deepfilter.totype":true};	//string to datatype
-	testDeepFilterTests(command, function(err, res){
+	var command = {"deepfilter":{"convert":true, "totype":true}};	//string to datatype
+	testDeepFilterTests(command, function (err, res){
 		proxyprinttodiv("after test convert:true totype: true --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
 		callback(err, res);
 	});
@@ -11286,8 +11287,8 @@ exports.etd16 = etd16 = function etd16(params, callback) {
 	"command.deepfilter.convert":true, "command.deepfilter.totype":false
 */
 exports.etd17 = etd17 = function etd17(params, callback) {
-	var command = {"command.deepfilter.convert":true, "command.deepfilter.totype":false};	//datatype to string
-	testDeepFilterTests(command, function(err, res){
+	var command = {"deepfilter":{"convert":true, "totype":false}};	//datatype to string
+	testDeepFilterTests(command, function (err, res){
             proxyprinttodiv("after test convert:true totype: false --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
 		callback(err, res);
 	});
@@ -11298,8 +11299,8 @@ exports.etd17 = etd17 = function etd17(params, callback) {
 	no conversion
 */
 exports.etd18 = etd18 = function etd18(params, callback) {
-	var command = {"command.deepfilter.convert":false, "command.deepfilter.totype":true};	//no conversion
-	testDeepFilterTests(command, function(err, res){
+	var command = {"deepfilter":{"convert":false, "totype":true}};	//no conversion
+	testDeepFilterTests(command, function (err, res){
             proxyprinttodiv("after test convert:false totype: true --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
 		callback(err, res);
 	});
@@ -11310,8 +11311,8 @@ exports.etd18 = etd18 = function etd18(params, callback) {
 	no conversion
 */
 exports.etd19 = etd19 = function etd19(params, callback) {
-	var command = {"command.deepfilter.convert":false, "command.deepfilter.totype":false};	//no conversion
-	testDeepFilterTests(command, function(err, res){
+	var command = {"deepfilter":{"convert":false, "totype":false}};	//no conversion
+	testDeepFilterTests(command, function (err, res){
             proxyprinttodiv("after test convert:false totype: false --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
 		callback(err, res);
 	});
@@ -11343,7 +11344,7 @@ exports.etd19 = etd19 = function etd19(params, callback) {
 // var command = {"command.deepfilter.totype":true};
 	
 
-function testDeepFilterTests(command, callback){
+function testDeepFilterTests1(command, callback){
 	debuglevel = 0;
 	async.series([
 		function (cb1){
@@ -11409,7 +11410,7 @@ function testDeepFilterTests(command, callback){
                 "h2":"#ff00ff",
                 "p2":"+19998887777",
 
-				"b3":"", 
+		    "b3":"", 
                 "s3":"", 
                 "n3":"", 
                 "i3":"", 
@@ -11464,13 +11465,13 @@ function testDeepFilterTests(command, callback){
 /*
 	"command.deepfilter.convert":true, "command.deepfilter.totype":true
 */
-exports.etd16 = etd16 = function etd16(params, callback) {
+exports.etd26 = etd26 = function etd26(params, callback) {
     eventappinstall();
 
     execute([{
-            "executethis": "testDeepFilterTests",
-            "command.deepfilter.convert": true,
-            "command.deepfilter.totype": true
+            "executethis": "testDeepFilterTests1",
+            "command":{"deepfilter":{"convert": true}},
+			"command":{"deepfilter":{"totype": true}}
         }],
         function (err, res) {
             res = logverify("etd16_result", res[0], [{
@@ -11497,11 +11498,11 @@ exports.etd16 = etd16 = function etd16(params, callback) {
 /*
 	"command.deepfilter.convert":true, "command.deepfilter.totype":false
 */
-exports.etd17 = etd17 = function etd17(params, callback) {
+exports.etd27 = etd27 = function etd27(params, callback) {
     eventappinstall();
 
     execute([{
-            "executethis": "testDeepFilterTests",
+            "executethis": "testDeepFilterTests1",
             "command.deepfilter.convert": true,
             "command.deepfilter.totype": false
         }],
@@ -11531,11 +11532,11 @@ exports.etd17 = etd17 = function etd17(params, callback) {
 	"command.deepfilter.convert":false, "command.deepfilter.totype":true
 	no conversion
 */
-exports.etd18 = etd18 = function etd18(params, callback) {
+exports.etd28 = etd28 = function etd28(params, callback) {
     eventappinstall();
 
     execute([{
-            "executethis": "testDeepFilterTests",
+            "executethis": "testDeepFilterTests1",
             "command.deepfilter.convert": false,
             "command.deepfilter.totype": true
         }],
@@ -11565,11 +11566,11 @@ exports.etd18 = etd18 = function etd18(params, callback) {
 	"command.deepfilter.convert":false, "command.deepfilter.totype":false
 	no conversion
 */
-exports.etd19 = etd19 = function etd19(params, callback) {
+exports.etd29 = etd29 = function etd29(params, callback) {
     eventappinstall();
 
     execute([{
-            "executethis": "testDeepFilterTests",
+            "executethis": "testDeepFilterTests1",
             "command.deepfilter.convert": false,
             "command.deepfilter.totype": false
         }],
@@ -11597,7 +11598,7 @@ exports.etd19 = etd19 = function etd19(params, callback) {
 
 // exports.etd16 = etd16 = function etd16(params, callback) {
 //     var command = {"command.deepfilter.convert":true, "command.deepfilter.totype":true};    //string to datatype
-//     testDeepFilterTests(command, function(err, res){
+//     testDeepFilterTests(command, function (err, res){
 
 //         proxyprinttodiv("after test convert:true totype: true --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
         
@@ -11606,7 +11607,7 @@ exports.etd19 = etd19 = function etd19(params, callback) {
 // }
 // exports.etd17 = etd17 = function etd17(params, callback) {
 //     var command = {"command.deepfilter.convert":true, "command.deepfilter.totype":false};   //datatype to string
-//     testDeepFilterTests(command, function(err, res){
+//     testDeepFilterTests(command, function (err, res){
 //             proxyprinttodiv("after test convert:true totype: false --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
 //         callback(err, res);
 //     });
@@ -11614,7 +11615,7 @@ exports.etd19 = etd19 = function etd19(params, callback) {
                   
 // exports.etd18 = etd18 = function etd18(params, callback) {
 //     var command = {"command.deepfilter.convert":false, "command.deepfilter.totype":true};   //no conversion
-//     testDeepFilterTests(command, function(err, res){
+//     testDeepFilterTests(command, function (err, res){
 //             proxyprinttodiv("after test convert:false totype: true --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
 //         callback(err, res);
 //     });
@@ -11622,7 +11623,7 @@ exports.etd19 = etd19 = function etd19(params, callback) {
 
 // exports.etd19 = etd19 = function etd19(params, callback) {
 // 	var command = {"command.deepfilter.convert":false, "command.deepfilter.totype":false};	//no conversion
-// 	testDeepFilterTests(command, function(err, res){
+// 	testDeepFilterTests(command, function (err, res){
 //             proxyprinttodiv("after test convert:false totype: false --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
 // 		callback(err, res);
 // 	});
@@ -11635,7 +11636,7 @@ exports.etd19 = etd19 = function etd19(params, callback) {
 
 <<dtoobj>>{"title":"string","wid":"string","metadata":{"method":"string","merchantdto":{"type":"onetomany"}},"command":{"inherit":{"defaultsystemactions":"defaultsystemactions"},"deepdtolist":{"systemdto":"onetoone","loyaltydto":"onetomany","merchantdto":"onetomany"},"dtolist":{"merchantdto":"onetomany","systemdto":"onetoone"}},"merchantdto":[{"name":"string","wid":"string","metadata":{"method":"string","loyaltydto":{"type":"onetomany"}},"command":{"inherit":{"defaultsystemactions":"defaultsystemactions"},"deepdtolist":{"systemdto":"onetoone","loyaltydto":"onetomany"},"dtolist":{"loyaltydto":"onetomany","systemdto":"onetoone"}},"loyaltydto":[{"name":"string","wid":"string","metadata":{"method":"string"},"command":{"inherit":{"defaultsystemactions":"defaultsystemactions"},"deepdtolist":{"systemdto":"onetoone"},"dtolist":{"systemdto":"onetoone"}}}]}]}
 */
-exports.etd20 = etd20 = function etd20(params, callback) {
+exports.etd30 = etd30 = function etd30(params, callback) {
       debuglevel = 41;
       async.series([
             function (cb1) {
@@ -11712,7 +11713,7 @@ exports.lmetd2 = lmetd2 = function lmetd2(params, callback) {
                             "formatresult": "true"
                         };
               
-            deepfilter(inputObj, dtoObjOpt, command, function(err, res){
+            deepfilter(inputObj, dtoObjOpt, command, function (err, res){
                 var actual_result = [res];
                 var expected_result = [{
                                         "c":30//,
@@ -11753,7 +11754,7 @@ exports.lmetd3 = lmetd3 = function lmetd3(params, callback) {
                             "formatresult": "true"
                         };
               
-            deepfilter(inputObj, dtoObjOpt, command, function(err, res){
+            deepfilter(inputObj, dtoObjOpt, command, function (err, res){
                 var actual_result = [res];
                 var expected_result = [{
                                         "c":"30"
@@ -11791,7 +11792,7 @@ exports.lmetd4 = lmetd4 = function lmetd4(params, callback) {
                             "formatresult": "true"
                         };
               
-            deepfilter(inputObj, dtoObjOpt, command, function(err, res){
+            deepfilter(inputObj, dtoObjOpt, command, function (err, res){
                 var actual_result = [res];
                 var expected_result = [{
                                         "c":30
@@ -11828,7 +11829,7 @@ exports.lmetd5 = lmetd5 = function lmetd5(params, callback) {
                             // "deepfilter.convert": "true"
                         };
               
-            deepfilter(inputObj, dtoObjOpt, command, function(err, res){
+            deepfilter(inputObj, dtoObjOpt, command, function (err, res){
                 var actual_result = [res];
                 var expected_result = [{
                                         "charlie":"30"
