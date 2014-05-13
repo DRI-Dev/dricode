@@ -566,7 +566,7 @@ exports.getDriApiData = getDriApiData = function getDriApiData(params, callback)
 };
 
 
-exports.mquery = mquery = function mquery(inboundobj, command, callback) {
+exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, callback) {
     try {
         var inbound_parameters = {};
         extend(true, inbound_parameters, inboundobj);

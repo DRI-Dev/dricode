@@ -156,7 +156,7 @@
                                             proxyprinttodiv('Function MongoDataQuery singlemongoquery : ', mQueryString, 28);
                                             //mQueryString = output.substring(0, output.length - 1);
                                             // if (validParams(mQueryString)) {
-                                            mquery(mQueryString, commandParams, function (err, res) {
+                                            mquery(mQueryString,{}, commandParams, function (err, res) {
                                                 // If error, bounce out
                                                 if (err && Object.keys(err).length > 0) {
                                                     cb(err, res);
@@ -281,7 +281,7 @@
                                                             proxyprinttodiv('querywid mQueryString init', mQueryString, 28);
 
                                                             // if (validParams(mQueryString)) {
-                                                            mquery(mQueryString, commandParams, function (err, res) {
+                                                            mquery(mQueryString,{}, commandParams, function (err, res) {
                                                                 // If error, bounce out
                                                                 if (err && Object.keys(err).length > 0) {
                                                                     cb(err, res);
@@ -334,7 +334,7 @@
                                 }
 
                                 // if (validParams(mQueryString)) {
-                                mquery(mQueryString, commandParams, function (err, res) {
+                                mquery(mQueryString,{}, commandParams, function (err, res) {
                                     // If error, bounce out
                                     if (err && Object.keys(err).length > 0) {
                                         cb(err, res);
@@ -407,7 +407,7 @@
                                 // console.log('mQueryString at step03 => ' + mQueryString);
 
                                 if (Object.keys(JSON.parse(mQueryString)).length > 0) {
-                                    mquery(mQueryString, commandParams, function (err, res) {
+                                    mquery(mQueryString,{}, commandParams, function (err, res) {
                                         // If error, bounce out
                                         if (err && Object.keys(err).length > 0) {
                                             cb(err, res);
@@ -469,7 +469,7 @@
                                 debugfn("step04", "querywid", "query", "mid", getglobal("debugcolor"), getglobal("debugindent"), debugvars([5]));
 
                                 if (Object.keys(JSON.parse(mQueryString)).length > 0) {
-                                    mquery(mQueryString, commandParams, function (err, res) {
+                                    mquery(mQueryString,{}, commandParams, function (err, res) {
                                         // If error, bounce out
                                         if (err && Object.keys(err).length > 0) {
                                             cb(err, res);
