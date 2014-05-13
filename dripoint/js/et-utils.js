@@ -1166,44 +1166,8 @@ function setbyindex(obj, str, val) {
 
 
 exports.deepfilter = deepfilter = function deepfilter(inputObj, dtoObjOpt, command, callback) {
-    proxyprinttodiv("deepfilter inputObj", inputObj, 99);
-    proxyprinttodiv("deepfilter command", command, 99);
-    // function find_and_replace_addthis(obj) {
-    //     proxyprinttodiv('<<< Get_Clean find_and_replace_addthis obj >>>', obj, 38);
-    //     var _in_obj;
-
-    //     if (obj instanceof Array) {
-    //         _in_obj = [];
-    //         extend(true, _in_obj, obj);
-    //     } else {
-    //         _in_obj = {};
-    //         extend(true, _in_obj, obj);
-    //     }
-
-    //     proxyprinttodiv('<<< Get_Clean find_and_replace_addthis _in_obj >>>', _in_obj, 38);
-
-    //     if (_in_obj.hasOwnProperty("addthis")) {
-    //         var _add_this = _in_obj["addthis"];
-    //         delete _in_obj["addthis"];
-    //         for (var i in _add_this) {
-    //             if (_add_this.hasOwnProperty(i)) {
-    //                 _in_obj[i] = _add_this[i];
-    //             }
-    //         }
-    //     }
-
-    //     for (var each_param in _in_obj) {
-    //         if (_in_obj.hasOwnProperty(each_param)) {
-    //             if (isObject(_in_obj[each_param])) {
-    //                 _in_obj[each_param] = find_and_replace_addthis(_in_obj[each_param]);
-    //             }
-    //         }
-    //     } // for each_param
-
-    //     return _in_obj;
-    // } // end fn recurse
-
-    //console.log("<< in deepfilter >>");
+    proxyprinttodiv("deepfilter inputObj", inputObj, 41);
+    // proxyprinttodiv("deepfilter command", command, 99);
     var modifiedObj = {};
     // copying inputobj into modifiedObj
     extend(true, modifiedObj, inputObj);
@@ -1224,21 +1188,11 @@ exports.deepfilter = deepfilter = function deepfilter(inputObj, dtoObjOpt, comma
         totype = command.deepfilter.totype;
     }
 
-    // if (command && command.command && command.command.deepfilter && command.command.deepfilter.keepaddthis===undefined) { //if command.deepfilter.totype undefined
-    //     keepaddthis = false; //default value -- normally will try to remove addthis at add and get
-    // } else { keepaddthis=command.command.deepfilter.keepaddthis; }
-
-    proxyprinttodiv("deepfilter inputObj", inputObj, 41);
-    proxyprinttodiv("deepfilter dtoObjOpt", dtoObjOpt, 41);
-
     if (dtoObjOpt) {
         recurseModObj(modifiedObj, dtoObjOpt, convert, totype, function (err, res) {
-            // if (!keepaddthis) {res = find_and_replace_addthis(res)}
-            // If error, bounce out
             if (err && Object.keys(err).length > 0) {
                 callback(err, res);
             } else {
-                proxyprinttodiv("deepfilter result with dtoObjOpt", res, 41);
                 callback(null, res);
             }
         });
@@ -1252,390 +1206,293 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
     proxyprinttodiv("recurseModObj - inputObject ", inputObject, 17);
     proxyprinttodiv("recurseModObj - dtoObject ", dtoObject, 17);
 
-    if (!dtoObject.command) {
-        dtoObject["command"] = "object";
-    }
-
     var temparray = [];
     var modifiedObj = {};
     var todolist = [];
     if (dtoObject instanceof Object) {
         Object.keys(dtoObject).forEach(function (inpKey) {
-            //for (eachkey in inputObject) {
             todolist.push(inpKey);
-            //}
         });
     }
     proxyprinttodiv("recurseModObj - todolist ", todolist, 41);
-
     async.mapSeries(todolist, function (inpKey, cbMap) {
-            proxyprinttodiv("recurseModObj - modifiedObj ", modifiedObj, 41);
+            // proxyprinttodiv("recurseModObj - modifiedObj ", modifiedObj, 41);
             async.nextTick(function () {
                 var inpVal = inputObject[inpKey];
-                //if (inpVal && dtoObject.hasOwnProperty(inpKey)) {
-                if (dtoObject.hasOwnProperty(inpKey)) {
-                    var dataType = dtoObject[inpKey];
-                    ////if (inpVal instanceof Array) {
+                if (!inpVal || (inpKey === "metadata") || (inpKey === "command")) { //Ignoring metadata property in input.
+                    modifiedObj[inpKey] = inpVal; 
+                    cbMap(null);
+                } else{                     
+                    if (dtoObject.hasOwnProperty(inpKey)) {
+                        var dataType = dtoObject[inpKey];
 
+                        proxyprinttodiv("*** recurseModObj - inpVal ", inpVal, 17);
+                        proxyprinttodiv("*** recurseModObj - dataType ", dataType, 17);
 
-                    // if ((isArray(inpVal)) && (isArray(dataType))) {
-                    //     if (!isArray(inpVal)) {
-                    //         temparray = [];
-                    //         temparray.push(inpVal);
-                    //         inpVal = temparray;
-                    //     }
-                    //     if (isArray(dataType)) {
-                    //         dataType = dataType[0];
-                    //     }
-                    //     if (!modifiedObj[inpKey]) {
-                    //         modifiedObj[inpKey] = [];
-                    //     }
-                    //     proxyprinttodiv("recurseModObj - before mapseries inpKey ", inpKey, 41);
-                    //     proxyprinttodiv("recurseModObj - before mapseries inpVal ", inpVal, 41);
-                    //     proxyprinttodiv("recurseModObj - before mapseries inpVal isArray", isArray(inpVal), 41);
-                    //     proxyprinttodiv("recurseModObj - before mapseries dataType ", dataType, 41);
-                    //     async.mapSeries(inpVal, function (eachinputval, cb1) { // step through each inpVal
-                    //             async.nextTick(function () {
-                    //                 proxyprinttodiv("recurseModObj - in mapseries eachinputval ", eachinputval, 41);
-                    //                 if (eachinputval) {
-                    //                     recurseModObj(eachinputval, dataType, convert, totype, function (err, result) {
-                    //                         // If error, bounce out
-                    //                         if (err && Object.keys(err).length > 0) {
-                    //                             cb1(err, result);
-                    //                         } else {
-                    //                             proxyprinttodiv("recurseModObj - in mapseries result ", result, 41);
-                    //                             if (Object.keys(result).length !== 0) {
-                    //                                 modifiedObj[inpKey].push(result);
-                    //                                 proxyprinttodiv("recurseModObj - modifiedObj[inpKey] ", modifiedObj[inpKey], 41);
-                    //                                 proxyprinttodiv("recurseModObj - modifiedObj ", modifiedObj, 41);
-                    //                             }
-                    //                             proxyprinttodiv("recurseModObj - after if ", modifiedObj[inpKey], 41);
-                    //                             cb1(null);
-                    //                         }
-                    //                     }); // recurse
-                    //                 } else {
-                    //                     modifiedObj[inpKey] = null;
-                    //                     proxyprinttodiv("recurseModObj - modifiedObj[inpKey] after undefined input ", modifiedObj[inpKey], 41);
-                    //                     cb1(null);
-                    //                 }
-                    //                 proxyprinttodiv("recurseModObj - between ", modifiedObj[inpKey], 41);
-                    //             }); // next tick
-                    //             proxyprinttodiv("recurseModObj - between II ", modifiedObj[inpKey], 41);
-                    //         },
-                    //         function (err, res) {
-                    //             // If error, bounce out
-                    //             if (err && Object.keys(err).length > 0) {
-                    //                 cbMap(err, res);
-                    //             } else {
-                    //                 proxyprinttodiv("recurseModObj - modifiedObj[inpKey] end nextTick ", modifiedObj[inpKey], 41);
-                    //                 cbMap(null);
-                    //             }
-                    //         });
-                    // } else 
-                    if (dataType === "boolean" || dataType === "string" || dataType === "number" ||
-                        dataType === "date" || dataType === "integer" || dataType === "shortguid" ||
-                        dataType === "guid" || dataType === "hash" || dataType === "phone" ||
-                        dataType === "random4" || dataType === "object" || dataType === "array") {
-                        proxyprinttodiv("recurseModObj - dataType ", dataType, 17);
-                        proxyprinttodiv("recurseModObj - inpKey ", inpKey, 17);
-                        proxyprinttodiv("recurseModObj - inpVal ", inpVal, 17);
+                        if (dataType === "boolean" || dataType === "string" || dataType === "number" ||
+                            dataType === "date" || dataType === "integer" || dataType === "shortguid" ||
+                            dataType === "guid" || dataType === "hash" || dataType === "phone" ||
+                            dataType === "random4" || dataType === "object" || dataType === "array") {
+                            proxyprinttodiv("recurseModObj - dataType ", dataType, 17);
+                            proxyprinttodiv("recurseModObj - inpKey ", inpKey, 17);
+                            proxyprinttodiv("recurseModObj - inpVal ", inpVal, 17);
 
-                        /*
-                         For below cases,
-                         if input provided, then no change
-                         if input not provided, then set new values
-                         */
-                        if (inpVal === undefined || inpVal === "undefined") {
+                            /*
+                             For below cases,
+                             if input provided, then no change
+                             if input not provided, then set new values
+                             */
+                            if (inpVal === undefined || inpVal === "undefined") {
+                                switch (dataType) {
+                                case "shortguid": //to create 5 digit alphanumeric string
+                                    //modifiedObj[inpKey] = createNewShortGuid();
+                                    inpVal = createNewShortGuid();
+                                    break;
+                                case "guid":
+                                    //modifiedObj[inpKey] = createNewGuid();
+                                    inpVal = createNewGuid();
+                                    break;
+                                case "random4": //to create 4 digit number
+                                    //modifiedObj[inpKey] = createNewRandom4DigitNumber();
+                                    inpVal = createNewRandom4DigitNumber();
+                                    break;
+                                }
+                            }
+
                             switch (dataType) {
+                                // placeholders, these may need to be fleshed out per roger, thats why the set value logic is here and not above
                             case "shortguid": //to create 5 digit alphanumeric string
-                                //modifiedObj[inpKey] = createNewShortGuid();
-                                inpVal = createNewShortGuid();
+                                modifiedObj[inpKey] = inpVal;
                                 break;
                             case "guid":
-                                //modifiedObj[inpKey] = createNewGuid();
-                                inpVal = createNewGuid();
+                                modifiedObj[inpKey] = inpVal;
                                 break;
                             case "random4": //to create 4 digit number
-                                //modifiedObj[inpKey] = createNewRandom4DigitNumber();
-                                inpVal = createNewRandom4DigitNumber();
+                                modifiedObj[inpKey] = inpVal;
                                 break;
-                            }
-                        }
+                            case "boolean":
+                                if (inpVal === true || inpVal == "true") {
 
-                        switch (dataType) {
-                            // placeholders, these may need to be fleshed out per roger, thats why the set value logic is here and not above
-                        case "shortguid": //to create 5 digit alphanumeric string
-                            modifiedObj[inpKey] = inpVal;
-                            break;
-                        case "guid":
-                            modifiedObj[inpKey] = inpVal;
-                            break;
-                        case "random4": //to create 4 digit number
-                            modifiedObj[inpKey] = inpVal;
-                            break;
-                        case "boolean":
-                            if (inpVal === true || inpVal == "true") {
-
-                                if (convert === false) {
-                                    modifiedObj[inpKey] = inpVal;
-                                } else {
-                                    if (totype === true) {
-                                        modifiedObj[inpKey] = true;
-                                    } else {
-                                        modifiedObj[inpKey] = "true";
-                                    }
-                                }
-
-                                //modifiedObj[inpKey] = true;
-                            } else if (inpVal === false || inpVal == "false") {
-
-                                if (convert === false) {
-                                    modifiedObj[inpKey] = inpVal;
-                                } else {
-                                    if (totype === true) {
-                                        modifiedObj[inpKey] = false;
-                                    } else {
-                                        modifiedObj[inpKey] = "false";
-                                    }
-                                }
-                                //modifiedObj[inpKey] = false;
-                            }
-                            break;
-
-                        case "string":
-                            if (isString(inpVal)) {
-                                if (convert === false) {
-                                    modifiedObj[inpKey] = inpVal;
-                                } else {
-                                    if (totype === true) {
-                                        modifiedObj[inpKey] = String(inpVal);
-                                    } else {
-                                        modifiedObj[inpKey] = String(inpVal);
-                                    }
-                                }
-                                //modifiedObj[inpKey] = String(inpVal);
-                            }
-                            break;
-                        case "number":
-                        case "integer":
-                            if (parseInt(inpVal)) {
-                                if (convert === false) {
-                                    modifiedObj[inpKey] = inpVal;
-                                } else {
-                                    if (totype === true) {
-                                        modifiedObj[inpKey] = parseInt(inpVal);
-                                    } else {
-                                        modifiedObj[inpKey] = String(inpVal);
-                                    }
-                                }
-                                //modifiedObj[inpKey] = parseInt(inpVal);
-                            }
-                            break;
-                        case "date":
-                            /*
-                                 var arrD = inpVal.split("/");
-                                 var m = arrD[0];
-                                 m = (m < 38 ? '0' + m : m);
-                                 var d = arrD[1];
-                                 d = (d < 38 ? '0' + d : d);
-                                 var y = arrD[2];
-                                 var date = new Date(y, m - 1, d);
-                                 // add a day
-                                 date.setDate(date.getDate() + 1);
-                                 modifiedObj[inpKey] = date;
-                                 */
-                            if (inpVal) {
-                                var d = new Date(inpVal);
-                                if (!isNaN(d)) {
                                     if (convert === false) {
                                         modifiedObj[inpKey] = inpVal;
                                     } else {
                                         if (totype === true) {
-                                            modifiedObj[inpKey] = d.toISOString();
+                                            modifiedObj[inpKey] = true;
+                                        } else {
+                                            modifiedObj[inpKey] = "true";
+                                        }
+                                    }
+
+                                    //modifiedObj[inpKey] = true;
+                                } else if (inpVal === false || inpVal == "false") {
+
+                                    if (convert === false) {
+                                        modifiedObj[inpKey] = inpVal;
+                                    } else {
+                                        if (totype === true) {
+                                            modifiedObj[inpKey] = false;
+                                        } else {
+                                            modifiedObj[inpKey] = "false";
+                                        }
+                                    }
+                                    //modifiedObj[inpKey] = false;
+                                }
+                                break;
+
+                            case "string":
+                                if (isString(inpVal)) {
+                                    if (convert === false) {
+                                        modifiedObj[inpKey] = inpVal;
+                                    } else {
+                                        if (totype === true) {
+                                            modifiedObj[inpKey] = String(inpVal);
                                         } else {
                                             modifiedObj[inpKey] = String(inpVal);
                                         }
                                     }
-                                    //modifiedObj[inpKey] = d.toISOString();
+                                    //modifiedObj[inpKey] = String(inpVal);
                                 }
-                            }
-                            break;
-                        case "hash":
-                            if (inpVal && inpVal.length >= 6) {
-                                if (convert === false) {
-                                    modifiedObj[inpKey] = inpVal;
-                                } else {
-                                    if (totype === true) {
-                                        modifiedObj[inpKey] = parseToHashFormat(inpVal);
+                                break;
+                            case "number":
+                            case "integer":
+                                if (parseInt(inpVal)) {
+                                    if (convert === false) {
+                                        modifiedObj[inpKey] = inpVal;
                                     } else {
-                                        modifiedObj[inpKey] = String(inpVal);
+                                        if (totype === true) {
+                                            modifiedObj[inpKey] = parseInt(inpVal);
+                                        } else {
+                                            modifiedObj[inpKey] = String(inpVal);
+                                        }
+                                    }
+                                    //modifiedObj[inpKey] = parseInt(inpVal);
+                                }
+                                break;
+                            case "date":
+                                /*
+                                     var arrD = inpVal.split("/");
+                                     var m = arrD[0];
+                                     m = (m < 38 ? '0' + m : m);
+                                     var d = arrD[1];
+                                     d = (d < 38 ? '0' + d : d);
+                                     var y = arrD[2];
+                                     var date = new Date(y, m - 1, d);
+                                     // add a day
+                                     date.setDate(date.getDate() + 1);
+                                     modifiedObj[inpKey] = date;
+                                     */
+                                if (inpVal) {
+                                    var d = new Date(inpVal);
+                                    if (!isNaN(d)) {
+                                        if (convert === false) {
+                                            modifiedObj[inpKey] = inpVal;
+                                        } else {
+                                            if (totype === true) {
+                                                modifiedObj[inpKey] = d.toISOString();
+                                            } else {
+                                                modifiedObj[inpKey] = String(inpVal);
+                                            }
+                                        }
+                                        //modifiedObj[inpKey] = d.toISOString();
                                     }
                                 }
-                                //if(inpVal && inpVal.length>=6){
-                                //    modifiedObj[inpKey] = parseHashFormatToString(inpVal);
-                                //}
-                                //modifiedObj[inpKey] = parseToHashFormat(inpVal);
-                            }
-                            break;
-                        case "phone": //+9 129 129 1212
-                            if (inpVal && inpVal.length >= 11) {
-                                if (convert === false) {
-                                    modifiedObj[inpKey] = inpVal;
-                                } else {
-                                    if (totype === true) {
-                                        modifiedObj[inpKey] = parseToPhoneFormat(inpVal);
+                                break;
+                            case "hash":
+                                if (inpVal && inpVal.length >= 6) {
+                                    if (convert === false) {
+                                        modifiedObj[inpKey] = inpVal;
                                     } else {
-                                        modifiedObj[inpKey] = String(inpVal);
+                                        if (totype === true) {
+                                            modifiedObj[inpKey] = parseToHashFormat(inpVal);
+                                        } else {
+                                            modifiedObj[inpKey] = String(inpVal);
+                                        }
                                     }
+                                    //if(inpVal && inpVal.length>=6){
+                                    //    modifiedObj[inpKey] = parseHashFormatToString(inpVal);
+                                    //}
+                                    //modifiedObj[inpKey] = parseToHashFormat(inpVal);
                                 }
-                                //if(inpVal && inpVal.length>=11){
-                                //    modifiedObj[inpKey] = parsePhoneFormatToString(inpVal);
-                                // }
-                                //modifiedObj[inpKey] = parseToPhoneFormat(inpVal);
+                                break;
+                            case "phone": //+9 129 129 1212
+                                if (inpVal && inpVal.length >= 11) {
+                                    if (convert === false) {
+                                        modifiedObj[inpKey] = inpVal;
+                                    } else {
+                                        if (totype === true) {
+                                            modifiedObj[inpKey] = parseToPhoneFormat(inpVal);
+                                        } else {
+                                            modifiedObj[inpKey] = String(inpVal);
+                                        }
+                                    }
+                                    //if(inpVal && inpVal.length>=11){
+                                    //    modifiedObj[inpKey] = parsePhoneFormatToString(inpVal);
+                                    // }
+                                    //modifiedObj[inpKey] = parseToPhoneFormat(inpVal);
+                                }
+                                break;
+                            case "object":
+                                if (inpVal && isObject(inpVal)) {
+                                    modifiedObj[inpKey] = inpVal;
+                                }
+                                break;
+                            case "array":
+                                if (inpVal && isArray(inpVal)) {
+                                    modifiedObj[inpKey] = inpVal;
+                                }
+                                break;
                             }
-                            break;
-                        case "object":
-                            if (inpVal && isObject(inpVal)) {
-                                modifiedObj[inpKey] = inpVal;
+
+                            proxyprinttodiv("recurseModObj - modifiedObj[inpKey] I ", modifiedObj[inpKey], 41);
+                            cbMap(null);
+                        } else if (isArray(dataType)) {
+                            if (isArray(dataType)) {
+                                dataType = dataType[0];
                             }
-                            break;
-                        case "array":
-                            if (inpVal && isArray(inpVal)) {
-                                modifiedObj[inpKey] = inpVal;
+                            if (!modifiedObj[inpKey]) {
+                                modifiedObj[inpKey] = [];
                             }
-                            break;
-                        }
-
-                        proxyprinttodiv("recurseModObj - modifiedObj[inpKey] I ", modifiedObj[inpKey], 41);
-                        cbMap(null);
-                        //} else if(typeof inpVal === "object" &&  dataType === "object") {
-                        //} else if((typeof inpVal === "object") &&  (typeof dataType === "object")) {  //Ignoring metadata property in input.
-                    } else if (inpVal instanceof Array) {
-
-
-
-                        //if ((isArray(inpVal)) && (isArray(dataType))) {
-                        if (!isArray(inpVal)) {
-                            temparray = [];
-                            temparray.push(inpVal);
-                            inpVal = temparray;
-                        }
-                        if (isArray(dataType)) {
-                            dataType = dataType[0];
-                        }
-                        if (!modifiedObj[inpKey]) {
-                            modifiedObj[inpKey] = [];
-                        }
-                        proxyprinttodiv("recurseModObj - before mapseries inpKey ", inpKey, 41);
-                        proxyprinttodiv("recurseModObj - before mapseries inpVal ", inpVal, 41);
-                        proxyprinttodiv("recurseModObj - before mapseries inpVal isArray", isArray(inpVal), 41);
-                        proxyprinttodiv("recurseModObj - before mapseries dataType ", dataType, 41);
-                        async.mapSeries(inpVal, function (eachinputval, cb1) { // step through each inpVal
-                                async.nextTick(function () {
-                                    proxyprinttodiv("recurseModObj - in mapseries eachinputval ", eachinputval, 41);
-                                    if (eachinputval) {
+                            if (!isArray(inpVal)) {
+                                temparray = [];
+                                temparray.push(inpVal);
+                                inpVal = temparray;
+                            }
+                            proxyprinttodiv("recurseModObj - before mapseries inpKey ", inpKey, 41);
+                            proxyprinttodiv("recurseModObj - before mapseries inpVal ", inpVal, 41);
+                            proxyprinttodiv("recurseModObj - before mapseries inpVal isArray", isArray(inpVal), 41);
+                            proxyprinttodiv("recurseModObj - before mapseries dataType ", dataType, 41);
+                            async.mapSeries(inpVal, function (eachinputval, cb1) { // step through each inpVal
+                                    async.nextTick(function () {
+                                        proxyprinttodiv("recurseModObj - in mapseries eachinputval ", eachinputval, 41);
                                         recurseModObj(eachinputval, dataType, convert, totype, function (err, result) {
-                                            // If error, bounce out
                                             if (err && Object.keys(err).length > 0) {
                                                 cb1(err, result);
                                             } else {
                                                 proxyprinttodiv("recurseModObj - in mapseries result ", result, 41);
-                                                if (Object.keys(result).length !== 0) {
-                                                    modifiedObj[inpKey].push(result);
-                                                    proxyprinttodiv("recurseModObj - modifiedObj[inpKey] ", modifiedObj[inpKey], 41);
-                                                    proxyprinttodiv("recurseModObj - modifiedObj ", modifiedObj, 41);
-                                                }
+                                                modifiedObj[inpKey].push(result);
+                                                proxyprinttodiv("recurseModObj - modifiedObj[inpKey] ", modifiedObj[inpKey], 41);
+                                                proxyprinttodiv("recurseModObj - modifiedObj ", modifiedObj, 41);
+                                                //}
                                                 proxyprinttodiv("recurseModObj - after if ", modifiedObj[inpKey], 41);
                                                 cb1(null);
                                             }
                                         }); // recurse
+                                        proxyprinttodiv("recurseModObj - between ", modifiedObj[inpKey], 41);
+                                    }); // next tick
+                                    proxyprinttodiv("recurseModObj - between II ", modifiedObj[inpKey], 41);
+                                },
+
+                                function (err, res) {
+                                    // If error, bounce out
+                                    if (err && Object.keys(err).length > 0) {
+                                        cbMap(err, res);
                                     } else {
-                                        modifiedObj[inpKey] = null;
-                                        proxyprinttodiv("recurseModObj - modifiedObj[inpKey] after undefined input ", modifiedObj[inpKey], 41);
-                                        cb1(null);
+                                        proxyprinttodiv("recurseModObj - modifiedObj[inpKey] end nextTick ", modifiedObj[inpKey], 41);
+                                        cbMap(null);
                                     }
-                                    proxyprinttodiv("recurseModObj - between ", modifiedObj[inpKey], 41);
-                                }); // next tick
-                                proxyprinttodiv("recurseModObj - between II ", modifiedObj[inpKey], 41);
-                            },
-                            function (err, res) {
-                                // If error, bounce out
-                                if (err && Object.keys(err).length > 0) {
-                                    cbMap(err, res);
-                                } else {
-                                    proxyprinttodiv("recurseModObj - modifiedObj[inpKey] end nextTick ", modifiedObj[inpKey], 41);
-                                    cbMap(null);
+                                });
+                        } else if (isObject(inpVal) && isObject(dataType)) {
+                            proxyprinttodiv("typeof inpVal (object) - ", inpVal, 41);
+                                proxyprinttodiv("recurseModObj - modifiedObj[inpKey] II ", modifiedObj[inpKey], 41);
+                                recurseModObj(inpVal, dataType, convert, totype, function (err, result) {
+                                    // If error, bounce out
+                                    if (err && Object.keys(err).length > 0) {
+                                        cbMap(err, result);
+                                    } else {
+                                        //var modObj = recurseModObj(inpVal, dataType, convert, totype,
+                                        modifiedObj[inpKey] = result;
+                                        proxyprinttodiv("recurseModObj - modifiedObj[inpKey] III ", modifiedObj[inpKey], 41);
+                                        cbMap(null);
+                                    }
+                                });
+                        } else { 
+                               // to read wid obj via getwidmaster
+                                if (dataType !== 'string') {
+                                    execute({
+                                        "executethis": dataType
+                                    }, function (err, result) {
+                                        // If error, bounce out
+                                        if (err && Object.keys(err).length > 0) {
+                                            cbMap(err, result);
+                                        } else {
+                                            proxyprinttodiv("getwidmaster result for wid  " + JSON.stringify(dataType), result, 41);
+                                            var widObj = result[0][0];
+                                            if (widObj) {
+                                                if (widObj.hasOwnProperty(inpVal)) {
+                                                    modifiedObj[inpKey] = inpVal;
+                                                }
+                                            }
+                                            proxyprinttodiv("recurseModObj - modifiedObj[inpKey] V ", modifiedObj[inpKey], 41);
+                                            cbMap(null);
+                                        }
+                                    });
                                 }
-                            });
-                        //} else 
-
-
-
-                        // async.mapSeries(inpVal, function (eachinputval, cb1) {
-                        //     async.nextTick(function () {
-                        //         recurseModObj(eachinputval, dataType, convert, totype, function (err, result) {
-                        //             modifiedObj[inpKey] = result;
-                        //             cb1(null);
-                        //         }); // recurse
-                        //     }); // next tick
-                        // }); // mapseries
-                        // cbMap(null);
-                    } else if ((typeof inpVal === "object")) {
-                        proxyprinttodiv("typeof inpVal (object) - ", inpVal, 41);
-                        if (inpKey !== "metadata") { //Ignoring metadata property in input.
-                            proxyprinttodiv("recurseModObj - modifiedObj[inpKey] II ", modifiedObj[inpKey], 41);
-                            recurseModObj(inpVal, dataType, convert, totype, function (err, result) {
-                                // If error, bounce out
-                                if (err && Object.keys(err).length > 0) {
-                                    cbMap(err, result);
-                                } else {
-                                    //var modObj = recurseModObj(inpVal, dataType, convert, totype,
-                                    modifiedObj[inpKey] = result;
-                                    proxyprinttodiv("recurseModObj - modifiedObj[inpKey] III ", modifiedObj[inpKey], 41);
-                                    cbMap(null);
-                                }
-                            });
-                        } else {
-                            modifiedObj[inpKey] = inpVal;
-                            proxyprinttodiv("recurseModObj - modifiedObj[inpKey] IV", modifiedObj[inpKey], 41);
-                            cbMap(null);
                         }
                     } else {
-                        // to read wid obj via getwidmaster
-                        if (dataType !== 'string') {
-                            execute({
-                                "executethis": dataType
-                            }, function (err, result) {
-                                // If error, bounce out
-                                if (err && Object.keys(err).length > 0) {
-                                    cbMap(err, result);
-                                } else {
-                                    //proxyprinttodiv("getwidmaster result for wid  " + dataType, result, 41);
-                                    var widObj = result[0][0];
-                                    if (widObj) {
-                                        if (widObj.hasOwnProperty(inpVal)) {
-                                            modifiedObj[inpKey] = inpVal;
-                                        }
-                                    }
-                                    proxyprinttodiv("recurseModObj - modifiedObj[inpKey] V ", modifiedObj[inpKey], 41);
-                                    cbMap(null);
-                                    var finalobject = createfinalobject({
-                                        "result": "recurseModObj_recurseModObj_II_execute"
-                                    }, {}, "recurseModObj_recurseModObj_II_execute", err, result);
-                                    cbMap(finalobject.err, finalobject.res);
-                                }
-                            });
-                        }
+                        delete modifiedObj[inpKey];
+                        proxyprinttodiv("recurseModObj - modifiedObj[inpKey] VI ", modifiedObj[inpKey], 41);
+                        cbMap(null);
                     }
-                    /*else {
-                     //Doesn't match with dto -- Nullifying the param
-                     modifiedObj[inpKey] = null;
-                     cbMap(null);
-                     }*/
-                } else {
-                    delete modifiedObj[inpKey];
-                    proxyprinttodiv("recurseModObj - modifiedObj[inpKey] VI ", modifiedObj[inpKey], 41);
-                    cbMap(null);
                 }
             });
         },

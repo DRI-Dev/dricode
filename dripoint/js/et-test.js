@@ -4528,27 +4528,37 @@ exports.manytomanytest = manytomanytest = function manytomanytest(params, callba
         authortoauthor test
     */
 exports.authortoauthortest = authortoauthortest = function authortoauthortest(params, callback) {
-    debuglevel = 36;
     execute([{
-            "wid": "songdto",
-            "metadata": {
-                "sounddto": {
-                    "type": "onetoone"
-                }
-            },
-            "title": "string",
-            "sounddto": {
-                "note": "string"
-            }
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "metadata.authordto.type": "onetoone"
+        }, { //authordto - authordto
+            "executethis": "addwidmaster",
+            "wid": "rel_author_author",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetoone",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "authordto",
+            "secondarymethod": "authordto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "wid1",
+            "metadata.method": "authordto",
+            "name": "author1",
+            "authordto.authordto.authordto.name": "authortoauthor1"
         }],
-        function (err, res) {
+        function(err, res) {
             proxyprinttodiv('authortoauthortest addwidmaster result: ', res, 99);
 
-
+            debuglevel = 38;
             execute({
                 "executethis": "getwidmaster",
                 "wid": "wid1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv("authortoauthortest getwidmaster result: ", res1, 99);
                 callback(err, res);
             });

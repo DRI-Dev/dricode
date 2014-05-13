@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 // copyright (c) 2014 DRI
     // require('../utils/addget.js');
     // require('../config.js');
