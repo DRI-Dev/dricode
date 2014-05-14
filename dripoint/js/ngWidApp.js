@@ -379,16 +379,18 @@ if (typeof angular !== 'undefined') {
                 if (Array.isArray(scope[name])) {
                     if (filter) {
                         for (var i = 0; i < scope[name].length; i++) {
-                            if (scope[name][i][prop] && scope[name][i][prop] === filter) { delete scope[name][i][prop]; }
+                            if (scope[name][i][prop] && scope[name][i][prop] === filter) {
+                                scope.$apply(function() { delete scope[name][i][prop]; });
+                            }
                         }
                     } else {
                         for (var i = 0; i < scope[name].length; i++) {
-                            if (scope[name][i][prop]) { delete scope[name][i][prop]; }
+                            if (scope[name][i][prop]) { scope.$apply(function() { delete scope[name][i][prop]; }); }
                         }
                     }
-                } else { delete scope[name][prop]; }
+                } else { scope.$apply(function() { delete scope[name][prop]; }); }
             }
-            else { delete scope[name]; }
+            else { scope.$apply(function() { delete scope[name]; }); }
         }
     };
 
