@@ -381,7 +381,7 @@ if (typeof angular !== 'undefined') {
                         for (var i = 0; i < scope[name].length; i++) {
                             if (scope[name][i][prop] && scope[name][i][prop] === filter) {
                                 scope.$apply(function () {
-                                    delete scope[name][i];
+                                    scope[name].splice(i, 1);
                                 });
                             }
                         }
