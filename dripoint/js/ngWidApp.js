@@ -193,7 +193,7 @@ if (typeof angular !== 'undefined') {
 
             // general use back button function
             $scope.backbutton = function() {
-                executeService.executeThis({executethis:$scope.previouswid || "startwid"}, function (err, restuls) { });
+                executeService.executeThis({executethis:$scope.previouswid || "startwid"}, $scope, function (err, restuls) { });
             };
 
             // clear current angular data model
@@ -205,6 +205,16 @@ if (typeof angular !== 'undefined') {
             $scope.listLength = function(list) { return Object.size(list); };
         }
     ]);
+
+    // backbutton wrapper that can be called outside of the angular controller
+    exports.backbutton = backbutton = function backbutton(params, callback) {
+        if ($ && $('body').scope) { $('body').scope().backbutton(); callback(null); }
+    };
+
+    // cleardata wrapper that can be called outside of the angular controller
+    exports.clearangulardata = clearangulardata = function clearangulardata(params, callback) {
+        if ($ && $('body').scope) { $('body').scope().cleardata(); callback(null); }
+    };
 
     // angularExecute wrapper that is called from html elements
     function callExecute(ele) {
