@@ -359,11 +359,36 @@ if (typeof angular !== 'undefined') {
     exports.addToAngular = addToAngular = function addToAngular(name, obj) {
         var scope = $('body').scope();
 
-        if (scope.hasOwnProperty(name)) { scope[name] = extend(true, obj, scope[name]); }
+        if (scope.hasOwnProperty(name)) {
+            if (Array.isArray(scope[name])) { scope[name].push(obj); }
+            else { scope[name] = extend(true, obj, scope[name]); }
+        }
         else {
             angular.injector(['ng', 'widApp'])
                 .get('dataService')
                 .storeData(obj, scope, name);
+        }
+    };
+
+    // removes a passed in property from an object or just the entire object
+    exports.remFromAngular = remFromAngular = function remFromAngular(name, prop, filter) {
+        var scope = $('body').scope();
+
+        if (scope[name]) {
+            if (prop) {
+                if (Array.isArray(scope[name])) {
+                    if (filter) {
+                        for (var i = 0; i < scope[name].length; i++) {
+                            if (scope[name][i][prop] && scope[name][i][prop] === filter) { delete scope[name][i][prop]; }
+                        }
+                    } else {
+                        for (var i = 0; i < scope[name].length; i++) {
+                            if (scope[name][i][prop]) { delete scope[name][i][prop]; }
+                        }
+                    }
+                } else { delete scope[name][prop]; }
+            }
+            else { delete scope[name]; }
         }
     };
 
