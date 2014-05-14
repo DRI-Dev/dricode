@@ -360,8 +360,8 @@ if (typeof angular !== 'undefined') {
         var scope = $('body').scope();
 
         if (scope.hasOwnProperty(name)) {
-            if (Array.isArray(scope[name])) { scope[name].push(obj); }
-            else { scope[name] = extend(true, obj, scope[name]); }
+            if (Array.isArray(scope[name])) { scope.$apply(function() { scope[name].push(obj); }); }
+            else { scope.$apply(function() { scope[name] = extend(true, obj, scope[name]); }); }
         }
         else {
             angular.injector(['ng', 'widApp'])
