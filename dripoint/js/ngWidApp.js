@@ -380,15 +380,13 @@ if (typeof angular !== 'undefined') {
                     if (filter) {
                         for (var i = 0; i < scope[name].length; i++) {
                             if (scope[name][i][prop] && scope[name][i][prop] === filter) {
-                                scope.$apply(function() { delete scope[name][i][prop]; });
+                                scope.$apply(function () {
+                                    delete scope[name][i];
+                                });
                             }
                         }
-                    } else {
-                        for (var i = 0; i < scope[name].length; i++) {
-                            if (scope[name][i][prop]) { scope.$apply(function() { delete scope[name][i][prop]; }); }
-                        }
                     }
-                } else { scope.$apply(function() { delete scope[name][prop]; }); }
+                } else if (scope[name][prop]) { scope.$apply(function() { delete scope[name][prop]; }); }
             }
             else { scope.$apply(function() { delete scope[name]; }); }
         }
