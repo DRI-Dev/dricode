@@ -197,7 +197,14 @@ if (typeof angular !== 'undefined') {
             };
 
             // clear current angular data model
-            $scope.cleardata = function() { $scope = {}; };
+            $scope.cleardata = function() {
+//                // remove all objects and arrays from data model
+//                for (var i = 0; i < $scope.length; i++) {
+//
+//                }
+
+                $scope = {};
+            };
 
             // clears success and error logs on page
             $scope.clearlogs = function() { $('#errorlog,#successlog').html(''); };
@@ -361,7 +368,7 @@ if (typeof angular !== 'undefined') {
 
         if (scope.hasOwnProperty(name)) {
             if (Array.isArray(scope[name])) { scope.$apply(function() { scope[name].push(obj); }); }
-            else { scope.$apply(function() { scope[name] = extend(true, obj, scope[name]); }); }
+            else { scope.$apply(function() { scope[name] = extend(true, scope[name], obj); }); }
         }
         else {
             angular.injector(['ng', 'widApp'])
