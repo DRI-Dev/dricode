@@ -191,6 +191,12 @@ if (typeof angular !== 'undefined') {
             // process url parameters with angularExecute
             executeService.executeThis(urlParameters, $scope, function (err, resultset) { });
 
+            // general use submit function which propegates data model changes to localStorage and mongoDB
+            $scope.etsubmit = function(widName) {
+                var etObj = extend(true, $scope[widName], {executethis:"addwidmaster"});
+                execute(etObj, function (err, results) { });
+            };
+
             // general use back button function
             $scope.backbutton = function() {
                 executeService.executeThis({executethis:$scope.previouswid || "startwid"}, $scope, function (err, restuls) { });
@@ -213,12 +219,17 @@ if (typeof angular !== 'undefined') {
         }
     ]);
 
-    // backbutton wrapper that can be called outside of the angular controller
+    // etsubmit wrapper that can be called through execute()
+    exports.etsubmit = etsubmit = function etsubmit(params, callback) {
+        if ($ && $('body').scope) { $('body').scope().etsubmit(params.wid); callback(null); }
+    };
+
+    // backbutton wrapper that can be called through execute()
     exports.backbutton = backbutton = function backbutton(params, callback) {
         if ($ && $('body').scope) { $('body').scope().backbutton(); callback(null); }
     };
 
-    // cleardata wrapper that can be called outside of the angular controller
+    // cleardata wrapper that can be called through execute()
     exports.clearangulardata = clearangulardata = function clearangulardata(params, callback) {
         if ($ && $('body').scope) { $('body').scope().cleardata(); callback(null); }
     };
@@ -226,14 +237,14 @@ if (typeof angular !== 'undefined') {
     // angularExecute wrapper that is called from html elements
     function callExecute(ele) {
         var attrObj = NNMtoObj(ele.attributes),
-            parameters = extend(true, {command:{parameters:{eventdata:{}}}}, JSON.parse(attrObj.etparams)),
+            parameters = extend(true, {command:{environment:{}}}, JSON.parse(attrObj.etparams)),
             scope = $('body').scope();
 
         // send calling element and any additional info into the execute process
-        parameters.command.parameters.eventdata.element = $('<div>' + ele + '</div>').html();
-        parameters.command.parameters.eventdata.originatingscreen = widAppHelper.getUrlParam('wid');
+        parameters.command.environment.element = $('<div>' + ele + '</div>').html();
+        parameters.command.environment.originatingscreen = scope.activewid;
 
-        // cancel default html behavior
+        // cancel default html behavior like the default contextmenu
         window.event.returnValue = false;
 
         angular.injector(['ng', 'widApp'])
