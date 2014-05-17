@@ -90,26 +90,28 @@ function getdatabaseinfo(command, datastore, collection, keycollection, db, data
         "databasetable": databasetable,
         "configuration": config.configuration.environment
     };
+	var keyname = "databasetable-"+databasetable+"_collection-"+collection;
+    var keynamekey = "databasetable-"+databasetable+"_collection-"+keycollection;
     if (datastore === "localstorage") {
-        database = getFromLocalStorage(databasetable + collection);
+        database = getFromLocalStorage(keyname);
         if (!database) {
-            addToLocalStorage(databasetable + collection, [tempobj]);
-            addToLocalStorage(databasetable + keycollection, {
+            addToLocalStorage(keyname, [tempobj]);
+            addToLocalStorage(keynamekey, {
                 "initialwid": tempobj
             });
-            database = getFromLocalStorage(databasetable + collection);
+            database = getFromLocalStorage(keyname);
         }
-        keydatabase = getFromLocalStorage(databasetable + keycollection);
+        keydatabase = getFromLocalStorage(keynamekey);
     } else if (datastore === "localstore") {
-        database = getfromlocal(databasetable + collection); // &&& localstorage&&&
+        database = getfromlocal(keyname); // &&& localstorage&&&
         if (!database) {
-            addtolocal(databasetable + collection, [tempobj]);
-            addtolocal(databasetable + keycollection, {
+            addtolocal(keyname, [tempobj]);
+            addtolocal(keynamekey, {
                 "initialwid": tempobj
             });
-            database = getfromlocal(databasetable + collection);
+            database = getfromlocal(keyname);
         }
-        keydatabase = getfromlocal(databasetable + keycollection);
+        keydatabase = getfromlocal(keynamekey);
     } else if (datastore === "mongo") {}
     return {
         database: database,
@@ -374,20 +376,21 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
             if (datastore === "localstorage") {
                 //keydatabase = getFromLocalStorage(keycollection);
                 //keydatabase[widName] = inputWidgetObject;
-                addToLocalStorage(databasetable + collection, database);
-                addToLocalStorage(databasetable + keycollection, keydatabase);
-            } else if (datastore === "localstore") {
+                addToLocalStorage("databasetable-"+databasetable+"_collection-"+collection, database);
+                addToLocalStorage("databasetable-"+databasetable+"_collection-"+keycollection, keydatabase);
+            }
+            else if (datastore==="localstore") {
                 //keydatabase = getfromlocal(keycollection);
                 //keydatabase[widName] = inputWidgetObject;
-                addtolocal(databasetable + collection, database); // &&& localstorage
-                addtolocal(databasetable + keycollection, keydatabase);
+                addtolocal("databasetable-"+databasetable+"_collection-"+collection, database); // &&& localstorage
+                addtolocal("databasetable-"+databasetable+"_collection-"+keycollection, keydatabase);
             }
 
             // upsert data in angular data model
             //addToAngular(widName, inputWidgetObject);
 
             // the type of storage below is not needed
-            addToLocalStorage(databasetable + "_" + collection + "_" + widName, addedobject);
+            addToLocalStorage("databasetable-"+databasetable+"_collection-"+collection+"_wid-"+ widName, addedobject);
             //addtoangularstorage
             proxyprinttodiv('Function datastore command -- add addedobject end', addedobject, 12);
             callback(err, addedobject);
