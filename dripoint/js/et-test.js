@@ -8794,83 +8794,6 @@ exports.testgetrelatedrecords2 = testgetrelatedrecords2 = function testgetrelate
     });
 }
 
-/*
--- amount of remaining local storage
--- how many bytes is object using up    
-Reference -- http://glynrob.com/javascript/calculate-localstorage-space
-*/
-exports.calculatespace = calculatespace = function calculatespace(params, callback) {
-    debuglevel = 17;
-
-
-
-
-};
-
-
-exports.testcalculatespace = testcalculatespace = function testcalculatespace(params, callback) {
-    debuglevel = 17;
-    var executeList = [{ //testdto
-        "executethis": "calculatespace",
-        "command": {
-            "collection": "xyz"
-        }
-    }];
-    execute(executeList, function (err, res) {
-        proxyprinttodiv("testcalculatespace res", res, 17);
-        callback(err, res);
-    });
-}
-
-// To calculate the size in bytes of the data currently stored
-
-function sizeofAllStorage() {
-    var size = 0;
-    var eachObjectSize = 0;
-    var eachObjectSizeInMB = 0
-    for (i = 0; i <= localStorage.length - 1; i++) {
-        key = localStorage.key(i);
-        eachObjectSize = lengthInUtf8Bytes(localStorage.getItem(key));
-        size += eachObjectSize;
-        eachObjectSizeInMB = Math.ceil((eachObjectSize / 1024 / 1024) * 100) / 100
-        proxyprinttodiv("calculatespace size (" + key + ")", eachObjectSizeInMB, 17);
-    }
-    return Math.ceil((size / 1024 / 1024) * 100) / 100; // get into MB
-}
-
-function lengthInUtf8Bytes(str) {
-    // Matches only the 10.. bytes that are non-initial characters in a multi-byte sequence.
-    var m = encodeURIComponent(str).match(/%[89ABab]/g);
-    return str.length + (m ? m.length : 0);
-}
-
-//To get total storage size
-
-function totalStorageSize() {
-    var storeSpace = 0;
-    var maxMBToTest = 10;
-    localStorage.clear();
-    var i = 0;
-    var testPacket = new Array(1025).join("a"); // create 1024 characters so 1KB
-    while (i < maxMBToTest) { // MB level
-        var t = 0;
-        while (t < 1025) { // KB level
-            try {
-                localStorage.setItem(i + "|" + t, testPacket);
-            } catch (error) {
-                var kbsaved = Math.floor(((t / 1024) * 100)); // calculate percentage of 1024
-                storeSpace = i + '.' + kbsaved; // add MB and KB values
-                storeSpace = (Math.floor(storeSpace * 100)) / 100; // rounds down the value
-                t = 1025;
-                i = maxMBToTest + 1;
-            }
-            t++;
-        }
-        i++;
-    }
-    localStorage.clear();
-    return storeSpace;
-}
 
 /*
     deepfilter should process command
@@ -8879,66 +8802,22 @@ function totalStorageSize() {
 exports.etd15 = etd15 = function etd15(params, callback) {
     debuglevel = 17;
     async.series([
-        function step1(cb1) {
-            var dtoObjOpt = {
-                "o1": "object",
-                "a1": "array",
-                "q": {
-                    "w": {
-                        "e": "boolean"
-                    }
-                },
-                "b": [{
-                    "c": "string",
-                    "c1": "boolean",
-                    "c2": "boolean"
-                }]
-            };
-            var inputObj = {
-                "o1": {
-                    "a": "b"
-                },
-                "a1": [{
-                    "a1": "b1"
-                }, {
-                    "a2": "b2"
-                }],
-                "q": {
-                    "w": {
-                        "e": "true"
-                    }
-                },
-                "b": [{
-                    "c": "one",
-                    "c1": "true",
-                    "c2": "x"
-                }]
-            };
-            var command = {
-                "deepfilter": {
-                    "convert": "true"
-                }
-            };
-            deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
-                cb1(err, res);
-            });
-        }
-    ], function (err, res) {
+    function step1(cb1){
+        var dtoObjOpt = {"o1":"object","a1":"array","q":{"w":{"e":"boolean"}},"b":[{"c":"string","c1":"boolean","c2":"boolean"}]};
+        var inputObj = {"o1":{"a":"b"},"a1":[{"a1":"b1"},{"a2":"b2"}],"q":{"w":{"e":"true"}},"b":[{"c":"one","c1":"true","c2":"x"}]};
+        var command = {"deepfilter":{"convert":"true"}};
+        deepfilter(inputObj, dtoObjOpt, command, function (err, res){
+            cb1(err, res);
+        });
+    }], function (err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = [res];
-        proxyprinttodiv("actual_result --", actual_result, 17);
+        proxyprinttodiv("actual_result --", actual_result, 17);                           
 
-        var expected_result = [
-            [{
-                "o1": {
-                    "a": "b"
-                },
-                "a1": ["hi", "hi2"]
-            }]
-        ];
+        var expected_result = [[{"o1":{"a":"b"},"a1":["hi","hi2"]}]];
         proxyprinttodiv("expected_result --", expected_result, 17);
 
-        //      res = logverify("etd15", actual_result, expected_result);
+//      res = logverify("etd15", actual_result, expected_result);
         callback(err, res);
     });
 }
@@ -8949,33 +8828,144 @@ exports.etd15 = etd15 = function etd15(params, callback) {
 exports.etdguid = etdguid = function etdguid(params, callback) {
     debuglevel = 17;
     async.series([
-        function step1(cb1) {
-            var dtoObjOpt = {
-                "g1": "guid",
-                "g2": "guid",
-                "sg1": "shortguid",
-                "sg2": "shortguid",
-                "r1": "random4",
-                "r2": "random4"
-            };
-            var inputObj = {
-                "g2": "1111111-2222-33333-4444-5555555555",
-                "sg2": "1111-2222-3333-4444",
-                "r2": "1111"
-            };
-            var command = {
-                "deepfilter": {
-                    "convert": "true"
-                }
-            };
-            deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
-                cb1(err, res);
-            });
-        }
-    ], function (err, res) {
+    function step1(cb1){
+        var dtoObjOpt = {"g1":"guid","g2":"guid","sg1":"shortguid", "sg2":"shortguid","r1":"random4","r2":"random4"};
+        var inputObj = {"g2":"1111111-2222-33333-4444-5555555555","sg2":"1111-2222-3333-4444","r2":"1111"};
+        var command = {"deepfilter":{"convert":"true"}};
+        deepfilter(inputObj, dtoObjOpt, command, function (err, res){
+            cb1(err, res);
+        });
+    }], function (err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = [res];
         proxyprinttodiv("actual_result --", actual_result, 17);
+        callback(err, res);
+    });
+}
+
+/*
+    objectoperations() test
+*/
+exports.testobjectoperations = testobjectoperations = function testobjectoperations(params, callback) {
+    debuglevel = 17;    
+    var executeList = [{    //object size
+        "executethis": "objectoperations",
+        "command": {"object":{"a":"b","b":"c"}, "result":"objectSize1"}
+    }, {    //right collection input for size
+        "executethis": "objectoperations",
+        "command": {"collection":"dricollection", "result":"objectSize2"}
+    }, {    //to add test1
+        "executethis":"updatewid",
+        "wid": "test1",
+        "a": "1"
+    }, {    //right datasettable input for size
+        "executethis": "objectoperations",
+        "command": {"databasetable":"wikiwallettesting", "result":"objectSize3"}
+    }, {    //to add test2
+        "executethis":"updatewid",
+        "wid": "test2",
+        "a": "2"
+    }, {    //to add test3
+        "executethis":"updatewid",
+        "wid": "test3",
+        "a": "3"
+    }, {    //right collection, datasettable input for size
+        "executethis": "objectoperations",
+        "command": {"collection":"dricollection", "databasetable":"wikiwallettesting", "result":"objectSize4"}
+    }, {    //wrong collection input for size
+        "executethis": "objectoperations",
+        "command": {"collection":"testcollection", "result":"objectSize5"}
+    }, {    //right collection input for delete=true
+        "executethis": "objectoperations",
+        "command": {"collection":"dricollection", "result":"objectSize6", "delete":true}
+    }, {    //right collection input for size
+        "executethis": "objectoperations",
+        "command": {"collection":"dricollection", "result":"objectSize7"}
+    }];
+    execute(executeList, function (err, res) {
+        proxyprinttodiv("testobjectoperations res", res, 17);
+        callback(err, res);
+    });
+}
+
+
+/*
+deletewid() test 
+-- To delete parent/child with recursion
+*/ 
+exports.testdltwid2 = testdltwid2 = function testdltwid2(params, callback) {
+    debuglevel = 17;
+    execute([{  //authordto
+        "executethis": "updatewid",
+        "metadata.method": "authordto",
+        "wid": "authordto",
+        "name": "string",
+        "age": "string"
+    }, {    //bookdto
+        "executethis": "updatewid",
+        "metadata.method": "bookdto",
+        "wid": "bookdto",
+        "title": "string"
+    }, {    //authordto - bookdto
+        "executethis": "updatewid",
+        "wid": "rel_author_book",
+        "metadata.method": "relationshipdto",
+        "relationshiptype": "attributes",
+        "linktype": "onetomany",
+        "primarywid": "authordto",
+        "primarymethod": "authordto",
+        "secondarywid": "bookdto",
+        "secondarymethod": "bookdto"
+    }, {    //author1
+        "executethis":"updatewid",
+        "metadata.method": "authordto",
+        "wid": "author1",
+        "name": "Author 1",
+        "age": "1",
+        //"bookdto.title":"book1"
+    }, {    //book1
+        "executethis":"updatewid",
+        "metadata.method": "bookdto",
+        "wid": "book1",
+        "title": "Book 1"
+    }, {    //rel author1-book1
+        "executethis": "updatewid",
+        "wid": "rel_author1_book1",
+        "metadata.method": "relationshipdto",
+        "relationshiptype": "attributes",
+        "linktype": "onetomany",
+        "primarywid": "author1",
+        "primarymethod": "author1",
+        "secondarywid": "book1",
+        "secondarymethod": "book1"
+    }, {    //to get book1's parent author1
+        "executethis":"getrelatedrecords",
+        "widlist": ["book1"],
+        "command": {"reltype": "parent", "recurse":true}
+    }, {    //deletewid author1 with command.reltype=parent, recurse=true
+        "executethis": "deletewid",
+        "wid": "author1",
+        "command":{"reltype":"child", "recurse":true}
+    }],
+    function(err, res) {
+        proxyprinttodiv('testdltwid2 res', res, 99);
+        callback(err, res);
+    });
+}
+
+/*
+    querywid() test
+--To test getcommand() instead of fishOut()
+*/
+exports.testquerywid = testquerywid = function testquerywid(params, callback) {
+    debuglevel = 17;
+    execute([{  //query to get parent of book1
+        "executethis": "querywid",
+        "command": {"result":"querywidres"},
+        "mongorawquery": {"$and": [{"data.secondarywid": "book1"}]}
+    }],
+    function(err, res) {
+        proxyprinttodiv('testquerywid res', res, 99);
         callback(err, res);
     });
 }
