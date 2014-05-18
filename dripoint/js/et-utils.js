@@ -72,51 +72,44 @@ exports.clearLocal = clearLocal = function clearLocal() {
 };
 
 function getdatabaseinfo(command, datastore, collection, keycollection, db, databasetable) {
-    proxyprinttodiv('Function getdatabaseinfo collection', collection, 12);
-    proxyprinttodiv('Function getdatabaseinfo keycollection', keycollection, 12);
-    proxyprinttodiv('Function getdatabaseinfo datastore', datastore, 12);
+    proxyprinttodiv('Function getdatabaseinfo collection', collection,12);
+    proxyprinttodiv('Function getdatabaseinfo keycollection', keycollection,12);
+    proxyprinttodiv('Function getdatabaseinfo datastore', datastore,12);
     var database = [];
-    var keydatabase = {};
-    var tempobj = {};
-    tempobj["wid"] = "initialwid";
-    tempobj["metadata"] = {
-        "date": new Date()
-    };
-    tempobj[db] = {
-        "system generated": "clearLocalStorage",
-        "db": db,
-        "collection": collection,
-        "datastore": datastore,
-        "databasetable": databasetable,
-        "configuration": config.configuration.environment
-    };
-	var keyname = "databasetable-"+databasetable+"_collection-"+collection;
-    var keynamekey = "databasetable-"+databasetable+"_collection-"+keycollection;
-    if (datastore === "localstorage") {
+    var keydatabase={};
+    var tempobj={};
+    tempobj["wid"]= "initialwid";
+    tempobj["metadata"] = {"date": new Date()};
+    tempobj[db]={"system generated": "clearLocalStorage",
+        "db":db,
+        "collection":collection,
+        "datastore":datastore,
+        "databasetable":databasetable,
+        "configuration":config.configuration.environment};
+    var keyname = "databasetable-"+databasetable+"_collection-"+collection
+	//var keyname = databasetable+collection;
+    var keynamekey = "databasetable-"+databasetable+"_collection-"+keycollection
+	//var keynamekey = databasetable+keycollection;
+    if (datastore==="localstorage") {
         database = getFromLocalStorage(keyname);
         if (!database) {
             addToLocalStorage(keyname, [tempobj]);
-            addToLocalStorage(keynamekey, {
-                "initialwid": tempobj
-            });
+            addToLocalStorage(keynamekey, {"initialwid": tempobj});
             database = getFromLocalStorage(keyname);
         }
         keydatabase = getFromLocalStorage(keynamekey);
-    } else if (datastore === "localstore") {
+    }
+    else if (datastore==="localstore") {
         database = getfromlocal(keyname); // &&& localstorage&&&
         if (!database) {
             addtolocal(keyname, [tempobj]);
-            addtolocal(keynamekey, {
-                "initialwid": tempobj
-            });
+            addtolocal(keynamekey, {"initialwid": tempobj});
             database = getfromlocal(keyname);
         }
         keydatabase = getfromlocal(keynamekey);
-    } else if (datastore === "mongo") {}
-    return {
-        database: database,
-        keydatabase: keydatabase
-    };
+    }
+    else if (datastore==="mongo") {}
+    return {database: database, keydatabase : keydatabase};
 }
 
 /*
@@ -377,13 +370,17 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
                 //keydatabase = getFromLocalStorage(keycollection);
                 //keydatabase[widName] = inputWidgetObject;
                 addToLocalStorage("databasetable-"+databasetable+"_collection-"+collection, database);
+				//addToLocalStorage(databasetable+collection, database);
                 addToLocalStorage("databasetable-"+databasetable+"_collection-"+keycollection, keydatabase);
+				//addToLocalStorage(databasetable+keycollection, keydatabase);
             }
             else if (datastore==="localstore") {
                 //keydatabase = getfromlocal(keycollection);
                 //keydatabase[widName] = inputWidgetObject;
                 addtolocal("databasetable-"+databasetable+"_collection-"+collection, database); // &&& localstorage
+				//addtolocal(databasetable+collection, database); // &&& localstorage
                 addtolocal("databasetable-"+databasetable+"_collection-"+keycollection, keydatabase);
+				//addtolocal(databasetable+keycollection, keydatabase);
             }
 
             // upsert data in angular data model
@@ -391,6 +388,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
 
             // the type of storage below is not needed
             addToLocalStorage("databasetable-"+databasetable+"_collection-"+collection+"_wid-"+ widName, addedobject);
+			//addToLocalStorage(databasetable+collection+widName, addedobject);
             //addtoangularstorage
             proxyprinttodiv('Function datastore command -- add addedobject end', addedobject, 12);
             callback(err, addedobject);
