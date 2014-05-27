@@ -4554,6 +4554,85 @@ exports.authortoauthortest = authortoauthortest = function authortoauthortest(pa
         function(err, res) {
             proxyprinttodiv('authortoauthortest addwidmaster result: ', res, 99);
 
+            //debuglevel = 38;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "wid1"
+            }, function(err, res1) {
+                proxyprinttodiv("authortoauthortest getwidmaster result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+exports.authortoauthortesto = authortoauthortesto = function authortoauthortesto(params, callback) {
+    //debuglevel=38
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "metadata.authordto.type": "onetomany"
+        }, { //authordto - authordto
+            "executethis": "addwidmaster",
+            "wid": "rel_author_author",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "authordto",
+            "secondarymethod": "authordto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "wid1",
+            "metadata.method": "authordto",
+            "name": "author1",
+            "authordto.authordto.authordto.name": "authortoauthor1"
+        }],
+        function(err, res) {
+            proxyprinttodiv('authortoauthortest addwidmaster result: ', res, 99);
+
+            debuglevel = 93;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "wid1"
+            }, function(err, res1) {
+                proxyprinttodiv("authortoauthortest getwidmaster result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+
+
+exports.authortoauthortestm = authortoauthortestm = function authortoauthortestm(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "metadata.authordto.type": "manytomany"
+        }, { //authordto - authordto
+            "executethis": "addwidmaster",
+            "wid": "rel_author_author",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "manytomany",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "authordto",
+            "secondarymethod": "authordto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "wid1",
+            "metadata.method": "authordto",
+            "name": "author1",
+            "authordto.authordto.authordto.name": "authortoauthor1"
+        }],
+        function(err, res) {
+            proxyprinttodiv('authortoauthortest addwidmaster result: ', res, 99);
+
             debuglevel = 38;
             execute({
                 "executethis": "getwidmaster",
@@ -8979,3 +9058,58 @@ exports.etdguid = etdguid = function etdguid(params, callback) {
         callback(err, res);
     });
 }
+
+
+
+exports.testdd = testdd = function testdd(config, callback) {
+
+    debuglevel = 39;
+
+    execute([{
+        "executethis": "addwidmaster",
+        "wid":"guid",
+        "type": "string",
+        "metadata.method": "actiondto",
+        "metadata.subactiondto.type": "manytomany"
+    }, {
+        "executethis": "addwidmaster",
+        "wid":"guid",
+        "subtype": "string",
+        "metadata.method": "subactiondto",
+        "metadata.actiondto.type": "manytomany"
+    }, {
+        "executethis": "addwidmaster",
+        "wid": "rel_action_subaction",
+        "metadata.method": "relationshipdto",
+        "primarywid": "actiondto",
+        "secondarywid": "subactiondto",
+        "primarymethod": "actiondto",
+        "secondarymethod": "subactiondto",
+        "linktype": "manytomany",
+        "relationshiptype": "attributes"
+    }, {
+        "executethis": "addwidmaster",
+        "wid": "rel_subaction_action",
+        "metadata.method": "relationshipdto",
+        "primarywid": "subactiondto",
+        "secondarywid": "actiondto",
+        "primarymethod": "subactiondto",
+        "secondarymethod": "actiondto",
+        "linktype": "manytoone",
+        "relationshiptype": "attributes"
+    }, {
+        "executethis": "addwidmaster",
+        "type": "superaction",
+        "wid": "a1",
+        "metadata.method": "actiondto",
+        "subactiondto.subtype": "subaction",
+        "subactiondto.actiondto.wid": "a1",
+        "subactiondto.actiondto.type": "nextsuperaction"
+    }, {
+        "executethis": "getwidmaster",
+        "wid": "a1"
+    }], function (err, res) {
+        proxyprinttodiv('Function testdd -- ', res, 39);
+        callback(err, res);
+    });
+};

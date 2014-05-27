@@ -270,7 +270,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
     if (inputWidgetObject.command && Object.keys(inputWidgetObject.command.environment).length > 0) {
         copyEnvironmentCommands(inputWidgetObject);
     }
-
+    if (inputWidgetObject && inputWidgetObject.command && inputWidgetObject.command.userid) {inputWidgetObject.metadata.userid=inputWidgetObject.command.userid}
     proxyprinttodiv('Function  inputWidgetObject.command', inputWidgetObject.command, 11);
 
     proxyprinttodiv('Function datastore inputWidgetObject 1', inputWidgetObject, 11);
@@ -316,6 +316,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
     var databasetable = command.databasetable;
 
     delete filter_data.output.command;
+
     var addedobject = converttodriformat(filter_data.output, command);
     proxyprinttodiv('Function datastore command -- add inputWidgetObject addedobject', addedobject, 12);
 
@@ -3831,5 +3832,7 @@ function getRandomNumberByLength(length) {
         if (inputWidgetObject)
             delete inputWidgetObject['command']['environment'];
     }
+
+
 
 })();

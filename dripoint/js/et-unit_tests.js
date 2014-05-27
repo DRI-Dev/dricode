@@ -512,7 +512,7 @@ function etunittesttester(params, callback) {
     }
     // console.log('-------------  subset: \n' + JSON.stringify(subset, '-', 4));
 
-    executethismultiple(subset, function (err, result) {
+    executethismultiple(subset, function(err, result) {
         callback(err, result);
     });
 }
@@ -614,17 +614,17 @@ exports.ettestat = ettestat = function ettestat(params, callback) {
     var result = [];
     var err;
 
-    ettesttt(result, function (err, r1) {
+    ettesttt(result, function(err, r1) {
         result.push(r1);
-        ettestastt(result, function (err, r2) {
+        ettestastt(result, function(err, r2) {
             result.push(r2);
-            ettestctt(result, function (err, r3) {
+            ettestctt(result, function(err, r3) {
                 result.push(r3);
-                ettestagtt(result, function (err, r4) {
+                ettestagtt(result, function(err, r4) {
                     result.push(r4);
-                    etalldeepfiltertests(result, function (err, r5) {
+                    etalldeepfiltertests(result, function(err, r5) {
                         result.push(r5);
-                        ettestdot(result, function (err, r6) {
+                        ettestdot(result, function(err, r6) {
                             result.push(r6);
 
                             callback(err, result);
@@ -644,7 +644,7 @@ exports.ettestat2 = ettestat2 = function ettestat2(params, callback) {
         'type': 'minute'
     };
 
-    result = etunittesttester(target, function (err, result) {
+    result = etunittesttester(target, function(err, result) {
         callback(err, result);
     });
 }
@@ -656,7 +656,7 @@ exports.ettestat3 = ettestat3 = function ettestat3(params, callback) {
         'type': 'second'
     };
 
-    result = etunittesttester(target, function (err, result) {
+    result = etunittesttester(target, function(err, result) {
         callback(err, result);
     });
 }
@@ -668,7 +668,7 @@ exports.ettestat4 = ettestat4 = function ettestat4(params, callback) {
         'type': 'quasi'
     };
 
-    result = etunittesttester(target, function (err, result) {
+    result = etunittesttester(target, function(err, result) {
         callback(err, result);
     });
 }
@@ -680,7 +680,7 @@ exports.ettestat5 = ettestat5 = function ettestat5(params, callback) {
         'type': 'hourly'
     };
 
-    result = etunittesttester(target, function (err, result) {
+    result = etunittesttester(target, function(err, result) {
         callback(err, result);
     });
 }
@@ -718,21 +718,21 @@ exports.ettesttt = ettesttt = function ettesttt(params, callback) {
     var result = [];
     var err;
 
-    ettestt1(result, function (err, r1) {
+    ettestt1(result, function(err, r1) {
         result.push(r1);
-        ettestt2(result, function (err, r2) {
+        ettestt2(result, function(err, r2) {
             result.push(r2);
-            ettestt3(result, function (err, r3) {
+            ettestt3(result, function(err, r3) {
                 result.push(r3);
-                ettestt3a(result, function (err, r3a) {
+                ettestt3a(result, function(err, r3a) {
                     result.push(r3a);
-                    ettestt4(result, function (err, r4) {
+                    ettestt4(result, function(err, r4) {
                         result.push(r4);
-                        ettestt4a(result, function (err, r4a) {
+                        ettestt4a(result, function(err, r4a) {
                             result.push(r4a);
-                            ettestt5(result, function (err, r5) {
+                            ettestt5(result, function(err, r5) {
                                 result.push(r5);
-                                ettestt6(result, function (err, r6) {
+                                ettestt6(result, function(err, r6) {
                                     result.push(r6);
                                     callback(err, result);
                                 });
@@ -774,21 +774,21 @@ exports.ettestastt = ettestastt = function ettestastt(params, callback) {
     var result = [];
     var err;
 
-    ettestast1(result, function (err, r1) {
+    ettestast1(result, function(err, r1) {
         result.push(r1);
-        ettestast2(result, function (err, r2) {
+        ettestast2(result, function(err, r2) {
             result.push(r2);
-            ettestast3(result, function (err, r3) {
+            ettestast3(result, function(err, r3) {
                 result.push(r3);
-                ettestast3a(result, function (err, r3a) {
+                ettestast3a(result, function(err, r3a) {
                     result.push(r3a);
-                    ettestast4(result, function (err, r4) {
+                    ettestast4(result, function(err, r4) {
                         result.push(r4);
-                        ettestast4a(result, function (err, r4a) {
+                        ettestast4a(result, function(err, r4a) {
                             result.push(r4a);
-                            ettestast5(result, function (err, r5) {
+                            ettestast5(result, function(err, r5) {
                                 result.push(r5);
-                                ettestast6(result, function (err, r6) {
+                                ettestast6(result, function(err, r6) {
                                     result.push(r6);
                                     callback(err, result);
                                 });
@@ -858,45 +858,45 @@ exports.ettestctt = ettestctt = function ettestctt(params, callback) {
     var result = [];
     var err;
 
-    ettestct1(result, function (err, r1) {
+    ettestct1(result, function(err, r1) {
         result.push(r1);
-        ettestct2(result, function (err, r2) {
+        ettestct2(result, function(err, r2) {
             result.push(r2);
-            ettestct3(result, function (err, r3) {
+            ettestct3(result, function(err, r3) {
                 result.push(r3);
-                ettestct3a(result, function (err, r3a) {
+                ettestct3a(result, function(err, r3a) {
                     result.push(r3a);
-                    ettestct4(result, function (err, r4) {
+                    ettestct4(result, function(err, r4) {
                         result.push(r4);
-                        ettestct4a(result, function (err, r4a) {
+                        ettestct4a(result, function(err, r4a) {
                             result.push(r4a);
-                            ettestct5(result, function (err, r5) {
+                            ettestct5(result, function(err, r5) {
                                 result.push(r5);
-                                ettestct6(result, function (err, r6) {
+                                ettestct6(result, function(err, r6) {
                                     result.push(r6);
-                                    ettestct7(result, function (err, r7) {
+                                    ettestct7(result, function(err, r7) {
                                         result.push(r7);
-                                        ettestct9(result, function (err, r9) {
+                                        ettestct9(result, function(err, r9) {
                                             result.push(r9);
-                                            ettestct10(result, function (err, r10) {
+                                            ettestct10(result, function(err, r10) {
                                                 result.push(r10);
-                                                ettestct11(result, function (err, r11) {
+                                                ettestct11(result, function(err, r11) {
                                                     result.push(r11);
-                                                    ettestct13(result, function (err, r13) {
+                                                    ettestct13(result, function(err, r13) {
                                                         result.push(r13);
-                                                        ettestct14(result, function (err, r14) {
+                                                        ettestct14(result, function(err, r14) {
                                                             result.push(r14);
-                                                            ettestct15(result, function (err, r15) {
+                                                            ettestct15(result, function(err, r15) {
                                                                 result.push(r15);
-                                                                ettestct16(result, function (err, r16) {
+                                                                ettestct16(result, function(err, r16) {
                                                                     result.push(r16);
-                                                                    ettestct17(result, function (err, r17) {
+                                                                    ettestct17(result, function(err, r17) {
                                                                         result.push(r17);
-                                                                        ettestct18(result, function (err, r18) {
+                                                                        ettestct18(result, function(err, r18) {
                                                                             result.push(r18);
-                                                                            ettestct19(result, function (err, r19) {
+                                                                            ettestct19(result, function(err, r19) {
                                                                                 result.push(r19);
-                                                                                ettestct20(result, function (err, r20) {
+                                                                                ettestct20(result, function(err, r20) {
                                                                                     result.push(r20);
                                                                                     callback(err, result);
                                                                                 });
@@ -939,11 +939,11 @@ exports.ettestagtt = ettestagtt = function ettestagtt(params, callback) {
     var result = [];
     var err;
 
-    ettestag1(result, function (err, r1) {
+    ettestag1(result, function(err, r1) {
         result.push(r1);
-        ettestag2(result, function (err, r2) {
+        ettestag2(result, function(err, r2) {
             result.push(r2);
-            ettestag3(result, function (err, r3) {
+            ettestag3(result, function(err, r3) {
                 result.push(r3);
                 callback(err, result);
             });
@@ -957,13 +957,13 @@ exports.ettestetdtt = ettestetdtt = function ettestetdtt(params, callback) {
     var result = [];
     var err;
 
-    etd16(result, function (err, r1) {
+    etd16(result, function(err, r1) {
         result.push(r1);
-        etd17(result, function (err, r2) {
+        etd17(result, function(err, r2) {
             result.push(r2);
-            etd18(result, function (err, r3) {
+            etd18(result, function(err, r3) {
                 result.push(r3);
-                etd19(result, function (err, r4) {
+                etd19(result, function(err, r4) {
                     result.push(r4);
                     callback(err, result);
                 });
@@ -986,7 +986,7 @@ exports.ettestt1 = ettestt1 = function ettestt1(params, callback) {
             "d": "1",
             "e": "2"
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("ettestt1_result", res[0], [{
                 "c": "0",
                 "d": "1",
@@ -1040,7 +1040,7 @@ exports.ettestt2 = ettestt2 = function ettestt2(params, callback) {
             "preexecute": "func_a",
             "postexecute": "func_c"
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("ettestt2_result", res[0], [{
                 "f": "3",
                 "g": "4",
@@ -1061,7 +1061,7 @@ exports.ettestt3 = ettestt3 = function ettestt3(params, callback) {
             "e": "2",
             "preexecute": "func_a"
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("ettestt3_result", res[0], [{
                 "c": "0",
                 "f": "3",
@@ -1082,7 +1082,7 @@ exports.ettestt3a = ettestt3a = function ettestt3a(params, callback) {
             "e": "2",
             "postexecute": "func_a"
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("ettestt3a_result", res[0], [{
                 "c": "0",
                 "g": "4",
@@ -1103,7 +1103,7 @@ exports.ettestt4 = ettestt4 = function ettestt4(params, callback) {
             "e": "2",
             "postexecute": "func_c"
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("ettestt4_result", res[0], [{
                 "d": "1",
                 "g": "4",
@@ -1124,7 +1124,7 @@ exports.ettestt4a = ettestt4a = function ettestt4a(params, callback) {
             "e": "2",
             "preexecute": "func_c"
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("ettestt4a_result", res[0], [{
                 "d": "1",
                 "g": "4",
@@ -1145,7 +1145,7 @@ exports.ettestt5 = ettestt5 = function ettestt5(params, callback) {
             "preexecute": "func_a",
             "postexecute": "func_a"
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("ettestt5_result", res[0], [{
                 "c": "0",
                 "f": "3",
@@ -1167,7 +1167,7 @@ exports.ettestt6 = ettestt6 = function ettestt6(params, callback) {
             "preexecute": "func_c",
             "postexecute": "func_c"
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("ettestt6_result", res[0], [{
                 "d": "1",
                 "h": "5",
@@ -1194,7 +1194,7 @@ exports.ss1 = ss1 = function ss1(params, callback) {
             "to": "+12145644732",
             "body": "test"
         },
-        function (err, res) {
+        function(err, res) {
             callback(err, res[0])
         }
     );
@@ -1214,7 +1214,7 @@ exports.ettestast1 = ettestast1 = function ettestast1(params, callback) {
             "d": "1",
             "e": "2"
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("ettestast1_result", res[0], [{
                 "d": "1",
                 "c": "0",
@@ -1235,7 +1235,7 @@ exports.ettestast2 = ettestast2 = function ettestast2(params, callback) {
             "preexecute": "async_func_a",
             "postexecute": "async_func_c"
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("ettestast2_result", res[0], [{
                 "f": "3",
                 "g": "4",
@@ -1254,7 +1254,7 @@ exports.ettestast3 = ettestast3 = function ettestast3(params, callback) {
             "e": "2",
             "preexecute": "async_func_a"
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("ettestast3_result", res[0], [{
                 "c": "0",
                 "f": "3",
@@ -1273,7 +1273,7 @@ exports.ettestast3a = ettestast3a = function ettestast3a(params, callback) {
             "e": "2",
             "postexecute": "async_func_a"
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("ettestast3a_result", res[0], [{
                 "c": "0",
                 "g": "4",
@@ -1292,7 +1292,7 @@ exports.ettestast4 = ettestast4 = function ettestast4(params, callback) {
             "e": "2",
             "postexecute": "async_func_c"
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("ettestast4_result", res[0], [{
                 "d": "1",
                 "g": "4",
@@ -1311,7 +1311,7 @@ exports.ettestast4a = ettestast4a = function ettestast4a(params, callback) {
             "e": "2",
             "preexecute": "async_func_c"
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("ettestast4a_result", res[0], [{
                 "d": "1",
                 "g": "4",
@@ -1331,7 +1331,7 @@ exports.ettestast5 = ettestast5 = function ettestast5(params, callback) {
             "preexecute": "async_func_a",
             "postexecute": "async_func_a"
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("ettestast5_result", res[0], [{
                 "c": "0",
                 "f": "3",
@@ -1351,7 +1351,7 @@ exports.ettestast6 = ettestast6 = function ettestast6(params, callback) {
             "preexecute": "async_func_c",
             "postexecute": "async_func_c"
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("ettestast6_result", res[0], [{
                 "d": "1",
                 "h": "5",
@@ -1421,7 +1421,7 @@ exports.ettestct1 = ettestct1 = function ettestct1(params, callback) {
 
     var res = master_test_and_verify("ettestct1", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -1484,7 +1484,7 @@ exports.ettestct2 = ettestct2 = function ettestct2(params, callback) {
     });
     var res = master_test_and_verify("ettestct2", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -1545,7 +1545,7 @@ exports.ettestct3 = ettestct3 = function ettestct3(params, callback) {
     })
     var res = master_test_and_verify("ettestct3", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -1607,7 +1607,7 @@ exports.ettestct3a = ettestct3a = function ettestct3a(params, callback) {
     });
     var res = master_test_and_verify("ettestct3a", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -1669,7 +1669,7 @@ exports.ettestct4 = ettestct4 = function ettestct4(params, callback) {
     })
     var res = master_test_and_verify("ettestct4", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -1731,7 +1731,7 @@ exports.ettestct4a = ettestct4a = function ettestct4a(params, callback) {
     })
     var res = master_test_and_verify("ettestct4a", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -1794,7 +1794,7 @@ exports.ettestct5 = ettestct5 = function ettestct5(params, callback) {
     })
     var res = master_test_and_verify("ettestct4a", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -1858,7 +1858,7 @@ exports.ettestct6 = ettestct6 = function ettestct6(params, callback) {
     })
     var res = master_test_and_verify("ettestct6", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -1897,7 +1897,7 @@ exports.ettestct7 = ettestct7 = function ettestct7(params, callback) {
     });
     var res = master_test_and_verify("ettestct7", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -1947,7 +1947,7 @@ exports.ettestct8 = ettestct8 = function ettestct8(params, callback) {
 
     var res = master_test_and_verify("ettestct8", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -1972,7 +1972,7 @@ exports.ettestct9 = ettestct9 = function ettestct9(params, callback) {
     });
     var res = master_test_and_verify("ettestct9", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -1989,7 +1989,7 @@ exports.ettestct9a = ettestct9a = function ettestct9a(params, callback) {
     });
     var res = master_test_and_verify("ettestct9a", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -2016,7 +2016,7 @@ exports.ettestct10 = ettestct10 = function ettestct10(params, callback) {
     });
     var res = master_test_and_verify("ettestct10", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -2047,7 +2047,7 @@ exports.ettestct11 = ettestct11 = function ettestct11(params, callback) {
     });
     var res = master_test_and_verify("ettestct11", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -2088,7 +2088,7 @@ exports.ettestct12 = ettestct12 = function ettestct12(params, callback) {
     });
     var res = master_test_and_verify("ettestct12", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -2138,7 +2138,7 @@ exports.ettestct13 = ettestct13 = function ettestct13(params, callback) {
     });
     var res = master_test_and_verify("ettestct13", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -2222,7 +2222,7 @@ exports.ettestct14 = ettestct14 = function ettestct14(params, callback) {
     });
     var res = master_test_and_verify("ettestct14", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -2304,7 +2304,7 @@ exports.ettestct15 = ettestct15 = function ettestct15(params, callback) {
     });
     var res = master_test_and_verify("ettestct15", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -2389,7 +2389,7 @@ exports.ettestct16 = ettestct16 = function ettestct16(params, callback) {
     });
     var res = master_test_and_verify("ettestct16", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -2432,7 +2432,7 @@ exports.ettestct17 = ettestct17 = function ettestct17(params, callback) {
     });
     var res = master_test_and_verify("ettestct17", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -2477,7 +2477,7 @@ exports.ettestct18 = ettestct18 = function ettestct18(params, callback) {
     });
     var res = master_test_and_verify("ettestct18", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -2558,7 +2558,7 @@ exports.ettestct19 = ettestct19 = function ettestct19(params, callback) {
     });
     var res = master_test_and_verify("ettestct19", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -2635,7 +2635,7 @@ exports.ettestct20 = ettestct20 = function ettestct20(params, callback) {
     });
     var res = master_test_and_verify("ettestct20", parameters, assert, {}, {
         "command": "null"
-    }, function (err, res) {
+    }, function(err, res) {
         callback(err, res)
     });
 }
@@ -2760,7 +2760,7 @@ exports.ettestag11 = ettestag11 = function ettestag11(params, callback) {
         }, {
             "executethis": "third_wid"
         }],
-        function (err, res) {
+        function(err, res) {
 
             console.log('Function ag11 result\n' + JSON.stringify(res, '-', 4));
 
@@ -2815,7 +2815,7 @@ exports.ettestag12 = ettestag12 = function ettestag12(params, callback) {
         }, {
             "postexecute": "third_wid"
         }],
-        function (err, res) {
+        function(err, res) {
 
             console.log('Function ag11 result\n' + JSON.stringify(res, '-', 4));
 
@@ -2867,7 +2867,7 @@ exports.ettestag1 = ettestag1 = function ettestag1(params, callback) {
             "executethis": "getwidmaster",
             "wid": "sounddto"
         }],
-        function (err, res1) {
+        function(err, res1) {
             proxyprinttodiv("Ag1  result ", res1, 99);
             // var res = res1[1]; //~~~ changed by SAURABH 
             var res = res1[1];
@@ -2909,7 +2909,7 @@ exports.ettestag1a = ettestag1a = function ettestag1a(params, callback) {
             "executethis": "getwidmaster",
             "wid": "superhero"
         }],
-        function (err, res) {
+        function(err, res) {
             proxyprinttodiv('Function ag1 result ', res, 17);
             res = logverify("ettestag1a_result", res[2], {
                 "name": "Nick Fury",
@@ -2941,7 +2941,7 @@ exports.ettestag1b = ettestag1b = function ettestag1b(params, callback) {
             "executethis": "getwidmaster",
             "wid": "sounddto2"
         }],
-        function (err, res1) {
+        function(err, res1) {
             proxyprinttodiv("Ag1b  result ", res1, 99);
             // var res = res1[1]; //~~~ changed by SAURABH 
             var res = res1[1];
@@ -3060,7 +3060,7 @@ exports.ettestag2 = ettestag2 = function ettestag2(params, callback) {
             "executethis": "getwidmaster",
             "wid": "color1"
         }],
-        function (err, res) {
+        function(err, res) {
             debugfn("offlinegetwid code generator END", "ag2", "", "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
 
             saveglobal("debugname", "");
@@ -3086,19 +3086,19 @@ exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
     //debuglevel = 17;
     //saveglobal("debugname", "");
 
-    //%%%%%%%%%%%
+    //%
     // Functions of --- config-local
     // saveglobal("debugname", "offlineupdatewid");
 
     // saveglobal("debugname", "offlinegetwid");
-    //%%%%%%%%%%%
+    //%
     // Functions of --- add
 
-    // %%%%%%%%%%%
+    // %
     // Functions of --- query
     // saveglobal("debugname", "querywid");
 
-    // %%%%%%%%%%%
+    // %
     // Functions of --- get
     // saveglobal("debugname", "getwid");
 
@@ -3110,12 +3110,12 @@ exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
 
     // saveglobal("debugname", "getwidmongo");
     // saveglobal("debugname", "getcleanparameters");
-    // %%%%%%%%%%%
+    // %
 
     // saveglobal("debugcat", "");
     // saveglobal("debugsubcat", "code");
 
-    debuglevel = 0;
+    //debuglevel = 38;
     execute([{
             // "executethis": "addwidmaster",
             // "wid": "songdto",
@@ -3215,7 +3215,7 @@ exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
         //  "wid": "book1"
         // }],
 
-        function (err, res) {
+        function(err, res) {
             // alert('err' + JSON.stringify(err, '-', 4));
 
 
@@ -3223,29 +3223,29 @@ exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
             // 
             // These will create the code on the screen from the logged data
 
-            //%%%%%%%%%%%
+            //%
             // Functions of --- config-local
 
             // debugfn("update code generator END",        "offlineupdatewid", "add",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
             // debugfn("offlinegetwid code generator END", "offlinegetwid",    "get",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
             debugfn("offlinegetwid code generator END", "", "", "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
 
-            //%%%%%%%%%%%
+            //%
             // Functions of --- add
 
-            //%%%%%%%%%%%
+            //%
             // Functions of --- query
 
             // debugfn("querywid code generator END",      "querywid",         "query", "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
 
-            // %%%%%%%%%%%
+            // %
             // Functions of --- get
 
             // debugfn("getwidmaster code generator END",  "getwidmaster",     "get",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
             // debugfn("getWidMongo code generator END",   "getWidMongo",      "get",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
             // debugfn("getcleanparameters code generator END",   "getcleanparameters",      "get",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
 
-            // %%%%%%%%%%%
+            // %
             // saveglobal("debugname", "");
             // saveglobal("debugcat", "");
             // saveglobal("debugsubcat", "");
@@ -3279,7 +3279,7 @@ exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 99);
                 callback(err, res);
 
@@ -3323,7 +3323,7 @@ exports.ettestag3b = ettestag3b = function ettestag3b(params, callback) {
             "wid": "song1"
         }],
 
-        function (err, res) {
+        function(err, res) {
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result ', res[4], 17);
@@ -3354,7 +3354,7 @@ exports.ettestag3b = ettestag3b = function ettestag3b(params, callback) {
                         "dtotype": ""
                     }
                 }
-            }, function (err, res1) {
+            }, function(err, res1) {
                 //execute({"executethis": "getwidmaster","wid": "song1"}, function (err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 17);
                 callback(err, res);
@@ -3431,7 +3431,7 @@ exports.ettestag5 = ettestag5 = function ettestag5(params, callback) {
             "executethis": "getwidmaster",
             "wid": "song1"
         }],
-        function (err, res) {
+        function(err, res) {
             proxyprinttodiv('Function ag5 result Full res', res, 17);
             proxyprinttodiv('Function ag5 result ', res[4], 17);
 
@@ -3455,7 +3455,7 @@ exports.ettestag5 = ettestag5 = function ettestag5(params, callback) {
                 "wid": "songdto",
                 "command.getwidmaster.convertmethod": "dto",
                 "command.getwidmaster.execute": "ConvertFromDOTdri"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag5 result LAST ', res1, 17);
                 callback(err, res);
             });
@@ -3495,7 +3495,7 @@ exports.ettestag6 = ettestag6 = function ettestag6(params, callback) {
             "title": "Highway to Hell",
             "sounddto.0.note": "C flat"
         }],
-        function (err, res) {
+        function(err, res) {
             proxyprinttodiv('Function ag5 result Full res', res, 17);
             proxyprinttodiv('Function ag5 result ', res[4], 17);
 
@@ -3519,7 +3519,7 @@ exports.ettestag6 = ettestag6 = function ettestag6(params, callback) {
                 "wid": "songdto",
                 "command.getwidmaster.convertmethod": "dto",
                 "command.getwidmaster.execute": "ConvertFromDOTdri"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag5 result LAST ', res1, 17);
                 callback(err, res);
             });
@@ -3567,7 +3567,7 @@ exports.ettestag7 = ettestag7 = function ettestag7(params, callback) {
 
     getdtoobject(obj, {
         "dtotype": "defaultdto"
-    }, function (err, res) {
+    }, function(err, res) {
         proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
     });
 }
@@ -3597,14 +3597,14 @@ exports.ettestag8 = ettestag8 = function ettestag8(params, callback) {
             "sounddto.0.metadata.method": "sounddto",
             "sounddto.0.note": "string"
         }],
-        function (err, res) {
+        function(err, res) {
 
             execute({
                 "executethis": "getwidmaster",
                 "wid": "songdto",
                 "command.getwidmaster.convertmethod": "dto",
                 "command.getwidmaster.execute": "ConvertFromDOTdri"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag8 result LAST ', res1, 17);
                 callback(err, res);
             });
@@ -3653,7 +3653,7 @@ exports.ettestag9 = ettestag9 = function ettestag9(params, callback) {
             "executethis": "getwidmaster",
             "wid": "song1"
         }],
-        function (err, res) {
+        function(err, res) {
             proxyprinttodiv('Function ag5 result Full res', res, 17);
             proxyprinttodiv('Function ag5 result ', res[3], 17);
 
@@ -3677,7 +3677,7 @@ exports.ettestag9 = ettestag9 = function ettestag9(params, callback) {
                 "wid": "songdto",
                 "command.getwidmaster.convertmethod": "dto",
                 "command.getwidmaster.execute": "ConvertFromDOTdri"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag5 result LAST ', res1, 17);
                 callback(err, res);
             });
@@ -3726,7 +3726,7 @@ exports.ettestag3a = ettestag3a = function ettestag3a(params, callback) {
             "executethis": "getwidmaster",
             "wid": "song1"
         }],
-        function (err, res) {
+        function(err, res) {
             proxyprinttodiv('Function ag5 result Full res', res, 17);
             proxyprinttodiv('Function ag5 result ', res[2], 17);
 
@@ -3750,7 +3750,7 @@ exports.ettestag3a = ettestag3a = function ettestag3a(params, callback) {
                 "wid": "songdto",
                 "command.getwidmaster.convertmethod": "dto",
                 "command.getwidmaster.execute": "ConvertFromDOTdri"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag5 result LAST ', res1, 17);
                 callback(err, res);
             });
@@ -3831,7 +3831,7 @@ exports.uwid1 = uwid1 = function uwid1(params, callback) {
             "executethis": "getwidmaster",
             "wid": "getexecutetest"
         }],
-        function (err, res) {
+        function(err, res) {
             proxyprinttodiv("uwid1 res: ", res, 17);
             // The following will pass...it shows what the getwidmaster returns
             // res = logverify("uwid1", res[1][0], {"addthis.executethis": "func_b", "wid": "getexecutetest", "metadata.method": "testdto"});
@@ -3861,7 +3861,7 @@ exports.uwid2 = uwid2 = function uwid2(params, callback) {
             "executethis": "getwidmaster",
             "wid": "getexecutetest"
         }],
-        function (err, res) {
+        function(err, res) {
             proxyprinttodiv("uwid2 res: ", res, 17);
             res = logverify("uwid2", res[1][0][0], {
                 "nested.postexecute": "func_b",
@@ -3900,7 +3900,7 @@ exports.mut = mut = function mut(params, callback) {
     );
 
 
-    executethismultiple(data, function (err, res) {
+    executethismultiple(data, function(err, res) {
         callback(err, res)
     });
 }
@@ -4888,7 +4888,7 @@ exports.err1 = err1 = function err1(params, callback) {
             },
             "status": "fail"
         }
-    }, function (err, result) {
+    }, function(err, result) {
         proxyprinttodiv('Function err1 result ', result, 17);
         // debugfn("offlinegetwid code generator END",                  "ag2",    "",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
     });
@@ -4906,7 +4906,7 @@ exports.wrapped1 = wrapped1 = function wrapped1(params, callback) {
         "command": {
             "executeresult": "outer"
         }
-    }], function (err, result) {
+    }], function(err, result) {
         proxyprinttodiv('Function wrapped1 result ', result, 99)
         // debugfn("offlinegetwid code generator END",                  "ag2",    "",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
 
@@ -5289,7 +5289,7 @@ exports.ettest_recurseModObj = ettest_recurseModObj = function ettest_recurseMod
             }
         },
         "g": "boolean"
-    }, {}, function (err, res) {
+    }, {}, function(err, res) {
 
         proxyprinttodiv('recurseModObj inputObject', {
             "metadata": {
@@ -5355,7 +5355,7 @@ exports.ettss1 = ettss1 = function ettss1(params, callback) {
 
 
     async.series([
-        function (cb1) {
+        function(cb1) {
             // create dtos  
             var executeList = [{
                 // create simple ttdto
@@ -5364,12 +5364,12 @@ exports.ettss1 = ettss1 = function ettss1(params, callback) {
                 "metadata.method": "ttdto",
                 "type": "string"
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 proxyprinttodiv('Function tss1 added  ttdto -- ', res, 17);
                 cb1(null);
             });
         },
-        function (cb1) {
+        function(cb1) {
             // create data for ttdto
             var executeList = [{
                 "executethis": "addwidmaster",
@@ -5405,12 +5405,12 @@ exports.ettss1 = ettss1 = function ettss1(params, callback) {
                 "type": "a"
             }];
 
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 proxyprinttodiv('Function tss1 added  ttdto -- ', res, 17);
                 cb1(null);
             });
         },
-        function (cb1) {
+        function(cb1) {
             // create data for ttdto
             var executeList = [{
                 "executethis": "addwidmaster",
@@ -5430,12 +5430,12 @@ exports.ettss1 = ettss1 = function ettss1(params, callback) {
                 "type": "a"
             }];
 
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 proxyprinttodiv('Function tss1 added  ttdto --4 ', res, 17);
                 cb1(null);
             });
         },
-        function (cb1) {
+        function(cb1) {
             // create data for ttdto
             var executeList = [{
                 "executethis": "addwidmaster",
@@ -5471,12 +5471,12 @@ exports.ettss1 = ettss1 = function ettss1(params, callback) {
                 "type": "a"
             }];
 
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 proxyprinttodiv('Function tss1 added  ttdto --5 ', res, 17);
                 cb1(null, res);
             });
         },
-    ], function (err, res) {
+    ], function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = res[3];
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -5583,51 +5583,51 @@ exports.ett1 = ett1 = function ett1(params, callback) {
     var status = false;
 
     async.series([
-        function (callback1) { //addwidmaster dto
+        function(callback1) { //addwidmaster dto
             var executeList = [{
                 "executethis": "addwidmaster",
                 "wid": "ttdto",
                 "metadata.method": "ttdto",
                 "type": "string"
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 proxyprinttodiv("Function t1 addwidmaster ttdto  result -- ", res, 17);
                 callback1(null);
             });
         },
-        function (callback2) { //addwidmaster wid1
+        function(callback2) { //addwidmaster wid1
             //n-times loop
-            async.times(5, function (n, next) {
+            async.times(5, function(n, next) {
                 var executeList = [{
                     "executethis": "addwidmaster",
                     "wid": "ttdto_wid" + n,
                     "metadata.method": "ttdto",
                     "type": "a"
                 }];
-                execute(executeList, function (err, res) {
+                execute(executeList, function(err, res) {
                     proxyprinttodiv("Function t1 addwidmaster ttdto wid result -- ", res, 17);
                     next(err, res);
                 });
-            }, function (err, result) {
+            }, function(err, result) {
                 callback2(null, result);
             });
         },
-        function (callback3) { //getwidmaster
+        function(callback3) { //getwidmaster
             //n-times loop
-            async.times(5, function (n, next) {
+            async.times(5, function(n, next) {
                 var executeList = [{
                     "executethis": "getwidmaster",
                     "wid": "ttdto_wid" + n,
                 }];
-                execute(executeList, function (err, res) {
+                execute(executeList, function(err, res) {
                     proxyprinttodiv("Function t1 getwidmaster  result -- ", res, 17);
                     next(err, res);
                 });
-            }, function (err, result) {
+            }, function(err, result) {
                 callback3(null, result);
             });
         }
-    ], function (err, res) {
+    ], function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = res[2];
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -5700,20 +5700,20 @@ exports.t2 = t2 = function t2(params, callback) {
                         callback1(null);
                   });
             },*/
-        function (callback2) { //addwidmaster wid1
+        function(callback2) { //addwidmaster wid1
             //n-times loop
-            async.times(5, function (n, next) {
+            async.times(5, function(n, next) {
                 var executeList = [{
                     "executethis": "addwidmaster",
                     "wid": "ttdto_wid" + n,
                     "metadata.method": "ttdto",
                     "type": "a"
                 }];
-                execute(executeList, function (err, res) {
+                execute(executeList, function(err, res) {
                     proxyprinttodiv("Function t1 addwidmaster ttdto wid result -- ", res, 17);
                     next(err, res);
                 });
-            }, function (err, result) {
+            }, function(err, result) {
                 callback2(null, result);
             });
         }
@@ -5732,7 +5732,7 @@ exports.t2 = t2 = function t2(params, callback) {
                         callback3(null);
                   });
             }*/
-    ], function (err, res) {
+    ], function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = res[0];
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -5818,32 +5818,32 @@ exports.ett3 = ett3 = function ett3(params, callback) {
     var status = false;
 
     async.series([
-        function (callback1) { //addwidmaster dto
+        function(callback1) { //addwidmaster dto
             var executeList = [{
                 "executethis": "addwidmaster",
                 "wid": "ttdto",
                 "metadata.method": "ttdto",
                 "type": "string"
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 proxyprinttodiv("Function t1 addwidmaster ttdto  result -- ", res, 17);
                 callback1(null);
             });
         },
-        function (callback2) { //addwidmaster wid1
+        function(callback2) { //addwidmaster wid1
             //n-times loop
-            async.times(1, function (n, next) {
+            async.times(1, function(n, next) {
                 var executeList = [{
                     "executethis": "addwidmaster",
                     "wid": "ttdto_wid" + n,
                     "metadata.method": "ttdto",
                     "type": "a"
                 }];
-                execute(executeList, function (err, res) {
+                execute(executeList, function(err, res) {
                     proxyprinttodiv("Function t1 addwidmaster ttdto wid result -- ", res, 17);
                     next(err, res);
                 });
-            }, function (err, result) {
+            }, function(err, result) {
                 callback2(null, result);
             });
         }
@@ -5862,7 +5862,7 @@ exports.ett3 = ett3 = function ett3(params, callback) {
                         callback3(null);
                   });
             }*/
-    ], function (err, res) {
+    ], function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = res[1];
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -5899,7 +5899,7 @@ exports.ettss2 = ettss2 = function ettss2(params, callback) {
 
 
     async.series([
-            function (cb1) {
+            function(cb1) {
                 // create data for ttdto
                 var executeList = [{
                     // create simple ttdto
@@ -6037,13 +6037,13 @@ exports.ettss2 = ettss2 = function ettss2(params, callback) {
                     "type": "a"
                 }];
 
-                execute(executeList, function (err, res) {
+                execute(executeList, function(err, res) {
                     proxyprinttodiv('Function tss2 added  ttdto -- ', res, 17);
                     cb1(null, res);
                 });
             }
         ],
-        function (err, res) {
+        function(err, res) {
             proxyprinttodiv("res --", res, 17);
             var actual_result = [res];
             proxyprinttodiv("actual_result --", actual_result, 17);
@@ -6402,7 +6402,7 @@ exports.ettss3 = ettss3 = function ettss3(params, callback) {
 
 
     async.series([
-        function (cb1) {
+        function(cb1) {
             // create dtos  
             var executeList = [{
                 // create simple ttdto
@@ -6411,12 +6411,12 @@ exports.ettss3 = ettss3 = function ettss3(params, callback) {
                 "metadata.method": "ttdto",
                 "type": "string"
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 proxyprinttodiv('Function tss3 loop # 1  -- ', res, 34);
                 cb1(null);
             });
         },
-        function (cb1) {
+        function(cb1) {
             // create data for ttdto
             var executeList = [{
                 "executethis": "addwidmaster",
@@ -6436,12 +6436,12 @@ exports.ettss3 = ettss3 = function ettss3(params, callback) {
                 "type": "a"
             }];
 
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 proxyprinttodiv('Function tss3 loop # 2 -- ', res, 34);
                 cb1(null);
             });
         },
-        function (cb1) {
+        function(cb1) {
             // create data for ttdto
             var executeList = [{
                 "executethis": "addwidmaster",
@@ -6461,12 +6461,12 @@ exports.ettss3 = ettss3 = function ettss3(params, callback) {
                 "type": "a"
             }];
 
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 proxyprinttodiv('Function tss3 loop # 3 -- ', res, 34);
                 cb1(null);
             });
         },
-        function (cb1) {
+        function(cb1) {
             // create data for ttdto
             var executeList = [{
                 "executethis": "addwidmaster",
@@ -6486,12 +6486,12 @@ exports.ettss3 = ettss3 = function ettss3(params, callback) {
                 "type": "a"
             }];
 
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 proxyprinttodiv('Function tss3 loop #  4-- ', res, 34);
                 cb1(null);
             });
         },
-        function (cb1) {
+        function(cb1) {
             // create data for ttdto
             var executeList = [{
                 "executethis": "addwidmaster",
@@ -6511,12 +6511,12 @@ exports.ettss3 = ettss3 = function ettss3(params, callback) {
                 "type": "a"
             }];
 
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 proxyprinttodiv('Function tss3 loop #  5-- ', res, 34);
                 cb1(null);
             });
         },
-        function (cb1) {
+        function(cb1) {
             // create data for ttdto
             var executeList = [{
                 "executethis": "addwidmaster",
@@ -6536,12 +6536,12 @@ exports.ettss3 = ettss3 = function ettss3(params, callback) {
                 "type": "a"
             }];
 
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 proxyprinttodiv('Function tss3 loop #  -- 6', res, 34);
                 cb1(null);
             });
         },
-        function (cb1) {
+        function(cb1) {
             // create data for ttdto
             var executeList = [{
                 "executethis": "addwidmaster",
@@ -6561,12 +6561,12 @@ exports.ettss3 = ettss3 = function ettss3(params, callback) {
                 "type": "a"
             }];
 
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 proxyprinttodiv('Function tss3 loop #  -- 7', res, 34);
                 cb1(null);
             });
         },
-        function (cb1) {
+        function(cb1) {
             // create data for ttdto
             var executeList = [{
                 "executethis": "addwidmaster",
@@ -6586,12 +6586,12 @@ exports.ettss3 = ettss3 = function ettss3(params, callback) {
                 "type": "a"
             }];
 
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 proxyprinttodiv('Function tss3 loop #  -- 8', res, 34);
                 cb1(null);
             });
         },
-        function (cb1) {
+        function(cb1) {
             // create data for ttdto
             var executeList = [{
                 "executethis": "addwidmaster",
@@ -6611,12 +6611,12 @@ exports.ettss3 = ettss3 = function ettss3(params, callback) {
                 "type": "a"
             }];
 
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 proxyprinttodiv('Function tss3 loop #  -- 9', res, 34);
                 cb1(null);
             });
         },
-        function (cb1) {
+        function(cb1) {
             // create data for ttdto
             var executeList = [{
                 "executethis": "addwidmaster",
@@ -6636,12 +6636,12 @@ exports.ettss3 = ettss3 = function ettss3(params, callback) {
                 "type": "a"
             }];
 
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 proxyprinttodiv('Function tss3 loop #  -- 10', res, 34);
                 cb1(null, res);
             });
         }
-    ], function (err, res) {
+    ], function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = res[9];
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -6699,42 +6699,42 @@ exports.ettss3 = ettss3 = function ettss3(params, callback) {
 exports.sectest1 = sectest1 = function sectest1(parm, callback) {
 
     async.series([
-            function (cb1) {
+            function(cb1) {
                 createtestuser("rogeruser", "rogerac", "99", cb1);
             },
-            function (cb1) {
+            function(cb1) {
                 createtestuser("codyuser", "codyac", "99", cb1)
             },
-            function (cb1) { // add codyuser to the driemployeesgroup
+            function(cb1) { // add codyuser to the driemployeesgroup
                 addgrouptowid("codyuser", "userdto", "driemployeegroup", cb1);
             },
-            function (cb1) { // rogeruser allows anyone in driemployees to executethis to cretecoupon
+            function(cb1) { // rogeruser allows anyone in driemployees to executethis to cretecoupon
                 addpermission("rogeruser", "driemployeegroup", "createcoupon", "data", "50", cb1);
             },
-            function (cb1) {
+            function(cb1) {
                 testsecurity("codyac", "executethis", "createcoupon", "data", true, cb1);
             },
 
 
 
-            function (cb1) {
+            function(cb1) {
                 addpermission("rogeruser", "codyuser", "executethis", "createcoupon", "data", 50, cb1);
             },
-            function (cb1) {
+            function(cb1) {
                 addgrouptowid("createcoupon", "xxxxxxx", "rogeruser", cb1);
             },
-            function (cb1) {
+            function(cb1) {
                 testsecurity("rogerac", "executethis", "createcoupon", "data", true, cb1);
             },
-            function (cb1) {
+            function(cb1) {
                 addgrouptowid("codyuser", "userdto", "driemployeegroup", cb1);
             },
 
-            function (cb1) {
+            function(cb1) {
                 testsecurity("codyac", "executethis", "createcoupon", "data", true, cb1);
             }
         ],
-        function (err, res) {
+        function(err, res) {
 
             callback(err, res);
 
@@ -6750,17 +6750,17 @@ exports.tsa1 = tsa1 = function tsa1(params, callback) {
     // var status = false;
 
     async.series([
-        function (cb1) {
-            createsystemdtos(null, function (err, res) {
+        function(cb1) {
+            createsystemdtos(null, function(err, res) {
                 cb1(null);
             });
         },
-        function (cb1) {
-            sectest1(null, function (err, res) {
+        function(cb1) {
+            sectest1(null, function(err, res) {
                 cb1(null);
             });
         }
-    ], function (err, res) {
+    ], function(err, res) {
         proxyprinttodiv('Function tss3 done a series of tasks using ttdto -- process.addListener(type, listener);', res, 34);
         callback(err, res);
     });
@@ -6768,8 +6768,8 @@ exports.tsa1 = tsa1 = function tsa1(params, callback) {
 
 
 /// test getting permissions list :: dependent on sectest1
-exports.ttsa3 = ttsa3 = function (params, callback) {
-    getPermissionsList(["driemployeegroup0", "rogeruser0", "groupdto0", "19", "25"], ["createcoupon0"], ["executethis"], ["data"], 99, function (err, res) {
+exports.ttsa3 = ttsa3 = function(params, callback) {
+    getPermissionsList(["driemployeegroup0", "rogeruser0", "groupdto0", "19", "25"], ["createcoupon0"], ["executethis"], ["data"], 99, function(err, res) {
         proxyprinttodiv('Function ttsa3() in : res', res, 34);
         callback(err, res);
 
@@ -6777,12 +6777,12 @@ exports.ttsa3 = ttsa3 = function (params, callback) {
 };
 
 /// test getting groups recursively :: dependent on sectest1
-exports.ttsa4 = ttsa4 = function (params, callback) {
+exports.ttsa4 = ttsa4 = function(params, callback) {
     debuglevel = 34;
     saveglobal("debugname", "");
     saveglobal("debugcat", "");
     saveglobal("debugsubcat", "code");
-    getGroupRecursive("rogeruser", 99, function (err, res) {
+    getGroupRecursive("rogeruser", 99, function(err, res) {
         proxyprinttodiv('Function ttsa4() in : res', res, 34);
         callback(err, res);
 
@@ -6790,7 +6790,7 @@ exports.ttsa4 = ttsa4 = function (params, callback) {
 };
 
 /// test add group to wid :: dependent on sectest1
-exports.ttsa6 = ttsa6 = function (params, callback) {
+exports.ttsa6 = ttsa6 = function(params, callback) {
     addgrouptowid("anything", "groupnamedto", "createcoupon", callback);
 };
 
@@ -6836,7 +6836,7 @@ exports.etadd01 = etadd01 = function etadd01(parameters, callback) {
         "age": "50"
     }]
 
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
         proxyprinttodiv('__--__', res, 17);
 
         var object = {
@@ -6861,7 +6861,7 @@ exports.etadd01 = etadd01 = function etadd01(parameters, callback) {
         var relationshiptype = "onetomany";
         var command = {};
 
-        addwidobject(object, dtoobject, null, null, null, command, function (err, res) {
+        addwidobject(object, dtoobject, null, null, null, command, function(err, res) {
             proxyprinttodiv("res --", res, 17);
             var actual_result = [res];
             proxyprinttodiv("actual_result --", actual_result, 17);
@@ -6923,7 +6923,7 @@ exports.etadd0 = etadd0 = function etadd0(parameters, callback) {
         //{"executethis":"updatewid","metadata.method":"relationshipdto","wid":"rel111","primarywid":"elizabeth_heart","secondarywid":"222", "relationshiptype":"attributes"},
     ]
 
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
         proxyprinttodiv('__--__', res, 17);
 
         var object = {
@@ -6952,7 +6952,7 @@ exports.etadd0 = etadd0 = function etadd0(parameters, callback) {
         //     alert("add0 addrecord! -- got res -->" + JSON.stringify(res));
         // });
 
-        cleanadd(object, dtoobject, command, function (err, res) {
+        cleanadd(object, dtoobject, command, function(err, res) {
             proxyprinttodiv("res --", res, 17);
             var actual_result = [res];
             proxyprinttodiv("actual_result --", actual_result, 17);
@@ -7050,7 +7050,7 @@ exports.etadd1 = etadd1 = function etadd1(parameters, callback) {
 
     var command = {};
 
-    addwidobject(inputObject, inputdto, null, null, null, command, function (err, res) {
+    addwidobject(inputObject, inputdto, null, null, null, command, function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = [res];
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -7140,7 +7140,7 @@ exports.etadd11 = etadd11 = function etadd11(parameters, callback) {
 
     var command = {};
 
-    addwidobject(inputObject, inputdto, null, null, null, command, function (err, res) {
+    addwidobject(inputObject, inputdto, null, null, null, command, function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = [res];
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -7777,7 +7777,7 @@ exports.etaddwidtest = etaddwidtest = function etaddwidtest(parameters, callback
         "wid": "defaultauthor",
         "name": "roger"
     }];
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
         proxyprinttodiv("addwidtest updatewid authordto result ", res, 17);
 
         var inputobject = {
@@ -7815,7 +7815,7 @@ exports.etaddwidtest = etaddwidtest = function etaddwidtest(parameters, callback
         };
         var command = {};
 
-        addwid(inputobject, inputdto, command, function (err, res) {
+        addwid(inputobject, inputdto, command, function(err, res) {
             proxyprinttodiv("res --", res, 17);
             var actual_result = res;
             proxyprinttodiv("actual_result --", actual_result, 17);
@@ -7851,7 +7851,7 @@ exports.etaddwidtest2 = etaddwidtest2 = function etaddwidtest2(parameters, callb
         "wid": "defaultauthor",
         "name": "roger"
     }];
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
         proxyprinttodiv("addwidtest updatewid authordto result ", res, 17);
 
         var inputobject = {
@@ -7877,7 +7877,7 @@ exports.etaddwidtest2 = etaddwidtest2 = function etaddwidtest2(parameters, callb
         };
         var command = {};
 
-        addwid(inputobject, inputdto, command, function (err, res) {
+        addwid(inputobject, inputdto, command, function(err, res) {
             proxyprinttodiv("res --", res, 17);
             var actual_result = res;
             proxyprinttodiv("actual_result --", actual_result, 17);
@@ -7916,7 +7916,7 @@ exports.etaddwidtest3 = etaddwidtest3 = function etaddwidtest3(parameters, callb
             "name": "roger"
         }
     ];
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
         proxyprinttodiv("addwidtest updatewid authordto result ", res, 17);
 
         var inputobject = {
@@ -7942,7 +7942,7 @@ exports.etaddwidtest3 = etaddwidtest3 = function etaddwidtest3(parameters, callb
         };
         var command = {};
 
-        addwid(inputobject, inputdto, command, function (err, res) {
+        addwid(inputobject, inputdto, command, function(err, res) {
             proxyprinttodiv("res --", res, 17);
             var actual_result = res;
             proxyprinttodiv("actual_result --", actual_result, 17);
@@ -7978,7 +7978,7 @@ exports.etaddwidtest4 = etaddwidtest4 = function etaddwidtest4(parameters, callb
         "wid": "defaultauthor",
         "name": "roger"
     }];
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
         proxyprinttodiv("addwidtest updatewid authordto result ", res, 17);
 
         var inputobject = {
@@ -8016,7 +8016,7 @@ exports.etaddwidtest4 = etaddwidtest4 = function etaddwidtest4(parameters, callb
         };
         var command = {};
 
-        addwid(inputobject, inputdto, command, function (err, res) {
+        addwid(inputobject, inputdto, command, function(err, res) {
             proxyprinttodiv("res --", res, 17);
             var actual_result = res;
             proxyprinttodiv("actual_result --", actual_result, 17);
@@ -8055,7 +8055,7 @@ exports.etaddwidtest5 = etaddwidtest5 = function etaddwidtest5(parameters, callb
             "a": "shouldsurvie"
         }
     ];
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
         proxyprinttodiv("addwidtest updatewid authordto result ", res, 17);
 
         var inputobject = {
@@ -8080,7 +8080,7 @@ exports.etaddwidtest5 = etaddwidtest5 = function etaddwidtest5(parameters, callb
         };
         var command = {};
 
-        addwid(inputobject, inputdto, command, function (err, res) {
+        addwid(inputobject, inputdto, command, function(err, res) {
             proxyprinttodiv("res --", res, 17);
             var actual_result = res;
             proxyprinttodiv("actual_result --", actual_result, 17);
@@ -8119,7 +8119,7 @@ exports.etaddwidtest6 = etaddwidtest6 = function etaddwidtest6(parameters, callb
             "test": "roger"
         }
     }];
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
         proxyprinttodiv("addwidtest updatewid authordto result ", res, 17);
 
         var inputobject = {
@@ -8159,7 +8159,7 @@ exports.etaddwidtest6 = etaddwidtest6 = function etaddwidtest6(parameters, callb
         };
         var command = {};
 
-        addwid(inputobject, inputdto, command, function (err, res) {
+        addwid(inputobject, inputdto, command, function(err, res) {
             proxyprinttodiv("res --", res, 17);
             var actual_result = res;
             proxyprinttodiv("actual_result --", actual_result, 17);
@@ -8196,7 +8196,7 @@ exports.etaddwidtest7 = etaddwidtest7 = function etaddwidtest7(parameters, callb
         "wid": "defaultauthor",
         "name": "roger"
     }];
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
         proxyprinttodiv("addwidtest updatewid authordto result ", res, 17);
 
         var inputobject = {
@@ -8238,7 +8238,7 @@ exports.etaddwidtest7 = etaddwidtest7 = function etaddwidtest7(parameters, callb
         };
         var command = {};
 
-        addwid(inputobject, inputdto, command, function (err, res) {
+        addwid(inputobject, inputdto, command, function(err, res) {
             proxyprinttodiv("res --", res, 17);
             var actual_result = res;
             proxyprinttodiv("actual_result --", actual_result, 17);
@@ -8312,7 +8312,7 @@ exports.etadd2 = etadd2 = function etadd2(parameters, callback) {
         }
     ]
 
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = res[5];
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -8398,7 +8398,7 @@ exports.etget1 = etget1 = function etget1(parameters, callback) {
         //{"executethis":"getwidmaster","wid":"elizabeth_heart"}
     ];
 
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
         proxyprinttodiv('__--__', res, 17);
         //callback(err, res);
 
@@ -8409,18 +8409,18 @@ exports.etget1 = etget1 = function etget1(parameters, callback) {
         var preamble = "";
         var level = "";
 
-        getWidMongo(widInput, command, preamble, level, null, function (err, res) {
+        getWidMongo(widInput, command, preamble, level, null, function(err, res) {
             proxyprinttodiv('__--__', res, 17);
             //callback(err, res);
 
             widInput = "authordto";
-            getWidMongo(widInput, command, preamble, level, null, function (err, res) {
+            getWidMongo(widInput, command, preamble, level, null, function(err, res) {
                 proxyprinttodiv('__--__', res, 17);
                 //callback(err, res);
 
 
                 widInput = "bookdto";
-                getWidMongo(widInput, command, preamble, level, null, function (err, res) {
+                getWidMongo(widInput, command, preamble, level, null, function(err, res) {
 
 
                     proxyprinttodiv("res --", res, 17);
@@ -8520,7 +8520,7 @@ exports.etget3 = etget3 = function etget3(parameters, callback) {
     //                  "deepdtolist":{"bookdto":"bookdto"},
     //                   "dtolist":{}}}}
 
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = res[7];
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -8656,7 +8656,7 @@ exports.etget2 = etget2 = function etget2(parameters, callback) {
     ];
 
     // alert(JSON.stringify(executeList));    
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = res[11];
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -8786,7 +8786,7 @@ exports.etget11 = etget11 = function etget11(parameters, callback) {
     ];
 
 
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = res[11];
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -8912,7 +8912,7 @@ exports.surveydata = surveydata = function surveydata(params, callback) {
                 "wid": "bill2"
             }
         ],
-        function (err, res) {
+        function(err, res) {
             proxyprinttodiv('Function update userdto', res[0], 17);
             proxyprinttodiv('Function update surveydto', res[1], 17);
             proxyprinttodiv('Function update relationshipdto1', res[2], 17);
@@ -8988,7 +8988,7 @@ exports.surveydata2 = surveydata2 = function surveydata2(params, callback) {
                 "wid": "happy"
             }
         ],
-        function (err, res) {
+        function(err, res) {
             proxyprinttodiv('Function getwidmongo parameterObject after', res[0], 17);
             proxyprinttodiv('Function getwidmongo parameterObject after', res[1], 17);
             proxyprinttodiv('Function getwidmongo parameterObject after', res[2], 17);
@@ -9089,7 +9089,7 @@ exports.surveydtoflat = surveydtoflat = function surveydtoflat(params, callback)
                 "wid": "flatsurvey"
             }
         ],
-        function (err, res) {
+        function(err, res) {
             callback(err, res)
         });
 }
@@ -9269,7 +9269,7 @@ exports.etmttest4 = etmttest4 = function etmttest4(params, callback) {
         "metadata.method": "colordto3",
         "intensity": "string"
     }];
-    execute(addList, function (err, res) {
+    execute(addList, function(err, res) {
         console.log(' >>> final response after addList >>> ' + JSON.stringify(res));
     });
 
@@ -9296,7 +9296,7 @@ exports.etmttest4 = etmttest4 = function etmttest4(params, callback) {
 
 
         }];
-        execute(queryList, function (err, res1) {
+        execute(queryList, function(err, res1) {
             var res = res1["queryresult"];
             console.log(' >>> final response after queryList >>> ' + JSON.stringify(res));
 
@@ -9330,7 +9330,7 @@ exports.etmttest4 = etmttest4 = function etmttest4(params, callback) {
             //"relationshiptype": "attributes",
             //"relationshipmethod": "first"
         }];
-        execute(queryList, function (err, res1) {
+        execute(queryList, function(err, res1) {
             var res = res1["queryresult"];
             console.log(' >>> final response after queryList >>> ' + JSON.stringify(res));
         });
@@ -9344,7 +9344,7 @@ exports.etmttest4 = etmttest4 = function etmttest4(params, callback) {
             "mongorelationshiptype": "attributes",
             "mongorelationshipmethod": "first"
         }];
-        execute(queryList, function (err, res) {
+        execute(queryList, function(err, res) {
             console.log(' >>> final response after queryList >>> ' + JSON.stringify(res));
         });
 
@@ -9368,13 +9368,13 @@ exports.executegetwidtest = executegetwidtest = function executegetwidtest(param
             "a": "Hello",
             "b": "goodbye"
         }
-    }, {}, function (err, res) {
+    }, {}, function(err, res) {
 
         executeList = [{
             "executethis": "getexecutetest"
         }]
         debuglevel = 11;
-        execute(executeList, function (err, res) {
+        execute(executeList, function(err, res) {
             proxyprinttodiv('Function executegetwidtest ', res, 17);
             //res = logverify("unit_tests", "getexecutetest", "", res, "", {});
             callback(err, res)
@@ -9384,11 +9384,11 @@ exports.executegetwidtest = executegetwidtest = function executegetwidtest(param
 }
 
 
-exports.qw1 = qw1 = function (params, callback) {
+exports.qw1 = qw1 = function(params, callback) {
     var q = '[{"dtotype":"","convertmethod":"","mongowidmethod":"","command.results":"queryresult","mongorelationshipdirection":"forward","mongorelationshipmethod":"all","mongorelationshiptype":"attributes"}]';
     var qJson = JSON.parse(q);
 
-    querywid(qJson, function (err, res1) {
+    querywid(qJson, function(err, res1) {
         var res = res1["queryresult"];
         console.log(' >>> final response after querywid >>> ' + JSON.stringify(res));
 
@@ -9398,7 +9398,7 @@ exports.qw1 = qw1 = function (params, callback) {
     });
 }
 
-exports.qw2 = qw2 = function (params, callback) {
+exports.qw2 = qw2 = function(params, callback) {
     var q = '{"mongorawquery":{"wid":"wid1","command.results": "queryresult","mongorelationshiptype":"x"}}';
     var qJson = JSON.parse(q);
 
@@ -9406,8 +9406,8 @@ exports.qw2 = qw2 = function (params, callback) {
         "executethis": "updatewid",
         "wid": "wid1"
     }];
-    execute(executeList, function (err, res) {
-        querywid(qJson, function (err, res1) {
+    execute(executeList, function(err, res) {
+        querywid(qJson, function(err, res1) {
             var res = res1["queryresult"];
             console.log(' >>> final response after querywid >>> ' + JSON.stringify(res[0][0]));
             res = logverify("unit_tests", "testqw2_result", "", res[0], "", {});
@@ -9417,7 +9417,7 @@ exports.qw2 = qw2 = function (params, callback) {
 }
 
 
-exports.mongoquery1 = mongoquery1 = function (params, callback) {
+exports.mongoquery1 = mongoquery1 = function(params, callback) {
     var q = '{"mongorawquery":{"wid":"wid1","mongorelationshiptype":"x"}}';
     var qJson = JSON.parse(q);
 
@@ -9428,8 +9428,8 @@ exports.mongoquery1 = mongoquery1 = function (params, callback) {
     }];
 
     // query data added
-    execute(executeList, function (err, res) {
-        mongoquery(qJson, function (err, res) {
+    execute(executeList, function(err, res) {
+        mongoquery(qJson, function(err, res) {
             console.log(' >>> final response after mongoquery >>> ' + JSON.stringify(res));
             res = logverify("unit_tests", "testmongoquery1_result", "", res, "", {});
             callback(err, res)
@@ -9588,7 +9588,7 @@ exports.mts1 = mts1 = function mts1(params, callback) {
     // }];
 
     // pass our add test wid array to execute this, this should add a wid to local storage
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
         colorTrace('res after executerray: ' + JSON.stringify(res), "blue");
 
         // build query
@@ -9610,7 +9610,7 @@ exports.mts1 = mts1 = function mts1(params, callback) {
         executeList.push(executeObj);
 
         // Execute our query wid test
-        execute(executeList, function (err, res1) {
+        execute(executeList, function(err, res1) {
             var res = res1["queryresult"];
             proxyprinttodiv('Function mttest II', res, 17);
         });
@@ -9645,14 +9645,14 @@ exports.mts2 = mts2 = function mts2(params, callback) {
     executeList.push(dtoObj);
 
     // pass our add test wid array to execute this, this should add a wid to local storage
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
         colorTrace('res after executerray: ' + JSON.stringify(res), "blue");
 
         // build query
         mongorawquery = '{"$or":[{"data.a":"string"}]}';
 
         // execute mongoquery
-        mongoquery(mongorawquery, function (err, res) {
+        mongoquery(mongorawquery, function(err, res) {
             colorTrace("mongorawquery returned: " + JSON.stringify(res), "blue");
 
             // build execute array for testing query wid
@@ -9664,7 +9664,7 @@ exports.mts2 = mts2 = function mts2(params, callback) {
             executeList.push(executeObj);
 
             // Execute our query wid test
-            execute(executeList, function (err, res1) {
+            execute(executeList, function(err, res1) {
                 var res = res1["queryresult"];
                 alert(JSON.stringify(res));
                 colorTrace('res after executerray querywid: ' + JSON.stringify(res), "blue");
@@ -9704,24 +9704,24 @@ exports.etmttest1 = etmttest1 = function etmttest1(params, callback) {
     eventappinstall();
     var executeList = [];
     executeList = addmttestdata(callback);
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
         console.log(' >>> final response after executerray >>> ' + JSON.stringify(res));
     });
 
     /* $or queries */
     if (ortests) {
         var mongorawquery = '{"$or":[{"data.a":"string"}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [testdto]", result, 17);
         });
 
         var mongorawquery = '{"$or":[{"data.a":"1"},{"data.b":"1"}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid1]", result, 17);
         });
         //test fails
         var mongorawquery = '{"$or":[{"data.a":"1"},{"data.b":"16"}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid1, wid4]", result, 17);
         });
 
@@ -9730,27 +9730,27 @@ exports.etmttest1 = etmttest1 = function etmttest1(params, callback) {
     /* $and queries */
     if (andtests) {
         var mongorawquery = '{"$and":[{"data.a":"string"}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [testdto]", result, 17);
         });
         var mongorawquery = '{"$and":[{"data.a":"1"},{"data.b":"1"}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid1]", result, 17);
         });
         var mongorawquery = '{"$and":[{"data.a":"1"},{"data.b":"16"}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- []", result, 17);
         });
         var mongorawquery = '{"$and":[{"data.a":"1"},{"data.b":"1"},{"data.b":"1"}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid1]", result, 17);
         });
         var mongorawquery = '{"$and":[{"data.a":"1"}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid1]", result, 17);
         });
         var mongorawquery = '{"$and":[{"data.a":"5"}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid5]", result, 17);
         });
     }
@@ -9758,15 +9758,15 @@ exports.etmttest1 = etmttest1 = function etmttest1(params, callback) {
     /* $or-$or tests */
     if (orortests) {
         var mongorawquery = '{"$or":[{"data.a":"1"},{"$or":[{"data.b":"25"},{"data.a":"5"},{"data.a":"5"},{"data.a":"1"}]}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid1,wid5]", result, 17);
         });
         var mongorawquery = '{"$or":[{"data.a":"5"},{"$or":[{"data.b":"25"},{"$or":[{"data.a":"5"},{"$or":[{"data.b":"25"}]}]}]}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid5]", result, 17);
         });
         var mongorawquery = '{"$or":[{"data.a":"5"},{"$or":[{"data.b":"16"}]}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid4,wid5]", result, 17);
         });
     }
@@ -9774,16 +9774,16 @@ exports.etmttest1 = etmttest1 = function etmttest1(params, callback) {
     /* $and-$and queries */
     if (andandtests) {
         var mongorawquery = '{"$and":[{"data.a":"1"},{"$and":[{"data.b":"1"}]}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid1]", result, 17);
         });
         var mongorawquery = '{"$and":[{"data.a":"5"},{"$and":[{"data.b":"25"}]}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid5]", result, 17);
         });
         //test fails
         var mongorawquery = '{"$and":[{"data.a":"5"},{"$and":[{"data.b":"25"},{"$and":[{"data.b":"1"}]}]}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- []", result, 17);
         });
     }
@@ -9791,11 +9791,11 @@ exports.etmttest1 = etmttest1 = function etmttest1(params, callback) {
     /* $or-$and queries */
     if (orandtests) {
         var mongorawquery = '{"$or":[{"data.a":"1"},{"$and":[{"data.b":"1"}]}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid1]", result, 17);
         });
         var mongorawquery = '{"$or":[{"data.a":"5"},{"$and":[{"data.a":"4"},{"$and":[{"data.b":"1"}]}]}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid5]", result, 17);
         });
     }
@@ -9803,11 +9803,11 @@ exports.etmttest1 = etmttest1 = function etmttest1(params, callback) {
     /* fail test cases */
     if (failedtests) {
         var mongorawquery = '{"$and":[{"data.a":"4"},{"$or":[{"data.a":"2"},{"$or":[{"data.b":"16"}]}]}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid4]", result, 17);
         });
         var mongorawquery = '{"$or":[{"data.a":"1"},{"data.b":"16"}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid1, wid4]", result, 17);
         });
     }
@@ -9815,28 +9815,28 @@ exports.etmttest1 = etmttest1 = function etmttest1(params, callback) {
     /* 20 more test cases */
     if (orandtests20) {
         var mongorawquery = '{"$or":[{"data.a":"25"},{"$and":[{"data.a":"44"},{"data.a":"64"},{"$or":[{"data.b":"400"}]}]}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid25]", result, 17);
         });
         var mongorawquery = '{"$or":[{"data.a":"25"},{"$and":[{"data.a":"44"},{"data.a":"64"},{"$or":[{"data.b":"400"},{"data.b":"625"}]}]}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid25]", result, 17);
         });
         var mongorawquery = '{"$or":[{"data.a":"25"},{"$or":[{"data.a":"2"},{"data.a":"64"},{"$or":[{"data.b":"400"},{"data.b":"625"},{"$or":[{"data.a":"2"}]}]}]}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid2,wid20,wid25]", result, 17);
         });
         var mongorawquery = '{"$or":[{"data.a":"2"},{"data.a":"64"},{"$or":[{"data.b":"400"},{"data.b":"625"},{"$or":[{"data.a":"2"}]}]}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid2,wid20,wid25]", result, 17);
         });
         //test fails
         var mongorawquery = '{"$and":[{"data.a":"25"},{"$or":[{"data.a":"2"},{"data.a":"64"},{"$or":[{"data.b":"400"},{"data.b":"625"},{"$or":[{"data.a":"2"}]}]}]}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid25]", result, 17);
         });
         var mongorawquery = '{"$and":[{"data.a":"4"},{"$and":[{"data.a":"2"},{"$or":[{"data.b":"16"}]}]}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [wid25]", result, 17);
         });
     }
@@ -9851,7 +9851,7 @@ exports.etmttest1 = etmttest1 = function etmttest1(params, callback) {
         executeObj["mongorawquery"] = '{"$or":[{"data.a":"string"}]}';
         executeList.push(executeObj);
 
-        execute(executeList, function (err, res1) {
+        execute(executeList, function(err, res1) {
             var res = res1["queryresult"];
             console.log(' >>> final response after executerray >>> ' + JSON.stringify(res));
 
@@ -9937,7 +9937,7 @@ exports.etmttest1 = etmttest1 = function etmttest1(params, callback) {
         proxyprinttodiv("result", result, 17);
 
         var mongorawquery = '{"$or":[{"data.a":"string"}]}';
-        mongoquery(mongorawquery, function (err, result) {
+        mongoquery(mongorawquery, function(err, result) {
             proxyprinttodiv("result from mongoquery with query " + mongorawquery + " -- expected result :- [testdto]", result, 17);
         });
     }
@@ -9993,7 +9993,7 @@ exports.t1example = t1example = function t1example(params, callback) {
             "d": "1",
             "e": "2"
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("unit_tests", "t1_result", "", res[0], "", {
                 "d": "1",
                 "c": "0",
@@ -10064,7 +10064,7 @@ exports.etmttest2 = etmttest2 = function etmttest2(params, callback) {
 
     proxyprinttodiv("execute list ", executeList, 17);
 
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
         proxyprinttodiv('Function verifytestresults', res, 17);
         console.log(' >>> final response after executerray >>> ' + JSON.stringify(res));
         var expectedResultList = [{
@@ -10221,7 +10221,7 @@ exports.etmttest3 = etmttest3 = function etmttest3(params, callback) {
         "wid": "color7"
     }];
     proxyprinttodiv("execute list", executeList, 17);
-    execute(executeList, function (err, res) {
+    execute(executeList, function(err, res) {
 
     });
 
@@ -10285,7 +10285,7 @@ exports.etmttest3 = etmttest3 = function etmttest3(params, callback) {
         }
     }];
     proxyprinttodiv("execute list for query", executeList, 17);
-    execute(executeList, function (err, res1) {
+    execute(executeList, function(err, res1) {
         var res = res1["queryresult"];
         //Query Expected Result List
         expectedResultList = [
@@ -10786,7 +10786,7 @@ exports.etmttest333 = etmttest333 = function etmttest333(params, callback) {
             "sat": "cyan-sat"
         }]
     ];
-    execute([addlist, querylist], function (err, res1) {
+    execute([addlist, querylist], function(err, res1) {
         var res = res1["queryresult"]
         proxyprinttodiv("res --", res, 17);
         var actual_result = res[0];
@@ -10994,12 +10994,12 @@ exports.etar100 = etar100 = function etar100(params, callback) {
       */
 
     // n times loop
-    async.times(5, function (n, next) {
-        addrecord(object, dtoobject, parentwid, parentmethod, relationshiptype, command, function (err, res) {
+    async.times(5, function(n, next) {
+        addrecord(object, dtoobject, parentwid, parentmethod, relationshiptype, command, function(err, res) {
             console.log(n + "addrecord! -- got res -->" + JSON.stringify(res));
             next(err, res);
         });
-    }, function (err, res) {
+    }, function(err, res) {
         //after loop
         proxyprinttodiv("res --", res, 17);
         var actual_result = [res[4]];
@@ -11029,7 +11029,7 @@ exports.etar100 = etar100 = function etar100(params, callback) {
 exports.etd1 = etd1 = function etd1(params, callback) {
     debuglevel = 17;
     async.series([
-        function (cb1) {
+        function(cb1) {
             var executeList = [{
                 "executethis": "updatewid",
                 "wid": "wid2",
@@ -11037,12 +11037,12 @@ exports.etd1 = etd1 = function etd1(params, callback) {
                 "aaa": "",
                 "ggg": ""
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 //proxyprinttodiv('after updatewid wid1 -- ', res, 34);
                 cb1(null);
             });
         }
-    ], function (err, res) { //after updatewid
+    ], function(err, res) { //after updatewid
         var dtoObjOpt = {
             "metadata": {
                 "method": "string"
@@ -11116,7 +11116,7 @@ exports.etd1 = etd1 = function etd1(params, callback) {
             }
         };
 
-        deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+        deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
             proxyprinttodiv("after d1 deepfilter res", res, 17);
 
             proxyprinttodiv("res --", res, 17);
@@ -11168,7 +11168,7 @@ exports.etd1 = etd1 = function etd1(params, callback) {
 exports.etd2 = etd2 = function etd2(params, callback) {
     debuglevel = 17;
     async.series([
-        function (cb1) {
+        function(cb1) {
             var executeList = [{
                 "executethis": "updatewid",
                 "wid": "wid2",
@@ -11176,12 +11176,12 @@ exports.etd2 = etd2 = function etd2(params, callback) {
                 "aaa": "",
                 "ggg": ""
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 //proxyprinttodiv('after updatewid wid1 -- ', res, 34);
                 cb1(null);
             });
         }
-    ], function (err, res) { //after updatewid
+    ], function(err, res) { //after updatewid
         /*
                   var dtoObjOpt = {"metadata":{"method":"string"},"a":"wid2","x":"wid2", "z":"wid2",
                                     "c":"number","d":"date","q":{"w":{"e":"string"}},"g":"boolean"} ;
@@ -11223,7 +11223,7 @@ exports.etd2 = etd2 = function etd2(params, callback) {
         };
         var command = {};
 
-        deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+        deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
             proxyprinttodiv("after d1 deepfilter res", res, 17);
 
             proxyprinttodiv("res --", res, 17);
@@ -11260,7 +11260,7 @@ exports.etd2 = etd2 = function etd2(params, callback) {
 exports.etd3 = etd3 = function etd3(params, callback) {
     debuglevel = 17;
     async.series([
-        function (cb1) {
+        function(cb1) {
             var executeList = [{
                 "executethis": "updatewid",
                 "wid": "wid2",
@@ -11268,12 +11268,12 @@ exports.etd3 = etd3 = function etd3(params, callback) {
                 "aaa": "",
                 "ggg": ""
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 //proxyprinttodiv('after updatewid wid1 -- ', res, 34);
                 cb1(null);
             });
         }
-    ], function (err, res) { //after updatewid
+    ], function(err, res) { //after updatewid
         var dtoObjOpt = {
             "a": "wid2",
             "x": "wid2"
@@ -11284,7 +11284,7 @@ exports.etd3 = etd3 = function etd3(params, callback) {
         };
         var command = {};
 
-        deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+        deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
             proxyprinttodiv("after d3 deepfilter res", res, 17);
 
             proxyprinttodiv("res --", res, 17);
@@ -11307,7 +11307,7 @@ exports.etd3 = etd3 = function etd3(params, callback) {
 */
 exports.dupdateget4 = dupdateget4 = function dupdateget4(params, callback) {
     async.series([
-        function (cb1) {
+        function(cb1) {
             var executeList = [{
                 "executethis": "updatewid",
                 "wid": "wid3",
@@ -11315,22 +11315,22 @@ exports.dupdateget4 = dupdateget4 = function dupdateget4(params, callback) {
                 "aaa": "",
                 "ggg": ""
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 //proxyprinttodiv('updatewid wid3 -- ', res, 17);
                 cb1(null);
             });
         },
-        function (cb2) {
+        function(cb2) {
             var executeList = [{
                 "executethis": "getwid",
                 "wid": "wid3",
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 //proxyprinttodiv("getwidmaster  wid3 -- ", res, 17);
                 cb2(null);
             });
         }
-    ], function (err, res) { //after updatewid
+    ], function(err, res) { //after updatewid
 
         params = {
             'test': 'PASS'
@@ -11345,7 +11345,7 @@ exports.dupdateget4 = dupdateget4 = function dupdateget4(params, callback) {
 exports.etd5 = etd5 = function etd5(params, callback) {
     debuglevel = 17;
     async.series([
-        function (cb1) {
+        function(cb1) {
             var executeList = [{
                 "executethis": "updatewid",
                 "wid": "wid2",
@@ -11354,12 +11354,12 @@ exports.etd5 = etd5 = function etd5(params, callback) {
                 "ggg": "",
                 "test": ""
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 //proxyprinttodiv('after updatewid wid1 -- ', res, 34);
                 cb1(err, res);
             });
         },
-        function (cb2) {
+        function(cb2) {
             var dtoObjOpt = {
                 "metadata": {
                     "method": "string"
@@ -11396,12 +11396,12 @@ exports.etd5 = etd5 = function etd5(params, callback) {
                 "formatresult": "true"
             };
 
-            deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+            deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
                 proxyprinttodiv("after d5 deepfilter res", res, 17);
                 cb2(err, res);
             });
         }
-    ], function (err, res) {
+    ], function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = [res];
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -11452,7 +11452,7 @@ exports.etd5 = etd5 = function etd5(params, callback) {
 exports.etd6 = etd6 = function etd6(params, callback) {
     debuglevel = 17;
     async.series([
-        function (cb2) {
+        function(cb2) {
             var dtoObjOpt = {
                 "metadata": {
                     "method": "string"
@@ -11487,12 +11487,12 @@ exports.etd6 = etd6 = function etd6(params, callback) {
             };
             var command = {};
 
-            deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+            deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
                 proxyprinttodiv("after d6 deepfilter res", res, 17);
                 cb2(err, res);
             });
         }
-    ], function (err, res) {
+    ], function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = [res];
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -11525,7 +11525,7 @@ exports.etd6 = etd6 = function etd6(params, callback) {
 exports.etd7 = etd7 = function etd7(params, callback) {
     debuglevel = 17;
     async.series([
-        function (cb1) {
+        function(cb1) {
             var executeList = [{
                 "executethis": "updatewid",
                 "wid": "wid2",
@@ -11533,12 +11533,12 @@ exports.etd7 = etd7 = function etd7(params, callback) {
                 "aaa": "",
                 "ggg": ""
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 //proxyprinttodiv('after updatewid wid1 -- ', res, 34);
                 cb1(err, res);
             });
         },
-        function (cb2) {
+        function(cb2) {
             /*var dtoObjOpt = {"metadata":{"method":"string"},"a":"wid2","x":"wid2", "z":"wid2",
                                     "c":"number","d":"date","q":{"w":{"e":"string"}},"g":"boolean"} ;
                   */
@@ -11561,12 +11561,12 @@ exports.etd7 = etd7 = function etd7(params, callback) {
             };
             var command = {};
 
-            deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+            deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
                 proxyprinttodiv("after d7 deepfilter res", res, 17);
                 cb2(err, res);
             });
         }
-    ], function (err, res) {
+    ], function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = [res];
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -11617,7 +11617,7 @@ exports.etd7 = etd7 = function etd7(params, callback) {
 exports.etd8 = etd8 = function etd8(params, callback) {
     debuglevel = 17;
     async.series([
-        function (cb1) {
+        function(cb1) {
             var executeList = [{
                 "executethis": "updatewid",
                 "wid": "wid2",
@@ -11625,12 +11625,12 @@ exports.etd8 = etd8 = function etd8(params, callback) {
                 "aaa": "",
                 "ggg": ""
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 //proxyprinttodiv('after updatewid wid1 -- ', res, 34);
                 cb1(err, res);
             });
         },
-        function (cb2) {
+        function(cb2) {
             var dtoObjOpt = {
                 "d": "date"
             };
@@ -11639,12 +11639,12 @@ exports.etd8 = etd8 = function etd8(params, callback) {
             };
             var command = {};
 
-            deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+            deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
                 proxyprinttodiv("after d8 deepfilter res", res, 17);
                 cb2(err, res);
             });
         }
-    ], function (err, res) {
+    ], function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = [res];
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -11682,7 +11682,7 @@ exports.etd8 = etd8 = function etd8(params, callback) {
 exports.etd10 = etd10 = function etd10(params, callback) {
     debuglevel = 17;
     async.series([
-        function (cb1) {
+        function(cb1) {
             var executeList = [{
                 "executethis": "updatewid",
                 "wid": "wid5",
@@ -11690,12 +11690,12 @@ exports.etd10 = etd10 = function etd10(params, callback) {
                 "aaa": "",
                 "ggg": ""
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 //proxyprinttodiv('after updatewid wid1 -- ', res, 34);
                 cb1(err, res);
             });
         }
-    ], function (err, res) { //after updatewid
+    ], function(err, res) { //after updatewid
         var dtoObjOpt = {
             "obj": "",
             "c": "string",
@@ -11714,7 +11714,7 @@ exports.etd10 = etd10 = function etd10(params, callback) {
         };
         var command = {};
 
-        deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+        deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
             proxyprinttodiv("res --", res, 17);
             var actual_result = [res];
             proxyprinttodiv("actual_result --", actual_result, 17);
@@ -11787,7 +11787,7 @@ exports.etd10b = etd10b = function etd10b(params, callback) {
     //{"wid":"songdto","metadata":{"method":"songdto","sounddto":{"type":"jsononetomany"}},
     //"title":"string","sounddto":[{"wid":"string","metadata":{"method":"string"},"note":"string"}]}
 
-    deepfilter(obj, dto, command, function (err, res) {
+    deepfilter(obj, dto, command, function(err, res) {
         proxyprinttodiv('Function d10b deepfilter result ', res, 17);
         proxyprinttodiv("res --", res, 17);
         var actual_result = [res];
@@ -11824,7 +11824,7 @@ exports.etd10b = etd10b = function etd10b(params, callback) {
 exports.etd11 = etd11 = function etd11(params, callback) {
     debuglevel = 17;
     async.series([
-        function (cb1) { //5 (a)
+        function(cb1) { //5 (a)
             var executeList = [{
                 "executethis": "updatewid",
                 "wid": "wid1",
@@ -11851,7 +11851,7 @@ exports.etd11 = etd11 = function etd11(params, callback) {
                 "k": "y",
                 "a": "p"
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 //proxyprinttodiv('after updatewid wid1,2,3,4 -- ', res, 34);
                 cb1(null);
             });
@@ -11862,7 +11862,7 @@ exports.etd11 = etd11 = function etd11(params, callback) {
                 "command.results": "queryresult",
                 "mongorawquery": '{"$or": [{ "data.a": "b" }]}'
             }];
-            execute(executeList, function (err, res1) {
+            execute(executeList, function(err, res1) {
                 var res = res1["queryresult"];
                 //proxyprinttodiv("mongo query result ", res, 17);
                 cb2(null);
@@ -11876,7 +11876,7 @@ exports.etd11 = etd11 = function etd11(params, callback) {
                 "addthis.executethis": "querywid",
                 "mongorawquery": "{data.a:b}"
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 //proxyprinttodiv("after updatewid wid5 -- ", res, 17);
                 cb3(null);
             });
@@ -11889,7 +11889,7 @@ exports.etd11 = etd11 = function etd11(params, callback) {
                         "execute": "false"
                     }
                 }
-            }, function (err, res) {
+            }, function(err, res) {
                 //proxyprinttodiv("5 (d) getwidmaster  wid5 -- ", res, 17);
                 cb4(null);
             });
@@ -11897,7 +11897,7 @@ exports.etd11 = etd11 = function etd11(params, callback) {
         function step5(cb5) { //5 (e)
             getwidmaster({
                 "wid": "wid5"
-            }, function (err, res) {
+            }, function(err, res) {
                 //proxyprinttodiv("5 (e) getwidmaster  wid5 -- ", res, 17);
                 cb5(null);
             });
@@ -11905,13 +11905,13 @@ exports.etd11 = etd11 = function etd11(params, callback) {
         function step6(cb6) { //5 (f)
             execute({
                 "executethis": "wid5"
-            }, function (err, res) {
+            }, function(err, res) {
                 //proxyprinttodiv("5 (f) getwidmaster  wid5 -- ", res, 17);
                 cb6(null);
             });
         },
         function step7(cb7) { //5 (g)
-            execute("wid5", function (err, res) {
+            execute("wid5", function(err, res) {
                 //proxyprinttodiv("5 (g) getwidmaster  wid5 -- ", res, 17);
                 cb7(null);
             });
@@ -11928,7 +11928,7 @@ exports.etd11 = etd11 = function etd11(params, callback) {
             };
             var command = {};
 
-            deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+            deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
                 //proxyprinttodiv("step 8 res--", res, 17);
                 cb8(null);
             });
@@ -11945,7 +11945,7 @@ exports.etd11 = etd11 = function etd11(params, callback) {
             };
             var command = {};
 
-            deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+            deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
                 //proxyprinttodiv("step 9 res--", res, 17);
                 cb9(null);
             });
@@ -11969,12 +11969,12 @@ exports.etd11 = etd11 = function etd11(params, callback) {
             };
             var command = {};
 
-            deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+            deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
                 proxyprinttodiv("d11 - step 10 res--", res, 17);
                 cb10(err, res);
             });
         }
-    ], function (err, res) {
+    ], function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = [res[9]];
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -12007,7 +12007,7 @@ exports.etd12 = etd12 = function etd12(params, callback) {
                 "b2": false
             };
             var command = {};
-            deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+            deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
                 //proxyprinttodiv("without command-- res ", res, 17);
                 cb1(err, res);
             });
@@ -12024,7 +12024,7 @@ exports.etd12 = etd12 = function etd12(params, callback) {
             var command = {
                 "command.deepfilter.convert": "true"
             };
-            deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+            deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
                 //proxyprinttodiv("command.deepfilter.convert = true-- res ", res, 17);
                 cb2(err, res);
             });
@@ -12041,12 +12041,12 @@ exports.etd12 = etd12 = function etd12(params, callback) {
             var command = {
                 "command.deepfilter.convert": "false"
             };
-            deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+            deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
                 proxyprinttodiv("d12 - command.deepfilter.convert = false-- res ", res, 17);
                 cb3(err, res);
             });
         }
-    ], function (err, res) {
+    ], function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = res;
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -12074,7 +12074,7 @@ exports.etd12 = etd12 = function etd12(params, callback) {
 exports.etd13 = etd13 = function etd13(params, callback) {
     debuglevel = 17;
     async.series([
-        function (cb1) {
+        function(cb1) {
             var executeList = [{
                 "executethis": "updatewid",
                 "wid": "wid2",
@@ -12086,12 +12086,12 @@ exports.etd13 = etd13 = function etd13(params, callback) {
                 "metadata.method": "defaultdto",
                 "bbb": ""
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 //proxyprinttodiv('after updatewid wid1 -- ', res, 34);
                 cb1(err, res);
             });
         },
-        function (cb2) {
+        function(cb2) {
             var dtoObjOpt = {
                 "a": "wid2",
                 "b": "wid2",
@@ -12106,12 +12106,12 @@ exports.etd13 = etd13 = function etd13(params, callback) {
             };
             var command = {};
 
-            deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+            deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
                 proxyprinttodiv("after d13 deepfilter res", res, 17);
                 cb2(err, res);
             });
         }
-    ], function (err, res) {
+    ], function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = res;
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -12163,7 +12163,7 @@ exports.etd13 = etd13 = function etd13(params, callback) {
 exports.etd14 = etd14 = function etd14(params, callback) {
     debuglevel = 17;
     async.series([
-        function (cb1) {
+        function(cb1) {
             var dtoObjOpt = {
                 "a": "string",
                 "y": "string",
@@ -12200,14 +12200,14 @@ exports.etd14 = etd14 = function etd14(params, callback) {
                 "command.deepfilter.convert": true
             };
 
-            deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+            deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
                 proxyprinttodiv("after d14 deepfilter in", inputObj, 17);
                 proxyprinttodiv("after d14 deepfilter out", dtoObjOpt, 17);
                 proxyprinttodiv("after d14 deepfilter res", res, 17);
                 cb1(err, res);
             });
         }
-    ], function (err, res) {
+    ], function(err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = res;
         proxyprinttodiv("actual_result --", actual_result, 17);
@@ -12242,31 +12242,31 @@ exports.etalldeepfiltertests = etalldeepfiltertests = function etalldeepfilterte
     var result = [];
     var err;
 
-    etd1(result, function (err, r1) {
+    etd1(result, function(err, r1) {
         result.push(r1);
-        etd2(result, function (err, r2) {
+        etd2(result, function(err, r2) {
             result.push(r2);
-            etd3(result, function (err, r3) {
+            etd3(result, function(err, r3) {
                 result.push(r3);
-                etd5(result, function (err, r5) {
+                etd5(result, function(err, r5) {
                     result.push(r5);
-                    etd6(result, function (err, r6) {
+                    etd6(result, function(err, r6) {
                         result.push(r6);
-                        etd7(result, function (err, r7) {
+                        etd7(result, function(err, r7) {
                             result.push(r7);
-                            etd8(result, function (err, r8) {
+                            etd8(result, function(err, r8) {
                                 result.push(r8);
-                                etd10(result, function (err, r10) {
+                                etd10(result, function(err, r10) {
                                     result.push(r10);
-                                    etd10b(result, function (err, r10b) {
+                                    etd10b(result, function(err, r10b) {
                                         result.push(r10b);
-                                        etd11(result, function (err, r11) {
+                                        etd11(result, function(err, r11) {
                                             result.push(r11);
-                                            etd12(result, function (err, r12) {
+                                            etd12(result, function(err, r12) {
                                                 result.push(r12);
-                                                etd13(result, function (err, r13) {
+                                                etd13(result, function(err, r13) {
                                                     result.push(r13);
-                                                    etd14(result, function (err, r14) {
+                                                    etd14(result, function(err, r14) {
                                                         result.push(r14);
                                                         callback(err, result);
                                                     });
@@ -12526,7 +12526,7 @@ exports.etd9 = etd9 = function etd9(params, callback) {
 
     var command = {};
 
-    deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+    deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
         proxyprinttodiv("after d3 deepfilter res", res, 99, true);
 
         proxyprinttodiv("res --", res, 17);
@@ -12587,13 +12587,13 @@ exports.etd9 = etd9 = function etd9(params, callback) {
 */
 exports.getnewwid1 = getnewwid1 = function getnewwid1(params, callback) {
     async.series([
-        function (cb1) {
-            getnewwid(function (err, res) {
+        function(cb1) {
+            getnewwid(function(err, res) {
                 proxyprinttodiv("after getnewwid", res, 17);
                 cb1(null);
             });
         }
-    ], function (err, res) {
+    ], function(err, res) {
         params = {
             'test': 'PASS'
         };
@@ -12638,7 +12638,7 @@ exports.ettest1dot3dot = ettest1dot3dot = function ettest1dot3dot(params, callba
             "executethis": "getwidmaster",
             "wid": "song1"
         }],
-        function (err, res) {
+        function(err, res) {
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result ', res[4], 17);
@@ -12666,7 +12666,7 @@ exports.ettest1dot3dot = ettest1dot3dot = function ettest1dot3dot(params, callba
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 17);
                 callback(err, res);
 
@@ -12725,7 +12725,7 @@ exports.ettest3dot3dot = ettest3dot3dot = function ettest3dot3dot(params, callba
         }],
 
 
-        function (err, res) {
+        function(err, res) {
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result 3 x 3', res[6], 17);
@@ -12754,7 +12754,7 @@ exports.ettest3dot3dot = ettest3dot3dot = function ettest3dot3dot(params, callba
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 17);
                 callback(err, res);
 
@@ -12802,7 +12802,7 @@ exports.ettest3dot1dot = ettest3dot1dot = function ettest3dot1dot(params, callba
         }],
 
 
-        function (err, res) {
+        function(err, res) {
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result 3 x 3', res[4], 17);
@@ -12831,7 +12831,7 @@ exports.ettest3dot1dot = ettest3dot1dot = function ettest3dot1dot(params, callba
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 17);
                 callback(err, res);
 
@@ -12867,7 +12867,7 @@ exports.ettest1dot1dot = ettest1dot1dot = function ettest1dot1dot(params, callba
             "wid": "song1"
         }],
 
-        function (err, res) {
+        function(err, res) {
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result 3 x 3', res[2], 17);
@@ -12896,7 +12896,7 @@ exports.ettest1dot1dot = ettest1dot1dot = function ettest1dot1dot(params, callba
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 17);
                 callback(err, res);
 
@@ -12946,7 +12946,7 @@ exports.ettest1dot3dotjsonmany = ettest1dot3dotjsonmany = function ettest1dot3do
             "wid": "song1"
         }],
 
-        function (err, res) {
+        function(err, res) {
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result ', res[4], 17);
@@ -12971,7 +12971,7 @@ exports.ettest1dot3dotjsonmany = ettest1dot3dotjsonmany = function ettest1dot3do
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 17);
                 callback(err, res);
 
@@ -13029,7 +13029,7 @@ exports.ettest3dot3dotjsonmany = ettest3dot3dotjsonmany = function ettest3dot3do
         }],
 
 
-        function (err, res) {
+        function(err, res) {
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result 3 x 3', res[6], 17);
@@ -13049,7 +13049,7 @@ exports.ettest3dot3dotjsonmany = ettest3dot3dotjsonmany = function ettest3dot3do
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 17);
                 callback(err, res);
 
@@ -13097,7 +13097,7 @@ exports.ettest3dot1dotjsonmany = ettest3dot1dotjsonmany = function ettest3dot1do
         }],
 
 
-        function (err, res) {
+        function(err, res) {
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result 3 x 3', res[4], 17);
@@ -13117,7 +13117,7 @@ exports.ettest3dot1dotjsonmany = ettest3dot1dotjsonmany = function ettest3dot1do
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 17);
                 callback(err, res);
 
@@ -13153,7 +13153,7 @@ exports.ettest1dot1dotjsonmany = ettest1dot1dotjsonmany = function ettest1dot1do
             "wid": "song1"
         }],
 
-        function (err, res) {
+        function(err, res) {
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result 3 x 3', res[2], 17);
@@ -13173,7 +13173,7 @@ exports.ettest1dot1dotjsonmany = ettest1dot1dotjsonmany = function ettest1dot1do
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 17);
                 callback(err, res);
 
@@ -13223,7 +13223,7 @@ exports.ettest1dot3dotjsonone = ettest1dot3dotjsonone = function ettest1dot3dotj
             "wid": "song1"
         }],
 
-        function (err, res) {
+        function(err, res) {
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result ', res[4], 17);
@@ -13241,7 +13241,7 @@ exports.ettest1dot3dotjsonone = ettest1dot3dotjsonone = function ettest1dot3dotj
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 17);
                 callback(err, res);
 
@@ -13299,7 +13299,7 @@ exports.ettest3dot3dotjsonone = ettest3dot3dotjsonone = function ettest3dot3dotj
         }],
 
 
-        function (err, res) {
+        function(err, res) {
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result 3 x 3', res[6], 17);
@@ -13317,7 +13317,7 @@ exports.ettest3dot3dotjsonone = ettest3dot3dotjsonone = function ettest3dot3dotj
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 17);
                 callback(err, res);
 
@@ -13365,7 +13365,7 @@ exports.ettest3dot1dotjsonone = ettest3dot1dotjsonone = function ettest3dot1dotj
         }],
 
 
-        function (err, res) {
+        function(err, res) {
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result 3 x 3', res[4], 17);
@@ -13385,7 +13385,7 @@ exports.ettest3dot1dotjsonone = ettest3dot1dotjsonone = function ettest3dot1dotj
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 17);
                 callback(err, res);
 
@@ -13420,7 +13420,7 @@ exports.ettest1dot1dotjsonone = ettest1dot1dotjsonone = function ettest1dot1dotj
             "executethis": "getwidmaster",
             "wid": "song1"
         }],
-        function (err, res) {
+        function(err, res) {
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result 3 x 3', res[2], 17);
@@ -13440,7 +13440,7 @@ exports.ettest1dot1dotjsonone = ettest1dot1dotjsonone = function ettest1dot1dotj
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 17);
                 callback(err, res);
 
@@ -13508,7 +13508,7 @@ exports.ettest1dot3dotobject = ettest1dot3dotobject = function ettest1dot3dotobj
             "wid": "song1"
         }],
 
-        function (err, res) {
+        function(err, res) {
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result ', res[4], 17);
@@ -13527,7 +13527,7 @@ exports.ettest1dot3dotobject = ettest1dot3dotobject = function ettest1dot3dotobj
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 17);
                 callback(err, res);
 
@@ -13603,7 +13603,7 @@ exports.ettest3dot3dotobject = ettest3dot3dotobject = function ettest3dot3dotobj
         }],
 
 
-        function (err, res) {
+        function(err, res) {
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result 3 x 3', res[6], 17);
@@ -13621,7 +13621,7 @@ exports.ettest3dot3dotobject = ettest3dot3dotobject = function ettest3dot3dotobj
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 17);
                 callback(err, res);
 
@@ -13675,7 +13675,7 @@ exports.ettest3dot1dotobject = ettest3dot1dotobject = function ettest3dot1dotobj
             "executethis": "getwidmaster",
             "wid": "song1"
         }],
-        function (err, res) {
+        function(err, res) {
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result 3 x 3', res[4], 17);
@@ -13695,7 +13695,7 @@ exports.ettest3dot1dotobject = ettest3dot1dotobject = function ettest3dot1dotobj
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 17);
                 callback(err, res);
 
@@ -13741,7 +13741,7 @@ exports.ettest1dot1dotobject = ettest1dot1dotobject = function ettest1dot1dotobj
             "wid": "song1"
         }],
 
-        function (err, res) {
+        function(err, res) {
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result 3 x 3', res[2], 17);
@@ -13761,7 +13761,7 @@ exports.ettest1dot1dotobject = ettest1dot1dotobject = function ettest1dot1dotobj
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 17);
                 callback(err, res);
             })
@@ -13789,29 +13789,29 @@ exports.ettestdot = ettestdot = function ettestdot(params, callback) {
     var result = [];
     var err;
 
-    ettest1dot3dotjsonmany(result, function (err, r1) {
+    ettest1dot3dotjsonmany(result, function(err, r1) {
         result.push(r1);
-        ettest3dot3dotjsonmany(result, function (err, r2) {
+        ettest3dot3dotjsonmany(result, function(err, r2) {
             result.push(r2);
-            ettest3dot1dotjsonmany(result, function (err, r3) {
+            ettest3dot1dotjsonmany(result, function(err, r3) {
                 result.push(r3);
-                ettest1dot3dotjsonone(result, function (err, r4) {
+                ettest1dot3dotjsonone(result, function(err, r4) {
                     result.push(r4);
-                    ettest1dot3dotjsonone(result, function (err, r5) {
+                    ettest1dot3dotjsonone(result, function(err, r5) {
                         result.push(r5);
-                        ettest3dot3dotjsonone(result, function (err, r6) {
+                        ettest3dot3dotjsonone(result, function(err, r6) {
                             result.push(r6);
-                            ettest3dot1dotjsonone(result, function (err, r7) {
+                            ettest3dot1dotjsonone(result, function(err, r7) {
                                 result.push(r7);
-                                ettest1dot1dotjsonone(result, function (err, r8) {
+                                ettest1dot1dotjsonone(result, function(err, r8) {
                                     result.push(r8);
-                                    ettest1dot3dotobject(result, function (err, r9) {
+                                    ettest1dot3dotobject(result, function(err, r9) {
                                         result.push(r9);
-                                        ettest3dot3dotobject(result, function (err, r10) {
+                                        ettest3dot3dotobject(result, function(err, r10) {
                                             result.push(r10);
-                                            ettest3dot1dotobject(result, function (err, r11) {
+                                            ettest3dot1dotobject(result, function(err, r11) {
                                                 result.push(r11);
-                                                ettest1dot1dotobject(result, function (err, r12) {
+                                                ettest1dot1dotobject(result, function(err, r12) {
                                                     result.push(r12);
                                                     callback(err, result);
                                                 });
@@ -13856,7 +13856,7 @@ exports.ettestdot = ettestdot = function ettestdot(params, callback) {
 
 function testDeepFilterTests(command, callback) {
     async.series([
-        function (cb1) {
+        function(cb1) {
             var dtoObjOpt = {
                 "b1": "boolean",
                 "s1": "string",
@@ -13959,14 +13959,14 @@ function testDeepFilterTests(command, callback) {
                               //"p1":"+19998887777", "p2":"+19998887777", "p3":"", "p4":"x"
                               };    
                   */
-            deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+            deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
                 proxyprinttodiv("after etd16 deepfilter in", inputObj, 17);
                 proxyprinttodiv("after etd16 deepfilter dto", dtoObjOpt, 17);
                 proxyprinttodiv("after etd16 deepfilter res", res, 17);
                 cb1(err, res);
             });
         }
-    ], function (err, res) {
+    ], function(err, res) {
         callback(err, res);
     });
 }
@@ -13981,7 +13981,7 @@ exports.etd16 = etd16 = function etd16(params, callback) {
             "totype": true
         }
     }; //string to datatype
-    testDeepFilterTests(command, function (err, res) {
+    testDeepFilterTests(command, function(err, res) {
         proxyprinttodiv("after test convert:true totype: true --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
         callback(err, res);
     });
@@ -13998,7 +13998,7 @@ exports.etd17 = etd17 = function etd17(params, callback) {
             "totype": false
         }
     }; //datatype to string
-    testDeepFilterTests(command, function (err, res) {
+    testDeepFilterTests(command, function(err, res) {
         proxyprinttodiv("after test convert:true totype: false --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
         callback(err, res);
     });
@@ -14016,7 +14016,7 @@ exports.etd18 = etd18 = function etd18(params, callback) {
             "totype": true
         }
     }; //no conversion
-    testDeepFilterTests(command, function (err, res) {
+    testDeepFilterTests(command, function(err, res) {
         proxyprinttodiv("after test convert:false totype: true --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
         callback(err, res);
     });
@@ -14034,7 +14034,7 @@ exports.etd19 = etd19 = function etd19(params, callback) {
             "totype": false
         }
     }; //no conversion
-    testDeepFilterTests(command, function (err, res) {
+    testDeepFilterTests(command, function(err, res) {
         proxyprinttodiv("after test convert:false totype: false --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
         callback(err, res);
     });
@@ -14069,7 +14069,7 @@ exports.etd19 = etd19 = function etd19(params, callback) {
 function testDeepFilterTests1(command, callback) {
     debuglevel = 0;
     async.series([
-        function (cb1) {
+        function(cb1) {
             var dtoObjOpt = {
                 "b1": "boolean",
                 "s1": "string",
@@ -14172,14 +14172,14 @@ function testDeepFilterTests1(command, callback) {
                               //"p1":"+19998887777", "p2":"+19998887777", "p3":"", "p4":"x"
                               };    
                   */
-            deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+            deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
                 proxyprinttodiv("after etd16 deepfilter in", inputObj, 17);
                 proxyprinttodiv("after etd16 deepfilter dto", dtoObjOpt, 17);
                 proxyprinttodiv("after etd16 deepfilter res", res, 17);
                 cb1(err, res);
             });
         }
-    ], function (err, res) {
+    ], function(err, res) {
         callback(err, res);
     });
 }
@@ -14198,28 +14198,28 @@ exports.etd26 = etd26 = function etd26(params, callback) {
                     "totype": true
                 }
             }
-    }],
+        }],
 
-    function (err, res) {
-        res = logverify("etd16_result", res[0], [{
-            "b1": false,
-            "s1": "hello",
-            "n1": 30,
-            "i1": 40,
-            "d1": "2014-02-27T05:00:00.000Z",
-            "h1": "#ff00ff",
-            "p1": "+1 999 888 7777",
-            "b2": false,
-            "s2": "hello",
-            "n2": 30,
-            "i2": 40,
-            "d2": "2014-02-27T18:30:00.000Z",
-            "h2": "#ff00ff",
-            "p2": "+1 999 888 7777",
-            "s3": ""
-        }]);
-        callback(err, res);
-    });
+        function(err, res) {
+            res = logverify("etd16_result", res[0], [{
+                "b1": false,
+                "s1": "hello",
+                "n1": 30,
+                "i1": 40,
+                "d1": "2014-02-27T05:00:00.000Z",
+                "h1": "#ff00ff",
+                "p1": "+1 999 888 7777",
+                "b2": false,
+                "s2": "hello",
+                "n2": 30,
+                "i2": 40,
+                "d2": "2014-02-27T18:30:00.000Z",
+                "h2": "#ff00ff",
+                "p2": "+1 999 888 7777",
+                "s3": ""
+            }]);
+            callback(err, res);
+        });
 }
 
 /*
@@ -14233,7 +14233,7 @@ exports.etd27 = etd27 = function etd27(params, callback) {
             "command.deepfilter.convert": true,
             "command.deepfilter.totype": false
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("etd17_result", res[0], [{
                 "b1": "false",
                 "s1": "hello",
@@ -14267,7 +14267,7 @@ exports.etd28 = etd28 = function etd28(params, callback) {
             "command.deepfilter.convert": false,
             "command.deepfilter.totype": true
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("etd18_result", res[0], [{
                 "b1": "false",
                 "s1": "hello",
@@ -14301,7 +14301,7 @@ exports.etd29 = etd29 = function etd29(params, callback) {
             "command.deepfilter.convert": false,
             "command.deepfilter.totype": false
         }],
-        function (err, res) {
+        function(err, res) {
             res = logverify("etd19_result", res[0], [{
                 "b1": "false",
                 "s1": "hello",
@@ -14366,7 +14366,7 @@ exports.etd29 = etd29 = function etd29(params, callback) {
 exports.etd30 = etd30 = function etd30(params, callback) {
     debuglevel = 41;
     async.series([
-        function (cb1) {
+        function(cb1) {
             //var executeList = [{
             //    "executethis": "updatewid",
             //    "wid": "wid5",
@@ -14380,7 +14380,7 @@ exports.etd30 = etd30 = function etd30(params, callback) {
             //});
             cb1(null, null);
         }
-    ], function (err, res) { //after updatewid
+    ], function(err, res) { //after updatewid
         var dtoObjOpt = {
             "title": "string",
             "wid": "string",
@@ -14464,7 +14464,7 @@ exports.etd30 = etd30 = function etd30(params, callback) {
             "command.deepfilter.totype": true
         }; //string to datatype
 
-        deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+        deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
             proxyprinttodiv("res --", res, 41);
             var actual_result = [res];
             proxyprinttodiv("actual_result --", actual_result, 41);
@@ -14484,7 +14484,7 @@ exports.etd30 = etd30 = function etd30(params, callback) {
 exports.lmetd2 = lmetd2 = function lmetd2(params, callback) {
     debuglevel = 17;
     async.series([
-        function (cb1) {
+        function(cb1) {
             var executeList = [{
                 "executethis": "updatewid",
                 "wid": "deep_filter_test",
@@ -14492,11 +14492,11 @@ exports.lmetd2 = lmetd2 = function lmetd2(params, callback) {
                 "aaa": "",
                 "ggg": ""
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 cb1(null);
             });
         }
-    ], function (err, res) { //after updatewid
+    ], function(err, res) { //after updatewid
         var dtoObjOpt = {
             "c": "integer" //, 
             // "h":"string", 
@@ -14517,7 +14517,7 @@ exports.lmetd2 = lmetd2 = function lmetd2(params, callback) {
             "formatresult": "true"
         };
 
-        deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+        deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
             var actual_result = [res];
             var expected_result = [{
                 "c": 30 //,
@@ -14536,18 +14536,18 @@ exports.lmetd2 = lmetd2 = function lmetd2(params, callback) {
 exports.lmetd3 = lmetd3 = function lmetd3(params, callback) {
     debuglevel = 17;
     async.series([
-        function (cb1) {
+        function(cb1) {
             var executeList = [{
                 "executethis": "updatewid",
                 "wid": "deep_filter_test",
                 "metadata.method": "defaultdto",
                 "aaa": ""
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 cb1(null);
             });
         }
-    ], function (err, res) {
+    ], function(err, res) {
         var dtoObjOpt = {
             "c": "string"
         };
@@ -14558,7 +14558,7 @@ exports.lmetd3 = lmetd3 = function lmetd3(params, callback) {
             "formatresult": "true"
         };
 
-        deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+        deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
             var actual_result = [res];
             var expected_result = [{
                 "c": "30"
@@ -14574,18 +14574,18 @@ exports.lmetd3 = lmetd3 = function lmetd3(params, callback) {
 exports.lmetd4 = lmetd4 = function lmetd4(params, callback) {
     debuglevel = 17;
     async.series([
-        function (cb1) {
+        function(cb1) {
             var executeList = [{
                 "executethis": "updatewid",
                 "wid": "deep_filter_test",
                 "metadata.method": "defaultdto",
                 "aaa": ""
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 cb1(null);
             });
         }
-    ], function (err, res) {
+    ], function(err, res) {
         var dtoObjOpt = {
             "c": ""
         };
@@ -14596,7 +14596,7 @@ exports.lmetd4 = lmetd4 = function lmetd4(params, callback) {
             "formatresult": "true"
         };
 
-        deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+        deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
             var actual_result = [res];
             var expected_result = [{
                 "c": 30
@@ -14610,18 +14610,18 @@ exports.lmetd4 = lmetd4 = function lmetd4(params, callback) {
 exports.lmetd5 = lmetd5 = function lmetd5(params, callback) {
     debuglevel = 17;
     async.series([
-        function (cb1) {
+        function(cb1) {
             var executeList = [{
                 "executethis": "updatewid",
                 "wid": "deep_filter_test",
                 "metadata.method": "defaultdto",
                 "aaa": ""
             }];
-            execute(executeList, function (err, res) {
+            execute(executeList, function(err, res) {
                 cb1(null);
             });
         }
-    ], function (err, res) {
+    ], function(err, res) {
         var dtoObjOpt = {
             "charlie": ""
         };
@@ -14633,7 +14633,7 @@ exports.lmetd5 = lmetd5 = function lmetd5(params, callback) {
             // "deepfilter.convert": "true"
         };
 
-        deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+        deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
             var actual_result = [res];
             var expected_result = [{
                 "charlie": "30"
@@ -14695,7 +14695,7 @@ exports.ettestag3v2 = ettestag3v2 = function ettestag3v2(params, callback) {
             "executethis": "getwidmaster",
             "wid": "song1v2"
         }],
-        function (err, res) {
+        function(err, res) {
             debugfn("offlinegetwid code generator END", "", "", "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
 
             proxyprinttodiv('Function ag3 result Full res', res, 17);
@@ -14724,10 +14724,605 @@ exports.ettestag3v2 = ettestag3v2 = function ettestag3v2(params, callback) {
             execute({
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function (err, res1) {
+            }, function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 99);
                 callback(err, res);
 
             })
         });
 };
+
+
+// }
+
+
+exports.testgetdtoobject1 = testgetdtoobject1 = function testgetdtoobject1(params, callback) {
+    debuglevel = 17;
+    var obj = {
+        "wid": "sounddto",
+        "metadata": {
+            "method": "sounddto"
+        },
+        "note": "string"
+    }
+
+    // var temp = ConvertToDOTdri(obj);
+    // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
+
+    // temp = ConvertFromDOTdri(obj);
+    // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
+
+    getdtoobject(obj, {
+        "dtotype": "defaultdto"
+    }, function(err, res) {
+        proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
+        res = logverify("testgetdtoobject1", res, {
+            "wid": "guid",
+            "metadata": {
+                "method": "string",
+                "systemdto": {
+                    "type": "string"
+                }
+            },
+            "note": "string",
+            "command": {
+                "dtolist": {
+                    "systemdto": "onetoone"
+                },
+                "deepdtolist": {
+                    "systemdto": "onetoone"
+                },
+                "inherit": []
+            }
+        });
+
+
+
+        // {"exception":["created", "changed", "unchanged", "deleted"]}
+
+
+        callback(null, res)
+    });
+}
+
+
+// add songdto, sounddto, relationship and then get the structure of the compounddto - songdto 
+// tests if relationships are setup correctly
+exports.testgetdtoobject3 = testgetdtoobject3 = function testgetdtoobject3(params, callback) {
+    debuglevel = 17;
+
+    var preData1 = {
+        "wid": "songdto",
+        "metadata": {
+            "method": "songdto",
+            "sounddto": {
+                "type": "onetomany"
+            }
+        },
+        "title": "string"
+    };
+
+    var preData2 = {
+        "wid": "sounddto",
+        "metadata": {
+            "method": "sounddto"
+        },
+        "note": "string"
+    };
+
+    var preData3 = {
+        "wid": "rel_sound_to_song",
+        "metadata": {
+            "method": "relationshipdto"
+        },
+        "primarywid": "songdto",
+        "secondarywid": "sounddto",
+        "primarymethod": "songdto",
+        "secondarymethod": "sounddto",
+        "linktype": "onetomany",
+        "relationshiptype": "attributes"
+    };
+
+    updatewid(preData1, function(err, res) {
+
+        updatewid(preData2, function(err, res) {
+
+            updatewid(preData3, function(err, res) {
+
+
+                var obj = {
+                    "wid": "songdto"
+                };
+
+                var assertobj = {
+                    "title": "string",
+                    "wid": "guid",
+                    "metadata": {
+                        "method": "string",
+                        "sounddto": {
+                            "type": "string"
+                        }
+                    },
+                    "sounddto": [{
+                        "command": {
+                            "inherit": [],
+                            "deepdtolist": {
+                                "systemdto": "onetoone"
+                            },
+                            "dtolist": {
+                                "systemdto": "onetoone"
+                            }
+                        },
+                        "note": "string",
+                        "wid": "guid",
+                        "metadata": {
+                            "method": "string"
+                        },
+                        "systemdto": {}
+                    }],
+                    "systemdto": {},
+                    "command": {
+                        "inherit": [],
+                        "deepdtolist": {
+                            "systemdto": "onetoone",
+                            "sounddto": "onetomany"
+                        },
+                        "dtolist": {
+                            "sounddto": "onetomany",
+                            "systemdto": "onetoone"
+                        }
+                    }
+                };
+
+
+
+                // var temp = ConvertToDOTdri(obj);
+                // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
+
+                // temp = ConvertFromDOTdri(obj);
+                // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
+
+                getdtoobject(obj, {
+                    "dtotype": "songdto"
+                }, function(err, res) {
+                    proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
+                    res = logverify("testgetdtoobject3", res, assertobj);
+                    callback(null, res)
+                });
+            });
+        });
+    });
+}
+
+exports.testgetdtoobject2 = testgetdtoobject2 = function testgetdtoobject2(params, callback) {
+    debuglevel = 17;
+    var obj = {
+        "title": "Highway to Hell",
+        "wid": "song1",
+        "metadata": {
+            "method": "songdto",
+            "sounddto": {
+                "type": "onetomany"
+            }
+        },
+        "sounddto": [{
+            "note": "A flat",
+            "wid": "ag3aflat",
+            "metadata": {
+                "method": "sounddto",
+                "parentwid": {
+                    "song1": "songdto"
+                }
+            }
+        }, {
+            "note": "B sharp",
+            "wid": "ag3bsharp",
+            "metadata": {
+                "method": "sounddto",
+                "parentwid": {
+                    "song1": "songdto"
+                }
+            }
+        }, {
+            "note": "C flat",
+            "wid": "ag3cflat",
+            "metadata": {
+                "method": "sounddto",
+                "parentwid": {
+                    "song1": "songdto"
+                }
+            }
+        }]
+    };
+
+    var outputobj = 
+    {
+    "title": "string",
+    "wid": "guid",
+    "metadata": {
+        "method": "string",
+        "sounddto": {
+            "type": "string"
+        },
+        "systemdto": {
+            "type": "string"
+        }
+    },
+    "sounddto": [{
+        "note": "A flat",
+        "wid": "ag3aflat",
+        "metadata": {
+            "method": "sounddto",
+            "parentwid": {
+                "song1": "songdto"
+            }
+        }
+    }],
+    "command": {
+        "dtolist": {
+            "sounddto": "onetomany",
+            "systemdto": "onetoone"
+        },
+        "deepdtolist": {
+            "sounddto": "onetomany",
+            "systemdto": "onetoone"
+        },
+        "inherit": []
+    }
+}
+
+    // var temp = ConvertToDOTdri(obj);
+    // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
+
+    // temp = ConvertFromDOTdri(obj);
+    // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
+
+    getdtoobject(obj, {
+        "dtotype": "defaultdto"
+    }, function(err, res) {
+        proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
+        res = logverify("testgetdtoobject2", res, outputobj);
+        callback(null, res)
+    });
+}
+
+
+
+// 13 getdtoobject  -- input 
+// {"wid":"sounddto","metadata":{"method":"sounddto"},"note":"string"}black
+// 14 getdtoobject -- output
+// {"wid":"string","metadata":{"method":"string"},"note":"string"}black
+exports.testgetdtoobject4 = testgetdtoobject4 = function testgetdtoobject4(params, callback) {
+    debuglevel = 17;
+    var obj = {
+        "wid": "sounddto",
+        "metadata": {
+            "method": "sounddto"
+        },
+        "note": "string"
+    };
+
+    var assertobj = {"wid":"guid","metadata":{"method":"string","systemdto":{"type":"string"}},"note":"string","command":{"dtolist":{"systemdto":"onetoone"},"deepdtolist":{"systemdto":"onetoone"},"inherit":[]}};
+
+    // var temp = ConvertToDOTdri(obj);
+    // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
+
+    // temp = ConvertFromDOTdri(obj);
+    // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
+
+    getdtoobject(obj, {
+        "dtotype": "songdto"
+    }, function(err, res) {
+        proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
+        res = logverify("testgetdtoobject4", res, assertobj);
+        callback(null, res)
+    });
+}
+// 15 getdtoobject  -- input 
+// {"wid":"songdto","metadata":{"method":"songdto","sounddto":{"type":"onetomany"}},"title":"string"}black
+// 16 getdtoobject -- output
+// {"wid":"string","metadata":{"method":"string","sounddto":{"type":"string"}},"title":"string"}black
+exports.testgetdtoobject5 = testgetdtoobject5 = function testgetdtoobject5(params, callback) {
+    debuglevel = 17;
+    var obj = {
+        "wid": "songdto",
+        "metadata": {
+            "method": "songdto",
+            "sounddto": {
+                "type": "onetomany"
+            }
+        },
+        "title": "string"
+    };
+
+    var assertobj = {"wid":"guid","metadata":{"method":"string","sounddto":{"type":"string"},"systemdto":{"type":"string"}},"title":"string","command":{"dtolist":{"sounddto":"onetomany","systemdto":"onetoone"},"deepdtolist":{"sounddto":"onetomany","systemdto":"onetoone"},"inherit":[]}}
+;
+
+    // var temp = ConvertToDOTdri(obj);
+    // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
+
+    // temp = ConvertFromDOTdri(obj);
+    // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
+
+    getdtoobject(obj, {
+        "dtotype": "songdto"
+    }, function(err, res) {
+        proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
+        res = logverify("testgetdtoobject5", res, assertobj);
+        callback(null, res)
+    });
+}
+
+// 17 getdtoobject  -- input 
+// {"wid":"rel_sound_to_song","metadata":{"method":"relationshipdto"},"primarywid":"songdto","secondarywid":"sounddto","primarymethod":"songdto","secondarymethod":"sounddto","linktype":"onetomany","relationshiptype":"attributes"}black
+// 18 getdtoobject -- output
+// {"wid":"string","metadata":{"command":{"dtolist":{}},"method":"string"},"primarywid":"string","secondarywid":"string","primarymethod":"string","secondarymethod":"string","linktype":"string","relationshiptype":"string","command":{"dtolist":{}}}black
+exports.testgetdtoobject6 = testgetdtoobject6 = function testgetdtoobject6(params, callback) {
+    debuglevel = 17;
+    var obj = {
+        "wid": "rel_sound_to_song",
+        "metadata": {
+            "method": "relationshipdto"
+        },
+        "primarywid": "songdto",
+        "secondarywid": "sounddto",
+        "primarymethod": "songdto",
+        "secondarymethod": "sounddto",
+        "linktype": "onetomany",
+        "relationshiptype": "attributes"
+    };
+
+    var assertobj = {"wid":"guid","metadata":{"method":"string","systemdto":{"type":"string"}},"primarywid":"string","secondarywid":"string","primarymethod":"string","secondarymethod":"string","linktype":"string","relationshiptype":"string","command":{"dtolist":{"systemdto":"onetoone"},"deepdtolist":{"systemdto":"onetoone"},"inherit":[]}};
+
+    // var temp = ConvertToDOTdri(obj);
+    // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
+
+    // temp = ConvertFromDOTdri(obj);
+    // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
+
+    getdtoobject(obj, {
+        "dtotype": "songdto"
+    }, function(err, res) {
+        proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
+        res = logverify("testgetdtoobject6", res, assertobj);
+        callback(null, res)
+    });
+}
+
+
+// 19 getdtoobject  -- input 
+// {"title":"string","wid":"guid","metadata":{"method":"string","sounddto":{"type":"onetomany"}},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone","sounddto":"onetomany"},"dtolist":{"sounddto":"onetomany","systemdto":"onetoone"}},"sounddto":[{"note":"string","wid":"guid","metadata":{"method":"string"},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone"},"dtolist":{"systemdto":"onetoone"}},"systemdto":{}}],"systemdto":{}}black
+// 20 getdtoobject -- output
+// {"title":"string","wid":"string","metadata":{"command":{"dtolist":{}},"method":"string","sounddto":{"command":{"dtolist":{}},"type":"string"}},"sounddto":[{"command":{"command":{"dtolist":{}},"inherit":[],"deepdtolist":{"command":{"dtolist":{}},"systemdto":"string"},"dtolist":{"command":{"dtolist":{}},"systemdto":"string"}},"note":"string","wid":"string","metadata":{"command":{"dtolist":{}},"method":"string"},"systemdto":{"command":{"dtolist":{}}}}],"systemdto":{"command":{"dtolist":{}}},"command":{"command":{"dtolist":{}},"inherit":[],"deepdtolist":{"command":{"dtolist":{}},"systemdto":"string","sounddto":"string"},"dtolist":{"command":{"dtolist":{}},"sounddto":"string","systemdto":"string"}}}black
+exports.testgetdtoobject7 = testgetdtoobject7 = function testgetdtoobject7(params, callback) {
+    debuglevel = 17;
+    var obj = {
+        "title": "string",
+        "wid": "guid",
+        "metadata": {
+            "method": "string",
+            "sounddto": {
+                "type": "onetomany"
+            }
+        },
+        "command": {
+            "inherit": [],
+            "deepdtolist": {
+                "systemdto": "onetoone",
+                "sounddto": "onetomany"
+            },
+            "dtolist": {
+                "sounddto": "onetomany",
+                "systemdto": "onetoone"
+            }
+        },
+        "sounddto": [{
+            "note": "string",
+            "wid": "guid",
+            "metadata": {
+                "method": "string"
+            },
+            "command": {
+                "inherit": [],
+                "deepdtolist": {
+                    "systemdto": "onetoone"
+                },
+                "dtolist": {
+                    "systemdto": "onetoone"
+                }
+            },
+            "systemdto": {}
+        }],
+        "systemdto": {}
+    };
+
+    var assertobj = {"title":"string","wid":"guid","metadata":{"method":"string","sounddto":{"type":"onetomany"}},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone","sounddto":"onetomany"},"dtolist":{"sounddto":"onetomany","systemdto":"onetoone"}},"sounddto":[{"note":"string","wid":"guid","metadata":{"method":"string"},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone"},"dtolist":{"systemdto":"onetoone"}},"systemdto":{}}],"systemdto":{}};
+
+    // var temp = ConvertToDOTdri(obj);
+    // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
+
+    // temp = ConvertFromDOTdri(obj);
+    // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
+
+    getdtoobject(obj, {
+        "dtotype": "songdto"
+    }, function(err, res) {
+        proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
+        res = logverify("testgetdtoobject7", res, assertobj);
+        callback(null, res)
+    });
+}
+
+
+// 21 getdtoobject  -- input 
+// {"wid":"song1","metadata":{"method":"songdto"},"title":"Highway to Hell","sounddto":{"wid":"ag3aflat","note":"A flat"}}black
+// 22 getdtoobject -- output
+// {"title":"string","wid":"string","metadata":{"method":"string","sounddto":{"type":"string"}},"sounddto":[{"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone"},"dtolist":{"systemdto":"onetoone"}},"note":"string","wid":"string","metadata":{"method":"string"},"systemdto":{}}],"systemdto":{},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone","sounddto":"onetomany"},"dtolist":{"sounddto":"onetomany","systemdto":"onetoone"}}}black
+exports.testgetdtoobject8 = testgetdtoobject8 = function testgetdtoobject8(params, callback) {
+    debuglevel = 17;
+
+    var preData1 = {
+        "wid": "songdto",
+        "metadata": {
+            "method": "songdto",
+            "sounddto": {
+                "type": "onetomany"
+            }
+        },
+        "title": "string"
+    };
+
+    var preData2 = {
+        "wid": "sounddto",
+        "metadata": {
+            "method": "sounddto"
+        },
+        "note": "string"
+    };
+
+    var preData3 = {
+        "wid": "rel_sound_to_song",
+        "metadata": {
+            "method": "relationshipdto"
+        },
+        "primarywid": "songdto",
+        "secondarywid": "sounddto",
+        "primarymethod": "songdto",
+        "secondarymethod": "sounddto",
+        "linktype": "onetomany",
+        "relationshiptype": "attributes"
+    };
+
+    updatewid(preData1, function(err, res) {
+
+        updatewid(preData2, function(err, res) {
+
+            updatewid(preData3, function(err, res) {
+
+                var obj = {
+                    "wid": "song1",
+                    "metadata": {
+                        "method": "songdto"
+                    },
+                    "title": "Highway to Hell",
+                    "sounddto": {
+                        "wid": "ag3aflat",
+                        "note": "A flat"
+                    }
+                };
+
+                var assertobj = {"title":"string","wid":"guid","metadata":{"method":"string","sounddto":{"type":"string"}},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone","sounddto":"onetomany"},"dtolist":{"sounddto":"onetomany","systemdto":"onetoone"}},"sounddto":[{"note":"string","wid":"guid","metadata":{"method":"string"},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone"},"dtolist":{"systemdto":"onetoone"}},"systemdto":{}}],"systemdto":{}};
+
+                // var temp = ConvertToDOTdri(obj);
+                // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
+
+                // temp = ConvertFromDOTdri(obj);
+                // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
+
+                getdtoobject(obj, {
+                    "dtotype": "songdto"
+                }, function(err, res) {
+                    proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
+                    res = logverify("testgetdtoobject8", res, assertobj);
+                    callback(null, res)
+                });
+            });
+        });
+    });
+}
+
+
+// 37 getdtoobject  -- input 
+// {"title":"Highway to Hell","wid":"song1","metadata":{"method":"songdto","sounddto":{"type":"onetomany"}},"sounddto":[{"note":"A flat","wid":"ag3aflat","metadata":{"method":"sounddto","parentwid":{"song1":"songdto"}}},{"note":"B sharp","wid":"ag3bsharp","metadata":{"method":"sounddto","parentwid":{"song1":"songdto"}}}]}black
+// 38 getdtoobject -- output
+// {"title":"string","wid":"string","metadata":{"method":"string","sounddto":{"type":"string"}},"sounddto":[{"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone"},"dtolist":{"systemdto":"onetoone"}},"note":"string","wid":"string","metadata":{"method":"string"},"systemdto":{}}],"systemdto":{},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone","sounddto":"onetomany"},"dtolist":{"sounddto":"onetomany","systemdto":"onetoone"}}}black
+exports.testgetdtoobject9 = testgetdtoobject9 = function testgetdtoobject9(params, callback) {
+    debuglevel = 17;
+
+    var preData1 = {
+        "wid": "songdto",
+        "metadata": {
+            "method": "songdto",
+            "sounddto": {
+                "type": "onetomany"
+            }
+        },
+        "title": "string"
+    };
+
+    var preData2 = {
+        "wid": "sounddto",
+        "metadata": {
+            "method": "sounddto"
+        },
+        "note": "string"
+    };
+
+    var preData3 = {
+        "wid": "rel_sound_to_song",
+        "metadata": {
+            "method": "relationshipdto"
+        },
+        "primarywid": "songdto",
+        "secondarywid": "sounddto",
+        "primarymethod": "songdto",
+        "secondarymethod": "sounddto",
+        "linktype": "onetomany",
+        "relationshiptype": "attributes"
+    };
+
+    updatewid(preData1, function(err, res) {
+
+        updatewid(preData2, function(err, res) {
+
+            updatewid(preData3, function(err, res) {
+
+                var obj = {
+                    "title": "Highway to Hell",
+                    "wid": "song1",
+                    "metadata": {
+                        "method": "songdto",
+                        "sounddto": {
+                            "type": "onetomany"
+                        }
+                    },
+                    "sounddto": [{
+                        "note": "A flat",
+                        "wid": "ag3aflat",
+                        "metadata": {
+                            "method": "sounddto",
+                            "parentwid": {
+                                "song1": "songdto"
+                            }
+                        }
+                    }, {
+                        "note": "B sharp",
+                        "wid": "ag3bsharp",
+                        "metadata": {
+                            "method": "sounddto",
+                            "parentwid": {
+                                "song1": "songdto"
+                            }
+                        }
+                    }]
+                };
+
+                var assertobj = {"title":"string","wid":"guid","metadata":{"method":"string","sounddto":{"type":"string"}},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone","sounddto":"onetomany"},"dtolist":{"sounddto":"onetomany","systemdto":"onetoone"}},"sounddto":[{"note":"string","wid":"guid","metadata":{"method":"string"},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone"},"dtolist":{"systemdto":"onetoone"}},"systemdto":{}}],"systemdto":{}};
+
+                // var temp = ConvertToDOTdri(obj);
+                // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
+
+                // temp = ConvertFromDOTdri(obj);
+                // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
+
+                getdtoobject(obj, {
+                    "dtotype": "songdto"
+                }, function(err, res) {
+                    proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
+                    res = logverify("testgetdtoobject8", res, assertobj);
+                    callback(null, res)
+                });
+            });
+        });
+    });
+}
