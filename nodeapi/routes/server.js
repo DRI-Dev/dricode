@@ -47,10 +47,8 @@ function runExecuteThis(parameters, resp) {
         delete parameters.Debug
     }
 
-    console.log(' => global object => ' + JSON.stringify(global.execute));
-
-    global['execute'](parameters, function (err, results) {
-
+//    global['execute'](parameters, function (err, results) {
+    execute(parameters, function (err, results) {
         if (Debug === 'true') {
             var tempoutput = {};
             tempoutput.command = {};
