@@ -546,7 +546,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                     mQueryString = relationShipQuery(command, output, "data");
 
                     proxyprinttodiv('mQueryString at step03 =>', mQueryString, 99);
-                    if (Object.keys(JSON.parse(mQueryString)).length > 0) {
+                    if (mQueryString !== '' && Object.keys(JSON.parse(mQueryString)).length > 0) {
                         mquery(mQueryString, {}, command, function (err, res) {
                             // If error, bounce out
                             if (err && Object.keys(err).length > 0) {
@@ -718,7 +718,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                     obj[widvalue] = item[parmnamein];
                 } else {
                     if (parmnamein) {
-                        obj[widvalue] = item[environmentdb][parmnamein];
+                        obj[widvalue] = item[environmentdb] ? item[environmentdb][parmnamein] : '';
                     } else {
                         obj[widvalue] = item[environmentdb];
                     }
@@ -1027,7 +1027,7 @@ function copylist(inlist, parmnamein, parmnameout, environmentdb) {
             item = ConvertFromDOTdri(item);
             proxyprinttodiv('querywid copylist item ', item, 17);
 
-            widvalue = item[environmentdb][parmnameout];
+            widvalue = item[environmentdb] ? item[environmentdb][parmnameout] : '';
 
             proxyprinttodiv('querywid copylist widvalue ', widvalue, 17);
 
