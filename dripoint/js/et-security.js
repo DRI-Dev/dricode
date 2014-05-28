@@ -1,196 +1,33 @@
-// test to see if a call to getwidmaster gets passed through security check
-exports.testauth = testauth = function testauth(inboundparams, callback) {
-    debuglevel = 39;
-    proxyprinttodiv('testauth inboundparams ', inboundparams, 39);
-    var environment;
-    environment = {};
-    environment['ac'] = 'rogerac';
-    environment['mygroup'] = ''; //set account to account of ac if no account
-    environment['myphone'] = '9873838958';
-    environment['actiongroup'] = 'allactions';
-    environment['dbgroup'] = 'data';
-    environment['collection'] = 'maincollection';
-    environment['server'] = 'server1';
-    environment['datastore'] = 'datastore1';
+// createuser merchant1
+// createuser user1
+// createuser user2
+// creategroup (drisales, usergroupdto)
+// creategroup (driadmin, usergroupdto)
+// addwidtogroup(user1, drisales)
+// addwidtogroup(user2, driadmin)
+// createparentgrouprelationship(drisales, driadmin)
 
-    var request = {};
-    request['command'] = {};
-    request['command']['environment'] = environment;
-
-    request['executethis'] = 'ettestag1';
-
-    async.series([
-
-        function (cb1) {
-            // create all DTOs for security
-            createalldtos({}, function (err, res) {
-                cb1(null);
-            });
-        },
-        function (cb1) {
-            // create all data
-            execute([{
-                // default actiongroupdto
-                "executethis": "addwidmaster",
-                "wid": "actiongroupdtodefault",
-                "metadata.method": "actiongroupdto",
-                "actiongroupname": "actiongroupdtodefault",
-                "executeactiondto.actiondto.serveractiondto": "defaultserveractiondto",
-                "executeactiondto.actiondto.localactiondto": "defaultlocalactiondto",
-                "getactiondto.actiondto.serveractiondto": "defaultserveractiondto",
-                "getactiondto.actiondto.localactiondto": "defaultlocalactiondto",
-                "editactiondto.actiondto.serveractiondto": "defaultserveractiondto",
-                "editactiondto.actiondto.localactiondto": "defaultlocalactiondto",
-                "deleteactiondto.actiondto.serveractiondto": "defaultserveractiondto",
-                "deleteactiondto.actiondto.localactiondto": "defaultlocalactiondto"
-            }, {
-                // default permissiondto
-                "executethis": "addwidmaster",
-                "wid": "permissiondtodefault",
-                "metadata.method": "permissiondto",
-                "metadata.system.creator": "string",
-                "level": "string",
-                // "actiongroupdto.wid": "actiongroupdtodefault",
-                "db": "data",
-                "collection": "maincollection"
-            }, {
-                // Create the userdto
-                "executethis": "addwidmaster",
-                "metadata.method": "userdto",
-                "widname": "userdtodefault",
-                "wid": "defaultuser",
-                "fname": "1",
-                "lname": "2",
-                "phone": "3",
-                "email": "4",
-                "address": "5",
-                "address2": "6",
-                "city": "7",
-                "state": "8",
-                "zip": "9",
-                "country": "10",
-                "wid": "testuser",
-                "metadata.method": "userdto",
-
-                // relationships
-                "metadata.securitydto.type": "onetoone",
-                "metadata.environmentdto.type": "onetoone",
-                "metadata.usergroupdto.type": "onetomany",
-
-                // securitydto
-                "securitydto.accesstoken": "rogerac",
-                "securitydto.metadata.method": "securitydto",
-
-                // environmentdto
-                "environmentdto.ac": "ac",
-                "environmentdto.gps": "gpsval",
-                "environmentdto.account": "default",
-                "environmentdto.db": "data",
-                "environmentdto.collection": "maincollection",
-                "environmentdto.metadata.method": "environmentdto",
-
-                // permissiondto
-                "permissiondto.metadata.method": "permissiondto",
-                "permissiondto.metadata.system.creator": "driwid",
-                "permissiondto.level": "99",
-                "permissiondto.metadata.collection": "collection1",
-                "permissiondto.metadata.db": "data1",
-                // ,
-                // "permissiondto.0.metadata.inherit.0.wid": "userdtodefault",
-                // "permissiondto.0.metadata.inherit.0.command.dtotype": "",
-                // "permissiondto.0.metadata.inherit.0.command.adopt": "default",
-                // "permissiondto.0.actiongroupdto.0.metadata.inherit.wid": "actiongroupdtodefault",
-                // "permissiondto.0.actiongroupdto.0.metadata.inherit.0.command.dtotype": "",
-                // "permissiondto.0.actiongroupdto.0.metadata.inherit.0.command.adopt": "default"
-
-                // permissiondto.usergroupdto
-                "permissiondto.usergroupdto.0.usergroupname": "everyone",
-                "permissiondto.usergroupdto.0.metadata.method": "usergroupdto",
-                "permissiondto.usergroupdto.0.metadata.system.creator": "driwid",
-
-                // permissiondto.actiongroupdto
-                "permissiondto.actiongroupdto.0.actiongroupname": "allactions",
-                "permissiondto.actiongroupdto.0.metadata.method": "actiongroupdto",
-                "permissiondto.actiongroupdto.0.metadata.system.creator": "driwid",
-                // "permissiondto.0.actiongroupdto.0.executeactiondto.actiondto.serveractiondto": "defaultserveractiondto",
-                // "permissiondto.0.actiongroupdto.actiongroupname": "actiongroupdtodefault",
-                // "permissiondto.0.actiongroupdto.0.executeactiondto.actiondto.serveractiondto": "defaultserveractiondto",
-                // "permissiondto.0.actiongroupdto.0.executeactiondto.actiondto.localactiondto": "defaultlocalactiondto",
-                // "permissiondto.0.actiongroupdto.1.getactiondto.actiondto.serveractiondto": "defaultserveractiondto",
-                // "permissiondto.0.actiongroupdto.1.getactiondto.actiondto.localactiondto": "defaultlocalactiondto",
-                // "permissiondto.0.actiongroupdto.2.editactiondto.actiondto.serveractiondto": "defaultserveractiondto",
-                // "permissiondto.0.actiongroupdto.2.editactiondto.actiondto.localactiondto": "defaultlocalactiondto",
-                // "permissiondto.0.actiongroupdto.3.deleteactiondto.actiondto.serveractiondto": "defaultserveractiondto",
-                // "permissiondto.0.actiongroupdto.3.deleteactiondto.actiondto.localactiondto": "defaultlocalactiondto"
-            }], function (err, res) {
-                //
-                cb1(null);
-            });
-        },
-        function (cb1) {
-            execute(request, function (err, res) {
-                cb1(null);
-            });
-        }
-
-    ], function (err, res) {
-        callback(res);
-    });
-
-
-}
-
-// authcall looks at incoming paramters and creates call to security check
-exports.authcall = authcall = function authcall(executeobject, command, callback) {
-    if (command.internalcall && command.internalcall === true) {
-        // internal call, no security check required
-        alert("skip")
-        callback(undefined, true);
-    } else {
-        // proxyprinttodiv('authcall inboundparams ', inboundparams, 39);
-        var environment;
-        var status = false;
-        // //console.debug">>>>> env >>> "+ JSON.stringify(inboundparams['etenvironment']));
-        if (!(command && command['environment'])) {
-            callback(null, false);
-        } else {
-            environment = extend(true, environment, command['environment']);
-            secParams = command['environment'];
-
-            var accesstoken = environment['ac'];
-            var mygroup = environment['mygroup'];
-            var myphone = environment['myphone'];
-            var actiongroup = environment['actiongroup'];
-            var dbgroup = environment['dbgroup'];
-            var collection = environment['collection'];
-            var server = environment['server'];
-            var datastore = environment['datastore'];
-
-            if (accesstoken && collection && myphone && dbgroup && actiongroup && server && datastore) {
-                // actual security check
-                // _accesstoken, _mygroup, _myphone, _actiongroup, _dbgroup, _collection, _server, _datastore,
-                sc(secParams, accesstoken, mygroup, myphone, actiongroup, dbgroup, collection, server, datastore, callback);
-            } else {
-                // false result of security check
-                callback(null, false);
-            }
-        }
-    }
-};
-
-
-
-
+// getrelatedgroups(drisales) would return drisales and driadmin
 
 
 
 // securitycheck(ac, mygroup(opt),_myphone(opt), accountgroup, actiongroup, actiontypegroup, dbgroup, _loginlevel, callback)
 // (AC or my account, action, action type, db)
-exports.sc = sc = function sc(secParams, _accesstoken, _mygroup, _myphone, _actiongroup, _dbgroup, _collection, _server, _datastore, callback) {
+exports.sc = sc = function sc(accessconfig, callback) {
     debuglevel = 39;
+
+    var _accesstoken = accessconfig["_accesstoken"];
+    var _mygroup = accessconfig["_mygroup"];
+    var _action = accessconfig["_action"];
+    var _myphone = accessconfig["_myphone"];
+    var _server = accessconfig["_server"];
+    var _dbgroup = accessconfig["_dbgroup"];
+    var _datastore = accessconfig["_datastore"];
+    var _loginlevel = accessconfig["_loginlevel"];
+
     proxyprinttodiv('Function securitytest accesstoken-- ', _accesstoken, 39);
     proxyprinttodiv('Function securitytest mygroup-- ', _mygroup, 39);
-    proxyprinttodiv('Function securitytest actiongroup-- ', _actiongroup, 39);
+    proxyprinttodiv('Function securitytest actiongroup-- ', _action, 39);
     proxyprinttodiv('Function securitytest _myphone-- ', _myphone, 39);
     proxyprinttodiv('Function securitytest server-- ', _server, 39);
     proxyprinttodiv('Function securitytest dbgroup-- ', _dbgroup, 39);
@@ -199,24 +36,39 @@ exports.sc = sc = function sc(secParams, _accesstoken, _mygroup, _myphone, _acti
     var securityCheckOutput = false;
     var actor;
     var actorGroup;
-    var action = _actiongroup;
+    var action = _action;
     var actorGroupsArr = [];
     var actionGroupsArr = [];
     var actionCreator;
     var actionCreatorPermissions = [];
     var actorPermissions = [];
-    var actionCreatorPermissions = [];
+
+    var isMatch = false;
+    var actioncreatorgroups;
+    var actorgroups;
 
     var actorCreator = "";
     var actionCreator = "";
 
+    // add group wid id from user >> group relationship data records
+    function addGroupWids(actioncreatorgroups,res){
+        for(var idx in  res){
+            var json = res[idx];
+            var objkey = Object.keys(json)[0];
+            var relationshipJson = json[objkey];
+
+            var groupid = relationshipJson['primarywid'];
+            actioncreatorgroups.push(groupid);
+        }
+    }
+
     async.series([
 
-            function (cb1) {
+            function(cb1) {
                 // if mygroup not sent in then convert AC to my userwid (mygroup)
                 if (!_mygroup) {
                     proxyprinttodiv('Function sc getting user for ac -- ', _accesstoken, 39);
-                    getuserbyac(secParams, _accesstoken, function (err, userDto) {
+                    getuserbyac(_accesstoken, function(err, userDto) {
                         actor = userDto;
                         actorGroup = userDto.wid; // consider user is usergroup
                         proxyprinttodiv('Function sc got actor Group for ac -- ', actorGroup, 39);
@@ -229,96 +81,66 @@ exports.sc = sc = function sc(secParams, _accesstoken, _mygroup, _myphone, _acti
                     cb1(null);
                 }
             },
-            function (cb1) {
-                // 'actor' wants to do an 'action'
-                // 'actorGroup' shall be in the list of 'userGroups' having permissions to 'actionGroup'
-                proxyprinttodiv('Function sc going to get groups for  actor Group  -- ', actorGroup, 39);
-                getmygroups(secParams, actorGroup, "usergroupdto", "usergroupname", actorGroupsArr, function (err, res) {
-                    // get all userGroups for the actor
-                    // add calculated + default userGroup for the actor('actorGroup')
-                    proxyprinttodiv('Function sc got groups for  actor Group ' + actorGroup + '  -- ', res, 39);
-                    cb1(null, "get usergroups for user");
-                })
-            },
-            function (cb1) {
-                // get all actionGroups for the action
-                // add calculated + default userGroup for the actor('actorGroup')
-                getmygroups(secParams, action, "actiongroupdto", "actiongroupname", actionGroupsArr, function (err, res) {
-                    cb1(null, "get actiongroups for action");
-                })
-            },
-            function (cb1) {
-
+            // function(cb1) {
+            //     // 'actor' wants to do an 'action'
+            //     // 'actorGroup' shall be in the list of 'userGroups' having permissions to 'actionGroup'
+            //     proxyprinttodiv('Function sc going to get groups for  actor Group  -- ', actorGroup, 39);
+            //     getmygroups({
+            //         "wid": actorGroup
+            //     }, "groupdto", "groupname", actorGroupsArr, function(err, res) {
+            //         // get all userGroups for the actor
+            //         // add calculated + default userGroup for the actor('actorGroup')
+            //         proxyprinttodiv('Function sc got groups for  actor Group ' + actorGroup + '  -- ', res, 39);
+            //         cb1(null, "get usergroups for user");
+            //     })
+            // },
+            // function(cb1) {
+            //     // get all actionGroups for the action
+            //     // add calculated + default userGroup for the actor('actorGroup')
+            //     getmygroups({
+            //         "wid": action
+            //     }, "groupdto", "type", actionGroupsArr, function(err, res) {
+            //         cb1(null, "get action groups for action");
+            //     })
+            // },
+            function(cb1) {
                 // get the owner of the original action(metadata.systemdto.creator)
                 var query = {
                     "executethis": "querywid",
-                    "mongorawquery":{"data.usergroupname": "everyone"}
-                };
-                addSecurityParams(query, secParams, function (err, query) {
-                    execute(query, function (err, res) {
-                        var res1 = res[0][Object.keys(res[0])[0]];
-                        actionCreator = res1['metadata']['system']['creator'];
-                        proxyprinttodiv('Function securitycheck Action creator is -- ', actionCreator, 39);
-                        // actionCreator = "rogeruser";
-                        cb1(null, "identified action owner");
-                    });
-                });
-            },
-            function (cb1) {
-                // getwidmaster for permissions for the 'owner'
-                var rawquery1 = {
-                    "executethis": "querywid",
-                    "command": {
-                        "result": "queryresult"
-                    },
                     "mongorawquery": {
-                        "metadata.system.creator": actionCreator
+                        "data.type": _action
                     }
                 };
 
-                addSecurityParams(rawquery1, secParams, function (err, rawquery1) {
-
-                    execute(rawquery1, function (err, res1) {
-                        var arr = res1;
-                        var obj, jsonKey, dto;
-                        if (arr) {
-                            // iterate over the results and prepare the list
-                            async.mapSeries(arr, function (objOuter, cbMapOuter) {
-                                jsonKey = Object.keys(objOuter)[0];
-                                dto = objOuter[jsonKey];
-
-                                var rawquery2 = {
-                                    "executethis": "getwidmaster",
-                                    "wid": dto.wid
-                                };
-                                execute(rawquery2, function (err, res) {
-                                    var arr = res;
-                                    var obj, jsonKey, dto;
-                                    if (arr) {
-                                        // iterate over the results and prepare the list
-                                        async.mapSeries(arr, function (obj, cbMap) {
-                                            var permissionsjson = converttodriformat(obj);
-                                            actionCreatorPermissions.push(permissionsjson);
-                                            cbMap(null, "map iteration");
-                                        }, function (err, res) {
-                                            proxyprinttodiv('Function securitycheck permissions list -- ', actionCreatorPermissions, 39);
-                                            cbMapOuter(null, "getwidmaster to get owner's permissions");
-                                        })
-                                    } else {
-                                        cbMapOuter(null, "getwidmaster to get owner's permissions");
-                                    }
-                                });
-                            }, function (err, res) {
-                                cb1(null, "finish getting permissions list");
-                            });
-                        }
-                    });
-
+                execute(query, function(err, res) {
+                    var res1 = res[0][Object.keys(res[0])[0]];
+                    actionCreator = res1['metadata']['system']['creator'];
+                    proxyprinttodiv('Function securitycheck Action creator is -- ', actionCreator, 39);
+                    cb1(null, "identified action owner");
                 });
             },
 
+            function(cb1) {
+                // get user groups where user granted permissions is the action 'owner'
+                // get all the groups for the actioncreator
+                getrelatedwids("", "groupdto", actionCreator, "userdto", "", function(err, res) {
+                    actioncreatorgroups = [];
+                    addGroupWids(actioncreatorgroups,res);
 
-            function (cb1) {
+                    // iterate over all groups and get the related groups
+                    for (var i in actioncreatorgroups) {
+                        var groupWid = actioncreatorgroups[i];
+                        // get all related groups recursively and concat to groups set
+                        getrelatedwids("", "groupdto", groupWid, "groupdto", "", function(err, res) {
+                            addGroupWids(actioncreatorgroups,res);
+                        });
+                    }
+
+                    cb1(err, actioncreatorgroups);
+                });
+            },
+
+            function(cb1) {
                 // make a query for permissions on from a query on
                 // action = received action}
                 // &&
@@ -331,64 +153,52 @@ exports.sc = sc = function sc(secParams, _accesstoken, _mygroup, _myphone, _acti
                 // usergroupname
                 // if any matches are found -- user has permissions
 
+                // **** check permission wid(s) based on the the user's groups from user's permissions
+                // get user groups where user granted permissions is the action 'owner'
+                // get all the groups for the actioncreator
+                if (actioncreatorgroups && (actioncreatorgroups.length > 0)) {
+                    // get all my groups
+                    getrelatedwids("", "", "", "", {'data.groupname':actorGroup}, function(err, res) {
+                        actorgroups = [];
 
-                // **** check permission wid(s) based on the collection,db, and creator
-                var actiongroupnameslist = [];
-                var usergroupnameslist = [];
-                var isMatch = false;
-                // iterate each permission record
-                for (var idx1 in actionCreatorPermissions) {
-                    isMatch = false;
-                    var permissionrecord = actionCreatorPermissions[idx1];
-                    var actiongroupsarr = permissionrecord['data']['actiongroupdto'];
-                    var usergroupsarr = permissionrecord['data']['usergroupdto'];
+                        for(var idx in res){
+                            var json = res[idx];
+                            var objkey = Object.keys(json)[0];
+                            var groupWid = objkey;
+                            actorgroups.push(groupWid);
 
-                    // check db and collection
-                    var db = permissionrecord['metadata']['db'];
-                    var collection = permissionrecord['metadata']['collection'];
 
-                    isMatch = ((_dbgroup === db) && (_collection === collection))
-
-                    // if matching proceed with other checks --actiongroupname and usergroupname
-                    if (isMatch) {
-
-                        // check actiongroups -- check if sent in action mataches the actiongroups permitted to
-                        for (var idx2 in actiongroupsarr) {
-                            var actiongrouprecord = actiongroupsarr[idx2];
-                            isMatch = (action === actiongrouprecord['actiongroupname']);
-                            if (isMatch) {
-                                break;
-                            }
-                        }
-
-                        if (isMatch) {
-                            break;
-                        } else {
-                            // check usergroups -- check if sent in usergroup mataches the usergroups permitted to
-                            for (var idx3 in usergroupsarr) {
-                                var usergrouprecord = usergroupsarr[idx3];
-                                isMatch = (action === usergrouprecord['usergroupname']);
-                                if (isMatch) {
-                                    break;
+                            // TODO :: get more groups applicable recursively
+                            getrelatedwids(groupWid, "groupdto", "", "groupdto", "", function(err, res) {
+                                for(var idx2 in res){
+                                    var json = res[idx2];
+                                    var objkey = Object.keys(json)[0];
+                                    var groupWid = json[objkey]['primarywid'];
+                                    actorgroups.push(groupWid);
                                 }
-                            }
+                            });
                         }
-                    } else {
-                        isMatch = false;
-                    }
-
-                    if (isMatch) {
-                        break;
-                    }
+                        cb1(err, actorgroups);
+                    });
+                } else {
+                    // TODO :: no need progressing, security check is false
+                    cb1(null, "No action creation permissions");
                 }
+            },
+            function(cb1) {
+                // match the 2 arrays for commonality
+                checkSecurityEx(actioncreatorgroups,actorgroups,function(err,resp){
+                    isMatch = resp;
+                    proxyprinttodiv('Function securitycheck auth status -- ', isMatch, 39);
+                    securityCheckOutput = isMatch;
+                    cb1(null, "matching permissions list");
+                });
 
-                proxyprinttodiv('Function securitycheck auth status -- ', isMatch, 39);
-                securityCheckOutput = isMatch;
-                cb1(null, "matching permissions list");
+
             }
         ],
 
-        function (err, res) {
+        function(err, res) {
             // final callback
             proxyprinttodiv('Function Final callback returns -- ', securityCheckOutput, 39);
             callback(err, securityCheckOutput);
@@ -396,100 +206,35 @@ exports.sc = sc = function sc(secParams, _accesstoken, _mygroup, _myphone, _acti
 
 };
 
-
-// getusergroups
-// that calls getusergroupsdefault, getusergroupsrecurse and adds them together
-exports.getmygroups = getmygroups = function getmygroups(secParams, userobj, grouptype, groupkey, groupset, callback) {
-    debuglevel = 39;
-    proxyprinttodiv('Function  getmygroups get groups for user  -- ', userobj, 39);
-
-    var queryJson = {};
-    queryJson['data.' + groupkey] = userobj;
-    query = {
-        "executethis": "querywid",
-        "mongorawquery": queryJson,
-        "command": {
-            "result": "queryresult"
+// get the 2 wids lists and check the security check output
+function checkSecurity(actioncreatorgroups,actorgroups, callback){
+    var isMatch = false;
+    for (var idx1 in actioncreatorgroups) {
+        for (var idx2 in actorgroups) {
+            if (actorgroups[idx2] === actioncreatorgroups[idx1]) {
+                isMatch = true;
+            }
         }
     }
+    callback(null, isMatch);
+}
 
-
-    // query = {
-    //     "executethis": "querywid",
-    //     "mongowid": userobj,
-    //     "command": {
-    //         "result": "queryresult"
-    //     },
-    //     "mongorelationshiptype": "attributes",
-    //     "mongorelationshipmethod": grouptype,
-    //     "mongorelationshipdirection": "forward",
-    //     "mongowidmethod": grouptype
-    // };
-
-
-
-
-    proxyprinttodiv('Function  getmygroups get groups for user query is -- ', query, 39);
-
-
-    addSecurityParams(query, secParams, function (err, query) {
-
-        execute(query,
-            function (err, res1) {
-                proxyprinttodiv('Function  getmygroups get groups for user query results -- ', res1, 39);
-
-                // var jsonKey = Object.keys(res)[0];
-                // var jsonVal = res[jsonKey];
-                // var arr = jsonVal;
-
-                var arr = res1;
-                var obj, jsonKey, dto;
-
-                if (arr) {
-                    // iterate over the results and prepare the list
-                    // for (var i = 0; i < arr.length; i++) {
-                    async.mapSeries(arr, function (obj, cbMap) {
-                        jsonKey = Object.keys(obj)[0];
-                        dto = obj[jsonKey];
-
-                        if (dto[groupkey] && ((userobj !== dto[groupkey]) && dto[groupkey])) {
-                            getmygroups(secParams, dto[groupkey], grouptype, groupkey, groupset,
-                                function (err, res) {
-                                    // recursing -- nothing to do
-                                    cbMap(null, "  added a dto in iteration  ");
-                                });
-                        }else{
-                            cbMap(null, "  no dto in iteration  ");
-                        }
-                    }, function (err, res) {
-
-                        groupset.push(userobj)
-                        // proxyprinttodiv('Function getmygroups >>>>>  for  -- creator', creator, 39);
-                        callback(err, groupset);
-                    });
-                }
-            });
+// extensive check
+// get the 2 wids lists and check the security check output
+function checkSecurityEx(actioncreatorgroups,actorgroups, callback){
+    var isMatch = false;
+    getrelatedwids("","","","",{"$and":[{"wid":{"$in":actioncreatorgroups}},{"wid":{"$in":actorgroups}}]}, function(err, matchingWids) {
+        if(matchingWids && matchingWids instanceof Array &&  (matchingWids.length > 0)){
+            isMatch = true;
+        }
+        callback(null, isMatch);
     });
 }
 
-// logic to get my owner as string
-exports.getmycreator = getmycreator = function getmycreator(widname, callback) {
-    widname = "getwidmaster";
-    var reqJson = {
-        "executethis": "getwidmaster",
-        "wid": widname
-    };
-    execute(reqJson, function (err, res) {
-        var creator = res["metadata.system.creator"];
-        proxyprinttodiv('Function getmycreator -- ', creator, 39);
-        callback(err, creator);
-    });
-
-}
 
 // getuserbyac() gets user id by ac
 // logic to get user wid by the user accesstoken passed in
-exports.getuserbyac = getuserbyac = function getuserbyac(secParams, userac, callback) {
+exports.getuserbyac = getuserbyac = function getuserbyac(userac, callback) {
     var userDto, results1, userWid, systemWid;
 
     async.series([
@@ -501,25 +246,24 @@ exports.getuserbyac = getuserbyac = function getuserbyac(secParams, userac, call
                     "result": "queryresult"
                 },
                 "mongorawquery": {
-                    "data.accesstoken": userac
+                    "data.ac": userac
                 },
                 "mongorelationshipdirection": "backward",
                 "mongorelationshipmethod": "all",
                 "mongorelationshiptype": "attributes"
             };
 
-            addSecurityParams(query1, secParams, function (err, query1) {
-                execute(query1, function (err, res1) {
-                    var res = res1[0];
-                    proxyprinttodiv('Function getuserbyac query1 -- res', res1, 39);
-                    var jsonKey = Object.keys(res)[0];
-                    var jsonVal = res[jsonKey];
-                    userWid = jsonVal;
-                    cb(null);
-                });
+            execute(query1, function(err, res1) {
+                var res = res1[0];
+                proxyprinttodiv('Function getuserbyac query1 -- res', res1, 39);
+                var jsonKey = Object.keys(res)[0];
+                var jsonVal = res[jsonKey];
+                userWid = jsonVal;
+                cb(null);
             });
+
         }
-    ], function (err, res) {
+    ], function(err, res) {
         //console.debug' done securitycheck in sync manner.');
         // proxyprinttodiv('securitycheck userDto ', userDto, 39);
         proxyprinttodiv('Function getuserbyac --  >>>>>>  >>>>> userWid -- ', userWid, 39);
@@ -527,54 +271,6 @@ exports.getuserbyac = getuserbyac = function getuserbyac(secParams, userac, call
     });
 
 }
-
-
-// get cumulative list of all the permission records associated given group and key
-
-function getPermissionsForGroup(group, groupname, key, type, rawquery, callback) {
-    getgroupsrecursive(groupname, type, [], function (err, res) {
-        var matchingGroups = res;
-        var permissionsList = [];
-
-        var query = {};
-        if (rawquery) {
-            query = rawquery;
-        } else {
-            query["data." + key] = group;
-        }
-
-
-        var command = {
-            "executethis": "querywid",
-            "command": {
-                "result": "queryresult"
-            },
-            "mongorawquery": query
-        };
-
-        execute(command, function (err, res1) {
-            var res = res1[0][0]["queryresult"];
-            var arr = res;
-            var obj, jsonKey, dtoPermissions;
-
-            for (var i = 0; i < arr.length; i++) {
-                obj = arr[i];
-                jsonKey = Object.keys(obj)[0];
-                dtoPermissions = obj[jsonKey];
-
-                // check for all the permissions in the matchinggroups with acceptable level
-                if (((!dtoPermissions.levelgroup) || (sentinloginlevel >= dtoPermissions.levelgroup))) {
-                    permissionsList.push(dtoPermissions);
-                }
-            }
-
-            proxyprinttodiv('Function getPermissionsForGroup --  permissionsList ', permissionsList, 39);
-            callback(err, permissionsList);
-        });
-    });
-}
-
-
 
 
 
@@ -588,51 +284,9 @@ function getPermissionsForGroup(group, groupname, key, type, rawquery, callback)
 
 
 
-
-
-
-
-// ** GENERIC FUNCTION TO CREATE COMMON(default and override) DATA **
-// create defaultdto and overridedto wids -- NOT USED CURRENTLY
-exports.createcommondata = createcommondata = function createcommondata(callback) {
-
-    var creatorwid = "driwid";
-    var expirationtimer = "10000";
-    var creationdate = "3/9/2014";
-    var expirationdate = "12/31/2999";
-    var expirationdate = "12/31/2999";
-    var db = "data";
-    var collectionname = "dri";
-
-
-    execute([{
-        // create defaultdto data
-        "executethis": "addwidmaster",
-        "metadata.method": "defaultdto",
-        "system.creator": creatorwid,
-        "system.creationdate": creationdate,
-        "system.expirationtimer": expirationtimer,
-        "system.expiratondate": expirationdate,
-        "system.db": db,
-        "system.collection": collectionname
-
-        // TODO :: ADD systemdto/overridedto data add logic below
-        // },{
-        //  // create overridedto data
-        //     "executethis": "addwidmaster",
-        //     "metadata.method": "defaultdto",
-        //     "metadata.system.creator": creatorwid,
-        //     "metadata.system.creationdate": creationdate,
-        //     "metadata.system.expirationtimer": expirationtimer,
-        //     "metadata.system.expiratondate": expirationdate,
-        //     "metadata.system.db": db,
-        //     "metadata.system.collection": collectionname
-    }], callback);
-}
-
 // ** GENERIC FUNCTION TO CREATE A USER WID ON THE BASIS OF RECEIVED DATA **
 // create createuserdata wid data and associated relationships
-exports.createuserdata = createuserdata = function createuserdata(userobj, securityobj, overrideobj, defaultobj, permissionobj, usergroupobj, actiongroupobj, environmentobj, callback) {
+exports.createuserdata = createuserdata = function createuserdata(userobj, callback) {
 
     var userJson = {
         "executethis": "addwidmaster",
@@ -648,112 +302,51 @@ exports.createuserdata = createuserdata = function createuserdata(userobj, secur
         "state": userobj.state,
         "zip": userobj.zip,
         "country": userobj.country
-
     }
 
-    // userJson["permissiondto.0.wid"]={};
-    // add permissiondto values from the json object passed in
-    // for (var key in permissionobj) {
-    //     userJson[key] = permissionobj[key];
-    // }
-
-    // add usergroupdto values from the json object passed in
-    // for (var key in usergroupobj) {
-    //     userJson[key] = usergroupobj[key];
-    // }
-
-    // userJson["actiongroupdto.0.wid"]={};
-    // add actiongroupdto values from the json object passed in
-    // for (var key in actiongroupobj) {
-    //     userJson[key] = actiongroupobj[key];
-    // }
-
-    // add environmentdto values from the json object passed in
-    // userJson["environmentdto.ac"] = environmentobj.ac;
-    // userJson["environmentdto.gps"] = environmentobj.gps;
-    // userJson["environmentdto.account"] = environmentobj.account;
-    // userJson["environmentdto.db"] = environmentobj.db;
-    // userJson["environmentdto.collection"] = environmentobj.collection;
-
-    // add securitydto values from the json object passed in
-    // userJson["securitydto.accesstoken"] = securityobj.ac;
-
     // create userdto data
-    execute(userJson, function (err, res) {
+    execute(userJson, function(err, res) {
         // create securitydto data
-        execute({
-            "executethis": "getwidmaster",
-            "wid": userobj.wid
-        }, function (err, resp) {
-            proxyprinttodiv('Function createuserdata -- added getwidmaster on user  -- ' + userobj.wid, res, 39);
-            callback(err, res);
-        });
+        proxyprinttodiv('Function createuserdata -- added getwidmaster on user  -- ' + userobj.wid, res, 39);
+        callback(err, res);
     });
 }
 
-// ** GENERIC FUNCTION TO ADD ENVIRONMENT DATA TO A USER WID ON THE BASIS OF RECEIVED DATA **
-// logic to assign environment to a user -- taking the groupname
-exports.addenvironment = addenvironment = function addenvironment(userobj, environmentobj, callback) {
-
-    execute({
-        "executethis": "addwidmaster",
-        "wid": userobj.wid,
-        "environmentdto.ac": environmentobj.ac,
-        "environmentdto.gps": environmentobj.gps,
-        "environmentdto.account": environmentobj.account,
-        "environmentdto.db": environmentobj.db,
-        "environmentdto.collection": environmentobj.collection
-    }, function (err, res) {
-        proxyprinttodiv('Function addenvironment -- added environment to user  -- ' + userobj.wid, res, 39);
-        callback(null, "environmentdto");
-    });
-}
 
 // ** GENERIC FUNCTION TO CREATE A GROUP ON THE BASIS OF RECEIVED DATA **
-// logic to create a group -- taking the groupname
-exports.creategroup = creategroup = function creategroup(groupname, callback) {
+// logic to create a group --
+exports.creategroup = creategroup = function creategroup(config, callback) {
+    // proxyprinttodiv('Function creategroup -- adding group of ', config, 39);
+
+    var grouptype = config['grouptype'];
     execute([{
         "executethis": "addwidmaster",
-        "wid": groupname,
-        "usergroupname": groupname
-    }], function (err, res) {
-        proxyprinttodiv('Function creategroup -- added group  -- ', groupname, 39);
-
+        "metadata.method": "groupdto",
+        "metadata.system.creator": "user1", // TODO :: this shall come from inherit
+        "groupname": grouptype,
+        "type": grouptype
+    }], function(err, res) {
+        proxyprinttodiv('Function creategroup -- added group -- ', res, 39);
         callback(err, res);
     });
-}
+};
 
 
-// ** GENERIC FUNCTION TO CREATE A USER GROUP ON THE BASIS OF RECEIVED DATA **
-// logic to create a group -- taking the groupname
-exports.createusergroup = createusergroup = function createusergroup(groupname, callback) {
+// ** GENERIC FUNCTION TO CREATE AN ACTION ON THE BASIS OF RECEIVED DATA **
+// logic to create an action -- taking the type of action
+exports.createaction = createaction = function createaction(config, callback) {
+    // proxyprinttodiv('Function createaction -- adding action of ', config, 39);
+    var actiontype = config['actiontype'];
     execute([{
         "executethis": "addwidmaster",
-        "wid": groupname,
-        "usergroupname": groupname
-    }], function (err, res) {
-        proxyprinttodiv('Function createusergroup -- added user group  -- ', groupname, 39);
-
-        callback(err, res);
+        "type": actiontype,
+        "metadata.system.creator": "user1", // TODO :: this shall come from inherit
+        "metadata.method": "actiondto"
+    }], function(err, res) {
+        proxyprinttodiv('Function createaction -- added group of type "' + actiontype + '"  -- ', res, 39);
+        callback(err, res[0]);
     });
-}
-
-
-
-// ** GENERIC FUNCTION TO CREATE AN ACTION GROUP ON THE BASIS OF RECEIVED DATA **
-// logic to create a group -- taking the groupname
-exports.createactiongroup = createactiongroup = function createactiongroup(groupname, callback) {
-    execute([{
-        "executethis": "addwidmaster",
-        "metadata.method": "actiongroupdto",
-        "wid": groupname,
-        "actiongroupname": groupname
-    }], function (err, res) {
-        proxyprinttodiv('Function createactiongroup -- added actiongroup  -- ', groupname, 39);
-
-        callback(err, res);
-    });
-}
+};
 
 // ** GENERIC FUNCTION TO ADD A RELATIONSHIP BETWEEN TWO WID TYPES ON THE BASIS OF RECEIVED DATA **
 // create relationship function
@@ -769,7 +362,7 @@ exports.createrelationship = createrelationship = function createrelationship(pr
         "primarymethod": primarywid,
         "secondarywid": secondarywid,
         "secondarymethod": secondarywid
-    }], function (err, res) {
+    }], function(err, res) {
         // proxyprinttodiv('Function createrelationship -- added relationship for  -- ' + primarywid + ' >> ' + secondarywid, linktype, 39);
         callback(err, res);
     });
@@ -780,47 +373,66 @@ exports.createrelationship = createrelationship = function createrelationship(pr
 
 // ** GENERIC FUNCTION TO ADD A RELATIONSHIP BETWEEN TWO WID TYPES ON THE BASIS OF RECEIVED DATA **
 // add permission
-exports.addpermission = addpermission = function addpermission(userobj, permissionobjArr, callback) {
-    async.mapSeries(permissionobjArr, function (permissionobj, cbMap) {
-        // add each permission to the user
-        execute([{
-                // add permissions as per given information
-                "executethis": "addwidmaster",
-                "wid": userobj.wid,
-                // permissions data
-                "metadata.method": "userdto",
-                "permissiondto.usergroup.usergroupname": permissionobj.usergroup,
-                "permissiondto.actiongroup.actiongroupname": permissionobj.actiongroup,
-                "permissiondto.dbgroup": permissionobj.dbgroup,
-                "permissiondto.levelgroup": permissionobj.levelgroup
-
-            }],
-            function (err, res) {
-                cbMap(null);
-            });
-    }, function (err, res) {
-        proxyprinttodiv('Function createuser done --  >>>>>> added permission >>>>>  for  -- ' + userobj.wid, res, 39);
+exports.addpermission = addpermission = function addpermission(config, callback) {
+    // add each permission to the user
+    execute([{
+        // add permissions as per given information
+        "executethis": "addwidmaster",
+        "metadata.method": "permissiondto",
+        "level": config['permission.level']
+    }], function(err, res) {
+        proxyprinttodiv('Function addpermission done --  >>>>>> added permission >>>>>  for  -- ', res, 39);
         callback(err, res);
     });
 }
 
 // ** GENERIC FUNCTION TO ADD A SECURITY DATA FOR A USER WID ON THE BASIS OF RECEIVED DATA **
 // add security data
-exports.addsecurity = addsecurity = function addsecurity(userobj, securityobj, callback) {
+exports.addsecurity = addsecurity = function addsecurity(config, callback) {
     execute([{
             // add group as per given wid
             "executethis": "addwidmaster",
-            "wid": userobj.wid,
+            "wid": config['userwid'],
             // security data
             "metadata.method": "userdto",
-            "securitydto.accesstoken": securityobj.ac
+            "securitydto.ac": config['securityac']
         }],
-        function (err, res) {
-            proxyprinttodiv('Function addsecurity --  >>>>>> added security  >>>>>  for  -- ' + userobj.wid, res, 39);
+        function(err, res) {
+            proxyprinttodiv('Function addsecurity --  >>>>>> added security  >>>>>  for  -- ', res, 39);
             // console.debug('added security for wid ' + wid + " >>>> " + JSON.stringify(res));
             callback(err, res)
         });
 }
+
+// ** GENERIC FUNCTION TO ADD A WID TO GROUP ON THE BASIS OF RECEIVED DATA **
+// add security data
+exports.addwidtogroup = addwidtogroup = function addwidtogroup(config, callback) {
+    // addwidtogroup(groupwid, targetwid=, type=)
+    // var record = {mm: groupdto, wid: groupwid, <type>.wid: targetwid}
+    // addwidmaster(record)
+    // add each permission to the user
+
+    var groupchildkey = config['group.type'] + ".wid";
+    var jsonToAdd = {
+        // add permissions as per given information
+        "executethis": "addwidmaster",
+        "wid": config['group.wid'],
+        "metadata.method": "groupdto"
+    }
+
+    jsonToAdd[groupchildkey] = config['group.targetwid'];
+
+    execute(jsonToAdd, function(err, res) {
+        proxyprinttodiv('Function addwidtogroup done --  >>>>>> added group  to wid >>>>>  for  -- ' + config['group.wid'] + " >>> " + config['group.targetwid'], res, 39);
+        callback(err, res);
+    });
+
+
+}
+
+
+
+
 
 // createuser merchant1
 // createuser user1
@@ -1187,289 +799,6 @@ exports.addtargetwidtocurrentwid = addtargetwidtocurrentwid = function addtarget
     }, function(err, resp) {
         proxyprinttodiv('Function addtargetwidtocurrentwid done -- ' + currentwid + ' >>>>>> ' + linktype + ' >>>>> ' + targetwid + '  -- ', resp, 99);
         callback(err, resp);
-    });
-
-}
-
-exports.ttttest2 = ttttest2 = function ttttest2(config, callback) {
-    var user1wid, permissionwid, group1wid, group1;
-    debuglevel = 39;
-    group1 = "drisales";
-
-    // create user user1
-    var organizationuser1 = {
-        "wid": "user1",
-        "fname": "Saurabh",
-        "lname": "S",
-        "phone": "+91-987-383-8981",
-        "email": "s@s.com",
-        "address": "112,Donald Lynch blvd",
-        "address2": "MA",
-        "city": "Marlborrough",
-        "state": "MA",
-        "zip": "01752",
-        "country": "US"
-    };
-
-    execute([], function(err, res) {
-
-        async.series([
-            function(cb) {
-                execute([{ // systemdto
-                    "executethis": "addwidmaster",
-                    "metadata.method": "systemdto",
-                    "wid": "systemdto",
-                    "ownerid": "string",
-                    "expirationtimer": "string",
-                    "expirationdate": "string",
-                    "executecount": "integer"
-                    // ,
-                    // "permissiondto.something1.something2": "string", // this is just a field, but will look like dto data to outside
-                    // "metadata.inherit.0": {
-                    //     "wid": "systemdefault",
-                    //     "command": {
-                    //         "dtotype": "",
-                    //         "adopt": "default"
-                    //     }
-                    // }
-                    // }, { // system default
-                    //     "executethis": "addwidmaster",
-                    //     "wid": "systemdefault",
-                    //     "metadata.method": "systemdto",
-                    //     "expirationtimer": "90",
-                    //     "expirationdate": "6/14/14",
-                    //     "permissiondto.something1.something2": "someanwser"
-
-                }, { //userdto
-                    "executethis": "addwidmaster",
-                    "metadata.method": "userdto",
-                    "wid": "userdto",
-                    "fname": "string",
-                    "lname": "string",
-                    "phone": "string",
-                    "email": "string",
-                    "address": "string",
-                    "address2": "string",
-                    "city": "string",
-                    "state": "string",
-                    "zip": "string",
-                    "country": "string",
-                    //"metadata.systemdto.type": "onetoone",
-                    "metadata.securitydto.type": "onetoone",
-                    "metadata.permissiondto.type": "onetomany"
-                    //"metadata.usergroupdto.type": "onetomany"
-                }, { // securitydto
-                    "executethis": "addwidmaster",
-                    "metadata.method": "securitydto",
-                    "wid": "securitydto",
-                    "ac": "string"
-                }, { // permissiondto
-                    "executethis": "addwidmaster",
-                    "metadata.method": "permissiondto",
-                    "wid": "permissiondto",
-                    "level": "string",
-                    "metadata.groupdto.type": "manytomany"
-                    // }, { // permission default
-                    //     "executethis": "addwidmaster",
-                    //     "wid": "rel_user_sys",
-                    //     "metadata.method": "relationshipdto",
-                    //     "primarywid": "userdto",
-                    //     "secondarywid": "systemdto",
-                    //     "primarymethod": "userdto",
-                    //     "secondarymethod": "systemdto",
-                    //     "linktype": "onetoone",
-                    //     "relationshiptype": "attributes"
-                }, { // actiondto
-                    "executethis": "addwidmaster",
-                    "wid": "actiondto",
-                    "type": "string",
-                    "metadata.method": "actiondto"
-                }, { // groupdto
-                    "executethis": "addwidmaster",
-                    "wid": "groupdto",
-                    "metadata.method": "groupdto",
-                    "type": "string",
-                    "groupname": "string",
-                    "metadata.groupdto.type": "manytoone", // changed -- debateable
-                    "metadata.userdto.type": "manytomany", // added
-                    "metadata.actiondto.type": "manytomany" // added
-                    // user to ... relationships
-                }, {
-                    "executethis": "addwidmaster",
-                    "wid": "rel_user_sec",
-                    "metadata.method": "relationshipdto",
-                    "primarywid": "userdto",
-                    "secondarywid": "securitydto",
-                    "primarymethod": "userdto",
-                    "secondarymethod": "securitydto",
-                    "linktype": "onetoone",
-                    "relationshiptype": "attributes"
-                }, {
-                    "executethis": "addwidmaster",
-                    "wid": "rel_user_permission",
-                    "metadata.method": "relationshipdto",
-                    "primarywid": "userdto",
-                    "secondarywid": "permissiondto",
-                    "primarymethod": "userdto",
-                    "secondarymethod": "permissiondto",
-                    "linktype": "onetomany",
-                    "relationshiptype": "attributes"
-                    // permission to relationships
-                }, {
-                    "executethis": "addwidmaster",
-                    "wid": "rel_permission_group",
-                    "metadata.method": "relationshipdto",
-                    "primarywid": "permissiondto",
-                    "secondarywid": "groupdto",
-                    "primarymethod": "permissiondto",
-                    "secondarymethod": "groupdto",
-                    "linktype": "manytomany",
-                    "relationshiptype": "attributes"
-                }, {
-                    "executethis": "addwidmaster",
-                    "wid": "rel_action_group",
-                    "metadata.method": "relationshipdto",
-                    "primarywid": "groupdto", //"actiondto",
-                    "secondarywid": "actiondto", //"groupdto"
-                    "primarymethod": "groupdto", // "actiondto",
-                    "secondarymethod": "actiondto", // "groupdto",
-                    "linktype": "manytomany", // "onetomany",
-                    "relationshiptype": "attributes"
-                }, {
-                    "executethis": "addwidmaster",
-                    "wid": "rel_user_group",
-                    "metadata.method": "relationshipdto",
-                    "primarywid": "groupdto", //"groupdto",
-                    "secondarywid": "userdto", //"userdto"
-                    "primarymethod": "groupdto", // "groupdto",
-                    "secondarymethod": "userdto", // "userdto",
-                    "linktype": "manytomany", // "onetomany",
-                    "relationshiptype": "attributes"
-                }, { // group to group
-                    "executethis": "addwidmaster",
-                    "wid": "rel_group_group",
-                    "metadata.method": "relationshipdto",
-                    "primarywid": "groupdto",
-                    "secondarywid": "groupdto",
-                    "primarymethod": "groupdto",
-                    "secondarymethod": "groupdto",
-                    "linktype": "manytoone", // changed
-                    "relationshiptype": "attributes"
-                }, {
-                    "executethis": "getwidmaster",
-                    "metadata.method": "userdto",
-                    "wid": "userdto"
-                }], function(err, res) {
-                    execute({
-                            "executethis": "getwidmaster",
-                            "wid": "userdto"
-                        },
-                        function(err, resp) {
-                            proxyprinttodiv('Function test done --    for userdto  -- ', resp, 39);
-                            cb(err);
-                        });
-                });
-            },
-            function(cb) {
-                addtargetwidtocurrentwid("groupdto", "groupdto", "userdto", "userdto", "manytomany", function(err, res) {
-                    cb(err);
-                })
-            },
-
-            // function (cb) {
-            //     execute([{
-            //         "executethis": "addwidmaster",
-            //         "wid": "testgroup",
-            //         "metadata.method": "groupdto",
-            //         "groupname": "testgroup"
-            //     }, {
-            //         "executethis": "addwidmaster",
-            //         "level": "99",
-            //         "wid": "testpermission",
-            //         "metadata.method": "permissiondto"
-            //     }], function (err, res) {
-            //         cb(err);
-            //     });
-            // },
-
-            function(cb) {
-                addtargetwidtocurrentwid("userdto", "userdto", "permissiondto", "permissiondto", "onetomany", function(err, res) {
-                    cb(err);
-                })
-            },
-
-            // function (cb) {
-            //     addtargetwidtocurrentwid("groupdto", "groupdto", "groupdto", "groupdto", "manytoone", function (err, res) {
-            //         cb(err);
-            //     })
-            // }
-            // ,
-
-            // function (cb) {
-            //     addtargetwidtocurrentwid("groupdto", "groupdto", "actiondto", "actiondto", "manytomany", function (err, res) {
-            //         cb(err);
-            //     })
-            // },
-            // function (cb) {
-            //     // create group (by admin user)
-            //     creategroup({
-            //         "grouptype": group1
-            //     }, function (err, resp) {
-            //         group1wid = resp[0][0].wid;
-            //         proxyprinttodiv('Function creategroup done --    for  -- ', group1wid, 39);
-            //         cb(err);
-            //     });
-            // },
-
-
-
-            // // add group create to actiongroup and usergroup
-            function(cb) {
-                // create organization user 1
-                createuserdata(organizationuser1, function(err, resp) {
-                    user1wid = resp[0].wid;
-                    proxyprinttodiv('Function organization createuser 1 done --  for  -- ', user1wid, 39);
-                    cb(err, res);
-                });
-            },
-            function(cb) {
-                // create permission (for organization user), add permission data to organizationuser wid
-                execute([{
-                    // add permissions as per given information
-                    "executethis": "addwidmaster",
-                    "metadata.method": "permissiondto",
-                    "level": 99
-                }], function(err, res) {
-                    proxyprinttodiv('Function addpermission done --  >>>>>> added permission >>>>>  for  -- ', res, 39);
-                    permissionwid = res[0].wid;
-                    cb(err, res);
-                });
-            },
-            // function (cb) {
-            //     addtargetwidtocurrentwid(permissionwid, "permissiondto", group1, "groupdto", "manytomany", function (err, res) {
-            //         cb(err);
-            //     });
-            // },
-
-            function(cb) {
-                addtargetwidtocurrentwid("user1", "userdto", permissionwid, "permissiondto", "onetomany", function(err, res) {
-                    cb(err);
-                })
-            },
-
-
-
-
-        ], function(err, res) {
-            execute({
-                "executethis": "getwidmaster",
-                "wid": organizationuser1['wid']
-            }, function(err, res) {
-                proxyprinttodiv('Function ttttest2 done --  >>>>>>  -- ', res, 99);
-                callback(err, res);
-            });
-        });
-
     });
 
 }

@@ -72,44 +72,49 @@ exports.clearLocal = clearLocal = function clearLocal() {
 };
 
 function getdatabaseinfo(command, datastore, collection, keycollection, db, databasetable) {
-    proxyprinttodiv('Function getdatabaseinfo collection', collection,12);
-    proxyprinttodiv('Function getdatabaseinfo keycollection', keycollection,12);
-    proxyprinttodiv('Function getdatabaseinfo datastore', datastore,12);
+    proxyprinttodiv('Function getdatabaseinfo collection', collection, 12);
+    proxyprinttodiv('Function getdatabaseinfo keycollection', keycollection, 12);
+    proxyprinttodiv('Function getdatabaseinfo datastore', datastore, 12);
     var database = [];
-    var keydatabase={};
-    var tempobj={};
-    tempobj["wid"]= "initialwid";
-    tempobj["metadata"] = {"date": new Date()};
-    tempobj[db]={"system generated": "clearLocalStorage",
-        "db":db,
-        "collection":collection,
-        "datastore":datastore,
-        "databasetable":databasetable,
-        "configuration":config.configuration.environment};
-    var keyname = "databasetable-"+databasetable+"_collection-"+collection
-	//var keyname = databasetable+collection;
-    var keynamekey = "databasetable-"+databasetable+"_collection-"+keycollection
-	//var keynamekey = databasetable+keycollection;
-    if (datastore==="localstorage") {
-        database = getFromLocalStorage(keyname);
+    var keydatabase = {};
+    var tempobj = {};
+    tempobj["wid"] = "initialwid";
+    tempobj["metadata"] = {
+        "date": new Date()
+    };
+    tempobj[db] = {
+        "system generated": "clearLocalStorage",
+        "db": db,
+        "collection": collection,
+        "datastore": datastore,
+        "databasetable": databasetable,
+        "configuration": config.configuration.environment
+    };
+    if (datastore === "localstorage") {
+        database = getFromLocalStorage(databasetable + collection);
         if (!database) {
-            addToLocalStorage(keyname, [tempobj]);
-            addToLocalStorage(keynamekey, {"initialwid": tempobj});
-            database = getFromLocalStorage(keyname);
+            addToLocalStorage(databasetable + collection, [tempobj]);
+            addToLocalStorage(databasetable + keycollection, {
+                "initialwid": tempobj
+            });
+            database = getFromLocalStorage(databasetable + collection);
         }
-        keydatabase = getFromLocalStorage(keynamekey);
-    }
-    else if (datastore==="localstore") {
-        database = getfromlocal(keyname); // &&& localstorage&&&
+        keydatabase = getFromLocalStorage(databasetable + keycollection);
+    } else if (datastore === "localstore") {
+        database = getfromlocal(databasetable + collection); // &&& localstorage&&&
         if (!database) {
-            addtolocal(keyname, [tempobj]);
-            addtolocal(keynamekey, {"initialwid": tempobj});
-            database = getfromlocal(keyname);
+            addtolocal(databasetable + collection, [tempobj]);
+            addtolocal(databasetable + keycollection, {
+                "initialwid": tempobj
+            });
+            database = getfromlocal(databasetable + collection);
         }
-        keydatabase = getfromlocal(keynamekey);
-    }
-    else if (datastore==="mongo") {}
-    return {database: database, keydatabase : keydatabase};
+        keydatabase = getfromlocal(databasetable + keycollection);
+    } else if (datastore === "mongo") {}
+    return {
+        database: database,
+        keydatabase: keydatabase
+    };
 }
 
 /*
@@ -265,7 +270,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
     if (inputWidgetObject.command && Object.keys(inputWidgetObject.command.environment).length > 0) {
         copyEnvironmentCommands(inputWidgetObject);
     }
-
+    if (inputWidgetObject && inputWidgetObject.command && inputWidgetObject.command.userid) {inputWidgetObject.metadata.userid=inputWidgetObject.command.userid}
     proxyprinttodiv('Function  inputWidgetObject.command', inputWidgetObject.command, 11);
 
     proxyprinttodiv('Function datastore inputWidgetObject 1', inputWidgetObject, 11);
@@ -311,6 +316,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
     var databasetable = command.databasetable;
 
     delete filter_data.output.command;
+
     var addedobject = converttodriformat(filter_data.output, command);
     proxyprinttodiv('Function datastore command -- add inputWidgetObject addedobject', addedobject, 12);
 
@@ -369,26 +375,20 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
             if (datastore === "localstorage") {
                 //keydatabase = getFromLocalStorage(keycollection);
                 //keydatabase[widName] = inputWidgetObject;
-                addToLocalStorage("databasetable-"+databasetable+"_collection-"+collection, database);
-				//addToLocalStorage(databasetable+collection, database);
-                addToLocalStorage("databasetable-"+databasetable+"_collection-"+keycollection, keydatabase);
-				//addToLocalStorage(databasetable+keycollection, keydatabase);
-            }
-            else if (datastore==="localstore") {
+                addToLocalStorage(databasetable + collection, database);
+                addToLocalStorage(databasetable + keycollection, keydatabase);
+            } else if (datastore === "localstore") {
                 //keydatabase = getfromlocal(keycollection);
                 //keydatabase[widName] = inputWidgetObject;
-                addtolocal("databasetable-"+databasetable+"_collection-"+collection, database); // &&& localstorage
-				//addtolocal(databasetable+collection, database); // &&& localstorage
-                addtolocal("databasetable-"+databasetable+"_collection-"+keycollection, keydatabase);
-				//addtolocal(databasetable+keycollection, keydatabase);
+                addtolocal(databasetable + collection, database); // &&& localstorage
+                addtolocal(databasetable + keycollection, keydatabase);
             }
 
             // upsert data in angular data model
             //addToAngular(widName, inputWidgetObject);
 
             // the type of storage below is not needed
-            addToLocalStorage("databasetable-"+databasetable+"_collection-"+collection+"_wid-"+ widName, addedobject);
-			//addToLocalStorage(databasetable+collection+widName, addedobject);
+            addToLocalStorage(databasetable + "_" + collection + "_" + widName, addedobject);
             //addtoangularstorage
             proxyprinttodiv('Function datastore command -- add addedobject end', addedobject, 12);
             callback(err, addedobject);
@@ -636,8 +636,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                     }
                     // if not resultobject then just leave output alone
 
-                    // ***
-                    if (Object.keys(output).length ) {
+                    if (output) {
                         err = null;
                         // make sure data is bundled properly for convertfromdriformat()
                         for (var prop in output) {
@@ -680,8 +679,8 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
 
                     }
                     proxyprinttodiv('Function datastore command -- get output 1', output, 12);
-                    //callback(null, output);
-                    callback(err, output);
+                    callback(null, output);
+                    //callback(err, output);
                 });
             } else { // if not local...this case makes no sense
                 output = convertfromdriformatenhanced(output, command, originalarguments);
@@ -695,8 +694,8 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                 // if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
                 //     output =  ConvertFromDOTdri(output);
                 // }
-                //callback(null, output);
-                callback(err, output);
+                callback(null, output);
+                //callback(err, output);
             }
         } else if (datastore === 'mongo') {
             mget(inputWidgetObject, command, function (err, output) {
@@ -715,8 +714,8 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                 //     output =  ConvertFromDOTdri(output);
                 // }
                 // proxyprinttodiv('Function datastore command -- get output 3', output, 12);
-                //callback(err, output);
-                callback(err, resultobject);
+                callback(err, output);
+                //callback(err, resultobject);
             });
         } else { // if not mongo
             output = convertfromdriformatenhanced(output, command, originalarguments);
@@ -726,8 +725,8 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
             //     output =  ConvertFromDOTdri(output);
             // }
             proxyprinttodiv('Function datastore command -- get output 4', output, 12);
-            //callback(null, output);
-            callback(err, output);
+            callback(null, output);
+            //callback(err, output);
         }
     } else { // if no widname
         err = {};
@@ -964,23 +963,8 @@ exports.converttodriformat = converttodriformat = function converttodriformat(in
 
 
 
-exports.printToDiv = printToDiv = function printToDiv(text, outobject, debugone, pretty) {
+exports.printToDiv = printToDiv = function printToDiv(text, obj, debugone, pretty) {
     var inbound_parameters = arguments;
-    var color_list = [
-            "black",
-            "red",
-            "green",
-            "maroon",
-            "olive",
-            "teal",
-            "blue",
-            "fuchsia",
-            "purple",
-            "lime",
-            "green",
-            "MediumBlue"
-        ];
-
     // if ((g_Debug == 'true') || (g_debuglevel == debugone) || (debugone == 12)) {
     //     printText = '<pre>' + text + '<br/>' + JSON.stringify(obj) + '</pre>';
     //     if (pretty) {printText = '<pre>' + text + '<br/>' + JSON.stringify(obj, "-", 4)+ '</pre>';}
@@ -988,38 +972,15 @@ exports.printToDiv = printToDiv = function printToDiv(text, outobject, debugone,
     //         document.getElementById('divprint').innerHTML = document.getElementById('divprint').innerHTML + printText; //append(printText);
     //     }
 
-
     if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
-            var displaycolor = color_list[getglobal("debugcolor")];
-            var indent = getglobal("debugcolor");
-            var z = getglobal('debuglinenum');
-            z++;
-            saveglobal('debuglinenum', z);
-
-            if (displaycolor == "") {
-                displaycolor = "brown";
-            }
-
-            if (pretty) {
-            var jsonPretty = JSON.stringify(outobject, "-", 4);
-            }
-            else {
-            var jsonPretty = JSON.stringify(outobject);
-            }
-            // debuglinenum++;
-
-            if (indent > 0) {
-                // var temp_HTML = debuglinenum + " " + indebugdesc + "<br>" + "<div style='color:" + displaycolor + "; padding-left:" + (8 * indent) + "em'>" + syntaxHighlight(jsonPretty) + displaycolor + "</div>";
-                var temp_HTML = z + " " + text + "<br>" + "<div style='color:" + displaycolor + "; padding-left:" + (1 * indent) + "em'>" + syntaxHighlight(jsonPretty) + "</div>";
-            } else {
-                // var temp_HTML = debuglinenum + " " + indebugdesc + "<br>" + "<div style='color:" + displaycolor + "'>" + syntaxHighlight(jsonPretty) + displaycolor + "</div>";
-                var temp_HTML = z + " " + text + "<br>" + "<div style='color:" + displaycolor + "'>" + syntaxHighlight(jsonPretty) + displaycolor + "</div>";
-            }
-
+        printText = '<pre>' + text + '<br/>' + JSON.stringify(obj) + '</pre>';
+        if (pretty) {
+            printText = '<pre>' + text + '<br/>' + JSON.stringify(obj, "-", 4) + '</pre>';
+        }
         // console.log(text);
         // console.log(obj);
         if (document.getElementById('divprint')) {
-            document.getElementById('divprint').innerHTML = document.getElementById('divprint').innerHTML + temp_HTML; //append(printText);
+            document.getElementById('divprint').innerHTML = document.getElementById('divprint').innerHTML + printText; //append(printText);
         }
 
     }
@@ -1055,7 +1016,7 @@ exports.proxyprinttodiv = proxyprinttodiv = function proxyprinttodiv(text, obj, 
     }
 }
 
-//
+// 
 //   this will command.dtotype inisde bigdto
 //   this will give an address for dtotype inside bigdto
 //   then it uses that address to insert insertobjc into inputobj
@@ -1260,9 +1221,9 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
             async.nextTick(function () {
                 var inpVal = inputObject[inpKey];
                 if (!inpVal || (inpKey === "metadata") || (inpKey === "command")) { //Ignoring metadata property in input.
-                    modifiedObj[inpKey] = inpVal;
+                    modifiedObj[inpKey] = inpVal; 
                     cbMap(null);
-                } else{
+                } else{                     
                     if (dtoObject.hasOwnProperty(inpKey)) {
                         var dataType = dtoObject[inpKey];
 
@@ -1505,7 +1466,7 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
                                         cbMap(null);
                                     }
                                 });
-                        } else {
+                        } else { 
                                // to read wid obj via getwidmaster
                                 if (dataType !== 'string') {
                                     execute({
@@ -1716,7 +1677,7 @@ function getRandomNumberByLength(length) {
     //             if (data.hasOwnProperty(item)) {
     //                 var iArray = item.split(".");
     //                 var value = data[item];
-    //                 // Copy all of the properties in the source objects over to the destination object, and return the destination object.
+    //                 // Copy all of the properties in the source objects over to the destination object, and return the destination object. 
     //                 // It's in-order, so the last source will override properties of the same name in previous arguments.
     //                 extend(true, output, recurFunc(iArray, value));
     //             }
@@ -1833,8 +1794,8 @@ function getRandomNumberByLength(length) {
 
     //http://jsfiddle.net/WSzec/14/
 
-    // Creates an object with a hash parent:value. If the chain array is more that 1,
-    // recurse until there is only 1 chain so you get chain:value returned. This is called only
+    // Creates an object with a hash parent:value. If the chain array is more that 1, 
+    // recurse until there is only 1 chain so you get chain:value returned. This is called only 
     // from ConvertFrom DOT, so you can see it part of the process of deconstructing the dot.notaion string.
     exports.createObjects = createObjects = function createObjects(parent, chainArray, value) {
         //proxyprinttodiv('createobject parent',  parent,38);
@@ -2015,7 +1976,7 @@ function getRandomNumberByLength(length) {
         }
     };
 
-    // Deletes a hash from an object
+    // Deletes a hash from an object    
     exports.remove = remove = function remove(parameters, str) {
         var inbound_parameters = arguments;
         //function remove(parameters, str){
@@ -2301,11 +2262,11 @@ function getRandomNumberByLength(length) {
     //     for (var p in param)
     //     console.log('Params:\n' + JSON.stringify(parameters, "-", 4));
     //     console.log('rightparameters:\n' + JSON.stringify(rightparameters, "-", 4));
-    //     // Iterate throught the filter params, putting in the defaults of the filter params
+    //     // Iterate throught the filter params, putting in the defaults of the filter params    
     //     for (temp in rightparameters) {
     //         var eachparameter = temp.toLowerCase();
     //         // if the 'value' of a filter param is exists...do the following. btw the first arg has
-    //         // to be true if the second is true...i.e. you don't need to check for arg2
+    //         // to be true if the second is true...i.e. you don't need to check for arg2 
     //         // if ((rightparameters[eachparameter].length > 0) || (rightparameters[eachparameter] == 'add')) {
     //         if (rightparameters[eachparameter].length > 0 || rightparameters[eachparameter] === "") {
     //             // Store the value of the 'value' of the filter param in 'x'
@@ -2320,12 +2281,12 @@ function getRandomNumberByLength(length) {
     //                 y = y.toLowerCase();
     //             }
     //             // If x is 'add', remove it
-    //             if (x.toLowerCase() == 'add') {
+    //             if (x.toLowerCase() == 'add') { 
     //                 // If the data has a key that matches the filter params AND the value is not ""
     //                 if (y.length > 0) {
     //                     // Assign x the value of the data that matches the filter key
-    //                     x = y;
-    //                 }
+    //                     x = y; 
+    //                 } 
     //                 else {
     //                     // Otherwise you need to reset x to ""...we dont want 'add' in the data do we?
     //                     x = "";
@@ -2334,11 +2295,11 @@ function getRandomNumberByLength(length) {
     //             // Check and see if the data should override the default
     //             if (y.length > 0) {
     //                 // Assign the original data
-    //                 outputparameters[eachparameter.toLowerCase()] = y.toLowerCase();
+    //                 outputparameters[eachparameter.toLowerCase()] = y.toLowerCase(); 
     //             }
     //             else {
     //                 // Put x in the key of the output params so that { eachparameter: x } is added to the output
-    //                 outputparameters[eachparameter.toLowerCase()] = x.toLowerCase();
+    //                 outputparameters[eachparameter.toLowerCase()] = x.toLowerCase(); 
     //             }
     //         }
     //     }
@@ -2348,7 +2309,7 @@ function getRandomNumberByLength(length) {
     //         // Iterate through the actual data
     //         for (eachparameter in parameters) {
     //             // If you do not find a parameter key in the output data...do the following ---is this wrong? I think so
-    //             if ( !outputparameters[eachparameter.toLowerCase()] ) {
+    //             if ( !outputparameters[eachparameter.toLowerCase()] ) {    
     //                     // Give the output a key from the data, and the value it contains
     //                     outputparameters[eachparameter.toLowerCase()] = parameters[eachparameter].toLowerCase();
     //             }
@@ -2357,7 +2318,7 @@ function getRandomNumberByLength(length) {
     //     return outputparameters;
     // };
 
-    //rightparameters && rightparameters[eachparameter] &&
+    //rightparameters && rightparameters[eachparameter] && 
 
     // Adds the key of object2 to object 1
     exports.jsonConcat = jsonConcat = function jsonConcat(o1, o2) {
@@ -2430,69 +2391,6 @@ function getRandomNumberByLength(length) {
     //     return a;
     // };
 
-    exports.logverifycomplex = function logverifycomplex(test_name, result_object, result_assertion, error_object, error_assertion)
-    {
-        // step 1 - compare result objects
-        // step 2 - compare error objects
-        // step 3 - consolidate results
-        // step 4 - return it all
-        // --------------------------------------
-
-        debugger;
-
-        // Step 1 - compare result objects
-        var complex_result = {};
-        if (result_object.hasOwnProperty('command') )
-        {
-            if (result_object.command.hasOwnProperty('resulttable'))
-            {
-                var key_obj = null;
-                var resulttable_assertion_obj = {
-                    "detail": [ {
-                            "executeseq":1,
-                            // "executeid":"474390a6-855e-81a6-9c73-72c577cacf9c",
-                            "outgoingparm": {
-                                "executethis":"test_return_notfound_result",
-                                "command": {
-                                    "runtype":"group",
-                                    "executelevel":0,
-                                    // "executeid":"474390a6-855e-81a6-9c73-72c577cacf9c"
-                                }
-                            },
-                            "err":{"errornname":"notfound"},
-                            "res":{ 'x':'y' }
-                        }
-                    ],
-                    "tryrecords":[],
-                    "tryseq":[],
-                    "summary": {
-                        "overallresult":{'x':'y'},
-                        "overallerror":{"errorname":"notfound"},
-                        "executeseq":1
-                    }
-                }
-                foreach( key in result_object.command.resulttable )
-                {
-                    key_obj = result_object.command.resulttable[key];
-                    complex_result[key] = logverify(test_name, key_obj, resulttable_assertion_obj );
-                }
-            }
-        } else {
-            // this is NOT a command object, do a regular compare
-            complex_result = logverify(test_name, result_object, result_assertion_object);
-        }
-
-        // Step 2 - compare error objects
-        var error_result = {};
-        error_result = logverify(test_name, error_object, error_assertion_object);
-
-
-        // Step 3 - conslidate
-        var return_object = {'result': complex_result, 'error': complex_error };
-    }
-
-
-
     exports.logverify = logverify = function logverify(test_name, data_object, assertion_object) {
         //To delete metadata.date method
         // if(data_object && data_object[0] && data_object[0]["metadata"] && data_object[0]["metadata"]["date"]){
@@ -2504,7 +2402,7 @@ function getRandomNumberByLength(length) {
 
         if (test_name === undefined) test_name = "defaulttest";
 
-        var result = deepDiffMapper.map(assertion_object, data_object);
+        var result = deepDiffMapper.map(data_object, assertion_object);
         // Assume UNKNOWN...
         var test_results = "UNKNOWN";
         var temp_string = JSON.stringify(result);
@@ -2512,7 +2410,7 @@ function getRandomNumberByLength(length) {
         // so for now, set the 'test_results' to PASS.
         if (temp_string.indexOf("unchanged") !== -1 || temp_string === "{}") test_results = "PASS";
         // If there are any of 'created', 'updated', 'deleted', the tests now fails, even if
-        // it passed before...if none of the 4 strings are found, the test_results will
+        // it passed before...if none of the 4 strings are found, the test_results will 
         // remain 'UNKNOWN'
         if (temp_string.indexOf("created") !== -1 || temp_string.indexOf("deleted") !== -1 || temp_string.indexOf("updated") !== -1) test_results = "FAIL";
 
@@ -2543,7 +2441,7 @@ function getRandomNumberByLength(length) {
             "MediumBlue"
         ];
 
-        var indebugdesc = String(arguments[0]) || ""; //
+        var indebugdesc = String(arguments[0]) || ""; // 
         var indebugname = String(arguments[1]) || ""; // main fn
         var indebugcat = String(arguments[2]) || ""; // add/get
         var indebugsubcat = String(arguments[3]) || ""; // sub fn
@@ -3303,7 +3201,7 @@ function getRandomNumberByLength(length) {
                     return -1;
                 }
 
-                //continue to traverse even if there isn't a value - this is needed for
+                //continue to traverse even if there isn't a value - this is needed for 
                 //something like name:{$exists:false}
                 return priority(a, b ? b[a.k] : undefined);
             }
@@ -3841,7 +3739,7 @@ function getRandomNumberByLength(length) {
                         }
                     } // if exists
                 } // if not object
-            } // for
+            } // for 
 
             proxyprinttodiv("objectrelationships result", result, 65);
             return result
@@ -3883,7 +3781,7 @@ function getRandomNumberByLength(length) {
             xorobj1: xorobj1,
             xorobj2: xorobj2
         }
-    };
+    }
 
     //##
     exports.sortObj = sortObj = function sortObj(obj, callback) {
@@ -3901,7 +3799,7 @@ function getRandomNumberByLength(length) {
             obj[n.key] = n.value;
             return obj;
         }, {});
-    };
+    }
 
     //##
     exports.hashobj = hashobj = function hashobj(inobj, command) {
@@ -3920,183 +3818,8 @@ function getRandomNumberByLength(length) {
             });
             return JSON.stringify(result);
         }
-    };
-
-/*
-    object operations
-    -size (either local object or localstorage object)
-    -delete
-*/
-exports.objectoperations = objectoperations = function objectoperations(inputWidgetObject, callback) {
-    proxyprinttodiv('Function objectoperations inputWidgetObject', inputWidgetObject, 17);
-    var command = inputWidgetObject.command;
-
-    //2). if command.collection or command.databasetable exists then return used space
-    var collection = command.collection;
-    var databasetable = command.databasetable;
-    var commandObj = command.object;
-    var objectSize = 0;
-    var db={};
-
-    proxyprinttodiv('Function objectoperations command collection', collection, 18);
-    proxyprinttodiv('Function objectoperations command databasetable', databasetable, 18);
-
-    if(!commandObj){
-        if (command.datastore === "localstore") {
-            command.object=localStore;
-        } else {
-            command.object=localStorage;
-        }
-    }
-    proxyprinttodiv('Function objectoperations command object', command.object, 17);
-
-    for(key in command.object) {
-        proxyprinttodiv('Function objectoperations object key ----------', key, 17);
-        var storedObj = command.object[key];
-        var splittedKeys = key.split("_");
-
-        var targetcollection = null;
-        var targetdatabasetable = null;
-
-        for(index in splittedKeys) {
-            splittedKey = splittedKeys[index];
-            var keyValues = splittedKey.split("-");
-            if( keyValues && keyValues.length==2 ){
-                if( keyValues[0]=="collection" ) {
-                    targetcollection = keyValues[1];
-                }
-                if( keyValues[0]=="databasetable" ) {
-                    targetdatabasetable = keyValues[1];
-                }
-            }
-        }
-
-        if( commandObj ) {
-            var size = memorySizeOf(storedObj);
-            proxyprinttodiv('Function objectoperations size 1 ', size, 17);
-            objectSize+=size;
-        } else {  //If no command.object
-            if((collection && collection===targetcollection) || (databasetable && databasetable===targetdatabasetable)){ //To get particular collection/databasetable size
-                proxyprinttodiv('Function objectoperations targetcollection', targetcollection, 17);
-                proxyprinttodiv('Function objectoperations targetdatabasetable', targetdatabasetable, 17);
-
-                var size = memorySizeOf(storedObj);
-                proxyprinttodiv('Function objectoperations size 2', size, 17);
-                objectSize+=size;
-            }
-        }
-
-        //3). if command.delete exists and true then delete from localstorage
-        if(command && command["delete"] && command["delete"]===true){
-            removeFromLocalStorage(key);
-        }
     }
 
-    var res = {};
-    res["objectsize"]=formatByteSize(objectSize);
-    callback(null, res);
-}
-
-/*
--- To calculate object size
-Reference -- https://gist.github.com/zensh/4975495
-*/
-function memorySizeOf(obj) {
-    var bytes = 0;
-
-    function sizeOf(obj) {
-        if(obj !== null && obj !== undefined) {
-            switch(typeof obj) {
-            case 'number':
-                bytes += 8;
-                break;
-            case 'string':
-                bytes += obj.length * 2;
-                break;
-            case 'boolean':
-                bytes += 4;
-                break;
-            case 'object':
-                var objClass = Object.prototype.toString.call(obj).slice(8, -1);
-                if(objClass === 'Object' || objClass === 'Array') {
-                    for(var key in obj) {
-                        if(!obj.hasOwnProperty(key)) continue;
-                        sizeOf(obj[key]);
-                    }
-                } else bytes += obj.toString().length * 2;
-                break;
-            }
-        }
-        return bytes;
-    };
-    return sizeOf(obj);
-}
-function formatByteSize(bytes) {
-    if(bytes < 1024) return bytes + " bytes";
-    else if(bytes < 1048576) return(bytes / 1024).toFixed(3) + " KiB";
-    else if(bytes < 1073741824) return(bytes / 1048576).toFixed(3) + " MiB";
-    else return(bytes / 1073741824).toFixed(3) + " GiB";
-};
-
-/*
--- To calculate localstorage object size
-Reference -- http://glynrob.com/javascript/calculate-localstorage-space
-*/
-function memorySizeOfObjFromLocalStorage(key){
-    var objectValue = localStorage.getItem(key);
-    objectSize = 0;
-    if(objectValue){
-        objectSize = lengthInUtf8Bytes(objectValue);
-    }
-    return formatByteSize(objectSize);
-}
-
-// To calculate the size in bytes of the data currently stored
-function sizeofAllStorage(){
-    var size = 0;
-    var eachObjectSize = 0;
-    var eachObjectSizeInMB = 0
-    for (i=0; i<=localStorage.length-1; i++) {
-        key = localStorage.key(i);
-        eachObjectSize = lengthInUtf8Bytes(localStorage.getItem(key));
-        size += eachObjectSize;
-        eachObjectSizeInMB = Math.ceil((eachObjectSize/1024/1024)*100)/100
-        proxyprinttodiv("calculatespace size ("+ key +")", eachObjectSizeInMB, 17);
-    }
-    return Math.ceil((size/1024/1024)*100)/100; // get into MB
-}
-function lengthInUtf8Bytes(str) {
-  // Matches only the 10.. bytes that are non-initial characters in a multi-byte sequence.
-  var m = encodeURIComponent(str).match(/%[89ABab]/g);
-  return str.length + (m ? m.length : 0);
-}
-
-//To get total storage size
-function totalStorageSize(){
-    var storeSpace = 0;
-    var maxMBToTest = 10;
-    localStorage.clear();
-    var i = 0;
-    var testPacket = new Array( 1025 ).join( "a" ); // create 1024 characters so 1KB
-    while (i<maxMBToTest){ // MB level
-        var t = 0;
-        while (t<1025){ // KB level
-            try {
-                localStorage.setItem(i+"|"+t, testPacket);
-            } catch( error ) {
-                var kbsaved = Math.floor(((t / 1024) * 100)); // calculate percentage of 1024
-                storeSpace = i+'.'+kbsaved; // add MB and KB values
-                storeSpace =  (Math.floor(storeSpace*100))/100; // rounds down the value
-                t = 1025;
-                i = maxMBToTest+1;
-            }
-            t++;
-        }
-        i++;
-    }
-    localStorage.clear();
-    return storeSpace;
-}
 
     exports.copyEnvironmentCommands = copyEnvironmentCommands = function (inputWidgetObject) {
         //now repeat that code in getwid, copywod, and bottom of query
@@ -4108,6 +3831,8 @@ function totalStorageSize(){
 
         if (inputWidgetObject)
             delete inputWidgetObject['command']['environment'];
-    };
+    }
+
+
 
 })();

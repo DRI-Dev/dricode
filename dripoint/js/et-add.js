@@ -139,12 +139,13 @@
                 proxyprinttodiv("addwidmaster after clean dto", _dto_object, 17);
                 addwidobject(_object, _dto_object, null, null, null, command, function (err, res) {
                     // If error, bounce out
+                    proxyprinttodiv("addwidmaster after addwidobject res", res, 17);
                     if (err && Object.keys(err).length > 0) {
                         callback(err, res);
                     } else {
 //                                    res = pack_up_params(res, command, "addwidmaster");
                         //callback(null, _object);
-                        callback(null, {wid: _object['wid']})
+                        callback(null, {wid: res['wid']})
                     }
                 });
             } // end else
@@ -193,13 +194,16 @@
         extend (true, inbound_parameters, object);
         extend (true, inbound_parameters, dtoobject);
 
+        proxyprinttodiv("cleanadd object", object, 17);
+        //if (object.wid==="wid1") {debuglevel=38}
         getdtoobject(object, command, function (err, res) {
+                proxyprinttodiv("cleanadd object after getdtoobject", object, 17);
 
             if (err && Object.keys(err).length > 0) {
                 callback(err, res);
             } else {
                 dtoobject = res;
-                proxyprinttodiv("cleanadd getdtoobject res-------", dtoobject, 17);
+                proxyprinttodiv("cleanadd getdtoobject object-------", object, 17);
 
                 var dto_to_get;
                 var big_dto = {};
@@ -256,6 +260,7 @@
                                 } else {
                                     output.obj = result_obj;
                                     output.dtoobj = dtoobject;
+                                    proxyprinttodiv("cleanadd getdtoobject res------- if ", dtoobject, 17);
                                     callback(null, output);
                                 }
                             });
@@ -263,7 +268,10 @@
                     });// end execute
                 } else { // if ==string
                     proxyprinttodiv("cleanadd command", command, 17);
+                    proxyprinttodiv("cleanadd getdtoobject object------- else", object, 17);
+                     proxyprinttodiv("cleanadd getdtoobject dtoobject------- else", dtoobject, 17);
                     deepfilter(object, dtoobject, command, function (err, result_obj) {
+                        proxyprinttodiv("cleanadd getdtoobject result_obj------- else", result_obj, 17);
                         output.obj = result_obj;
                         output.dtoobj = dtoobject;
                         callback(null, output);
@@ -276,8 +284,8 @@
     exports.addwidobject = addwidobject = function addwidobject(input, inputdto, parentwid, parentmethod, relationshiptype, command, callback) {
         var inbound_parameters_100 = arguments;
 
-        proxyprinttodiv("addwidobject input input :- ", input, 99);
-        proxyprinttodiv("addwidobject input inputdto :- ", inputdto, 99);
+        proxyprinttodiv("addwidobject input input :- ", input, 17);
+        proxyprinttodiv("addwidobject input inputdto :- ", inputdto, 17);
         proxyprinttodiv("addwidobject input command :- ", command, 17);
 
         var _parent_object = {};
