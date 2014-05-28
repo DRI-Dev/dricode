@@ -605,8 +605,7 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
         // if (command.db) {db=command.db} // not needed
         // if (command.collection) {collection=command.collection}
         proxyprinttodiv('Function databasetable + collection', databasetable + collection, 30);
-        //database = getFromLocalStorage(databasetable + collection);
-		database = getFromLocalStorage("databasetable-"+databasetable+"_collection-"+collection);
+        database = getFromLocalStorage(databasetable + collection);
         proxyprinttodiv('Function inlist', database, 30);
         if (database) {
             proxyprinttodiv('before IsJsonString', inboundobj, 30);
@@ -625,8 +624,7 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
             });
 
             // not sure if stuff below needed
-            //keydatabase = getFromLocalStorage(databasetable + keycollection);
-			keydatabase = getFromLocalStorage("databasetable-"+databasetable+"_collection-"+keycollection);
+            keydatabase = getFromLocalStorage(databasetable + keycollection);
             for (var eachrecord in outlist) {
                 eachwid = keydatabase[outlist[eachrecord]["wid"]];
                 resultlist.push(eachwid);
