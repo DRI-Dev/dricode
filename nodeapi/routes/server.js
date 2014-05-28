@@ -46,6 +46,9 @@ function runExecuteThis(parameters, resp) {
         Debug = "true";
         delete parameters.Debug
     }
+
+    console.log(' => global object => ' + JSON.stringify(global));
+
     global['execute'](parameters, function (err, results) {
 
         if (Debug === 'true') {
