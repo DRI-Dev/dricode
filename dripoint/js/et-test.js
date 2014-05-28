@@ -45,8 +45,8 @@
 //             res = logverify("bookdtowid111_result", res[4], expectedResult);
 //             debuglevel=0;
 //             execute({"executethis": "getwidmaster","wid": "bookdtowid111"}, function (err, res1) {
-//                 proxyprinttodiv('Function bookdtowid111 result LAST ', res1, 17); 
-//                 callback(err, res); 
+//                 proxyprinttodiv('Function bookdtowid111 result LAST ', res1, 17);
+//                 callback(err, res);
 //             })
 //     });
 // }
@@ -62,11 +62,11 @@
 
 //     if (params) {
 //         executeobj=extend(true, executeobj, params)
-//     }               
+//     }
 //     if(preamble && preambleflag>=0 && preamble[preambleflag]){
 //         for(key in executeobj){
 //             if(key!=="executethis" && key!="metadata.method" && key!="wid"){
-//                 var preamblekey = preamble[preambleflag]+"."+key;               
+//                 var preamblekey = preamble[preambleflag]+"."+key;
 //                 executeobj[preamblekey]=executeobj[key];
 //                 delete executeobj[key];
 //             }
@@ -83,7 +83,7 @@
 // }
 
 // /*
-//     Global Variable 
+//     Global Variable
 // */
 // var preamble=["spousedto", "housedto", "bookdto", "bookdto.pubhousedto", "bookdto.pubhousedto.addressdto.0", "bookdto.pubhousedto.statedto.0", "bookdto.pubhousedto.ownerdto.0"];
 
@@ -102,14 +102,14 @@
 //     var dtotype=["authordto"];
 //     createdataforcommanddtotypadd(params, preambleflag, preamble, dtotypeflag, dtotype, executeobj, function (err, res){
 //         callback(err, res);
-//     });         
+//     });
 //  }
 
 //  /*
 //     To add data for commanddtotypeaddtest
 //  */
 //  function createdataspouse(params, preambleflag, dtotypeflag, d, callback){
-//     var executeobj = 
+//     var executeobj =
 //             {
 //                 "executethis":"addwidmaster",
 //                 "metadata.method": "authordto",
@@ -121,14 +121,14 @@
 //     var dtotype=["spousedto"];
 //     createdataforcommanddtotypadd(params, preambleflag, preamble, dtotypeflag, dtotype, executeobj, function (err, res){
 //         callback(err, res);
-//     });             
+//     });
 //  }
 
 //  /*
 //     To add data for commanddtotypeaddtest
 //  */
 //  function createdatahouse(params, preambleflag, dtotypeflag, d, callback){
-//         var executeobj = 
+//         var executeobj =
 //             {
 //                 "executethis":"addwidmaster",
 //                 "metadata.method": "authordto",
@@ -140,14 +140,14 @@
 //     var dtotype=["housedto"];
 //     createdataforcommanddtotypadd(params, preambleflag, preamble, dtotypeflag, dtotype, executeobj, function (err, res){
 //         callback(err, res);
-//     });             
+//     });
 //  }
 
 //  /*
 //     To add data for commanddtotypeaddtest
 //  */
 //  function createdatabook(params, preambleflag, dtotypeflag, d, callback){
-//         var executeobj = 
+//         var executeobj =
 //             {
 //                 "executethis":"addwidmaster",
 //                 "metadata.method": "authordto",
@@ -160,14 +160,14 @@
 //     var dtotype=["bookdto"];
 //     createdataforcommanddtotypadd(params, preambleflag, preamble, dtotypeflag, dtotype, executeobj, function (err, res){
 //         callback(err, res);
-//     });             
+//     });
 //  }
 
 //  /*
 //     To add data for commanddtotypeaddtest
 //  */
 //  function createdatapubhouse(params, preambleflag, dtotypeflag, d, callback){
-//     var executeobj = 
+//     var executeobj =
 //             {
 //                 "executethis":"addwidmaster",
 //                 "metadata.method": "authordto",
@@ -180,7 +180,7 @@
 //     var dtotype =["pubhousedto"];
 //     createdataforcommanddtotypadd(params, preambleflag, preamble, dtotypeflag, dtotype, executeobj, function (err, res){
 //         callback(err, res);
-//     });         
+//     });
 //  }
 
 //  /*
@@ -201,7 +201,7 @@
 //     var dtotype =["addressdto"];
 //     createdataforcommanddtotypadd(params, preambleflag, preamble, dtotypeflag, dtotype, executeobj, function (err, res){
 //         callback(err, res);
-//     });         
+//     });
 //  }
 
 //  /*
@@ -221,7 +221,7 @@
 //     var dtotype =["statedto"];
 //     createdataforcommanddtotypadd(params, preambleflag, preamble, dtotypeflag, dtotype, executeobj, function (err, res){
 //         callback(err, res);
-//     });         
+//     });
 //  }
 
 //  /*
@@ -240,7 +240,7 @@
 //     var dtotype =["ownerdto"];
 //     createdataforcommanddtotypadd(params, preambleflag, preamble, dtotypeflag, dtotype, executeobj, function (err, res){
 //         callback(err, res);
-//     });             
+//     });
 //  }
 
 // function manytoonedata(params, d, callback){
@@ -256,7 +256,7 @@
 
 //                     "spousedto.datemarried": "03/10/2014",
 
-//                     "housedto.color": "purple"  + d,    
+//                     "housedto.color": "purple"  + d,
 
 //                     "bookdto.title": "Book 1"  + d,
 //                     "bookdto.pages": "300"  + d,
@@ -287,7 +287,7 @@
 //         }
 //     ], function (err, res) {
 //         callback(err, res);
-//     });             
+//     });
 // }
 
 
@@ -315,14 +315,14 @@
 //                                              callback(err, res);
 //                                         });
 //                                     });
-//                                 }); 
+//                                 });
 //                             });
 //                         });
-//                     }); 
+//                     });
 //                 });
 //             });
 //         });
-//      });     
+//      });
 //  }
 
 
@@ -372,10 +372,10 @@
 //                     }
 //                 ], function (err, res) {
 //                      proxyprinttodiv('Function commanddtotypegettest result Full res', res, 99);
-//                      callback(err, res); 
-//                  });        
+//                      callback(err, res);
+//                  });
 //             });
-//         }); 
+//         });
 //     });
 //  }
 
@@ -727,8 +727,8 @@ function manytoonesetupdto(inherit, dtotype, callback) {
 //         execute(executeobj, function (err, res) {
 //             proxyprinttodiv( eachprint["wid"] + " with command.dtotype="+eachprint["command.dtotype"], res, 99, true);
 //             cbMap(null);
-//         }); 
-//     },                 
+//         });
+//     },
 //     function (err, res) {
 //         callback(null, {})
 //         };
@@ -756,15 +756,15 @@ function printlistmany(printlist, callback) {
 
 
 // ADD: How many to add
-// ADD: parentparmkey, c, 
+// ADD: parentparmkey, c,
 // ADD: childparmkey, d: (let system select child wid names, we select child wid names)
 // ADD: relativepreamble (childs do not have preamble / childs do have preamble)
 // ADD: relativedtotype (don’t use command.dtotype / use command.dtotype)
-// GET: relgetlist 
-//     get each get each child with one parent w/o dto, 
-//     get each child with one parent with dto, 
+// GET: relgetlist
+//     get each get each child with one parent w/o dto,
+//     get each child with one parent with dto,
 //     get each child by childname w/o dto
-//     get each child by childname with dto, 
+//     get each child by childname with dto,
 
 function addauthorrecord(parentparmkey, c, childparmkey, d, relativepreamble, relativedtotype, relgetlist, callback) {
     var parent = [{
@@ -1042,7 +1042,7 @@ exports.testupdatewid0 = testupdatewid0 = function testupdatewid0(params, callba
 /*************   INHERIT DEFAULT TESTS ***************/
 /*************       Single Level      ***************/
 
-// This tests inherit.default at the dto level. authordto inherits from authordefault 
+// This tests inherit.default at the dto level. authordto inherits from authordefault
 // and so author1 should be returned with name=Alex & age=42
 // works.
 exports.testinheritdefault0 = testinheritdefault0 = function testinheritdefault0(params, callback) {
@@ -1093,7 +1093,7 @@ exports.testinheritdefault0 = testinheritdefault0 = function testinheritdefault0
         });
 };
 
-// This tests inherit.default at the wid level. author1 inherits from authordefault and 
+// This tests inherit.default at the wid level. author1 inherits from authordefault and
 // should be returned with name=Alex & age=42
 // works.
 exports.testinheritdefault1 = testinheritdefault1 = function testinheritdefault1(params, callback) {
@@ -1229,7 +1229,7 @@ exports.testcommanddtotype = testcommanddtotype = function testcommanddtotype(pa
             //  "command.dtotype":""
             //  },{
             //  "executethis":"getwidmaster",
-            //  "wid":"author1", 
+            //  "wid":"author1",
             //  "command.dtotype":"authordto"
             // },{
             // "executethis":"getwidmaster",
@@ -1262,8 +1262,8 @@ exports.testcommanddtotype = testcommanddtotype = function testcommanddtotype(pa
                 callback(err, res);
             });
             // execute({"executethis": "getwidmaster","wid": "book1", "command":{"dtotype":"authordto"}}, function (err, res1) {
-            //     proxyprinttodiv("getwidmaster book1 result: ", res1, 99); 
-            //     callback(err, res); 
+            //     proxyprinttodiv("getwidmaster book1 result: ", res1, 99);
+            //     callback(err, res);
             // });
         });
 };
@@ -1272,7 +1272,7 @@ exports.testcommanddtotype = testcommanddtotype = function testcommanddtotype(pa
 /*************   INHERIT DEFAULT TESTS ***************/
 /*************        Multi Level      ***************/
 
-// inherit default set at the dto level. authordto has a default wid to inherit from and bookdto has a default wid to inherit from. 
+// inherit default set at the dto level. authordto has a default wid to inherit from and bookdto has a default wid to inherit from.
 exports.testinheritdefault3 = testinheritdefault3 = function testinheritdefault3(params, callback) {
     execute([{
             "executethis": "addwidmaster",
@@ -1374,7 +1374,7 @@ exports.testinheritdefault4 = testinheritdefault4 = function testinheritdefault4
                 }
             }]
             //  "metadata.inherit.default":[{"widname" : "authordefault"}],
-            // "bookdto.0.inherit.default":[{"widname" : "bookdefault"}]                    
+            // "bookdto.0.inherit.default":[{"widname" : "bookdefault"}]
         }, {
             "executethis": "addwidmaster",
             "wid": "rel_author_book",
@@ -2199,7 +2199,7 @@ exports.testjsononetoone0 = testjsononetoone0 = function testjsononetoone0(param
 //                   "executethis": "addwidmaster",
 //                   "wid": "bookoverride",
 //                   "metadata.method": "bookdto",
-//                   "title":"X title", 
+//                   "title":"X title",
 //                   "pages":"300"
 //               },{
 //                   "executethis": "addwidmaster",
@@ -2229,8 +2229,8 @@ exports.testjsononetoone0 = testjsononetoone0 = function testjsononetoone0(param
 //               res = logverify("bookdtowid111_result", res[3], expectedResult);
 //               debuglevel = 0;
 //               execute({"executethis": "getwidmaster","wid": "bookdtowid111"}, function (err, res1) {
-//                   proxyprinttodiv('Function bookdtowid111 result LAST ', res1, 17); 
-//                   callback(err, res); 
+//                   proxyprinttodiv('Function bookdtowid111 result LAST ', res1, 17);
+//                   callback(err, res);
 //               })
 //       });
 //   }
@@ -2278,8 +2278,8 @@ exports.testjsononetoone0 = testjsononetoone0 = function testjsononetoone0(param
 //               res = logverify("bookwid1_result", res[3], expectedResult);
 //               debuglevel = 0;
 //               execute({"executethis": "getwidmaster","wid": "bookwid1"}, function (err, res1) {
-//                   proxyprinttodiv('Function bookwid1 result LAST ', res1, 17); 
-//                   callback(err, res); 
+//                   proxyprinttodiv('Function bookwid1 result LAST ', res1, 17);
+//                   callback(err, res);
 //               })
 //       });
 //   }
@@ -2327,8 +2327,8 @@ exports.testjsononetoone0 = testjsononetoone0 = function testjsononetoone0(param
 //               res = logverify("bookwid1_result", res[3], expectedResult);
 //               debuglevel = 0;
 //               execute({"executethis": "getwidmaster","wid": "bookwid1"}, function (err, res1) {
-//                   proxyprinttodiv('Function bookwid1 result LAST ', res1, 17); 
-//                   callback(err, res); 
+//                   proxyprinttodiv('Function bookwid1 result LAST ', res1, 17);
+//                   callback(err, res);
 //               })
 //       });
 //   }
@@ -2341,7 +2341,7 @@ exports.testjsononetoone0 = testjsononetoone0 = function testjsononetoone0(param
 //                   "executethis": "addwidmaster",
 //                   "wid": "bookoverride",
 //                   "metadata.method": "bookdto",
-//                   "title":"X title", 
+//                   "title":"X title",
 //                   "pages":"300"
 //               },{
 //                   "executethis": "addwidmaster",
@@ -2371,8 +2371,8 @@ exports.testjsononetoone0 = testjsononetoone0 = function testjsononetoone0(param
 //               res = logverify("bookdtowid111_result", res[4], expectedResult);
 //               debuglevel=0;
 //               execute({"executethis": "getwidmaster","wid": "bookdtowid111"}, function (err, res1) {
-//                   proxyprinttodiv('Function bookdtowid111 result LAST ', res1, 17); 
-//                   callback(err, res); 
+//                   proxyprinttodiv('Function bookdtowid111 result LAST ', res1, 17);
+//                   callback(err, res);
 //               })
 //       });
 //   }
@@ -2385,25 +2385,25 @@ exports.testjsononetoone0 = testjsononetoone0 = function testjsononetoone0(param
 //                 "executethis": "addwidmaster",
 //                 "wid": "bookdtoextra",
 //                 "metadata.method": "bookdtoextra",
-//                 "title": "string", 
+//                 "title": "string",
 //                 "pages": "string"
 //             },{
 //                 "executethis": "addwidmaster",
 //                 "wid": "bookdefault",
 //                 "metadata.method": "bookdefaultdto",
-//                 "chapters": "12", 
+//                 "chapters": "12",
 //                 "publisher": "Blank publisher"
 //             },{
 //                 "executethis": "addwidmaster",
 //                 "wid": "bookdefaultdto",
 //                 "metadata.method": "bookdefaultdto",
-//                 "chapters": "string", 
+//                 "chapters": "string",
 //                 "publisher": "string"
 //             },{
 //                 "executethis": "addwidmaster",
 //                 "wid": "bookdefaultdto",
 //                 "metadata.method": "bookdtoextra",
-//                 "title":"X title", 
+//                 "title":"X title",
 //                 "pages":"300"
 //             },{
 //                 "executethis": "addwidmaster",
@@ -2438,8 +2438,8 @@ exports.testjsononetoone0 = testjsononetoone0 = function testjsononetoone0(param
 //             res = logverify("bookdtowid111_result", res[4], expectedResult);
 //             debuglevel=0;
 //             execute({"executethis": "getwidmaster","wid": "bookdtowid111"}, function (err, res1) {
-//                 proxyprinttodiv('Function bookdtowid111 result LAST ', res1, 17); 
-//                 callback(err, res); 
+//                 proxyprinttodiv('Function bookdtowid111 result LAST ', res1, 17);
+//                 callback(err, res);
 //             })
 //     });
 // }
@@ -2504,10 +2504,10 @@ exports.add999 = add999 = function add999(params, callback) {
         let system select child wid names
         childs DO have preamble
         do NOT use command.dtotype
-        get each get each child with one parent w/o dto, 
-        get each child with one parent with dto, 
+        get each get each child with one parent w/o dto,
+        get each child with one parent with dto,
         get each child by childname w/o dto
-        get each child by childname with dto, 
+        get each child by childname with dto,
         results of this test:
   */
 
@@ -2543,10 +2543,10 @@ exports.etaddautoselectwid = etaddautoselectwid = function etaddautoselectwid(pa
         let system select child wid names
         childs DO have preamble
         do NOT use command.dtotype
-        get each get each child with one parent w/o dto, 
-        get each child with one parent with dto, 
+        get each get each child with one parent w/o dto,
+        get each child with one parent with dto,
         get each child by childname w/o dto
-        get each child by childname with dto, 
+        get each child by childname with dto,
         results of this test:
   */
 
@@ -2582,8 +2582,8 @@ exports.etaddautoselectwid2 = etaddautoselectwid2 = function etaddautoselectwid2
         we select child wid names
         childs do  have preamble
         do not use command.dtotype
-        get each get each child with one parent w/o dto, 
-        get each child with one parent with dto, 
+        get each get each child with one parent w/o dto,
+        get each child with one parent with dto,
         get each child by childname w/o dto
         get each child by childname with dto,
         results of this test:
@@ -2621,10 +2621,10 @@ exports.etaddmanualselectwid = etaddmanualselectwid = function etaddmanualselect
         we select child wid names
         childs do NOT have preamble
         use command.dtotype
-        get each get each child with one parent w/o dto, 
-        get each child with one parent with dto, 
+        get each get each child with one parent w/o dto,
+        get each child with one parent with dto,
         get each child by childname w/o dto
-        get each child by childname with dto, 
+        get each child by childname with dto,
         results of this test:
     */
 
@@ -2656,15 +2656,15 @@ exports.etaddwithdtotype = etaddwithdtotype = function etaddwithdtotype(params, 
     });
 }
 
-/*    
+/*
         etadddtoandpreamble
         we select child wid names
         childs do have preamble
         use command.dtotype
-        get each get each child with one parent w/o dto, 
-        get each child with one parent with dto, 
+        get each get each child with one parent w/o dto,
+        get each child with one parent with dto,
         get each child by childname w/o dto
-        get each child by childname with dto, 
+        get each child by childname with dto,
         results of this test:
     */
 
@@ -2703,10 +2703,10 @@ exports.etadddtoandpreamble = etadddtoandpreamble = function etadddtoandpreamble
         let system select child wid names
         childs DO have preamble
         do NOT use command.dtotype
-        get each get each child with one parent w/o dto, 
-        get each child with one parent with dto, 
+        get each get each child with one parent w/o dto,
+        get each child with one parent with dto,
         get each child by childname w/o dto
-        get each child by childname with dto, 
+        get each child by childname with dto,
         result of this test:
     */
 // appears to be working: last update takes affect
@@ -2825,7 +2825,7 @@ exports.etcreatedefaultdto1 = etcreatedefaultdto1 = function etcreatedefaultdto1
                         });
 
                         //                                });
-                        //                            }); 
+                        //                            });
                         //                        });
                         //                    });
                     });
@@ -2886,7 +2886,7 @@ exports.etcreateinheritdefault1 = etcreateinheritdefault1 = function etcreateinh
                     });
                     //});
                 });
-                //}); 
+                //});
             });
             //});
         });
@@ -3040,8 +3040,8 @@ exports.ettestatoa = ettestatoa = function ettestatoa(params, callback) {
         res = logverify("authordto_result", res[4], expectedResult);
         debuglevel = 0;
         // execute({"executethis": "getwidmaster","wid": "authordto"}, function (err, res1) {
-        //     proxyprinttodiv('Function authordto result LAST ', res1, 17); 
-        //     callback(err, res); 
+        //     proxyprinttodiv('Function authordto result LAST ', res1, 17);
+        //     callback(err, res);
         // })
     });
 }
@@ -3092,7 +3092,7 @@ The addbig test (manytoone = last record updates in a one to one) worked
 //                    "merchantdto.loyaltydto.wid": "loyaltydto",
 //                    "merchantdto.loyaltydto.name":"string"
 //                }
-//            ], function (err, res) { 
+//            ], function (err, res) {
 //                callback(err, res)
 //            });
 //    }
@@ -3321,7 +3321,7 @@ function recurseobjcontainer(obj, dtotable, callback) {
                             tempArray.push(recursestring(dtoobject[eachparam][eachitem]))
                             }
                         dtoobject[eachparam]=tempArray;
-                        } 
+                        }
                     else {
                         if (isObject(dtoobject[eachparam])) {
                             dtoobject[eachparam]=recursestring(dtoobject[eachparam])
@@ -3333,7 +3333,7 @@ function recurseobjcontainer(obj, dtotable, callback) {
                 }
                 return dtoobject
             }
-    function createdtotable(mm, dtoobject) {                
+    function createdtotable(mm, dtoobject) {
         proxyprinttodiv("getdtoobject createdtotable -- dtoobject", dtoobject, 38);
         proxyprinttodiv("getdtoobject createdtotable -- mm", mm, 38);
 
@@ -3344,13 +3344,13 @@ function recurseobjcontainer(obj, dtotable, callback) {
 
         //if (dtoobject.command.dtolist === undefined) {
         //proxyprinttodiv("getdtoobject createdtotable -- dtoobject.command.dtolist ", dtoobject.command.dtolist, 38);
-        
+
         if ((dtoobject.command) && (dtoobject.command.dtolist) && (Object.keys(dtoobject.command.dtolist).length > 0)) {
             proxyprinttodiv("getdtoobject dtoobject.command.dtolist -- ", dtoobject.command.dtolist,38);
             for (var eachparam in dtoobject.command.dtolist) {
                 proxyprinttodiv("getdtoobject createdtotable eachparam -- ", eachparam,38);
                 if (isObject(dtoobject[eachparam])) {
-                    createdtotable(eachparam, dtoobject[eachparam]);             
+                    createdtotable(eachparam, dtoobject[eachparam]);
                     dtotable[eachparam] = dtoobject[eachparam]
                     proxyprinttodiv("getdtoobject createdtotable dtoobject[eachparam] -- ", dtoobject[eachparam],38);
                     proxyprinttodiv("getdtoobject createdtotable dtotable -- ", dtotable,38);
@@ -3366,8 +3366,8 @@ function recurseobjcontainer(obj, dtotable, callback) {
         proxyprinttodiv("getdtoobject createdtotable -- dtotable ", dtotable, 38);
     }
 
-        
-    function recurseobj(params) {   
+
+    function recurseobj(params) {
         proxyprinttodiv("getdtoobject recurseobj -- params", params, 98);
         var dtolist = {};
         var dtoobj = {};
@@ -3396,9 +3396,9 @@ function recurseobjcontainer(obj, dtotable, callback) {
             proxyprinttodiv("tempArray", tempArray, 98);
             return tempArray;
         } else {
-            // the section below improves inobj, 
+            // the section below improves inobj,
             // -it gets command from dtotable if avail
-            // -it creates a dtolist based on type 
+            // -it creates a dtolist based on type
             // - it changes structure of inobj based on type
 
             if (inobj['metadata']) {
@@ -3416,7 +3416,7 @@ function recurseobjcontainer(obj, dtotable, callback) {
                             if (dtotable[metadata.method]) {tempobj = dtotable[metadata.method].command.dtolist}
                          }
                         if (tempobj) {extend(true, dtolist, tempobj)};
-                        // if (eachitem==='method' && dtotable[metadata.method] && 
+                        // if (eachitem==='method' && dtotable[metadata.method] &&
                         //     dtotable[metadata.method].command && dtotable[metadata.method].command.inherit) {
                         //     proxyprinttodiv("getdtoobject dtotable[metadata.method].command.inherit ", dtotable[metadata.method].command.inherit, 98);
                         //         tempobj = dtotable[metadata.method].command.inherit;
@@ -3433,7 +3433,7 @@ function recurseobjcontainer(obj, dtotable, callback) {
                             relationshipArray.push(inobj[eachitem]);
                             delete inobj[eachitem];
                             inobj[eachitem] = relationshipArray;
-                            }                    
+                            }
                     } // type
                 } // for metadata
             } // if inobj['metadata'];
@@ -3485,7 +3485,7 @@ function recurseobjcontainer(obj, dtotable, callback) {
                         //dtoobj[eachparm]=recursestring(dtoobj[eachparm])
                         proxyprinttodiv("getdtoobject is obj dtoobj.command.dtolist", dtoobj.command.dtolist, 98);
                     }
-                } else { // if not object then 
+                } else { // if not object then
                     dtoobj[eachparm] = "string";
                     //dtoobj[eachparm]=recursestring(dtoobj[eachparm])
                 }
@@ -3508,17 +3508,17 @@ function recurseobjcontainer(obj, dtotable, callback) {
             // }
 
             proxyprinttodiv("In GetDTOObject before return -- we created dto -- :", dtoobj, 98);
-                    
+
             return dtoobj;
         } // else
     } // end fn recurse
-    
+
     callback({}, recurseobj(obj))
 
 }
 
 
-        
+
 //{"title":"string","wid":"string","metadata":{"method":"string","sounddto":{"type":"onetomany"}},
 //"command":{"inherit":[{"wid":"systemactions","command":{"dtotype":"","adopt":"default"}},
 //{"wid":"systemactions","command":{"dtotype":"","adopt":"default"}}],
@@ -3528,8 +3528,8 @@ function recurseobjcontainer(obj, dtotable, callback) {
 //"command":{"inherit":[{"wid":"systemactions","command":{"dtotype":"","adopt":"default"}}],
 //"deepdtolist":{"systemdto":"onetoone"},"dtolist":{"systemdto":"onetoone"}}}]}
 
-    exports.createdtotabletest =  createdtotabletest = function createdtotabletest(params, callback) {  
-    function createdtotable(mm, dtoobject) {                
+    exports.createdtotabletest =  createdtotabletest = function createdtotabletest(params, callback) {
+    function createdtotable(mm, dtoobject) {
         proxyprinttodiv("getdtoobject createdtotable -- dtoobject", dtoobject, 38);
         proxyprinttodiv("getdtoobject createdtotable -- mm", mm, 38);
 
@@ -3540,13 +3540,13 @@ function recurseobjcontainer(obj, dtotable, callback) {
 
         //if (dtoobject.command.dtolist === undefined) {
         //proxyprinttodiv("getdtoobject createdtotable -- dtoobject.command.dtolist ", dtoobject.command.dtolist, 38);
-        
+
         if ((dtoobject.command) && (dtoobject.command.dtolist) && (Object.keys(dtoobject.command.dtolist).length > 0)) {
             proxyprinttodiv("getdtoobject dtoobject.command.dtolist -- ", dtoobject.command.dtolist,38);
             for (var eachparam in dtoobject.command.dtolist) {
                 proxyprinttodiv("getdtoobject createdtotable eachparam -- ", eachparam,38);
                 if (isObject(dtoobject[eachparam])) {
-                    createdtotable(eachparam, dtoobject[eachparam]);             
+                    createdtotable(eachparam, dtoobject[eachparam]);
                     dtotable[eachparam] = dtoobject[eachparam]
                     proxyprinttodiv("getdtoobject createdtotable dtoobject[eachparam] -- ", dtoobject[eachparam],38);
                     proxyprinttodiv("getdtoobject createdtotable dtotable -- ", dtotable,38);
@@ -3566,15 +3566,15 @@ function recurseobjcontainer(obj, dtotable, callback) {
         var mm = "sonddto";
         var dtoobject = {"title":"string","wid":"string","metadata":{"method":"string","sounddto":{"type":"onetomany"}},"command":{"inherit":[{"wid":"systemactions","command":{"dtotype":"","adopt":"default"}},{"wid":"systemactions","command":{"dtotype":"","adopt":"default"}}],"deepdtolist":{"systemdto":"onetoone","sounddto":"onetomany"},"dtolist":{"sounddto":"onetomany","systemdto":"onetoone"}},"sounddto":[{"note":"string","wid":"string","metadata":{"method":"string"},"command":{"inherit":[{"wid":"systemactions","command":{"dtotype":"","adopt":"default"}}],"deepdtolist":{"systemdto":"onetoone"},"dtolist":{"systemdto":"onetoone"}}}]};
         var dtotable = {};
-        
-        createdtotable(mm, dtoobject);  
+
+        createdtotable(mm, dtoobject);
         proxyprinttodiv("createdtotabletest result -- dtotable ", dtotable, 38, 99);
         callback(null, dtotable)
     }
-    
-    
-    exports.createdtotabletest2 =  createdtotabletest2 = function createdtotabletest2(params, callback) {  
-        function createdtotable(mm, dtoobject) {                
+
+
+    exports.createdtotabletest2 =  createdtotabletest2 = function createdtotabletest2(params, callback) {
+        function createdtotable(mm, dtoobject) {
             proxyprinttodiv("getdtoobject createdtotable -- dtoobject", dtoobject, 38);
             proxyprinttodiv("getdtoobject createdtotable -- mm", mm, 38);
 
@@ -3585,13 +3585,13 @@ function recurseobjcontainer(obj, dtotable, callback) {
 
             //if (dtoobject.command.dtolist === undefined) {
             //proxyprinttodiv("getdtoobject createdtotable -- dtoobject.command.dtolist ", dtoobject.command.dtolist, 38);
-            
+
             if ((dtoobject.command) && (dtoobject.command.dtolist) && (Object.keys(dtoobject.command.dtolist).length > 0)) {
                 proxyprinttodiv("getdtoobject dtoobject.command.dtolist -- ", dtoobject.command.dtolist,38);
                 for (var eachparam in dtoobject.command.dtolist) {
                     proxyprinttodiv("getdtoobject createdtotable eachparam -- ", eachparam,38);
                     if (isObject(dtoobject[eachparam])) {
-                        createdtotable(eachparam, dtoobject[eachparam]);             
+                        createdtotable(eachparam, dtoobject[eachparam]);
                         dtotable[eachparam] = dtoobject[eachparam]
                         proxyprinttodiv("getdtoobject createdtotable dtoobject[eachparam] -- ", dtoobject[eachparam],38);
                         proxyprinttodiv("getdtoobject createdtotable dtotable -- ", dtotable,38);
@@ -3606,29 +3606,29 @@ function recurseobjcontainer(obj, dtotable, callback) {
             }
             proxyprinttodiv("getdtoobject createdtotable -- dtotable ", dtotable, 38);
         }
-        
-        
-        
+
+
+
         debuglevel = 38;
         var mm = "sonddto";
         var dtoobject = {"title":"string","sounddto":{"wid":"sounddto","metadata":{"method":"sounddto"},"note":"string"},"wid":"string","metadata":{"method":"string","sounddto":{"type":"onetomany"}},"command":{"inherit":[{"wid":"systemactions","command":{"dtotype":"","adopt":"default"}}],"deepdtolist":{"sounddto":"onetomany","systemdto":"onetoone"},"dtolist":{"sounddto":"onetomany","systemdto":"onetoone"}}};
         var dtotable = {};
-        
-        createdtotable(mm, dtoobject);  
+
+        createdtotable(mm, dtoobject);
         proxyprinttodiv("createdtotabletest result -- dtotable ", dtotable, 38, 99);
         callback(null, dtotable)
     }
-    
+
 
     exports.testcad = testcad = function (params, callback){
 
     }
 
-    exports.rrr10 =  rrr10 = function rrr10(params, callback) {   
+    exports.rrr10 =  rrr10 = function rrr10(params, callback) {
         var obj=
         {"wid":"song1","metadata":{"method":"sonddto"},"title":"Highway to Hell","sounddto":{"wid":"ag3cflat","note":"C flat"}}
 
-        var dtotable = 
+        var dtotable =
                 {
             "songdto":{"title":"string","wid":"string","metadata":{"method":"string","sounddto":{"type":"onetomany"}},
 
@@ -4035,7 +4035,7 @@ exports.rrr4 = rrr4 = function rrr4(params, callback) {
 }
 
 /*
-        
+
     */
 exports.rrr5 = rrr5 = function rrr5(params, callback) {
     function recurseobjcontainer(obj, dtotable, callback) {
@@ -4090,9 +4090,9 @@ exports.rrr5 = rrr5 = function rrr5(params, callback) {
                 proxyprinttodiv("tempArray", tempArray, 98);
                 return tempArray;
             } else {
-                // the section below improves inobj, 
+                // the section below improves inobj,
                 // -it gets command from dtotable if avail
-                // -it creates a dtolist based on type 
+                // -it creates a dtolist based on type
                 // - it changes structure of inobj based on type
 
                 if (inobj['metadata']) {
@@ -4114,7 +4114,7 @@ exports.rrr5 = rrr5 = function rrr5(params, callback) {
                             if (tempobj) {
                                 extend(true, dtolist, tempobj)
                             };
-                            // if (eachitem==='method' && dtotable[metadata.method] && 
+                            // if (eachitem==='method' && dtotable[metadata.method] &&
                             //     dtotable[metadata.method].command && dtotable[metadata.method].command.inherit) {
                             //     proxyprinttodiv("getdtoobject dtotable[metadata.method].command.inherit ", dtotable[metadata.method].command.inherit, 98);
                             //         tempobj = dtotable[metadata.method].command.inherit;
@@ -4182,7 +4182,7 @@ exports.rrr5 = rrr5 = function rrr5(params, callback) {
                             //dtoobj[eachparm]=recursestring(dtoobj[eachparm])
                             proxyprinttodiv("getdtoobject is obj dtoobj.command.dtolist", dtoobj.command.dtolist, 98);
                         }
-                    } else { // if not object then 
+                    } else { // if not object then
                         dtoobj[eachparm] = "string";
                         //dtoobj[eachparm]=recursestring(dtoobj[eachparm])
                     }
@@ -4423,7 +4423,7 @@ exports.jstest1 = jstest1 = function jstest1(parameters, callback) {
 }
 
 exports.jstest2 = jstest2 = function jstest2(parameters, callback) {
-    //add_numbers_server  
+    //add_numbers_server
     eval("(function add_numbers(parameters1, callback1) { alert('global '+ JSON.stringify(parameters));alert('inner '+ JSON.stringify(parameters)); var sum = { numsum : parseInt(parameters.a) + parseInt(parameters.b) };callback(null, sum);})()")
 }
 
@@ -4540,85 +4540,6 @@ exports.authortoauthortest = authortoauthortest = function authortoauthortest(pa
             "metadata.method": "relationshipdto",
             "relationshiptype": "attributes",
             "linktype": "onetoone",
-            "primarywid": "authordto",
-            "primarymethod": "authordto",
-            "secondarywid": "authordto",
-            "secondarymethod": "authordto"
-        }, {
-            "executethis": "addwidmaster",
-            "wid": "wid1",
-            "metadata.method": "authordto",
-            "name": "author1",
-            "authordto.authordto.authordto.name": "authortoauthor1"
-        }],
-        function(err, res) {
-            proxyprinttodiv('authortoauthortest addwidmaster result: ', res, 99);
-
-            //debuglevel = 38;
-            execute({
-                "executethis": "getwidmaster",
-                "wid": "wid1"
-            }, function(err, res1) {
-                proxyprinttodiv("authortoauthortest getwidmaster result: ", res1, 99);
-                callback(err, res);
-            });
-        });
-}
-
-exports.authortoauthortesto = authortoauthortesto = function authortoauthortesto(params, callback) {
-    //debuglevel=38
-    execute([{
-            "executethis": "addwidmaster",
-            "wid": "authordto",
-            "metadata.method": "authordto",
-            "name": "string",
-            "metadata.authordto.type": "onetomany"
-        }, { //authordto - authordto
-            "executethis": "addwidmaster",
-            "wid": "rel_author_author",
-            "metadata.method": "relationshipdto",
-            "relationshiptype": "attributes",
-            "linktype": "onetomany",
-            "primarywid": "authordto",
-            "primarymethod": "authordto",
-            "secondarywid": "authordto",
-            "secondarymethod": "authordto"
-        }, {
-            "executethis": "addwidmaster",
-            "wid": "wid1",
-            "metadata.method": "authordto",
-            "name": "author1",
-            "authordto.authordto.authordto.name": "authortoauthor1"
-        }],
-        function(err, res) {
-            proxyprinttodiv('authortoauthortest addwidmaster result: ', res, 99);
-
-            debuglevel = 93;
-            execute({
-                "executethis": "getwidmaster",
-                "wid": "wid1"
-            }, function(err, res1) {
-                proxyprinttodiv("authortoauthortest getwidmaster result: ", res1, 99);
-                callback(err, res);
-            });
-        });
-}
-
-
-
-exports.authortoauthortestm = authortoauthortestm = function authortoauthortestm(params, callback) {
-    execute([{
-            "executethis": "addwidmaster",
-            "wid": "authordto",
-            "metadata.method": "authordto",
-            "name": "string",
-            "metadata.authordto.type": "manytomany"
-        }, { //authordto - authordto
-            "executethis": "addwidmaster",
-            "wid": "rel_author_author",
-            "metadata.method": "relationshipdto",
-            "relationshiptype": "attributes",
-            "linktype": "manytomany",
             "primarywid": "authordto",
             "primarymethod": "authordto",
             "secondarywid": "authordto",
@@ -5058,7 +4979,7 @@ exports.ettestag111 = ettestag111 = function ettestag111(params, callback) {
         }],
         function (err, res1) {
             proxyprinttodiv("Ag1  result ", res1, 99);
-            var res = res1[1]; //~~~ changed by SAURABH 
+            var res = res1[1]; //~~~ changed by SAURABH
             //var res = res1[0];
 
 
@@ -5088,7 +5009,7 @@ exports.ettestag111 = ettestag111 = function ettestag111(params, callback) {
         }],
         function (err, res1) {
             proxyprinttodiv("Ag1  result ", res1, 99);
-            var res = res1[1]; //~~~ changed by SAURABH 
+            var res = res1[1]; //~~~ changed by SAURABH
             //var res = res1[0];
 
 
@@ -5196,7 +5117,7 @@ exports.testusersystem = testusersystem = function testusersystem(params, callba
             }
         }
         proxyprinttodiv("systemdto fields found: ", found, 99);
-        //callback(err, res1); 
+        //callback(err, res1);
     });
 }
 
@@ -5571,7 +5492,7 @@ exports.testdeepsystem1 = testdeepsystem1 = function testdeepsystem1(params, cal
 }
 
 
-// simple test which sets up all data and then runs sectest1 test after that 
+// simple test which sets up all data and then runs sectest1 test after that
 exports.datastore1 = datastore1 = function datastore1(params, callback) {
 
     debuglevel = 12;
@@ -5602,7 +5523,7 @@ exports.datastore1 = datastore1 = function datastore1(params, callback) {
 
 
 
-// simple test which sets up all data and then runs sectest1 test after that 
+// simple test which sets up all data and then runs sectest1 test after that
 exports.datastore2 = datastore2 = function datastore2(params, callback) {
 
     debuglevel = 12;
@@ -6137,7 +6058,7 @@ exports.addwidtest12 = addwidtest12 = function addwidtest12(parameters, callback
     });
 }
 
-/*  
+/*
         etd21
         To test guid for empty wid
     */
@@ -6419,7 +6340,7 @@ exports.filterobjecttest1 = filterobjecttest1 = function filterobjecttest1(param
 //     deepfilter(obj, filterobject, command, function (err, res){
 //         proxyprinttodiv("res --", res, 17);
 //         var actual_result = res;
-//         proxyprinttodiv("actual_result --", actual_result, 17);                           
+//         proxyprinttodiv("actual_result --", actual_result, 17);
 
 //         var expected_result = [];
 //         proxyprinttodiv("expected_result --", expected_result, 17);
@@ -6777,7 +6698,7 @@ exports.testeventonemin1 = testeventonemin1 = function testeventonemin1(params, 
             "executethis": "addwidmaster",
             "addthis.executethis": "testeventdata1",
             "wid": "doesnotmatter",
-            // something to do 
+            // something to do
             "command": {
                 "databasetable": "queuecollection",
                 "db": "queuedata",
@@ -6835,7 +6756,7 @@ exports.testeventonemin3 = testeventonemin3 = function testeventonemin3(params, 
             "executethis": "updatewid",
             "addthis.executethis": "wid1",
             "wid": "doesnotmatter",
-            // something to do 
+            // something to do
             "command": {
                 "databasetable": "queuecollection",
                 "db": "queuedata",
@@ -7214,8 +7135,8 @@ exports.testhtmladd2 = testhtmladd2 = function testhtmladd2(params, callback) {
                 callback(err,result);
             });
     }
-            
-            
+
+
     exports.addtocache1 = addtocache1 = function addtocache1(params,callback){
         execute([{
             "executethis":"codydto1"
@@ -7241,7 +7162,7 @@ exports.testhtmladd2 = testhtmladd2 = function testhtmladd2(params, callback) {
                 callback(err,result);
             });
     }
-    
+
     exports.addtocache2 = addtocache2 = function addtocache2(params,callback){
         execute([{
             "executethis":"codydto1"
@@ -7699,7 +7620,7 @@ exports.testpermissiondefault1 = testpermissiondefault1 = function testpermissio
 
 exports.testpermissiondefault2 = testpermissiondefault2 = function testpermissiondefault2(params, callback) {
     execute([{
-            // Create the permissiondto     
+            // Create the permissiondto
             "executethis": "addwidmaster",
             "wid": "permissiondto",
             "metadata.method": "permissiondto",
@@ -8539,7 +8460,7 @@ exports.mq2_test = mq2_test = function mq2_test(inputobj, callback) {
         })
 }
 
-// deletewid() test 
+// deletewid() test
 // To test wid copied to command.datasettable="driarchive" or not
 exports.testdltwid1 = testdltwid1 = function testdltwid1(params, callback) {
     debuglevel = 17;
@@ -8779,7 +8700,7 @@ exports.testgetrelatedrecords1 = testgetrelatedrecords1 = function testgetrelate
     });
 }
 
-// getrelatedrecords() test 
+// getrelatedrecords() test
 // to test multiple children
 exports.testgetrelatedrecords2 = testgetrelatedrecords2 = function testgetrelatedrecords2(params, callback) {
     debuglevel = 17;
@@ -8853,13 +8774,13 @@ exports.testgetrelatedrecords2 = testgetrelatedrecords2 = function testgetrelate
         "metadata.method": "testdto",
         "wid": "test9",
         "testdto.testdto.testdto.a": "12"
-    }, {    
+    }, {
         "executethis":"getrelatedrecords",
         "wid": "test3"
-    }, {    
+    }, {
         "executethis":"getrelatedrecords",
         "wid": "test6"
-    }, {    
+    }, {
         "executethis":"getrelatedrecords",
         "wid": "test9"
     }*/
@@ -8891,7 +8812,7 @@ exports.etd15 = etd15 = function etd15(params, callback) {
     }], function (err, res) {
         proxyprinttodiv("res --", res, 17);
         var actual_result = [res];
-        proxyprinttodiv("actual_result --", actual_result, 17);                           
+        proxyprinttodiv("actual_result --", actual_result, 17);
 
         var expected_result = [[{"o1":{"a":"b"},"a1":["hi","hi2"]}]];
         proxyprinttodiv("expected_result --", expected_result, 17);
@@ -8920,6 +8841,7 @@ exports.etdguid = etdguid = function etdguid(params, callback) {
         proxyprinttodiv("actual_result --", actual_result, 17);
         callback(err, res);
     });
+
 }
 
 
@@ -8927,7 +8849,7 @@ exports.etdguid = etdguid = function etdguid(params, callback) {
     objectoperations() test
 */
 exports.testobjectoperations = testobjectoperations = function testobjectoperations(params, callback) {
-    debuglevel = 17;    
+    debuglevel = 17;
     var executeList = [{    //object size
         "executethis": "objectoperations",
         "command": {"object":{"a":"b","b":"c"}, "result":"objectSize1"}
@@ -8970,9 +8892,9 @@ exports.testobjectoperations = testobjectoperations = function testobjectoperati
 
 
 /*
-deletewid() test 
+deletewid() test
 -- To delete parent/child with recursion
-*/ 
+*/
 exports.testdltwid2 = testdltwid2 = function testdltwid2(params, callback) {
     debuglevel = 17;
     execute([{  //authordto
@@ -9048,4 +8970,5 @@ exports.testquerywid = testquerywid = function testquerywid(params, callback) {
         proxyprinttodiv('testquerywid res', res, 99);
         callback(err, res);
     });
+
 }

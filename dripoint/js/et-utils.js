@@ -265,7 +265,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
     if (inputWidgetObject.command && Object.keys(inputWidgetObject.command.environment).length > 0) {
         copyEnvironmentCommands(inputWidgetObject);
     }
-    if (inputWidgetObject && inputWidgetObject.command && inputWidgetObject.command.userid) {inputWidgetObject.metadata.userid=inputWidgetObject.command.userid}
+
     proxyprinttodiv('Function  inputWidgetObject.command', inputWidgetObject.command, 11);
 
     proxyprinttodiv('Function datastore inputWidgetObject 1', inputWidgetObject, 11);
@@ -311,7 +311,6 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
     var databasetable = command.databasetable;
 
     delete filter_data.output.command;
-
     var addedobject = converttodriformat(filter_data.output, command);
     proxyprinttodiv('Function datastore command -- add inputWidgetObject addedobject', addedobject, 12);
 
@@ -991,7 +990,7 @@ exports.printToDiv = printToDiv = function printToDiv(text, outobject, debugone,
 
 
     if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
-            var displaycolor = color_list[getglobal("debugcolor")];    
+            var displaycolor = color_list[getglobal("debugcolor")];
             var indent = getglobal("debugcolor");
             var z = getglobal('debuglinenum');
             z++;
@@ -1056,7 +1055,7 @@ exports.proxyprinttodiv = proxyprinttodiv = function proxyprinttodiv(text, obj, 
     }
 }
 
-// 
+//
 //   this will command.dtotype inisde bigdto
 //   this will give an address for dtotype inside bigdto
 //   then it uses that address to insert insertobjc into inputobj
@@ -1261,9 +1260,9 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
             async.nextTick(function () {
                 var inpVal = inputObject[inpKey];
                 if (!inpVal || (inpKey === "metadata") || (inpKey === "command")) { //Ignoring metadata property in input.
-                    modifiedObj[inpKey] = inpVal; 
+                    modifiedObj[inpKey] = inpVal;
                     cbMap(null);
-                } else{                     
+                } else{
                     if (dtoObject.hasOwnProperty(inpKey)) {
                         var dataType = dtoObject[inpKey];
 
@@ -1506,7 +1505,7 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
                                         cbMap(null);
                                     }
                                 });
-                        } else { 
+                        } else {
                                // to read wid obj via getwidmaster
                                 if (dataType !== 'string') {
                                     execute({
@@ -1717,7 +1716,7 @@ function getRandomNumberByLength(length) {
     //             if (data.hasOwnProperty(item)) {
     //                 var iArray = item.split(".");
     //                 var value = data[item];
-    //                 // Copy all of the properties in the source objects over to the destination object, and return the destination object. 
+    //                 // Copy all of the properties in the source objects over to the destination object, and return the destination object.
     //                 // It's in-order, so the last source will override properties of the same name in previous arguments.
     //                 extend(true, output, recurFunc(iArray, value));
     //             }
@@ -1834,8 +1833,8 @@ function getRandomNumberByLength(length) {
 
     //http://jsfiddle.net/WSzec/14/
 
-    // Creates an object with a hash parent:value. If the chain array is more that 1, 
-    // recurse until there is only 1 chain so you get chain:value returned. This is called only 
+    // Creates an object with a hash parent:value. If the chain array is more that 1,
+    // recurse until there is only 1 chain so you get chain:value returned. This is called only
     // from ConvertFrom DOT, so you can see it part of the process of deconstructing the dot.notaion string.
     exports.createObjects = createObjects = function createObjects(parent, chainArray, value) {
         //proxyprinttodiv('createobject parent',  parent,38);
@@ -2016,7 +2015,7 @@ function getRandomNumberByLength(length) {
         }
     };
 
-    // Deletes a hash from an object    
+    // Deletes a hash from an object
     exports.remove = remove = function remove(parameters, str) {
         var inbound_parameters = arguments;
         //function remove(parameters, str){
@@ -2302,11 +2301,11 @@ function getRandomNumberByLength(length) {
     //     for (var p in param)
     //     console.log('Params:\n' + JSON.stringify(parameters, "-", 4));
     //     console.log('rightparameters:\n' + JSON.stringify(rightparameters, "-", 4));
-    //     // Iterate throught the filter params, putting in the defaults of the filter params    
+    //     // Iterate throught the filter params, putting in the defaults of the filter params
     //     for (temp in rightparameters) {
     //         var eachparameter = temp.toLowerCase();
     //         // if the 'value' of a filter param is exists...do the following. btw the first arg has
-    //         // to be true if the second is true...i.e. you don't need to check for arg2 
+    //         // to be true if the second is true...i.e. you don't need to check for arg2
     //         // if ((rightparameters[eachparameter].length > 0) || (rightparameters[eachparameter] == 'add')) {
     //         if (rightparameters[eachparameter].length > 0 || rightparameters[eachparameter] === "") {
     //             // Store the value of the 'value' of the filter param in 'x'
@@ -2321,12 +2320,12 @@ function getRandomNumberByLength(length) {
     //                 y = y.toLowerCase();
     //             }
     //             // If x is 'add', remove it
-    //             if (x.toLowerCase() == 'add') { 
+    //             if (x.toLowerCase() == 'add') {
     //                 // If the data has a key that matches the filter params AND the value is not ""
     //                 if (y.length > 0) {
     //                     // Assign x the value of the data that matches the filter key
-    //                     x = y; 
-    //                 } 
+    //                     x = y;
+    //                 }
     //                 else {
     //                     // Otherwise you need to reset x to ""...we dont want 'add' in the data do we?
     //                     x = "";
@@ -2335,11 +2334,11 @@ function getRandomNumberByLength(length) {
     //             // Check and see if the data should override the default
     //             if (y.length > 0) {
     //                 // Assign the original data
-    //                 outputparameters[eachparameter.toLowerCase()] = y.toLowerCase(); 
+    //                 outputparameters[eachparameter.toLowerCase()] = y.toLowerCase();
     //             }
     //             else {
     //                 // Put x in the key of the output params so that { eachparameter: x } is added to the output
-    //                 outputparameters[eachparameter.toLowerCase()] = x.toLowerCase(); 
+    //                 outputparameters[eachparameter.toLowerCase()] = x.toLowerCase();
     //             }
     //         }
     //     }
@@ -2349,7 +2348,7 @@ function getRandomNumberByLength(length) {
     //         // Iterate through the actual data
     //         for (eachparameter in parameters) {
     //             // If you do not find a parameter key in the output data...do the following ---is this wrong? I think so
-    //             if ( !outputparameters[eachparameter.toLowerCase()] ) {    
+    //             if ( !outputparameters[eachparameter.toLowerCase()] ) {
     //                     // Give the output a key from the data, and the value it contains
     //                     outputparameters[eachparameter.toLowerCase()] = parameters[eachparameter].toLowerCase();
     //             }
@@ -2358,7 +2357,7 @@ function getRandomNumberByLength(length) {
     //     return outputparameters;
     // };
 
-    //rightparameters && rightparameters[eachparameter] && 
+    //rightparameters && rightparameters[eachparameter] &&
 
     // Adds the key of object2 to object 1
     exports.jsonConcat = jsonConcat = function jsonConcat(o1, o2) {
@@ -2453,7 +2452,7 @@ function getRandomNumberByLength(length) {
                             "executeseq":1,
                             // "executeid":"474390a6-855e-81a6-9c73-72c577cacf9c",
                             "outgoingparm": {
-                                "executethis":"test_return_notfound_result",          
+                                "executethis":"test_return_notfound_result",
                                 "command": {
                                     "runtype":"group",
                                     "executelevel":0,
@@ -2474,7 +2473,7 @@ function getRandomNumberByLength(length) {
                 }
                 foreach( key in result_object.command.resulttable )
                 {
-                    key_obj = result_object.command.resulttable[key];   
+                    key_obj = result_object.command.resulttable[key];
                     complex_result[key] = logverify(test_name, key_obj, resulttable_assertion_obj );
                 }
             }
@@ -2488,11 +2487,11 @@ function getRandomNumberByLength(length) {
         error_result = logverify(test_name, error_object, error_assertion_object);
 
 
-        // Step 3 - conslidate 
+        // Step 3 - conslidate
         var return_object = {'result': complex_result, 'error': complex_error };
     }
 
-    
+
 
     exports.logverify = logverify = function logverify(test_name, data_object, assertion_object) {
         //To delete metadata.date method
@@ -2513,7 +2512,7 @@ function getRandomNumberByLength(length) {
         // so for now, set the 'test_results' to PASS.
         if (temp_string.indexOf("unchanged") !== -1 || temp_string === "{}") test_results = "PASS";
         // If there are any of 'created', 'updated', 'deleted', the tests now fails, even if
-        // it passed before...if none of the 4 strings are found, the test_results will 
+        // it passed before...if none of the 4 strings are found, the test_results will
         // remain 'UNKNOWN'
         if (temp_string.indexOf("created") !== -1 || temp_string.indexOf("deleted") !== -1 || temp_string.indexOf("updated") !== -1) test_results = "FAIL";
 
@@ -2544,7 +2543,7 @@ function getRandomNumberByLength(length) {
             "MediumBlue"
         ];
 
-        var indebugdesc = String(arguments[0]) || ""; // 
+        var indebugdesc = String(arguments[0]) || ""; //
         var indebugname = String(arguments[1]) || ""; // main fn
         var indebugcat = String(arguments[2]) || ""; // add/get
         var indebugsubcat = String(arguments[3]) || ""; // sub fn
@@ -3304,7 +3303,7 @@ function getRandomNumberByLength(length) {
                     return -1;
                 }
 
-                //continue to traverse even if there isn't a value - this is needed for 
+                //continue to traverse even if there isn't a value - this is needed for
                 //something like name:{$exists:false}
                 return priority(a, b ? b[a.k] : undefined);
             }
@@ -3842,7 +3841,7 @@ function getRandomNumberByLength(length) {
                         }
                     } // if exists
                 } // if not object
-            } // for 
+            } // for
 
             proxyprinttodiv("objectrelationships result", result, 65);
             return result
@@ -3931,7 +3930,7 @@ function getRandomNumberByLength(length) {
 exports.objectoperations = objectoperations = function objectoperations(inputWidgetObject, callback) {
     proxyprinttodiv('Function objectoperations inputWidgetObject', inputWidgetObject, 17);
     var command = inputWidgetObject.command;
-    
+
     //2). if command.collection or command.databasetable exists then return used space
     var collection = command.collection;
     var databasetable = command.databasetable;
@@ -3941,8 +3940,8 @@ exports.objectoperations = objectoperations = function objectoperations(inputWid
 
     proxyprinttodiv('Function objectoperations command collection', collection, 18);
     proxyprinttodiv('Function objectoperations command databasetable', databasetable, 18);
-    
-    if(!commandObj){  
+
+    if(!commandObj){
         if (command.datastore === "localstore") {
             command.object=localStore;
         } else {
@@ -3980,31 +3979,31 @@ exports.objectoperations = objectoperations = function objectoperations(inputWid
             if((collection && collection===targetcollection) || (databasetable && databasetable===targetdatabasetable)){ //To get particular collection/databasetable size
                 proxyprinttodiv('Function objectoperations targetcollection', targetcollection, 17);
                 proxyprinttodiv('Function objectoperations targetdatabasetable', targetdatabasetable, 17);
-                
+
                 var size = memorySizeOf(storedObj);
                 proxyprinttodiv('Function objectoperations size 2', size, 17);
                 objectSize+=size;
             }
-        }       
-    
+        }
+
         //3). if command.delete exists and true then delete from localstorage
         if(command && command["delete"] && command["delete"]===true){
             removeFromLocalStorage(key);
-        }   
+        }
     }
-    
+
     var res = {};
     res["objectsize"]=formatByteSize(objectSize);
-    callback(null, res);    
+    callback(null, res);
 }
 
 /*
--- To calculate object size 
+-- To calculate object size
 Reference -- https://gist.github.com/zensh/4975495
-*/  
+*/
 function memorySizeOf(obj) {
     var bytes = 0;
- 
+
     function sizeOf(obj) {
         if(obj !== null && obj !== undefined) {
             switch(typeof obj) {
@@ -4040,10 +4039,10 @@ function formatByteSize(bytes) {
 };
 
 /*
--- To calculate localstorage object size 
+-- To calculate localstorage object size
 Reference -- http://glynrob.com/javascript/calculate-localstorage-space
-*/  
-function memorySizeOfObjFromLocalStorage(key){  
+*/
+function memorySizeOfObjFromLocalStorage(key){
     var objectValue = localStorage.getItem(key);
     objectSize = 0;
     if(objectValue){
@@ -4053,17 +4052,17 @@ function memorySizeOfObjFromLocalStorage(key){
 }
 
 // To calculate the size in bytes of the data currently stored
-function sizeofAllStorage(){  
+function sizeofAllStorage(){
     var size = 0;
     var eachObjectSize = 0;
     var eachObjectSizeInMB = 0
-    for (i=0; i<=localStorage.length-1; i++) {  
-        key = localStorage.key(i);  
+    for (i=0; i<=localStorage.length-1; i++) {
+        key = localStorage.key(i);
         eachObjectSize = lengthInUtf8Bytes(localStorage.getItem(key));
         size += eachObjectSize;
         eachObjectSizeInMB = Math.ceil((eachObjectSize/1024/1024)*100)/100
         proxyprinttodiv("calculatespace size ("+ key +")", eachObjectSizeInMB, 17);
-    }  
+    }
     return Math.ceil((size/1024/1024)*100)/100; // get into MB
 }
 function lengthInUtf8Bytes(str) {
@@ -4109,19 +4108,6 @@ function totalStorageSize(){
 
         if (inputWidgetObject)
             delete inputWidgetObject['command']['environment'];
-    };
-
-    // DriEnvironment class
-    exports.DriEnvironment = DriEnvironment = function DriEnvironment(environment) {
-        this.environment = environment;
-        this.execute = function(params, callback) {
-            if (!params.command) { params.command = {}; }
-
-            if (params.command.environment) { extend(true, params.command.environment, this.environment); }
-            else { params.command.environment = this.environment; }
-
-            execute(params, function (err, results) { callback(err, results); });
-        };
     };
 
 })();
