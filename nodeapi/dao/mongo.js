@@ -28,7 +28,6 @@ var SkinStore = require('connect-mongoskin'),
 // DAO method to fetch unique an entry to specified collection:: the entry to be fetched is also specified :: 
 // the callback function on succesful addition is also specified
 exports.mquery = mquery = function mquery(objToFind, projection, command, callback) {
-    debugger;
     console.log('-->>-->> Inputs to mquery objToFind:\n' + 
                 JSON.stringify(objToFind, '-', 4) + '\nCommand: \n' +
                 JSON.stringify(command, '-', 4));

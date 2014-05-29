@@ -48,6 +48,8 @@
     //exports.querywid = querywid = function (parameters,target,callback) {
     exports.querywid = querywid = function querywid(parameters, callback) { // can change to call back
         try {
+            debugger;
+
             var inbound_parameters_107 = arguments;
 
             delete parameters['executethis']; //** added 11/2
