@@ -48,8 +48,6 @@
     //exports.querywid = querywid = function (parameters,target,callback) {
     exports.querywid = querywid = function querywid(parameters, callback) { // can change to call back
         try {
-            debugger;
-
             var inbound_parameters_107 = arguments;
 
             delete parameters['executethis']; //** added 11/2
@@ -375,7 +373,7 @@
                                         // 
                                         output = res;
                                         //output = formatlist(res, "wid", "wid");  &&& takenout by roger
-                                        console.log(' *** get primary wids *** ' + JSON.stringify(output));
+//                                        console.log(' *** get primary wids *** ' + JSON.stringify(output));
                                         debugfn("move queParams to output", "querywid", "query", "mid", getglobal("debugcolor"), getglobal("debugindent"), debugvars([4]));
                                         cb(null, "step01");
                                     }
