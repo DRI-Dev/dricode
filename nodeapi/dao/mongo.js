@@ -276,6 +276,8 @@ exports.mupdate = mupdate = function mupdate(finder, objToAdd, command, options,
 // manage multiple mongo database connections
 
 exports.getConnection = getConnection = function getConnection(mongoDatabaseToLookup, callback) {
+    console.log(' => settings => ' + JSON.stringify(settings));
+
     var databaseConnection;
     var err;
     if (dbConnectionsManager[mongoDatabaseToLookup]) {
