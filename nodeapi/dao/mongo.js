@@ -281,7 +281,7 @@ exports.getConnection = getConnection = function getConnection(mongoDatabaseToLo
     if (dbConnectionsManager[mongoDatabaseToLookup]) {
         databaseConnection = dbConnectionsManager[mongoDatabaseToLookup];
     } else {
-        console.log('database is >>> '+settings[mongoDatabaseToLookup]['DB_HOST_NAME']);
+        console.log('database is >>> '+ settings.DB_SET[mongoDatabaseToLookup]['DB_HOST_NAME']);
         var DB_HOST_NAME = settings.DB_SET[mongoDatabaseToLookup]['DB_HOST_NAME'];
         var DB_USER_ID = settings.DB_SET[mongoDatabaseToLookup]['DB_USER_ID'];
         var DB_USER_PWD = settings.DB_SET[mongoDatabaseToLookup]['DB_USER_PWD'];
