@@ -373,7 +373,6 @@
                                         // 
                                         output = res;
                                         //output = formatlist(res, "wid", "wid");  &&& takenout by roger
-//                                        console.log(' *** get primary wids *** ' + JSON.stringify(output));
                                         debugfn("move queParams to output", "querywid", "query", "mid", getglobal("debugcolor"), getglobal("debugindent"), debugvars([4]));
                                         cb(null, "step01");
                                     }
@@ -532,7 +531,6 @@
                             // throw ({'Sample_error': 'querywid_async_final'});
 
                             console.log('completed tasks asynchronously in querywid ');
-                            console.log('output is ' + JSON.stringify(output));
                             debugfn("final", "querywid", "query", "end", getglobal("debugcolor"), getglobal("debugindent"), debugvars([6]));
 
                             proxyprinttodiv('querywid before output', output, 28);
