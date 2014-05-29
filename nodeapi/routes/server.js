@@ -46,8 +46,9 @@ function runExecuteThis(parameters, resp) {
         Debug = "true";
         delete parameters.Debug
     }
-    global['execute'](parameters, function (err, results) {
 
+//    global['execute'](parameters, function (err, results) {
+    execute(parameters, function (err, results) {
         if (Debug === 'true') {
             var tempoutput = {};
             tempoutput.command = {};

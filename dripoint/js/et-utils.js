@@ -148,7 +148,7 @@ exports.copywid = copywid = copywid = function copywid(inputWidgetObject, callba
     // // proxyprinttodiv('Function datastore inputWidgetObject 1', inputWidgetObject, 11);
     // // inputWidgetObject.command = extend(true, inputWidgetObject.command, tempobj);
     // delete inputWidgetObject['command']['environment'];
-    if (inputWidgetObject.command && Object.keys(inputWidgetObject.command.environment).length > 0) {
+    if (inputWidgetObject.command && inputWidgetObject.command.environment && Object.keys(inputWidgetObject.command.environment).length > 0) {
         copyEnvironmentCommands(inputWidgetObject);
     }
 
@@ -267,7 +267,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
     proxyprinttodiv('Function datastore inputWidgetObject 0', inputWidgetObject, 11);
     // console.log('>>>inputWidgetObject.command.environment' +inputWidgetObject.command.environment)
 
-    if (inputWidgetObject.command && Object.keys(inputWidgetObject.command.environment).length > 0) {
+    if (inputWidgetObject.command && inputWidgetObject.command.environment && Object.keys(inputWidgetObject.command.environment).length > 0) {
         copyEnvironmentCommands(inputWidgetObject);
     }
     if (inputWidgetObject && inputWidgetObject.command && inputWidgetObject.command.userid) {inputWidgetObject.metadata.userid=inputWidgetObject.command.userid}
@@ -512,7 +512,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
     //if (config.configuration.environment==="local") {defaultdatastore='localstorage';} else {defaultdatastore='mongo';}
 
     proxyprinttodiv('Function datastore inputWidgetObject 0', inputWidgetObject, 11);
-    // if (inputWidgetObject.command && Object.keys(inputWidgetObject.command.environment).length > 0) {
+    // if (inputWidgetObject.command && inputWidgetObject.command.environment && Object.keys(inputWidgetObject.command.environment).length > 0) {
     //     inputWidgetObject.command = extend(false, inputWidgetObject.command.environment, inputWidgetObject.command)
     // }
 
@@ -530,7 +530,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
 
     // delete inputWidgetObject['command']['environment'];
 
-    if (inputWidgetObject.command && Object.keys(inputWidgetObject.command.environment).length > 0) {
+    if (inputWidgetObject.command && inputWidgetObject.command.environment && Object.keys(inputWidgetObject.command.environment).length > 0) {
         copyEnvironmentCommands(inputWidgetObject);
     }
 
@@ -714,8 +714,8 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                 //     output =  ConvertFromDOTdri(output);
                 // }
                 // proxyprinttodiv('Function datastore command -- get output 3', output, 12);
+                //callback(err, output);
                 callback(err, output);
-                //callback(err, resultobject);
             });
         } else { // if not mongo
             output = convertfromdriformatenhanced(output, command, originalarguments);
