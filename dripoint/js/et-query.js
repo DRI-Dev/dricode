@@ -13,6 +13,37 @@
         return parameters;
     };
 
+    exports.querywidmaster = querywidmaster = function querywidmaster(params, callback) {
+        querywid(params, function (err, results) {
+            var formattedResults = [];
+
+            for (var i = 0; i < results.length; i++) {
+                var thisObj = {};
+
+                for (var prop in results[i]) {
+                    if (results[i].hasOwnProperty(prop)) {
+                        if (results[i][prop] instanceof Object
+                            && results[i][prop] !== null
+                            && prop.toLowerCase() !== 'metadata'
+                            && prop.toLowerCase() !== 'command') {
+                            extend(true, thisObj, results[i][prop]);
+                        }
+                        else if (prop.toLowerCase() === 'metadata') {
+                            thisObj.metadata = results[i][prop];
+                        }
+                        else if (prop.toLowerCase() === 'command') {
+                            thisObj.command = results[i][prop];
+                        }
+
+                        formattedResults.push(thisObj);
+                    }
+                }
+            }
+
+            callback(err, formattedResults);
+        });
+    };
+
     //Starting of querywid function...formerly MongoDataQuery
     //exports.querywid = querywid = function (parameters,target,callback) {
     exports.querywid = querywid = function querywid(parameters, callback) { // can change to call back
@@ -342,7 +373,6 @@
                                         // 
                                         output = res;
                                         //output = formatlist(res, "wid", "wid");  &&& takenout by roger
-                                        console.log(' *** get primary wids *** ' + JSON.stringify(output));
                                         debugfn("move queParams to output", "querywid", "query", "mid", getglobal("debugcolor"), getglobal("debugindent"), debugvars([4]));
                                         cb(null, "step01");
                                     }
@@ -501,7 +531,6 @@
                             // throw ({'Sample_error': 'querywid_async_final'});
 
                             console.log('completed tasks asynchronously in querywid ');
-                            console.log('output is ' + JSON.stringify(output));
                             debugfn("final", "querywid", "query", "end", getglobal("debugcolor"), getglobal("debugindent"), debugvars([6]));
 
                             proxyprinttodiv('querywid before output', output, 28);
