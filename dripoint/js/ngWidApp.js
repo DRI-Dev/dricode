@@ -240,6 +240,13 @@ if (typeof angular !== 'undefined') {
             parameters = extend(true, {command:{environment:{}}}, JSON.parse(attrObj.etparams)),
             scope = $('body').scope();
 
+        if (attrObj.addtomodel) {
+            var newAdd = JSON.parse(attrObj.addtomodel);
+            for (var prop in newAdd) {
+                scope[prop] = newAdd[prop];
+            }
+        }
+
         // send calling element and any additional info into the execute process
         parameters.command.environment.element = $('<div>' + ele + '</div>').html();
         parameters.command.environment.originatingscreen = scope.activewid;
