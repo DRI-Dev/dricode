@@ -287,7 +287,7 @@ exports.getuserbyac = getuserbyac = function getuserbyac(userac, callback) {
 // ** GENERIC FUNCTION TO CREATE A USER WID ON THE BASIS OF RECEIVED DATA **
 // create createuserdata wid data and associated relationships
 exports.createuserdata = createuserdata = function createuserdata(userobj, callback) {
-
+    var commandresult = userobj["command.result"];
     var userJson = {
         "executethis": "addwidmaster",
         "metadata.method": "userdto",
@@ -301,7 +301,8 @@ exports.createuserdata = createuserdata = function createuserdata(userobj, callb
         "city": userobj.city,
         "state": userobj.state,
         "zip": userobj.zip,
-        "country": userobj.country
+        "country": userobj.country,
+        "command":{"result":commandresult}
     }
 
     // create userdto data
@@ -319,12 +320,15 @@ exports.creategroup = creategroup = function creategroup(config, callback) {
     // proxyprinttodiv('Function creategroup -- adding group of ', config, 39);
 
     var grouptype = config['grouptype'];
+    var commandresult = config["command.result"];
+
     execute([{
         "executethis": "addwidmaster",
         "metadata.method": "groupdto",
         "metadata.system.creator": "user1", // TODO :: this shall come from inherit
         "groupname": grouptype,
-        "type": grouptype
+        "type": grouptype,
+        "command":{"result":commandresult}
     }], function(err, res) {
         proxyprinttodiv('Function creategroup -- added group -- ', res, 39);
         callback(err, res);
@@ -337,11 +341,13 @@ exports.creategroup = creategroup = function creategroup(config, callback) {
 exports.createaction = createaction = function createaction(config, callback) {
     // proxyprinttodiv('Function createaction -- adding action of ', config, 39);
     var actiontype = config['actiontype'];
+    var commandresult = config["command.result"];
     execute([{
         "executethis": "addwidmaster",
         "type": actiontype,
         "metadata.system.creator": "user1", // TODO :: this shall come from inherit
-        "metadata.method": "actiondto"
+        "metadata.method": "actiondto",
+        "command":{"result":commandresult}
     }], function(err, res) {
         proxyprinttodiv('Function createaction -- added group of type "' + actiontype + '"  -- ', res, 39);
         callback(err, res[0]);
@@ -375,11 +381,13 @@ exports.createrelationship = createrelationship = function createrelationship(pr
 // add permission
 exports.addpermission = addpermission = function addpermission(config, callback) {
     // add each permission to the user
+    var commandresult = config["command.result"];
     execute([{
         // add permissions as per given information
         "executethis": "addwidmaster",
         "metadata.method": "permissiondto",
-        "level": config['permission.level']
+        "level": config['permission.level'],
+        "command":{"result":commandresult}
     }], function(err, res) {
         proxyprinttodiv('Function addpermission done --  >>>>>> added permission >>>>>  for  -- ', res, 39);
         callback(err, res);
@@ -389,13 +397,15 @@ exports.addpermission = addpermission = function addpermission(config, callback)
 // ** GENERIC FUNCTION TO ADD A SECURITY DATA FOR A USER WID ON THE BASIS OF RECEIVED DATA **
 // add security data
 exports.addsecurity = addsecurity = function addsecurity(config, callback) {
+    var commandresult = config["command.result"];
     execute([{
             // add group as per given wid
             "executethis": "addwidmaster",
             "wid": config['userwid'],
             // security data
             "metadata.method": "userdto",
-            "securitydto.ac": config['securityac']
+            "securitydto.ac": config['securityac'],
+        "command":{"result":commandresult}
         }],
         function(err, res) {
             proxyprinttodiv('Function addsecurity --  >>>>>> added security  >>>>>  for  -- ', res, 39);
@@ -637,25 +647,29 @@ exports.datax = datax = function datax(groupname, callback) {
         },
 
         function(cb) {
-            addtargetwidtocurrentwid(user1wid, "userdto", permissionwid, "permissiondto", "onetomany", function(err, res) {
+            var config = {"currentwid":user1wid, "currentwidmethod":"userdto", "targetwid":permissionwid, "targetwidmethod":"permissiondto", "linktype":"onetomany"};
+            addtargetwidtocurrentwid( config, function(err, res) {
                 cb(err);
             })
         },
         function(cb) {
             // attach groupdto to permissiondto
-            addtargetwidtocurrentwid(permissionwid, "permissiondto", group1wid, "groupdto", "manytomany", function(err, res) {
+            var config = {"currentwid":permissionwid, "currentwidmethod":"permissiondto", "targetwid":group1wid, "targetwidmethod":"groupdto", "linktype":"manytomany"};
+            addtargetwidtocurrentwid( config,function(err, res) {
                 cb(err);
             })
         },
         function(cb) {
             // attach userdto to groupdto
-            addtargetwidtocurrentwid( group1wid, "groupdto",user1wid, "userdto", "manytomany", function(err, res) {
+            var config = {"currentwid":group1wid, "currentwidmethod":"groupdto", "targetwid":user1wid, "targetwidmethod":"userdto", "linktype":"manytomany"};
+            addtargetwidtocurrentwid( config, function(err, res) {
                 cb(err);
             })
         },
         function(cb) {
             // attach actiondto to groupdto
-            addtargetwidtocurrentwid( group1wid, "groupdto",action1, "actiondto", "manytomany", function(err, res) {
+            var config = {"currentwid":group1wid, "currentwidmethod":"groupdto", "targetwid":action1, "targetwidmethod":"actiondto", "linktype":"manytomany"};
+            addtargetwidtocurrentwid( config, function(err, res) {
                 cb(err);
             })
         },
@@ -786,18 +800,18 @@ exports.testgetrelated = testgetrelated = function testgetrelated(config, callba
 
 
 // passin data and get the relationship created
-exports.addtargetwidtocurrentwid = addtargetwidtocurrentwid = function addtargetwidtocurrentwid(currentwid, currentwidmethod, targetwid, targetwidmethod, linktype, callback) {
+exports.addtargetwidtocurrentwid = addtargetwidtocurrentwid = function addtargetwidtocurrentwid(config, callback) {
     execute({
         "executethis": "addwidmaster",
         "metadata.method": "relationshipdto",
-        "primarywid": currentwid,
-        "secondarywid": targetwid,
-        "primarymethod": currentwidmethod,
-        "secondarymethod": targetwidmethod,
-        "linktype": linktype,
+        "primarywid": config['currentwid'],
+        "secondarywid": config['targetwid'],
+        "primarymethod": config['currentwidmethod'],
+        "secondarymethod": config['targetwidmethod'],
+        "linktype": config['linktype'],
         "relationshiptype": "attributes"
     }, function(err, resp) {
-        proxyprinttodiv('Function addtargetwidtocurrentwid done -- ' + currentwid + ' >>>>>> ' + linktype + ' >>>>> ' + targetwid + '  -- ', resp, 99);
+        proxyprinttodiv('Function addtargetwidtocurrentwid done -- ' + config['currentwid'] + ' >>>>>> ' + config['linktype'] + ' >>>>> ' + config['targetwid'] + '  -- ', resp, 99);
         callback(err, resp);
     });
 
