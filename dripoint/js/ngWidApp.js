@@ -6,7 +6,7 @@ eventdeviceready({}, function (err, results) { });
 
 if (typeof angular !== 'undefined') {
     // define main angularJS dri wid app
-    var widApp = angular.module('widApp', ['ui.bootstrap']);
+    var widApp = angular.module('widApp', ['ui.bootstrap', 'autofields']);
 
     // angular data service which decides how incoming data is stored into the model
     widApp.factory('dataService', function($http, $compile) {
