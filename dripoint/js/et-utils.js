@@ -572,7 +572,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
     proxyprinttodiv('Function datastore command -- get', command, 12);
     var db = command.db;
     var databasetable = command.databasetable;
-    var keepaddthis = command.keepaddthis;
+    //var keepaddthis = command.keepaddthis;
     if (widName) {
         getdatabaseinforesult = getdatabaseinfo(command, datastore, collection, keycollection, db, databasetable);
         proxyprinttodiv('Function getwid getdatabaseinforesult', getdatabaseinforesult, 12);
@@ -602,16 +602,16 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                 }
             }
 
-            proxyprinttodiv('Function getwid output', output, 12);
-            if (!keepaddthis) { // i.e. remove add this
+            // proxyprinttodiv('Function getwid output', output, 12);
+            // if (!keepaddthis) { // i.e. remove add this
 
-                if (output.hasOwnProperty("addthis")) {
-                    var _add_this = output["addthis"];
-                    delete output["addthis"];
-                    output = extend(true, output, _add_this)
-                }
-                //output = find_and_replace_addthis(output) ;
-            }
+            //     if (output.hasOwnProperty("addthis")) {
+            //         var _add_this = output["addthis"];
+            //         delete output["addthis"];
+            //         output = extend(true, output, _add_this)
+            //     }
+            //     //output = find_and_replace_addthis(output) ;
+            // }
 
 
             // if (!keydatabase.hasOwnProperty(widName)) {
@@ -919,6 +919,16 @@ exports.convertfromdriformat = convertfromdriformat = function convertfromdrifor
         //commented by Roger
         //outobject = ConvertToDOTdri(outobject);
     }
+
+    if (command.hasOwnProperty("keepaddthis") && !command.keepaddthis) { // i.e. remove add this if false
+
+        if (outobject.hasOwnProperty("addthis")) {
+            var _add_this = outobject["addthis"];
+            delete outobject["addthis"];
+            outobject = extend(true, outobject, _add_this)
+        }
+    }
+
     return outobject;
 };
 
