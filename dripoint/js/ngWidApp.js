@@ -1,9 +1,5 @@
 if(!exports){ var exports = {}; } // defaulting global exports variable
 
-// call eventdeviceready from config to see if app needs to be installed
-// call outside controller so it happens first
-eventdeviceready({}, function (err, results) { });
-
 if (typeof angular !== 'undefined') {
     // define main angularJS dri wid app
     var widApp = angular.module('widApp', ['ui.bootstrap', 'autofields']);

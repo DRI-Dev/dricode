@@ -134,9 +134,8 @@ function finishConvert($, screenwid, res) {
     // append any existing style blocks to body before continuing
     $('style').each(function () { $('body').append(this.outerHTML); });
 
-//    $('widsection').each(function(i, ele) { });
-
-    screenwid.html = $('body').html();
+//    screenwid.html = $('body').html();
+    screenwid.html = $('body').text();
 
     console.log('**>>** new screenwid execution parameters => ' + JSON.stringify(screenwid));
 
