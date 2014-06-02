@@ -48,7 +48,7 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
     //             "wid":"systemdto",
     //             "expirationtimer":"string",
     //             "expirationdate":"string",
-				// "executecount":"integer",
+                // "executecount":"integer",
     //             "metadata.inherit.0": {"wid" : "systemdefault", "command" : { "dtotype":"", "adopt":"default"}}
     //     },{
     //         "executethis":"addwidmaster",
@@ -195,8 +195,8 @@ exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, cal
 
 exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eventtype, callback) {
     proxyprinttodiv("getexecutelist eventname(collection)", eventname, 17);
-	proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
-	var executeobject = {"command": {"result": "queryresult"}};
+    proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
+    var executeobject = {"command": {"result": "queryresult"}};
     var executetodolist=[];
     executeobject.command.databasetable = eventtype;
     executeobject.command.collection = eventname;
@@ -204,17 +204,17 @@ exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eve
     //executeobject.command.result = "queueresult";
     executeobject["executethis"] = "querywid";
     //executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
-    executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]}  	
-	proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
-	
+    executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]}   
+    proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
+
     execute(executeobject, function (err, res) {
-		proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
+        proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
         if (res.length === 0) {
             executetodolist = [];
         }
         else if(res[0] && res[0]["queryresult"]){
             for (var everyaction in res[0]["queryresult"]){
-				proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
+                proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
                 //if (res[0]["queryresult"][everyaction]
                 executetodolist.push(res[0]["queryresult"][everyaction]);
             }
