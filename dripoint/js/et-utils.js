@@ -255,6 +255,9 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
     extend(true, inputWidgetObject, originalarguments);
 
 
+
+
+
     var err = null;
     var widName = inputWidgetObject['wid'];
     var found = false;
@@ -266,6 +269,25 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
 
     proxyprinttodiv('Function datastore inputWidgetObject 0', inputWidgetObject, 11);
     // console.log('>>>inputWidgetObject.command.environment' +inputWidgetObject.command.environment)
+
+    if(!inputWidgetObject['metadata']){
+        inputWidgetObject['metadata']={};
+    }
+
+    // copy environment stuff
+    if(inputWidgetObject && inputWidgetObject.command && inputWidgetObject.command.usernamespace){
+        // add usernamespace from environment to metadata
+        if(inputWidgetObject.command.usernamespace){
+            inputWidgetObject['metadata']['accountid']=inputWidgetObject.command.usernamespace;
+        }
+
+        // // add attributes from environment to metadata
+        // if(inputWidgetObject.command.environment && (typeof inputWidgetObject.command.environment === object)){
+        //     for(var key in inputWidgetObject.command.environment){
+        //         inputWidgetObject[key]=inputWidgetObject.command.environment[key];
+        //     }
+        // }
+    }
 
     if (inputWidgetObject.command && inputWidgetObject.command.environment && Object.keys(inputWidgetObject.command.environment).length > 0) {
         copyEnvironmentCommands(inputWidgetObject);
@@ -3841,7 +3863,20 @@ function getRandomNumberByLength(length) {
 
         inputWidgetObject.command = tempObj;
 
-        if (inputWidgetObject)
+        // add attributes from environment to metadata
+        if(tempObj && tempObj.environment && tempObj.environment.attributes  && (typeof tempObj.environment.attributes === "object")){
+            
+            if(!inputWidgetObject['metadata']){
+                inputWidgetObject['metadata']={};
+            }
+            for(var key in tempObj.environment.attributes){
+                inputWidgetObject['metadata'][key]=tempObj.environment.attributes[key];
+            }
+        }
+
+
+
+        if (inputWidgetObject){}
             delete inputWidgetObject['command']['environment'];
     }
 

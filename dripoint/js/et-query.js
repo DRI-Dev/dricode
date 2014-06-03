@@ -38,6 +38,21 @@
             var output = [];
             var mQueryString = "";
 
+
+            if(!parameters['metadata']){
+                parameters['metadata']={};
+            }
+
+            // copy environment stuff
+            if(parameters && parameters.command && parameters.command.usernamespace){
+                // add usernamespace from environment to metadata
+                if(parameters.command.usernamespace){
+                    parameters['metadata']['accountid']=parameters.command.usernamespace;
+                }
+            }
+
+            
+
             // Fish out params
             proxyprinttodiv('querywid parameters I', parameters, 28);
             var p = fishOut(parameters);
@@ -156,6 +171,8 @@
                                             proxyprinttodiv('Function MongoDataQuery singlemongoquery : ', mQueryString, 28);
                                             //mQueryString = output.substring(0, output.length - 1);
                                             // if (validParams(mQueryString)) {
+                                            
+
                                             mquery(mQueryString,{}, commandParams, function (err, res) {
                                                 // If error, bounce out
                                                 if (err && Object.keys(err).length > 0) {
