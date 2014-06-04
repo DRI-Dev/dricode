@@ -440,7 +440,7 @@ function executeAjax(allConfig, executeItem, callback, returnCallback) {
         dataType: 'json',
         url: '/executethis',
         headers: {
-            'content-type': 'Application/json'
+            'content-type': 'application/json'
         },
         global: 'false',
         cache: 'false',
