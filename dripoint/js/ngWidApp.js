@@ -357,6 +357,8 @@ if (typeof angular !== 'undefined') {
             $('<div>' + parameters.html + '</div>').find('execute').each(function(i, ele) {
                 var attrs = NNMtoObj(ele.attributes);
 
+                if (attrs.etparams) { attrs = JSON.parse(attrs.etparams); }
+
                 all_wids.push({executethis:attrs.wid || attrs.executethis});
             });
         }
