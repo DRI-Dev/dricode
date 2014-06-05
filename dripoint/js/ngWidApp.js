@@ -353,15 +353,15 @@ if (typeof angular !== 'undefined') {
         for (var b = 0; b < widforbase.length; b++) { all_wids.push({executethis:widforbase[b].trim()}); }
         for (var c = 0; c < widforbackground.length; c++) { all_wids.push({executethis:widforbackground[c].trim()}); }
 
-        if ($('<div>' + parameters.html + '</div>').find('execute').length > 0) {
-            $('<div>' + parameters.html + '</div>').find('execute').each(function(i, ele) {
-                var attrs = NNMtoObj(ele.attributes);
-
-                if (attrs.etparams) { attrs = JSON.parse(attrs.etparams); }
-
-                all_wids.push({executethis:attrs.wid || attrs.executethis});
-            });
-        }
+//        if ($('<div>' + parameters.html + '</div>').find('execute').length > 0) {
+//            $('<div>' + parameters.html + '</div>').find('execute').each(function(i, ele) {
+//                var attrs = NNMtoObj(ele.attributes);
+//
+//                if (attrs.etparams) { attrs = JSON.parse(attrs.etparams); }
+//
+//                all_wids.push({executethis:attrs.wid || attrs.executethis});
+//            });
+//        }
 
         async.eachSeries(all_wids,
             function(executeObj, cb) {
