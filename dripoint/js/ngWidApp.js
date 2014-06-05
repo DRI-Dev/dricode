@@ -137,47 +137,6 @@ if (typeof angular !== 'undefined') {
         }
     });
 
-
-    widApp.directive('etCrud', function($rootScope) {
-        
-         return {
-            restrict: "E",        // directive is an Element (not Attribute)
-            scope: {              // set up directive's isolated scope
-              list: "=",          // list var passed by value (string, one-way)
-              delete: "=", 
-              fields: "=",
-              add: "=",
-              get: "=", 
-              widQuery: "=",        
-              save: "&"           // save action
-            },
-            template:             // replacement HTML (can use our scope vars here)
-              "<div>" +
-              "<div> list -- {{list}} " + 
-              "<div> get -- {{get}} " + 
-              "<div> add -- {{add}} " + 
-              "<div> delete -- {{delete}} " + 
-              "<div> fields -- {{fields}} " + 
-              "<div> widQuery -- {{widQuery}} " +
-              "{{name}}: <input ng-model='amount' />" +
-              "<button ng-click='save()'>Save</button>" +
-              "</div>",
-            replace: true,        // replace original markup with template
-            transclude: false,    // do not copy original HTML content
-            controller: [ "$scope", function ($scope) {}],
-            link: function (scope, element, attrs, controller) {
-                var list = scope.list;
-                var fields = scope.fields;
-                var get = scope.get;
-                var add = scope.add;
-                // var delete = scope.delete;
-                var widQuery = scope.widQuery;
-
-            }
-          }
-
-    });
-
     // html attribute that allows any html element to become draggable with the mouse
     widApp.directive('draggable', function($document) {
         return function(scope, element, attr) {
@@ -393,14 +352,6 @@ if (typeof angular !== 'undefined') {
         for (var a = 0; a < widforview.length; a++) { all_wids.push({executethis:widforview[a].trim()}); }
         for (var b = 0; b < widforbase.length; b++) { all_wids.push({executethis:widforbase[b].trim()}); }
         for (var c = 0; c < widforbackground.length; c++) { all_wids.push({executethis:widforbackground[c].trim()}); }
-
-        if ($('<div>' + parameters.html + '</div>').find('execute').length > 0) {
-            $('<div>' + parameters.html + '</div>').find('execute').each(function(i, ele) {
-                var attrs = NNMtoObj(ele.attributes);
-
-                all_wids.push(attrs);
-            });
-        }
 
         async.eachSeries(all_wids,
             function(executeObj, cb) {
