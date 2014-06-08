@@ -51,8 +51,9 @@ exports.sc = sc = function sc(accessconfig, callback) {
     var actionCreator = "";
 
     // add group wid id from user >> group relationship data records
-    function addGroupWids(actioncreatorgroups,res){
-        for(var idx in  res){
+
+    function addGroupWids(actioncreatorgroups, res) {
+        for (var idx in res) {
             var json = res[idx];
             var objkey = Object.keys(json)[0];
             var relationshipJson = json[objkey];
@@ -70,9 +71,13 @@ exports.sc = sc = function sc(accessconfig, callback) {
                     proxyprinttodiv('Function sc getting user for ac -- ', _accesstoken, 39);
                     getuserbyac(_accesstoken, function(err, userDto) {
                         actor = userDto;
-                        actorGroup = userDto.wid; // consider user is usergroup
-                        proxyprinttodiv('Function sc got actor Group for ac -- ', actorGroup, 39);
-                        cb1(null);
+                        if(userDto){
+                            actorGroup = userDto.wid; // consider user is usergroup
+                            proxyprinttodiv('Function sc got actor Group for ac -- ', actorGroup, 39);
+                            cb1(null);
+                        }else{
+                            cb1(null);
+                        }
                     });
 
                 } else {
@@ -114,9 +119,13 @@ exports.sc = sc = function sc(accessconfig, callback) {
 
                 execute(query, function(err, res) {
                     var res1 = res[0][Object.keys(res[0])[0]];
-                    actionCreator = res1['metadata']['system']['creator'];
-                    proxyprinttodiv('Function securitycheck Action creator is -- ', actionCreator, 39);
-                    cb1(null, "identified action owner");
+                    if(res1 && res1['metadata'] && res1['metadata']['system']){
+                        actionCreator = res1['metadata']['system']['creator'];
+                        proxyprinttodiv('Function securitycheck Action creator is -- ', actionCreator, 39);
+                        cb1(null, "identified action owner");
+                    }else{
+                        cb1(null);
+                    }
                 });
             },
 
@@ -125,14 +134,14 @@ exports.sc = sc = function sc(accessconfig, callback) {
                 // get all the groups for the actioncreator
                 getrelatedwids("", "groupdto", actionCreator, "userdto", "", function(err, res) {
                     actioncreatorgroups = [];
-                    addGroupWids(actioncreatorgroups,res);
+                    addGroupWids(actioncreatorgroups, res);
 
                     // iterate over all groups and get the related groups
                     for (var i in actioncreatorgroups) {
                         var groupWid = actioncreatorgroups[i];
                         // get all related groups recursively and concat to groups set
                         getrelatedwids("", "groupdto", groupWid, "groupdto", "", function(err, res) {
-                            addGroupWids(actioncreatorgroups,res);
+                            addGroupWids(actioncreatorgroups, res);
                         });
                     }
 
@@ -157,14 +166,14 @@ exports.sc = sc = function sc(accessconfig, callback) {
                 // get user groups where user granted permissions is the action 'owner'
                 // get all the groups for the actioncreator
 
-                
+
 
                 if (actioncreatorgroups && (actioncreatorgroups.length > 0)) {
                     // get all my groups
                     getrelatedwids(actorGroup, "groupdto", "", "userdto", {}, function(err, res) {
                         actorgroups = [];
 
-                        for(var idx in res){
+                        for (var idx in res) {
                             var json = res[idx];
                             var objkey = Object.keys(json)[0];
                             var groupWid = json[objkey]['primarywid'];
@@ -172,7 +181,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
                             // addactorGroups(res[idx], actorgroups);
                             // TODO :: get more groups applicable recursively
                             getrelatedwids(groupWid, "groupdto", "", "groupdto", "", function(err, res1) {
-                                for(var idx1 in res1){
+                                for (var idx1 in res1) {
                                     var json = res1[idx1];
                                     var objkey = Object.keys(json)[0];
                                     var groupWid = json[objkey]['primarywid'];
@@ -191,7 +200,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
             },
             function(cb1) {
                 // match the 2 arrays for commonality
-                checkSecurityEx(actioncreatorgroups,actorgroups,function(err,resp){
+                checkSecurityEx(actioncreatorgroups, actorgroups, function(err, resp) {
                     isMatch = resp;
                     proxyprinttodiv('Function securitycheck auth status -- ', isMatch, 39);
                     securityCheckOutput = isMatch;
@@ -211,7 +220,8 @@ exports.sc = sc = function sc(accessconfig, callback) {
 };
 
 // get the 2 wids lists and check the security check output
-function checkSecurity(actioncreatorgroups,actorgroups, callback){
+
+function checkSecurity(actioncreatorgroups, actorgroups, callback) {
     var isMatch = false;
     for (var idx1 in actioncreatorgroups) {
         for (var idx2 in actorgroups) {
@@ -225,10 +235,21 @@ function checkSecurity(actioncreatorgroups,actorgroups, callback){
 
 // extensive check
 // get the 2 wids lists and check the security check output
-function checkSecurityEx(actioncreatorgroups,actorgroups, callback){
+
+function checkSecurityEx(actioncreatorgroups, actorgroups, callback) {
     var isMatch = false;
-    getrelatedwids("","","","",{"$and":[{"wid":{"$in":actioncreatorgroups}},{"wid":{"$in":actorgroups}}]}, function(err, matchingWids) {
-        if(matchingWids && matchingWids instanceof Array &&  (matchingWids.length > 0)){
+    getrelatedwids("", "", "", "", {
+        "$and": [{
+            "wid": {
+                "$in": actioncreatorgroups
+            }
+        }, {
+            "wid": {
+                "$in": actorgroups
+            }
+        }]
+    }, function(err, matchingWids) {
+        if (matchingWids && matchingWids instanceof Array && (matchingWids.length > 0)) {
             isMatch = true;
         }
         callback(null, isMatch);
@@ -255,12 +276,16 @@ exports.getuserbyac = getuserbyac = function getuserbyac(userac, callback) {
             };
 
             execute(query1, function(err, res1) {
-                var res = res1[0];
-                proxyprinttodiv('Function getuserbyac query1 -- res', res1, 39);
-                var jsonKey = Object.keys(res)[0];
-                var jsonVal = res[jsonKey];
-                userWid = jsonVal;
-                cb(null);
+                if(res1 && res1[0]){
+                    var res = res1[0];
+                    proxyprinttodiv('Function getuserbyac query1 -- res', res1, 39);
+                    var jsonKey = Object.keys(res)[0];
+                    var jsonVal = res[jsonKey];
+                    userWid = jsonVal;
+                    cb(null);
+                }else{
+                    cb(null);
+                }
             });
 
         }
@@ -303,7 +328,9 @@ exports.createuserdata = createuserdata = function createuserdata(userobj, callb
         "state": userobj.state,
         "zip": userobj.zip,
         "country": userobj.country,
-        "command":{"result":commandresult}
+        "command": {
+            "result": commandresult
+        }
     }
 
     // create userdto data
@@ -329,7 +356,9 @@ exports.creategroup = creategroup = function creategroup(config, callback) {
         "metadata.system.creator": "user1", // TODO :: this shall come from inherit
         "groupname": grouptype,
         "type": grouptype,
-        "command":{"result":commandresult}
+        "command": {
+            "result": commandresult
+        }
     }], function(err, res) {
         proxyprinttodiv('Function creategroup -- added group -- ', res, 39);
         callback(err, res);
@@ -348,7 +377,9 @@ exports.createaction = createaction = function createaction(config, callback) {
         "type": actiontype,
         "metadata.system.creator": "user1", // TODO :: this shall come from inherit
         "metadata.method": "actiondto",
-        "command":{"result":commandresult}
+        "command": {
+            "result": commandresult
+        }
     }], function(err, res) {
         proxyprinttodiv('Function createaction -- added group of type "' + actiontype + '"  -- ', res, 39);
         callback(err, res[0]);
@@ -388,7 +419,9 @@ exports.addpermission = addpermission = function addpermission(config, callback)
         "executethis": "addwidmaster",
         "metadata.method": "permissiondto",
         "level": config['permission.level'],
-        "command":{"result":commandresult}
+        "command": {
+            "result": commandresult
+        }
     }], function(err, res) {
         proxyprinttodiv('Function addpermission done --  >>>>>> added permission >>>>>  for  -- ', res, 39);
         callback(err, res);
@@ -406,12 +439,20 @@ exports.addsecurity = addsecurity = function addsecurity(config, callback) {
             // security data
             "metadata.method": "securitydto",
             "ac": config['securityac'],
-            "command":{"result":commandresult}
+            "command": {
+                "result": commandresult
+            }
         }],
         function(err, res) {
 
-            var config1 = {"currentwid":config['userwid'], "currentwidmethod":"userdto", "targetwid":res['wid'], "targetwidmethod":"securitydto", "linktype":"onetoone"};
-            addtargetwidtocurrentwid( config1, function(err, res) {
+            var config1 = {
+                "currentwid": config['userwid'],
+                "currentwidmethod": "userdto",
+                "targetwid": res['wid'],
+                "targetwidmethod": "securitydto",
+                "linktype": "onetoone"
+            };
+            addtargetwidtocurrentwid(config1, function(err, res) {
                 proxyprinttodiv('Function addsecurity --  >>>>>> added security  >>>>>  for  -- ', res, 39);
                 // console.debug('added security for wid ' + wid + " >>>> " + JSON.stringify(res));
                 callback(err, res)
@@ -653,29 +694,53 @@ exports.datax = datax = function datax(groupname, callback) {
         },
 
         function(cb) {
-            var config = {"currentwid":user1wid, "currentwidmethod":"userdto", "targetwid":permissionwid, "targetwidmethod":"permissiondto", "linktype":"onetomany"};
-            addtargetwidtocurrentwid( config, function(err, res) {
+            var config = {
+                "currentwid": user1wid,
+                "currentwidmethod": "userdto",
+                "targetwid": permissionwid,
+                "targetwidmethod": "permissiondto",
+                "linktype": "onetomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
                 cb(err);
             })
         },
         function(cb) {
             // attach groupdto to permissiondto
-            var config = {"currentwid":permissionwid, "currentwidmethod":"permissiondto", "targetwid":group1wid, "targetwidmethod":"groupdto", "linktype":"manytomany"};
-            addtargetwidtocurrentwid( config,function(err, res) {
+            var config = {
+                "currentwid": permissionwid,
+                "currentwidmethod": "permissiondto",
+                "targetwid": group1wid,
+                "targetwidmethod": "groupdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
                 cb(err);
             })
         },
         function(cb) {
             // attach userdto to groupdto
-            var config = {"currentwid":group1wid, "currentwidmethod":"groupdto", "targetwid":user1wid, "targetwidmethod":"userdto", "linktype":"manytomany"};
-            addtargetwidtocurrentwid( config, function(err, res) {
+            var config = {
+                "currentwid": group1wid,
+                "currentwidmethod": "groupdto",
+                "targetwid": user1wid,
+                "targetwidmethod": "userdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
                 cb(err);
             })
         },
         function(cb) {
             // attach actiondto to groupdto
-            var config = {"currentwid":group1wid, "currentwidmethod":"groupdto", "targetwid":action1, "targetwidmethod":"actiondto", "linktype":"manytomany"};
-            addtargetwidtocurrentwid( config, function(err, res) {
+            var config = {
+                "currentwid": group1wid,
+                "currentwidmethod": "groupdto",
+                "targetwid": action1,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
                 cb(err);
             })
         },
@@ -730,7 +795,7 @@ exports.getrelatedwids = getrelatedwids = function getrelatedwids(primarywidtype
     if (secondarywidval)
         mongorawquery['data.secondarymethod'] = secondarywidval;
 
-    if (extracondition && (typeof extracondition === "object") &&  (Object.keys(extracondition).length > 0)) {
+    if (extracondition && (typeof extracondition === "object") && (Object.keys(extracondition).length > 0)) {
         var andQuery = {
             "$and": []
         };
@@ -779,4 +844,59 @@ exports.addtargetwidtocurrentwid = addtargetwidtocurrentwid = function addtarget
         callback(err, resp);
     });
 
+}
+
+
+exports.testscreens = testscreens = function testscreens(config, callback) {
+    async.series([
+
+            function(cb) {
+                dtonx({}, function(err, res) {
+                    cb(err, res);
+                });
+            },
+            function(cb) {
+
+                var config = {
+                    "currentwid": "myscreenwid",
+                    "currentwidmethod": "screendto",
+                    "targetwid": "mywidoptionwid",
+                    "targetwidmethod": "widoptiondto",
+                    "linktype": "manytoone"
+                };
+                addtargetwidtocurrentwid(config, function(err, res) {
+                    cb(err);
+                });
+            },
+            function(cb) {
+                var config = {
+                    "currentwid": "myscreenwid",
+                    "currentwidmethod": "screendto",
+                    "targetwid": "myquerywid",
+                    "targetwidmethod": "querydto",
+                    "linktype": "manytoone"
+                };
+                addtargetwidtocurrentwid(config, function(err, res) {
+                    cb(err);
+                });
+            }
+
+        ],
+
+        function(err, resp) {
+            // final callback
+            // var q = {
+            //     "executethis": "querywid",
+            //     "mongorawquery": {"data.widname":"myscreen","metadata.method": "screendto"},
+            //     "command.result": "widname"
+            // }
+
+            // execute(q,function(e,r){
+                // callback(err, r);
+            // });
+
+
+            proxyprinttodiv('Function testscreens done --  response  -- ', resp, 39);
+            callback(err, resp);
+        });
 }
