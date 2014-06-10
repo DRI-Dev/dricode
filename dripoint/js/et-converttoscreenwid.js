@@ -19,11 +19,11 @@ $(document).ready(function () {
 
     // convert linked html page to a screenwid
     htmlToScreenwid(widName, $(htmltarget).html(), params, function() {
-        $('body').html('<div class="container" style="margin-top:30px;text-align:center;">'
+        $('body').html('<div id="default_view_loc"><div class="container" style="margin-top:30px;text-align:center;">'
             + '<div class="row well col-md-8 col-md-offset-2"><h4>This page has been saved as the '
             + widName + ' screenwid in the current angular data model as well as in localStorage.<br /> '
-            + 'You will be redirected to <a href="http://dripoint.com?wid='
-            + widName + '">http://dripoint.com?wid = ' + widName + '</h4></div></div>');
+            + 'You will be directed to the ' + widName + ' html wid.</h4></div></div></div>'
+            + '<div id="logs" class="container"><p id="errorlog" class="row"></p><p id="successlog" class="row"></p></div>');
 //        setTimeout(function() { window.location = 'http://dev.dripoint.com?wid=' + widName; },3500);
         setTimeout(function() { angularExecute({executethis:widName}, function (err, results) { }); },3500);
     });
