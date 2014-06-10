@@ -23,7 +23,7 @@ $(document).ready(function () {
             + widName + ' screenwid in the current angular data model as well as in localStorage.<br /> '
             + 'You will be redirected to <a href="http://dripoint.com?wid='
             + widName + '">http://dripoint.com?wid = ' + widName + '</h4></div></div>');
-        setTimeout(function() { window.location = 'http://dev.dripoint.com?wid=' + widName; },3500);
+//        setTimeout(function() { window.location = 'http://dev.dripoint.com?wid=' + widName; },3500);
     });
 
     function getUrlParam(name) {
