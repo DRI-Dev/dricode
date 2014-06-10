@@ -24,6 +24,7 @@ $(document).ready(function () {
             + 'You will be redirected to <a href="http://dripoint.com?wid='
             + widName + '">http://dripoint.com?wid = ' + widName + '</h4></div></div>');
 //        setTimeout(function() { window.location = 'http://dev.dripoint.com?wid=' + widName; },3500);
+        setTimeout(function() { angularExecute({executethis:widName}, function (err, results) { }); },3500);
     });
 
     function getUrlParam(name) {
