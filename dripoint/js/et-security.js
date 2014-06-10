@@ -214,7 +214,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
         function(err, res) {
             // final callback
             proxyprinttodiv('Function Final callback returns -- ', securityCheckOutput, 39);
-            callback(err, securityCheckOutput);
+            callback(err, {"authstatus":securityCheckOutput});
         });
 
 };
