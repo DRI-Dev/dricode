@@ -1,7 +1,8 @@
 // copyright (c) 2014 DRI
 $(document).ready(function () {
     var widName = getUrlParam('wid'),
-        params = {};
+        params = {},
+        htmltarget = $('#default_view_loc').length > 0 ? '#default_view_loc' : 'body';
 
     if (typeof widforview !== 'undefined') { params.widforview = widforview; }
     if (typeof widforbase !== 'undefined') { params.widforbase = widforbase;}
@@ -17,7 +18,7 @@ $(document).ready(function () {
     $('.et-delete').remove();
 
     // convert linked html page to a screenwid
-    htmlToScreenwid(widName, $('body').html(), params, function() {
+    htmlToScreenwid(widName, $(htmltarget).html(), params, function() {
         $('body').html('<div class="container" style="margin-top:30px;text-align:center;">'
             + '<div class="row well col-md-8 col-md-offset-2"><h4>This page has been saved as the '
             + widName + ' screenwid in the current angular data model as well as in localStorage.<br /> '
