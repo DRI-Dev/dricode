@@ -24,8 +24,11 @@ $(document).ready(function () {
             + widName + ' screenwid in the current angular data model as well as in localStorage.<br /> '
             + 'You will be directed to the ' + widName + ' html wid.</h4></div></div></div>'
             + '<div id="logs" class="container"><p id="errorlog" class="row"></p><p id="successlog" class="row"></p></div>');
-//        setTimeout(function() { window.location = 'http://dev.dripoint.com?wid=' + widName; },3500);
-        setTimeout(function() { angularExecute({executethis:widName}, function (err, results) { }); },3500);
+
+        setTimeout(function() {
+            $('#default_view_loc').html('');
+            angularExecute({executethis:widName}, function (err, results) { });
+        },3500);
     });
 
     function getUrlParam(name) {
