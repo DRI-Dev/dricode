@@ -2858,14 +2858,37 @@ exports.ettestag12 = ettestag12 = function ettestag12(params, callback) {
 exports.ettestag1 = ettestag1 = function ettestag1(params, callback) {
     // debuglevel = 18;
     // eventappinstall();
+
+
+   
     execute([{
             "executethis": "addwidmaster",
             "wid": "sounddto",
             "metadata.method": "sounddto",
-            "note": "string"
+            "note": "string",
+            "command": {
+                "processparameterfn": "execute_nothing",
+                "processfn": "execute_function",
+                "environment": {
+                    "run": {
+                        "type": "series",
+                        "executelevel": 0
+                    }
+                }
+            }
         }, {
             "executethis": "getwidmaster",
-            "wid": "sounddto"
+            "wid": "sounddto",
+            "command": {
+                "processparameterfn": "execute_nothing",
+                "processfn": "execute_function",
+                "environment": {
+                    "run": {
+                        "type": "series",
+                        "executelevel": 0
+                    }
+                }
+            }
         }],
         function(err, res1) {
             proxyprinttodiv("Ag1  result ", res1, 99);
