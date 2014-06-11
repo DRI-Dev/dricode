@@ -88,9 +88,10 @@
         object = ConvertFromDOTdri(object);
         proxyprinttodiv("addwidmaster before", object, 17);
 
+        
+
         var filter_data = getcommand(object, {
             "command": {
-                "type":"series",
                 "datastore": config.configuration.defaultdatastore,
                 "collection":config.configuration.defaultcollection,
                 "keycollection": config.configuration.defaultcollection + "key",
@@ -98,9 +99,7 @@
                 "databasetable":config.configuration.defaultdatabasetable,
                 "convertmethod":"toobject",
                 "datamethod":"upsert",
-                "environment":{
-                    "run":{}
-                }
+                "environment":""
             }
         }, {
             "command": {
@@ -110,7 +109,8 @@
                 "db":"",
                 "databasetable":"",
                 "convertmethod":"",
-                "datamethod":""
+                "datamethod":"",
+                "environment":""
             }
         },
         true);
@@ -236,34 +236,19 @@
 
                if (dto_to_get !== "string") {
                     proxyprinttodiv("cleanadd dto_to_get", dto_to_get, 17);
-
-                    // old code
-                    // execute({
-                    //     "executethis": "getwidmaster",
-                    //     "wid": dto_to_get,
-                    //     "command.getwidmaster.execute": "ConvertFromDOTdri",
-                    //     "command.getwidmaster.convertmethod": "dto"
-                    // }, function (err, res) {
-
-                    var executeobject = 
-                        {
+                    execute({
                         "executethis": "getwidmaster",
                         "wid": dto_to_get,
                         "command.getwidmaster.execute": "ConvertFromDOTdri",
                         "command.getwidmaster.convertmethod": "dto"
-                        }
-
-                    var env = new drienvironment(object.command.environment);
-
-                    env.execute(executeobject, function (err, res) {
-                        if (err && err.errorname === "failnotfound") {err=null; res={}}
+                    }, function (err, res) {
 
                         if (err && Object.keys(err).length > 0) {
                             callback(err, res);
                         } else {
                             proxyprinttodiv("cleanadd after execute", res, 17);
 
-                            big_dto = res;
+                            big_dto = res[0];
                             result_obj = insertbydtotype(object, big_dto, {}, command); // this fn in et-get
                             proxyprinttodiv("cleanadd after insertbydtotype", result_obj, 17);
                             //command.deepfilter.convert="fromstring"; not needed since done in addwid anyway
@@ -578,22 +563,16 @@
                                 }]
                             };
                         }
-
-                        var env = new drienvironment(inputrecord.command.environment);
-
-                        env.execute(executeobject, function (err, widset1) {
-                        if (err && err.errorname === "failnotfound") {err=null; widset1={"queryresult":[]}}
-
-                        //execute(executeobject, function (err, widset1) {
+                        execute(executeobject, function (err, widset1) {
                             // If error, bounce out
                             
                             if (err && Object.keys(err).length > 0) {
                                 step1_callback(err, widset);
                             } else {
-                                var widset=widset1['queryresult'][0];
+                                var widset=widset1[0]['queryresult'];
                                 if (widset) {
-                                    for (wid in widset) { // really should only be one record
-                                        currentrelationshipobj = widset[wid];
+                                    for (wid in widset[0]) { // really should only be one record
+                                        currentrelationshipobj = widset[0][wid];
                                         }
                                     step1_callback(null);
                                     }
@@ -939,23 +918,12 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
             function step1(step1_callback) { // getwidmaster
                  proxyprinttodiv("addwid step1 getwidmaster output", output, 18);
                  if (object['wid']) {
-                     // execute({
-                     //     "executethis": "getwidmaster",
-                     //     "wid": object['wid'],
-                     //     "command.getwidmaster.execute": "ConvertFromDOTdri",
-                     //     "command.getwidmaster.convertmethod": "nowid"
-                     //     }, function (err, res) {
-
-                        var executeobject={
-                                         "executethis": "getwidmaster",
-                                         "wid": object['wid'],
-                                         "command.getwidmaster.execute": "ConvertFromDOTdri",
-                                         "command.getwidmaster.convertmethod": "nowid"
-                                         }
-                        var env = new drienvironment(object.command.environment);
-                        env.execute(executeobject, function (err, res) {
-                        if (err && err.errorname === "failnotfound") {err=null; res={}}
-
+                     execute({
+                         "executethis": "getwidmaster",
+                         "wid": object['wid'],
+                         "command.getwidmaster.execute": "ConvertFromDOTdri",
+                         "command.getwidmaster.convertmethod": "nowid"
+                         }, function (err, res) {
                              proxyprinttodiv("addwid step1 getwidmaster result", res, 18);
                              var getwidmasterres = {};
                              extend(true, getwidmasterres, res[0]); // master copy
@@ -1075,16 +1043,9 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                 tempcmd.command=command;
                 extend(true, object, tempcmd);
                 proxyprinttodiv("addwid before updatewid ", object, 18);
-
-                //not needed in this case
-                //var env = new drienvironment(object.command.environment);
-                //env.execute(object, function (err, res) {
-
                 execute(object, function (err, res) {
-                //if (err && err.errorname === "failnotfound") {err=null; res={}}
-                //execute(object, function (err, res) {
-                    //console.log(" ^^^^^ "+ JSON.stringify(res))
-                    output = res; // or res[0]?
+                    console.log(" ^^^^^ "+ JSON.stringify(res))
+                    output = res[0]; // or res[0]?
                     // If error, bounce out
                     if (err && Object.keys(err).length > 0) {
                         step4_callback(err, res);

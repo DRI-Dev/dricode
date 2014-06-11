@@ -1,4 +1,4 @@
-        <!-- 
+    <!-- 
 copyright (c) 2014 DRI
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -36,6 +36,7 @@ copyright (c) 2014 DRI
     <script src="et-security.js"></script>
     <script src="executethis.js"></script>
     <script src="et-query.js"></script>
+    <script src="test.js"></script>
     <!-- <script src="et-testing.js" type="text/javascript"></script> -->
 
     <script src="et-get.js"></script>
@@ -43,6 +44,7 @@ copyright (c) 2014 DRI
 
     <script src="et-test.js"></script>
     <script src="et-unit_tests.js"></script>
+    <script src="test-execute.js"></script>
     <script src="cody.js"></script>
     <script src="addhoc.js"></script>
     <script src="ngWidApp.js"></script>
@@ -67,7 +69,27 @@ copyright (c) 2014 DRI
     </style>
     <script type="text/javascript">
     // This example fires without a callback
-    
+    $(document).ready(function() {
+
+   // $("button.collapsibleallbtn").click(function(){
+   // // $("[type=button][value='Collapse All']").click(function(){
+   //      $("button[collapsible='collapsiblebtn']").reset();
+   //  });    
+
+    $("[type=button]").button();
+    $("[type=button]").click(function() {
+        $(this).button('toggle');
+        if ($(this).text()==="+"){
+            $(this).button('open');
+            $(this).button().text("-");
+          }
+          else {
+            $(this).button('reset');
+            $(this).button().text("+");
+          }
+    });
+    });
+
 
     function test4(params) {
         alert("test4 fired with these params:\n" + JSON.stringify(params));
@@ -231,6 +253,8 @@ copyright (c) 2014 DRI
             <!-- end of col-md-12 -->
         </div>
 
+        <button class="btn collapsibleallbtn">Collapse All</button>
+
 
 
     </div>
@@ -295,6 +319,42 @@ copyright (c) 2014 DRI
 
     });
 
+    function default_js_callback(result_object, error_object)
+    {
+        proxyprinttodiv('JS Function Complete: result_object -> ', result_object, 99);
+        proxyprinttodiv('JS Function Complete: error_object -> ', error_object, 99);
+    }
+
+    function execute_js_function()
+    {
+        var function_to_execute = $('#function_to_run').val();
+        window[function_to_execute]({}, function (err, res) 
+            { 
+                show_function_output3(err, res)
+            });
+
+        // call a pure javascript function
+        // var fn_name = '';
+        // var fn_paramters = '';
+        // fn_name = $('#function_to_run').val().toString();
+        // if (fn_name.indexOf('(') > 0 && fn_name.indexOf(')') > 0 && fn_name.indexOf(')') > fn_name.indexOf('('))
+        // {
+        //     // Assume this is already a function and try to run it
+        // } else {
+        //     // Assume this is just a function name and try to add parameters from the parameters box
+        //     fn_paramters = $('#function_parameters').val();
+        // }
+        // if (window.hasOwnProperty(fn_name))
+        // {
+        //     if (fn_paramters > ' ')
+        //     {
+        //         window[fn_name](fn_paramters, default_js_callback);
+        //     } else {
+        //         window[fn_name]({}, default_js_callback);
+        //     }
+        // }
+    }
+
     function execute_stuff(isTest, isServer, servername) {
         // Save function from textbox
         sessionStorage.setItem('function', $('#function_to_run').val());
@@ -331,10 +391,20 @@ copyright (c) 2014 DRI
             // if(function_to_execute.indexOf("ettest") === -1) {
             //  function_to_execute = "ettest" + function_to_execute;
             // }
-
+ 
             var my_execute_object = {
-                "executethis": function_to_execute
-            };
+                "executethis": function_to_execute, 
+                "command": {
+                    "processparameterfn":"execute_nothing",
+                    "processfn":"execute_function",
+                    "environment": {
+                        "run": {
+                            "type": "series",
+                            "executelevel": 0
+                                }
+                            }
+                        }
+                    };
             var data = $('#function_parameters').val();
             if (data != "") {
                 data = JSON.parse(data);
@@ -379,7 +449,8 @@ copyright (c) 2014 DRI
     });
 
     $('#execute_function').click(function() {
-        execute_stuff(false, false);
+        //execute_stuff(false, false);
+        execute_js_function();
     });
 
     $('#execute_server_test').click(function() {
@@ -517,6 +588,12 @@ copyright (c) 2014 DRI
         // if (typeof(result_array) != "array" && typeof(result_array) == "object") {
         //     result_array[0] = result_array;
         // }
+        if (!isArray(result_array)) 
+        {
+            var temp=[]
+            temp.push(result_array)
+            result_array=temp
+        }
         if (err && (Object.keys(err).length > 0)) {
             result_array.push(err)
         }

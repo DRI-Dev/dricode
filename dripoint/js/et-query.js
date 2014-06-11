@@ -155,10 +155,16 @@
                             if (Object.keys(queParams).length > 0 && queParams['mongosinglequery'] != undefined && Object.keys(xtrParams).length === 0) {
                                 console.log('singlemongoquery => ' + queParams['mongosinglequery']);
                                 var wid = queParams['mongosinglequery'];
-                                execute({
-                                    'executethis': 'getwid',
-                                    'wid': wid
-                                }, function (err, res) {
+
+                            var executeobject={'executethis': 'getwid','wid': wid}
+                            var env = new drienvironment(command.environment);
+                            env.execute(executeobject, function (err, res) {
+                                if (err && err.errorname === "failnotfound") {err=null; res={}}
+
+                                // execute({
+                                //     'executethis': 'getwid',
+                                //     'wid': wid
+                                // }, function (err, res) {
                                     // If error, bounce out
                                     if (err && Object.keys(err).length > 0) {
                                         cb(err, res);
@@ -171,8 +177,6 @@
                                             proxyprinttodiv('Function MongoDataQuery singlemongoquery : ', mQueryString, 28);
                                             //mQueryString = output.substring(0, output.length - 1);
                                             // if (validParams(mQueryString)) {
-                                            
-
                                             mquery(mQueryString,{}, commandParams, function (err, res) {
                                                 // If error, bounce out
                                                 if (err && Object.keys(err).length > 0) {
@@ -202,10 +206,17 @@
                                 var paramList = {};
                                 wid = queParams['mongomultiplequery'];
 
-                                execute({
-                                    'executethis': 'getwid',
-                                    'wid': wid
-                                }, function (err, res) {
+
+                                // execute({
+                                //     'executethis': 'getwid',
+                                //     'wid': wid
+                                // }, function (err, res) {
+
+                                var executeobject={'executethis': 'getwid','wid': wid}
+                                var env = new drienvironment(command.environment);
+                                env.execute(executeobject, function (err, res) {
+                                if (err && err.errorname === "failnotfound") {err=null; res={}}
+
                                     // If error, bounce out
                                     if (err && Object.keys(err).length > 0) {
                                         callback(err, res);
@@ -225,12 +236,18 @@
 
                                             async.mapSeries(todolist, function (w, cbMap) {
                                                     async.nextTick(function () {
-                                                        execute({
-                                                            'executethis': 'getwid',
-                                                            'wid': w
-                                                            //getwid({
-                                                            //    'wid': w
-                                                        }, function (err, res) {
+                                                        // execute({
+                                                        //     'executethis': 'getwid',
+                                                        //     'wid': w
+                                                        //     //getwid({
+                                                        //     //    'wid': w
+                                                        // }, function (err, res) {
+
+                                                        var executeobject={'executethis': 'getwid','wid': wid}
+                                                        var env = new drienvironment(command.environment);
+                                                        env.execute(executeobject, function (err, res) {
+                                                            if (err && err.errorname === "failnotfound") {err=null; res={}}
+
                                                             // If error, bounce out
                                                             if (err && Object.keys(err).length > 0) {
                                                                 cbMap(err, res);
@@ -668,10 +685,16 @@
                                 async.series([
                                         function (cb1) {
                                             if (!database[wid]) {
-                                                execute({
-                                                    'executethis': 'getwid',
-                                                    'wid': wid
-                                                }, function (err, res) {
+                                                // execute({
+                                                //     'executethis': 'getwid',
+                                                //     'wid': wid
+                                                // }, function (err, res) {
+
+                                            var executeobject={'executethis': 'getwid','wid': wid}
+                                            var env = new drienvironment(command.environment);
+                                            env.execute(executeobject, function (err, res) {
+                                                if (err && err.errorname === "failnotfound") {err=null; res={}}
+
                                                     widrecord = res;
                                                     cb1(null);
                                                 });

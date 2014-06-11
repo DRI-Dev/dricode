@@ -256,45 +256,6 @@ exports.deletelist = deletelist = function deletelist(listToDo, eventname, callb
     });
 };
 
-exports.server = window.server = server = function server(params, callback) {
-    proxyprinttodiv('Function server ------', params, 30);
-    try {
-        var inbound_parameters = {};
-        extend(true, inbound_parameters, params);
-
-        console.log('execute server called with ' + JSON.stringify(params));
-        delete params['configuration'];
-        params = toLowerKeys(params);
-        // if (params['midexecute']) {
-        //     params['executethis'] = params['midexecute'];
-        //     delete params['midexecute'];
-        // }
-        // alert(JSON.stringify(params));
-
-        // add accesstoken if user exists in localStorage
-        var currentUser = window.localStorage ? JSON.parse(window.localStorage.getItem('driUser')) : undefined;
-        if (currentUser) {
-            if (!params.etenvironment) {
-                params.etenvironment = {};
-            }
-            params.etenvironment.accesstoken = currentUser.at;
-        }
-
-        executeAjax("", params, function (data) {
-            console.log("Return from server: " + JSON.stringify(data));
-            var err;
-            callback(null, data);
-        });
-    } // end try
-    catch (err) {
-        var finalobject =
-            createfinalobject({
-                "result": "server"
-            }, {}, "server", err, inbound_parameters);
-        callback(finalobject.err, finalobject.res);
-    }
-};
-
 
 function setdefaultparm() {
 
@@ -338,98 +299,72 @@ function config123() {
     configuration.d.defaultdatastore =  configuration.defaultdatastore
     configuration.d.defaultkeycollection = configuration.defaultkeycollection
     configuration.d.defaultdatabasetable = configuration.defaultdatabasetable
-    configuration.d.platform = configuration.environment
 
+    configuration.preExecute = [];
+    configuration.preExecute[0] = {};
+    configuration.preExecute[0].executeorder = 1;
+    configuration.preExecute[0].tryorder = 1;
+    configuration.preExecute[0].dothis = 'dothis';
+    configuration.preExecute[0].params = {};
+    configuration.preExecute[1] = {};
+    configuration.preExecute[1].executeorder = 1;
+    configuration.preExecute[1].tryorder = 2;
+    configuration.preExecute[1].dothis = 'executeparam';
+    configuration.preExecute[1].params = {};
+    configuration.preExecute[2] = {};
+    configuration.preExecute[2].executeorder = 1;
+    configuration.preExecute[2].tryorder = 3;
+    configuration.preExecute[2].dothis = 'executegetwid';
+    configuration.preExecute[2].params = {};
+    configuration.preExecute[3] = {};
+    configuration.preExecute[3].executeorder = 1;
+    configuration.preExecute[3].tryorder = 4;
+    configuration.preExecute[3].dothis = 'server';
+    configuration.preExecute[3].params = {};
 
-    if (configuration.environment === 'local') {
-        configuration.postactionprocess = server
-    } else {
-        configuration.postactionprocess = false // dont don anything on server
-    }
+    configuration.midExecute = [];
+    configuration.midExecute[0] = {};
+    configuration.midExecute[0].executeorder = 1;
+    configuration.midExecute[0].tryorder = 1;
+    configuration.midExecute[0].dothis = 'dothis';
+    configuration.midExecute[0].params = {};
+    configuration.midExecute[1] = {};
+    configuration.midExecute[1].executeorder = 1;
+    configuration.midExecute[1].tryorder = 2;
+    configuration.midExecute[1].dothis = 'executeparam';
+    configuration.midExecute[1].params = {};
+    configuration.midExecute[2] = {};
+    configuration.midExecute[2].executeorder = 1;
+    configuration.midExecute[2].tryorder = 3;
+    configuration.midExecute[2].dothis = 'executegetwid';
+    configuration.midExecute[2].params = {};
+    configuration.midExecute[3] = {};
+    configuration.midExecute[3].executeorder = 1;
+    configuration.midExecute[3].tryorder = 4;
+    configuration.midExecute[3].dothis = 'server';
+    configuration.midExecute[3].params = {};
 
-
-    configuration.executethis = [];
-    configuration.executethis[0] = {};
-    configuration.executethis[0].executeorder = 1;
-    configuration.executethis[0].tryorder = 1;
-    configuration.executethis[0].dothis = 'dothis';
-    configuration.executethis[0].params = {};
-    configuration.executethis[1] = {};
-    configuration.executethis[1].executeorder = 1;
-    configuration.executethis[1].tryorder = 2;
-    configuration.executethis[1].dothis = 'executeparam';
-    configuration.executethis[1].params = {};
-    configuration.executethis[2] = {};
-    configuration.executethis[2].executeorder = 1;
-    configuration.executethis[2].tryorder = 3;
-    configuration.executethis[2].dothis = 'executegetwid';
-    configuration.executethis[2].params = {};
-    
-    // configuration.preExecute = [];
-    // configuration.preExecute[0] = {};
-    // configuration.preExecute[0].executeorder = 1;
-    // configuration.preExecute[0].tryorder = 1;
-    // configuration.preExecute[0].dothis = 'dothis';
-    // configuration.preExecute[0].params = {};
-    // configuration.preExecute[1] = {};
-    // configuration.preExecute[1].executeorder = 1;
-    // configuration.preExecute[1].tryorder = 2;
-    // configuration.preExecute[1].dothis = 'executeparam';
-    // configuration.preExecute[1].params = {};
-    // configuration.preExecute[2] = {};
-    // configuration.preExecute[2].executeorder = 1;
-    // configuration.preExecute[2].tryorder = 3;
-    // configuration.preExecute[2].dothis = 'executegetwid';
-    // configuration.preExecute[2].params = {};
-    // // configuration.preExecute[3] = {};
-    // // configuration.preExecute[3].executeorder = 1;
-    // // configuration.preExecute[3].tryorder = 4;
-    // // configuration.preExecute[3].dothis = 'server';
-    // // configuration.preExecute[3].params = {};
-
-    // configuration.midExecute = [];
-    // configuration.midExecute[0] = {};
-    // configuration.midExecute[0].executeorder = 1;
-    // configuration.midExecute[0].tryorder = 1;
-    // configuration.midExecute[0].dothis = 'dothis';
-    // configuration.midExecute[0].params = {};
-    // configuration.midExecute[1] = {};
-    // configuration.midExecute[1].executeorder = 1;
-    // configuration.midExecute[1].tryorder = 2;
-    // configuration.midExecute[1].dothis = 'executeparam';
-    // configuration.midExecute[1].params = {};
-    // configuration.midExecute[2] = {};
-    // configuration.midExecute[2].executeorder = 1;
-    // configuration.midExecute[2].tryorder = 3;
-    // configuration.midExecute[2].dothis = 'executegetwid';
-    // configuration.midExecute[2].params = {};
-    // // configuration.midExecute[3] = {};
-    // // configuration.midExecute[3].executeorder = 1;
-    // // configuration.midExecute[3].tryorder = 4;
-    // // configuration.midExecute[3].dothis = 'server';
-    // // configuration.midExecute[3].params = {};
-
-    // configuration.postExecute = [];
-    // configuration.postExecute[0] = {};
-    // configuration.postExecute[0].executeorder = 1;
-    // configuration.postExecute[0].tryorder = 1;
-    // configuration.postExecute[0].dothis = 'dothis';
-    // configuration.postExecute[0].params = {};
-    // configuration.postExecute[1] = {};
-    // configuration.postExecute[1].executeorder = 1;
-    // configuration.postExecute[1].tryorder = 2;
-    // configuration.postExecute[1].dothis = 'executeparam';
-    // configuration.postExecute[1].params = {};
-    // configuration.postExecute[2] = {};
-    // configuration.postExecute[2].executeorder = 1;
-    // configuration.postExecute[2].tryorder = 3;
-    // configuration.postExecute[2].dothis = 'executegetwid';
-    // configuration.postExecute[2].params = {};
-    // configuration.postExecute[3] = {};
-    // configuration.postExecute[3].executeorder = 1;
-    // configuration.postExecute[3].tryorder = 4;
-    // configuration.postExecute[3].dothis = 'server';
-    // configuration.postExecute[3].params = {};
+    configuration.postExecute = [];
+    configuration.postExecute[0] = {};
+    configuration.postExecute[0].executeorder = 1;
+    configuration.postExecute[0].tryorder = 1;
+    configuration.postExecute[0].dothis = 'dothis';
+    configuration.postExecute[0].params = {};
+    configuration.postExecute[1] = {};
+    configuration.postExecute[1].executeorder = 1;
+    configuration.postExecute[1].tryorder = 2;
+    configuration.postExecute[1].dothis = 'executeparam';
+    configuration.postExecute[1].params = {};
+    configuration.postExecute[2] = {};
+    configuration.postExecute[2].executeorder = 1;
+    configuration.postExecute[2].tryorder = 3;
+    configuration.postExecute[2].dothis = 'executegetwid';
+    configuration.postExecute[2].params = {};
+    configuration.postExecute[3] = {};
+    configuration.postExecute[3].executeorder = 1;
+    configuration.postExecute[3].tryorder = 4;
+    configuration.postExecute[3].dothis = 'server';
+    configuration.postExecute[3].params = {};
 
     //     configuration.getwid = [];
     //     configuration.getwid[0] = {};
@@ -540,6 +475,45 @@ function test2(params, callback) {
     });
 }
 
+exports.server = window.server = server = function server(params, callback) {
+    proxyprinttodiv('Function server ------', params, 30);
+//    callback(null,null)
+    try {
+         var inbound_parameters = {};
+         extend(true, inbound_parameters, params);
+
+         console.log('execute server called with ' + JSON.stringify(params));
+         delete params['configuration'];
+         params = toLowerKeys(params);
+         // if (params['midexecute']) {
+         //     params['executethis'] = params['midexecute'];
+         //     delete params['midexecute'];
+         // }
+         // alert(JSON.stringify(params));
+
+         // add accesstoken if user exists in localStorage
+         var currentUser = window.localStorage ? JSON.parse(window.localStorage.getItem('driUser')) : undefined;
+         if (currentUser) {
+             if (!params.etenvironment) {
+                 params.etenvironment = {};
+             }
+             params.etenvironment.accesstoken = currentUser.at;
+         }
+
+         executeAjax("", params, function (data) {
+             console.log("Return from server: " + JSON.stringify(data));
+             var err;
+             callback(null, data);
+         });
+    } // end try
+    catch (err) {
+         var finalobject =
+             createfinalobject({
+                 "result": "server"
+             }, {}, "server", err, inbound_parameters);
+         callback(finalobject.err, finalobject.res);
+    }
+};
 
 
 exports.server2 = window.server2 = server2 = function server2(params, callback) {
