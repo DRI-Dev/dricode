@@ -1,7 +1,7 @@
 // copyright (c) 2014 DRI
+  
 
-
-(function (window) {
+    (function (window) {
     // *** GetWid ***
     // Purpose: Converts data to and from dri standards
 
@@ -181,123 +181,110 @@
                 if ((res) && (Object.keys(res).length !== 0)) { //&& (res['metadata']) && (res['wid'] !== res['metadata']['method'])) {
                     if (((command) && (command.getwidmaster)) && ((command.getwidmaster.convertmethod !== "dto") || (command.getwidmaster.inheritflag === "true"))) {
 
-                            proxyprinttodiv('getwidmaster command II-3', command, 38);
-                            proxyprinttodiv('GetWidMaster res from getWidMongo right before getClean', res, 38);
+                        proxyprinttodiv('getwidmaster command II-3', command, 38);
+                        proxyprinttodiv('GetWidMaster res from getWidMongo right before getClean', res, 38);
 
-                            getclean(res, command, function (err, res) {
-                                // If error, bounce out
-                                if (err && Object.keys(err).length > 0) {
-                                    callback(err, res);
-                                } else {
-                                    proxyprinttodiv("GetWidMaster after getclean before packed", res, 38);
-                                    res = pack_up_params(res, command, "getwidmaster");
-                                    proxyprinttodiv("GetWidMaster after getclean after packed", res, 38);
+                        getclean(res, command, function (err, res) {
+                            // If error, bounce out
+                            if (err && Object.keys(err).length > 0) {
+                                callback(err, res);
+                            } else {
+                                proxyprinttodiv("GetWidMaster after getclean before packed", res, 38);
+                                res = pack_up_params(res, command, "getwidmaster");
+                                proxyprinttodiv("GetWidMaster after getclean after packed", res, 38);
 
-                                    proxyprinttodiv('getwidmaster command II-4', command, 38);
-                                    proxyprinttodiv('getwidmaster after getclean ', res, 38);
-                                    if (command && command.getwidmaster && command.getwidmaster.execute === "ConvertFromDOTdri") {
-                                        //res = ConvertFromDOTdri(res);
-                                        proxyprinttodiv("??? getwidmaster command callback 1 ", command, 38);
-                                        callback(null, res);
-                                    } else { // the detault is to return dot notation...so old code does not break
-                                        res = ConvertToDOTdri(res);
-                                        proxyprinttodiv('getwidmaster packed parameters after convert', res, 38);
-                                        callback(null, res);
-                                    }
+                                proxyprinttodiv('getwidmaster command II-4', command, 38);
+                                proxyprinttodiv('getwidmaster after getclean ', res, 38);
+                                if (command && command.getwidmaster && command.getwidmaster.execute === "ConvertFromDOTdri") {
+                                    //res = ConvertFromDOTdri(res);
+                                    proxyprinttodiv("??? getwidmaster command callback 1 ", command, 38);
+                                    callback(null, res);
+                                } else { // the detault is to return dot notation...so old code does not break
+                                    res = ConvertToDOTdri(res);
+                                    proxyprinttodiv('getwidmaster packed parameters after convert', res, 38);
+                                    callback(null, res);
                                 }
-                            });
-                        } else { //==dto
-                            // if (command.getwidmaster.convertmethod === "dto" && parameters.wid!=="systemdto") {
-                            // execute({
-                            //     "executethis": "getwidmaster",
-                            //     "wid": "systemdto",
-                            //     "command.getwidmaster.convertmethod": "dto",
-                            //     "command.getwidmaster.execute": "ConvertFromDOTdri"
-                            // }, function (err, systemdto) {
-                            //     if (err && Object.keys(err).length > 0) {
-                            //         callback(err, res);
-                            //         } else {
-                            //             if (Object.keys(systemdto[0]).length > 0) {
-                            //                     systemdto=systemdto[0]
-                            //                     }
-                            //                 else {
-                            //                     systemdto={}
-                            //                     }
-                            //                 res=extend(true, res, systemdto);
-                            //                 proxyprinttodiv('getwidmaster command III-5', command, 38);
-                            //                 res = pack_up_params(res, command, "getwidmaster");
-                            //                 proxyprinttodiv('getwidmaster packed parameters', res, 38);
-                            //                 proxyprinttodiv('getwidmaster command III', command, 38);
-                            //                 if (command && command.getwidmaster && command.getwidmaster.execute === "ConvertFromDOTdri") {
-                            //                     proxyprinttodiv("??? getwidmaster command callback 33 ", command, 38);
-                            //                     callback(null, res);
-                            //                     }
-                            //                 else { // the detault is to return dot notation...so old code does not break
-                            //                     res = ConvertToDOTdri(res);
-                            //                     proxyprinttodiv("??? getwidmaster command callback 4 ", command, 38);
-                            //                     callback(null, res);
-                            //                     }
-
-                            //             }
-                            //     })
-                            //     } // ==dto
-                            // else { //!==dto
-                            proxyprinttodiv('getwidmaster command III-5', command, 38);
-                            res = pack_up_params(res, command, "getwidmaster");
-                            proxyprinttodiv('getwidmaster packed parameters', res, 38);
-                            proxyprinttodiv('getwidmaster command III', command, 38);
-                            if (command && command.getwidmaster && command.getwidmaster.execute === "ConvertFromDOTdri") {
-                                proxyprinttodiv("??? getwidmaster command callback 34 ", command, 38);
-                                callback(null, res);
-                            } else { // the detault is to return dot notation...so old code does not break
-                                res = ConvertToDOTdri(res);
-                                proxyprinttodiv("??? getwidmaster command callback 4 ", command, 38);
-                                callback(null, res);
                             }
-                            //                                } // else !==dto
-                        } // else == dto
-                    } // length!==0
-                    else { // length ==0
+                        });
+                    } else { //==dto
+                        // if (command.getwidmaster.convertmethod === "dto" && parameters.wid!=="systemdto") {
+                        // execute({
+                        //     "executethis": "getwidmaster",
+                        //     "wid": "systemdto",
+                        //     "command.getwidmaster.convertmethod": "dto",
+                        //     "command.getwidmaster.execute": "ConvertFromDOTdri"
+                        // }, function (err, systemdto) {
+                        //     if (err && Object.keys(err).length > 0) {
+                        //         callback(err, res);
+                        //         } else {
+                        //             if (Object.keys(systemdto[0]).length > 0) {
+                        //                     systemdto=systemdto[0]
+                        //                     }
+                        //                 else {
+                        //                     systemdto={}
+                        //                     }
+                        //                 res=extend(true, res, systemdto);
+                        //                 proxyprinttodiv('getwidmaster command III-5', command, 38);
+                        //                 res = pack_up_params(res, command, "getwidmaster");
+                        //                 proxyprinttodiv('getwidmaster packed parameters', res, 38);
+                        //                 proxyprinttodiv('getwidmaster command III', command, 38);
+                        //                 if (command && command.getwidmaster && command.getwidmaster.execute === "ConvertFromDOTdri") {
+                        //                     proxyprinttodiv("??? getwidmaster command callback 33 ", command, 38);
+                        //                     callback(null, res);
+                        //                     }
+                        //                 else { // the detault is to return dot notation...so old code does not break
+                        //                     res = ConvertToDOTdri(res);
+                        //                     proxyprinttodiv("??? getwidmaster command callback 4 ", command, 38);
+                        //                     callback(null, res);
+                        //                     }
+
+                        //             }
+                        //     })
+                        //     } // ==dto
+                        // else { //!==dto
                         proxyprinttodiv('getwidmaster command III-5', command, 38);
                         res = pack_up_params(res, command, "getwidmaster");
                         proxyprinttodiv('getwidmaster packed parameters', res, 38);
                         proxyprinttodiv('getwidmaster command III', command, 38);
                         if (command && command.getwidmaster && command.getwidmaster.execute === "ConvertFromDOTdri") {
-                            proxyprinttodiv("??? getwidmaster command callback 35 ", command, 38);
+                            proxyprinttodiv("??? getwidmaster command callback 34 ", command, 38);
                             callback(null, res);
                         } else { // the detault is to return dot notation...so old code does not break
                             res = ConvertToDOTdri(res);
                             proxyprinttodiv("??? getwidmaster command callback 4 ", command, 38);
                             callback(null, res);
                         }
-                    } // else lenght ==0
-                }
-            }); // end get wid mongo
-        }
+                        //                                } // else !==dto
+                    } // else == dto
+                } // length!==0
+                else { // length ==0
+                    proxyprinttodiv('getwidmaster command III-5', command, 38);
+                    res = pack_up_params(res, command, "getwidmaster");
+                    proxyprinttodiv('getwidmaster packed parameters', res, 38);
+                    proxyprinttodiv('getwidmaster command III', command, 38);
+                    if (command && command.getwidmaster && command.getwidmaster.execute === "ConvertFromDOTdri") {
+                        proxyprinttodiv("??? getwidmaster command callback 35 ", command, 38);
+                        callback(null, res);
+                    } else { // the detault is to return dot notation...so old code does not break
+                        res = ConvertToDOTdri(res);
+                        proxyprinttodiv("??? getwidmaster command callback 4 ", command, 38);
+                        callback(null, res);
+                    }
+                } // else lenght ==0
+            }
+        }); // end get wid mongo
     };
-
-
 
 
     // *** GetDTOObject ***
     // Purpose: Pulls the schema for objects
-    //
-    //     if dto = wid (trying to enter or change an existing dto).  We need to be more liberal.  We do not care what getwidmaster says.
-    //     use recurseobj code
-
-    //     no dto specified or dto = defaultdto.  We do not care what getwidmaster says.
-    //     use recurse string code 
-    //
-    //      We either get and try to used values returned by getwidmaster or not
-    //      if not, then we take sent in object, for each level create table and command
-    //
-    //
     exports.getdtoobject = getdtoobject = function getdtoobject(obj, command, callback) {
         function recursestring(inobj) {
             var dtoobject = {};
             extend(true, dtoobject, inobj);
             for (var eachparam in dtoobject) {
-                 if (dtoobject.hasOwnProperty(eachparam) && eachparam !== "command") {
+                // if (dtoobject.hasOwnProperty(eachparam) && eachparam !== "command") {
+                if (dtoobject.hasOwnProperty(eachparam)) {
                     if (isArray(dtoobject[eachparam])) {
                         var tempArray = [];
                         for (var eachitem in dtoobject[eachparam]) {
@@ -317,86 +304,18 @@
             }
             return dtoobject;
         }
-        function generatedtotablelist(objin, objlist, mm){ // generates a dtotable based on obj
-          proxyprinttodiv("getdtoobject arguments", arguments, 93); 
-          if (!((objin.command) && (objin.command.dtolist) && (Object.keys(objin.command.dtolist).length > 0))) {
-            // nothing
-          } else {
-          for(var key in objin.command.dtolist){ // if value is not an object, just place the key else transform and find keys
-            if (!objin[key]) {
-              // do nothing 
-            }else{
-              objlist[key]=objin[key]; // needs key fetching from object which is inside 
-              var objinplay =  objin[key];
-               objlist[key]=objin[key];
-              if(objinplay instanceof Array){ // handle arrays
-                for(var idx in objinplay){
-                  generatedtotablelist(objinplay[idx], objlist, key);
-                }
-              }else{
-                generatedtotablelist(objinplay, objlist, key); // handle JSON objects
-              }
-            }
-          }
-        }
-        if (!isObject(objlist[mm])) { 
-            objlist[mm] = objin;
-            }
-            proxyprinttodiv("getdtoobject objlist", objlist, 93);
-        }
 
-        function createcommand_and_dtotable(inobj, dtotable) {  
-            proxyprinttodiv("getdtoobject createcommand inobj in", inobj, 93);  
-            // the section below tries to create a command object and dtotable based on items in metadata  
-            if (inobj['metadata']) {
-                inobj.metadata.systemdto={};
-                inobj.metadata.systemdto.type="onetoone"
-                var dtolist = {};
-                var metadata = inobj['metadata'];
-                proxyprinttodiv("In getdtoobject createdto metadata", metadata, 93);
-                for (var eachitem in metadata) {
-                    if (metadata[eachitem].type) {
-                        proxyprinttodiv("In getdtoobject createcommand metadata[eachitem].type", metadata[eachitem].type, 93);
-                        dtolist[eachitem] = metadata[eachitem]['type'];
-                        if (inobj[eachitem]) {dtotable[eachitem]=inobj[eachitem]} // create dtotable entry based on inobj
-                        } // inherit or type
-                    } // for metadata
-
-            if (!inobj.command) {inobj.command = {}}
-            if (!inobj.command.dtolist) {inobj.command.dtolist = {}}
-            if (!inobj.command.deepdtolist) {inobj.command.deepdtolist = {}}
-            if (!inobj.command.inherit) {inobj.command.inherit = []}
-
-            // for dtolist return this one, for deepdtolist, extend, for inherit push to what was there
-            inobj.command.dtolist = dtolist;
-            extend(true, inobj.command.deepdtolist, dtolist) 
-
-            if (metadata.inherit) {
-                for (var eachinherit in metadata.inherit) {
-                    inobj.command.inherit.push(metadata.inherit[eachinherit])
-                    }
-                }
-
-            //if (metadata.method) {dtotable[metadata.method]=inobj} //make dtotable entry for top level
-
-            proxyprinttodiv("In getdtoobject createdto metadata", metadata.method, 93);
-            proxyprinttodiv("In getdtoobject createdto inobj", inobj, 93);
-            proxyprinttodiv("In getdtoobject createdto dtotable", dtotable, 93);
-            }
-            proxyprinttodiv("getdtoobject createcommand inobj out", inobj, 93);  
-        } 
-
-
-        function createdto(params, dtotable, createcommand_and_dtotable_flag) {
-            proxyprinttodiv("getdtoobject createdto -- params", params, 93);
-            proxyprinttodiv("getdtoobject createdto dtotable", dtotable, 93);
-            proxyprinttodiv("getdtoobject createdto arguments", arguments, 93);
+        function recurseobj(params) {
+            proxyprinttodiv("getdtoobject recurseobj -- params", params, 98);
+            var dtolist = {};
             var dtoobj = {};
+            var metadata = {};
             var tempobj = {};
+            var inheritlist = [];
             var inobj = JSON.parse(JSON.stringify(params));
 
             if (inobj instanceof Array) { //if we get an array in (usally happens on the recurse)
-                proxyprinttodiv("inobj instanceof array", inobj, 93);
+                proxyprinttodiv("inobj instanceof array", inobj, 98);
                 var mergedObj = {};
                 var tempArray = [];
                 for (var i in inobj) {
@@ -405,7 +324,7 @@
                         if (typeof inobj[i] === 'string') {
                             tempArray.push("string");
                         } else {
-                            extend(true, mergedObj, createdto(inobj[i]));
+                            extend(true, mergedObj, recurseobj(inobj[i]));
                         }
                     }
                 }
@@ -413,128 +332,189 @@
                 if (Object.keys(mergedObj).length > 0) {
                     tempArray.push(mergedObj);
                 }
-                proxyprinttodiv("tempArray", tempArray, 93);
+
+                proxyprinttodiv("tempArray", tempArray, 98);
                 return tempArray;
             } else {
+                // the section below improves inobj,
+                // -it gets command from dtotable if avail
+                // -it creates a dtolist based on type
+                // - it changes structure of inobj based on type
 
-                if (createcommand_and_dtotable_flag) {createcommand_and_dtotable(inobj, dtotable)}; 
-
-                // section below goes through each property and recurses as necessary
-                proxyprinttodiv("getdtoobject createdto -- inobj II", inobj, 93);
-
-                for (var eachparm in inobj) {
-                    if (inobj.hasOwnProperty(eachparm)) 
-                    {
-                        if (eachparm==="command") 
-                        { 
-                            dtoobj[eachparm] = inobj[eachparm] 
+                if (inobj['metadata']) {
+                    dtolist = {};
+                    metadata = inobj['metadata'];
+                    proxyprinttodiv("In getdtoobject recurseobj metadata", metadata, 98);
+                    for (var eachitem in metadata) {
+                        if (metadata.hasOwnProperty(eachitem)) {
+                            if (eachitem === 'type' || eachitem === 'method') {
+                                proxyprinttodiv("In getdtoobject recurseobj metadata -- eachitem", eachitem, 98);
+                                tempobj = {};
+                                if (eachitem === 'type') {
+                                    tempobj[eachitem] = metadata[eachitem]['type'];
+                                }
+                                if (eachitem === 'method') {
+                                    if (dtotable[metadata.method]) {
+                                        tempobj = dtotable[metadata.method].command.dtolist;
+                                    }
+                                }
+                                if (tempobj) {
+                                    extend(true, dtolist, tempobj);
+                                }
+                                // if (eachitem==='method' && dtotable[metadata.method] &&
+                                //     dtotable[metadata.method].command && dtotable[metadata.method].command.inherit) {
+                                //     proxyprinttodiv("getdtoobject dtotable[metadata.method].command.inherit ", dtotable[metadata.method].command.inherit, 98);
+                                //         tempobj = dtotable[metadata.method].command.inherit;
+                                //         inheritlist.push(tempobj);
+                                //     }
+                                proxyprinttodiv("getdtoobject dtolist", dtolist, 98);
+                                proxyprinttodiv("In getdtoobject <<< DTOLIST >>>", dtolist, 98);
+                                // eachitem would be a child
+                                if ((metadata[eachitem]['type'] === "onetomany" ||
+                                        metadata[eachitem]['type'] === "manytomany" || // ** readded
+                                        metadata[eachitem]['type'] === "jsononetomany") &&
+                                    (inobj[eachitem] !== undefined) && (!isArray(inobj[eachitem]))) {
+                                    relationshipArray = [];
+                                    relationshipArray.push(inobj[eachitem]);
+                                    delete inobj[eachitem];
+                                    inobj[eachitem] = relationshipArray;
+                                }
+                            } // type
                         }
-                        else // not command
-                        {
-                            proxyprinttodiv("getdtoobject createdto -- eachparm", eachparm, 93);
-                            proxyprinttodiv("getdtoobject --is-- switch inobj[eachparm]", inobj[eachparm], 93);
-                            if (dtotable && dtotable.hasOwnProperty(eachparm)) 
-                            {
-                                dtoobj[eachparm] = createdto(inobj[eachparm], dtotable, createcommand_and_dtotable_flag); // recurse 
-                                proxyprinttodiv("getdtoobject dtoobj[eachparm] before", dtoobj[eachparm], 93);
-                                //proxyprinttodiv("getdtoobject is obj dtotable[eachparm]", dtotable[eachparm], 98);
-                                // get a object copy of dtotable[eachparam] to tempobj
-                                if (isArray(dtotable[eachparm])) {tempobj = dtotable[eachparm][0]} 
-                                                            else {tempobj = dtotable[eachparm]}
-                                //proxyprinttodiv("getdtoobject is obj tempobj", tempobj, 98);
+                    } // for metadata
+                } // if inobj['metadata'];
+
+                //###
+                // var dtolistdefault = {'systemdto' : 'onetoone'}
+                // extend(true, dtolist, dtolistdefault)
+
+                if (!dtoobj.command) { dtoobj.command = {}; }
+                // section below goes through each property and recurses
+                proxyprinttodiv("getdtoobject createdtotable -- dtotable ", dtotable, 98, true);
+                //proxyprinttodiv("getdtoobject inheritlist", inheritlist, 98);
+                proxyprinttodiv("getdtoobject dtolist", dtolist, 98);
+                proxyprinttodiv("getdtoobject recurseobj -- inobj II", inobj, 98);
+                for (var eachparm in inobj) {
+                    if (inobj.hasOwnProperty(eachparm)) {
+                        proxyprinttodiv("getdtoobject recurseobj -- eachparm", eachparm, 98);
+                        proxyprinttodiv("getdtoobject --is-- switch inobj[eachparm]", inobj[eachparm], 98);
+
+                        if (isObject(inobj[eachparm]) || isArray(inobj[eachparm])) {
+                            dtoobj[eachparm] = recurseobj(inobj[eachparm]);
+                            proxyprinttodiv("getdtoobject --is-- switch inobj[eachparm]", inobj[eachparm], 98);
+                            proxyprinttodiv("getdtoobject is obj dtoobj", dtoobj, 98);
+                            if (dtotable[eachparm]) { // if table entry exists, then merge to what you just got
+                                proxyprinttodiv("getdtoobject is obj dtotable[eachparm]", dtotable[eachparm], 98);
+
+                                if (isArray(dtotable[eachparm])) { // get a object copy of dtotable[eachparam] to tempobj
+                                    tempobj = dtotable[eachparm][0];
+                                } else {
+                                    tempobj = dtotable[eachparm];
+                                }
+                                proxyprinttodiv("getdtoobject is obj tempobj", tempobj, 98);
                                 if (isArray(dtoobj[eachparm])) { // merge it with object dtoobj[eachparm]
                                     tempobj = extend(true, dtoobj[eachparm][0], tempobj);
-                                } 
-                                else 
-                                {
+                                } else {
                                     tempobj = extend(true, dtoobj[eachparm], tempobj);
                                 }
-                                var relationshiptype = "";
-                                if (tempobj && 
-                                    tempobj['metadata'] && 
-                                    tempobj['metadata'][eachparm] &&
-                                    tempobj['metadata'][eachparm]['type']) 
-                                {
-                                    relationshiptype = tempobj['metadata'][eachparm]['type'];
-                                }
-
-                                //proxyprinttodiv("getdtoobject is obj tempobj II", tempobj, 93);
-                                if (isArray(dtotable[eachparm]) ||
-                                    (relationshiptype === "onetomany") || 
-                                    (relationshiptype === "manytomany") || 
-                                    (relationshiptype === "jsononetomany") || 
-                                    (relationshiptype === "jsonmanytomany")
-                                    ) 
-                                { // now convert it back to right form
+                                proxyprinttodiv("getdtoobject is obj tempobj II", tempobj, 98);
+                                if (isArray(dtotable[eachparm])) { // now convert it back to right form
                                     dtoobj[eachparm] = [];
                                     dtoobj[eachparm].push(tempobj);
-                                } 
-                                else 
-                                {
+                                } else {
                                     dtoobj[eachparm] = tempobj;
                                 }
-                                proxyprinttodiv("getdtoobject dtoobj[eachparm] after", dtoobj[eachparm], 93);
+                                //dtoobj[eachparm]=recursestring(dtoobj[eachparm])
+                                proxyprinttodiv("getdtoobject is obj dtoobj.command.dtolist", dtoobj.command.dtolist, 98);
                             }
-                            else 
-                            { // if not dto table then make up value
-                                if (eachparm === "metadata")            {dtoobj[eachparm] = recursestring(inobj[eachparm])}
-                                else if (eachparm === "wid")            {dtoobj[eachparm] = "guid"}
-                                else if (isObject(inobj[eachparm]))     {dtoobj[eachparm] = "object"} 
-                                else if (isArray(inobj[eachparm]))      {dtoobj[eachparm] = "array"}
-                                else                                    {dtoobj[eachparm] = "string"}
-                            }
-                            proxyprinttodiv("getdtoobject is obj dtoobj end--each", dtoobj[eachparm], 93);
-                        } // end else
-                    } // if has property
+                        } else { // if not object then
+                            dtoobj[eachparm] = "string";
+                            //dtoobj[eachparm]=recursestring(dtoobj[eachparm])
+                        }
+                        //dtoobj[eachparm]=recursestring(dtoobj[eachparm])
+                        proxyprinttodiv("getdtoobject is obj dtoobj end--each", dtoobj[eachparm], 98);
+                    }
                 } // for eachparm
-            
-                proxyprinttodiv("getdtoobject is obj inobj", inobj, 93);
-                proxyprinttodiv("getdtoobject is obj dtoobj end", dtoobj, 93);
+
+                proxyprinttodiv("getdtoobject is obj inobj", inobj, 38);
+                proxyprinttodiv("getdtoobject is obj dtoobj end", dtoobj, 38);
+
+                if (!dtoobj.command) {
+                    dtoobj.command = {};
+                }
+                if (!dtoobj.command.dtolist) {
+                    dtoobj.command.dtolist = {};
+                }
+                if (dtolist) {
+                    dtoobj.command.dtolist = extend(true, dtoobj.command.dtolist, dtolist);
+                }
+
+                //if (!dtoobj.command.inherit) {dtoobj.command.inherit = []}
+                // if (inheritlist) {
+                //     for (var eachinherit in inheritlist) {
+                //         dtoobj.command.inherit.push(inheritlist[eachinherit])
+                //     }
+                // }
+
+                proxyprinttodiv("In GetDTOObject before return -- we created dto -- :", dtoobj, 98);
 
                 return dtoobj;
             } // else
         } // end fn recurse
 
-    function createdtofromresults(obj, dtoobject, dtotype) {
-        var dtotable={}
-        generatedtotablelist(dtoobject, dtotable, dtotype);
+        function createdtotable(mm, dtoobject) {
+            proxyprinttodiv("getdtoobject createdtotable -- dtoobject", dtoobject, 38);
+            proxyprinttodiv("getdtoobject createdtotable -- mm", mm, 38);
 
-        proxyprinttodiv("getdtoobject createdtofromresults obj", obj, 93);
-        proxyprinttodiv("getdtoobject createdtofromresults dtoobject", dtoobject, 93);
+            // if we are missing dto object, command, and dtotype create them
+            if (!dtoobject) { dtoobject = {}; }
 
-        if (dtoobject.command.dtorecursive) {
-            proxyprinttodiv("getdtoobject after createdtotable, dtotable recurse", dtotable, 93);
-            if (!obj.command) {obj.command={}}
-            obj.command.recursive = true
-            dtoobject = createdto(obj, dtotable, true)
-        } else {
-            proxyprinttodiv("getdtoobject after createdtotable, dtotable, not recurse", dtotable, 93);
-            dtoobject = createdto(dtoobject, dtotable, false)
+            //if (dtoobject.command.dtolist === undefined) {
+            //proxyprinttodiv("getdtoobject createdtotable -- dtoobject.command.dtolist ", dtoobject.command.dtolist, 38);
+
+            if ((dtoobject.command) && (dtoobject.command.dtolist) && (Object.keys(dtoobject.command.dtolist).length > 0)) {
+                proxyprinttodiv("getdtoobject dtoobject.command.dtolist -- ", dtoobject.command.dtolist, 38);
+                for (var eachparam in dtoobject.command.dtolist) {
+                    if (dtoobject.command.dtolist.hasOwnProperty(eachparam)) {
+                        proxyprinttodiv("getdtoobject createdtotable eachparam -- ", eachparam, 38);
+                        if (isObject(dtoobject[eachparam])) {
+                            createdtotable(eachparam, dtoobject[eachparam]);
+                            dtotable[eachparam] = dtoobject[eachparam];
+                            proxyprinttodiv("getdtoobject createdtotable dtoobject[eachparam] -- ", dtoobject[eachparam], 38);
+                            proxyprinttodiv("getdtoobject createdtotable dtotable -- ", dtotable, 38);
+                        }
+                    }
+                }
+            }
+
+            //dtoobject=recursestring(dtoobject);
+
+            if (!dtotable[mm] && Object.keys(dtoobject).length > 0) {
+                dtotable[mm] = dtoobject;
+            }
+            proxyprinttodiv("getdtoobject createdtotable -- dtotable ", dtotable, 38);
         }
- 
-        proxyprinttodiv("getdtoobject after createdto dtoobject", dtoobject, 93);
-        return dtoobject
-        }
 
-        // -------------------------> START < --------------------
-        // this function looks up the matching dto to an object or sent in command.dtotype, if one is not found then one is made
-        // based on object that came in or found dto we create a dtotable
-        // based on traversing that dtotable we create a dto
-        proxyprinttodiv("getdtoobject input obj: ", obj, 93);
+        proxyprinttodiv("getdtoobject input obj: ", obj, 38);
+        var inbound_parameters = JSON.parse(JSON.stringify(arguments));
+
         var dtotype;
         var dtoobject = {};
+        var dtotable = {};
+        var createddto = {};
 
-        if (!obj["metadata"]) {obj["metadata"] = {}}
-        if (!obj["metadata"]["method"]) {obj["metadata"]["method"] = "defaultdto"}
+        if (!obj["metadata"]) {
+            obj["metadata"] = {};
+            proxyprinttodiv("getdtoobject metadata -- CREATED", obj, 38);
+        }
+        if (!obj["metadata"]["method"]) {
+            obj["metadata"]["method"] = "defaultdto";
+            proxyprinttodiv("getdtoobject metadata method -- CREATED", obj, 38);
+        }
 
-        if (command && command.dtotype) {dtotype = command.dtotype;
-                                } else  {dtotype = obj['metadata']['method'];}
-
-        if (obj.metadata.method === "string" ||  obj.wid ==="guid") {
-            proxyprinttodiv("getdtoobject *****string ", obj, 93); 
-            callback(null, obj)
-
-         } else {
+        if (command && command.dtotype) {
+            dtotype = command.dtotype;
+        } else {
             dtotype = obj['metadata']['method'];
         }
         if (dtotype !== "defaultdto") { // && (dtotype !== obj.wid)) {
@@ -641,15 +621,28 @@
                     proxyprinttodiv("getdtoobject output1 AFTER -- dtoobject", dtoobject, 99);
                     callback(null, dtoobject);
                 }
-                }); // end execute
-            }       
+            }); // end execute
+        } else { // if there is no dtoType or obj.wid then call back with a blank dtoObject
+            dtoobject = {};
+            //dtoobject = recurseobj(obj);
+            command = dtoobject.command;
+            delete dtoobject.command;
+            dtoobject = recursestring(obj);
+            dtoobject.command = command;
+            proxyprinttodiv("getdtoobject output2 -- dtoobject", dtoobject, 99);
+            callback(null, dtoobject);
         } // end else
     };
 
     // *** GetWidMongo ***
     // Purpose: Builds a base object built up from relationships
     // Notes: returns a made up dto base on maximum number of relationships, etc
-    exports.getWidMongo = getWidMongo = function getWidMongo(widInput, command, preamble, level, excludeset, callback) {
+    //exports.getWidMongo = getWidMongo = function getWidMongo(widInput, command, preamble, level, excludeset, callback) {
+    exports.getWidMongo = getWidMongo = function getWidMongo(parameters, command, preamble, level, excludeset, callback) {
+        var widInput=parameters.wid;
+        var inbound_parameters = {};
+        inbound_parameters = JSON.parse(JSON.stringify(arguments));
+
         // local vars
         var moreDTOParameters = [];
         var targetwid = "";
@@ -699,23 +692,23 @@
         excludeset[widInput] = widInput; // keep track of what we have done so we do not do it again
 
         async.series([
-                // getwid
-                function step1(cb) {
-                    // Sample error
-                    // throw({'Rocks': 'are hard'});
-                    proxyprinttodiv('Function getwidmongo step 1 hit with widInput:', widInput, 38);
-                    proxyprinttodiv('Function getwidmongo step 1 hit with command:', command, 38);
-                    if (!level) {
-                        level = 20;
-                    } else {
-                        level = level - 1;
-                    } //how many levels to try
-                    if (preamble === undefined) {
-                        preamble = "";
-                    }
-                    if (preamble !== "") {
-                        preamble = preamble + ".";
-                    }
+            // getwid
+            function step1(cb) {
+                // Sample error
+                // throw({'Rocks': 'are hard'});
+                proxyprinttodiv('Function getwidmongo step 1 hit with widInput:', widInput, 99);
+                proxyprinttodiv('Function getwidmongo step 1 hit with command:', command, 38);
+                if (!level) {
+                    level = 20;
+                } else {
+                    level = level - 1;
+                } //how many levels to try
+                if (preamble === undefined) {
+                    preamble = "";
+                }
+                if (preamble !== "") {
+                    preamble = preamble + ".";
+                }
 
 
                 //var etEnvironment = new drienvironment({
@@ -743,194 +736,140 @@
                     } else {
                         proxyprinttodiv('Function getwidmongo getwid res', res, 99);
 
-                            if (Object.keys(res).length !== 0) {
-                                parameterobject = res;
-                                proxyprinttodiv('Function getwidmongo getwid res', res, 38);
-                                //moreDTOParameters=parameterobject;  &&& taken out roger 2/7
-                                cb(null); // add
-                            } else { // if no object
-                                parameterobject = {};
-                                targetwid = ""; // if no object to follow then targetwid="";
-                                cb(null);
-                            }
-                        }
-                    }); // end execute
-                }, // end step1
-                // *** Override ***
-                // Date: 10 MAR 14
-                // Purpose: Looks at the current object and determines if we need to grab new data and override values on properties
-
-                function processOverride(cb) {
-
-                    // Sample error
-                    // throw({'Emeralds': 'make cities'});
-                    proxyprinttodiv('Function getwidmongo getwid parameterobject', parameterobject, 38);
-
-                    if (command.getwidmaster.convertmethod !== "dto" && Object.keys(parameterobject).length !== 0 &&
-                        parameterobject.metadata && parameterobject.metadata.inherit) {
-
-                        proxyprinttodiv("GetWidMongo start processOverride", parameterobject, 38);
-
-                        listToDo = parameterobject.metadata.inherit;
-                        listToDo.reverse(); // they are processed in reverse order
-                        var wid = parameterobject.wid;
-                        var mm = extend(true, {}, parameterobject.metadata);
-
-                        if (listToDo.length > 0 && command && command.getwidmaster && command.getwidmaster.inheritflag === "true") {
-                            proxyprinttodiv('<<< Get_Clean step3 resultObj after >>xx', parameterobject, 38);
-                            async.mapSeries(listToDo, function (eachresult, cbMap) {
-                                async.nextTick(function () {
-                                    proxyprinttodiv('getClean inherit getwidmaster eachresult I ', eachresult, 38);
-                                    if (!eachresult.command) {
-                                        eachresult.command = {};
-                                    }
-                                    if (!eachresult.command.getwidmaster) {
-                                        eachresult.command.getwidmaster = {};
-                                    }
-				    } else {
-            dtotype = obj['metadata']['method'];
-        }
-        if (dtotype !== "defaultdto") { // && (dtotype !== obj.wid)) {
-            proxyprinttodiv("getdtoobject about to getwidmaster dtotype ", dtotype, 38); //38
-
-//            var executeobject={"executethis": "getwidmaster",
-//                                "wid": dtotype,
-//                                "command.getwidmaster.convertmethod": "dto",
-//                                "command.getwidmaster.execute": "ConvertFromDOTdri"
-//                                };
-//            executeobject.command.executeid=obj.command.executeid;
-//            executeobject.command.executelevel=obj.command.executelevel;
-//            executeobject.command.type="series";
-
-            // var etEnvironment = new drienvironment({
-            //     "getwidmaster.convertmethod":"dto",
-            //     "getwidmaster.execute":"ConvertFromDOTdri",
-            //     "executeid":obj.command.environment.run.executeid,
-            //     "executelevel":obj.command.environment.run.executelevel
-            // });
-
-            // var executeobject = {
-            //     "executethis":"getwidmaster",
-            //     "wid":dtotype,
-            //     "command":{
-            //         "environment":{
-            //             "run" : {
-            //                 "type":"series"
-            //             }    
-            //         }
-            //     }
-            // };
-
-            var etEnvironment = new drienvironment(
-                {"run":
-                    {
-                    "executeid":obj.command.environment.run.executeid,
-                    "executelevel":obj.command.environment.run.executelevel
-                    }
-                }
-            );
-
-            var executeobject = {
-                "executethis":"getwidmaster",
-                "wid":dtotype,
-                "command": {
-                    "getwidmaster": {
-                        "convertmethod":"dto",
-                        "execute":"ConvertFromDOTdri"
-                    },
-                    "environment": {
-                        "run" : {
-                            "type":"series"
-                        }
-                    }
-                }  
-            };
-
-//            execute(executeobject, function (err, res) {
-
-            etEnvironment.execute(executeobject, function (err, res) {
-                proxyprinttodiv("getdtoobject err", err, 38);
-                if (err && err.errorname === "failnotfound") {err=null; res=null}
-                // If error, bounce out
-                if (err && Object.keys(err).length > 0) {
-                    callback(err, res);
-                } else {
-                    proxyprinttodiv("getdtoobject input res I ", res, 38);
-                    if (res && (Object.keys(res).length !== 0)) {
-                        proxyprinttodiv("getdtoobject before createdtotable dtoobject res[0]", res, 38);
-                        proxyprinttodiv("getdtoobject before createdtotable dtoobjectobj", obj, 38);
-                        dtotable = {};
-                        // if(dtotype){
-                        createdtotable(dtotype, res);
-                        // }
-                        proxyprinttodiv("getdtoobject before createdtotable dtoobject res[0] again", res, 38);
-                        proxyprinttodiv("getdtoobject after createdtotable, dtotable", dtotable, 38);
-                        createddto = {};
-
-                        // In the case of author.author
-                        if (obj.hasOwnProperty(dtotype) && obj[dtotype].hasOwnProperty(dtotype)) {
-                            createddto = recurseobj(obj);
-                        } else { // our original case
-                            createddto = res;
-                        }
-
-                        proxyprinttodiv("getdtoobject after createddto", createddto, 38);
-                        dtoobject = extend(true, res, createddto);
-                        proxyprinttodiv("getdtoobject after recurseobj dtoobject", dtoobject, 38);
-                        //dtoobject = res[0];
-                    } else {
-                        //proxyprinttodiv("getdtoobject createdtotable dtoobject II-- ", dtotable, 38);
-                        dtoobject = {};
-                        dtoobject = recurseobj(obj);
-                    }
-
-                    proxyprinttodiv("getdtoobject output1 AFTER -- dtoobject", dtoobject, 38);
-                    command = dtoobject.command;
-                    delete dtoobject.command;
-                    dtoobject = recursestring(dtoobject);
-                    dtoobject.command = command;
-                    proxyprinttodiv("getdtoobject output1 -- dtotable", dtotable, 38);
-                    //proxyprinttodiv("getdtoobject output1 -- dtolist", dtolist, 38);
-                    proxyprinttodiv("getdtoobject output1 AFTER -- dtoobject", dtoobject, 99);
-                    callback(null, dtoobject);
-                }
-                                        }); // end execute
-                                }); // end next tick
-                            }, function (err, res) {
-                                if (err && Object.keys(err).length > 0) {
-                                    cb(err, res);
-                                } else {
-                                    cb(null);
-                                }
-                            }); //end mapseries
-                        } // if listdto length
-                        else {
+                        if (Object.keys(res).length !== 0) {
+                            parameterobject = res;
+                            proxyprinttodiv('Function getwidmongo getwid res', res, 38);
+                            //moreDTOParameters=parameterobject;  &&& taken out roger 2/7
+                            cb(null); // add
+                        } else { // if no object
+                            parameterobject = {};
+                            targetwid = ""; // if no object to follow then targetwid="";
                             cb(null);
                         }
-                    } // end if bigdto
-                    else { // if no bigdto
+                    }
+                }); // end execute
+            }, // end step1
+            // *** Override ***
+            // Date: 10 MAR 14
+            // Purpose: Looks at the current object and determines if we need to grab new data and override values on properties
+
+            function processOverride(cb) {
+
+                // Sample error
+                // throw({'Emeralds': 'make cities'});
+                proxyprinttodiv('Function getwidmongo getwid parameterobject', parameterobject, 38);
+
+                if (command.getwidmaster.convertmethod !== "dto" && Object.keys(parameterobject).length !== 0 &&
+                    parameterobject.metadata && parameterobject.metadata.inherit) {
+
+                    proxyprinttodiv("GetWidMongo start processOverride", parameterobject, 38);
+
+                    listToDo = parameterobject.metadata.inherit;
+                    listToDo.reverse(); // they are processed in reverse order
+                    var wid = parameterobject.wid;
+                    var mm = extend(true, {}, parameterobject.metadata);
+
+                    if (listToDo.length > 0 && command && command.getwidmaster && command.getwidmaster.inheritflag === "true") {
+                        proxyprinttodiv('<<< Get_Clean step3 resultObj after >>xx', parameterobject, 38);
+                        async.mapSeries(listToDo, function (eachresult, cbMap) {
+                            async.nextTick(function () {
+                                proxyprinttodiv('getClean inherit getwidmaster eachresult I ', eachresult, 38);
+                                if (!eachresult.command) {
+                                    eachresult.command = {};
+                                }
+                                if (!eachresult.command.getwidmaster) {
+                                    eachresult.command.getwidmaster = {};
+                                }
+
+                                var etEnvironment = new drienvironment({
+                                    "getwidmaster.inheritflag":"false",
+                                    "getwidmaster.execute":"ConvertFromDOTdri",
+                                    "executeid":parameters.command.environment.run.executeid,
+                                    "executelevel":parameters.command.environment.run.executelevel
+                                });
+
+                                //eachresult.command.getwidmaster.convertmethod="nowid";
+//                                eachresult.command.getwidmaster.inheritflag = "false";
+//                                eachresult.command.getwidmaster.execute = "ConvertFromDOTdri";
+//                                eachresult.command.executeid=parameters.command.executeid;
+//                                eachresult.command.executelevel=parameters.command.executelevel;
+                                eachresult.executethis = "getwidmaster";
+                                eachresult.command.environment.run.type="series";
+                                proxyprinttodiv('getClean inherit getwidmaster eachresult II', eachresult, 38);
+
+                                if (!eachresult.command.resultparameters) {
+                                    eachresult.command.resultparameters = {}
+                                }
+                                extend(true, eachresult.command.resultparameters, parameterobject);
+
+                                proxyprinttodiv('getClean inherit getwidmaster eachresult III', eachresult, 38);
+
+//                                execute(eachresult, function (err, res) {
+
+                                etEnvironment.execute(eachresult, function (err, res) {
+                                    if (err && err.errorname === "failnotfound") {err=null; res=null}
+                                    proxyprinttodiv('clean inherit 3', err, 38);
+                                    proxyprinttodiv('clean inherit 4', res, 38);
+                                    proxyprinttodiv('resultObj after special getwidmaster A ', parameterobject, 38);
+                                    if (err && Object.keys(err).length > 0) {
+                                        cbMap(err, res);
+                                    } else {
+                                        if ((res.length > 0) && (Object.keys(res[0]).length > 0)) {
+
+                                            parameterobject = res;
+                                            delete parameterobject.wid;
+                                            delete parameterobject.metadata;
+                                            //### we may need to renable line below
+                                            //delete parameterobject.command;
+                                            parameterobject.wid = wid;
+                                            parameterobject.metadata = {};
+                                            parameterobject.metadata = mm;
+                                            proxyprinttodiv('resultObj after special getwidmaster B', parameterobject, 38);
+                                            cbMap(null);
+                                        } // end if
+                                        else { // if no result
+                                            cbMap(null);
+                                        }
+                                    }
+                                }); // end execute
+                            }); // end next tick
+                        }, function (err, res) {
+                            if (err && Object.keys(err).length > 0) {
+                                cb(err, res);
+                            } else {
+                                cb(null);
+                            }
+                        }); //end mapseries
+                    } // if listdto length
+                    else {
                         cb(null);
                     }
-                }, // end step 3
+                } // end if bigdto
+                else { // if no bigdto
+                    cb(null);
+                }
+            }, // end step 3
 
 
-                function step2(cb) {
-                    if (targetwid != "") {
-                        async.series([ // asynch step1n2
-                                function step2n1(cb1) {
-                                    executeobject = {};
-                                    executeobject["mongosetfieldsexclude"] = excludeset;
-                                    executeobject["mongowid"] = targetwid;
-                                    executeobject["mongorelationshiptype"] = "attributes";
-                                    executeobject["mongorelationshipmethod"] = "all";
-                                    executeobject["mongorelationshipdirection"] = "forward";
-                                    executeobject["mongowidmethod"] = "";
-                                    executeobject["command"] = {
-                                        "result": "queryresult"
-                                    };
-                                    // executeobject["command.execute"] = "ConvertFromDOTdri";
-                                    // executeobject["command.convertmethod"] = "toobject";
-                                    
+            function step2(cb) {
+                if (targetwid !== "") {
+                    async.series([ // asynch step1n2
+                        function step2n1(cb1) {
+//                            executeobject = {};
+//                            executeobject["mongosetfieldsexclude"] = excludeset;
+//                            executeobject["mongowid"] = targetwid;
+//                            executeobject["mongorelationshiptype"] = "attributes";
+//                            executeobject["mongorelationshipmethod"] = "all";
+//                            executeobject["mongorelationshipdirection"] = "forward";
+//                            executeobject["mongowidmethod"] = "";
+//                            executeobject["command"] = {
+//                                "result": "queryresult"
+//                            };
+
+                            // executeobject["command.execute"] = "ConvertFromDOTdri";
+                            // executeobject["command.convertmethod"] = "toobject";
+                            //executeobject["dtotype"] = "";
+
 //                            executeobject["executethis"] = 'querywid';
 //                            executeobject.command.executeid=parameters.command.executeid;
 //                            executeobject.command.executelevel=parameters.command.executelevel;
@@ -965,101 +904,147 @@
                                 proxyprinttodiv('Function getwidmongo executeobject', executeobject, 99);
                                 proxyprinttodiv('Function getwidmongo results res', res, 99);
                                 res = res["queryresult"];
-                                        if (!res) {
-                                            res = []
-                                        }
-                                        if (err && Object.keys(err).length > 0) {
-                                            cb1(err, 'step2n1');
-                                        } else {
-                                            proxyprinttodiv('Function getwidmongo query res', res, 38);
-                                            if (Object.keys(res).length !== 0) {
-                                                moreDTOParameters = res;
-                                            }
-                                            cb1(null, 'step2n1');
-                                        }
-                                    });
-                                } // end step1n2
-                            ],
-                            function (err, res) {
-                                // If error, bounce out
+                                if (!res) {
+                                    res = []
+                                }
                                 if (err && Object.keys(err).length > 0) {
-                                    cb(err, res);
+                                    cb1(err, 'step2n1');
                                 } else {
-                                    proxyprinttodiv('Function getwidmongo query part 2', res, 38);
-                                    cb(null, 'two');
+                                    proxyprinttodiv('Function getwidmongo query res', res, 38);
+                                    if (Object.keys(res).length !== 0) {
+                                        moreDTOParameters = res;
+                                    }
+                                    cb1(null, 'step2n1');
                                 }
                             });
-                    } // end if
-                    else {
-                        cb(null, 'two');
-                    }
-                }, // end step2
-
-                function step3(cb) {
-
-                    // Sample error
-                    // throw ({'Frisbees': 'are errors'});
-
-
-                    if (!parameterobject.command) {
-                        parameterobject.command = {};
-                    }
-                    if ((parameterobject["metadata"]) && (command) && (command.getwidmaster) &&
-                        (command.getwidmaster.convertmethod === "dto")) {
-                        if (!parameterobject.command.inherit) {
-                            parameterobject.command.inherit = []; // ### roger
+                        } // end step1n2
+                    ],
+                    function (err, res) {
+                        // If error, bounce out
+                        if (err && Object.keys(err).length > 0) {
+                            cb(err, res);
+                        } else {
+                            proxyprinttodiv('Function getwidmongo query part 2', res, 38);
+                            cb(null, 'two');
                         }
-                        //if (!parameterobject.command.inherit) {parameterobject.command.inherit = [];
-                        if (!parameterobject.command.deepdtolist) {
-                            parameterobject.command.deepdtolist = {};
-                        }
-                        if (!parameterobject.command.dtolist) {
-                            parameterobject.command.dtolist = {};
-                        }
+                    });
+                } // end if
+                else {
+                    cb(null, 'two');
+                }
+            }, // end step2
+
+            // function step2B(cb) { // to handle looing up to parent (manytoone)
+            //     if (targetwid != "") {
+            //         async.series([ // asynch step1n2
+            //                 function step2n1(cb1) {
+            //                     //proxyprinttodiv('Function getwidmongo step 2n1 hit', null, 38);
+            //                     executeobject = {};
+            //                     executeobject["mongowid"] = targetwid;
+            //                     executeobject["mongorelationshiptype"] = "attributes";
+            //                     executeobject["mongorelationshipmethod"] = "all";
+            //                     executeobject["mongorelationshipdirection"] = "backward";
+            //                     executeobject["mongowidmethod"] = "";
+            //                     executeobject["mongorelationshiplink"] = "manytoone";
+            //                     // executeobject["command.execute"] = "ConvertFromDOTdri",
+            //                     // executeobject["command.convertmethod"] = "toobject";
+            //                     executeobject["dtotype"] = "";
+            //                     executeobject["executethis"] = 'querywid';
+            //                     executeobject["mongosetfieldsexclude"]=excludeset;
+            //                     execute(executeobject, function (err, res) {
+            //                         proxyprinttodiv('Function getwidmongo query manytoone', res, 38);
+            //                         if (Object.keys(res).length !== 0) {
+            //                             for (var eachresult in res) {
+            //                                 moreDTOParameters.push(res[eachresult])
+            //                                 // res is list [{wid:{}},{wid:{}},{wid:{}}] ... if wid not in widset then push
+            //                                 // if (!excludeset[Object.keys(res[eachresult])[0]]) {
+            //                                 //      moreDTOParameters.push(res[eachresult])
+            //                                 //     }
+            //                                 }
+            //                             }
+            //                         cb1(null, 'step2n1');
+            //                         // TODO: figure out the return here
+            //                     });
+            //                 } // end step1n2
+            //             ],
+            //             function (err, res) {
+            //                 if (err) {
+            //                     throw err;
+            //                 }
+            //                 cb(null, 'two');
+            //             });
+            //     } // end if
+            //     else {
+            //         cb(null, 'two');
+            //     }
+            // }, // end step2B
+
+            function step3(cb) {
+
+                // Sample error
+                // throw ({'Frisbees': 'are errors'});
+
+
+                if (!parameterobject.command) {
+                    parameterobject.command = {};
+                }
+                if ((parameterobject["metadata"]) && (command) && (command.getwidmaster) &&
+                    (command.getwidmaster.convertmethod === "dto")) {
+                    if (!parameterobject.command.inherit) {
+                        parameterobject.command.inherit = []; // ### roger
                     }
-                    proxyprinttodiv('Function getwidmongo parameterobject reset', parameterobject, 38);
+                    //if (!parameterobject.command.inherit) {parameterobject.command.inherit = [];
+                    if (!parameterobject.command.deepdtolist) {
+                        parameterobject.command.deepdtolist = {};
+                    }
+                    if (!parameterobject.command.dtolist) {
+                        parameterobject.command.dtolist = {};
+                    }
+                }
+                proxyprinttodiv('Function getwidmongo parameterobject reset', parameterobject, 38);
 
-                    if (moreDTOParameters && moreDTOParameters.length > 0) {
-                        var listToDo = [];
-                        var rightparameters = {};
-                        var left;
+                if (moreDTOParameters && moreDTOParameters.length > 0) {
+                    var listToDo = [];
+                    var rightparameters = {};
+                    var left;
 
-                        //proxyprinttodiv('Function getwidmongo moreDTOParameters', moreDTOParameters,38);
+                    //proxyprinttodiv('Function getwidmongo moreDTOParameters', moreDTOParameters,38);
 
-                        // note moreDTOParameters is a LIST [{wid1: {}}, wid2: {}}, wid3: {}}]
-                        for (var eachresult in moreDTOParameters) { // list, for each item in list
+                    // note moreDTOParameters is a LIST [{wid1: {}}, wid2: {}}, wid3: {}}]
+                    for (var eachresult in moreDTOParameters) { // list, for each item in list
+                        for (var key in moreDTOParameters[eachresult]) { // list is {wid : {}} --key = wid
+                            if (moreDTOParameters[eachresult].hasOwnProperty(key)) {
+                                rightparameters = moreDTOParameters[eachresult][key];
+                            }
+                        }
+
+                        // create dto
+                        listToDo.push(eachresult);
+                    }
+                    proxyprinttodiv('Function getwidmongo listToDo', listToDo, 38);
+
+                    async.mapSeries(listToDo, function (eachresult, cbMap) {
+                        async.nextTick(function () {
+                            // Sample error
+
+                            var rightparameters = {};
+                            var params;
+                            var metadataMethod;
+                            proxyprinttodiv('Function getwidmongo inside', eachresult, 38);
+                            proxyprinttodiv('Function getwidmongo moreDTOParameters[eachresult]', moreDTOParameters[eachresult], 38);
                             for (var key in moreDTOParameters[eachresult]) { // list is {wid : {}} --key = wid
                                 if (moreDTOParameters[eachresult].hasOwnProperty(key)) {
                                     rightparameters = moreDTOParameters[eachresult][key];
                                 }
                             }
-
-                            // create dto
-                            listToDo.push(eachresult);
-                        }
-                        proxyprinttodiv('Function getwidmongo listToDo', listToDo, 38);
-
-                        async.mapSeries(listToDo, function (eachresult, cbMap) {
+                            proxyprinttodiv('Function getwidmongo rightparameters inside ', rightparameters, 38);
+                            // added
+                            // if metadata: {inherit: wid1} then create command: {inherit: { wid1: wid}}
 
 
-                                async.nextTick(function () {
-                                    // Sample error
+                            if (level > 0) {
 
-                                    var rightparameters = {};
-                                    var params;
-                                    var metadataMethod;
-                                    proxyprinttodiv('Function getwidmongo inside', eachresult, 38);
-                                    proxyprinttodiv('Function getwidmongo moreDTOParameters[eachresult]', moreDTOParameters[eachresult], 38);
-                                    for (var key in moreDTOParameters[eachresult]) { // list is {wid : {}} --key = wid
-                                        if (moreDTOParameters[eachresult].hasOwnProperty(key)) {
-                                            rightparameters = moreDTOParameters[eachresult][key];
-                                        }
-                                    }
-                                    proxyprinttodiv('Function getwidmongo rightparameters inside ', rightparameters, 38);
-
-                                    if (level > 0) {
-
-                                        proxyprinttodiv('Function getwidmongo recurse', key, 38);
+                                proxyprinttodiv('Function getwidmongo recurse', key, 38);
 
                                 debugfn("getwidmongo before recusr", "getwidmongo", "get", "mid", getglobal("debugcolor"), getglobal("debugindent"), debugvars([1]));
 
@@ -1094,140 +1079,179 @@
                                             //     delete params.metadata;
                                             // }
 
-                                                    if (params.command && params.command.inherit) {
-                                                        for (var eachinherit in params.command.inherit) {
-                                                            parameterobject.command.inherit.push(params.command.inherit[eachinherit])
+                                            // added
+                                            if (params.command && params.command.inherit) {
+                                                for (var eachinherit in params.command.inherit) {
+                                                    parameterobject.command.inherit.push(params.command.inherit[eachinherit])
+                                                }
+                                                // ### above added below taken away roger
+                                                //extend(true, parameterobject.command.inherit, params.command.inherit);
+                                                // if (params.command.inherit instanceof Array) {
+                                                //     for (eachinherit in params.command.inherit) {
+                                                //         parameterobject.command.inherit.push(params.command.inherit[eachinherit])
+                                                //         }
+                                                //     }
+                                                // else { // this one shoiuld be impossible
+                                                //     parameterobject.command.inherit.push(params.command.inherit)
+                                                //     }
+                                            }
+                                            if (params.command && params.command.deepdtolist) {
+                                                extend(true, parameterobject.command.deepdtolist, params.command.deepdtolist);
+                                            }
+                                            // proxyprinttodiv("--- What i'm looking at parameterobject step1", parameterobject, 38);
+                                            // extend(true, parameterobject.command.inherit, params.command.inherit);
+                                            // proxyprinttodiv("--- What i'm looking at parameterobject step2", parameterobject, 38);
+                                            // //delete params.command
+
+
+                                            proxyprinttodiv('Function getwidmongo rightparameters before ', rightparameters, 38);
+                                            //if ((rightparameters["data"]) && (rightparameters["data"]["linktype"]) &&
+                                            //    (rightparameters["data"]["linktype"] === "onetomany") && (command.convertmethod !== "dto"))  {
+
+                                            //                                    if ((command) && (command.getwidmaster) && (command.getwidmaster.convertmethod === "dto")) {
+                                            //                                        parameterobject[rightparameters["metadata"]["method"]]=params;
+                                            //                                    }
+                                            //                                    else { // if not dto, i.e most of time
+                                            if ((rightparameters) && (rightparameters["linktype"])) {
+                                                if ((rightparameters["linktype"] === "onetomany") ||
+                                                    (rightparameters["linktype"] === "manytomany") ||
+                                                    (rightparameters["linktype"] === "jsononetomany")) {
+                                                    //if (Object.prototype.toString.call(parameterobject[rightparameters["metadata"]["method"]]) !== '[object Array]') {
+                                                    if (!isArray(parameterobject[rightparameters["metadata"]["method"]])) {
+                                                        parameterobject[rightparameters["metadata"]["method"]] = [];
+                                                    }
+                                                    parameterobject[rightparameters["metadata"]["method"]].push(params);
+                                                } else {
+                                                    if ((rightparameters["linktype"] === "onetoone") ||
+                                                        (rightparameters["linktype"] === "manytoone") ||
+                                                        (rightparameters["linktype"] === "jsononetoone")
+                                                        // || (rightparameters["linktype"] === "manytomany")
+                                                    ) {
+                                                        parameterobject[rightparameters["metadata"]["method"]] = params;
+                                                    } else {
+                                                        if ((rightparameters["linktype"] === "jsononetoone") ||
+                                                            (rightparameters["linktype"] === "jsononetomany")) {
+                                                            // add code here
                                                         }
                                                     }
-                                                    if (params.command && params.command.deepdtolist) {
-                                                        extend(true, parameterobject.command.deepdtolist, params.command.deepdtolist);
-                                                    }
-                                                    if (params.command && params.command.dtorecursive) 
-                                                        {parameterobject.command.dtorecursive=true}
+                                                } // end of 2nd else
 
-                                                    proxyprinttodiv('Function getwidmongo rightparameters before ', rightparameters, 38);
+                                                proxyprinttodiv('Function getwidmongo parameterobject II-before', parameterobject, 38);
+                                                parameterobject['metadata'][rightparameters.metadata.method] = {};
+                                                parameterobject['metadata'][rightparameters.metadata.method]['type'] =
+                                                    rightparameters["linktype"];
 
-                                                    if ((rightparameters) && (rightparameters["linktype"])) {
-                                                        if ((rightparameters["linktype"] === "onetomany") ||
-                                                            (rightparameters["linktype"] === "manytomany") ||
-                                                            (rightparameters["linktype"] === "jsononetomany")) {
-                                                            //if (Object.prototype.toString.call(parameterobject[rightparameters["metadata"]["method"]]) !== '[object Array]') {
-                                                            if (!isArray(parameterobject[rightparameters["metadata"]["method"]])) {
-                                                                parameterobject[rightparameters["metadata"]["method"]] = [];
-                                                            }
-                                                            parameterobject[rightparameters["metadata"]["method"]].push(params);
-                                                        } else {
-                                                            if ((rightparameters["linktype"] === "onetoone") ||
-                                                                (rightparameters["linktype"] === "manytoone") ||
-                                                                (rightparameters["linktype"] === "jsononetoone")
-                                                                // || (rightparameters["linktype"] === "manytomany")
-                                                            ) {
-                                                                parameterobject[rightparameters["metadata"]["method"]] = params;
-                                                            } else {
-                                                                if ((rightparameters["linktype"] === "jsononetoone") ||
-                                                                    (rightparameters["linktype"] === "jsononetomany")) {
-                                                                    // add code here
-                                                                }
-                                                            }
-                                                        } // end of 2nd else
-
-                                                        proxyprinttodiv('Function getwidmongo parameterobject II-before', parameterobject, 38);
-                                                        parameterobject['metadata'][rightparameters.metadata.method] = {};
-                                                        parameterobject['metadata'][rightparameters.metadata.method]['type'] =
-                                                            rightparameters["linktype"];
-
-                                                    }
-                                                    proxyprinttodiv('Function getwidmongo parameterobject II', parameterobject, 38);
-                                                    //                                        } // if not dto else
-                                                    //cbMap(null);
-                                                } // if object length
-                                                //else { // if nothing returned
-                                                cbMap(null);
-                                                //}
-                                            } // end else
-                                        }); // getwidmongo
-                                    } // >0level
-                                    else {
+                                            }
+                                            proxyprinttodiv('Function getwidmongo parameterobject II', parameterobject, 38);
+                                            //                                        } // if not dto else
+                                            //cbMap(null);
+                                        } // if object length
+                                        //else { // if nothing returned
                                         cbMap(null);
-                                    }
-                                }); // added for nexttick
-                            },
-                            function (err, res) {
-                                // If error, bounce out
-                                proxyprinttodiv('Function getwidmongo end of parameterobject mapSeries res', res, 38);
-                                if (err && Object.keys(err).length > 0) {
-                                    cb(err, res);
-                                    // cb(null, 'three');
-                                } else {
-                                    cb(null, 'three');
-                                }
-                            }); // mapseries
-                        // cb(null, 'three') moved up 2/24 by roger
-                    } // moreparameters length > 0
-                    else {
-                        cb(null, 'three');
-                    }
-                },
-                function step4(cb) {
-
-                    // Sample error
-                    // throw ({'Hazelnut': 'are peanut errors'});
-
-                    proxyprinttodiv('Function getwidmongo step4', parameterobject, 38);
-                    //if (!parameterobject.command.dtolist) { // create dtolist
-
-                    if ((parameterobject["metadata"]) && (command) && (command.getwidmaster) &&
-                        (command.getwidmaster.convertmethod === "dto")) {
-
-                        for (var eachmetadata in parameterobject["metadata"]) {
-                            proxyprinttodiv('Function getwidmongo eachmetadata', eachmetadata, 38);
-                            proxyprinttodiv('Function getwidmongo parameterobject', parameterobject, 38);
-                            if (eachmetadata === "inherit") {
-
-                                // added ### roger
-                                for (var eachinherit in parameterobject["metadata"]["inherit"]) {
-                                    parameterobject.command.inherit.push(parameterobject["metadata"]["inherit"][eachinherit]);
-                                }
-
-                                proxyprinttodiv('*** parameterobject["metadata"]["inherit"] ***', parameterobject["metadata"]["inherit"], 38);
-                                proxyprinttodiv('*** parameterobject.command.inherit ***', parameterobject.command.inherit, 38);
-
-
+                                        //}
+                                    } // end else
+                                }); // getwidmongo
+                            } // >0level
+                            else {
+                                cbMap(null);
                             }
-                            // creates a list that looks like this:
-                            // command.inherit: {a:a, b:b c:c}
-                            else { // create deepdtolist, including current metadata
-                                if (eachmetadata === "method") {
-                                    //parameterobject.command.deepdtolist[parameterobject.metadata.method]=parameterobject.metadata.method;
-                                    //parameterobject.command.dtolist[parameterobject.metadata.method]=parameterobject.metadata.method;
-                                } else {
-                                    proxyprinttodiv('Function getwidmongo parameterobject II', parameterobject, 38);
-                                    if (
-                                        (parameterobject['metadata'][eachmetadata]) &&
-                                        (parameterobject['metadata'][eachmetadata]['type']) &&
-                                        (
-                                            (parameterobject['metadata'][eachmetadata]['type'] === "onetomany") ||
-                                            (parameterobject['metadata'][eachmetadata]['type'] === "onetoone") ||
-                                            (parameterobject['metadata'][eachmetadata]['type'] === "jsononetomany") ||
-                                            (parameterobject['metadata'][eachmetadata]['type'] === "jsononetoone") ||
-                                            (parameterobject['metadata'][eachmetadata]['type'] === "manytoone") ||
-                                            (parameterobject['metadata'][eachmetadata]['type'] === "manytomany")
-                                        )
-                                    ) {
-                                        proxyprinttodiv('Function getwidmongo parameterobject III', parameterobject, 38);
-                                        parameterobject.command.deepdtolist[eachmetadata] = parameterobject.metadata[eachmetadata]['type'];
-                                        parameterobject.command.dtolist[eachmetadata] = parameterobject.metadata[eachmetadata]['type'];
-
-                                        // creates a list that looks like this:
-                                        // command.inherit: {adto:onetomany bdto:onetomany cdto>: onetoone}
-                                    }
-                                }
-                            }
-                        } // for
-                        // if the method already exists in deepdtolist then it is recursive...set flag
-                        if (parameterobject.command.deepdtolist[parameterobject.metadata.method]) {
-                            parameterobject.command.dtorecursive=true
+                        }); // added for nexttick
+                    },
+                    function (err, res) {
+                        // If error, bounce out
+                        proxyprinttodiv('Function getwidmongo end of parameterobject mapSeries res', res, 38);
+                        if (err && Object.keys(err).length > 0) {
+                            cb(err, res);
+                            // cb(null, 'three');
+                        } else {
+                            cb(null, 'three');
                         }
+                    }); // mapseries
+                    // cb(null, 'three') moved up 2/24 by roger
+                } // moreparameters length > 0
+                else {
+                    cb(null, 'three');
+                }
+            },
+            function step4(cb) {
+
+                // Sample error
+                // throw ({'Hazelnut': 'are peanut errors'});
+
+                proxyprinttodiv('Function getwidmongo step4', parameterobject, 38);
+                //if (!parameterobject.command.dtolist) { // create dtolist
+
+                if ((parameterobject["metadata"]) && (command) && (command.getwidmaster) &&
+                    (command.getwidmaster.convertmethod === "dto")) {
+
+                    // if ((!parameterobject.command.dtolist) && (Object.keys(dtolist).length > 0)){ // create dtolist
+                    //     parameterobject.command.dtolist = dtolist;
+                    //     };
+
+                    for (var eachmetadata in parameterobject["metadata"]) {
+                        proxyprinttodiv('Function getwidmongo eachmetadata', eachmetadata, 38);
+                        proxyprinttodiv('Function getwidmongo parameterobject', parameterobject, 38);
+                        if (eachmetadata === "inherit") {
+
+                            // added ### roger
+                            for (var eachinherit in parameterobject["metadata"]["inherit"]) {
+                                parameterobject.command.inherit.push(parameterobject["metadata"]["inherit"][eachinherit]);
+                            }
+
+                            proxyprinttodiv('*** parameterobject["metadata"]["inherit"] ***', parameterobject["metadata"]["inherit"], 38);
+                            proxyprinttodiv('*** parameterobject.command.inherit ***', parameterobject.command.inherit, 38);
+
+
+                        }
+                        // creates a list that looks like this:
+                        // command.inherit: {a:a, b:b c:c}
+                        else { // create deepdtolist, including current metadata
+                            if (eachmetadata === "method") {
+                                //parameterobject.command.deepdtolist[parameterobject.metadata.method]=parameterobject.metadata.method;
+                                //parameterobject.command.dtolist[parameterobject.metadata.method]=parameterobject.metadata.method;
+                            } else {
+                                proxyprinttodiv('Function getwidmongo parameterobject II', parameterobject, 38);
+                                if (
+                                    (parameterobject['metadata'][eachmetadata]) &&
+                                    (parameterobject['metadata'][eachmetadata]['type']) &&
+                                    (
+                                        (parameterobject['metadata'][eachmetadata]['type'] === "onetomany") ||
+                                        (parameterobject['metadata'][eachmetadata]['type'] === "onetoone") ||
+                                        (parameterobject['metadata'][eachmetadata]['type'] === "jsononetomany") ||
+                                        (parameterobject['metadata'][eachmetadata]['type'] === "jsononetoone") ||
+                                        (parameterobject['metadata'][eachmetadata]['type'] === "manytoone") ||
+                                        (parameterobject['metadata'][eachmetadata]['type'] === "manytomany")
+                                    )
+                                ) {
+                                    proxyprinttodiv('Function getwidmongo parameterobject III', parameterobject, 38);
+                                    parameterobject.command.deepdtolist[eachmetadata] = parameterobject.metadata[eachmetadata]['type'];
+                                    parameterobject.command.dtolist[eachmetadata] = parameterobject.metadata[eachmetadata]['type'];
+                                    // creates a list that looks like this:
+                                    // command.inherit: {adto:onetomany bdto:onetomany cdto>: onetoone}
+                                }
+                            }
+                        }
+                    } // for
+
+                //     parameterobject["wid"] = "string";
+                //     parameterobject["metadata"]["method"] = "string";
+                //     var systemdto = {
+                //         "systemdto": {
+                //             "expirationdate": "string"
+                //         }
+                //     };
+                //     parameterobject = extend(true, parameterobject, systemdto);
+                //     proxyprinttodiv("--- What i'm looking at parameterobject inside system dto ---", parameterobject, 38);
+                //     parameterobject.command.dtolist['systemdto'] = 'onetoone';
+                //     parameterobject.command.deepdtolist['systemdto'] = 'onetoone';
+                //     cb(null, 'four');
+                // } // end if
+                // else {
+                //     proxyprinttodiv("--- What i'm looking at parameterobject step3 ---", parameterobject, 38);
+                //     debugfn("getwidmongo end step4", "getwidmongo", "get", "end", getglobal("debugcolor"), getglobal("debugindent"), debugvars([1]));
+                //     cb(null, 'four');
+
+                        // save widName for systemdto check, this keeps it from endlessly looping
 
                         var widName = "undefined";
                         if (parameterobject["wid"]) {
@@ -1237,10 +1261,9 @@
                         parameterobject["wid"] = "guid";
                         parameterobject["metadata"]["method"] = "string";
                         // parameterobject.command.inherit.push({"wid" : "systemdefault", "command":{"dtotype":"", "adopt":"default"}})
+
                         // if (command.getwidmaster.inheritflag === "true") {
                         if (widName !== "systemdto") {
-                            var executeobject = {};
-                         if (widName !== "systemdto") {
 //                            var executeobject = {};
 //                            executeobject["command"] = {
 //                                "result": "systemdto",
@@ -1308,11 +1331,11 @@
 
                         debugfn("getwidmongo end step4", "getwidmongo", "get", "end", getglobal("debugcolor"), getglobal("debugindent"), debugvars([1]));
                         cb(null, 'four');
-                        // }
-                    }
+                    // }
                 }
+            }
             ],
-            function (err, results) {
+            function (err,results) {
                 // If error, bounce out
                 if (err && Object.keys(err).length > 0) {
                     callback(err, results);
@@ -1347,15 +1370,13 @@
 
         async.series([
                 function step1(cb) { // getdto
-                    proxyprinttodiv('In __getclean__ resultObj: ', resultObj, 38);
+                    proxyprinttodiv('In __getclean__ resultObj: ', resultObj, 99);
                     proxyprinttodiv('In __getclean__ just before getdtoobject', command, 38);
-
                     getdtoobject(resultObj, command, function (err, res) {
                         // If error, bounce out
                         if (err && Object.keys(err).length > 0) {
                             cb(err, res);
                         } else {
-                            proxyprinttodiv('In __getclean__ resultObj: II ', resultObj, 38);
                             proxyprinttodiv('In __getclean__ step1 with res: ', res, 38);
                             proxyprinttodiv('In __getclean__ step1 command: ', command, 38);
                             dtoobject = res;
@@ -1377,7 +1398,7 @@
 
                         // add logic to look for dtotype
                         dtoToGet = resultObj.metadata.method;
-                        //                        var executeobject= {
+//                        var executeobject= {
 //                            "executethis": "getwidmaster",
 //                            "wid": dtoToGet,
 //                            "command.getwidmaster.execute": "ConvertFromDOTdri",
@@ -1428,8 +1449,6 @@
                     }
                 },
                 function step3(cb) {
-
-
 
                     // Process command.dtotype at getwidmaster time
                     proxyprinttodiv('<<< Get_Clean step3 bigdto before', bigdto, 38);
@@ -1502,8 +1521,8 @@
                                     }
                                     eachresult.executethis = "getwidmaster";
                                     //eachresult.command.getwidmaster.convertmethod="nowid";
-                                    eachresult.command.getwidmaster.inheritflag = "false";
-                                    eachresult.command.getwidmaster.execute = "ConvertFromDOTdri";
+//                                    eachresult.command.getwidmaster.inheritflag = "false";
+//                                    eachresult.command.getwidmaster.execute = "ConvertFromDOTdri";
                                     if (!eachresult.command) {
                                         eachresult.command = {}
                                     }
@@ -1513,7 +1532,7 @@
                                     extend(true, eachresult.command.resultparameters, resultObj);
                                     eachresult.command.resultparameters = resultObj;
                                     proxyprinttodiv('call being done for inherit', eachresult, 38);
-                                   //                                    eachresult.command.executeid=resultObj.command.executeid;
+//                                    eachresult.command.executeid=resultObj.command.executeid;
 //                                    eachresult.command.executelevel=resultObj.command.executelevel;
                                     eachresult.command.environment.run.type="series";
 
@@ -1547,17 +1566,17 @@
                                                 resultObj.metadata = {};
                                                 resultObj.metadata = mm;
 
-                                                    proxyprinttodiv('resultObj after special getwidmaster 3', resultObj, 38);
-                                                    cbMap(null);
-                                                } // end if
-                                                else { // if no result
-                                                    cbMap(null);
-                                                }
-                                                proxyprinttodiv('<<< step3 resultObj at end', resultObj, 38);
+                                                proxyprinttodiv('resultObj after special getwidmaster 3', resultObj, 38);
+                                                cbMap(null);
+                                            } // end if
+                                            else { // if no result
+                                                cbMap(null);
                                             }
-                                            proxyprinttodiv('end of iteration -- inherit -- resultObj', resultObj, 38);
+                                            proxyprinttodiv('<<< step3 resultObj at end', resultObj, 38);
+                                        }
+                                        proxyprinttodiv('end of iteration -- inherit -- resultObj', resultObj, 38);
 
-                                        }); // end execute
+                                    }); // end execute
                                 }); // end next tick
                             }, function (err, res) {
 
@@ -1585,9 +1604,6 @@
             function (err, res) {
                 proxyprinttodiv('<<< step3 eachresult 12', resultObj, 38);
                 proxyprinttodiv('resultObj after special getwidmaster 5', resultObj, 38);
-
-                // // band-aid
-                // dtoobject = bigdto;
 
 
 
@@ -1643,4 +1659,6 @@
 
 
 
-})(typeof window == "undefined" ? global : window);
+    })(typeof window == "undefined" ? global : window);
+
+
