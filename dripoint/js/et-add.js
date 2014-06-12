@@ -958,15 +958,15 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
 
                              proxyprinttodiv("addwid step1 getwidmaster result", res, 18);
                              var getwidmasterres = {};
-                             extend(true, getwidmasterres, res[0]); // master copy
+                             extend(true, getwidmasterres, res); // master copy
                              proxyprinttodiv("addwid step1 getwidmaster getwidmasterres", getwidmasterres, 18);
                              //res = [{"wid":"wid1","metadata":{"method":"defaultdto"},"d":44,"command":{"inherit":{"data":{"c":17, "e":98, "g":7}}}}];      
                              //res = [{"wid":"wid1","metadata":{"method":"defaultdto"},"d":4, "f":6, "command":{"inherit":{"data":{"c":17, "e":98, "g":7}}}}];       
-                             if (typeof res[0] === 'object' && Object.keys(res[0]).length !== 0) {
+                             if (typeof res === 'object' && Object.keys(res).length !== 0) {
                                 // if we have inherit data
-                                if (res[0].command && res[0].command.inherit && res[0].command.inherit.data) {
-                                    currentinheritobject = res[0].command.inherit.data;
-                                    delete res[0].command.inherit.data;
+                                if (res.command && res.command.inherit && res.command.inherit.data) {
+                                    currentinheritobject = res.command.inherit.data;
+                                    delete res.command.inherit.data;
                                     //var command = {"filterobject": {"type":"match"}};
                                     var matches = compareobjects(getwidmasterres, currentinheritobject, "equal");
 				                    matches = matches.andobj;
