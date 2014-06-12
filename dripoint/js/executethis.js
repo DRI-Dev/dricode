@@ -281,7 +281,7 @@
 
         // command.parameters may have additional parameters for this call...unbundle them
         // adopt command.parameters into inparams
-        if (inparams.command.parameters) 
+        if (inparams.command && inparams.command.parameters)
         {
             // make parameter copy
             var inparamscopy = {};
