@@ -1,5 +1,4 @@
 // copyright (c) 2014 DRI 
-// 'use strict';
 if (!exports) {
     var exports = {};
 }
@@ -17,7 +16,7 @@ if (!debugon) { // debugfn
     var debugon = false;
 }
 
-
+//debuglevel=11
 
 // *********** EVENTS **************************************************
 exports.eventappinstall = eventappinstall = function eventappinstall() {
@@ -31,15 +30,13 @@ exports.everyTenMinuteInterval = 0;
 exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
     setdefaultparm();
     //debuglevel=11
-    if (!getFromLocalStorage(config.configuration.defaultkeycollection)) {
-        eventappinstall();
-    }
+    // if (!getFromLocalStorage(config.configuration.defaultkeycollection)) {
+    //     eventappinstall();
+    // }
 
     // start eventonemin, eventtenmin and save the interval value so 
     // you can use "clearInterval" in the future if desired to stop things
     var minutes = 60 * 1000;
-    var err,res = {};
-
     //exports.everyMinuteInterval = setInterval(exports.eventonemin,1000);
     //exports.everyTenMinuteInterval = setInterval(exports.eventtenmin,10 * minutes);
 
@@ -48,7 +45,7 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
     //             "wid":"systemdto",
     //             "expirationtimer":"string",
     //             "expirationdate":"string",
-                // "executecount":"integer",
+				// "executecount":"integer",
     //             "metadata.inherit.0": {"wid" : "systemdefault", "command" : { "dtotype":"", "adopt":"default"}}
     //     },{
     //         "executethis":"addwidmaster",
@@ -60,9 +57,10 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
     //     ],
     //     function (err, res) {
     //         updatewid({"wid":"initialwid", "date": new Date()}, function (err, res) {
-                callback(err, res);
-        //         });
-        // });
+    //             callback(err, res);
+    //             });
+    //     });
+callback(null,null);
 };
 
 exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
@@ -170,14 +168,16 @@ exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters,
 };
 
 exports.processevent = processevent = function processevent(eventname, callback) {
-    getexecutelist(eventname, "queuecollection", function (err, executetodolist) {
-        proxyprinttodiv("processeventqueue executelist", executetodolist, 17);
-        executelistfn(executetodolist, execute, function (err, res) {
-            deletelist(executetodolist, eventname, function (err, res) {
-                callback(err, res);
-                });
-            });
-        });
+    callback(null,null)
+    // proxyprinttodiv("processeventqueue eventname----", eventname, 99);
+    // getexecutelist(eventname, "queuecollection", function (err, executetodolist) {
+    //     proxyprinttodiv("processeventqueue executelist", executetodolist, 17);
+    //     executelistfn(executetodolist, execute, function (err, res) {
+    //         deletelist(executetodolist, eventname, function (err, res) {
+    //             callback(err, res);
+    //             });
+    //         });
+    //     });
     };
 
 exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, callback) {
@@ -195,8 +195,8 @@ exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, cal
 
 exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eventtype, callback) {
     proxyprinttodiv("getexecutelist eventname(collection)", eventname, 17);
-    proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
-    var executeobject = {"command": {"result": "queryresult"}};
+	proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
+	var executeobject = {"command": {"result": "queryresult"}};
     var executetodolist=[];
     executeobject.command.databasetable = eventtype;
     executeobject.command.collection = eventname;
@@ -204,17 +204,17 @@ exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eve
     //executeobject.command.result = "queueresult";
     executeobject["executethis"] = "querywid";
     //executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
-    executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]}   
-    proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
-
+    executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]}  	
+	proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
+	
     execute(executeobject, function (err, res) {
-        proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
+		proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
         if (res.length === 0) {
             executetodolist = [];
         }
         else if(res[0] && res[0]["queryresult"]){
             for (var everyaction in res[0]["queryresult"]){
-                proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
+				proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
                 //if (res[0]["queryresult"][everyaction]
                 executetodolist.push(res[0]["queryresult"][everyaction]);
             }
@@ -309,10 +309,10 @@ function setdefaultparm() {
     saveglobal("debugsubcat", "");
     saveglobal("debugcat", "");
     saveglobal("debugfilter", "");
-    saveglobal("debugdestination", 12);
+    saveglobal("debugdestination", 0);
     saveglobal("debugcolor", 0);
     saveglobal("debugindent", 0);
-    saveglobal("debuglinenum", 12);
+    saveglobal("debuglinenum", 0);
 
     exports.environment = "local";
     exports.Debug = Debug;
@@ -331,20 +331,20 @@ function config123() {
     configuration.defaultdatastore = 'localstorage';
     configuration.defaultkeycollection = 'dricollectionkey';
     configuration.defaultdatabasetable = 'wikiwallettesting';
-    configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment";
-    configuration.d = {};
-    configuration.d.defaultcollection = configuration.defaultcollection;
-    configuration.d.defaultdb = configuration.defaultdb;
-    configuration.d.defaultdatastore =  configuration.defaultdatastore;
-    configuration.d.defaultkeycollection = configuration.defaultkeycollection;
-    configuration.d.defaultdatabasetable = configuration.defaultdatabasetable;
-    configuration.d.platform = configuration.environment;
+    configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment"
+    configuration.d = {}
+    configuration.d.defaultcollection = configuration.defaultcollection
+    configuration.d.defaultdb = configuration.defaultdb
+    configuration.d.defaultdatastore =  configuration.defaultdatastore
+    configuration.d.defaultkeycollection = configuration.defaultkeycollection
+    configuration.d.defaultdatabasetable = configuration.defaultdatabasetable
+    configuration.d.platform = configuration.environment
 
 
     if (configuration.environment === 'local') {
-        configuration.postactionprocess = server;
+        configuration.postactionprocess = server
     } else {
-        configuration.postactionprocess = false; // dont don anything on server
+        configuration.postactionprocess = false // dont don anything on server
     }
 
 
@@ -364,11 +364,6 @@ function config123() {
     configuration.executethis[2].tryorder = 3;
     configuration.executethis[2].dothis = 'executegetwid';
     configuration.executethis[2].params = {};
-    configuration.executethis[3] = {};
-    configuration.executethis[3].executeorder = 1;
-    configuration.executethis[3].tryorder = 4;
-    configuration.executethis[3].dothis = 'server';
-    configuration.executethis[3].params = {};
     
     // configuration.preExecute = [];
     // configuration.preExecute[0] = {};
@@ -636,7 +631,8 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
         // if (command.db) {db=command.db} // not needed
         // if (command.collection) {collection=command.collection}
         proxyprinttodiv('Function databasetable + collection', databasetable + collection, 30);
-        database = getFromLocalStorage(databasetable + collection);
+        //database = getFromLocalStorage(databasetable + collection);
+        database = getFromLocalStorage("databasetable-"+databasetable+"_collection-"+collection);
         proxyprinttodiv('Function inlist', database, 30);
         if (database) {
             proxyprinttodiv('before IsJsonString', inboundobj, 30);
@@ -655,7 +651,8 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
             });
 
             // not sure if stuff below needed
-            keydatabase = getFromLocalStorage(databasetable + keycollection);
+            //keydatabase = getFromLocalStorage(databasetable + keycollection);
+            keydatabase = getFromLocalStorage("databasetable-"+databasetable+"_collection-"+keycollection);
             for (var eachrecord in outlist) {
                 eachwid = keydatabase[outlist[eachrecord]["wid"]];
                 resultlist.push(eachwid);

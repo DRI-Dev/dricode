@@ -20,6 +20,7 @@
 // remove processparameterfn from all
 // names of tests
 
+// This is the master test. this test calls all of the individual testing groups.
 exports.ettest_allexecute = 
 ettest_allexecute = 
 function ettest_allexecute(executeobject, callback) 
@@ -51,6 +52,9 @@ function ettest_allexecute(executeobject, callback)
 // /*===============================================*/  
 // /******* SECTION: series Level 0 		*********/
 // /*===============================================*/
+
+// Group of 4 'series' tests at level 0: 1 test passes; 3 tests pass; 
+//		3 tests middle fails; 3 tests last fails 
 exports.ettest_serieslevel0 = 
 ettest_serieslevel0 = 
 function ettest_serieslevel0(executeobject, callback) 
@@ -68,7 +72,7 @@ function ettest_serieslevel0(executeobject, callback)
 	})
 }
 
-	//series
+	// series, level 0, 1 function that passes locally
 	exports.ettest_serieslevel0pass1 = 
 	ettest_serieslevel0pass1 = 
 	function ettest_serieslevel0pass1(executeobject, callback) 
@@ -102,7 +106,7 @@ function ettest_serieslevel0(executeobject, callback)
 		  })
 	}
 
-	//series
+	//series, level 0, 3 tests pass locally
 	exports.ettest_serieslevel0pass3 = 
 	ettest_serieslevel0pass3 = 
 	function ettest_serieslevel0pass3(executeobject, callback) 
@@ -138,6 +142,7 @@ function ettest_serieslevel0(executeobject, callback)
 		  })
 	}
 
+	// series, level 0, 3 tests, 2nd test is fail not found
 	exports.ettest_serieslevel0fail3middle = 
 	ettest_serieslevel0fail3middle = 
 	function ettest_serieslevel0fail3middle(executeobject, callback) 
@@ -177,6 +182,7 @@ function ettest_serieslevel0(executeobject, callback)
 		);
 	}
 
+	// series, level 0, 3 tests, last test is fail not found
 	exports.ettest_serieslevel0fail3last = 
 	ettest_serieslevel0fail3last = 
 	function ettest_serieslevel0fail3last(executeobject, callback) 
@@ -215,7 +221,9 @@ function ettest_serieslevel0(executeobject, callback)
 // /*===============================================*/  
 // /******* SECTION: series Level 1 		*********/
 // /*===============================================*/
-// series level = 1 — do them in order.. if pass return a list, if fail return error and resulttable
+
+// Group of 4 'series' tests at level 1: 1 test passes; 3 tests pass; 
+//		3 tests middle fails; 3 tests last fails 
 exports.ettest_serieslevel1 = 
 ettest_serieslevel1 = 
 function ettest_serieslevel1(executeobject, callback) 
@@ -1440,16 +1448,16 @@ function ettest_howtodo(executeobject, callback)
 		  //executeobject.command.processfn="execute_function"
 		  //executeobject.serverfn="test_return_noerror_result2"
 		  executeobject.command.xrun=[{
-									"executethis": 'test_return_realerror_result'//,
-									//"serverfn": "test_return_noerror_result2"
+									"executethis": 'test_return_realerror_result',
+									"serverfn": "test_return_noerror_result2"
 									},
 									{
-									"executethis": 'test_return_notfound_result'//,
-									//"serverfn": "test_return_noerror_result3"
+									"executethis": 'test_return_notfound_result',
+									"serverfn": "test_return_noerror_result3"
 									},
 									{
-									"executethis": 'test_return_failnotfound_result'//,
-									//"serverfn": "test_return_noerror_result4"
+									"executethis": 'test_return_failnotfound_result',
+									"serverfn": "test_return_noerror_result4"
 									}]
 
 		  var etEnvironment = new drienvironment(executeobject.command.environment)
@@ -1512,6 +1520,50 @@ function ettest_howtodo(executeobject, callback)
 		  })
 	}
 
+		//group
+	exports.ettest_grouplevel0pass1server = 
+	ettest_grouplevel0pass1server = 
+	function ettest_grouplevel0pass1server(executeobject, callback) 
+	{
+		  if (!executeobject.command) 
+		  {
+			executeobject.command={};
+			executeobject.command.environment={};
+			executeobject.command.environment.run={};
+		  }
+		  executeobject.command.environment.run.type="group"
+		  executeobject.command.environment.run.executelevel=0
+		  executeobject.command.environment.platform='local'
+		  //executeobject.command.processparameterfn="create_how_to_do_list"
+		  //executeobject.command.processfn="execute_function"
+		  //executeobject.serverfn="test_return_noerror_result2"
+		  executeobject.command.xrun=[{
+									"executethis": 'test_return_realerror_result',
+									"serverfn": "test_return_noerror_result2"
+									},
+									{
+									"executethis": 'test_return_noerror_result3',
+									"serverfn": "test_return_noerror_result4"
+									},
+									{
+									"executethis": 'test_return_noerror_result5',
+									"serverfn": "test_return_noerror_result6"
+									}]
+
+		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+		  {
+				//var result_assertion=[result, result, result]           
+				var result_assertion=[{"a":"b", "env":"local"},{"x3":"y3","env":"server"},{"x4":"y4","env":"local"}];          
+				proxyprinttodiv('expected error', null, 99);
+				proxyprinttodiv('actual error', error_obj, 99);
+				proxyprinttodiv('expected result', result_assertion, 99);
+				proxyprinttodiv('actual result', result_obj, 99);
+
+				composite_obj=logverifycomplex("ettest_serieslevel0pass3", result_obj, result_assertion, error_obj, null);
+				callback(null, composite_obj)
+		  })
+	}
 
 	// test executegetwid from the inside of howtodolist and whattodolist
 	// create a wid called callpassfunction ... this wid, if called (i.e. et:callpassfunction) will execute "test_return_noerror_result" 
