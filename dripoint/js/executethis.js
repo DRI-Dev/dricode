@@ -296,7 +296,7 @@
         var executionpreferences={};
 
         // if command.resulttable exists then that wins over all else, ingnores rest of parameters
-        if (inparams.command.resulttable)
+        if (inparams.command && inparams.command.resulttable)
         {
             // common parameters will get lost
             // extra parameters will be lost also
