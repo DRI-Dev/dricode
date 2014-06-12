@@ -145,7 +145,7 @@
                     } else {
 //                                    res = pack_up_params(res, command, "addwidmaster");
                         //callback(null, _object);
-                        callback(null, {wid: res['wid']})
+                        callback(null, {wid: res['wid']});
                     }
                 });
             } // end else
@@ -195,7 +195,7 @@
         extend (true, inbound_parameters, dtoobject);
 
         proxyprinttodiv("cleanadd object", object, 17);
-        //if (object.wid==="wid1") {debuglevel=38}
+        //if (object.wid==="wid1") {debuglevel=38;}
         getdtoobject(object, command, function (err, res) {
                 proxyprinttodiv("cleanadd object after getdtoobject", object, 17);
 
@@ -246,12 +246,12 @@
                     // }, function (err, res) {
 
                     var executeobject = 
-                        {
+                    {
                         "executethis": "getwidmaster",
                         "wid": dto_to_get,
                         "command.getwidmaster.execute": "ConvertFromDOTdri",
                         "command.getwidmaster.convertmethod": "dto"
-                        }
+                    };
 
                     var env = new drienvironment(object.command.environment);
 
@@ -422,7 +422,7 @@
                             _child_object_map = _child_object;
                         }
                         if (isArray(_child_dto)) {
-                            _child_dto = _child_dto[0]
+                            _child_dto = _child_dto[0];
                         }
                         if(_child_object_map) {
 
@@ -437,7 +437,7 @@
                                         _child_dto && Object.keys(_child_dto).length !== 0) {
 
                                         if (!_child_object["metadata"]) {
-                                            _child_object["metadata"] = {}
+                                            _child_object["metadata"] = {};
                                         }
                                         if (!_child_object["metadata"]["method"]) {
                                             _child_object["metadata"]["method"] = eachchild.dtoname;
@@ -525,7 +525,7 @@
         proxyprinttodiv("addrecord input relationshiptype :- ", relationshiptype, 17);
 
         var relobj = {};
-        var currentrelationshipobj=null
+        var currentrelationshipobj=null;
         var reldto = {};
         var executeobject = {};
 
@@ -596,12 +596,12 @@
                                         currentrelationshipobj = widset[wid];
                                         }
                                     step1_callback(null);
-                                    }
+                                }
                                 else {
                                     step1_callback(null); 
-                                    }
+                                }
 
-                                // currentrelationshipobj=widset
+                                // currentrelationshipobj=widset;
                                 // var widrecord;
                                 // var wid
                                 // if ((widset.length > 0)) { //|| && (relationshiptype === "onetoone")(relationshiptype === "manytomany")
@@ -682,8 +682,8 @@
                                     relobj.wid = currentrelationshipobj.wid
                                     }
                                 if (hashobj(currentrelationshipobj)===hashobj(relobj)) { // if objects are the same
-                                    step2_callback(null) // then do not save
-                                    }
+                                    step2_callback(null); // then do not save
+                                }
                                 else {
                                     addwid(relobj, reldto, command, function (err, added_relation) {
                                         // If error, bounce out

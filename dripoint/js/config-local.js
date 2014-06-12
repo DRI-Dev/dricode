@@ -331,20 +331,20 @@ function config123() {
     configuration.defaultdatastore = 'localstorage';
     configuration.defaultkeycollection = 'dricollectionkey';
     configuration.defaultdatabasetable = 'wikiwallettesting';
-    configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment"
-    configuration.d = {}
-    configuration.d.defaultcollection = configuration.defaultcollection
-    configuration.d.defaultdb = configuration.defaultdb
-    configuration.d.defaultdatastore =  configuration.defaultdatastore
-    configuration.d.defaultkeycollection = configuration.defaultkeycollection
-    configuration.d.defaultdatabasetable = configuration.defaultdatabasetable
-    configuration.d.platform = configuration.environment
+    configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment";
+    configuration.d = {};
+    configuration.d.defaultcollection = configuration.defaultcollection;
+    configuration.d.defaultdb = configuration.defaultdb;
+    configuration.d.defaultdatastore =  configuration.defaultdatastore;
+    configuration.d.defaultkeycollection = configuration.defaultkeycollection;
+    configuration.d.defaultdatabasetable = configuration.defaultdatabasetable;
+    configuration.d.platform = configuration.environment;
 
 
     if (configuration.environment === 'local') {
-        configuration.postactionprocess = server
+        configuration.postactionprocess = server;
     } else {
-        configuration.postactionprocess = false // dont don anything on server
+        configuration.postactionprocess = false; // dont don anything on server
     }
 
 
