@@ -256,6 +256,27 @@ exports.deletelist = deletelist = function deletelist(listToDo, eventname, callb
     });
 };
 
+
+exports.execute_server = window.execute_server = execute_server = function execute_server(params, callback) {
+    proxyprinttodiv('Function server TO ------', params, 99);
+
+        var inbound_parameters = {};
+        extend(true, inbound_parameters, params);
+        params = toLowerKeys(params);
+
+        // temporary code to stay local... uncomment below to enable server
+        param.command.xrun=param.serverfn
+        delete param.serverfn
+        proxyprinttodiv('test ***** calling server', param, 99);
+        execute(param, callback) 
+        
+        // executeAjax("", params, function (data) {
+        //     proxyprinttodiv('Function server FROM ------', params, 99);
+        //     callback(null, data);
+        // });
+};
+
+
 exports.server = window.server = server = function server(params, callback) {
     proxyprinttodiv('Function server ------', params, 30);
     try {
@@ -265,13 +286,7 @@ exports.server = window.server = server = function server(params, callback) {
         console.log('execute server called with ' + JSON.stringify(params));
         delete params['configuration'];
         params = toLowerKeys(params);
-        // if (params['midexecute']) {
-        //     params['executethis'] = params['midexecute'];
-        //     delete params['midexecute'];
-        // }
-        // alert(JSON.stringify(params));
 
-        // add accesstoken if user exists in localStorage
         var currentUser = window.localStorage ? JSON.parse(window.localStorage.getItem('driUser')) : undefined;
         if (currentUser) {
             if (!params.etenvironment) {
@@ -339,115 +354,6 @@ function config123() {
     configuration.d.defaultkeycollection = configuration.defaultkeycollection
     configuration.d.defaultdatabasetable = configuration.defaultdatabasetable
     configuration.d.platform = configuration.environment
-
-
-    if (configuration.environment === 'local') {
-        configuration.postactionprocess = server
-    } else {
-        configuration.postactionprocess = false // dont don anything on server
-    }
-
-
-    configuration.executethis = [];
-    configuration.executethis[0] = {};
-    configuration.executethis[0].executeorder = 1;
-    configuration.executethis[0].tryorder = 1;
-    configuration.executethis[0].dothis = 'dothis';
-    configuration.executethis[0].params = {};
-    configuration.executethis[1] = {};
-    configuration.executethis[1].executeorder = 1;
-    configuration.executethis[1].tryorder = 2;
-    configuration.executethis[1].dothis = 'executeparam';
-    configuration.executethis[1].params = {};
-    configuration.executethis[2] = {};
-    configuration.executethis[2].executeorder = 1;
-    configuration.executethis[2].tryorder = 3;
-    configuration.executethis[2].dothis = 'executegetwid';
-    configuration.executethis[2].params = {};
-    
-    // configuration.preExecute = [];
-    // configuration.preExecute[0] = {};
-    // configuration.preExecute[0].executeorder = 1;
-    // configuration.preExecute[0].tryorder = 1;
-    // configuration.preExecute[0].dothis = 'dothis';
-    // configuration.preExecute[0].params = {};
-    // configuration.preExecute[1] = {};
-    // configuration.preExecute[1].executeorder = 1;
-    // configuration.preExecute[1].tryorder = 2;
-    // configuration.preExecute[1].dothis = 'executeparam';
-    // configuration.preExecute[1].params = {};
-    // configuration.preExecute[2] = {};
-    // configuration.preExecute[2].executeorder = 1;
-    // configuration.preExecute[2].tryorder = 3;
-    // configuration.preExecute[2].dothis = 'executegetwid';
-    // configuration.preExecute[2].params = {};
-    // // configuration.preExecute[3] = {};
-    // // configuration.preExecute[3].executeorder = 1;
-    // // configuration.preExecute[3].tryorder = 4;
-    // // configuration.preExecute[3].dothis = 'server';
-    // // configuration.preExecute[3].params = {};
-
-    // configuration.midExecute = [];
-    // configuration.midExecute[0] = {};
-    // configuration.midExecute[0].executeorder = 1;
-    // configuration.midExecute[0].tryorder = 1;
-    // configuration.midExecute[0].dothis = 'dothis';
-    // configuration.midExecute[0].params = {};
-    // configuration.midExecute[1] = {};
-    // configuration.midExecute[1].executeorder = 1;
-    // configuration.midExecute[1].tryorder = 2;
-    // configuration.midExecute[1].dothis = 'executeparam';
-    // configuration.midExecute[1].params = {};
-    // configuration.midExecute[2] = {};
-    // configuration.midExecute[2].executeorder = 1;
-    // configuration.midExecute[2].tryorder = 3;
-    // configuration.midExecute[2].dothis = 'executegetwid';
-    // configuration.midExecute[2].params = {};
-    // // configuration.midExecute[3] = {};
-    // // configuration.midExecute[3].executeorder = 1;
-    // // configuration.midExecute[3].tryorder = 4;
-    // // configuration.midExecute[3].dothis = 'server';
-    // // configuration.midExecute[3].params = {};
-
-    // configuration.postExecute = [];
-    // configuration.postExecute[0] = {};
-    // configuration.postExecute[0].executeorder = 1;
-    // configuration.postExecute[0].tryorder = 1;
-    // configuration.postExecute[0].dothis = 'dothis';
-    // configuration.postExecute[0].params = {};
-    // configuration.postExecute[1] = {};
-    // configuration.postExecute[1].executeorder = 1;
-    // configuration.postExecute[1].tryorder = 2;
-    // configuration.postExecute[1].dothis = 'executeparam';
-    // configuration.postExecute[1].params = {};
-    // configuration.postExecute[2] = {};
-    // configuration.postExecute[2].executeorder = 1;
-    // configuration.postExecute[2].tryorder = 3;
-    // configuration.postExecute[2].dothis = 'executegetwid';
-    // configuration.postExecute[2].params = {};
-    // configuration.postExecute[3] = {};
-    // configuration.postExecute[3].executeorder = 1;
-    // configuration.postExecute[3].tryorder = 4;
-    // configuration.postExecute[3].dothis = 'server';
-    // configuration.postExecute[3].params = {};
-
-    //     configuration.getwid = [];
-    //     configuration.getwid[0] = {};
-    //     configuration.getwid[0].executeorder = 1;
-    //     configuration.getwid[0].tryorder = 1;
-    //     configuration.getwid[0].dothis = 'getfromangular';
-    // //    configuration.getwid[0].dothis = 'offlinegetwid';
-    //     configuration.getwid[0].server = 'getwid';
-    //     configuration.getwid[0].params = {};
-
-    //     configuration.updatewid = [];
-    //     configuration.updatewid[0] = {};
-    //     configuration.updatewid[0].executeorder = 1;
-    //     configuration.updatewid[0].tryorder = 1;
-    //     configuration.updatewid[0].dothis = 'offlineupdatewid';
-    //     configuration.updatewid[0].server = 'updatewid';
-    //     configuration.updatewid[0].dofn = offlineupdatewid;
-    //     configuration.updatewid[0].params = {};
 
     return {
         "configuration": configuration
@@ -542,54 +448,54 @@ function test2(params, callback) {
 
 
 
-exports.server2 = window.server2 = server2 = function server2(params, callback) {
-    proxyprinttodiv('Function server2 ------', params, 30);
-    params.command.server = "server2";
-    server(params, callback);
-};
+// exports.server2 = window.server2 = server2 = function server2(params, callback) {
+//     proxyprinttodiv('Function server2 ------', params, 30);
+//     params.command.server = "server2";
+//     server(params, callback);
+// };
 
-exports.getDriApiData = getDriApiData = function getDriApiData(params, callback) {
-    // set up object in syntax that driApi is expecting
-    // also get getdata/<action> action from params object
-    var driExecuteObj = {
-        actionQueryString: params.dri_action,
-        parameterDTOs: []
-    };
+// exports.getDriApiData = getDriApiData = function getDriApiData(params, callback) {
+//     // set up object in syntax that driApi is expecting
+//     // also get getdata/<action> action from params object
+//     var driExecuteObj = {
+//         actionQueryString: params.dri_action,
+//         parameterDTOs: []
+//     };
 
-    // convert passed in object to parameterdto list
-    for (var prop in params) {
-        if (params.hasOwnProperty(prop)) {
-            driExecuteObj.parameterDTOs.push({
-                ParameterName: prop,
-                ParameterValue: params[prop]
-            });
-        }
-    }
+//     // convert passed in object to parameterdto list
+//     for (var prop in params) {
+//         if (params.hasOwnProperty(prop)) {
+//             driExecuteObj.parameterDTOs.push({
+//                 ParameterName: prop,
+//                 ParameterValue: params[prop]
+//             });
+//         }
+//     }
 
-    $.ajax({
-        url: '/getdata',
-        type: 'PUT',
-        headers: {
-            'content-type': 'application/json'
-        },
-        cache: false,
-        async: false,
-        dataType: 'json',
-        data: JSON.stringify(driExecuteObj),
-        success: function (results) {
-            // convert returned list of DataModelDTOs to an object
-            var resultsObj = {};
-            for (var i = 0; i < results.length; i++) {
-                resultsObj[results[i].Key] = results[i].Value;
-            }
+//     $.ajax({
+//         url: '/getdata',
+//         type: 'PUT',
+//         headers: {
+//             'content-type': 'application/json'
+//         },
+//         cache: false,
+//         async: false,
+//         dataType: 'json',
+//         data: JSON.stringify(driExecuteObj),
+//         success: function (results) {
+//             // convert returned list of DataModelDTOs to an object
+//             var resultsObj = {};
+//             for (var i = 0; i < results.length; i++) {
+//                 resultsObj[results[i].Key] = results[i].Value;
+//             }
 
-            callback(null, resultsObj);
-        },
-        error: function (err) {
-            callback(err.responseText, null);
-        }
-    });
-};
+//             callback(null, resultsObj);
+//         },
+//         error: function (err) {
+//             callback(err.responseText, null);
+//         }
+//     });
+// };
 
 
 exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, callback) {

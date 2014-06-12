@@ -2166,23 +2166,23 @@ exports.test_return_noerror_result = test_return_noerror_result = function test_
     proxyprinttodiv('test_return_noerror_result- incoming parm', param, 99);
     var error_obj = null;
     var env = param.command.environment.platform
-    if (env==="server" && param.serverfn)     // if environment = server and serverfn parameter exist then redirect 
-                                              // to different function--that way we can on same machine pass locally and
-                                              // fail server
-    {
-      // var serverfn = window[param.serverfn]
-      // param.executethis=serverfn
-      param.command.xrun=param.serverfn
-      // debugger;
-      delete param.serverfn
-      proxyprinttodiv('test ***** calling server', param, 99);
-      // serverfn(param, callback)
-      execute(param, callback) 
+    // if (env==="server" && param.serverfn)     // if environment = server and serverfn parameter exist then redirect 
+    //                                           // to different function--that way we can on same machine pass locally and
+    //                                           // fail server
+    // {
+    //   // var serverfn = window[param.serverfn]
+    //   // param.executethis=serverfn
+    //   param.command.xrun=param.serverfn
+    //   // debugger;
+    //   delete param.serverfn
+    //   proxyprinttodiv('test ***** calling server', param, 99);
+    //   // serverfn(param, callback)
+    //   execute(param, callback) 
 
-    } else {
+    // } else {
       var result_obj = { 'a':'b', env: env };
       callback( error_obj, result_obj );
-    }
+    //}
 }
 
 exports.test_return_noerror_result2 = test_return_noerror_result2 = function test_return_noerror_result2 (param, callback) 
