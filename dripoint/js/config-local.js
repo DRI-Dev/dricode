@@ -364,6 +364,11 @@ function config123() {
     configuration.executethis[2].tryorder = 3;
     configuration.executethis[2].dothis = 'executegetwid';
     configuration.executethis[2].params = {};
+    configuration.executethis[3] = {};
+    configuration.executethis[3].executeorder = 1;
+    configuration.executethis[3].tryorder = 4;
+    configuration.executethis[3].dothis = 'server';
+    configuration.executethis[3].params = {};
     
     // configuration.preExecute = [];
     // configuration.preExecute[0] = {};
