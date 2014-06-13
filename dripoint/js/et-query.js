@@ -192,7 +192,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
     var database = {};
     var queryresults = {};
     var wid;
-    var environmentdb = command["db"];;
+    var environmentdb = command["db"];
     //var convertmethod = commandParams['command.convertmethod'];
     var extraparameters = {};
     //proxyprinttodiv('querywid convertmethod', convertmethod, 38);
