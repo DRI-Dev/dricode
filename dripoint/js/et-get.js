@@ -553,7 +553,7 @@
 //            executeobject.command.executelevel=obj.command.executelevel;
 //            executeobject.command.runtype="series";
 
-            var etEnvironment = new DriEnvironment({
+            var etEnvironment = new drienvironment({
                 "getwidmaster.convertmethod":"dto",
                 "getwidmaster.execute":"ConvertFromDOTdri",
                 "executeid":obj.command.executeid,
@@ -705,7 +705,7 @@
                 executeobject.command = executeobject.command || {};
                 executeobject.command.runtype = "group";
 
-                var etEnvironment = new DriEnvironment({
+                var etEnvironment = new drienvironment({
                     "getwidmaster.inheritflag":"false",
                     "getwidmaster.execute":"ConvertFromDOTdri",
                     "executeid":parameters.command.executeid,
@@ -767,7 +767,7 @@
                                     eachresult.command.getwidmaster = {};
                                 }
 
-                                var etEnvironment = new DriEnvironment({
+                                var etEnvironment = new drienvironment({
                                     "getwidmaster.inheritflag":"false",
                                     "getwidmaster.execute":"ConvertFromDOTdri",
                                     "executeid":parameters.command.executeid,
