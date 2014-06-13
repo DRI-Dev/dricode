@@ -158,6 +158,11 @@
 
                             var executeobject={'executethis': 'getwid','wid': wid}
                             var env = new drienvironment(command.environment);
+                            executeobject["command"]={"environment": {
+                            "run": {
+                                "type": "series"
+                            }
+                        }}
                             env.execute(executeobject, function (err, res) {
                                 if (err && err.errorname === "failnotfound") {err=null; res={}}
 
@@ -214,6 +219,11 @@
 
                                 var executeobject={'executethis': 'getwid','wid': wid}
                                 var env = new drienvironment(command.environment);
+                                executeobject["command"]={"environment": {
+                            "run": {
+                                "type": "series"
+                            }
+                        }}
                                 env.execute(executeobject, function (err, res) {
                                 if (err && err.errorname === "failnotfound") {err=null; res={}}
 
@@ -245,6 +255,11 @@
 
                                                         var executeobject={'executethis': 'getwid','wid': wid}
                                                         var env = new drienvironment(command.environment);
+                                                        executeobject["command"]={"environment": {
+                            "run": {
+                                "type": "series"
+                            }
+                        }}
                                                         env.execute(executeobject, function (err, res) {
                                                             if (err && err.errorname === "failnotfound") {err=null; res={}}
 
@@ -692,6 +707,11 @@
 
                                             var executeobject={'executethis': 'getwid','wid': wid}
                                             var env = new drienvironment(command.environment);
+                                            executeobject["command"]={"environment": {
+                            "run": {
+                                "type": "series"
+                            }
+                        }}
                                             env.execute(executeobject, function (err, res) {
                                                 if (err && err.errorname === "failnotfound") {err=null; res={}}
 

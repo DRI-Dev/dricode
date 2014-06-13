@@ -804,6 +804,11 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
                 }
             }
             proxyprinttodiv('Function getrelatedrecords query', executeobject, 17);
+            executeobject["command"]={"environment": {
+                            "run": {
+                                "type": "series"
+                            }
+                        }}
             execute(executeobject, function (err, res) {
                 proxyprinttodiv('Function getrelatedrecords query res', res, 17);
                 if (err && (Object.keys(err).length) > 0) {
@@ -1622,6 +1627,11 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
                         } else { 
                                // to read wid obj via getwidmaster
                                 if (dataType !== 'string') {
+                                    executeobject["command"]={"environment": {
+                            "run": {
+                                "type": "series"
+                            }
+                        }}
                                     execute({
                                         "executethis": dataType
                                     }, function (err, result) {

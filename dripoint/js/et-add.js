@@ -252,6 +252,11 @@
                         "command.getwidmaster.execute": "ConvertFromDOTdri",
                         "command.getwidmaster.convertmethod": "dto"
                     };
+                    executeobject["command"]={"environment": {
+                            "run": {
+                                "type": "series"
+                            }
+                        }}
 
                     var env = new drienvironment(object.command.environment);
 
@@ -954,6 +959,11 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                                          "command.getwidmaster.convertmethod": "nowid"
                                          }
                         var env = new drienvironment(object.command.environment);
+                        executeobject["command"]={"environment": {
+                            "run": {
+                                "type": "series"
+                            }
+                        }}
                         env.execute(executeobject, function (err, res) {
                         if (err && err.errorname === "failnotfound") {err=null; res={}}
 
@@ -1078,10 +1088,15 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                 proxyprinttodiv("addwid before updatewid ", object, 18);
 
                 //not needed in this case
-                //var env = new drienvironment(object.command.environment);
-                //env.execute(object, function (err, res) {
+                var env = new drienvironment(object.command.environment);
+                object["command"]={"environment": {
+                            "run": {
+                                "type": "series"
+                            }
+                        }}
+                env.execute(object, function (err, res) {
 
-                execute(object, function (err, res) {
+                // execute(object, function (err, res) {
                 //if (err && err.errorname === "failnotfound") {err=null; res={}}
                 //execute(object, function (err, res) {
                     //console.log(" ^^^^^ "+ JSON.stringify(res))
