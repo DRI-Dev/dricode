@@ -90,7 +90,6 @@
 
         var filter_data = getcommand(object, {
             "command": {
-                "type":"series",
                 "datastore": config.configuration.defaultdatastore,
                 "collection":config.configuration.defaultcollection,
                 "keycollection": config.configuration.defaultcollection + "key",
@@ -99,7 +98,7 @@
                 "convertmethod":"toobject",
                 "datamethod":"upsert",
                 "environment":{
-                    "run":{}
+                    "run":{"type":"series"}
                 }
             }
         }, {
@@ -113,6 +112,7 @@
                 "datamethod":"",
                 "environment":{
                     "run":{}
+                }
             }
         },
         true);
