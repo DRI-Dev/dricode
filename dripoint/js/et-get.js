@@ -133,7 +133,8 @@
                         "dtotype": "",
                         "execute": "ConvertFromDOTdri",
                         "convertmethod": ""
-                    }
+                    },
+                    "environment": {"run":{}}
                 }
             },
             //"dtotype":"", "execute":"ConvertFromDOTdri"}}},
@@ -144,7 +145,8 @@
                         "dtotype": "",
                         "execute": "",
                         "convertmethod": ""
-                    }
+                    },
+                    "environment": {"run":{}}
                 }
             }
             // {

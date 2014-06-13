@@ -110,7 +110,9 @@
                 "db":"",
                 "databasetable":"",
                 "convertmethod":"",
-                "datamethod":""
+                "datamethod":"",
+                "environment":{
+                    "run":{}
             }
         },
         true);
