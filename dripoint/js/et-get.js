@@ -667,11 +667,9 @@
                     executeobject = parameters;
                     //executeobject["wid"] = widInput;
                     //executeobject["command.convertmethod"]="toobject";
-                    
 
-
-                        
-
+                    if (!command.environment) { command.environment = {}; }
+                    if (!command.environment.run) { command.environment.run = {}; }
 
                     var etEnvironment = new drienvironment({
                         "run": {
@@ -681,10 +679,7 @@
                         }
                     });
 
-
                     etEnvironment.execute(executeobject, function(err, res) {
-
-
                         // execute(executeobject, function (err, res) { // getwid
                         // If error, bounce out
                         if (err && Object.keys(err).length > 0) {
