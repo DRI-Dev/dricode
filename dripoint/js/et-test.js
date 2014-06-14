@@ -8983,3 +8983,17 @@ exports.ettestgetwid = ettestgetwid = function ettestgetwid(params, callback) {
         callback(err, result);
     });
 };
+
+exports.ettestaddwidmaster = addwidmaster = function addwidmaster(params, callback) {
+    execute({executethis:'addwidmaster',wid:'mastertestdata123',key1:'value1',key2:'value2'}, function (err, result) {
+        proxyprinttodiv('addwidmaster results', result, 99);
+        callbackl(err, result);
+    });
+};
+
+exports.ettestgetwidmaster = ettestgetwidmaster = function ettestgetwidmaster(params, callback) {
+    execute({executethis:'getwidmaster',wid:'mastertestdata123'}, function (err, result) {
+        proxyprinttodiv('getwid results', result, 99);
+        callback(err, result);
+    });
+};
