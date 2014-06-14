@@ -8987,7 +8987,7 @@ exports.ettestgetwid = ettestgetwid = function ettestgetwid(params, callback) {
 exports.ettestaddwidmaster = ettestaddwidmaster = function ettestaddwidmaster(params, callback) {
     execute({executethis:'addwidmaster',wid:'mastertestdata123',key1:'value1',key2:'value2'}, function (err, result) {
         proxyprinttodiv('addwidmaster results', result, 99);
-        callbackl(err, result);
+        callback(err, result);
     });
 };
 
