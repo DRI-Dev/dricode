@@ -1,4 +1,5 @@
 // copyright (c) 2014 DRI 
+// 'use strict';
 if (!exports) {
     var exports = {};
 }
@@ -16,7 +17,7 @@ if (!debugon) { // debugfn
     var debugon = false;
 }
 
-//debuglevel=11
+
 
 // *********** EVENTS **************************************************
 exports.eventappinstall = eventappinstall = function eventappinstall() {
@@ -30,13 +31,15 @@ exports.everyTenMinuteInterval = 0;
 exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
     setdefaultparm();
     //debuglevel=11
-    // if (!getFromLocalStorage(config.configuration.defaultkeycollection)) {
-    //     eventappinstall();
-    // }
+    if (!getFromLocalStorage(config.configuration.defaultkeycollection)) {
+        eventappinstall();
+    }
 
     // start eventonemin, eventtenmin and save the interval value so 
     // you can use "clearInterval" in the future if desired to stop things
     var minutes = 60 * 1000;
+    var err,res = {};
+
     //exports.everyMinuteInterval = setInterval(exports.eventonemin,1000);
     //exports.everyTenMinuteInterval = setInterval(exports.eventtenmin,10 * minutes);
 
@@ -45,7 +48,7 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
     //             "wid":"systemdto",
     //             "expirationtimer":"string",
     //             "expirationdate":"string",
-				// "executecount":"integer",
+                // "executecount":"integer",
     //             "metadata.inherit.0": {"wid" : "systemdefault", "command" : { "dtotype":"", "adopt":"default"}}
     //     },{
     //         "executethis":"addwidmaster",
@@ -57,10 +60,9 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
     //     ],
     //     function (err, res) {
     //         updatewid({"wid":"initialwid", "date": new Date()}, function (err, res) {
-    //             callback(err, res);
-    //             });
-    //     });
-callback(null,null);
+                callback(err, res);
+        //         });
+        // });
 };
 
 exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
@@ -168,16 +170,14 @@ exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters,
 };
 
 exports.processevent = processevent = function processevent(eventname, callback) {
-    callback(null,null)
-    // proxyprinttodiv("processeventqueue eventname----", eventname, 99);
-    // getexecutelist(eventname, "queuecollection", function (err, executetodolist) {
-    //     proxyprinttodiv("processeventqueue executelist", executetodolist, 17);
-    //     executelistfn(executetodolist, execute, function (err, res) {
-    //         deletelist(executetodolist, eventname, function (err, res) {
-    //             callback(err, res);
-    //             });
-    //         });
-    //     });
+    getexecutelist(eventname, "queuecollection", function (err, executetodolist) {
+        proxyprinttodiv("processeventqueue executelist", executetodolist, 17);
+        executelistfn(executetodolist, execute, function (err, res) {
+            deletelist(executetodolist, eventname, function (err, res) {
+                callback(err, res);
+                });
+            });
+        });
     };
 
 exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, callback) {
@@ -195,8 +195,8 @@ exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, cal
 
 exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eventtype, callback) {
     proxyprinttodiv("getexecutelist eventname(collection)", eventname, 17);
-	proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
-	var executeobject = {"command": {"result": "queryresult"}};
+    proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
+    var executeobject = {"command": {"result": "queryresult"}};
     var executetodolist=[];
     executeobject.command.databasetable = eventtype;
     executeobject.command.collection = eventname;
@@ -204,17 +204,17 @@ exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eve
     //executeobject.command.result = "queueresult";
     executeobject["executethis"] = "querywid";
     //executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
-    executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]}  	
-	proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
-	
+    executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]}   
+    proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
+
     execute(executeobject, function (err, res) {
-		proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
+        proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
         if (res.length === 0) {
             executetodolist = [];
         }
         else if(res[0] && res[0]["queryresult"]){
             for (var everyaction in res[0]["queryresult"]){
-				proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
+                proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
                 //if (res[0]["queryresult"][everyaction]
                 executetodolist.push(res[0]["queryresult"][everyaction]);
             }
@@ -257,60 +257,6 @@ exports.deletelist = deletelist = function deletelist(listToDo, eventname, callb
 };
 
 
-exports.execute_server = window.execute_server = execute_server = function execute_server(params, callback) {
-    proxyprinttodiv('Function server TO ------', params, 99);
-
-        var inbound_parameters = {};
-        extend(true, inbound_parameters, params);
-        params = toLowerKeys(params);
-
-        // temporary code to stay local... uncomment below to enable server
-        param.command.xrun=param.serverfn;
-        delete param.serverfn;
-        proxyprinttodiv('test ***** calling server', param, 99);
-//        execute(param, callback);
-        
-        executeAjax("", params, function (data) {
-             proxyprinttodiv('Function server FROM ------', params, 99);
-             callback(null, data);
-        });
-};
-
-
-exports.server = window.server = server = function server(params, callback) {
-    proxyprinttodiv('Function server ------', params, 30);
-    try {
-        var inbound_parameters = {};
-        extend(true, inbound_parameters, params);
-
-        console.log('execute server called with ' + JSON.stringify(params));
-        delete params['configuration'];
-        params = toLowerKeys(params);
-
-        var currentUser = window.localStorage ? JSON.parse(window.localStorage.getItem('driUser')) : undefined;
-        if (currentUser) {
-            if (!params.etenvironment) {
-                params.etenvironment = {};
-            }
-            params.etenvironment.accesstoken = currentUser.at;
-        }
-
-        executeAjax("", params, function (data) {
-            console.log("Return from server: " + JSON.stringify(data));
-            var err;
-            callback(null, data);
-        });
-    } // end try
-    catch (err) {
-        var finalobject =
-            createfinalobject({
-                "result": "server"
-            }, {}, "server", err, inbound_parameters);
-        callback(finalobject.err, finalobject.res);
-    }
-};
-
-
 function setdefaultparm() {
 
     exports.config = config = config123();
@@ -324,10 +270,10 @@ function setdefaultparm() {
     saveglobal("debugsubcat", "");
     saveglobal("debugcat", "");
     saveglobal("debugfilter", "");
-    saveglobal("debugdestination", 0);
+    saveglobal("debugdestination", 12);
     saveglobal("debugcolor", 0);
     saveglobal("debugindent", 0);
-    saveglobal("debuglinenum", 0);
+    saveglobal("debuglinenum", 12);
 
     exports.environment = "local";
     exports.Debug = Debug;
@@ -353,7 +299,90 @@ function config123() {
     configuration.d.defaultdatastore =  configuration.defaultdatastore
     configuration.d.defaultkeycollection = configuration.defaultkeycollection
     configuration.d.defaultdatabasetable = configuration.defaultdatabasetable
-    configuration.d.platform = configuration.environment
+
+    configuration.preExecute = [];
+    configuration.preExecute[0] = {};
+    configuration.preExecute[0].executeorder = 1;
+    configuration.preExecute[0].tryorder = 1;
+    configuration.preExecute[0].dothis = 'dothis';
+    configuration.preExecute[0].params = {};
+    configuration.preExecute[1] = {};
+    configuration.preExecute[1].executeorder = 1;
+    configuration.preExecute[1].tryorder = 2;
+    configuration.preExecute[1].dothis = 'executeparam';
+    configuration.preExecute[1].params = {};
+    configuration.preExecute[2] = {};
+    configuration.preExecute[2].executeorder = 1;
+    configuration.preExecute[2].tryorder = 3;
+    configuration.preExecute[2].dothis = 'executegetwid';
+    configuration.preExecute[2].params = {};
+    configuration.preExecute[3] = {};
+    configuration.preExecute[3].executeorder = 1;
+    configuration.preExecute[3].tryorder = 4;
+    configuration.preExecute[3].dothis = 'server';
+    configuration.preExecute[3].params = {};
+
+    configuration.midExecute = [];
+    configuration.midExecute[0] = {};
+    configuration.midExecute[0].executeorder = 1;
+    configuration.midExecute[0].tryorder = 1;
+    configuration.midExecute[0].dothis = 'dothis';
+    configuration.midExecute[0].params = {};
+    configuration.midExecute[1] = {};
+    configuration.midExecute[1].executeorder = 1;
+    configuration.midExecute[1].tryorder = 2;
+    configuration.midExecute[1].dothis = 'executeparam';
+    configuration.midExecute[1].params = {};
+    configuration.midExecute[2] = {};
+    configuration.midExecute[2].executeorder = 1;
+    configuration.midExecute[2].tryorder = 3;
+    configuration.midExecute[2].dothis = 'executegetwid';
+    configuration.midExecute[2].params = {};
+    configuration.midExecute[3] = {};
+    configuration.midExecute[3].executeorder = 1;
+    configuration.midExecute[3].tryorder = 4;
+    configuration.midExecute[3].dothis = 'server';
+    configuration.midExecute[3].params = {};
+
+    configuration.postExecute = [];
+    configuration.postExecute[0] = {};
+    configuration.postExecute[0].executeorder = 1;
+    configuration.postExecute[0].tryorder = 1;
+    configuration.postExecute[0].dothis = 'dothis';
+    configuration.postExecute[0].params = {};
+    configuration.postExecute[1] = {};
+    configuration.postExecute[1].executeorder = 1;
+    configuration.postExecute[1].tryorder = 2;
+    configuration.postExecute[1].dothis = 'executeparam';
+    configuration.postExecute[1].params = {};
+    configuration.postExecute[2] = {};
+    configuration.postExecute[2].executeorder = 1;
+    configuration.postExecute[2].tryorder = 3;
+    configuration.postExecute[2].dothis = 'executegetwid';
+    configuration.postExecute[2].params = {};
+    configuration.postExecute[3] = {};
+    configuration.postExecute[3].executeorder = 1;
+    configuration.postExecute[3].tryorder = 4;
+    configuration.postExecute[3].dothis = 'server';
+    configuration.postExecute[3].params = {};
+
+    //     configuration.getwid = [];
+    //     configuration.getwid[0] = {};
+    //     configuration.getwid[0].executeorder = 1;
+    //     configuration.getwid[0].tryorder = 1;
+    //     configuration.getwid[0].dothis = 'getfromangular';
+    // //    configuration.getwid[0].dothis = 'offlinegetwid';
+    //     configuration.getwid[0].server = 'getwid';
+    //     configuration.getwid[0].params = {};
+
+    //     configuration.updatewid = [];
+    //     configuration.updatewid[0] = {};
+    //     configuration.updatewid[0].executeorder = 1;
+    //     configuration.updatewid[0].tryorder = 1;
+    //     configuration.updatewid[0].dothis = 'offlineupdatewid';
+    //     configuration.updatewid[0].server = 'updatewid';
+    //     configuration.updatewid[0].dofn = offlineupdatewid;
+    //     configuration.updatewid[0].params = {};
 
     return {
         "configuration": configuration
@@ -411,7 +440,7 @@ function executeAjax(allConfig, executeItem, callback, returnCallback) {
         dataType: 'json',
         url: '/executethis',
         headers: {
-            'content-type': 'application/json'
+            'content-type': 'Application/json'
         },
         global: 'false',
         cache: 'false',
@@ -446,56 +475,95 @@ function test2(params, callback) {
     });
 }
 
+exports.server = window.server = server = function server(params, callback) {
+    proxyprinttodiv('Function server ------', params, 30);
+//    callback(null,null)
+    try {
+         var inbound_parameters = {};
+         extend(true, inbound_parameters, params);
+
+         console.log('execute server called with ' + JSON.stringify(params));
+         delete params['configuration'];
+         params = toLowerKeys(params);
+         // if (params['midexecute']) {
+         //     params['executethis'] = params['midexecute'];
+         //     delete params['midexecute'];
+         // }
+         // alert(JSON.stringify(params));
+
+         // add accesstoken if user exists in localStorage
+         var currentUser = window.localStorage ? JSON.parse(window.localStorage.getItem('driUser')) : undefined;
+         if (currentUser) {
+             if (!params.etenvironment) {
+                 params.etenvironment = {};
+             }
+             params.etenvironment.accesstoken = currentUser.at;
+         }
+
+         executeAjax("", params, function (data) {
+             console.log("Return from server: " + JSON.stringify(data));
+             var err;
+             callback(null, data);
+         });
+    } // end try
+    catch (err) {
+         var finalobject =
+             createfinalobject({
+                 "result": "server"
+             }, {}, "server", err, inbound_parameters);
+         callback(finalobject.err, finalobject.res);
+    }
+};
 
 
-// exports.server2 = window.server2 = server2 = function server2(params, callback) {
-//     proxyprinttodiv('Function server2 ------', params, 30);
-//     params.command.server = "server2";
-//     server(params, callback);
-// };
+exports.server2 = window.server2 = server2 = function server2(params, callback) {
+    proxyprinttodiv('Function server2 ------', params, 30);
+    params.command.server = "server2";
+    server(params, callback);
+};
 
-// exports.getDriApiData = getDriApiData = function getDriApiData(params, callback) {
-//     // set up object in syntax that driApi is expecting
-//     // also get getdata/<action> action from params object
-//     var driExecuteObj = {
-//         actionQueryString: params.dri_action,
-//         parameterDTOs: []
-//     };
+exports.getDriApiData = getDriApiData = function getDriApiData(params, callback) {
+    // set up object in syntax that driApi is expecting
+    // also get getdata/<action> action from params object
+    var driExecuteObj = {
+        actionQueryString: params.dri_action,
+        parameterDTOs: []
+    };
 
-//     // convert passed in object to parameterdto list
-//     for (var prop in params) {
-//         if (params.hasOwnProperty(prop)) {
-//             driExecuteObj.parameterDTOs.push({
-//                 ParameterName: prop,
-//                 ParameterValue: params[prop]
-//             });
-//         }
-//     }
+    // convert passed in object to parameterdto list
+    for (var prop in params) {
+        if (params.hasOwnProperty(prop)) {
+            driExecuteObj.parameterDTOs.push({
+                ParameterName: prop,
+                ParameterValue: params[prop]
+            });
+        }
+    }
 
-//     $.ajax({
-//         url: '/getdata',
-//         type: 'PUT',
-//         headers: {
-//             'content-type': 'application/json'
-//         },
-//         cache: false,
-//         async: false,
-//         dataType: 'json',
-//         data: JSON.stringify(driExecuteObj),
-//         success: function (results) {
-//             // convert returned list of DataModelDTOs to an object
-//             var resultsObj = {};
-//             for (var i = 0; i < results.length; i++) {
-//                 resultsObj[results[i].Key] = results[i].Value;
-//             }
+    $.ajax({
+        url: '/getdata',
+        type: 'PUT',
+        headers: {
+            'content-type': 'application/json'
+        },
+        cache: false,
+        async: false,
+        dataType: 'json',
+        data: JSON.stringify(driExecuteObj),
+        success: function (results) {
+            // convert returned list of DataModelDTOs to an object
+            var resultsObj = {};
+            for (var i = 0; i < results.length; i++) {
+                resultsObj[results[i].Key] = results[i].Value;
+            }
 
-//             callback(null, resultsObj);
-//         },
-//         error: function (err) {
-//             callback(err.responseText, null);
-//         }
-//     });
-// };
+            callback(null, resultsObj);
+        },
+        error: function (err) {
+            callback(err.responseText, null);
+        }
+    });
+};
 
 
 exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, callback) {
@@ -538,7 +606,6 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
         // if (command.collection) {collection=command.collection}
         proxyprinttodiv('Function databasetable + collection', databasetable + collection, 30);
         database = getFromLocalStorage(databasetable + collection);
-
         proxyprinttodiv('Function inlist', database, 30);
         if (database) {
             proxyprinttodiv('before IsJsonString', inboundobj, 30);
@@ -558,7 +625,6 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
 
             // not sure if stuff below needed
             keydatabase = getFromLocalStorage(databasetable + keycollection);
-
             for (var eachrecord in outlist) {
                 eachwid = keydatabase[outlist[eachrecord]["wid"]];
                 resultlist.push(eachwid);

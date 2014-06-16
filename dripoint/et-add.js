@@ -88,6 +88,8 @@
         object = ConvertFromDOTdri(object);
         proxyprinttodiv("addwidmaster before", object, 17);
 
+        
+
         var filter_data = getcommand(object, {
             "command": {
                 "datastore": config.configuration.defaultdatastore,
@@ -97,9 +99,7 @@
                 "databasetable":config.configuration.defaultdatabasetable,
                 "convertmethod":"toobject",
                 "datamethod":"upsert",
-                "environment":{
-                    "run":{"type":"series"}
-                }
+                "environment":""
             }
         }, {
             "command": {
@@ -110,9 +110,7 @@
                 "databasetable":"",
                 "convertmethod":"",
                 "datamethod":"",
-                "environment":{
-                    "run":{}
-                }
+                "environment":""
             }
         },
         true);
@@ -147,7 +145,7 @@
                     } else {
 //                                    res = pack_up_params(res, command, "addwidmaster");
                         //callback(null, _object);
-                        callback(null, {wid: res['wid']});
+                        callback(null, {wid: res['wid']})
                     }
                 });
             } // end else
@@ -197,7 +195,7 @@
         extend (true, inbound_parameters, dtoobject);
 
         proxyprinttodiv("cleanadd object", object, 17);
-        //if (object.wid==="wid1") {debuglevel=38;}
+        //if (object.wid==="wid1") {debuglevel=38}
         getdtoobject(object, command, function (err, res) {
                 proxyprinttodiv("cleanadd object after getdtoobject", object, 17);
 
@@ -238,39 +236,19 @@
 
                if (dto_to_get !== "string") {
                     proxyprinttodiv("cleanadd dto_to_get", dto_to_get, 17);
-
-                    // old code
-                    // execute({
-                    //     "executethis": "getwidmaster",
-                    //     "wid": dto_to_get,
-                    //     "command.getwidmaster.execute": "ConvertFromDOTdri",
-                    //     "command.getwidmaster.convertmethod": "dto"
-                    // }, function (err, res) {
-
-                    var executeobject = 
-                    {
+                    execute({
                         "executethis": "getwidmaster",
                         "wid": dto_to_get,
                         "command.getwidmaster.execute": "ConvertFromDOTdri",
                         "command.getwidmaster.convertmethod": "dto"
-                    };
-                    executeobject["command"]={"environment": {
-                            "run": {
-                                "type": "series"
-                            }
-                        }}
-
-                    var env = new drienvironment(object.command.environment);
-
-                    env.execute(executeobject, function (err, res) {
-                        if (err && err.errorname === "failnotfound") {err=null; res={}}
+                    }, function (err, res) {
 
                         if (err && Object.keys(err).length > 0) {
                             callback(err, res);
                         } else {
                             proxyprinttodiv("cleanadd after execute", res, 17);
 
-                            big_dto = res;
+                            big_dto = res[0];
                             result_obj = insertbydtotype(object, big_dto, {}, command); // this fn in et-get
                             proxyprinttodiv("cleanadd after insertbydtotype", result_obj, 17);
                             //command.deepfilter.convert="fromstring"; not needed since done in addwid anyway
@@ -429,7 +407,7 @@
                             _child_object_map = _child_object;
                         }
                         if (isArray(_child_dto)) {
-                            _child_dto = _child_dto[0];
+                            _child_dto = _child_dto[0]
                         }
                         if(_child_object_map) {
 
@@ -444,7 +422,7 @@
                                         _child_dto && Object.keys(_child_dto).length !== 0) {
 
                                         if (!_child_object["metadata"]) {
-                                            _child_object["metadata"] = {};
+                                            _child_object["metadata"] = {}
                                         }
                                         if (!_child_object["metadata"]["method"]) {
                                             _child_object["metadata"]["method"] = eachchild.dtoname;
@@ -532,7 +510,7 @@
         proxyprinttodiv("addrecord input relationshiptype :- ", relationshiptype, 17);
 
         var relobj = {};
-        var currentrelationshipobj=null;
+        var currentrelationshipobj=null
         var reldto = {};
         var executeobject = {};
 
@@ -585,30 +563,24 @@
                                 }]
                             };
                         }
-
-                        var env = new drienvironment(inputrecord.command.environment);
-
-                        env.execute(executeobject, function (err, widset1) {
-                        if (err && err.errorname === "failnotfound") {err=null; widset1={"queryresult":[]}}
-
-                        //execute(executeobject, function (err, widset1) {
+                        execute(executeobject, function (err, widset1) {
                             // If error, bounce out
                             
                             if (err && Object.keys(err).length > 0) {
                                 step1_callback(err, widset);
                             } else {
-                                var widset=widset1['queryresult'][0];
+                                var widset=widset1[0]['queryresult'];
                                 if (widset) {
-                                    for (wid in widset) { // really should only be one record
-                                        currentrelationshipobj = widset[wid];
+                                    for (wid in widset[0]) { // really should only be one record
+                                        currentrelationshipobj = widset[0][wid];
                                         }
                                     step1_callback(null);
-                                }
+                                    }
                                 else {
                                     step1_callback(null); 
-                                }
+                                    }
 
-                                // currentrelationshipobj=widset;
+                                // currentrelationshipobj=widset
                                 // var widrecord;
                                 // var wid
                                 // if ((widset.length > 0)) { //|| && (relationshiptype === "onetoone")(relationshiptype === "manytomany")
@@ -634,7 +606,6 @@
 
 
                     addwid(inputrecord, dtoobject, command, function (err, res) {
-                        res = res || {};
                         // If error, bounce out
                         if (err && Object.keys(err).length > 0) {
                             step2_callback(err, addobject);
@@ -690,8 +661,8 @@
                                     relobj.wid = currentrelationshipobj.wid
                                     }
                                 if (hashobj(currentrelationshipobj)===hashobj(relobj)) { // if objects are the same
-                                    step2_callback(null); // then do not save
-                                }
+                                    step2_callback(null) // then do not save
+                                    }
                                 else {
                                     addwid(relobj, reldto, command, function (err, added_relation) {
                                         // If error, bounce out
@@ -947,39 +918,23 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
             function step1(step1_callback) { // getwidmaster
                  proxyprinttodiv("addwid step1 getwidmaster output", output, 18);
                  if (object['wid']) {
-                     // execute({
-                     //     "executethis": "getwidmaster",
-                     //     "wid": object['wid'],
-                     //     "command.getwidmaster.execute": "ConvertFromDOTdri",
-                     //     "command.getwidmaster.convertmethod": "nowid"
-                     //     }, function (err, res) {
-
-                        var executeobject={
-                                         "executethis": "getwidmaster",
-                                         "wid": object['wid'],
-                                         "command.getwidmaster.execute": "ConvertFromDOTdri",
-                                         "command.getwidmaster.convertmethod": "nowid"
-                                         }
-                        var env = new drienvironment(object.command.environment);
-                        executeobject["command"]={"environment": {
-                            "run": {
-                                "type": "series"
-                            }
-                        }}
-                        env.execute(executeobject, function (err, res) {
-                        if (err && err.errorname === "failnotfound") {err=null; res={}}
-
+                     execute({
+                         "executethis": "getwidmaster",
+                         "wid": object['wid'],
+                         "command.getwidmaster.execute": "ConvertFromDOTdri",
+                         "command.getwidmaster.convertmethod": "nowid"
+                         }, function (err, res) {
                              proxyprinttodiv("addwid step1 getwidmaster result", res, 18);
                              var getwidmasterres = {};
-                             extend(true, getwidmasterres, res); // master copy
+                             extend(true, getwidmasterres, res[0]); // master copy
                              proxyprinttodiv("addwid step1 getwidmaster getwidmasterres", getwidmasterres, 18);
                              //res = [{"wid":"wid1","metadata":{"method":"defaultdto"},"d":44,"command":{"inherit":{"data":{"c":17, "e":98, "g":7}}}}];      
                              //res = [{"wid":"wid1","metadata":{"method":"defaultdto"},"d":4, "f":6, "command":{"inherit":{"data":{"c":17, "e":98, "g":7}}}}];       
-                             if (typeof res === 'object' && Object.keys(res).length !== 0) {
+                             if (typeof res[0] === 'object' && Object.keys(res[0]).length !== 0) {
                                 // if we have inherit data
-                                if (res.command && res.command.inherit && res.command.inherit.data) {
-                                    currentinheritobject = res.command.inherit.data;
-                                    delete res.command.inherit.data;
+                                if (res[0].command && res[0].command.inherit && res[0].command.inherit.data) {
+                                    currentinheritobject = res[0].command.inherit.data;
+                                    delete res[0].command.inherit.data;
                                     //var command = {"filterobject": {"type":"match"}};
                                     var matches = compareobjects(getwidmasterres, currentinheritobject, "equal");
 				                    matches = matches.andobj;
@@ -1088,21 +1043,9 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                 tempcmd.command=command;
                 extend(true, object, tempcmd);
                 proxyprinttodiv("addwid before updatewid ", object, 18);
-
-                //not needed in this case
-                var env = new drienvironment(object.command.environment);
-                object["command"]={"environment": {
-                            "run": {
-                                "type": "series"
-                            }
-                        }}
-                env.execute(object, function (err, res) {
-
-                // execute(object, function (err, res) {
-                //if (err && err.errorname === "failnotfound") {err=null; res={}}
-                //execute(object, function (err, res) {
-                    //console.log(" ^^^^^ "+ JSON.stringify(res))
-                    output = res; // or res[0]?
+                execute(object, function (err, res) {
+                    console.log(" ^^^^^ "+ JSON.stringify(res))
+                    output = res[0]; // or res[0]?
                     // If error, bounce out
                     if (err && Object.keys(err).length > 0) {
                         step4_callback(err, res);

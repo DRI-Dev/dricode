@@ -1,5 +1,3 @@
-// 'use strict';
-
 // copyright (c) 2014 DRI
 
 function etunittesttester(params, callback) {
@@ -609,8 +607,10 @@ function etunittesttester(params, callback) {
 // at stands for 'all tests', this will run a suite 
 // of tests that are known to run, but not necessarily pass
 
+var wid = wid || {};
+//exports.ettestat = ettestat = function ettestat(params, callback) {
+exports.ettestat = wid.ettestat = ettestat = function ettestat(params, callback) {
 
-exports.ettestat = ettestat = function ettestat(params, callback) {
     var result = [];
     var err;
 
@@ -636,8 +636,14 @@ exports.ettestat = ettestat = function ettestat(params, callback) {
         });
     });
 }
+wid.ettestat.category = "executeit";
+wid.ettestat.subcategory = "dothis";
+wid.ettestat.type = "minute";
+wid.ettestat.name = "this does a test";
 
-exports.ettestat2 = ettestat2 = function ettestat2(params, callback) {
+//exports.ettestat2 = ettestat2 = function ettestat2(params, callback) {
+exports.ettestat2 = wid.ettestat2 = ettestat2 = function ettestat2(params, callback) {
+
     var result;
     var err;
     var target = {
@@ -648,8 +654,13 @@ exports.ettestat2 = ettestat2 = function ettestat2(params, callback) {
         callback(err, result);
     });
 }
+wid.ettestat2.category = "executeit";
+wid.ettestat2.subcategory = "dothis";
+wid.ettestat2.type = "minute";
+wid.ettestat2.name = "this does a test";
 
-exports.ettestat3 = ettestat3 = function ettestat3(params, callback) {
+//exports.ettestat3 = ettestat3 = function ettestat3(params, callback) {
+exports.ettestat3 = wid.ettestat3 = ettestat3 = function ettestat3(params, callback) {
     var result;
     var err;
     var target = {
@@ -660,8 +671,13 @@ exports.ettestat3 = ettestat3 = function ettestat3(params, callback) {
         callback(err, result);
     });
 }
+wid.ettestat3.category = "executeit";
+wid.ettestat3.subcategory = "dothis";
+wid.ettestat3.type = "minute";
+wid.ettestat3.name = "this does a test";
 
-exports.ettestat4 = ettestat4 = function ettestat4(params, callback) {
+//exports.ettestat4 = ettestat4 = function ettestat4(params, callback) {
+exports.ettestat4 = wid.ettestat4 = ettestat4 = function ettestat4(params, callback) {
     var result;
     var err;
     var target = {
@@ -672,8 +688,13 @@ exports.ettestat4 = ettestat4 = function ettestat4(params, callback) {
         callback(err, result);
     });
 }
+wid.ettestat4.category = "executeit";
+wid.ettestat4.subcategory = "dothis";
+wid.ettestat4.type = "minute";
+wid.ettestat4.name = "this does a test";
 
-exports.ettestat5 = ettestat5 = function ettestat5(params, callback) {
+//exports.ettestat5 = ettestat5 = function ettestat5(params, callback) {
+exports.ettestat5 = wid.ettestat5 = ettestat5 = function ettestat5(params, callback) {
     var result;
     var err;
     var target = {
@@ -684,6 +705,11 @@ exports.ettestat5 = ettestat5 = function ettestat5(params, callback) {
         callback(err, result);
     });
 }
+wid.ettestat5.category = "executeit";
+wid.ettestat5.subcategory = "dothis";
+wid.ettestat5.type = "minute";
+wid.ettestat5.name = "this does a test";
+
 // -------------------------------------------------------------------------------------------------------
 // This series of tests will send parameters to func_b.
 // There are variations of pre and post execute applied to 
@@ -691,7 +717,8 @@ exports.ettestat5 = ettestat5 = function ettestat5(params, callback) {
 // deleted, and a parameters is added to verify that each level of  
 // the executethis is being accessed.
 
-exports.ettesttt = ettesttt = function ettesttt(params, callback) {
+//exports.ettesttt = ettesttt = function ettesttt(params, callback) {
+exports.ettesttt = wid.ettesttt = ettesttt = function ettesttt(params, callback) {
     // execute([{
     //         "executethis": "ettestt1"
     //     }, {
@@ -744,11 +771,16 @@ exports.ettesttt = ettesttt = function ettesttt(params, callback) {
         });
     });
 }
+wid.ettesttt.category = "executeit";
+wid.ettesttt.subcategory = "dothis";
+wid.ettesttt.type = "minute";
+wid.ettesttt.name = "this does a test";
 
 // This series is identical to tt, except that the functions called 
 // by executethis are async, and therefore use callbacks to return data
 // to the calling function.
-exports.ettestastt = ettestastt = function ettestastt(params, callback) {
+//exports.ettestastt = ettestastt = function ettestastt(params, callback) {
+exports.ettestastt = wid.ettestastt = ettestastt = function ettestastt(params, callback) {
     // execute([{
     //         "executethis": "ettestast1"
     //     }, {
@@ -800,11 +832,16 @@ exports.ettestastt = ettestastt = function ettestastt(params, callback) {
         });
     });
 }
+wid.ettestastt.category = "executeit";
+wid.ettestastt.subcategory = "dothis";
+wid.ettestastt.type = "minute";
+wid.ettestastt.name = "this does a test";
 
 // This series uses the sync functions of a,b, and c with changes to the
 // configuration parameters. This allows for calling func_b by calling
 // redir_b instead of func_b, redir_a instead of func_a, and so on.
-exports.ettestctt = ettestctt = function ettestctt(params, callback) {
+//exports.ettestctt = ettestctt = function ettestctt(params, callback) {
+exports.ettestctt = wid.ettestctt = ettestctt = function ettestctt(params, callback) {
     // execute([{
     //         "executethis": "ettestct1"
     //     }, {
@@ -920,10 +957,16 @@ exports.ettestctt = ettestctt = function ettestctt(params, callback) {
         });
     });
 }
+wid.ettestctt.category = "executeit";
+wid.ettestctt.subcategory = "dothis";
+wid.ettestctt.type = "minute";
+wid.ettestctt.name = "this does a test";
 
 
 // These are the add/get tests to stress out the dto/dot notation system
-exports.ettestagtt = ettestagtt = function ettestagtt(params, callback) {
+//exports.ettestagtt = ettestagtt = function ettestagtt(params, callback) {
+exports.ettestagtt = wid.ettestagtt = ettestagtt = function ettestagtt(params, callback) {
+
     // execute([{
     //         "executethis": "ettestag1"
     //     }, {
@@ -950,9 +993,14 @@ exports.ettestagtt = ettestagtt = function ettestagtt(params, callback) {
         });
     });
 }
+wid.ettestagtt.category = "executeit";
+wid.ettestagtt.subcategory = "dothis";
+wid.ettestagtt.type = "minute";
+wid.ettestagtt.name = "this does a test";
 
 // These are the deepfilter tests
-exports.ettestetdtt = ettestetdtt = function ettestetdtt(params, callback) {
+//exports.ettestetdtt = ettestetdtt = function ettestetdtt(params, callback) {
+exports.ettestetdtt = wid.ettestetdtt = ettestetdtt = function ettestetdtt(params, callback) {
 
     var result = [];
     var err;
@@ -971,6 +1019,10 @@ exports.ettestetdtt = ettestetdtt = function ettestetdtt(params, callback) {
         });
     });
 }
+wid.ettestetdtt.category = "executeit";
+wid.ettestetdtt.subcategory = "dothis";
+wid.ettestetdtt.type = "minute";
+wid.ettestetdtt.name = "this does a test";
 
 
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
@@ -978,7 +1030,10 @@ exports.ettestetdtt = ettestetdtt = function ettestetdtt(params, callback) {
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 // functions a,b,c manipulate parameters
 // Call func_b with no pre or post...it should simply remove 'e' and add 'g' to the parameters
-exports.ettestt1 = ettestt1 = function ettestt1(params, callback) {
+//exports.ettestt1 = ettestt1 = function ettestt1(params, callback) {
+exports.ettestt1 = wid.ettestt1 = ettestt1 = function ettestt1(params, callback) {
+
+    debugger;
     eventappinstall();
     execute([{
             "executethis": "func_b",
@@ -995,9 +1050,16 @@ exports.ettestt1 = ettestt1 = function ettestt1(params, callback) {
             callback(err, res);
         });
 }
+wid.ettestt1.category = "executeit";
+wid.ettestt1.subcategory = "dothis";
+wid.ettestt1.type = "minute";
+wid.ettestt1.name = "this does a test";
+
 
 // Not an 'at' test...used to test the verify system. This is a passing test.
-exports.ettestt1s = ettestt1s = function ettestt1s(params, callback) {
+//exports.ettestt1s = ettestt1s = function ettestt1s(params, callback) {
+exports.ettestt1s = wid.ettestt1s = ettestt1s = function ettestt1s(params, callback) {
+
     eventappinstall();
     res = logverify("ettestt1s_result", {
         "d": "1",
@@ -1011,9 +1073,15 @@ exports.ettestt1s = ettestt1s = function ettestt1s(params, callback) {
     var err;
     callback(err, res);
 }
+wid.ettestt1s.category = "executeit";
+wid.ettestt1s.subcategory = "dothis";
+wid.ettestt1s.type = "minute";
+wid.ettestt1s.name = "this does a test";
 
 // Not an 'at' test...used to tes the veryify system. This is a failing test.
-exports.ettestt1sf = ettestt1sf = function ettestt1sf(params, callback) {
+//exports.ettestt1sf = ettestt1sf = function ettestt1sf(params, callback) {
+exports.ettestt1sf = wid.ettestt1sf = ettestt1sf = function ettestt1sf(params, callback) {
+
     eventappinstall();
     res = logverify("ettestt1sf_result", {
         "d": "1",
@@ -1028,9 +1096,16 @@ exports.ettestt1sf = ettestt1sf = function ettestt1sf(params, callback) {
     var err;
     callback(err, res);
 }
+wid.ettestt1sf.category = "executeit";
+wid.ettestt1sf.subcategory = "dothis";
+wid.ettestt1sf.type = "minute";
+wid.ettestt1sf.name = "this does a test";
+
 
 // Call func_b, but also tell preexecute to call func_a and postexecute to call func_c.
-exports.ettestt2 = ettestt2 = function ettestt2(params, callback) {
+//exports.ettestt2 = ettestt2 = function ettestt2(params, callback) {
+exports.ettestt2 = wid.ettestt2 = ettestt2 = function ettestt2(params, callback) {
+
     eventappinstall();
     execute([{
             "executethis": "func_b",
@@ -1049,10 +1124,17 @@ exports.ettestt2 = ettestt2 = function ettestt2(params, callback) {
             callback(err, res);
         });
 }
+wid.ettestt2.category = "executeit";
+wid.ettestt2.subcategory = "dothis";
+wid.ettestt2.type = "minute";
+wid.ettestt2.name = "this does a test";
+
 
 // Call func_b with only pre func_a...this intends to call func_a in preexecute and func_b 
 // in midexecute and nothing in post execute.
-exports.ettestt3 = ettestt3 = function ettestt3(params, callback) {
+//exports.ettestt3 = ettestt3 = function ettestt3(params, callback) {
+exports.ettestt3 = wid.ettestt3 = ettestt3 = function ettestt3(params, callback) {
+
     eventappinstall();
     execute([{
             "executethis": "func_b",
@@ -1070,10 +1152,17 @@ exports.ettestt3 = ettestt3 = function ettestt3(params, callback) {
             callback(err, res);
         });
 }
+wid.ettestt3.category = "executeit";
+wid.ettestt3.subcategory = "dothis";
+wid.ettestt3.type = "minute";
+wid.ettestt3.name = "this does a test";
+
 
 // Call func_b with only post func_a -- same result as t3. This is to make sure that not
 // calling pre is ok...this calls only mid and post.
-exports.ettestt3a = ettestt3a = function ettestt3a(params, callback) {
+//exports.ettestt3a = ettestt3a = function ettestt3a(params, callback) {
+exports.ettestt3a = wid.ettestt3a = ettestt3a = function ettestt3a(params, callback) {
+
     eventappinstall();
     execute([{
             "executethis": "func_b",
@@ -1091,10 +1180,16 @@ exports.ettestt3a = ettestt3a = function ettestt3a(params, callback) {
             callback(err, res);
         });
 }
+wid.ettestt3a.category = "executeit";
+wid.ettestt3a.subcategory = "dothis";
+wid.ettestt3a.type = "minute";
+wid.ettestt3a.name = "this does a test";
 
 // Call mid with func_b and post with func_c, assuring that multiple functions exectue
 // well, no matter where in the pre/mid/post they are placed.
-exports.ettestt4 = ettestt4 = function ettestt4(params, callback) {
+//exports.ettestt4 = ettestt4 = function ettestt4(params, callback) {
+exports.ettestt4 = wid.ettestt4 = ettestt4 = function ettestt4(params, callback) {
+
     eventappinstall();
     execute([{
             "executethis": "func_b",
@@ -1112,10 +1207,16 @@ exports.ettestt4 = ettestt4 = function ettestt4(params, callback) {
             callback(err, res);
         });
 }
+wid.ettestt4.category = "executeit";
+wid.ettestt4.subcategory = "dothis";
+wid.ettestt4.type = "minute";
+wid.ettestt4.name = "this does a test";
 
 // Call mid with func_b and pre with func_c, assuring that multiple functions exectue
 // well, no matter where in the pre/mid/post they are placed.
-exports.ettestt4a = ettestt4a = function ettestt4a(params, callback) {
+//exports.ettestt4a = ettestt4a = function ettestt4a(params, callback) {
+exports.ettestt4a = wid.ettestt4a = ettestt4a = function ettestt4a(params, callback) {
+
     eventappinstall();
     execute([{
             "executethis": "func_b",
@@ -1133,9 +1234,16 @@ exports.ettestt4a = ettestt4a = function ettestt4a(params, callback) {
             callback(err, res);
         });
 }
+wid.ettestt4a.category = "executeit";
+wid.ettestt4a.subcategory = "dothis";
+wid.ettestt4a.type = "minute";
+wid.ettestt4a.name = "this does a test";
+
 // Call func_b with func_a for pre and post to ensure that calling the same
 // function more than once is not a problem for the system.
-exports.ettestt5 = ettestt5 = function ettestt5(params, callback) {
+//exports.ettestt5 = ettestt5 = function ettestt5(params, callback) {
+exports.ettestt5 = wid.ettestt5 = ettestt5 = function ettestt5(params, callback) {
+
     eventappinstall();
     execute([{
             "executethis": "func_b",
@@ -1154,10 +1262,18 @@ exports.ettestt5 = ettestt5 = function ettestt5(params, callback) {
             callback(err, res);
         });
 }
+wid.ettestt5.category = "executeit";
+wid.ettestt5.subcategory = "dothis";
+wid.ettestt5.type = "minute";
+wid.ettestt5.name = "this does a test";
+
+
 // Double check that calling func_b with func_c for pre and post to ensure that calling the same
 // function more than once is not a problem for the system. Essentially showing that tt5 was not 
 // a fluke, but a repeatable concept.
-exports.ettestt6 = ettestt6 = function ettestt6(params, callback) {
+//exports.ettestt6 = ettestt6 = function ettestt6(params, callback) {
+exports.ettestt6 = wid.ettestt6 = ettestt6 = function ettestt6(params, callback) {
+
     eventappinstall();
     execute([{
             "executethis": "func_b",
@@ -1176,8 +1292,14 @@ exports.ettestt6 = ettestt6 = function ettestt6(params, callback) {
             callback(err, res);
         });
 }
+wid.ettestt6.category = "executeit";
+wid.ettestt6.subcategory = "dothis";
+wid.ettestt6.type = "minute";
+wid.ettestt6.name = "this does a test";
 
-exports.ss1 = ss1 = function ss1(params, callback) {
+
+//exports.ss1 = ss1 = function ss1(params, callback) {
+exports.ss1 = wid.ss1 = ss1 = function ss1(params, callback) {
     proxyprinttodiv('Function ss1 ', '--', 99);
     // execute(
     //     [ 
@@ -1199,6 +1321,10 @@ exports.ss1 = ss1 = function ss1(params, callback) {
         }
     );
 }
+wid.ss1.category = "executeit";
+wid.ss1.subcategory = "dothis";
+wid.ss1.type = "minute";
+wid.ss1.name = "this does a test";
 
 
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
@@ -1206,7 +1332,8 @@ exports.ss1 = ss1 = function ss1(params, callback) {
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 // This whole section will mirror the tt tests, but call functions that have intentional
 // delays to test the async portioins of the system.
-exports.ettestast1 = ettestast1 = function ettestast1(params, callback) {
+//exports.ettestast1 = ettestast1 = function ettestast1(params, callback) {
+exports.ettestast1 = wid.ettestast1 = ettestast1 = function ettestast1(params, callback) {
     eventappinstall();
     execute([{
             "executethis": "async_func_b",
@@ -1223,9 +1350,16 @@ exports.ettestast1 = ettestast1 = function ettestast1(params, callback) {
             callback(err, res);
         });
 }
+wid.ettestast1.category = "executeit";
+wid.ettestast1.subcategory = "dothis";
+wid.ettestast1.type = "minute";
+wid.ettestast1.name = "this does a test";
+
 // Call async_func_b with pre calling func_a and post calling func_c...each simply
 // deletes a prameter and add a parameter.
-exports.ettestast2 = ettestast2 = function ettestast2(params, callback) {
+//exports.ettestast2 = ettestast2 = function ettestast2(params, callback) {
+exports.ettestast2 = wid.ettestast2 = ettestast2 = function ettestast2(params, callback) {
+
     eventappinstall();
     execute([{
             "executethis": "async_func_b",
@@ -1244,8 +1378,16 @@ exports.ettestast2 = ettestast2 = function ettestast2(params, callback) {
             callback(err, res);
         });
 }
+wid.ettestast2.category = "executeit";
+wid.ettestast2.subcategory = "dothis";
+wid.ettestast2.type = "minute";
+wid.ettestast2.name = "this does a test";
+
+
 // Call async_func_b with only pre async_func_a...is it ok to not call post...yes it is.
-exports.ettestast3 = ettestast3 = function ettestast3(params, callback) {
+//exports.ettestast3 = ettestast3 = function ettestast3(params, callback) {
+exports.ettestast3 = wid.ettestast3 = ettestast3 = function ettestast3(params, callback) {
+
     eventappinstall();
     execute([{
             "executethis": "async_func_b",
@@ -1263,8 +1405,15 @@ exports.ettestast3 = ettestast3 = function ettestast3(params, callback) {
             callback(err, res);
         });
 }
+wid.ettestast3.category = "executeit";
+wid.ettestast3.subcategory = "dothis";
+wid.ettestast3.type = "minute";
+wid.ettestast3.name = "this does a test";
+
 // Call async_func_b with only post async_func_a -- same result as t3
-exports.ettestast3a = ettestast3a = function ettestast3a(params, callback) {
+//exports.ettestast3a = ettestast3a = function ettestast3a(params, callback) {
+exports.ettestast3a = wid.ettestast3a = ettestast3a = function ettestast3a(params, callback) {
+
     eventappinstall();
     execute([{
             "executethis": "async_func_b",
@@ -1282,8 +1431,15 @@ exports.ettestast3a = ettestast3a = function ettestast3a(params, callback) {
             callback(err, res);
         });
 }
+wid.ettestast3a.category = "executeit";
+wid.ettestast3a.subcategory = "dothis";
+wid.ettestast3a.type = "minute";
+wid.ettestast3a.name = "this does a test";
+
 // Call async_func_b with only post
-exports.ettestast4 = ettestast4 = function ettestast4(params, callback) {
+//exports.ettestast4 = ettestast4 = function ettestast4(params, callback) {
+exports.ettestast4 = wid.ettestast4 = ettestast4 = function ettestast4(params, callback) {
+
     eventappinstall();
     execute([{
             "executethis": "async_func_b",
@@ -1301,8 +1457,15 @@ exports.ettestast4 = ettestast4 = function ettestast4(params, callback) {
             callback(err, res);
         });
 }
+wid.ettestast4.category = "executeit";
+wid.ettestast4.subcategory = "dothis";
+wid.ettestast4.type = "minute";
+wid.ettestast4.name = "this does a test";
+
 // Call async_func_b with only pre async_func_c -- same result as t4
-exports.ettestast4a = ettestast4a = function ettestast4a(params, callback) {
+//exports.ettestast4a = ettestast4a = function ettestast4a(params, callback) {
+exports.ettestast4a = wid.ettestast4a = ettestast4a = function ettestast4a(params, callback) {
+
     eventappinstall();
     execute([{
             "executethis": "async_func_b",
@@ -1320,8 +1483,15 @@ exports.ettestast4a = ettestast4a = function ettestast4a(params, callback) {
             callback(err, res);
         });
 }
+wid.ettestast4a.category = "executeit";
+wid.ettestast4a.subcategory = "dothis";
+wid.ettestast4a.type = "minute";
+wid.ettestast4a.name = "this does a test";
+
 // Call async_func_b with async_func_a for pre and post
-exports.ettestast5 = ettestast5 = function ettestast5(params, callback) {
+//exports.ettestast5 = ettestast5 = function ettestast5(params, callback) {
+exports.ettestast5 = wid.ettestast5 = ettestast5 = function ettestast5(params, callback) {
+
     eventappinstall();
     execute([{
             "executethis": "async_func_b",
@@ -1340,8 +1510,16 @@ exports.ettestast5 = ettestast5 = function ettestast5(params, callback) {
             callback(err, res);
         });
 }
+wid.ettestast5.category = "executeit";
+wid.ettestast5.subcategory = "dothis";
+wid.ettestast5.type = "minute";
+wid.ettestast5.name = "this does a test";
+
+
 // Call async_func_b with async_func_c for pre and post
-exports.ettestast6 = ettestast6 = function ettestast6(params, callback) {
+//exports.ettestast6 = ettestast6 = function ettestast6(params, callback) {
+exports.ettestast6 = wid.ettestast6 = ettestast6 = function ettestast6(params, callback) {
+
     eventappinstall();
     execute([{
             "executethis": "async_func_b",
@@ -1360,11 +1538,18 @@ exports.ettestast6 = ettestast6 = function ettestast6(params, callback) {
             callback(err, res);
         });
 }
+wid.ettestast6.category = "executeit";
+wid.ettestast6.subcategory = "dothis";
+wid.ettestast6.type = "minute";
+wid.ettestast6.name = "this does a test";
+
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 // Call redir_b. The config should remap redir_b to call func_b with no pre or post execution.
-exports.ettestct1 = ettestct1 = function ettestct1(params, callback) {
+//exports.ettestct1 = ettestct1 = function ettestct1(params, callback) {
+exports.ettestct1 = wid.ettestct1 = ettestct1 = function ettestct1(params, callback) {
+
     var parameters = {
         "executethis": "redir_b",
         "c": "0",
@@ -1425,9 +1610,16 @@ exports.ettestct1 = ettestct1 = function ettestct1(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct1.category = "executeit";
+wid.ettestct1.subcategory = "dothis";
+wid.ettestct1.type = "minute";
+wid.ettestct1.name = "this does a test";
+
 // Call redir_b. The config should remap redir_b to call func_b and pre to remap redir_a to func_a, and
 // also remap redir_c to func_c.
-exports.ettestct2 = ettestct2 = function ettestct2(params, callback) {
+//exports.ettestct2 = ettestct2 = function ettestct2(params, callback) {
+exports.ettestct2 = wid.ettestct2 = ettestct2 = function ettestct2(params, callback) {
+
     var parameters = {
         "executethis": "redir_b",
         "c": "0",
@@ -1488,8 +1680,15 @@ exports.ettestct2 = ettestct2 = function ettestct2(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct2.category = "executeit";
+wid.ettestct2.subcategory = "dothis";
+wid.ettestct2.type = "minute";
+wid.ettestct2.name = "this does a test";
+
 // Call redir_b. Also call pre with redir_a remapped to func_a, and no post call at all.
-exports.ettestct3 = ettestct3 = function ettestct3(params, callback) {
+//exports.ettestct3 = ettestct3 = function ettestct3(params, callback) {
+exports.ettestct3 = wid.ettestct3 = ettestct3 = function ettestct3(params, callback) {
+
     var parameters = {
         "executethis": "redir_b",
         "c": "0",
@@ -1549,9 +1748,16 @@ exports.ettestct3 = ettestct3 = function ettestct3(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct3.category = "executeit";
+wid.ettestct3.subcategory = "dothis";
+wid.ettestct3.type = "minute";
+wid.ettestct3.name = "this does a test";
+
 // Call redir_b with only post redir_a -- same result as ct3, but putting the only remap
 // call in post instead of pre.
-exports.ettestct3a = ettestct3a = function ettestct3a(params, callback) {
+//exports.ettestct3a = ettestct3a = function ettestct3a(params, callback) {
+exports.ettestct3a = wid.ettestct3a = ettestct3a = function ettestct3a(params, callback) {
+
     var parameters = {
         "executethis": "redir_b",
         "c": "0",
@@ -1611,9 +1817,16 @@ exports.ettestct3a = ettestct3a = function ettestct3a(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct3a.category = "executeit";
+wid.ettestct3a.subcategory = "dothis";
+wid.ettestct3a.type = "minute";
+wid.ettestct3a.name = "this does a test";
+
 // Call redir_b with only post calling func_c remapped to func_c. Simply ensures that the remapping can be any 
 // function in either pre or post.
-exports.ettestct4 = ettestct4 = function ettestct4(params, callback) {
+//exports.ettestct4 = ettestct4 = function ettestct4(params, callback) {
+exports.ettestct4 = wid.ettestct4 = ettestct4 = function ettestct4(params, callback) {
+
     var parameters = {
         "executethis": "redir_b",
         "c": "0",
@@ -1673,8 +1886,15 @@ exports.ettestct4 = ettestct4 = function ettestct4(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct4.category = "executeit";
+wid.ettestct4.subcategory = "dothis";
+wid.ettestct4.type = "minute";
+wid.ettestct4.name = "this does a test";
+
 // Call redir_b with only pre redir_c -- same result as t4
-exports.ettestct4a = ettestct4a = function ettestct4a(params, callback) {
+//exports.ettestct4a = ettestct4a = function ettestct4a(params, callback) {
+exports.ettestct4a = wid.ettestct4a = ettestct4a = function ettestct4a(params, callback) {
+
     eventappinstall();
     var parameters = {
         "executethis": "redir_b",
@@ -1735,8 +1955,15 @@ exports.ettestct4a = ettestct4a = function ettestct4a(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct4a.category = "executeit";
+wid.ettestct4a.subcategory = "dothis";
+wid.ettestct4a.type = "minute";
+wid.ettestct4a.name = "this does a test";
+
 // Call redir_b with a remapping of redir_a to func_a for both pre and post.
-exports.ettestct5 = ettestct5 = function ettestct5(params, callback) {
+//exports.ettestct5 = ettestct5 = function ettestct5(params, callback) {
+exports.ettestct5 = wid.ettestct5 = ettestct5 = function ettestct5(params, callback) {
+
     eventappinstall();
     var parameters = {
         "executethis": "redir_b",
@@ -1792,15 +2019,22 @@ exports.ettestct5 = ettestct5 = function ettestct5(params, callback) {
             }]
         }
     })
-    var res = master_test_and_verify("ettestct4a", parameters, assert, {}, {
+    var res = master_test_and_verify("ettestct5", parameters, assert, {}, {
         "command": "null"
     }, function(err, res) {
         callback(err, res)
     });
 }
+wid.ettestct5.category = "executeit";
+wid.ettestct5.subcategory = "dothis";
+wid.ettestct5.type = "minute";
+wid.ettestct5.name = "this does a test";
+
 // Call redir_b with redir_c for pre and post, essentiall rerunning ct5 but ensuring that other functions
 // can be used with the same effect.
-exports.ettestct6 = ettestct6 = function ettestct6(params, callback) {
+//exports.ettestct6 = ettestct6 = function ettestct6(params, callback) {
+exports.ettestct6 = wid.ettestct6 = ettestct6 = function ettestct6(params, callback) {
+
     eventappinstall();
     var parameters = {
         "executethis": "redir_b",
@@ -1862,9 +2096,16 @@ exports.ettestct6 = ettestct6 = function ettestct6(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct6.category = "executeit";
+wid.ettestct6.subcategory = "dothis";
+wid.ettestct6.type = "minute";
+wid.ettestct6.name = "this does a test";
+
 // This will try pre with func a, but remapped with a configuration that
 // is passed into executethis...it still wants to hit func_b with mid
-exports.ettestct7 = ettestct7 = function ettestct7(params, callback) {
+//exports.ettestct7 = ettestct7 = function ettestct7(params, callback) {
+exports.ettestct7 = wid.ettestct7 = ettestct7 = function ettestct7(params, callback) {
+
     eventappinstall();
     var parameters = {
         "c": "0",
@@ -1901,12 +2142,18 @@ exports.ettestct7 = ettestct7 = function ettestct7(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct7.category = "executeit";
+wid.ettestct7.subcategory = "dothis";
+wid.ettestct7.type = "minute";
+wid.ettestct7.name = "this does a test";
 
 // This test asserts that the tryorder in the config is successful
 // and causes executethis to call dothis, not server, or the others. As of jan 28, it
 // still fails to reorder them and calls the server instead. It breaks the code and will not
 // simply call func_b locally.
-exports.ettestct8 = ettestct8 = function ettestct8(params, callback) {
+//exports.ettestct8 = ettestct8 = function ettestct8(params, callback) {
+exports.ettestct8 = wid.ettestct8 = ettestct8 = function ettestct8(params, callback) {
+
     eventappinstall();
     // config = setconfig5();
     var parameters = {
@@ -1951,9 +2198,16 @@ exports.ettestct8 = ettestct8 = function ettestct8(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct8.category = "executeit";
+wid.ettestct8.subcategory = "dothis";
+wid.ettestct8.type = "minute";
+wid.ettestct8.name = "this does a test";
+
 
 // This test is to call does_not_exist, remaapped in the parameters to remap does_not_exist to func_b and execute...so far it doesn't work....
-exports.ettestct9 = ettestct9 = function ettestct9(params, callback) {
+//exports.ettestct9 = ettestct9 = function ettestct9(params, callback) {
+exports.ettestct9 = wid.ettestct9 = ettestct9 = function ettestct9(params, callback) {
+
     eventappinstall();
     var parameters = {
         "executethis": "does_not_exist",
@@ -1976,8 +2230,15 @@ exports.ettestct9 = ettestct9 = function ettestct9(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct9.category = "executeit";
+wid.ettestct9.subcategory = "dothis";
+wid.ettestct9.type = "minute";
+wid.ettestct9.name = "this does a test";
+
 // This test is to call does_not_exist, remapped to a function in the parameters. So far it does not work...never has.
-exports.ettestct9a = ettestct9a = function ettestct9a(params, callback) {
+//exports.ettestct9a = ettestct9a = function ettestct9a(params, callback) {
+exports.ettestct9a = wid.ettestct9a = ettestct9a = function ettestct9a(params, callback) {
+
     eventappinstall();
     var parameters = {
         "executethis": "does_not_exist",
@@ -1993,10 +2254,17 @@ exports.ettestct9a = ettestct9a = function ettestct9a(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct9a.category = "executeit";
+wid.ettestct9a.subcategory = "dothis";
+wid.ettestct9a.type = "minute";
+wid.ettestct9a.name = "this does a test";
+
 
 // This test is to call func_b and in pre, call does_not_exist that is remapped to func_a...and then to func_b. So
 // far it does not work, and never has.
-exports.ettestct10 = ettestct10 = function ettestct10(params, callback) {
+//exports.ettestct10 = ettestct10 = function ettestct10(params, callback) {
+exports.ettestct10 = wid.ettestct10 = ettestct10 = function ettestct10(params, callback) {
+
     eventappinstall();
     var parameters = {
         "executethis": "func_b",
@@ -2020,11 +2288,18 @@ exports.ettestct10 = ettestct10 = function ettestct10(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct10.category = "executeit";
+wid.ettestct10.subcategory = "dothis";
+wid.ettestct10.type = "minute";
+wid.ettestct10.name = "this does a test";
+
 
 // This test is to call func_b, remap does_not_exist_1 to func_a,
 // remap does_not_exist_2 to func_c, and execute params to func_a, and then to func_b, and then func_c.
 // None of these ever work...
-exports.ettestct11 = ettestct11 = function ettestct11(params, callback) {
+//exports.ettestct11 = ettestct11 = function ettestct11(params, callback) {
+exports.ettestct11 = wid.ettestct11 = ettestct11 = function ettestct11(params, callback) {
+
     eventappinstall();
     var parameters = {
         "executethis": "func_b",
@@ -2051,10 +2326,17 @@ exports.ettestct11 = ettestct11 = function ettestct11(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct11.category = "executeit";
+wid.ettestct11.subcategory = "dothis";
+wid.ettestct11.type = "minute";
+wid.ettestct11.name = "this does a test";
+
 
 // This test is to send in a config as parameter of a config. This allows for the server to recieve a config
 // from a config that is passed in the parameters.
-exports.ettestct12 = ettestct12 = function ettestct12(params, callback) {
+//exports.ettestct12 = ettestct12 = function ettestct12(params, callback) {
+exports.ettestct12 = wid.ettestct12 = ettestct12 = function ettestct12(params, callback) {
+
     eventappinstall();
     var parameters = {
         "c": "0",
@@ -2092,17 +2374,24 @@ exports.ettestct12 = ettestct12 = function ettestct12(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct12.category = "executeit";
+wid.ettestct12.subcategory = "dothis";
+wid.ettestct12.type = "minute";
+wid.ettestct12.name = "this does a test";
+
 
 // This test is to test a config where a and b do not exist, but func_c does and c will execute. You
 // should not see any data for ct13_output_a, or b. The params of mid should insert the cer2:booberry in
 // the results
-exports.ettestct13 = ettestct13 = function ettestct13(params, callback) {
+//exports.ettestct13 = ettestct13 = function ettestct13(params, callback) {
+exports.ettestct13 = wid.ettestct13 = ettestct13 = function ettestct13(params, callback) {
+
     eventappinstall();
 
     var parameters = {
         "executethis": "a",
-        // "executethis": "b",
-        // "executethis": "fire_c",
+        "executethis": "b",
+        "executethis": "fire_c",
         "configuration": {
             "preexecute": [{
                 "executeorder": 1,
@@ -2130,7 +2419,7 @@ exports.ettestct13 = ettestct13 = function ettestct13(params, callback) {
             }]
         }
 
-    };
+    }
     var assert = [];
     assert.push({
         "fire_c": "fire_c is now fired",
@@ -2142,6 +2431,11 @@ exports.ettestct13 = ettestct13 = function ettestct13(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct13.category = "executeit";
+wid.ettestct13.subcategory = "dothis";
+wid.ettestct13.type = "minute";
+wid.ettestct13.name = "this does a test";
+
 
 // This is original ct14 test
 // // This test is to test a config where a config with params is sent to pre, mid, and post.
@@ -2173,7 +2467,9 @@ exports.ettestct13 = ettestct13 = function ettestct13(params, callback) {
 // Here is the modified ct14 test
 // This test is to test a config where a config with params is sent to pre, mid, and post.
 // The results should have the a,b,c cereals, along with the regular params.
-exports.ettestct14 = ettestct14 = function ettestct14(params, callback) {
+//exports.ettestct14 = ettestct14 = function ettestct14(params, callback) {
+exports.ettestct14 = wid.ettestct14 = ettestct14 = function ettestct14(params, callback) {
+
     eventappinstall();
     var parameters = {
         "executethis": "func_b",
@@ -2226,11 +2522,17 @@ exports.ettestct14 = ettestct14 = function ettestct14(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct14.category = "executeit";
+wid.ettestct14.subcategory = "dothis";
+wid.ettestct14.type = "minute";
+wid.ettestct14.name = "this does a test";
 
 
 // This will send the alphabits param in the preexecute config, but will be overriding it in the args..
 // Which one will win out? It does...the config params are lost and the 'arg' params from the config win out.
-exports.ettestct15 = ettestct15 = function ettestct15(params, callback) {
+//exports.ettestct15 = ettestct15 = function ettestct15(params, callback) {
+exports.ettestct15 = wid.ettestct15 = ettestct15 = function ettestct15(params, callback) {
+
     eventappinstall();
     // config = setconfig6();
     var parameters = {
@@ -2308,9 +2610,16 @@ exports.ettestct15 = ettestct15 = function ettestct15(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct15.category = "executeit";
+wid.ettestct15.subcategory = "dothis";
+wid.ettestct15.type = "minute";
+wid.ettestct15.name = "this does a test";
+
 // Here the object is to get a set of config params from the config itself by using setconfig2 and checking for the 
 // config params in the assertion wid.
-exports.ettestct16 = ettestct16 = function ettestct16(params, callback) {
+//exports.ettestct16 = ettestct16 = function ettestct16(params, callback) {
+exports.ettestct16 = wid.ettestct16 = ettestct16 = function ettestct16(params, callback) {
+
     eventappinstall();
     var parameters = {
         "executethis": "func_b",
@@ -2393,9 +2702,15 @@ exports.ettestct16 = ettestct16 = function ettestct16(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct16.category = "executeit";
+wid.ettestct16.subcategory = "dothis";
+wid.ettestct16.type = "minute";
+wid.ettestct16.name = "this does a test";
 
 // This is to use the params in preexecute to ensure that the preexecute params are getting used by dothis
-exports.ettestct17 = ettestct17 = function ettestct17(params, callback) {
+//exports.ettestct17 = ettestct17 = function ettestct17(params, callback) {
+exports.ettestct17 = wid.ettestct17 = ettestct17 = function ettestct17(params, callback) {
+
     eventappinstall();
     var parameters = {
         "executethis": "func_b",
@@ -2436,9 +2751,16 @@ exports.ettestct17 = ettestct17 = function ettestct17(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct17.category = "executeit";
+wid.ettestct17.subcategory = "dothis";
+wid.ettestct17.type = "minute";
+wid.ettestct17.name = "this does a test";
+
 
 // This is to use the params in preexecute to ensure that the preexecute params are getting used by dothis
-exports.ettestct18 = ettestct18 = function ettestct18(params, callback) {
+//exports.ettestct18 = ettestct18 = function ettestct18(params, callback) {
+exports.ettestct18 = wid.ettestct18 = ettestct18 = function ettestct18(params, callback) {
+
     eventappinstall();
     // config = setconfig7();
     var parameters = {
@@ -2481,10 +2803,17 @@ exports.ettestct18 = ettestct18 = function ettestct18(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct18.category = "executeit";
+wid.ettestct18.subcategory = "dothis";
+wid.ettestct18.type = "minute";
+wid.ettestct18.name = "this does a test";
+
 // This test is to send params to executethis. There will be params in the call to executethis, config file, and the config in the params
 // sent to executethis. There are params that will be used and changed throughout the call...they are alfa, bravo, and charlie. At this point, 
 // the args sent to executethis will always win...not any of the 3 places in the config that they are set.
-exports.ettestct19 = ettestct19 = function ettestct19(params, callback) {
+//exports.ettestct19 = ettestct19 = function ettestct19(params, callback) {
+exports.ettestct19 = wid.ettestct19 = ettestct19 = function ettestct19(params, callback) {
+
     eventappinstall();
     // config = setconfig8();
     var parameters = {
@@ -2523,6 +2852,7 @@ exports.ettestct19 = ettestct19 = function ettestct19(params, callback) {
     }
     var assert = [];
     assert.push({
+        "configuration": {},
         "f": "3",
         "g": "4",
         "h": "5",
@@ -2562,9 +2892,16 @@ exports.ettestct19 = ettestct19 = function ettestct19(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct19.category = "executeit";
+wid.ettestct19.subcategory = "dothis";
+wid.ettestct19.type = "minute";
+wid.ettestct19.name = "this does a test";
+
 // Here the goal is to see if the config of the left and right conflict, which wins? Ad of now, the right side wins. The params for func_a,b,c are 
 // all set to be 2, but they come out as 4, because that is what pre,mid, and post set them to.
-exports.ettestct20 = ettestct20 = function ettestct20(params, callback) {
+//exports.ettestct20 = ettestct20 = function ettestct20(params, callback) {
+exports.ettestct20 = wid.ettestct20 = ettestct20 = function ettestct20(params, callback) {
+
     eventappinstall();
     // config = setconfig8();
     var parameters = {
@@ -2639,12 +2976,18 @@ exports.ettestct20 = ettestct20 = function ettestct20(params, callback) {
         callback(err, res)
     });
 }
+wid.ettestct20.category = "executeit";
+wid.ettestct20.subcategory = "dothis";
+wid.ettestct20.type = "minute";
+wid.ettestct20.name = "this does a test";
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 
 // Template for a new test, yet to be determined
-exports.ct1000 = ct1000 = function ct1000(params, callback) {
+//exports.ct1000 = ct1000 = function ct1000(params, callback) {
+exports.ct1000 = wid.ct1000 = ct1000 = function ct1000(params, callback) {
+
     eventappinstall();
     executetest("executethis", {
         "executethis": "func_b",
@@ -2659,16 +3002,26 @@ exports.ct1000 = ct1000 = function ct1000(params, callback) {
     });
     callback(err, params);
 }
+wid.ct1000.category = "executeit";
+wid.ct1000.subcategory = "dothis";
+wid.ct1000.type = "minute";
+wid.ct1000.name = "this does a test";
 
 // This is just a stub function to do a little work...really just a way to show that
 // a function call can be made.
-exports.alertFn1 = alertFn1 = function alertFn1(params, callback) {
+//exports.alertFn1 = alertFn1 = function alertFn1(params, callback) {
+exports.alertFn1 = wid.alertFn1 = alertFn1 = function alertFn1(params, callback) {
+
     // alert('ct7 has alerted');
     params["ct7"] = "did some alerting";
     // delete params["configuration"];
     var err;
     callback(err, params);
 }
+wid.alertFn1.category = "executeit";
+wid.alertFn1.subcategory = "dothis";
+wid.alertFn1.type = "minute";
+wid.alertFn1.name = "this does a test";
 
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
@@ -2676,7 +3029,9 @@ exports.alertFn1 = alertFn1 = function alertFn1(params, callback) {
 // Functions to use in pre, mid and post
 // to test the flow of parameters through executethis
 
-exports.func_a = func_a = function func_a(parameters, callback) {
+//exports.func_a = func_a = function func_a(parameters, callback) {
+exports.func_a = wid.func_a = func_a = function func_a(params, callback) {
+
     console.log('from func_a');
     printToDiv('func_a', parameters, 1);
     delete parameters["d"];
@@ -2684,16 +3039,27 @@ exports.func_a = func_a = function func_a(parameters, callback) {
     var err;
     callback(err, parameters);
 }
+wid.func_a.category = "executeit";
+wid.func_a.subcategory = "dothis";
+wid.func_a.type = "minute";
+wid.func_a.name = "this does a test";
 
-exports.func_b = func_b = function func_b(parameters, callback) {
+
+//exports.func_b = func_b = function func_b(parameters, callback) {
+exports.func_b = wid.func_b = func_b = function func_b(params, callback) {
+
     console.log('from func_b');
     delete parameters["e"];
     parameters["g"] = "4";
     var err;
     callback(err, parameters);
 }
+wid.func_b.category = "executeit";
+wid.func_b.subcategory = "dothis";
+wid.func_b.type = "minute";
+wid.func_b.name = "this does a test";
 
-exports.func_c = func_c = function func_c(parameters, callback) {
+exports.func_c = wid.func_c = func_c = function func_c(parameters, callback) {
     console.log('from func_c');
     printToDiv('func_c', parameters, 1);
     delete parameters["c"];
@@ -2701,45 +3067,73 @@ exports.func_c = func_c = function func_c(parameters, callback) {
     var err;
     callback(err, parameters);
 }
+wid.func_c.category = "executeit";
+wid.func_c.subcategory = "dothis";
+wid.func_c.type = "minute";
+wid.func_c.name = "this does a test";
 
 // This is used when a and b do not exist, but the fire_c
 // is sent as a parameter, and that parameter is to call fire_c.
-exports.fire_c = fire_c = function fire_c(parameters, callback) {
+//exports.fire_c = fire_c = function fire_c(parameters, callback) {
+exports.fire_c = wid.fire_c = fire_c = function fire_c(parameters, callback) {
+
     parameters["fire_c"] = "fire_c is now fired";
     var err;
     callback(err, parameters);
 }
+wid.fire_c.category = "executeit";
+wid.fire_c.subcategory = "dothis";
+wid.fire_c.type = "minute";
+wid.fire_c.name = "this does a test";
 
 // These are the async versions of the above func_a, _b, and _c.
-exports.async_func_a = async_func_a = function async_func_a(parameters, callback) {
+exports.async_func_a = wid.async_func_a = async_func_a = function async_func_a(parameters, callback) {
     delete parameters["d"];
     parameters["f"] = "3";
     //sleep(500);
     var err;
     callback(err, parameters);
 }
+wid.async_func_a.category = "executeit";
+wid.async_func_a.subcategory = "dothis";
+wid.async_func_a.type = "minute";
+wid.async_func_a.name = "this does a test";
 
-exports.async_func_b = async_func_b = function async_func_b(parameters, callback) {
+//exports.async_func_b = async_func_b = function async_func_b(parameters, callback) {
+exports.async_func_b = wid.async_func_b = async_func_b = function async_func_b(parameters, callback) {
+
     delete parameters["e"];
     parameters["g"] = "4";
     sleep(500);
     var err;
     callback(err, parameters);
 }
+wid.async_func_b.category = "executeit";
+wid.async_func_b.subcategory = "dothis";
+wid.async_func_b.type = "minute";
+wid.async_func_b.name = "this does a test";
 
-exports.async_func_c = async_func_c = function async_func_c(parameters, callback) {
+//exports.async_func_c = async_func_c = function async_func_c(parameters, callback) {
+exports.async_func_c = wid.async_func_c = async_func_c = function async_func_c(parameters, callback) {
+
     delete parameters["c"];
     parameters["h"] = "5";
     //sleep(500);
     var err;
     callback(err, parameters);
 }
+wid.async_func_c.category = "executeit";
+wid.async_func_c.subcategory = "dothis";
+wid.async_func_c.type = "minute";
+wid.async_func_c.name = "this does a test";
 
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 
-exports.ettestag11 = ettestag11 = function ettestag11(params, callback) {
+//exports.ettestag11 = ettestag11 = function ettestag11(params, callback) {
+exports.ettestag11 = wid.ettestag11 = ettestag11 = function ettestag11(parameters, callback) {
+
     eventappinstall();
     execute([{
             "executethis": "addwidmaster",
@@ -2793,8 +3187,14 @@ exports.ettestag11 = ettestag11 = function ettestag11(params, callback) {
             callback(err, res);
         });
 }
+wid.ettestag11.category = "executeit";
+wid.ettestag11.subcategory = "dothis";
+wid.ettestag11.type = "minute";
+wid.ettestag11.name = "this does a test";
 
-exports.ettestag12 = ettestag12 = function ettestag12(params, callback) {
+//exports.ettestag12 = ettestag12 = function ettestag12(params, callback) {
+exports.ettestag12 = wid.ettestag12 = ettestag12 = function ettestag12(parameters, callback) {
+
     eventappinstall();
     execute([{
             "executethis": "addwidmaster",
@@ -2851,14 +3251,24 @@ exports.ettestag12 = ettestag12 = function ettestag12(params, callback) {
             callback(err, res);
         });
 }
-
+wid.ettestag12.category = "executeit";
+wid.ettestag12.subcategory = "dothis";
+wid.ettestag12.type = "minute";
+wid.ettestag12.name = "this does a test";
 
 // This will test the ability to write a dto to the db and retrieve it
 
-exports.ettestag1 = ettestag1 = function ettestag1(params, callback) {
+//exports.ettestag1 = ettestag1 = function ettestag1(params, callback) {
+exports.ettestag1 = wid.ettestag1 = ettestag1 = function ettestag1(params, callback) {
+    // var debugger;
     // debuglevel = 18;
     // eventappinstall();
-    execute([{
+
+    proxyprinttodiv("Ag1  params ", params, 99);
+    var env = new drienvironment(params.command.environment);
+    proxyprinttodiv("Ag1  env ", env, 99);
+    env.execute([{
+            //execute([{
             "executethis": "addwidmaster",
             "wid": "sounddto",
             "metadata.method": "sounddto",
@@ -2878,18 +3288,26 @@ exports.ettestag1 = ettestag1 = function ettestag1(params, callback) {
                 "metadata.method": "sounddto"
             }, 99);
             proxyprinttodiv('Function ag1 actual result ', res, 99);
-            res = logverify("ettestag1_result", res, [{
+            res = logverify("ettestag1_result", res, {
                 "wid": "sounddto",
                 "metadata": {
                     "method": "sounddto"
                 },
                 "note": "string"
-            }]);
+            });
+
             callback(err, res);
         });
 }
 
-exports.ettestag1a = ettestag1a = function ettestag1a(params, callback) {
+wid.ettestag1.category = "executeit";
+wid.ettestag1.subcategory = "dothis";
+wid.ettestag1.type = "minute";
+wid.ettestag1.name = "this does a test";
+
+
+//exports.ettestag1a = ettestag1a = function ettestag1a(params, callback) {
+exports.ettestag1a = wid.ettestag1a = ettestag1a = function ettestag1a(params, callback) {
     eventappinstall();
 
     debuglevel = 75;
@@ -2926,42 +3344,10 @@ exports.ettestag1a = ettestag1a = function ettestag1a(params, callback) {
             callback(err, res);
         });
 }
-
-
-
-exports.ettestag1b = ettestag1b = function ettestag1b(params, callback) {
-    // debuglevel = 18;
-    // eventappinstall();
-    execute([{
-            "executethis": "addwidmaster",
-            "wid": "sounddto2",
-            "metadata.method": "sounddto2",
-            "note": "string"
-        }, {
-            "executethis": "getwidmaster",
-            "wid": "sounddto2"
-        }],
-        function(err, res1) {
-            proxyprinttodiv("Ag1b  result ", res1, 99);
-            // var res = res1[1]; //~~~ changed by SAURABH 
-            var res = res1[1];
-
-            proxyprinttodiv('Function ag1b expected res ', {
-                "note": "string",
-                "wid": "sounddto2",
-                "metadata.method": "sounddto2"
-            }, 99);
-            proxyprinttodiv('Function ag1b actual result ', res, 99);
-            res = logverify("ettestag1b_result", res, [{
-                "wid": "sounddto2",
-                "metadata": {
-                    "method": "sounddto2"
-                },
-                "note": "string"
-            }]);
-            callback(err, res);
-        });
-}
+wid.ettestag1a.category = "executeit";
+wid.ettestag1a.subcategory = "dothis";
+wid.ettestag1a.type = "minute";
+wid.ettestag1a.name = "this does a test";
 
 // // This will test the ability to write a dto to the db, use that dto to write
 // // a wid with that dto, and get the results of getting that wid.
@@ -2987,7 +3373,9 @@ exports.ettestag1b = ettestag1b = function ettestag1b(params, callback) {
 //  }
 // }
 
-exports.ettestag122 = ettestag122 = function ettestag122(params, callback) {
+//exports.ettestag122 = ettestag122 = function ettestag122(params, callback) {
+exports.ettestag122 = wid.ettestag122 = ettestag122 = function ettestag122(params, callback) {
+
     var a = {
         "wid": "systemdefault",
         "command": {
@@ -3030,9 +3418,16 @@ exports.ettestag122 = ettestag122 = function ettestag122(params, callback) {
     proxyprinttodiv('>>>> after a', filter_data.output, 99);
 
 }
+wid.ettestag122.category = "executeit";
+wid.ettestag122.subcategory = "dothis";
+wid.ettestag122.type = "minute";
+wid.ettestag122.name = "this does a test";
+
 // This will test the ability to write a dto to the db, use that dto to write
 // a wid with that dto, and get the results of getting that wid.
-exports.ettestag2 = ettestag2 = function ettestag2(params, callback) {
+//exports.ettestag2 = ettestag2 = function ettestag2(params, callback) {
+exports.ettestag2 = wid.ettestag2 = ettestag2 = function ettestag2(params, callback) {
+
     //    eventappinstall();
     // alert('here');
 
@@ -3067,38 +3462,45 @@ exports.ettestag2 = ettestag2 = function ettestag2(params, callback) {
             saveglobal("debugcat", "");
             debugsubcat = "";
             proxyprinttodiv('Function ag2 result ', res, 38);
-            res = logverify("ettestag2_result", res[3], [{
+            res = logverify("ettestag2_result", res[3], {
                 "hue": "red",
                 "wid": "color1",
                 "metadata": {
                     "method": "defaultdto"
                 } // changed by joe
                 //"metadata": {"method":"colordto"}
-            }]);
+            });
             callback(err, res);
         });
 };
+wid.ettestag2.category = "executeit";
+wid.ettestag2.subcategory = "dothis";
+wid.ettestag2.type = "minute";
+wid.ettestag2.name = "this does a test";
+
 // This is a 2 level test of the dtos...instantiate song1 with a songdto, and some sounddto values
 // failing due to a command object being sent back
-exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
+//exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
+exports.ettestag3 = wid.ettestag3 = ettestag3 = function ettestag3(params, callback) {
+
     //eventappinstall();
 
     //debuglevel = 17;
     //saveglobal("debugname", "");
 
-    //%
+    //%%%%%%%%%%%%%%%%%%%%%
     // Functions of --- config-local
     // saveglobal("debugname", "offlineupdatewid");
 
     // saveglobal("debugname", "offlinegetwid");
-    //%
+    //%%%%%%%%%%%%%%%%%%%%%
     // Functions of --- add
 
-    // %
+    // %%%%%%%%%%%%%%%%%%%%%
     // Functions of --- query
     // saveglobal("debugname", "querywid");
 
-    // %
+    // %%%%%%%%%%%%%%%%%%%%%
     // Functions of --- get
     // saveglobal("debugname", "getwid");
 
@@ -3110,12 +3512,12 @@ exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
 
     // saveglobal("debugname", "getwidmongo");
     // saveglobal("debugname", "getcleanparameters");
-    // %
+    // %%%%%%%%%%%%%%%%%%%%%
 
     // saveglobal("debugcat", "");
     // saveglobal("debugsubcat", "code");
 
-    //debuglevel = 38;
+    debuglevel = 0;
     execute([{
             // "executethis": "addwidmaster",
             // "wid": "songdto",
@@ -3223,29 +3625,29 @@ exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
             // 
             // These will create the code on the screen from the logged data
 
-            //%
+            //%%%%%%%%%%%%%%%%%%%%%
             // Functions of --- config-local
 
             // debugfn("update code generator END",        "offlineupdatewid", "add",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
             // debugfn("offlinegetwid code generator END", "offlinegetwid",    "get",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
             debugfn("offlinegetwid code generator END", "", "", "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
 
-            //%
+            //%%%%%%%%%%%%%%%%%%%%%
             // Functions of --- add
 
-            //%
+            //%%%%%%%%%%%%%%%%%%%%%
             // Functions of --- query
 
             // debugfn("querywid code generator END",      "querywid",         "query", "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
 
-            // %
+            // %%%%%%%%%%%%%%%%%%%%%
             // Functions of --- get
 
             // debugfn("getwidmaster code generator END",  "getwidmaster",     "get",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
             // debugfn("getWidMongo code generator END",   "getWidMongo",      "get",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
             // debugfn("getcleanparameters code generator END",   "getcleanparameters",      "get",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
 
-            // %
+            // %%%%%%%%%%%%%%%%%%%%%
             // saveglobal("debugname", "");
             // saveglobal("debugcat", "");
             // saveglobal("debugsubcat", "");
@@ -3253,7 +3655,7 @@ exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
             proxyprinttodiv('Function ag3 result Full res', res, 17);
             proxyprinttodiv('Function ag3 result ', res[6], 17);
 
-            res = logverify("ettestag3_result", res[6], [{
+            res = logverify("ettestag3_result", res[6], {
                 "title": "Highway to Hell",
                 "wid": "song1",
                 "metadata.method": "songdto",
@@ -3270,7 +3672,7 @@ exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
                 "sounddto.2.wid": "ag3cflat",
                 "sounddto.2.metadata.method": "sounddto",
                 "sounddto.2.metadata.parentwid.song1": "songdto"
-            }]);
+            });
             debuglevel = 0;
             // execute({"executethis": "getwidmaster","wid": "songdto",
             //       "command":{"getwidmaster":{"convertmethod":"dto",
@@ -3286,9 +3688,15 @@ exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
             })
         });
 }
+wid.ettestag3.category = "executeit";
+wid.ettestag3.subcategory = "dothis";
+wid.ettestag3.type = "minute";
+wid.ettestag3.name = "this does a test";
 
 // This test does not add the data records correctly
-exports.ettestag3b = ettestag3b = function ettestag3b(params, callback) {
+//exports.ettestag3b = ettestag3b = function ettestag3b(params, callback) {
+exports.ettestag3b = wid.ettestag3b = ettestag3b = function ettestag3b(params, callback) {
+
     eventappinstall();
 
     execute([{
@@ -3362,6 +3770,10 @@ exports.ettestag3b = ettestag3b = function ettestag3b(params, callback) {
             })
         });
 }
+wid.ettestag3b.category = "executeit";
+wid.ettestag3b.subcategory = "dothis";
+wid.ettestag3b.type = "minute";
+wid.ettestag3b.name = "this does a test";
 
 // Test for supporting jsononetomany
 // *** warning clear local storage ***
@@ -3385,7 +3797,9 @@ exports.ettestag3b = ettestag3b = function ettestag3b(params, callback) {
 //     "metadata.method" : "songdto"
 // } ]
 
-exports.ettestag5 = ettestag5 = function ettestag5(params, callback) {
+//exports.ettestag5 = ettestag5 = function ettestag5(params, callback) {
+exports.ettestag5 = wid.ettestag5 = ettestag5 = function ettestag5(params, callback) {
+
     eventappinstall();
     addToLocalStorage("DRI", [{
         "wid": "initialwid",
@@ -3461,8 +3875,14 @@ exports.ettestag5 = ettestag5 = function ettestag5(params, callback) {
             });
         });
 }
+wid.ettestag5.category = "executeit";
+wid.ettestag5.subcategory = "dothis";
+wid.ettestag5.type = "minute";
+wid.ettestag5.name = "this does a test";
 
-exports.ettestag6 = ettestag6 = function ettestag6(params, callback) {
+//exports.ettestag6 = ettestag6 = function ettestag6(params, callback) {
+exports.ettestag6 = wid.ettestag6 = ettestag6 = function ettestag6(params, callback) {
+
     eventappinstall();
     addToLocalStorage("DRI", [{
         "wid": "initialwid",
@@ -3525,6 +3945,10 @@ exports.ettestag6 = ettestag6 = function ettestag6(params, callback) {
             });
         });
 }
+wid.ettestag6.category = "executeit";
+wid.ettestag6.subcategory = "dothis";
+wid.ettestag6.type = "minute";
+wid.ettestag6.name = "this does a test";
 
 // {
 //     "executethis": "addwidmaster",
@@ -3539,7 +3963,9 @@ exports.ettestag6 = ettestag6 = function ettestag6(params, callback) {
 //         }
 //     ]
 // }
-exports.ettestag7 = ettestag7 = function ettestag7(params, callback) {
+//exports.ettestag7 = ettestag7 = function ettestag7(params, callback) {
+exports.ettestag7 = wid.ettestag7 = ettestag7 = function ettestag7(params, callback) {
+
     var obj = {
         "executethis": "addwidmaster",
         "wid": "song1",
@@ -3571,8 +3997,14 @@ exports.ettestag7 = ettestag7 = function ettestag7(params, callback) {
         proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
     });
 }
+wid.ettestag7.category = "executeit";
+wid.ettestag7.subcategory = "dothis";
+wid.ettestag7.type = "minute";
+wid.ettestag7.name = "this does a test";
 
-exports.ettestag8 = ettestag8 = function ettestag8(params, callback) {
+//exports.ettestag8 = ettestag8 = function ettestag8(params, callback) {
+exports.ettestag8 = wid.ettestag8 = ettestag8 = function ettestag8(params, callback) {
+
     eventappinstall();
     addToLocalStorage("DRI", [{
         "wid": "initialwid",
@@ -3610,8 +4042,14 @@ exports.ettestag8 = ettestag8 = function ettestag8(params, callback) {
             });
         });
 }
+wid.ettestag8.category = "executeit";
+wid.ettestag8.subcategory = "dothis";
+wid.ettestag8.type = "minute";
+wid.ettestag8.name = "this does a test";
 
-exports.ettestag9 = ettestag9 = function ettestag9(params, callback) {
+//exports.ettestag9 = ettestag9 = function ettestag9(params, callback) {
+exports.ettestag9 = wid.ettestag9 = ettestag9 = function ettestag9(params, callback) {
+
     eventappinstall();
     addToLocalStorage("DRI", [{
         "wid": "initialwid",
@@ -3683,8 +4121,14 @@ exports.ettestag9 = ettestag9 = function ettestag9(params, callback) {
             });
         });
 }
+wid.ettestag9.category = "executeit";
+wid.ettestag9.subcategory = "dothis";
+wid.ettestag9.type = "minute";
+wid.ettestag9.name = "this does a test";
 
-exports.ettestag3a = ettestag3a = function ettestag3a(params, callback) {
+//exports.ettestag3a = ettestag3a = function ettestag3a(params, callback) {
+exports.ettestag3a = wid.ettestag3a = ettestag3a = function ettestag3a(params, callback) {
+
     eventappinstall();
     addToLocalStorage("DRI", [{
         "wid": "initialwid",
@@ -3756,13 +4200,19 @@ exports.ettestag3a = ettestag3a = function ettestag3a(params, callback) {
             });
         });
 }
+wid.ettestag3a.category = "executeit";
+wid.ettestag3a.subcategory = "dothis";
+wid.ettestag3a.type = "minute";
+wid.ettestag3a.name = "this does a test";
 
 //88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 
 // Required for the delay in testing the async portionis
-exports.sleep = sleep = function sleep(milliseconds) {
+//exports.sleep = sleep = function sleep(milliseconds) {
+exports.sleep = wid.sleep = sleep = function sleep(params, callback) {
+
     var start = new Date().getTime();
     for (var i = 0; i < 1e7; i++) {
         if ((new Date().getTime() - start) > milliseconds) {
@@ -3770,6 +4220,10 @@ exports.sleep = sleep = function sleep(milliseconds) {
         }
     }
 }
+wid.sleep.category = "executeit";
+wid.sleep.subcategory = "dothis";
+wid.sleep.type = "minute";
+wid.sleep.name = "this does a test";
 
 // exports.func_async = func_async = function func_async(parameters, callback) {
 //     delete parameters["d"];
@@ -3817,7 +4271,9 @@ exports.sleep = sleep = function sleep(milliseconds) {
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Used as a test for having a executethis in the parameters
-exports.uwid1 = uwid1 = function uwid1(params, callback) {
+//exports.uwid1 = uwid1 = function uwid1(params, callback) {
+exports.uwid1 = wid.uwid1 = uwid1 = function uwid1(params, callback) {
+
     eventappinstall();
 
     execute([{
@@ -3846,9 +4302,15 @@ exports.uwid1 = uwid1 = function uwid1(params, callback) {
             callback(err, res);
         });
 }
+wid.uwid1.category = "executeit";
+wid.uwid1.subcategory = "dothis";
+wid.uwid1.type = "minute";
+wid.uwid1.name = "this does a test";
 
 // Used as a test for having a postexecute deply nested deep in the params in the parameters
-exports.uwid2 = uwid2 = function uwid2(params, callback) {
+//exports.uwid2 = uwid2 = function uwid2(params, callback) {
+exports.uwid2 = wid.uwid2 = uwid2 = function uwid2(params, callback) {
+
     eventappinstall();
 
     execute([{
@@ -3873,8 +4335,14 @@ exports.uwid2 = uwid2 = function uwid2(params, callback) {
             callback(err, res);
         });
 }
+wid.uwid2.category = "executeit";
+wid.uwid2.subcategory = "dothis";
+wid.uwid2.type = "minute";
+wid.uwid2.name = "this does a test";
 
-exports.mut = mut = function mut(params, callback) {
+//exports.mut = mut = function mut(params, callback) {
+exports.mut = wid.mut = mut = function mut(params, callback) {
+
     eventappinstall();
 
     var commandobject = {};
@@ -3904,16 +4372,27 @@ exports.mut = mut = function mut(params, callback) {
         callback(err, res)
     });
 }
+wid.mut.category = "executeit";
+wid.mut.subcategory = "dothis";
+wid.mut.type = "minute";
+wid.mut.name = "this does a test";
 
-exports.addwid4params = addwid4params = function addwid4params(a, b, c, d, callback) {
+exports.addwid4params = wid.addwid4params = addwid4params = function addwid4params(a, b, c, d, callback) {
+
 
     var paramsDataString = "{\"" + a + "\":\"" + a + "\",\"" + b + "\":\"" + b + "\",\"" + c + "\":\"" + c + "\",\"" + d + "\":\"" + d + "\"}";
     // alert(paramsDataString);
     var json = JSON.parse(paramsDataString);
     addwidmaster(json, callback);
 }
+wid.addwid4params.category = "executeit";
+wid.addwid4params.subcategory = "dothis";
+wid.addwid4params.type = "minute";
+wid.addwid4params.name = "this does a test";
 
-exports.testnested1 = testnested1 = function testnested1(params, callback) {
+//exports.testnested1 = testnested1 = function testnested1(params, callback) {
+exports.testnested1 = wid.testnested1 = testnested1 = function testnested1(params, callback) {
+
     eventappinstall();
 
     var inparams = [
@@ -3946,9 +4425,15 @@ exports.testnested1 = testnested1 = function testnested1(params, callback) {
 
     execute(inparams, callback);
 }
+wid.testnested1.category = "executeit";
+wid.testnested1.subcategory = "dothis";
+wid.testnested1.type = "minute";
+wid.testnested1.name = "this does a test";
 
 
-exports.testnested3 = testnested3 = function testnested3(params, callback) {
+//exports.testnested3 = testnested3 = function testnested3(params, callback) {
+exports.testnested3 = wid.testnested3 = testnested3 = function testnested3(params, callback) {
+
     eventappinstall();
 
     var inparams = [{
@@ -3982,8 +4467,14 @@ exports.testnested3 = testnested3 = function testnested3(params, callback) {
 
     execute(inparams, callback);
 }
+wid.testnested3.category = "executeit";
+wid.testnested3.subcategory = "dothis";
+wid.testnested3.type = "minute";
+wid.testnested3.name = "this does a test";
 
-exports.testnested4 = testnested4 = function testnested4(params, callback) {
+//exports.testnested4 = testnested4 = function testnested4(params, callback) {
+exports.testnested4 = wid.testnested4 = testnested4 = function testnested4(params, callback) {
+
     eventappinstall();
 
     var inparams = [{
@@ -3998,8 +4489,14 @@ exports.testnested4 = testnested4 = function testnested4(params, callback) {
 
     execute(inparams, callback);
 }
+wid.testnested4.category = "executeit";
+wid.testnested4.subcategory = "dothis";
+wid.testnested4.type = "minute";
+wid.testnested4.name = "this does a test";
 
-exports.testnested5 = testnested5 = function testnested5(params, callback) {
+//exports.testnested5 = testnested5 = function testnested5(params, callback) {
+exports.testnested5 = wid.testnested5 = testnested5 = function testnested5(params, callback) {
+
     eventappinstall();
 
     var inparams = {
@@ -4010,8 +4507,14 @@ exports.testnested5 = testnested5 = function testnested5(params, callback) {
 
     execute(inparams, callback);
 }
+wid.testnested5.category = "executeit";
+wid.testnested5.subcategory = "dothis";
+wid.testnested5.type = "minute";
+wid.testnested5.name = "this does a test";
 
-exports.testnested6 = testnested6 = function testnested6(params, callback) {
+//exports.testnested6 = testnested6 = function testnested6(params, callback) {
+exports.testnested6 = wid.testnested6 = testnested6 = function testnested6(params, callback) {
+
     eventappinstall();
 
     var inparams = {
@@ -4020,8 +4523,14 @@ exports.testnested6 = testnested6 = function testnested6(params, callback) {
 
     execute(inparams, callback);
 }
+wid.testnested6.category = "executeit";
+wid.testnested6.subcategory = "dothis";
+wid.testnested6.type = "minute";
+wid.testnested6.name = "this does a test";
 
-exports.testnested2 = testnested2 = function testnested2(params, callback) {
+//exports.testnested2 = testnested2 = function testnested2(params, callback) {
+exports.testnested2 = wid.testnested2 = testnested2 = function testnested2(params, callback) {
+
     eventappinstall();
 
     var inparams = [
@@ -4055,9 +4564,15 @@ exports.testnested2 = testnested2 = function testnested2(params, callback) {
 
     execute(inparams, callback);
 }
+wid.testnested2.category = "executeit";
+wid.testnested2.subcategory = "dothis";
+wid.testnested2.type = "minute";
+wid.testnested2.name = "this does a test";
 
 
-exports.testmultiplenested = testmultiplenested = function testmultiplenested(params, callback) {
+//exports.testmultiplenested = testmultiplenested = function testmultiplenested(params, callback) {
+exports.testmultiplenested = wid.testmultiplenested = testmultiplenested = function testmultiplenested(params, callback) {
+
     eventappinstall();
 
     var inparams = [
@@ -4103,6 +4618,10 @@ exports.testmultiplenested = testmultiplenested = function testmultiplenested(pa
 
     executethismultiple(inparams, callback);
 }
+wid.testmultiplenested.category = "executeit";
+wid.testmultiplenested.subcategory = "dothis";
+wid.testmultiplenested.type = "minute";
+wid.testmultiplenested.name = "this does a test";
 
 // exports.t121212 = t121212 = function t121212(params, callback) {
 //     eventappinstall();
@@ -4147,7 +4666,8 @@ exports.testmultiplenested = testmultiplenested = function testmultiplenested(pa
 // }
 
 
-exports.exec_mul_test = function exec_mul_test(data) {
+//exports.exec_mul_test = function exec_mul_test(data) {
+exports.exec_mul_test = wid.exec_mul_test = exec_mul_test = function exec_mul_test(data) {
     for (d in data) {
         // test_and_verify(data[d]);
         // exports.test_and_verify = test_and_verify = function test_and_verify(testname, fnname, parameters, assert, callback) {
@@ -4162,8 +4682,15 @@ exports.exec_mul_test = function exec_mul_test(data) {
         test_and_verify(a, b, c, d);
     }
 }
+wid.exec_mul_test.category = "executeit";
+wid.exec_mul_test.subcategory = "dothis";
+wid.exec_mul_test.type = "minute";
+wid.exec_mul_test.name = "this does a test";
 
-exports.newt = newt = function newt(params, callback) {
+
+//exports.newt = newt = function newt(params, callback) {
+exports.newt = wid.newt = newt = function newt(params, callback) {
+
     // var todolist = 
     //     [
     //         [
@@ -4256,8 +4783,14 @@ exports.newt = newt = function newt(params, callback) {
     executethismultiple(todolist, callback);
 
 }
+wid.newt.category = "executeit";
+wid.newt.subcategory = "dothis";
+wid.newt.type = "minute";
+wid.newt.name = "this does a test";
 
-exports.newt2 = newt2 = function newt2(params, callback) {
+//exports.newt2 = newt2 = function newt2(params, callback) {
+exports.newt2 = wid.newt2 = newt2 = function newt2(params, callback) {
+
     var todolist = [
         [{
                 "fn": "test_and_verify"
@@ -4322,13 +4855,24 @@ exports.newt2 = newt2 = function newt2(params, callback) {
     ]
     executethismultiple(todolist, callback);
 }
+wid.newt2.category = "executeit";
+wid.newt2.subcategory = "dothis";
+wid.newt2.type = "minute";
+wid.newt2.name = "this does a test";
 
-exports.newt3 = newt3 = function newt3(params, callback) {
+//exports.newt3 = newt3 = function newt3(params, callback) {
+exports.newt3 = wid.newt3 = newt3 = function newt3(params, callback) {
+
     var todolist = [];
     executethismultiple(todolist, callback);
 }
+wid.newt3.category = "executeit";
+wid.newt3.subcategory = "dothis";
+wid.newt3.type = "minute";
+wid.newt3.name = "this does a test";
 
-exports.newt4 = newt4 = function newt4(params, callback) {
+//exports.newt4 = newt4 = function newt4(params, callback) {
+exports.newt4 = wid.newt4 = newt4 = function newt4(params, callback) {
     var todolist = [
         [{
                 "fn": "test_and_verify"
@@ -4503,11 +5047,16 @@ exports.newt4 = newt4 = function newt4(params, callback) {
     ]
     executethismultiple(todolist, callback);
 }
+wid.newt4.category = "executeit";
+wid.newt4.subcategory = "dothis";
+wid.newt4.type = "minute";
+wid.newt4.name = "this does a test";
 
 
 
+//exports.newt5 = newt5 = function newt5(params, callback) {
+exports.newt5 = wid.newt5 = newt5 = function newt5(params, callback) {
 
-exports.newt5 = newt5 = function newt5(params, callback) {
 
     var todolist =
 
@@ -4588,12 +5137,18 @@ exports.newt5 = newt5 = function newt5(params, callback) {
     ]
     executethismultiple(todolist, callback);
 }
+wid.newt5.category = "executeit";
+wid.newt5.subcategory = "dothis";
+wid.newt5.type = "minute";
+wid.newt5.name = "this does a test";
 
 
 // test1212 calls fnb
 // fn b accepts one object and produces one array result
 
-exports.test121212 = test121212 = function test121212(params, callback) {
+//exports.test121212 = test121212 = function test121212(params, callback) {
+exports.test121212 = wid.test121212 = test121212 = function test121212(params, callback) {
+
     eventappinstall();
     var todolist = [
         [{
@@ -4618,12 +5173,18 @@ exports.test121212 = test121212 = function test121212(params, callback) {
     ];
     executethismultiple(todolist, callback);
 }
+wid.test121212.category = "executeit";
+wid.test121212.subcategory = "dothis";
+wid.test121212.type = "minute";
+wid.test121212.name = "this does a test";
 
 
 
 // test141414
 
-function test141414(params, callback) {
+//function test141414 (params, callback) {
+exports.test141414 = wid.test141414 = test141414 = function test141414(params, callback) {
+
     // Calling func_b2 with single
     eventappinstall();
     var todolist = [
@@ -4656,13 +5217,20 @@ function test141414(params, callback) {
     ];
     executethismultiple(todolist, callback);
 }
+wid.test141414.category = "executeit";
+wid.test141414.subcategory = "dothis";
+wid.test141414.type = "minute";
+wid.test141414.name = "this does a test";
+
 
 // func_b2 and func_b22 accepts 4 objects and produces one object result
 
 // test151515
 // func_b3 and func_b33 accepts 4 arrays and produces one object result
 
-function test151515(params, callback) {
+//function test151515 (params, callback) {
+exports.test151515 = wid.test151515 = test151515 = function test151515(params, callback) {
+
     eventappinstall();
     var todolist = [
         [{
@@ -4700,8 +5268,15 @@ function test151515(params, callback) {
     ];
     executethismultiple(todolist, callback);
 }
+wid.test151515.category = "executeit";
+wid.test151515.subcategory = "dothis";
+wid.test151515.type = "minute";
+wid.test151515.name = "this does a test";
 
-function test161616(params, callback) {
+
+//function test161616 (params, callback) {
+exports.test161616 = wid.test161616 = test161616 = function test161616(params, callback) {
+
     eventappinstall();
     var todolist = [
         [{
@@ -4742,8 +5317,15 @@ function test161616(params, callback) {
     ];
     executethismultiple(todolist, callback);
 }
+wid.test161616.category = "executeit";
+wid.test161616.subcategory = "dothis";
+wid.test161616.type = "minute";
+wid.test161616.name = "this does a test";
 
-exports.sample1 = sample1 = function sample1(params, callback) {
+
+//exports.sample1 = sample1 = function sample1 (params, callback) {
+exports.sample1 = wid.sample1 = sample1 = function sample1(params, callback) {
+
     saveglobal("debugsubcat", "code");
     offlineupdatewid({
         "wid": "wid1",
@@ -4751,8 +5333,12 @@ exports.sample1 = sample1 = function sample1(params, callback) {
     }, callback);
     debugfn("offlinegetwid code generator END", "ag2", "", "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
 }
+wid.sample1.category = "executeit";
+wid.sample1.subcategory = "dothis";
+wid.sample1.type = "minute";
+wid.sample1.name = "this does a test";
 
-exports.sample2 = sample2 = function sample2(params, callback) {
+exports.sample2 = wid.sample2 = sample2 = function sample2(params, callback) {
     saveglobal("debugsubcat", "code");
     merge_options({
         "wid": "wid1",
@@ -4763,10 +5349,14 @@ exports.sample2 = sample2 = function sample2(params, callback) {
     });
     debugfn("offlinegetwid code generator END", "ag2", "", "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
 }
+wid.sample2.category = "executeit";
+wid.sample2.subcategory = "dothis";
+wid.sample2.type = "minute";
+wid.sample2.name = "this does a test";
 
 // getclean(resultObj, command, callback)
 
-exports.sample3 = sample3 = function sample3(params, callback) {
+exports.sample3 = wid.sample3 = sample3 = function sample3(params, callback) {
     saveglobal("debugsubcat", "code");
     getclean({
         "wid": "wid1",
@@ -4777,8 +5367,14 @@ exports.sample3 = sample3 = function sample3(params, callback) {
     }, "DOT");
     debugfn("offlinegetwid code generator END", "ag2", "", "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
 }
+wid.sample3.category = "executeit";
+wid.sample3.subcategory = "dothis";
+wid.sample3.type = "minute";
+wid.sample3.name = "this does a test";
 
-function test171717(params, callback) {
+//function test171717 (params, callback) {
+exports.test171717 = wid.test171717 = test171717 = function test171717(params, callback) {
+
     eventappinstall();
     var todolist = [
         [{
@@ -4827,8 +5423,15 @@ function test171717(params, callback) {
     ];
     executethismultiple(todolist, callback);
 }
+wid.test171717.category = "executeit";
+wid.test171717.subcategory = "dothis";
+wid.test171717.type = "minute";
+wid.test171717.name = "this does a test";
 
-function func_b2(p1, p2, p3, p4, callback) {
+
+//function func_b2(p1, p2, p3, p4, callback) {
+exports.func_b2 = wid.func_b2 = func_b2 = function func_b2(p1, p2, p3, p4, callback) {
+
     data = {};
     delete p3['e'];
     data = jsonConcat(p3, p4);
@@ -4836,9 +5439,15 @@ function func_b2(p1, p2, p3, p4, callback) {
     var err;
     callback({}, data);
 }
+wid.func_b2.category = "executeit";
+wid.func_b2.subcategory = "dothis";
+wid.func_b2.type = "minute";
+wid.func_b2.name = "this does a test";
 
 
-function func_b22(params, callback) {
+//function func_b22(params, callback) {
+exports.func_b22 = wid.func_b22 = func_b22 = function func_b22(params, callback) {
+
     func_b2("test", {
             "r": "t",
             "x": "y"
@@ -4851,8 +5460,14 @@ function func_b22(params, callback) {
         },
         callback);
 }
+wid.func_b22.category = "executeit";
+wid.func_b22.subcategory = "dothis";
+wid.func_b22.type = "minute";
+wid.func_b22.name = "this does a test";
 
-function func_b3(p1, p2, p3, p4, callback) {
+//function func_b3(p1, p2, p3, p4, callback) {
+exports.func_b3 = wid.func_b3 = func_b3 = function func_b3(p1, p2, p3, p4, callback) {
+
     data = {};
     data["a"] = p1;
     data["b"] = p2;
@@ -4861,8 +5476,15 @@ function func_b3(p1, p2, p3, p4, callback) {
 
     callback({}, data);
 }
+wid.func_b3.category = "executeit";
+wid.func_b3.subcategory = "dothis";
+wid.func_b3.type = "minute";
+wid.func_b3.name = "this does a test";
 
-function func_b33(params, callback) {
+
+//function func_b33(params, callback) {
+exports.func_b33 = wid.func_b33 = func_b33 = function func_b33(params, callback) {
+
     func_b2("test", [{
             "a": "b",
             "x": "y"
@@ -4874,10 +5496,16 @@ function func_b33(params, callback) {
         }],
         callback);
 }
+wid.func_b33.category = "executeit";
+wid.func_b33.subcategory = "dothis";
+wid.func_b33.type = "minute";
+wid.func_b33.name = "this does a test";
 
 
 
-exports.err1 = err1 = function err1(params, callback) {
+//exports.err1 = err1 = function err1 (params, callback) {
+exports.err1 = wid.err1 = err1 = function err1(params, callback) {
+
     saveglobal("debugsubcat", "code");
     execute({
         "executethis": "getwidmaster",
@@ -4893,8 +5521,14 @@ exports.err1 = err1 = function err1(params, callback) {
         // debugfn("offlinegetwid code generator END",                  "ag2",    "",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
     });
 }
+wid.err1.category = "executeit";
+wid.err1.subcategory = "dothis";
+wid.err1.type = "minute";
+wid.err1.name = "this does a test";
 
-exports.wrapped1 = wrapped1 = function wrapped1(params, callback) {
+//exports.wrapped1 = wrapped1 = function wrapped1 (params, callback) {
+exports.wrapped1 = wid.wrapped1 = wrapped1 = function wrapped1(params, callback) {
+
     saveglobal("debugsubcat", "code");
     execute([{
         "executethis": "addwidmaster",
@@ -4912,8 +5546,15 @@ exports.wrapped1 = wrapped1 = function wrapped1(params, callback) {
 
     });
 }
+wid.wrapped1.category = "executeit";
+wid.wrapped1.subcategory = "dothis";
+wid.wrapped1.type = "minute";
+wid.wrapped1.name = "this does a test";
+
 // data, defaults, filter
-exports.lwr1 = lwr1 = function lwr1(params, callback) {
+//exports.lwr1 = lwr1 = function lwr1(params, callback) {
+exports.lwr1 = wid.lwr1 = lwr1 = function lwr1(params, callback) {
+
     var params = {
         "Alpha": "1",
         "beta": "2",
@@ -4934,8 +5575,14 @@ exports.lwr1 = lwr1 = function lwr1(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
+wid.lwr1.category = "executeit";
+wid.lwr1.subcategory = "dothis";
+wid.lwr1.type = "minute";
+wid.lwr1.name = "this does a test";
 
-exports.lwr2 = lwr2 = function lwr2(params, callback) {
+//exports.lwr2 = lwr2 = function lwr2(params, callback) {
+exports.lwr2 = wid.lwr2 = lwr2 = function lwr2(params, callback) {
+
     var params = {
         "Alpha": "1",
         "bEta": "2",
@@ -4957,8 +5604,14 @@ exports.lwr2 = lwr2 = function lwr2(params, callback) {
     result = getcommand(params, defaults, filter, false);
     callback(err, result);
 }
+wid.lwr2.category = "executeit";
+wid.lwr2.subcategory = "dothis";
+wid.lwr2.type = "minute";
+wid.lwr2.name = "this does a test";
 
-exports.lwr3 = lwr3 = function lwr3(params, callback) {
+//exports.lwr3 = lwr3 = function lwr3(params, callback) {
+exports.lwr3 = wid.lwr3 = lwr3 = function lwr3(params, callback) {
+
     var params = {
         "Alpha": "1",
         "Beta": "2",
@@ -4978,9 +5631,16 @@ exports.lwr3 = lwr3 = function lwr3(params, callback) {
 
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
-}
 
-exports.lwr4 = lwr4 = function lwr4(params, callback) {
+}
+wid.lwr3.category = "executeit";
+wid.lwr3.subcategory = "dothis";
+wid.lwr3.type = "minute";
+wid.lwr3.name = "this does a test";
+
+//exports.lwr4 = lwr4 = function lwr4(params, callback) {
+exports.lwr4 = wid.lwr4 = lwr4 = function lwr4(params, callback) {
+
     var params = {
         "Alpha": "1",
         "Beta": "2",
@@ -5001,8 +5661,14 @@ exports.lwr4 = lwr4 = function lwr4(params, callback) {
     result = getcommand(params, defaults, filter, false);
     callback(err, result);
 }
+wid.lwr4.category = "executeit";
+wid.lwr4.subcategory = "dothis";
+wid.lwr4.type = "minute";
+wid.lwr4.name = "this does a test";
 
-exports.lwr5 = lwr5 = function lwr5(params, callback) {
+//exports.lwr5 = lwr5 = function lwr5(params, callback) {
+exports.lwr5 = wid.lwr5 = lwr5 = function lwr5(params, callback) {
+
     var params = {
         "Alpha": "1",
         "Beta": "2",
@@ -5023,8 +5689,15 @@ exports.lwr5 = lwr5 = function lwr5(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
+wid.lwr5.category = "executeit";
+wid.lwr5.subcategory = "dothis";
+wid.lwr5.type = "minute";
+wid.lwr5.name = "this does a test";
 
-exports.lwr6 = lwr6 = function lwr6(params, callback) {
+
+//exports.lwr6 = lwr6 = function lwr6(params, callback) {
+exports.lwr6 = wid.lwr6 = lwr6 = function lwr6(params, callback) {
+
     var params = {
         "Alpha": "1",
         "Beta": "2",
@@ -5045,8 +5718,14 @@ exports.lwr6 = lwr6 = function lwr6(params, callback) {
     result = getcommand(params, defaults, filter, false);
     callback(err, result);
 }
+wid.lwr6.category = "executeit";
+wid.lwr6.subcategory = "dothis";
+wid.lwr6.type = "minute";
+wid.lwr6.name = "this does a test";
 
-exports.lwr7 = lwr7 = function lwr7(params, callback) {
+//exports.lwr7 = lwr7 = function lwr7(params, callback) {
+exports.lwr7 = wid.lwr7 = lwr7 = function lwr7(params, callback) {
+
     var params = {
         "Alpha": "1",
         "Beta": "2",
@@ -5060,8 +5739,14 @@ exports.lwr7 = lwr7 = function lwr7(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
+wid.lwr7.category = "executeit";
+wid.lwr7.subcategory = "dothis";
+wid.lwr7.type = "minute";
+wid.lwr7.name = "this does a test";
 
-exports.lwr8 = lwr8 = function lwr8(params, callback) {
+//exports.lwr8 = lwr8 = function lwr8(params, callback) {
+exports.lwr8 = wid.lwr8 = lwr8 = function lwr8(params, callback) {
+
     var params = {
         "Alpha": "1",
         "Beta": "2",
@@ -5075,8 +5760,14 @@ exports.lwr8 = lwr8 = function lwr8(params, callback) {
     result = getcommand(params, defaults, filter, false);
     callback(err, result);
 }
+wid.lwr8.category = "executeit";
+wid.lwr8.subcategory = "dothis";
+wid.lwr8.type = "minute";
+wid.lwr8.name = "this does a test";
 
-exports.lwr9 = lwr9 = function lwr9(params, callback) {
+//exports.lwr9 = lwr9 = function lwr9(params, callback) {
+exports.lwr9 = wid.lwr9 = lwr9 = function lwr9(params, callback) {
+
     var params = {
         "Alpha": "1",
         "Beta": "2",
@@ -5096,8 +5787,13 @@ exports.lwr9 = lwr9 = function lwr9(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
+wid.lwr9.category = "executeit";
+wid.lwr9.subcategory = "dothis";
+wid.lwr9.type = "minute";
+wid.lwr9.name = "this does a test";
 
-exports.lwr10 = lwr10 = function lwr10(params, callback) {
+//exports.lwr10 = lwr10 = function lwr10(params, callback) {
+exports.lwr10 = wid.lwr10 = lwr10 = function lwr10(params, callback) {
     var params = {
         "Alpha": "1",
         "Beta": "2",
@@ -5117,8 +5813,14 @@ exports.lwr10 = lwr10 = function lwr10(params, callback) {
     result = getcommand(params, defaults, filter, false);
     callback(err, result);
 }
+wid.lwr10.category = "executeit";
+wid.lwr10.subcategory = "dothis";
+wid.lwr10.type = "minute";
+wid.lwr10.name = "this does a test";
 
-exports.lwr11 = lwr11 = function lwr11(params, callback) {
+//exports.lwr11 = lwr11 = function lwr11(params, callback) {
+exports.lwr11 = wid.lwr11 = lwr11 = function lwr11(params, callback) {
+
     var params = {
         "Alpha": "1",
         "Beta": "2",
@@ -5139,8 +5841,13 @@ exports.lwr11 = lwr11 = function lwr11(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
+wid.lwr11.category = "executeit";
+wid.lwr11.subcategory = "dothis";
+wid.lwr11.type = "minute";
+wid.lwr11.name = "this does a test";
 
-exports.lwr12 = lwr12 = function lwr12(params, callback) {
+exports.lwr12 = wid.lwr12 = lwr12 = function lwr12(params, callback) {
+
     var params = {
         "Alpha": "1",
         "Beta": "2",
@@ -5160,8 +5867,12 @@ exports.lwr12 = lwr12 = function lwr12(params, callback) {
     result = getcommand(params, defaults, filter, false);
     callback(err, result);
 }
+wid.lwr12.category = "executeit";
+wid.lwr12.subcategory = "dothis";
+wid.lwr12.type = "minute";
+wid.lwr12.name = "this does a test";
 
-exports.lwr13 = lwr13 = function lwr13(params, callback) {
+exports.lwr13 = wid.lwr13 = lwr13 = function lwr13(params, callback) {
     var params = {
         "Alpha": "1",
         "Beta": "2",
@@ -5181,8 +5892,12 @@ exports.lwr13 = lwr13 = function lwr13(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
+wid.lwr13.category = "executeit";
+wid.lwr13.subcategory = "dothis";
+wid.lwr13.type = "minute";
+wid.lwr13.name = "this does a test";
 
-exports.lwr14 = lwr14 = function lwr14(params, callback) {
+exports.lwr14 = wid.lwr14 = lwr14 = function lwr14(params, callback) {
     var params = {
         "Alpha": "1",
         "Beta": "2",
@@ -5202,8 +5917,12 @@ exports.lwr14 = lwr14 = function lwr14(params, callback) {
     result = getcommand(params, defaults, filter, false);
     callback(err, result);
 }
+wid.lwr14.category = "executeit";
+wid.lwr14.subcategory = "dothis";
+wid.lwr14.type = "minute";
+wid.lwr14.name = "this does a test";
 
-exports.lwr15 = lwr15 = function lwr15(params, callback) {
+exports.lwr15 = wid.lwr15 = lwr15 = function lwr15(params, callback) {
     var params = {
         "Alpha": "1",
         "Beta": "2",
@@ -5218,8 +5937,12 @@ exports.lwr15 = lwr15 = function lwr15(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
+wid.lwr15.category = "executeit";
+wid.lwr15.subcategory = "dothis";
+wid.lwr15.type = "minute";
+wid.lwr15.name = "this does a test";
 
-exports.lwr16 = lwr16 = function lwr16(params, callback) {
+exports.lwr16 = wid.lwr16 = lwr16 = function lwr16(params, callback) {
     var params = {
         "Alpha": "1",
         "Beta": "2",
@@ -5234,8 +5957,12 @@ exports.lwr16 = lwr16 = function lwr16(params, callback) {
     result = getcommand(params, defaults, filter, false);
     callback(err, result);
 }
+wid.lwr16.category = "executeit";
+wid.lwr16.subcategory = "dothis";
+wid.lwr16.type = "minute";
+wid.lwr16.name = "this does a test";
 
-exports.pu1 = pu1 = function pu1(params, callback) {
+exports.pu1 = wid.pu1 = pu1 = function pu1(params, callback) {
     var params = {
         "Alpha": "1",
         "Beta": "2",
@@ -5254,11 +5981,16 @@ exports.pu1 = pu1 = function pu1(params, callback) {
     result = pack_up_params(params, command, "somefunction");
     callback(err, result);
 }
+wid.pu1.category = "executeit";
+wid.pu1.subcategory = "dothis";
+wid.pu1.type = "minute";
+wid.pu1.name = "this does a test";
 
 
 // this one inserts same amount of data but does not fail
 // enter lots of data in series, ths inserts data via different executes results in Max Range error
-exports.ettest_recurseModObj = ettest_recurseModObj = function ettest_recurseModObj(params, callback) {
+//exports.ettest_recurseModObj = ettest_recurseModObj = function ettest_recurseModObj(params, callback) {
+exports.ettest_recurseModObj = wid.ettest_recurseModObj = ettest_recurseModObj = function ettest_recurseModObj(params, callback) {
     eventappinstall();
     debuglevel = 17;
     // config = setconfig1();
@@ -5344,9 +6076,13 @@ exports.ettest_recurseModObj = ettest_recurseModObj = function ettest_recurseMod
         callback(err, res);
     });
 }
+wid.ettest_recurseModObj.category = "executeit";
+wid.ettest_recurseModObj.subcategory = "dothis";
+wid.ettest_recurseModObj.type = "minute";
+wid.ettest_recurseModObj.name = "this does a test";
 
 
-exports.ettss1 = ettss1 = function ettss1(params, callback) {
+exports.ettss1 = wid.ettss1 = ettss1 = function ettss1(params, callback) {
     debuglevel = 17;
     // saveglobal("debugname", "");
     // saveglobal("debugcat", "");
@@ -5569,13 +6305,16 @@ exports.ettss1 = ettss1 = function ettss1(params, callback) {
         callback(err, res);
     });
 }
-
+wid.ettss1.category = "executeit";
+wid.ettss1.subcategory = "dothis";
+wid.ettss1.type = "minute";
+wid.ettss1.name = "this does a test";
 
 /*
       addwidmater xdto
       now add many with addwidmaster with x dto
 */
-exports.ett1 = ett1 = function ett1(params, callback) {
+exports.ett1 = wid.ett1 = ett1 = function ett1(params, callback) {
     debuglevel = 17;
     saveglobal("debugname", "");
     saveglobal("debugcat", "");
@@ -5675,12 +6414,17 @@ exports.ett1 = ett1 = function ett1(params, callback) {
         callback(err, res);
     });
 }
+wid.ett1.category = "executeit";
+wid.ett1.subcategory = "dothis";
+wid.ett1.type = "minute";
+wid.ett1.name = "this does a test";
 
 /*
 do NOT save addwidmater xdto
 now add many with addwidmaster with x dto
 */
-exports.t2 = t2 = function t2(params, callback) {
+exports.ett2 = wid.ett2 = ett2 = function ett2(params, callback) {
+
     debuglevel = 34;
     saveglobal("debugname", "");
     saveglobal("debugcat", "");
@@ -5720,7 +6464,7 @@ exports.t2 = t2 = function t2(params, callback) {
         /*,
             function (callback3) {  //getwidmaster
                   //n-times loop
-                  async.times(5, function (n, next){
+                  async.times(5, function(n, next){
                         var executeList = [{
                               "executethis": "getwidmaster",
                               "wid": "ttdto_wid"+n,
@@ -5728,7 +6472,7 @@ exports.t2 = t2 = function t2(params, callback) {
                         execute(executeList, function (err, res) {
                               proxyprinttodiv("Function t1 getwidmaster  result -- ", res, 17);
                         });
-                  }, function (err, result) {
+                  }, function(err, result) {
                         callback3(null);
                   });
             }*/
@@ -5805,12 +6549,16 @@ exports.t2 = t2 = function t2(params, callback) {
         callback(err, res);
     });
 }
+wid.ett2.category = "executeit";
+wid.ett2.subcategory = "dothis";
+wid.ett2.type = "minute";
+wid.ett2.name = "this does a test";
 
 /*
 do NOT save addwidmater xdto
 now add many with addwidmaster with x dto
 */
-exports.ett3 = ett3 = function ett3(params, callback) {
+exports.ett3 = wid.ett3 = ett3 = function ett3(params, callback) {
     debuglevel = 17;
     saveglobal("debugname", "");
     saveglobal("debugcat", "");
@@ -5850,7 +6598,7 @@ exports.ett3 = ett3 = function ett3(params, callback) {
         /*,
             function (callback3) {  //getwidmaster
                   //n-times loop
-                  async.times(5, function (n, next){
+                  async.times(5, function(n, next){
                         var executeList = [{
                               "executethis": "getwidmaster",
                               "wid": "ttdto_wid"+n,
@@ -5858,7 +6606,7 @@ exports.ett3 = ett3 = function ett3(params, callback) {
                         execute(executeList, function (err, res) {
                               proxyprinttodiv("Function t1 getwidmaster  result -- ", res, 17);
                         });
-                  }, function (err, result) {
+                  }, function(err, result) {
                         callback3(null);
                   });
             }*/
@@ -5887,10 +6635,14 @@ exports.ett3 = ett3 = function ett3(params, callback) {
         callback(err, res);
     });
 }
+wid.ett3.category = "executeit";
+wid.ett3.subcategory = "dothis";
+wid.ett3.type = "minute";
+wid.ett3.name = "this does a test";
 
 // enter lots of data in series, the same data when inserted via different executes results in Max Range error
 // this one inserts same amount of data but does not fail
-exports.ettss2 = ettss2 = function ettss2(params, callback) {
+exports.ettss2 = wid.ettss2 = ettss2 = function ettss2(params, callback) {
     debuglevel = 17;
     saveglobal("debugname", "");
     saveglobal("debugcat", "");
@@ -6390,10 +7142,13 @@ exports.ettss2 = ettss2 = function ettss2(params, callback) {
             callback(err, res);
         });
 }
-
+wid.ettss2.category = "executeit";
+wid.ettss2.subcategory = "dothis";
+wid.ettss2.type = "minute";
+wid.ettss2.name = "this does a test";
 
 // test to enter lots of data at once :: created to raise the Maximum range reached error in Chrome
-exports.ettss3 = ettss3 = function ettss3(params, callback) {
+exports.ettss3 = wid.ettss3 = ettss3 = function ettss3(params, callback) {
     debuglevel = 17;
     saveglobal("debugname", "");
     saveglobal("debugcat", "");
@@ -6694,9 +7449,13 @@ exports.ettss3 = ettss3 = function ettss3(params, callback) {
         callback(err, res);
     });
 }
+wid.ettss3.category = "executeit";
+wid.ettss3.subcategory = "dothis";
+wid.ettss3.type = "minute";
+wid.ettss3.name = "this does a test";
 
 // simple test to setup data and then test against that
-exports.sectest1 = sectest1 = function sectest1(parm, callback) {
+exports.sectest1 = wid.sectest1 = sectest1 = function sectest1(parm, callback) {
 
     async.series([
             function(cb1) {
@@ -6740,9 +7499,13 @@ exports.sectest1 = sectest1 = function sectest1(parm, callback) {
 
         });
 }
+wid.sectest1.category = "executeit";
+wid.sectest1.subcategory = "dothis";
+wid.sectest1.type = "minute";
+wid.sectest1.name = "this does a test";
 
 // simple test which sets up all data and then runs sectest1 test after that 
-exports.tsa1 = tsa1 = function tsa1(params, callback) {
+exports.tsa1 = wid.tsa1 = tsa1 = function tsa1(params, callback) {
     // debuglevel = 34;
     // saveglobal("debugname", "");
     // saveglobal("debugcat", "");
@@ -6765,19 +7528,27 @@ exports.tsa1 = tsa1 = function tsa1(params, callback) {
         callback(err, res);
     });
 }
+wid.tsa1.category = "executeit";
+wid.tsa1.subcategory = "dothis";
+wid.tsa1.type = "minute";
+wid.tsa1.name = "this does a test";
 
 
-/// test getting permissions list :: dependent on sectest1
-exports.ttsa3 = ttsa3 = function(params, callback) {
+// test getting permissions list :: dependent on sectest1
+exports.ttsa3 = wid.ttsa3 = ttsa3 = function(params, callback) {
     getPermissionsList(["driemployeegroup0", "rogeruser0", "groupdto0", "19", "25"], ["createcoupon0"], ["executethis"], ["data"], 99, function(err, res) {
         proxyprinttodiv('Function ttsa3() in : res', res, 34);
         callback(err, res);
 
     });
 };
+wid.ttsa3.category = "executeit";
+wid.ttsa3.subcategory = "dothis";
+wid.ttsa3.type = "minute";
+wid.ttsa3.name = "this does a test";
 
-/// test getting groups recursively :: dependent on sectest1
-exports.ttsa4 = ttsa4 = function(params, callback) {
+// test getting groups recursively :: dependent on sectest1
+exports.ttsa4 = wid.ttsa4 = ttsa4 = function(params, callback) {
     debuglevel = 34;
     saveglobal("debugname", "");
     saveglobal("debugcat", "");
@@ -6788,11 +7559,20 @@ exports.ttsa4 = ttsa4 = function(params, callback) {
 
     });
 };
+wid.ttsa4.category = "executeit";
+wid.ttsa4.subcategory = "dothis";
+wid.ttsa4.type = "minute";
+wid.ttsa4.name = "this does a test";
 
-/// test add group to wid :: dependent on sectest1
-exports.ttsa6 = ttsa6 = function(params, callback) {
+
+// test add group to wid :: dependent on sectest1
+exports.ttsa6 = wid.ttsa6 = ttsa6 = function(params, callback) {
     addgrouptowid("anything", "groupnamedto", "createcoupon", callback);
 };
+wid.ttsa6.category = "executeit";
+wid.ttsa6.subcategory = "dothis";
+wid.ttsa6.type = "minute";
+wid.ttsa6.name = "this does a test";
 
 
 
@@ -6802,7 +7582,7 @@ exports.ttsa6 = ttsa6 = function(params, callback) {
 // {"executethis":"updatewid","metadata.method":"relationshipdto","wid":"rel222","primarywid":"elizabeth_heart","secondarywid":"elizabeth_heart_address", "relationshiptype":"attributes" },
 // {"executethis":"updatewid","metadata.method":"addressdto","wid":"elizabeth_heart_address", "street":"1234 First street", "city":"Something City","state":"ZZ","zip":"12345"},
 // {"executethis":"getwidmaster","wid":"elizabeth_heart_address"}
-exports.etadd01 = etadd01 = function etadd01(parameters, callback) {
+exports.etadd01 = wid.etadd01 = etadd01 = function etadd01(parameters, callback) {
     debuglevel = 17;
     var executeList = [{
         "executethis": "updatewid",
@@ -6885,8 +7665,12 @@ exports.etadd01 = etadd01 = function etadd01(parameters, callback) {
     });
 
 }
+wid.etadd01.category = "executeit";
+wid.etadd01.subcategory = "dothis";
+wid.etadd01.type = "minute";
+wid.etadd01.name = "this does a test";
 
-exports.etadd0 = etadd0 = function etadd0(parameters, callback) {
+exports.etadd0 = wid.etadd0 = etadd0 = function etadd0(parameters, callback) {
     debuglevel = 17;
     var executeList = [{
             "executethis": "updatewid",
@@ -6983,8 +7767,12 @@ exports.etadd0 = etadd0 = function etadd0(parameters, callback) {
     });
 
 }
+wid.etadd0.category = "executeit";
+wid.etadd0.subcategory = "dothis";
+wid.etadd0.type = "minute";
+wid.etadd0.name = "this does a test";
 
-exports.etadd1 = etadd1 = function etadd1(parameters, callback) {
+exports.etadd1 = wid.etadd1 = etadd1 = function etadd1(parameters, callback) {
     debuglevel = 17;
     eventappinstall();
     var inputObject = {
@@ -7072,8 +7860,12 @@ exports.etadd1 = etadd1 = function etadd1(parameters, callback) {
         callback(err, res);
     });
 }
+wid.etadd1.category = "executeit";
+wid.etadd1.subcategory = "dothis";
+wid.etadd1.type = "minute";
+wid.etadd1.name = "this does a test";
 
-exports.etadd11 = etadd11 = function etadd11(parameters, callback) {
+exports.etadd11 = wid.etadd11 = etadd11 = function etadd11(parameters, callback) {
     debuglevel = 17;
     eventappinstall();
     var inputObject = {
@@ -7162,11 +7954,15 @@ exports.etadd11 = etadd11 = function etadd11(parameters, callback) {
         callback(err, res);
     });
 }
+wid.etadd11.category = "executeit";
+wid.etadd11.subcategory = "dothis";
+wid.etadd11.type = "minute";
+wid.etadd11.name = "this does a test";
 
 /*
 this should insert {a:b} at the bookdto level
 */
-exports.etget4 = etget4 = function etget4(parameters, callback) {
+exports.etget4 = wid.etget4 = etget4 = function etget4(parameters, callback) {
     debuglevel = 17;
 
     eventappinstall();
@@ -7266,8 +8062,12 @@ exports.etget4 = etget4 = function etget4(parameters, callback) {
     res = logverify("logverify", actual_result, expected_result);
     callback(null, res);
 }
+wid.etget4.category = "executeit";
+wid.etget4.subcategory = "dothis";
+wid.etget4.type = "minute";
+wid.etget4.name = "this does a test";
 
-exports.etget22 = etget22 = function etget22(parameters, callback) { //add clean test
+exports.etget22 = wid.etget22 = etget22 = function etget22(parameters, callback) { //add clean test
     debuglevel = 17;
     eventappinstall();
     var inputObject = {
@@ -7363,11 +8163,15 @@ exports.etget22 = etget22 = function etget22(parameters, callback) { //add clean
     res = logverify("logverify", actual_result, expected_result);
     callback(null, res);
 }
+wid.etget22.category = "executeit";
+wid.etget22.subcategory = "dothis";
+wid.etget22.type = "minute";
+wid.etget22.name = "this does a test";
 
 /*
 do not specify command.dto...should put it at root/author level
 */
-exports.etget5 = etget5 = function etget5(parameters, callback) {
+exports.etget5 = wid.etget5 = etget5 = function etget5(parameters, callback) {
     debuglevel = 17;
     eventappinstall();
     var inputObject = {
@@ -7461,11 +8265,15 @@ exports.etget5 = etget5 = function etget5(parameters, callback) {
     res = logverify("logverify", actual_result, expected_result);
     callback(null, res);
 }
+wid.etget5.category = "executeit";
+wid.etget5.subcategory = "dothis";
+wid.etget5.type = "minute";
+wid.etget5.name = "this does a test";
 
 /*
 specify command.dtotype = x should wrap result in {x: {.....}}
 */
-exports.etget6 = etget6 = function etget6(parameters, callback) {
+exports.etget6 = wid.etget6 = etget6 = function etget6(parameters, callback) {
     debuglevel = 17;
     eventappinstall();
     var inputObject = {
@@ -7560,11 +8368,15 @@ exports.etget6 = etget6 = function etget6(parameters, callback) {
     res = logverify("logverify", actual_result, expected_result);
     callback(null, res);
 }
+wid.etget6.category = "executeit";
+wid.etget6.subcategory = "dothis";
+wid.etget6.type = "minute";
+wid.etget6.name = "this does a test";
 
 /*
 specify command.dtotype.x.y.z should wrap result in {x:{y:z{......}}}
 */
-exports.etget7 = etget7 = function etget7(parameters, callback) {
+exports.etget7 = wid.etget7 = etget7 = function etget7(parameters, callback) {
     debuglevel = 17;
     eventappinstall();
     var inputObject = {
@@ -7663,11 +8475,15 @@ exports.etget7 = etget7 = function etget7(parameters, callback) {
     res = logverify("logverify", actual_result, expected_result);
     callback(null, res);
 }
+wid.etget7.category = "executeit";
+wid.etget7.subcategory = "dothis";
+wid.etget7.type = "minute";
+wid.etget7.name = "this does a test";
 
 /*
 get8 - to get the dtoname
 */
-exports.etget8 = etget8 = function etget8(parameters, callback) {
+exports.etget8 = wid.etget8 = etget8 = function etget8(parameters, callback) {
     debuglevel = 17;
     eventappinstall();
     var inputObject = {
@@ -7763,12 +8579,15 @@ exports.etget8 = etget8 = function etget8(parameters, callback) {
     res = logverify("logverify", actual_result, expected_result);
     callback(null, res);
 }
-
+wid.etget8.category = "executeit";
+wid.etget8.subcategory = "dothis";
+wid.etget8.type = "minute";
+wid.etget8.name = "this does a test";
 
 /*
 addwid with out inherit ... should add inputobject
 */
-exports.etaddwidtest = etaddwidtest = function etaddwidtest(parameters, callback) {
+exports.etaddwidtest = wid.etaddwidtest = etaddwidtest = function etaddwidtest(parameters, callback) {
     debuglevel = 17;
     eventappinstall();
     var executeList = [{
@@ -7838,11 +8657,15 @@ exports.etaddwidtest = etaddwidtest = function etaddwidtest(parameters, callback
         });
     });
 }
+wid.etaddwidtest.category = "executeit";
+wid.etaddwidtest.subcategory = "dothis";
+wid.etaddwidtest.type = "minute";
+wid.etaddwidtest.name = "this does a test";
 
 /*
 addwid without inherit .. should add the input record
 */
-exports.etaddwidtest2 = etaddwidtest2 = function etaddwidtest2(parameters, callback) {
+exports.etaddwidtest2 = wid.etaddwidtest2 = etaddwidtest2 = function etaddwidtest2(parameters, callback) {
     debuglevel = 17;
     eventappinstall();
     var executeList = [{
@@ -7900,11 +8723,15 @@ exports.etaddwidtest2 = etaddwidtest2 = function etaddwidtest2(parameters, callb
         });
     });
 }
+wid.etaddwidtest2.category = "executeit";
+wid.etaddwidtest2.subcategory = "dothis";
+wid.etaddwidtest2.type = "minute";
+wid.etaddwidtest2.name = "this does a test";
 
 /*
 addwid - with record alreayd exists ... should update name, leave all else the same
 */
-exports.etaddwidtest3 = etaddwidtest3 = function etaddwidtest3(parameters, callback) {
+exports.etaddwidtest3 = wid.etaddwidtest3 = etaddwidtest3 = function etaddwidtest3(parameters, callback) {
     debuglevel = 17;
     eventappinstall();
     var executeList = [
@@ -7965,11 +8792,15 @@ exports.etaddwidtest3 = etaddwidtest3 = function etaddwidtest3(parameters, callb
         });
     });
 }
+wid.etaddwidtest3.category = "executeit";
+wid.etaddwidtest3.subcategory = "dothis";
+wid.etaddwidtest3.type = "minute";
+wid.etaddwidtest3.name = "this does a test";
 
 /*
 addwid with inherit that DOES matter ... should return name of roger
 */
-exports.etaddwidtest4 = etaddwidtest4 = function etaddwidtest4(parameters, callback) {
+exports.etaddwidtest4 = wid.etaddwidtest4 = etaddwidtest4 = function etaddwidtest4(parameters, callback) {
     debuglevel = 17;
     eventappinstall();
     var executeList = [{
@@ -8038,11 +8869,15 @@ exports.etaddwidtest4 = etaddwidtest4 = function etaddwidtest4(parameters, callb
         });
     });
 }
+wid.etaddwidtest4.category = "executeit";
+wid.etaddwidtest4.subcategory = "dothis";
+wid.etaddwidtest4.type = "minute";
+wid.etaddwidtest4.name = "this does a test";
 
 /*
 addwid - with record .. but dto fliters age
 */
-exports.etaddwidtest5 = etaddwidtest5 = function etaddwidtest5(parameters, callback) {
+exports.etaddwidtest5 = wid.etaddwidtest5 = etaddwidtest5 = function etaddwidtest5(parameters, callback) {
     debuglevel = 17;
     eventappinstall();
     var executeList = [
@@ -8103,12 +8938,15 @@ exports.etaddwidtest5 = etaddwidtest5 = function etaddwidtest5(parameters, callb
         });
     });
 }
-
+wid.etaddwidtest5.category = "executeit";
+wid.etaddwidtest5.subcategory = "dothis";
+wid.etaddwidtest5.type = "minute";
+wid.etaddwidtest5.name = "this does a test";
 
 /*
 addwid with inherit that DOES matter ... deep should return name of roger + more
 */
-exports.etaddwidtest6 = etaddwidtest6 = function etaddwidtest6(parameters, callback) {
+exports.etaddwidtest6 = wid.etaddwidtest6 = etaddwidtest6 = function etaddwidtest6(parameters, callback) {
     debuglevel = 17;
     eventappinstall();
     var executeList = [{
@@ -8182,12 +9020,15 @@ exports.etaddwidtest6 = etaddwidtest6 = function etaddwidtest6(parameters, callb
         });
     });
 }
-
+wid.etaddwidtest6.category = "executeit";
+wid.etaddwidtest6.subcategory = "dothis";
+wid.etaddwidtest6.type = "minute";
+wid.etaddwidtest6.name = "this does a test";
 
 /*
 addwid without inherit  ... should add inputobject -- test of deep filter string, number, boolean, date -- did it convert it?
 */
-exports.etaddwidtest7 = etaddwidtest7 = function etaddwidtest7(parameters, callback) {
+exports.etaddwidtest7 = wid.etaddwidtest7 = etaddwidtest7 = function etaddwidtest7(parameters, callback) {
     debuglevel = 17;
     eventappinstall();
     var executeList = [{
@@ -8263,8 +9104,12 @@ exports.etaddwidtest7 = etaddwidtest7 = function etaddwidtest7(parameters, callb
         });
     });
 }
+wid.etaddwidtest7.category = "executeit";
+wid.etaddwidtest7.subcategory = "dothis";
+wid.etaddwidtest7.type = "minute";
+wid.etaddwidtest7.name = "this does a test";
 
-exports.etadd2 = etadd2 = function etadd2(parameters, callback) {
+exports.etadd2 = wid.etadd2 = etadd2 = function etadd2(parameters, callback) {
     debuglevel = 17;
     var executeList = [{
             "executethis": "updatewid",
@@ -8329,12 +9174,15 @@ exports.etadd2 = etadd2 = function etadd2(parameters, callback) {
         callback(err, res);
     });
 }
+wid.etadd2.category = "executeit";
+wid.etadd2.subcategory = "dothis";
+wid.etadd2.type = "minute";
+wid.etadd2.name = "this does a test";
 
 
 
 
-
-exports.etget1 = etget1 = function etget1(parameters, callback) {
+exports.etget1 = wid.etget1 = etget1 = function etget1(parameters, callback) {
     debuglevel = 17;
     eventappinstall();
     var executeList = [{
@@ -8440,8 +9288,12 @@ exports.etget1 = etget1 = function etget1(parameters, callback) {
         });
     });
 }
+wid.etget1.category = "executeit";
+wid.etget1.subcategory = "dothis";
+wid.etget1.type = "minute";
+wid.etget1.name = "this does a test";
 
-exports.etget3 = etget3 = function etget3(parameters, callback) {
+exports.etget3 = wid.etget3 = etget3 = function etget3(parameters, callback) {
     debuglevel = 17;
     eventappinstall();
     var executeList = [{
@@ -8543,8 +9395,12 @@ exports.etget3 = etget3 = function etget3(parameters, callback) {
         callback(err, res);
     });
 }
+wid.etget3.category = "executeit";
+wid.etget3.subcategory = "dothis";
+wid.etget3.type = "minute";
+wid.etget3.name = "this does a test";
 
-exports.etget2 = etget2 = function etget2(parameters, callback) {
+exports.etget2 = wid.etget2 = etget2 = function etget2(parameters, callback) {
     debuglevel = 17;
     // Setup test
     eventappinstall();
@@ -8673,8 +9529,12 @@ exports.etget2 = etget2 = function etget2(parameters, callback) {
         callback(err, res);
     });
 }
+wid.etget2.category = "executeit";
+wid.etget2.subcategory = "dothis";
+wid.etget2.type = "minute";
+wid.etget2.name = "this does a test";
 
-exports.etget11 = etget11 = function etget11(parameters, callback) {
+exports.etget11 = wid.etget11 = etget11 = function etget11(parameters, callback) {
     debuglevel = 17;
     // Setup test
     eventappinstall();
@@ -8823,9 +9683,13 @@ exports.etget11 = etget11 = function etget11(parameters, callback) {
     //         callback(err, res);
     //     });
 }
+wid.etget11.category = "executeit";
+wid.etget11.subcategory = "dothis";
+wid.etget11.type = "minute";
+wid.etget11.name = "this does a test";
 
 /* Adding data for the survey */
-exports.surveydata = surveydata = function surveydata(params, callback) {
+exports.surveydata = wid.surveydata = surveydata = function surveydata(params, callback) {
 
     saveglobal("debugname", "addmaster");
     debuglevel = 97;
@@ -8926,9 +9790,13 @@ exports.surveydata = surveydata = function surveydata(params, callback) {
             callback(err, res)
         });
 }
+wid.surveydata.category = "executeit";
+wid.surveydata.subcategory = "dothis";
+wid.surveydata.type = "minute";
+wid.surveydata.name = "this does a test";
 
 /* Adding data for the survey with addwidmaster */
-exports.surveydata2 = surveydata2 = function surveydata2(params, callback) {
+exports.surveydata2 = wid.surveydata2 = surveydata2 = function surveydata2(params, callback) {
 
     execute([
 
@@ -8997,9 +9865,13 @@ exports.surveydata2 = surveydata2 = function surveydata2(params, callback) {
             callback(err, res)
         });
 }
+wid.surveydata2.category = "executeit";
+wid.surveydata2.subcategory = "dothis";
+wid.surveydata2.type = "minute";
+wid.surveydata2.name = "this does a test";
 
 /* Adding data for a flat survey */
-exports.surveydtoflat = surveydtoflat = function surveydtoflat(params, callback) {
+exports.surveydtoflat = wid.surveydtoflat = surveydtoflat = function surveydtoflat(params, callback) {
 
     execute([
             // Create the flatsurveydto dto 
@@ -9093,6 +9965,10 @@ exports.surveydtoflat = surveydtoflat = function surveydtoflat(params, callback)
             callback(err, res)
         });
 }
+wid.surveydtoflat.category = "executeit";
+wid.surveydtoflat.subcategory = "dothis";
+wid.surveydtoflat.type = "minute";
+wid.surveydtoflat.name = "this does a test";
 // Wids :--
 // {"wid": "colordto", "metadata.method": "colordto", "hue": "string", "sat": "string"}
 // {"wid": "color1", "metadata.method": "colordto", "hue": "red", "sat": "red-sat"},
@@ -9143,7 +10019,8 @@ exports.surveydtoflat = surveydtoflat = function surveydtoflat(params, callback)
 // {"wid": "color8", "metadata.method": "colordto", "hue": "black", "sat": "red-sat"}
 // {"wid": "color9", "metadata.method": "colordto", "hue": "cyan", "sat": "red-sat"}
 
-exports.etmttest4 = etmttest4 = function etmttest4(params, callback) {
+exports.etmttest4 = wid.etmttest4 = etmttest4 = function etmttest4(params, callback) {
+
     debuglevel = 17;
     console.log("<< mttest4 >>");
 
@@ -9350,13 +10227,22 @@ exports.etmttest4 = etmttest4 = function etmttest4(params, callback) {
 
     }
 }
-exports.testcallback = testcallback = function testcallback(params, callback) {
+wid.etmttest4.category = "executeit";
+wid.etmttest4.subcategory = "dothis";
+wid.etmttest4.type = "minute";
+wid.etmttest4.name = "this does a test";
+
+exports.testcallback = wid.testcallback = testcallback = function testcallback(params, callback) {
     console.log("<< testcallback >>");
     params["test_result"] = "XXXPASS";
     callback(null, params);
 }
+wid.testcallback.category = "executeit";
+wid.testcallback.subcategory = "dothis";
+wid.testcallback.type = "minute";
+wid.testcallback.name = "this does a test";
 
-exports.executegetwidtest = executegetwidtest = function executegetwidtest(params, callback) {
+exports.executegetwidtest = wid.executegetwidtest = executegetwidtest = function executegetwidtest(params, callback) {
 
     offlineaddtomongo({
         "wid": "getexecutetest",
@@ -9382,9 +10268,12 @@ exports.executegetwidtest = executegetwidtest = function executegetwidtest(param
         });
     });
 }
+wid.executegetwidtest.category = "executeit";
+wid.executegetwidtest.subcategory = "dothis";
+wid.executegetwidtest.type = "minute";
+wid.executegetwidtest.name = "this does a test";
 
-
-exports.qw1 = qw1 = function(params, callback) {
+exports.qw1 = wid.qw1 = qw1 = function(params, callback) {
     var q = '[{"dtotype":"","convertmethod":"","mongowidmethod":"","command.results":"queryresult","mongorelationshipdirection":"forward","mongorelationshipmethod":"all","mongorelationshiptype":"attributes"}]';
     var qJson = JSON.parse(q);
 
@@ -9397,8 +10286,12 @@ exports.qw1 = qw1 = function(params, callback) {
         callback(err, res)
     });
 }
+wid.qw1.category = "executeit";
+wid.qw1.subcategory = "dothis";
+wid.qw1.type = "minute";
+wid.qw1.name = "this does a test";
 
-exports.qw2 = qw2 = function(params, callback) {
+exports.qw2 = wid.qw2 = qw2 = function(params, callback) {
     var q = '{"mongorawquery":{"wid":"wid1","command.results": "queryresult","mongorelationshiptype":"x"}}';
     var qJson = JSON.parse(q);
 
@@ -9415,9 +10308,12 @@ exports.qw2 = qw2 = function(params, callback) {
         });
     });
 }
+wid.qw2.category = "executeit";
+wid.qw2.subcategory = "dothis";
+wid.qw2.type = "minute";
+wid.qw2.name = "this does a test";
 
-
-exports.mongoquery1 = mongoquery1 = function(params, callback) {
+exports.mongoquery1 = wid.mongoquery1 = mongoquery1 = function(params, callback) {
     var q = '{"mongorawquery":{"wid":"wid1","mongorelationshiptype":"x"}}';
     var qJson = JSON.parse(q);
 
@@ -9436,11 +10332,14 @@ exports.mongoquery1 = mongoquery1 = function(params, callback) {
         });
     });
 }
+wid.mongoquery1.category = "executeit";
+wid.mongoquery1.subcategory = "dothis";
+wid.mongoquery1.type = "minute";
+wid.mongoquery1.name = "this does a test";
 
 
 
-
-exports.mts1 = mts1 = function mts1(params, callback) {
+exports.mts1 = wid.mts1 = mts1 = function mts1(params, callback) {
     // basic test for debuging query issues
     console.log("Simple update wid test");
 
@@ -9617,8 +10516,12 @@ exports.mts1 = mts1 = function mts1(params, callback) {
         //});
     });
 }
+wid.mts1.category = "executeit";
+wid.mts1.subcategory = "dothis";
+wid.mts1.type = "minute";
+wid.mts1.name = "this does a test";
 
-exports.mts2 = mts2 = function mts2(params, callback) {
+exports.mts2 = wid.mts2 = mts2 = function mts2(params, callback) {
     // basic test for debuging query issues
     console.log("Simple update wid test");
 
@@ -9672,9 +10575,12 @@ exports.mts2 = mts2 = function mts2(params, callback) {
         });
     });
 }
+wid.mts2.category = "executeit";
+wid.mts2.subcategory = "dothis";
+wid.mts2.type = "minute";
+wid.mts2.name = "this does a test";
 
-
-exports.etmttest1 = etmttest1 = function etmttest1(params, callback) {
+exports.etmttest1 = wid.etmttest1 = etmttest1 = function etmttest1(params, callback) {
     console.log("<< mongoquery_two_test >>");
 
     var ortests = true;
@@ -9947,6 +10853,10 @@ exports.etmttest1 = etmttest1 = function etmttest1(params, callback) {
     };
     callback({}, params);
 }
+wid.etmttest1.category = "executeit";
+wid.etmttest1.subcategory = "dothis";
+wid.etmttest1.type = "minute";
+wid.etmttest1.name = "this does a test";
 
 function addmttestdata(callback) {
     console.log("<< addmttestdata >>");
@@ -9984,7 +10894,7 @@ proxyprinttodiv("end of data add", "end data add", 17);
     return widArray;
 }
 
-exports.t1example = t1example = function t1example(params, callback) {
+exports.t1example = wid.t1example = t1example = function t1example(params, callback) {
     eventappinstall();
     config = setconfig1();
     execute([{
@@ -10006,8 +10916,12 @@ exports.t1example = t1example = function t1example(params, callback) {
             }
         });
 }
+wid.t1example.category = "executeit";
+wid.t1example.subcategory = "dothis";
+wid.t1example.type = "minute";
+wid.t1example.name = "this does a test";
 
-exports.etmttest2 = etmttest2 = function etmttest2(params, callback) {
+exports.etmttest2 = wid.etmttest2 = etmttest2 = function etmttest2(params, callback) {
     debuglevel = 17;
     console.log("<< mongoquery_two_test >>");
 
@@ -10160,8 +11074,12 @@ exports.etmttest2 = etmttest2 = function etmttest2(params, callback) {
         callback(err, res);
     });
 }
+wid.etmttest2.category = "executeit";
+wid.etmttest2.subcategory = "dothis";
+wid.etmttest2.type = "minute";
+wid.etmttest2.name = "this does a test";
 
-exports.etmttest3 = etmttest3 = function etmttest3(params, callback) {
+exports.etmttest3 = wid.etmttest3 = etmttest3 = function etmttest3(params, callback) {
     debuglevel = 17;
     console.log("<< mttest3 >>");
 
@@ -10343,8 +11261,12 @@ exports.etmttest3 = etmttest3 = function etmttest3(params, callback) {
         callback(err, params);
     });
 }
+wid.etmttest3.category = "executeit";
+wid.etmttest3.subcategory = "dothis";
+wid.etmttest3.type = "minute";
+wid.etmttest3.name = "this does a test";
 
-exports.etmttest333 = etmttest333 = function etmttest333(params, callback) {
+exports.etmttest333 = wid.etmttest333 = etmttest333 = function etmttest333(params, callback) {
     debuglevel = 17;
     console.log("<< mttest3 >>");
     eventappinstall();
@@ -10803,8 +11725,12 @@ exports.etmttest333 = etmttest333 = function etmttest333(params, callback) {
         callback(err, params);
     });
 }
+wid.etmttest333.category = "executeit";
+wid.etmttest333.subcategory = "dothis";
+wid.etmttest333.type = "minute";
+wid.etmttest333.name = "this does a test";
 
-exports.mt3 = mt3 = function mt3(params, callback) {
+exports.mt3 = wid.mt3 = mt3 = function mt3(params, callback) {
     var x = [];
     var y;
     var mongorawquery;
@@ -10960,8 +11886,12 @@ exports.mt3 = mt3 = function mt3(params, callback) {
     var err;
     callback(err, params);
 }
+wid.mt3.category = "executeit";
+wid.mt3.subcategory = "dothis";
+wid.mt3.type = "minute";
+wid.mt3.name = "this does a test";
 
-exports.etar100 = etar100 = function etar100(params, callback) {
+exports.etar100 = wid.etar100 = etar100 = function etar100(params, callback) {
     debuglevel = 17;
     var object = {
         "metadata": {
@@ -11022,11 +11952,15 @@ exports.etar100 = etar100 = function etar100(params, callback) {
         callback(err, res);
     });
 }
+wid.etar100.category = "executeit";
+wid.etar100.subcategory = "dothis";
+wid.etar100.type = "minute";
+wid.etar100.name = "this does a test";
 
 /*
       deep filter test
 */
-exports.etd1 = etd1 = function etd1(params, callback) {
+exports.etd1 = wid.etd1 = etd1 = function etd1(params, callback) {
     debuglevel = 17;
     async.series([
         function(cb1) {
@@ -11111,9 +12045,7 @@ exports.etd1 = etd1 = function etd1(params, callback) {
             }]
         };
         var command = {
-            "deepfilter": {
-                "convert": true
-            }
+            "command.deepfilter.convert": true
         };
 
         deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
@@ -11161,11 +12093,15 @@ exports.etd1 = etd1 = function etd1(params, callback) {
         });
     });
 }
+wid.etd1.category = "executeit";
+wid.etd1.subcategory = "dothis";
+wid.etd1.type = "minute";
+wid.etd1.name = "this does a test";
 
 /*
       number, string, boolean, date, nested string
 */
-exports.etd2 = etd2 = function etd2(params, callback) {
+exports.etd2 = wid.etd2 = etd2 = function etd2(params, callback) {
     debuglevel = 17;
     async.series([
         function(cb1) {
@@ -11253,11 +12189,15 @@ exports.etd2 = etd2 = function etd2(params, callback) {
         });
     });
 }
+wid.etd2.category = "executeit";
+wid.etd2.subcategory = "dothis";
+wid.etd2.type = "minute";
+wid.etd2.name = "this does a test";
 
 /*
       wid
 */
-exports.etd3 = etd3 = function etd3(params, callback) {
+exports.etd3 = wid.etd3 = etd3 = function etd3(params, callback) {
     debuglevel = 17;
     async.series([
         function(cb1) {
@@ -11301,11 +12241,15 @@ exports.etd3 = etd3 = function etd3(params, callback) {
         });
     });
 }
+wid.etd3.category = "executeit";
+wid.etd3.subcategory = "dothis";
+wid.etd3.type = "minute";
+wid.etd3.name = "this does a test";
 
 /*
       updatewid and getwidmaster
 */
-exports.dupdateget4 = dupdateget4 = function dupdateget4(params, callback) {
+exports.dupdateget4 = wid.dupdateget4 = dupdateget4 = function dupdateget4(params, callback) {
     async.series([
         function(cb1) {
             var executeList = [{
@@ -11338,11 +12282,15 @@ exports.dupdateget4 = dupdateget4 = function dupdateget4(params, callback) {
         callback(err, params);
     });
 }
+wid.dupdateget4.category = "executeit";
+wid.dupdateget4.subcategory = "dothis";
+wid.dupdateget4.type = "minute";
+wid.dupdateget4.name = "this does a test";
 
 /*    
       added test in wid
 */
-exports.etd5 = etd5 = function etd5(params, callback) {
+exports.etd5 = wid.etd5 = etd5 = function etd5(params, callback) {
     debuglevel = 17;
     async.series([
         function(cb1) {
@@ -11445,11 +12393,15 @@ exports.etd5 = etd5 = function etd5(params, callback) {
         callback(err, res);
     });
 }
+wid.etd5.category = "executeit";
+wid.etd5.subcategory = "dothis";
+wid.etd5.type = "minute";
+wid.etd5.name = "this does a test";
 
 /*    
       selected wid does not exist
 */
-exports.etd6 = etd6 = function etd6(params, callback) {
+exports.etd6 = wid.etd6 = etd6 = function etd6(params, callback) {
     debuglevel = 17;
     async.series([
         function(cb2) {
@@ -11518,11 +12470,15 @@ exports.etd6 = etd6 = function etd6(params, callback) {
         callback(err, res);
     });
 }
+wid.etd6.category = "executeit";
+wid.etd6.subcategory = "dothis";
+wid.etd6.type = "minute";
+wid.etd6.name = "this does a test";
 
 /*    
       dto = null,, then return same object
 */
-exports.etd7 = etd7 = function etd7(params, callback) {
+exports.etd7 = wid.etd7 = etd7 = function etd7(params, callback) {
     debuglevel = 17;
     async.series([
         function(cb1) {
@@ -11610,11 +12566,15 @@ exports.etd7 = etd7 = function etd7(params, callback) {
         callback(err, res);
     });
 }
+wid.etd7.category = "executeit";
+wid.etd7.subcategory = "dothis";
+wid.etd7.type = "minute";
+wid.etd7.name = "this does a test";
 
 /*    
       date
 */
-exports.etd8 = etd8 = function etd8(params, callback) {
+exports.etd8 = wid.etd8 = etd8 = function etd8(params, callback) {
     debuglevel = 17;
     async.series([
         function(cb1) {
@@ -11675,11 +12635,15 @@ exports.etd8 = etd8 = function etd8(params, callback) {
         callback(err, res);
     });
 }
+wid.etd8.category = "executeit";
+wid.etd8.subcategory = "dothis";
+wid.etd8.type = "minute";
+wid.etd8.name = "this does a test";
 
 /*
       object dataType test
 */
-exports.etd10 = etd10 = function etd10(params, callback) {
+exports.etd10 = wid.etd10 = etd10 = function etd10(params, callback) {
     debuglevel = 17;
     async.series([
         function(cb1) {
@@ -11731,9 +12695,12 @@ exports.etd10 = etd10 = function etd10(params, callback) {
         });
     });
 }
+wid.etd10.category = "executeit";
+wid.etd10.subcategory = "dothis";
+wid.etd10.type = "minute";
+wid.etd10.name = "this does a test";
 
-
-exports.etd10b = etd10b = function etd10b(params, callback) {
+exports.etd10b = wid.etd10b = etd10b = function etd10b(params, callback) {
     debuglevel = 17;
     var obj = {
         "wid": "songdto",
@@ -11816,12 +12783,15 @@ exports.etd10b = etd10b = function etd10b(params, callback) {
         callback(err, res);
     });
 }
-
+wid.etd10b.category = "executeit";
+wid.etd10b.subcategory = "dothis";
+wid.etd10b.type = "minute";
+wid.etd10b.name = "this does a test";
 
 /*
       test to confirm deepfilter with wid that returns query results works
 */
-exports.etd11 = etd11 = function etd11(params, callback) {
+exports.etd11 = wid.etd11 = etd11 = function etd11(params, callback) {
     debuglevel = 17;
     async.series([
         function(cb1) { //5 (a)
@@ -11990,11 +12960,15 @@ exports.etd11 = etd11 = function etd11(params, callback) {
         callback(err, res);
     });
 }
+wid.etd11.category = "executeit";
+wid.etd11.subcategory = "dothis";
+wid.etd11.type = "minute";
+wid.etd11.name = "this does a test";
 
 /*
       command.deepfilter.convert = true/false
 */
-exports.etd12 = etd12 = function etd12(params, callback) {
+exports.etd12 = wid.etd12 = etd12 = function etd12(params, callback) {
     debuglevel = 17;
     async.series([
         function step1(cb1) { //without command
@@ -12064,6 +13038,10 @@ exports.etd12 = etd12 = function etd12(params, callback) {
         callback(err, res);
     });
 }
+wid.etd12.category = "executeit";
+wid.etd12.subcategory = "dothis";
+wid.etd12.type = "minute";
+wid.etd12.name = "this does a test";
 
 /*
       make with query that returns more than one item…test like below
@@ -12071,7 +13049,7 @@ exports.etd12 = etd12 = function etd12(params, callback) {
       make it produce two results wid7,8,9
       test deepfilter and make sure it does not break
 */
-exports.etd13 = etd13 = function etd13(params, callback) {
+exports.etd13 = wid.etd13 = etd13 = function etd13(params, callback) {
     debuglevel = 17;
     async.series([
         function(cb1) {
@@ -12148,6 +13126,10 @@ exports.etd13 = etd13 = function etd13(params, callback) {
         callback(err, res);
     });
 }
+wid.etd13.category = "executeit";
+wid.etd13.subcategory = "dothis";
+wid.etd13.type = "minute";
+wid.etd13.name = "this does a test";
 
 /*
       deep filter should process arrays
@@ -12160,7 +13142,7 @@ exports.etd13 = etd13 = function etd13(params, callback) {
       a:test
       b:[{c:one, d:two}, {c:three, d:four}, {c:five, d:six}]
 */
-exports.etd14 = etd14 = function etd14(params, callback) {
+exports.etd14 = wid.etd14 = etd14 = function etd14(params, callback) {
     debuglevel = 17;
     async.series([
         function(cb1) {
@@ -12234,9 +13216,12 @@ exports.etd14 = etd14 = function etd14(params, callback) {
         callback(err, res);
     });
 }
+wid.etd14.category = "executeit";
+wid.etd14.subcategory = "dothis";
+wid.etd14.type = "minute";
+wid.etd14.name = "this does a test";
 
-
-exports.etalldeepfiltertests = etalldeepfiltertests = function etalldeepfiltertests(params, callback) {
+exports.etalldeepfiltertests = wid.etalldeepfiltertests = etalldeepfiltertests = function etalldeepfiltertests(params, callback) {
     debuglevel = 17;
 
     var result = [];
@@ -12284,9 +13269,12 @@ exports.etalldeepfiltertests = etalldeepfiltertests = function etalldeepfilterte
 
     });
 }
+wid.etalldeepfiltertests.category = "executeit";
+wid.etalldeepfiltertests.subcategory = "dothis";
+wid.etalldeepfiltertests.type = "minute";
+wid.etalldeepfiltertests.name = "this does a test";
 
-
-exports.etd9 = etd9 = function etd9(params, callback) {
+exports.etd9 = wid.etd9 = etd9 = function etd9(params, callback) {
     debuglevel = 17;
     var dtoObjOpt = {
         "name": "string",
@@ -12573,7 +13561,10 @@ exports.etd9 = etd9 = function etd9(params, callback) {
         callback(err, res);
     });
 }
-
+wid.etd9.category = "executeit";
+wid.etd9.subcategory = "dothis";
+wid.etd9.type = "minute";
+wid.etd9.name = "this does a test";
 
 /*
       4) 
@@ -12585,7 +13576,7 @@ exports.etd9 = etd9 = function etd9(params, callback) {
       execute(execute=updatewid, wid=currentwid)
       return new wid
 */
-exports.getnewwid1 = getnewwid1 = function getnewwid1(params, callback) {
+exports.getnewwid1 = wid.getnewwid1 = getnewwid1 = function getnewwid1(params, callback) {
     async.series([
         function(cb1) {
             getnewwid(function(err, res) {
@@ -12600,9 +13591,13 @@ exports.getnewwid1 = getnewwid1 = function getnewwid1(params, callback) {
         callback(params);
     });
 }
+wid.getnewwid1.category = "executeit";
+wid.getnewwid1.subcategory = "dothis";
+wid.getnewwid1.type = "minute";
+wid.getnewwid1.name = "this does a test";
 
 // DTO 1, dot > object 3, dot
-exports.ettest1dot3dot = ettest1dot3dot = function ettest1dot3dot(params, callback) {
+exports.ettest1dot3dot = wid.ettest1dot3dot = ettest1dot3dot = function ettest1dot3dot(params, callback) {
     eventappinstall();
 
     debuglevel = 0;
@@ -12673,10 +13668,13 @@ exports.ettest1dot3dot = ettest1dot3dot = function ettest1dot3dot(params, callba
             })
         });
 }
-
+wid.ettest1dot3dot.category = "executeit";
+wid.ettest1dot3dot.subcategory = "dothis";
+wid.ettest1dot3dot.type = "minute";
+wid.ettest1dot3dot.name = "this does a test";
 
 // DTO 3, dot > object 3, dot
-exports.ettest3dot3dot = ettest3dot3dot = function ettest3dot3dot(params, callback) {
+exports.ettest3dot3dot = wid.ettest3dot3dot = ettest3dot3dot = function ettest3dot3dot(params, callback) {
     eventappinstall();
 
     debuglevel = 0;
@@ -12761,9 +13759,13 @@ exports.ettest3dot3dot = ettest3dot3dot = function ettest3dot3dot(params, callba
             })
         });
 }
+wid.ettest3dot3dot.category = "executeit";
+wid.ettest3dot3dot.subcategory = "dothis";
+wid.ettest3dot3dot.type = "minute";
+wid.ettest3dot3dot.name = "this does a test";
 
 // DTO 3, dot > object 3, dot
-exports.ettest3dot1dot = ettest3dot1dot = function ettest3dot1dot(params, callback) {
+exports.ettest3dot1dot = wid.ettest3dot1dot = ettest3dot1dot = function ettest3dot1dot(params, callback) {
     eventappinstall();
 
     debuglevel = 0;
@@ -12838,9 +13840,13 @@ exports.ettest3dot1dot = ettest3dot1dot = function ettest3dot1dot(params, callba
             })
         });
 }
+wid.ettest3dot1dot.category = "executeit";
+wid.ettest3dot1dot.subcategory = "dothis";
+wid.ettest3dot1dot.type = "minute";
+wid.ettest3dot1dot.name = "this does a test";
 
 // DTO 3, dot > object 3, dot
-exports.ettest1dot1dot = ettest1dot1dot = function ettest1dot1dot(params, callback) {
+exports.ettest1dot1dot = wid.ettest1dot1dot = ettest1dot1dot = function ettest1dot1dot(params, callback) {
     eventappinstall();
 
     debuglevel = 0;
@@ -12903,10 +13909,14 @@ exports.ettest1dot1dot = ettest1dot1dot = function ettest1dot1dot(params, callba
             })
         });
 }
+wid.ettest1dot1dot.category = "executeit";
+wid.ettest1dot1dot.subcategory = "dothis";
+wid.ettest1dot1dot.type = "minute";
+wid.ettest1dot1dot.name = "this does a test";
 
 /* jsononetomany tests */
 // DTO 1, dot > object , dot,, jsononetomany
-exports.ettest1dot3dotjsonmany = ettest1dot3dotjsonmany = function ettest1dot3dotjsonmany(params, callback) {
+exports.ettest1dot3dotjsonmany = wid.ettest1dot3dotjsonmany = ettest1dot3dotjsonmany = function ettest1dot3dotjsonmany(params, callback) {
     eventappinstall();
 
     debuglevel = 0;
@@ -12978,9 +13988,13 @@ exports.ettest1dot3dotjsonmany = ettest1dot3dotjsonmany = function ettest1dot3do
             })
         });
 }
+wid.ettest1dot3dotjsonmany.category = "executeit";
+wid.ettest1dot3dotjsonmany.subcategory = "dothis";
+wid.ettest1dot3dotjsonmany.type = "minute";
+wid.ettest1dot3dotjsonmany.name = "this does a test";
 
 // DTO 3, dot > object 3, dot,, jsononetomany
-exports.ettest3dot3dotjsonmany = ettest3dot3dotjsonmany = function ettest3dot3dotjsonmany(params, callback) {
+exports.ettest3dot3dotjsonmany = wid.ettest3dot3dotjsonmany = ettest3dot3dotjsonmany = function ettest3dot3dotjsonmany(params, callback) {
     eventappinstall();
 
     debuglevel = 0;
@@ -13056,9 +14070,13 @@ exports.ettest3dot3dotjsonmany = ettest3dot3dotjsonmany = function ettest3dot3do
             })
         });
 }
+wid.ettest3dot3dotjsonmany.category = "executeit";
+wid.ettest3dot3dotjsonmany.subcategory = "dothis";
+wid.ettest3dot3dotjsonmany.type = "minute";
+wid.ettest3dot3dotjsonmany.name = "this does a test";
 
 // DTO 3, dot > object 3, dot,, jsononetomany
-exports.ettest3dot1dotjsonmany = ettest3dot1dotjsonmany = function ettest3dot1dotjsonmany(params, callback) {
+exports.ettest3dot1dotjsonmany = wid.ettest3dot1dotjsonmany = ettest3dot1dotjsonmany = function ettest3dot1dotjsonmany(params, callback) {
     eventappinstall();
 
     debuglevel = 0;
@@ -13124,9 +14142,13 @@ exports.ettest3dot1dotjsonmany = ettest3dot1dotjsonmany = function ettest3dot1do
             })
         });
 }
+wid.ettest3dot1dotjsonmany.category = "executeit";
+wid.ettest3dot1dotjsonmany.subcategory = "dothis";
+wid.ettest3dot1dotjsonmany.type = "minute";
+wid.ettest3dot1dotjsonmany.name = "this does a test";
 
 // DTO 3, dot > object 3, dot,, jsononetomany
-exports.ettest1dot1dotjsonmany = ettest1dot1dotjsonmany = function ettest1dot1dotjsonmany(params, callback) {
+exports.ettest1dot1dotjsonmany = wid.ettest1dot1dotjsonmany = ettest1dot1dotjsonmany = function ettest1dot1dotjsonmany(params, callback) {
     eventappinstall();
 
     debuglevel = 0;
@@ -13180,10 +14202,14 @@ exports.ettest1dot1dotjsonmany = ettest1dot1dotjsonmany = function ettest1dot1do
             })
         });
 }
+wid.ettest1dot1dotjsonmany.category = "executeit";
+wid.ettest1dot1dotjsonmany.subcategory = "dothis";
+wid.ettest1dot1dotjsonmany.type = "minute";
+wid.ettest1dot1dotjsonmany.name = "this does a test";
 
 /* jsononetoone tests */
 // DTO 1, dot > object , dot,, jsononetoone
-exports.ettest1dot3dotjsonone = ettest1dot3dotjsonone = function ettest1dot3dotjsonone(params, callback) {
+exports.ettest1dot3dotjsonone = wid.ettest1dot3dotjsonone = ettest1dot3dotjsonone = function ettest1dot3dotjsonone(params, callback) {
     eventappinstall();
 
     debuglevel = 0;
@@ -13248,9 +14274,13 @@ exports.ettest1dot3dotjsonone = ettest1dot3dotjsonone = function ettest1dot3dotj
             })
         });
 }
+wid.ettest1dot3dotjsonone.category = "executeit";
+wid.ettest1dot3dotjsonone.subcategory = "dothis";
+wid.ettest1dot3dotjsonone.type = "minute";
+wid.ettest1dot3dotjsonone.name = "this does a test";
 
 // DTO 3, dot > object 3, dot,, jsononetoone
-exports.ettest3dot3dotjsonone = ettest3dot3dotjsonone = function ettest3dot3dotjsonone(params, callback) {
+exports.ettest3dot3dotjsonone = wid.ettest3dot3dotjsonone = ettest3dot3dotjsonone = function ettest3dot3dotjsonone(params, callback) {
     eventappinstall();
 
     debuglevel = 0;
@@ -13324,9 +14354,13 @@ exports.ettest3dot3dotjsonone = ettest3dot3dotjsonone = function ettest3dot3dotj
             })
         });
 }
+wid.ettest3dot3dotjsonone.category = "executeit";
+wid.ettest3dot3dotjsonone.subcategory = "dothis";
+wid.ettest3dot3dotjsonone.type = "minute";
+wid.ettest3dot3dotjsonone.name = "this does a test";
 
 // DTO 3, dot > object 3, dot,, jsononetoone
-exports.ettest3dot1dotjsonone = ettest3dot1dotjsonone = function ettest3dot1dotjsonone(params, callback) {
+exports.ettest3dot1dotjsonone = wid.ettest3dot1dotjsonone = ettest3dot1dotjsonone = function ettest3dot1dotjsonone(params, callback) {
     eventappinstall();
 
     debuglevel = 0;
@@ -13392,9 +14426,13 @@ exports.ettest3dot1dotjsonone = ettest3dot1dotjsonone = function ettest3dot1dotj
             })
         });
 }
+wid.ettest3dot1dotjsonone.category = "executeit";
+wid.ettest3dot1dotjsonone.subcategory = "dothis";
+wid.ettest3dot1dotjsonone.type = "minute";
+wid.ettest3dot1dotjsonone.name = "this does a test";
 
 // DTO 3, dot > object 3, dot,, jsononetoone
-exports.ettest1dot1dotjsonone = ettest1dot1dotjsonone = function ettest1dot1dotjsonone(params, callback) {
+exports.ettest1dot1dotjsonone = wid.ettest1dot1dotjsonone = ettest1dot1dotjsonone = function ettest1dot1dotjsonone(params, callback) {
     eventappinstall();
 
     debuglevel = 17;
@@ -13447,10 +14485,14 @@ exports.ettest1dot1dotjsonone = ettest1dot1dotjsonone = function ettest1dot1dotj
             })
         });
 }
+wid.ettest1dot1dotjsonone.category = "executeit";
+wid.ettest1dot1dotjsonone.subcategory = "dothis";
+wid.ettest1dot1dotjsonone.type = "minute";
+wid.ettest1dot1dotjsonone.name = "this does a test";
 
 /* object tests */
 // DTO 1, dot > object , dot,, object
-exports.ettest1dot3dotobject = ettest1dot3dotobject = function ettest1dot3dotobject(params, callback) {
+exports.ettest1dot3dotobject = wid.ettest1dot3dotobject = ettest1dot3dotobject = function ettest1dot3dotobject(params, callback) {
     eventappinstall();
 
     debuglevel = 0;
@@ -13466,10 +14508,14 @@ exports.ettest1dot3dotobject = ettest1dot3dotobject = function ettest1dot3dotobj
             //"sounddto.wid": "sounddto",
             //"sounddto.metadata.method": "sounddto",
             "sounddto": {
-                "wid": "string",
+                "wid": "string"
+            },
+            "sounddto": {
                 "metadata": {
                     "method": "string"
-                },
+                }
+            },
+            "sounddto": {
                 "note": "string"
             }
 
@@ -13534,9 +14580,13 @@ exports.ettest1dot3dotobject = ettest1dot3dotobject = function ettest1dot3dotobj
             })
         });
 }
+wid.ettest1dot3dotobject.category = "executeit";
+wid.ettest1dot3dotobject.subcategory = "dothis";
+wid.ettest1dot3dotobject.type = "minute";
+wid.ettest1dot3dotobject.name = "this does a test";
 
 // DTO 3, dot > object 3, dot,, object
-exports.ettest3dot3dotobject = ettest3dot3dotobject = function ettest3dot3dotobject(params, callback) {
+exports.ettest3dot3dotobject = wid.ettest3dot3dotobject = ettest3dot3dotobject = function ettest3dot3dotobject(params, callback) {
     eventappinstall();
 
     debuglevel = 0;
@@ -13628,9 +14678,13 @@ exports.ettest3dot3dotobject = ettest3dot3dotobject = function ettest3dot3dotobj
             })
         });
 }
+wid.ettest3dot3dotobject.category = "executeit";
+wid.ettest3dot3dotobject.subcategory = "dothis";
+wid.ettest3dot3dotobject.type = "minute";
+wid.ettest3dot3dotobject.name = "this does a test";
 
 // DTO 3, dot > object 3, dot,, object
-exports.ettest3dot1dotobject = ettest3dot1dotobject = function ettest3dot1dotobject(params, callback) {
+exports.ettest3dot1dotobject = wid.ettest3dot1dotobject = ettest3dot1dotobject = function ettest3dot1dotobject(params, callback) {
     eventappinstall();
 
     debuglevel = 0;
@@ -13702,9 +14756,13 @@ exports.ettest3dot1dotobject = ettest3dot1dotobject = function ettest3dot1dotobj
             })
         });
 }
+wid.ettest3dot1dotobject.category = "executeit";
+wid.ettest3dot1dotobject.subcategory = "dothis";
+wid.ettest3dot1dotobject.type = "minute";
+wid.ettest3dot1dotobject.name = "this does a test";
 
 // DTO 3, dot > object 3, dot,, object
-exports.ettest1dot1dotobject = ettest1dot1dotobject = function ettest1dot1dotobject(params, callback) {
+exports.ettest1dot1dotobject = wid.ettest1dot1dotobject = ettest1dot1dotobject = function ettest1dot1dotobject(params, callback) {
     eventappinstall();
 
     debuglevel = 0;
@@ -13712,19 +14770,25 @@ exports.ettest1dot1dotobject = ettest1dot1dotobject = function ettest1dot1dotobj
     execute([{
             "executethis": "addwidmaster",
             "wid": "songdto",
+            "metadata": {
+                "method": "songdto"
+            },
             "title": "string",
-            "method": "songdto",
             "metadata": {
                 "sounddto": {
                     "type": "jsononetoone"
                 }
             },
             "sounddto": {
-                "wid": "sounddto",
-                "note": "string",
+                "wid": "sounddto"
+            },
+            "sounddto": {
                 "metadata": {
                     "method": "sounddto"
                 }
+            },
+            "sounddto": {
+                "note": "string"
             }
         }, {
             "executethis": "addwidmaster",
@@ -13767,6 +14831,10 @@ exports.ettest1dot1dotobject = ettest1dot1dotobject = function ettest1dot1dotobj
             })
         });
 }
+wid.ettest1dot1dotobject.category = "executeit";
+wid.ettest1dot1dotobject.subcategory = "dothis";
+wid.ettest1dot1dotobject.type = "minute";
+wid.ettest1dot1dotobject.name = "this does a test";
 
 /*
 ettest1dot3dotjsonmany
@@ -13785,7 +14853,7 @@ ettest3dot1dotobject
 ettest1dot1dotobject
 */
 
-exports.ettestdot = ettestdot = function ettestdot(params, callback) {
+exports.ettestdot = wid.ettestdot = ettestdot = function ettestdot(params, callback) {
     var result = [];
     var err;
 
@@ -13827,6 +14895,10 @@ exports.ettestdot = ettestdot = function ettestdot(params, callback) {
         });
     });
 }
+wid.ettestdot.category = "executeit";
+wid.ettestdot.subcategory = "dothis";
+wid.ettestdot.type = "minute";
+wid.ettestdot.name = "this does a test";
 
 /*
       deep filter tests for all dto types
@@ -13855,6 +14927,7 @@ exports.ettestdot = ettestdot = function ettestdot(params, callback) {
 
 
 function testDeepFilterTests(command, callback) {
+    debuglevel = 0;
     async.series([
         function(cb1) {
             var dtoObjOpt = {
@@ -13868,9 +14941,6 @@ function testDeepFilterTests(command, callback) {
                 "h1": "hash",
                 "p1": "phone",
                 "r1": "random4",
-                "g11": "guid",
-                "sg11": "shortguid",
-                "r11": "random4", //To check if existing value, then don't touch
                 "b2": "boolean",
                 "s2": "string",
                 "n2": "number",
@@ -13910,9 +14980,6 @@ function testDeepFilterTests(command, callback) {
                 "d1": "2/27/2014",
                 "h1": "ff00ff",
                 "p1": "19998887777",
-                "g11": "1111111-2222-33333-4444-5555555555",
-                "sg11": "1111-2222-3333-4444",
-                "r11": "1111", //To check if existing value, then don't touch
                 "b2": false,
                 "s2": "hello",
                 "n2": 30,
@@ -13974,71 +15041,76 @@ function testDeepFilterTests(command, callback) {
 /*
       "command.deepfilter.convert":true, "command.deepfilter.totype":true
 */
-exports.etd16 = etd16 = function etd16(params, callback) {
+exports.etd16 = wid.etd16 = etd16 = function etd16(params, callback) {
     var command = {
-        "deepfilter": {
-            "convert": true,
-            "totype": true
-        }
+        "command.deepfilter.convert": true,
+        "command.deepfilter.totype": true
     }; //string to datatype
     testDeepFilterTests(command, function(err, res) {
         proxyprinttodiv("after test convert:true totype: true --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
         callback(err, res);
     });
 }
+wid.etd16.category = "executeit";
+wid.etd16.subcategory = "dothis";
+wid.etd16.type = "minute";
+wid.etd16.name = "this does a test";
 
 /*
       "command.deepfilter.convert":true, "command.deepfilter.totype":false
 */
-exports.etd17 = etd17 = function etd17(params, callback) {
-
+exports.etd17 = wid.etd17 = etd17 = function etd17(params, callback) {
     var command = {
-        "deepfilter": {
-            "convert": true,
-            "totype": false
-        }
+        "command.deepfilter.convert": true,
+        "command.deepfilter.totype": false
     }; //datatype to string
     testDeepFilterTests(command, function(err, res) {
         proxyprinttodiv("after test convert:true totype: false --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
         callback(err, res);
     });
 }
+wid.etd17.category = "executeit";
+wid.etd17.subcategory = "dothis";
+wid.etd17.type = "minute";
+wid.etd17.name = "this does a test";
 
 /*
       "command.deepfilter.convert":false, "command.deepfilter.totype":true
       no conversion
 */
-exports.etd18 = etd18 = function etd18(params, callback) {
-
+exports.etd18 = wid.etd18 = etd18 = function etd18(params, callback) {
     var command = {
-        "deepfilter": {
-            "convert": false,
-            "totype": true
-        }
+        "command.deepfilter.convert": false,
+        "command.deepfilter.totype": true
     }; //no conversion
     testDeepFilterTests(command, function(err, res) {
         proxyprinttodiv("after test convert:false totype: true --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
         callback(err, res);
     });
 }
+wid.etd18.category = "executeit";
+wid.etd18.subcategory = "dothis";
+wid.etd18.type = "minute";
+wid.etd18.name = "this does a test";
 
 /*
       "command.deepfilter.convert":false, "command.deepfilter.totype":false
       no conversion
 */
-exports.etd19 = etd19 = function etd19(params, callback) {
-
+exports.etd19 = wid.etd19 = etd19 = function etd19(params, callback) {
     var command = {
-        "deepfilter": {
-            "convert": false,
-            "totype": false
-        }
+        "command.deepfilter.convert": false,
+        "command.deepfilter.totype": false
     }; //no conversion
     testDeepFilterTests(command, function(err, res) {
         proxyprinttodiv("after test convert:false totype: false --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
         callback(err, res);
     });
 }
+wid.etd19.category = "executeit";
+wid.etd19.subcategory = "dothis";
+wid.etd19.type = "minute";
+wid.etd19.name = "this does a test";
 
 /*
       deep filter tests for all dto types
@@ -14066,7 +15138,7 @@ exports.etd19 = etd19 = function etd19(params, callback) {
 // var command = {"command.deepfilter.totype":true};
 
 
-function testDeepFilterTests1(command, callback) {
+function testDeepFilterTests(command, callback) {
     debuglevel = 0;
     async.series([
         function(cb1) {
@@ -14187,19 +15259,14 @@ function testDeepFilterTests1(command, callback) {
 /*
       "command.deepfilter.convert":true, "command.deepfilter.totype":true
 */
-exports.etd26 = etd26 = function etd26(params, callback) {
+exports.etd26 = wid.etd26 = etd26 = function etd26(params, callback) {
     eventappinstall();
 
     execute([{
-            "executethis": "testDeepFilterTests1",
-            "command": {
-                "deepfilter": {
-                    "convert": true,
-                    "totype": true
-                }
-            }
+            "executethis": "testDeepFilterTests",
+            "command.deepfilter.convert": true,
+            "command.deepfilter.totype": true
         }],
-
         function(err, res) {
             res = logverify("etd16_result", res[0], [{
                 "b1": false,
@@ -14221,15 +15288,19 @@ exports.etd26 = etd26 = function etd26(params, callback) {
             callback(err, res);
         });
 }
+wid.etd26.category = "executeit";
+wid.etd26.subcategory = "dothis";
+wid.etd26.type = "minute";
+wid.etd26.name = "this does a test";
 
 /*
       "command.deepfilter.convert":true, "command.deepfilter.totype":false
 */
-exports.etd27 = etd27 = function etd27(params, callback) {
+exports.etd27 = wid.etd27 = etd27 = function etd27(params, callback) {
     eventappinstall();
 
     execute([{
-            "executethis": "testDeepFilterTests1",
+            "executethis": "testDeepFilterTests",
             "command.deepfilter.convert": true,
             "command.deepfilter.totype": false
         }],
@@ -14254,16 +15325,20 @@ exports.etd27 = etd27 = function etd27(params, callback) {
             callback(err, res);
         });
 }
+wid.etd27.category = "executeit";
+wid.etd27.subcategory = "dothis";
+wid.etd27.type = "minute";
+wid.etd27.name = "this does a test";
 
 /*
       "command.deepfilter.convert":false, "command.deepfilter.totype":true
       no conversion
 */
-exports.etd28 = etd28 = function etd28(params, callback) {
+exports.etd28 = wid.etd28 = etd28 = function etd28(params, callback) {
     eventappinstall();
 
     execute([{
-            "executethis": "testDeepFilterTests1",
+            "executethis": "testDeepFilterTests",
             "command.deepfilter.convert": false,
             "command.deepfilter.totype": true
         }],
@@ -14288,16 +15363,20 @@ exports.etd28 = etd28 = function etd28(params, callback) {
             callback(err, res);
         });
 }
+wid.etd28.category = "executeit";
+wid.etd28.subcategory = "dothis";
+wid.etd28.type = "minute";
+wid.etd28.name = "this does a test";
 
 /*
       "command.deepfilter.convert":false, "command.deepfilter.totype":false
       no conversion
 */
-exports.etd29 = etd29 = function etd29(params, callback) {
+exports.etd29 = wid.etd29 = etd29 = function etd29(params, callback) {
     eventappinstall();
 
     execute([{
-            "executethis": "testDeepFilterTests1",
+            "executethis": "testDeepFilterTests",
             "command.deepfilter.convert": false,
             "command.deepfilter.totype": false
         }],
@@ -14322,10 +15401,14 @@ exports.etd29 = etd29 = function etd29(params, callback) {
             callback(err, res);
         });
 }
+wid.etd29.category = "executeit";
+wid.etd29.subcategory = "dothis";
+wid.etd29.type = "minute";
+wid.etd29.name = "this does a test";
 
 // exports.etd16 = etd16 = function etd16(params, callback) {
 //     var command = {"command.deepfilter.convert":true, "command.deepfilter.totype":true};    //string to datatype
-//     testDeepFilterTests(command, function (err, res){
+//     testDeepFilterTests(command, function(err, res){
 
 //         proxyprinttodiv("after test convert:true totype: true --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
 
@@ -14334,7 +15417,7 @@ exports.etd29 = etd29 = function etd29(params, callback) {
 // }
 // exports.etd17 = etd17 = function etd17(params, callback) {
 //     var command = {"command.deepfilter.convert":true, "command.deepfilter.totype":false};   //datatype to string
-//     testDeepFilterTests(command, function (err, res){
+//     testDeepFilterTests(command, function(err, res){
 //             proxyprinttodiv("after test convert:true totype: false --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
 //         callback(err, res);
 //     });
@@ -14342,7 +15425,7 @@ exports.etd29 = etd29 = function etd29(params, callback) {
 
 // exports.etd18 = etd18 = function etd18(params, callback) {
 //     var command = {"command.deepfilter.convert":false, "command.deepfilter.totype":true};   //no conversion
-//     testDeepFilterTests(command, function (err, res){
+//     testDeepFilterTests(command, function(err, res){
 //             proxyprinttodiv("after test convert:false totype: true --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
 //         callback(err, res);
 //     });
@@ -14350,7 +15433,7 @@ exports.etd29 = etd29 = function etd29(params, callback) {
 
 // exports.etd19 = etd19 = function etd19(params, callback) {
 //    var command = {"command.deepfilter.convert":false, "command.deepfilter.totype":false};    //no conversion
-//    testDeepFilterTests(command, function (err, res){
+//    testDeepFilterTests(command, function(err, res){
 //             proxyprinttodiv("after test convert:false totype: false --1:string, 2:type, 3:'', 4:wrong", res, 99, true);
 //          callback(err, res);
 //    });
@@ -14363,7 +15446,7 @@ exports.etd29 = etd29 = function etd29(params, callback) {
 
 <<dtoobj>>{"title":"string","wid":"string","metadata":{"method":"string","merchantdto":{"type":"onetomany"}},"command":{"inherit":{"defaultsystemactions":"defaultsystemactions"},"deepdtolist":{"systemdto":"onetoone","loyaltydto":"onetomany","merchantdto":"onetomany"},"dtolist":{"merchantdto":"onetomany","systemdto":"onetoone"}},"merchantdto":[{"name":"string","wid":"string","metadata":{"method":"string","loyaltydto":{"type":"onetomany"}},"command":{"inherit":{"defaultsystemactions":"defaultsystemactions"},"deepdtolist":{"systemdto":"onetoone","loyaltydto":"onetomany"},"dtolist":{"loyaltydto":"onetomany","systemdto":"onetoone"}},"loyaltydto":[{"name":"string","wid":"string","metadata":{"method":"string"},"command":{"inherit":{"defaultsystemactions":"defaultsystemactions"},"deepdtolist":{"systemdto":"onetoone"},"dtolist":{"systemdto":"onetoone"}}}]}]}
 */
-exports.etd30 = etd30 = function etd30(params, callback) {
+exports.etd30 = wid.etd30 = etd30 = function etd30(params, callback) {
     debuglevel = 41;
     async.series([
         function(cb1) {
@@ -14480,8 +15563,12 @@ exports.etd30 = etd30 = function etd30(params, callback) {
         });
     });
 }
+wid.etd30.category = "executeit";
+wid.etd30.subcategory = "dothis";
+wid.etd30.type = "minute";
+wid.etd30.name = "this does a test";
 
-exports.lmetd2 = lmetd2 = function lmetd2(params, callback) {
+exports.lmetd2 = wid.lmetd2 = lmetd2 = function lmetd2(params, callback) {
     debuglevel = 17;
     async.series([
         function(cb1) {
@@ -14532,8 +15619,13 @@ exports.lmetd2 = lmetd2 = function lmetd2(params, callback) {
         });
     });
 }
+wid.lmetd2.category = "executeit";
+wid.lmetd2.subcategory = "dothis";
+wid.lmetd2.type = "minute";
+wid.lmetd2.name = "this does a test";
+
 // I thought I could turn an integer into a string, but no go....leaves it an integer
-exports.lmetd3 = lmetd3 = function lmetd3(params, callback) {
+exports.lmetd3 = wid.lmetd3 = lmetd3 = function lmetd3(params, callback) {
     debuglevel = 17;
     async.series([
         function(cb1) {
@@ -14568,10 +15660,15 @@ exports.lmetd3 = lmetd3 = function lmetd3(params, callback) {
         });
     });
 }
+wid.lmetd3.category = "executeit";
+wid.lmetd3.subcategory = "dothis";
+wid.lmetd3.type = "minute";
+wid.lmetd3.name = "this does a test";
+
 
 // I expected the integer to stay an integer, 
 // but with an empty dtoObjOpt, you get a string
-exports.lmetd4 = lmetd4 = function lmetd4(params, callback) {
+exports.lmetd4 = wid.lmetd4 = lmetd4 = function lmetd4(params, callback) {
     debuglevel = 17;
     async.series([
         function(cb1) {
@@ -14606,8 +15703,13 @@ exports.lmetd4 = lmetd4 = function lmetd4(params, callback) {
         });
     });
 }
+wid.lmetd4.category = "executeit";
+wid.lmetd4.subcategory = "dothis";
+wid.lmetd4.type = "minute";
+wid.lmetd4.name = "this does a test";
+
 // 
-exports.lmetd5 = lmetd5 = function lmetd5(params, callback) {
+exports.lmetd5 = wid.lmetd5 = lmetd5 = function lmetd5(params, callback) {
     debuglevel = 17;
     async.series([
         function(cb1) {
@@ -14643,10 +15745,12 @@ exports.lmetd5 = lmetd5 = function lmetd5(params, callback) {
         });
     });
 };
+wid.lmetd5.category = "executeit";
+wid.lmetd5.subcategory = "dothis";
+wid.lmetd5.type = "minute";
+wid.lmetd5.name = "this does a test";
 
-exports.ettestag3v2 = ettestag3v2 = function ettestag3v2(params, callback) {
-
-
+exports.ettestag3v2 = wid.ettestag3v2 = ettestag3v2 = function ettestag3v2(params, callback) {
     debuglevel = 0;
     execute([{
             "executethis": "addwidmaster",
@@ -14731,598 +15835,85 @@ exports.ettestag3v2 = ettestag3v2 = function ettestag3v2(params, callback) {
             })
         });
 };
+wid.ettestag3v2.category = "executeit";
+wid.ettestag3v2.subcategory = "dothis";
+wid.ettestag3v2.type = "minute";
+wid.ettestag3v2.name = "this does a test";
 
+//
+// russ see me about naming of functions
+// russ see me about putting things in brackets or not
 
-// }
+//
 
+exports.test_logverifyvariable_1 = wid.test_logverifyvariable_1 = test_logverifyvariable_1 = function test_logverifyvariable_1(param, callback) {
+    // This is the simplest case - should work and return a simple pass
 
-exports.testgetdtoobject1 = testgetdtoobject1 = function testgetdtoobject1(params, callback) {
-    debuglevel = 17;
-    var obj = {
-        "wid": "sounddto",
-        "metadata": {
-            "method": "sounddto"
-        },
-        "note": "string"
-    }
-
-    // var temp = ConvertToDOTdri(obj);
-    // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
-
-    // temp = ConvertFromDOTdri(obj);
-    // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
-
-    getdtoobject(obj, {
-        "dtotype": "defaultdto"
-    }, function(err, res) {
-        proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
-        res = logverify("testgetdtoobject1", res, {
-            "wid": "guid",
-            "metadata": {
-                "method": "string",
-                "systemdto": {
-                    "type": "string"
-                }
-            },
-            "note": "string",
-            "command": {
-                "dtolist": {
-                    "systemdto": "onetoone"
-                },
-                "deepdtolist": {
-                    "systemdto": "onetoone"
-                },
-                "inherit": []
-            }
-        });
-
-
-
-        // {"exception":["created", "changed", "unchanged", "deleted"]}
-
-
-        callback(null, res)
-    });
-}
-
-
-// add songdto, sounddto, relationship and then get the structure of the compounddto - songdto 
-// tests if relationships are setup correctly
-exports.testgetdtoobject3 = testgetdtoobject3 = function testgetdtoobject3(params, callback) {
-    debuglevel = 17;
-
-    var preData1 = {
-        "wid": "songdto",
-        "metadata": {
-            "method": "songdto",
-            "sounddto": {
-                "type": "onetomany"
-            }
-        },
-        "title": "string"
+    var result_obj = {
+        'a': 'b'
     };
+    var assert_obj = {
+        'a': 'b'
+    }; // {'exception': 'changed'}};
 
-    var preData2 = {
-        "wid": "sounddto",
-        "metadata": {
-            "method": "sounddto"
-        },
-        "note": "string"
-    };
-
-    var preData3 = {
-        "wid": "rel_sound_to_song",
-        "metadata": {
-            "method": "relationshipdto"
-        },
-        "primarywid": "songdto",
-        "secondarywid": "sounddto",
-        "primarymethod": "songdto",
-        "secondarymethod": "sounddto",
-        "linktype": "onetomany",
-        "relationshiptype": "attributes"
-    };
-
-    updatewid(preData1, function(err, res) {
-
-        updatewid(preData2, function(err, res) {
-
-            updatewid(preData3, function(err, res) {
-
-
-                var obj = {
-                    "wid": "songdto"
-                };
-
-                var assertobj = {
-                    "title": "string",
-                    "wid": "guid",
-                    "metadata": {
-                        "method": "string",
-                        "sounddto": {
-                            "type": "string"
-                        }
-                    },
-                    "sounddto": [{
-                        "command": {
-                            "inherit": [],
-                            "deepdtolist": {
-                                "systemdto": "onetoone"
-                            },
-                            "dtolist": {
-                                "systemdto": "onetoone"
-                            }
-                        },
-                        "note": "string",
-                        "wid": "guid",
-                        "metadata": {
-                            "method": "string"
-                        },
-                        "systemdto": {}
-                    }],
-                    "systemdto": {},
-                    "command": {
-                        "inherit": [],
-                        "deepdtolist": {
-                            "systemdto": "onetoone",
-                            "sounddto": "onetomany"
-                        },
-                        "dtolist": {
-                            "sounddto": "onetomany",
-                            "systemdto": "onetoone"
-                        }
-                    }
-                };
-
-
-
-                // var temp = ConvertToDOTdri(obj);
-                // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
-
-                // temp = ConvertFromDOTdri(obj);
-                // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
-
-                getdtoobject(obj, {
-                    "dtotype": "songdto"
-                }, function(err, res) {
-                    proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
-                    res = logverify("testgetdtoobject3", res, assertobj);
-                    callback(null, res)
-                });
-            });
-        });
-    });
-}
-
-exports.testgetdtoobject2 = testgetdtoobject2 = function testgetdtoobject2(params, callback) {
-    debuglevel = 17;
-    var obj = {
-        "title": "Highway to Hell",
-        "wid": "song1",
-        "metadata": {
-            "method": "songdto",
-            "sounddto": {
-                "type": "onetomany"
-            }
-        },
-        "sounddto": [{
-            "note": "A flat",
-            "wid": "ag3aflat",
-            "metadata": {
-                "method": "sounddto",
-                "parentwid": {
-                    "song1": "songdto"
-                }
-            }
-        }, {
-            "note": "B sharp",
-            "wid": "ag3bsharp",
-            "metadata": {
-                "method": "sounddto",
-                "parentwid": {
-                    "song1": "songdto"
-                }
-            }
-        }, {
-            "note": "C flat",
-            "wid": "ag3cflat",
-            "metadata": {
-                "method": "sounddto",
-                "parentwid": {
-                    "song1": "songdto"
-                }
-            }
-        }]
-    };
-
-    var outputobj = 
-    {
-    "title": "string",
-    "wid": "guid",
-    "metadata": {
-        "method": "string",
-        "sounddto": {
-            "type": "string"
-        },
-        "systemdto": {
-            "type": "string"
-        }
-    },
-    "sounddto": [{
-        "note": "A flat",
-        "wid": "ag3aflat",
-        "metadata": {
-            "method": "sounddto",
-            "parentwid": {
-                "song1": "songdto"
+    var test_name = 'test_logverifyvariable_1_result';
+    var test_name_diff = test_name + '_diff';
+    var expected_result = {
+        test_name: 'PASS',
+        test_name_diff: {
+            'a': {
+                'data': 'b',
+                'type': 'unchanged'
             }
         }
-    }],
-    "command": {
-        "dtolist": {
-            "sounddto": "onetomany",
-            "systemdto": "onetoone"
-        },
-        "deepdtolist": {
-            "sounddto": "onetomany",
-            "systemdto": "onetoone"
-        },
-        "inherit": []
-    }
-}
-
-    // var temp = ConvertToDOTdri(obj);
-    // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
-
-    // temp = ConvertFromDOTdri(obj);
-    // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
-
-    getdtoobject(obj, {
-        "dtotype": "defaultdto"
-    }, function(err, res) {
-        proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
-        res = logverify("testgetdtoobject2", res, outputobj);
-        callback(null, res)
-    });
-}
-
-
-
-// 13 getdtoobject  -- input 
-// {"wid":"sounddto","metadata":{"method":"sounddto"},"note":"string"}black
-// 14 getdtoobject -- output
-// {"wid":"string","metadata":{"method":"string"},"note":"string"}black
-exports.testgetdtoobject4 = testgetdtoobject4 = function testgetdtoobject4(params, callback) {
-    debuglevel = 17;
-    var obj = {
-        "wid": "sounddto",
-        "metadata": {
-            "method": "sounddto"
-        },
-        "note": "string"
     };
 
-    var assertobj = {"wid":"guid","metadata":{"method":"string","systemdto":{"type":"string"}},"note":"string","command":{"dtolist":{"systemdto":"onetoone"},"deepdtolist":{"systemdto":"onetoone"},"inherit":[]}};
+    proxyprinttodiv(test_name, result_obj, assert_obj);
+    var actual_result = logverifyvariable(test_name, result_obj, assert_obj);
 
-    // var temp = ConvertToDOTdri(obj);
-    // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
+    // We should be able to pass back the result from "logverifyvariable" and get a PASS / FAIL result
 
-    // temp = ConvertFromDOTdri(obj);
-    // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
+    // tell the system we're finished
+    callback(null, actual_result);
 
-    getdtoobject(obj, {
-        "dtotype": "songdto"
-    }, function(err, res) {
-        proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
-        res = logverify("testgetdtoobject4", res, assertobj);
-        callback(null, res)
-    });
+    debugger;
 }
-// 15 getdtoobject  -- input 
-// {"wid":"songdto","metadata":{"method":"songdto","sounddto":{"type":"onetomany"}},"title":"string"}black
-// 16 getdtoobject -- output
-// {"wid":"string","metadata":{"method":"string","sounddto":{"type":"string"}},"title":"string"}black
-exports.testgetdtoobject5 = testgetdtoobject5 = function testgetdtoobject5(params, callback) {
-    debuglevel = 17;
-    var obj = {
-        "wid": "songdto",
-        "metadata": {
-            "method": "songdto",
-            "sounddto": {
-                "type": "onetomany"
+wid.test_logverifyvariable_1.category = "executeit";
+wid.test_logverifyvariable_1.subcategory = "dothis";
+wid.test_logverifyvariable_1.type = "minute";
+wid.test_logverifyvariable_1.name = "this does a test";
+
+exports.test_logverifyvariable_2 = wid.test_logverifyvariable_2 = test_logverifyvariable_2 = function test_logverifyvariable_2(param, callback) {
+    var result_obj = {
+        'a': 'b'
+    };
+    var assert_obj = {
+        'a': 'z'
+    };
+
+    var test_name = 'test_logverifyvariable_2';
+    var test_name_diff = test_name + '_diff';
+    var expected_result = {
+        test_name: 'FAIL',
+        test_name_diff: {
+            'a': {
+                'data': 'b',
+                'type': 'unchanged'
             }
-        },
-        "title": "string"
+        }
     };
 
-    var assertobj = {"wid":"guid","metadata":{"method":"string","sounddto":{"type":"string"},"systemdto":{"type":"string"}},"title":"string","command":{"dtolist":{"sounddto":"onetomany","systemdto":"onetoone"},"deepdtolist":{"sounddto":"onetomany","systemdto":"onetoone"},"inherit":[]}}
-;
+    proxyprinttodiv(test_name, result_obj, assert_obj);
+    var actual_result = logverifyvariable(test_name, result_obj, assert_obj);
 
-    // var temp = ConvertToDOTdri(obj);
-    // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
+    // tell the system we're finished
+    callback(null, actual_result);
 
-    // temp = ConvertFromDOTdri(obj);
-    // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
 
-    getdtoobject(obj, {
-        "dtotype": "songdto"
-    }, function(err, res) {
-        proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
-        res = logverify("testgetdtoobject5", res, assertobj);
-        callback(null, res)
-    });
+    // Check if the actual_result matches the expected result for a simple change
+    debugger;
 }
-
-// 17 getdtoobject  -- input 
-// {"wid":"rel_sound_to_song","metadata":{"method":"relationshipdto"},"primarywid":"songdto","secondarywid":"sounddto","primarymethod":"songdto","secondarymethod":"sounddto","linktype":"onetomany","relationshiptype":"attributes"}black
-// 18 getdtoobject -- output
-// {"wid":"string","metadata":{"command":{"dtolist":{}},"method":"string"},"primarywid":"string","secondarywid":"string","primarymethod":"string","secondarymethod":"string","linktype":"string","relationshiptype":"string","command":{"dtolist":{}}}black
-exports.testgetdtoobject6 = testgetdtoobject6 = function testgetdtoobject6(params, callback) {
-    debuglevel = 17;
-    var obj = {
-        "wid": "rel_sound_to_song",
-        "metadata": {
-            "method": "relationshipdto"
-        },
-        "primarywid": "songdto",
-        "secondarywid": "sounddto",
-        "primarymethod": "songdto",
-        "secondarymethod": "sounddto",
-        "linktype": "onetomany",
-        "relationshiptype": "attributes"
-    };
-
-    var assertobj = {"wid":"guid","metadata":{"method":"string","systemdto":{"type":"string"}},"primarywid":"string","secondarywid":"string","primarymethod":"string","secondarymethod":"string","linktype":"string","relationshiptype":"string","command":{"dtolist":{"systemdto":"onetoone"},"deepdtolist":{"systemdto":"onetoone"},"inherit":[]}};
-
-    // var temp = ConvertToDOTdri(obj);
-    // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
-
-    // temp = ConvertFromDOTdri(obj);
-    // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
-
-    getdtoobject(obj, {
-        "dtotype": "songdto"
-    }, function(err, res) {
-        proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
-        res = logverify("testgetdtoobject6", res, assertobj);
-        callback(null, res)
-    });
-}
-
-
-// 19 getdtoobject  -- input 
-// {"title":"string","wid":"guid","metadata":{"method":"string","sounddto":{"type":"onetomany"}},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone","sounddto":"onetomany"},"dtolist":{"sounddto":"onetomany","systemdto":"onetoone"}},"sounddto":[{"note":"string","wid":"guid","metadata":{"method":"string"},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone"},"dtolist":{"systemdto":"onetoone"}},"systemdto":{}}],"systemdto":{}}black
-// 20 getdtoobject -- output
-// {"title":"string","wid":"string","metadata":{"command":{"dtolist":{}},"method":"string","sounddto":{"command":{"dtolist":{}},"type":"string"}},"sounddto":[{"command":{"command":{"dtolist":{}},"inherit":[],"deepdtolist":{"command":{"dtolist":{}},"systemdto":"string"},"dtolist":{"command":{"dtolist":{}},"systemdto":"string"}},"note":"string","wid":"string","metadata":{"command":{"dtolist":{}},"method":"string"},"systemdto":{"command":{"dtolist":{}}}}],"systemdto":{"command":{"dtolist":{}}},"command":{"command":{"dtolist":{}},"inherit":[],"deepdtolist":{"command":{"dtolist":{}},"systemdto":"string","sounddto":"string"},"dtolist":{"command":{"dtolist":{}},"sounddto":"string","systemdto":"string"}}}black
-exports.testgetdtoobject7 = testgetdtoobject7 = function testgetdtoobject7(params, callback) {
-    debuglevel = 17;
-    var obj = {
-        "title": "string",
-        "wid": "guid",
-        "metadata": {
-            "method": "string",
-            "sounddto": {
-                "type": "onetomany"
-            }
-        },
-        "command": {
-            "inherit": [],
-            "deepdtolist": {
-                "systemdto": "onetoone",
-                "sounddto": "onetomany"
-            },
-            "dtolist": {
-                "sounddto": "onetomany",
-                "systemdto": "onetoone"
-            }
-        },
-        "sounddto": [{
-            "note": "string",
-            "wid": "guid",
-            "metadata": {
-                "method": "string"
-            },
-            "command": {
-                "inherit": [],
-                "deepdtolist": {
-                    "systemdto": "onetoone"
-                },
-                "dtolist": {
-                    "systemdto": "onetoone"
-                }
-            },
-            "systemdto": {}
-        }],
-        "systemdto": {}
-    };
-
-    var assertobj = {"title":"string","wid":"guid","metadata":{"method":"string","sounddto":{"type":"onetomany"}},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone","sounddto":"onetomany"},"dtolist":{"sounddto":"onetomany","systemdto":"onetoone"}},"sounddto":[{"note":"string","wid":"guid","metadata":{"method":"string"},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone"},"dtolist":{"systemdto":"onetoone"}},"systemdto":{}}],"systemdto":{}};
-
-    // var temp = ConvertToDOTdri(obj);
-    // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
-
-    // temp = ConvertFromDOTdri(obj);
-    // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
-
-    getdtoobject(obj, {
-        "dtotype": "songdto"
-    }, function(err, res) {
-        proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
-        res = logverify("testgetdtoobject7", res, assertobj);
-        callback(null, res)
-    });
-}
-
-
-// 21 getdtoobject  -- input 
-// {"wid":"song1","metadata":{"method":"songdto"},"title":"Highway to Hell","sounddto":{"wid":"ag3aflat","note":"A flat"}}black
-// 22 getdtoobject -- output
-// {"title":"string","wid":"string","metadata":{"method":"string","sounddto":{"type":"string"}},"sounddto":[{"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone"},"dtolist":{"systemdto":"onetoone"}},"note":"string","wid":"string","metadata":{"method":"string"},"systemdto":{}}],"systemdto":{},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone","sounddto":"onetomany"},"dtolist":{"sounddto":"onetomany","systemdto":"onetoone"}}}black
-exports.testgetdtoobject8 = testgetdtoobject8 = function testgetdtoobject8(params, callback) {
-    debuglevel = 17;
-
-    var preData1 = {
-        "wid": "songdto",
-        "metadata": {
-            "method": "songdto",
-            "sounddto": {
-                "type": "onetomany"
-            }
-        },
-        "title": "string"
-    };
-
-    var preData2 = {
-        "wid": "sounddto",
-        "metadata": {
-            "method": "sounddto"
-        },
-        "note": "string"
-    };
-
-    var preData3 = {
-        "wid": "rel_sound_to_song",
-        "metadata": {
-            "method": "relationshipdto"
-        },
-        "primarywid": "songdto",
-        "secondarywid": "sounddto",
-        "primarymethod": "songdto",
-        "secondarymethod": "sounddto",
-        "linktype": "onetomany",
-        "relationshiptype": "attributes"
-    };
-
-    updatewid(preData1, function(err, res) {
-
-        updatewid(preData2, function(err, res) {
-
-            updatewid(preData3, function(err, res) {
-
-                var obj = {
-                    "wid": "song1",
-                    "metadata": {
-                        "method": "songdto"
-                    },
-                    "title": "Highway to Hell",
-                    "sounddto": {
-                        "wid": "ag3aflat",
-                        "note": "A flat"
-                    }
-                };
-
-                var assertobj = {"title":"string","wid":"guid","metadata":{"method":"string","sounddto":{"type":"string"}},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone","sounddto":"onetomany"},"dtolist":{"sounddto":"onetomany","systemdto":"onetoone"}},"sounddto":[{"note":"string","wid":"guid","metadata":{"method":"string"},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone"},"dtolist":{"systemdto":"onetoone"}},"systemdto":{}}],"systemdto":{}};
-
-                // var temp = ConvertToDOTdri(obj);
-                // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
-
-                // temp = ConvertFromDOTdri(obj);
-                // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
-
-                getdtoobject(obj, {
-                    "dtotype": "songdto"
-                }, function(err, res) {
-                    proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
-                    res = logverify("testgetdtoobject8", res, assertobj);
-                    callback(null, res)
-                });
-            });
-        });
-    });
-}
-
-
-// 37 getdtoobject  -- input 
-// {"title":"Highway to Hell","wid":"song1","metadata":{"method":"songdto","sounddto":{"type":"onetomany"}},"sounddto":[{"note":"A flat","wid":"ag3aflat","metadata":{"method":"sounddto","parentwid":{"song1":"songdto"}}},{"note":"B sharp","wid":"ag3bsharp","metadata":{"method":"sounddto","parentwid":{"song1":"songdto"}}}]}black
-// 38 getdtoobject -- output
-// {"title":"string","wid":"string","metadata":{"method":"string","sounddto":{"type":"string"}},"sounddto":[{"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone"},"dtolist":{"systemdto":"onetoone"}},"note":"string","wid":"string","metadata":{"method":"string"},"systemdto":{}}],"systemdto":{},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone","sounddto":"onetomany"},"dtolist":{"sounddto":"onetomany","systemdto":"onetoone"}}}black
-exports.testgetdtoobject9 = testgetdtoobject9 = function testgetdtoobject9(params, callback) {
-    debuglevel = 17;
-
-    var preData1 = {
-        "wid": "songdto",
-        "metadata": {
-            "method": "songdto",
-            "sounddto": {
-                "type": "onetomany"
-            }
-        },
-        "title": "string"
-    };
-
-    var preData2 = {
-        "wid": "sounddto",
-        "metadata": {
-            "method": "sounddto"
-        },
-        "note": "string"
-    };
-
-    var preData3 = {
-        "wid": "rel_sound_to_song",
-        "metadata": {
-            "method": "relationshipdto"
-        },
-        "primarywid": "songdto",
-        "secondarywid": "sounddto",
-        "primarymethod": "songdto",
-        "secondarymethod": "sounddto",
-        "linktype": "onetomany",
-        "relationshiptype": "attributes"
-    };
-
-    updatewid(preData1, function(err, res) {
-
-        updatewid(preData2, function(err, res) {
-
-            updatewid(preData3, function(err, res) {
-
-                var obj = {
-                    "title": "Highway to Hell",
-                    "wid": "song1",
-                    "metadata": {
-                        "method": "songdto",
-                        "sounddto": {
-                            "type": "onetomany"
-                        }
-                    },
-                    "sounddto": [{
-                        "note": "A flat",
-                        "wid": "ag3aflat",
-                        "metadata": {
-                            "method": "sounddto",
-                            "parentwid": {
-                                "song1": "songdto"
-                            }
-                        }
-                    }, {
-                        "note": "B sharp",
-                        "wid": "ag3bsharp",
-                        "metadata": {
-                            "method": "sounddto",
-                            "parentwid": {
-                                "song1": "songdto"
-                            }
-                        }
-                    }]
-                };
-
-                var assertobj = {"title":"string","wid":"guid","metadata":{"method":"string","sounddto":{"type":"string"}},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone","sounddto":"onetomany"},"dtolist":{"sounddto":"onetomany","systemdto":"onetoone"}},"sounddto":[{"note":"string","wid":"guid","metadata":{"method":"string"},"command":{"inherit":[],"deepdtolist":{"systemdto":"onetoone"},"dtolist":{"systemdto":"onetoone"}},"systemdto":{}}],"systemdto":{}};
-
-                // var temp = ConvertToDOTdri(obj);
-                // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
-
-                // temp = ConvertFromDOTdri(obj);
-                // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
-
-                getdtoobject(obj, {
-                    "dtotype": "songdto"
-                }, function(err, res) {
-                    proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
-                    res = logverify("testgetdtoobject8", res, assertobj);
-                    callback(null, res)
-                });
-            });
-        });
-    });
-}
+wid.test_logverifyvariable_2.category = "executeit";
+wid.test_logverifyvariable_2.subcategory = "dothis";
+wid.test_logverifyvariable_2.type = "minute";
+wid.test_logverifyvariable_2.name = "this does a test";

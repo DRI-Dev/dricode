@@ -1,4 +1,5 @@
 // 'use strict';
+// -- test to trigger github
 
 // copyright (c) 2014 DRI
 // if(typeof localStorage === "undefined"){
@@ -255,6 +256,9 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
     extend(true, inputWidgetObject, originalarguments);
 
 
+
+
+
     var err = null;
     var widName = inputWidgetObject['wid'];
     var found = false;
@@ -266,6 +270,25 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
 
     proxyprinttodiv('Function datastore inputWidgetObject 0', inputWidgetObject, 11);
     // console.log('>>>inputWidgetObject.command.environment' +inputWidgetObject.command.environment)
+
+    if(!inputWidgetObject['metadata']){
+        inputWidgetObject['metadata']={};
+    }
+
+    // copy environment stuff
+    if(inputWidgetObject && inputWidgetObject.command && inputWidgetObject.command.usernamespace){
+        // add usernamespace from environment to metadata
+        if(inputWidgetObject.command.usernamespace){
+            inputWidgetObject['metadata']['accountid']=inputWidgetObject.command.usernamespace;
+        }
+
+        // // add attributes from environment to metadata
+        // if(inputWidgetObject.command.environment && (typeof inputWidgetObject.command.environment === object)){
+        //     for(var key in inputWidgetObject.command.environment){
+        //         inputWidgetObject[key]=inputWidgetObject.command.environment[key];
+        //     }
+        // }
+    }
 
     if (inputWidgetObject.command && inputWidgetObject.command.environment && Object.keys(inputWidgetObject.command.environment).length > 0) {
         copyEnvironmentCommands(inputWidgetObject);
@@ -512,7 +535,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
     //if (config.configuration.environment==="local") {defaultdatastore='localstorage';} else {defaultdatastore='mongo';}
 
     proxyprinttodiv('Function datastore inputWidgetObject 0', inputWidgetObject, 11);
-    // if (inputWidgetObject.command && inputWidgetObject.command.environment && Object.keys(inputWidgetObject.command.environment).length > 0) {
+    // if (inputWidgetObject.command && Object.keys(inputWidgetObject.command.environment).length > 0) {
     //     inputWidgetObject.command = extend(false, inputWidgetObject.command.environment, inputWidgetObject.command)
     // }
 
@@ -530,7 +553,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
 
     // delete inputWidgetObject['command']['environment'];
 
-    if (inputWidgetObject.command && inputWidgetObject.command.environment && Object.keys(inputWidgetObject.command.environment).length > 0) {
+    if (inputWidgetObject.command && Object.keys(inputWidgetObject.command.environment).length > 0) {
         copyEnvironmentCommands(inputWidgetObject);
     }
 
@@ -602,8 +625,9 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                 }
             }
 
-            // proxyprinttodiv('Function getwid output', output, 12);
-            // if (!keepaddthis) { // i.e. remove add this
+            //proxyprinttodiv('Function getwid output', output, 99);
+            //proxyprinttodiv('Function getwid keepaddthis', keepaddthis, 99);
+            //if (!keepaddthis) { // i.e. remove add this
 
             //     if (output.hasOwnProperty("addthis")) {
             //         var _add_this = output["addthis"];
@@ -636,7 +660,8 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                     }
                     // if not resultobject then just leave output alone
 
-                    if (output) {
+                    // ***
+                    if (Object.keys(output).length ) {
                         err = null;
                         // make sure data is bundled properly for convertfromdriformat()
                         for (var prop in output) {
@@ -679,8 +704,8 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
 
                     }
                     proxyprinttodiv('Function datastore command -- get output 1', output, 12);
-                    callback(null, output);
-                    //callback(err, output);
+                    //callback(null, output);
+                    callback(err, output);
                 });
             } else { // if not local...this case makes no sense
                 output = convertfromdriformatenhanced(output, command, originalarguments);
@@ -694,19 +719,19 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                 // if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
                 //     output =  ConvertFromDOTdri(output);
                 // }
-                callback(null, output);
-                //callback(err, output);
+                //callback(null, output);
+                callback(err, output);
             }
         } else if (datastore === 'mongo') {
             mget(inputWidgetObject, command, function (err, output) {
-//                if (!keepaddthis && output) { // i.e. remove add this
-//                    if (output.hasOwnProperty("addthis")) {
-//                        var _add_this = output["addthis"];
-//                        delete output["addthis"];
-//                        output = extend(true, output, _add_this)
-//                    }
-//                    //output = find_and_replace_addthis(output) ;
-//                }
+                if (!keepaddthis && output) { // i.e. remove add this
+                    if (output.hasOwnProperty("addthis")) {
+                        var _add_this = output["addthis"];
+                        delete output["addthis"];
+                        output = extend(true, output, _add_this)
+                    }
+                    //output = find_and_replace_addthis(output) ;
+                }
                 output = convertfromdriformatenhanced(output, command, originalarguments);
                 // output=convertfromdriformat(output, command);
                 // output = extend(true, originalarguments, output);
@@ -715,7 +740,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                 // }
                 // proxyprinttodiv('Function datastore command -- get output 3', output, 12);
                 //callback(err, output);
-                callback(err, output);
+                callback(err, resultobject);
             });
         } else { // if not mongo
             output = convertfromdriformatenhanced(output, command, originalarguments);
@@ -725,8 +750,8 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
             //     output =  ConvertFromDOTdri(output);
             // }
             proxyprinttodiv('Function datastore command -- get output 4', output, 12);
-            callback(null, output);
-            //callback(err, output);
+            //callback(null, output);
+            callback(err, output);
         }
     } else { // if no widname
         err = {};
@@ -779,6 +804,11 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
                 }
             }
             proxyprinttodiv('Function getrelatedrecords query', executeobject, 17);
+            executeobject["command"]={"environment": {
+                            "run": {
+                                "type": "series"
+                            }
+                        }}
             execute(executeobject, function (err, res) {
                 proxyprinttodiv('Function getrelatedrecords query res', res, 17);
                 if (err && (Object.keys(err).length) > 0) {
@@ -972,21 +1002,75 @@ exports.converttodriformat = converttodriformat = function converttodriformat(in
 };
 
 
-
-exports.printToDiv = printToDiv = function printToDiv(text, obj, debugone, pretty) {
+exports.cnt = 0;
+exports.printToDiv = printToDiv = function printToDiv(text, outobject, debugone, pretty, expanddefault) {
     var inbound_parameters = arguments;
-    // if ((g_Debug == 'true') || (g_debuglevel == debugone) || (debugone == 12)) {
-    //     printText = '<pre>' + text + '<br/>' + JSON.stringify(obj) + '</pre>';
-    //     if (pretty) {printText = '<pre>' + text + '<br/>' + JSON.stringify(obj, "-", 4)+ '</pre>';}
-    //     if (document.getElementById('divprint')) {
-    //         document.getElementById('divprint').innerHTML = document.getElementById('divprint').innerHTML + printText; //append(printText);
-    //     }
-
+    var color_list = [
+            "black",
+            "red",
+            "green",
+            "maroon",
+            "olive",
+            "teal",
+            "blue",
+            "fuchsia",
+            "purple",
+            "lime",
+            "green",
+            "MediumBlue"
+        ];
+    exports.cnt = exports.cnt + 1;
+    var inbound_parameters = arguments;
+    
+    if (getglobal('expanddefault')) {expanddefault=true}
+    
     if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
-        printText = '<pre>' + text + '<br/>' + JSON.stringify(obj) + '</pre>';
-        if (pretty) {
-            printText = '<pre>' + text + '<br/>' + JSON.stringify(obj, "-", 4) + '</pre>';
-        }
+            var displaycolor = color_list[getglobal("debugcolor")];    
+            var indent = getglobal("debugindent");
+            indent=indent*5;
+            var z = getglobal('debuglinenum');
+            z++;
+            saveglobal('debuglinenum', z);
+
+            if (displaycolor == "") {
+                displaycolor = "brown";
+            }
+
+            if (pretty) {
+            var jsonPretty = JSON.stringify(outobject, "-", 4);
+            }
+            else {
+            var jsonPretty = JSON.stringify(outobject);
+            }
+            // debuglinenum++;
+
+            var linenum = getglobal('debuglinenum');
+            exports.cnt++;  
+            
+            printText =  '<pre>';
+            if (indent > 0) {
+                printText +='<div style="color:' + displaycolor + '; padding-left:' + (1 * indent) + 'em;">';
+                printText +='<button type="button" class="btn collapsiblebtn" data-toggle="collapse" data-target="#myDiv'+ exports.cnt + '"data-open-text="+" data-close-text="-">+</button> <'+ linenum + '> -' + indent/5 + '-';
+                printText += text;
+                
+                printText +='</div>';
+            } else {
+                printText +='<div style="color:' + displaycolor + '";">';
+                printText +='<button type="button" class="btn collapsiblebtn" data-toggle="collapse" data-target="#myDiv'+ exports.cnt +'" data-open-text="+" data-close-text="-">+</button> <'+ linenum + '> -' + indent/5 + '-';
+                printText += text;
+                printText +='</div>';
+            }
+
+
+            if(expanddefault){
+                printText +='<div class="span4 collapse in" id="myDiv'+ exports.cnt +'">';
+            }else{
+                 printText +='<div class="span4 collapse" id="myDiv'+ exports.cnt +'">';
+            }
+            
+            printText += syntaxHighlight(jsonPretty) +'</div></pre>';
+                
+
         // console.log(text);
         // console.log(obj);
         if (document.getElementById('divprint')) {
@@ -994,9 +1078,73 @@ exports.printToDiv = printToDiv = function printToDiv(text, obj, debugone, prett
         }
 
     }
-};
 
-exports.proxyprinttodiv = proxyprinttodiv = function proxyprinttodiv(text, obj, debugone, pretty) { // **** making code node compatible
+}
+
+
+// exports.printToDiv = printToDiv = function printToDiv(text, outobject, debugone, pretty) {
+//     var inbound_parameters = arguments;
+//     var color_list = [
+//             "black",
+//             "red",
+//             "green",
+//             "maroon",
+//             "olive",
+//             "teal",
+//             "blue",
+//             "fuchsia",
+//             "purple",
+//             "lime",
+//             "green",
+//             "MediumBlue"
+//         ];
+
+//     // if ((g_Debug == 'true') || (g_debuglevel == debugone) || (debugone == 12)) {
+//     //     printText = '<pre>' + text + '<br/>' + JSON.stringify(obj) + '</pre>';
+//     //     if (pretty) {printText = '<pre>' + text + '<br/>' + JSON.stringify(obj, "-", 4)+ '</pre>';}
+//     //     if (document.getElementById('divprint')) {
+//     //         document.getElementById('divprint').innerHTML = document.getElementById('divprint').innerHTML + printText; //append(printText);
+//     //     }
+
+
+//     if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
+//             var displaycolor = color_list[getglobal("debugcolor")];    
+//             var indent = getglobal("debugindent");
+//             indent=indent*5;
+//             var z = getglobal('debuglinenum');
+//             z++;
+//             saveglobal('debuglinenum', z);
+
+//             if (displaycolor == "") {
+//                 displaycolor = "brown";
+//             }
+
+//             if (pretty) {
+//             var jsonPretty = JSON.stringify(outobject, "-", 4);
+//             }
+//             else {
+//             var jsonPretty = JSON.stringify(outobject);
+//             }
+//             // debuglinenum++;
+
+//             if (indent > 0) {
+//                 // var temp_HTML = debuglinenum + " " + indebugdesc + "<br>" + "<div style='color:" + displaycolor + "; padding-left:" + (8 * indent) + "em'>" + syntaxHighlight(jsonPretty) + displaycolor + "</div>";
+//                 var temp_HTML = z + " " + text + "<br>" + "<div style='color:" + displaycolor + "; padding-left:" + (1 * indent) + "em'>" + syntaxHighlight(jsonPretty) + "</div>";
+//             } else {
+//                 // var temp_HTML = debuglinenum + " " + indebugdesc + "<br>" + "<div style='color:" + displaycolor + "'>" + syntaxHighlight(jsonPretty) + displaycolor + "</div>";
+//                 var temp_HTML = z + " " + text + "<br>" + "<div style='color:" + displaycolor + "'>" + syntaxHighlight(jsonPretty) + "</div>";
+//             }
+
+//         // console.log(text);
+//         // console.log(obj);
+//         if (document.getElementById('divprint')) {
+//             document.getElementById('divprint').innerHTML = document.getElementById('divprint').innerHTML + temp_HTML; //append(printText);
+//         }
+
+//     }
+// };
+
+exports.proxyprinttodiv = proxyprinttodiv = function proxyprinttodiv(text, obj, debugone, pretty,expanddefault) { // **** making code node compatible
     var inbound_parameters = arguments;
     var g_debuglinenum = getglobal("debuglinenum");
 
@@ -1004,7 +1152,7 @@ exports.proxyprinttodiv = proxyprinttodiv = function proxyprinttodiv(text, obj, 
         debugone = -1;
     }
     if (exports.environment === "local") {
-        printToDiv(text, obj, debugone, pretty);
+        printToDiv(text, obj, debugone, pretty,expanddefault);
     } else {
         if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
 
@@ -1479,6 +1627,11 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
                         } else { 
                                // to read wid obj via getwidmaster
                                 if (dataType !== 'string') {
+                                    executeobject["command"]={"environment": {
+                            "run": {
+                                "type": "series"
+                            }
+                        }}
                                     execute({
                                         "executethis": dataType
                                     }, function (err, result) {
@@ -2372,7 +2525,8 @@ function getRandomNumberByLength(length) {
     };
 
     exports.isObject = isObject = function isObject(obj) {
-        return obj !== null && typeof obj === 'object';
+        return toString.call(obj) == '[object Object]';
+        //return obj !== null && typeof obj === 'object';
     };
 
     exports.isFunction = isFunction = function isfunction(obj) {
@@ -2387,42 +2541,199 @@ function getRandomNumberByLength(length) {
         }
         return true;
     };
+ exports.logverifycomplex = logverifycomplex = function logverifycomplex(test_name, result_object, result_assertion, error_object, error_assertion)
+    {
+        // step 1 - compare result objects
+        // step 2 - compare error objects
+        // step 3 - consolidate results
+        // step 4 - return it all
+        // --------------------------------------
 
+        // debugger;
 
+        proxyprinttodiv('logverifycomplex arguments ', arguments, 99);
+        // Step 1 - compare result objects
+        var complex_result = {};
+        complex_result = logverify(test_name + '_result', result_object, result_assertion);
+        proxyprinttodiv('logverifycomplex complex_result I ', complex_result, 99);
+        // Step 2 - compare error objects
+        var complex_error = {};
+        if (error_object)
+        {
+            // Only check if the error matches if there are actual error objects passed in
+            complex_error = logverify(test_name + '_err', error_object, error_assertion);
+            proxyprinttodiv('logverifycomplex complex_error I ', complex_error, 99);
+        }
+        
+        // Step 3 - conslidate 
+        // var return_object = {'result': complex_result, 'error': complex_error };
+        return_object = extend(true, complex_result, complex_error);
+        return_object = distillresults(test_name, return_object);
+        proxyprinttodiv('logverifycomplex return_object ', return_object, 99);
 
-    // exports.arrayUnique = window.arrayUnique = arrayUnique = function arrayUnique(array) {
-    //     var a = array.concat();
-    //     for (var i = 0; i < a.length; ++i) {
-    //         for (var j = i + 1; j < a.length; ++j) {
-    //             if (a[i] === a[j])
-    //                 a.splice(j--, 1);
-    //         }
-    //     }
-    //     return a;
-    // };
+        // Step 4 - return it all
+        return return_object;
+    }
+ 
 
-    exports.logverify = logverify = function logverify(test_name, data_object, assertion_object) {
-        //To delete metadata.date method
-        // if(data_object && data_object[0] && data_object[0]["metadata"] && data_object[0]["metadata"]["date"]){
-        //     delete data_object[0]["metadata"]["date"];
-        // }
-        // if(assertion_object &&assertion_object[0] && assertion_object[0]["metadata"] && assertion_object[0]["metadata"]["date"]){
-        //     delete assertion_object[0]["metadata"]["date"];
-        // }
+    function generatepropertylist(objin, objlist)
+    {
+        if (typeof objin !== "object")
+        {
+            objlist = objin;
+        } else {
+            for(var key in objin)
+            {
+                // if value is not an object, just place the key
+                // else transform and find keys
+                if(typeof objin[key] !== "object")
+                {
+                    objlist[key]=objin[key];
+                } else {
+                    // needs key fetching from object which is inside 
+                    var objinplay =  objin[key];
+                    objlist[key]=objin[key];
+                    if(objinplay instanceof Array)
+                    {
+                        // handle arrays
+                        for(var idx in objinplay)
+                        {
+                        generatepropertylist(objinplay[idx], objlist);
+                        }
+                    } else {
+                        // handle JSON objects
+                        generatepropertylist(objinplay, objlist);
+                    }
+                }
+            }
+        }
+    }
 
+    function logverifyresulttable(test_name, data_object, assertion_object)
+        {
+        var data_object_resulttable={}
+        var assertion_object_resulttable={}
+        var resulttable_result={}
+        if (assertion_object && assertion_object.command && assertion_object.command.resulttable &&
+            data_object.command && data_object.command.resulttable)
+        {
+            
+            for (var eachresulttable in data_object.command.resulttable) 
+            {
+                if (assertion_object.command.resulttable[eachresulttable]) 
+                {
+                    assertion_object_resulttable=assertion_object.command.resulttable[eachresulttable]
+                }
+                else
+                {
+                     assertion_object_resulttable=assertion_object.command.resulttable
+                }
+                data_object_resulttable=data_object.command.resulttable[eachresulttable]
+                extend(true, 
+                    resulttable_result, 
+                    logverify(test_name+'_RT'+eachresulttable, data_object_resulttable, assertion_object_resulttable))
+            }
+            delete data_object.command.resulttable
+            delete assertion_object.command.resulttable  
+        }
+        return ;
+        //return resulttable_result
+    }
+
+    exports.logverify = logverify = function logverify(test_name, data_objectin, assertion_objectin) {
         if (test_name === undefined) test_name = "defaulttest";
 
-        var result = deepDiffMapper.map(data_object, assertion_object);
+        var data_object={}
+        var assertion_object={}
+        extend(true, data_object, data_objectin)
+        extend(true, assertion_object, assertion_objectin)
+        // check both objects...get a deep comparison
+        var resulttable_result=logverifyresulttable(test_name, data_object, assertion_object)
+
+        var result0 = deepDiffMapper.map(assertion_object, data_object);
+        proxyprinttodiv('logverify  result0', result0, 98);
+
+        // collapse the results so they are easy to check -- same level
+        var result = {};
+        //collapsediffobj(result0, result)
+        generatepropertylist(result0, result)
+        proxyprinttodiv('logverify result', result, 98);
+        var xresults = distillresults(test_name, result);
+        proxyprinttodiv('logverify x I', xresults, 99, true);
+        if (xresults[test_name] === "PASS")
+        {
+            return xresults;
+        } else {
+            var exception_pass = 'PASS'
+            var diff_obj = xresults[test_name + '_diff'];
+            var type_count = 0;
+            var matching_type_count = 0;
+            for (key_name in diff_obj)
+            {
+                var diff_obj_item = diff_obj[key_name];
+                //var diff_type = diff_obj_item['type'];
+                if (diff_obj_item && diff_obj_item['type']!==null && diff_obj_item['type'] !== "unchanged")
+                {
+                    var diff_type = diff_obj_item['type'];
+                    type_count += 1;
+                    // Something is different here
+                    if (assertion_object && assertion_object.hasOwnProperty(key_name))
+                    {
+                        if (assertion_object[key_name].hasOwnProperty('exception'))
+                        {
+                            exception_types = assertion_object[key_name].exception;
+                            // A specific type of exception was defined here.  
+                            // If this exception type is not found, then it should fail
+                            if (exception_types.indexOf(diff_type) > -1)
+                            {
+                                // A diff type of something other than unchanged has been detected, 
+                                // but the assertian object didn't work with it.
+                                matching_type_count += 1;
+                            }
+                        }
+                    }
+                }
+            }        
+            // This is confusing - exception_pass keeps track of how many of the assertion objects
+            //     
+            if (matching_type_count == type_count)
+            {
+                xresults[test_name] = 'PASS';
+            }
+        }
+        proxyprinttodiv('logverify x', xresults, 99);
+
+        extend(true, xresults, resulttable_result)
+
+        return xresults;
+    };
+
+
+    exports.distillresults = distillresults = function distillresults( test_name, result) {
+        // result is expected to be the output of diffMapper
+
         // Assume UNKNOWN...
         var test_results = "UNKNOWN";
         var temp_string = JSON.stringify(result);
+
         // If there is a value of 'unchanged', there IS data that has passed,
         // so for now, set the 'test_results' to PASS.
-        if (temp_string.indexOf("unchanged") !== -1 || temp_string === "{}") test_results = "PASS";
+        if (temp_string.indexOf("unchanged") !== -1 || 
+            temp_string === "PASS" ||
+            temp_string === "{}") 
+        {
+            test_results = "PASS";
+        }
+
         // If there are any of 'created', 'updated', 'deleted', the tests now fails, even if
         // it passed before...if none of the 4 strings are found, the test_results will 
         // remain 'UNKNOWN'
-        if (temp_string.indexOf("created") !== -1 || temp_string.indexOf("deleted") !== -1 || temp_string.indexOf("updated") !== -1) test_results = "FAIL";
+        if (temp_string.indexOf("created") !== -1 ||
+            temp_string.indexOf("FAIL") !== -1 ||
+            temp_string.indexOf("deleted") !== -1 ||
+            temp_string.indexOf("updated") !== -1) {
+            test_results = "FAIL";
+        }
 
         var data = {};
         data[test_name] = test_results;
@@ -2430,6 +2741,7 @@ function getRandomNumberByLength(length) {
         data[test_name + '_diff'] = result;
         return data;
     };
+
 
     exports.debugfn = debugfn = function debugfn() {
         if (exports.environment !== 'local') {
@@ -2841,6 +3153,7 @@ function getRandomNumberByLength(length) {
     }();
 
     exports.syntaxHighlight = syntaxHighlight = function syntaxHighlight(json) {
+        if(json){
         json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
             var cls = 'number';
@@ -2857,6 +3170,8 @@ function getRandomNumberByLength(length) {
             }
             return '<span class="' + cls + '">' + match + '</span>';
         });
+            
+        }
     }
 
 })(typeof window === "undefined" ? global : window);
@@ -3791,7 +4106,7 @@ function getRandomNumberByLength(length) {
             xorobj1: xorobj1,
             xorobj2: xorobj2
         }
-    }
+    };
 
     //##
     exports.sortObj = sortObj = function sortObj(obj, callback) {
@@ -3809,7 +4124,7 @@ function getRandomNumberByLength(length) {
             obj[n.key] = n.value;
             return obj;
         }, {});
-    }
+    };
 
     //##
     exports.hashobj = hashobj = function hashobj(inobj, command) {
@@ -3828,8 +4143,183 @@ function getRandomNumberByLength(length) {
             });
             return JSON.stringify(result);
         }
-    }
+    };
 
+/*
+    object operations
+    -size (either local object or localstorage object)
+    -delete
+*/
+exports.objectoperations = objectoperations = function objectoperations(inputWidgetObject, callback) {
+    proxyprinttodiv('Function objectoperations inputWidgetObject', inputWidgetObject, 17);
+    var command = inputWidgetObject.command;
+    
+    //2). if command.collection or command.databasetable exists then return used space
+    var collection = command.collection;
+    var databasetable = command.databasetable;
+    var commandObj = command.object;
+    var objectSize = 0;
+    var db={};
+
+    proxyprinttodiv('Function objectoperations command collection', collection, 18);
+    proxyprinttodiv('Function objectoperations command databasetable', databasetable, 18);
+    
+    if(!commandObj){  
+        if (command.datastore === "localstore") {
+            command.object=localStore;
+        } else {
+            command.object=localStorage;
+        }
+    }
+    proxyprinttodiv('Function objectoperations command object', command.object, 17);
+
+    for(key in command.object) {
+        proxyprinttodiv('Function objectoperations object key ----------', key, 17);
+        var storedObj = command.object[key];
+        var splittedKeys = key.split("_");
+
+        var targetcollection = null;
+        var targetdatabasetable = null;
+
+        for(index in splittedKeys) {
+            splittedKey = splittedKeys[index];
+            var keyValues = splittedKey.split("-");
+            if( keyValues && keyValues.length==2 ){
+                if( keyValues[0]=="collection" ) {
+                    targetcollection = keyValues[1];
+                }
+                if( keyValues[0]=="databasetable" ) {
+                    targetdatabasetable = keyValues[1];
+                }
+            }
+        }
+
+        if( commandObj ) {
+            var size = memorySizeOf(storedObj);
+            proxyprinttodiv('Function objectoperations size 1 ', size, 17);
+            objectSize+=size;
+        } else {  //If no command.object
+            if((collection && collection===targetcollection) || (databasetable && databasetable===targetdatabasetable)){ //To get particular collection/databasetable size
+                proxyprinttodiv('Function objectoperations targetcollection', targetcollection, 17);
+                proxyprinttodiv('Function objectoperations targetdatabasetable', targetdatabasetable, 17);
+                
+                size = memorySizeOf(storedObj);
+                proxyprinttodiv('Function objectoperations size 2', size, 17);
+                objectSize+=size;
+            }
+        }       
+    
+        //3). if command.delete exists and true then delete from localstorage
+        if(command && command["delete"] && command["delete"]===true){
+            removeFromLocalStorage(key);
+        }   
+    }
+    
+    var res = {};
+    res["objectsize"]=formatByteSize(objectSize);
+    callback(null, res);    
+};
+
+/*
+-- To calculate object size 
+Reference -- https://gist.github.com/zensh/4975495
+*/  
+function memorySizeOf(obj) {
+    var bytes = 0;
+ 
+    function sizeOf(obj) {
+        if(obj !== null && obj !== undefined) {
+            switch(typeof obj) {
+            case 'number':
+                bytes += 8;
+                break;
+            case 'string':
+                bytes += obj.length * 2;
+                break;
+            case 'boolean':
+                bytes += 4;
+                break;
+            case 'object':
+                var objClass = Object.prototype.toString.call(obj).slice(8, -1);
+                if(objClass === 'Object' || objClass === 'Array') {
+                    for(var key in obj) {
+                        if(!obj.hasOwnProperty(key)) continue;
+                        sizeOf(obj[key]);
+                    }
+                } else bytes += obj.toString().length * 2;
+                break;
+            }
+        }
+        return bytes;
+    }
+    return sizeOf(obj);
+}
+function formatByteSize(bytes) {
+    if(bytes < 1024) return bytes + " bytes";
+    else if(bytes < 1048576) return(bytes / 1024).toFixed(3) + " KiB";
+    else if(bytes < 1073741824) return(bytes / 1048576).toFixed(3) + " MiB";
+    else return(bytes / 1073741824).toFixed(3) + " GiB";
+}
+
+/*
+-- To calculate localstorage object size 
+Reference -- http://glynrob.com/javascript/calculate-localstorage-space
+*/  
+function memorySizeOfObjFromLocalStorage(key){  
+    var objectValue = localStorage.getItem(key);
+    objectSize = 0;
+    if(objectValue){
+        objectSize = lengthInUtf8Bytes(objectValue);
+    }
+    return formatByteSize(objectSize);
+}
+
+// To calculate the size in bytes of the data currently stored
+function sizeofAllStorage(){  
+    var size = 0;
+    var eachObjectSize = 0;
+    var eachObjectSizeInMB = 0;
+    for (i=0; i<=localStorage.length-1; i++) {  
+        key = localStorage.key(i);  
+        eachObjectSize = lengthInUtf8Bytes(localStorage.getItem(key));
+        size += eachObjectSize;
+        eachObjectSizeInMB = Math.ceil((eachObjectSize/1024/1024)*100)/100;
+        proxyprinttodiv("calculatespace size ("+ key +")", eachObjectSizeInMB, 17);
+    }  
+    return Math.ceil((size/1024/1024)*100)/100; // get into MB
+}
+function lengthInUtf8Bytes(str) {
+  // Matches only the 10.. bytes that are non-initial characters in a multi-byte sequence.
+  var m = encodeURIComponent(str).match(/%[89ABab]/g);
+  return str.length + (m ? m.length : 0);
+}
+
+//To get total storage size
+function totalStorageSize(){
+    var storeSpace = 0;
+    var maxMBToTest = 10;
+    localStorage.clear();
+    var i = 0;
+    var testPacket = new Array( 1025 ).join( "a" ); // create 1024 characters so 1KB
+    while (i<maxMBToTest){ // MB level
+        var t = 0;
+        while (t<1025){ // KB level
+            try {
+                localStorage.setItem(i+"|"+t, testPacket);
+            } catch( error ) {
+                var kbsaved = Math.floor(((t / 1024) * 100)); // calculate percentage of 1024
+                storeSpace = i+'.'+kbsaved; // add MB and KB values
+                storeSpace =  (Math.floor(storeSpace*100))/100; // rounds down the value
+                t = 1025;
+                i = maxMBToTest+1;
+            }
+            t++;
+        }
+        i++;
+    }
+    localStorage.clear();
+    return storeSpace;
+}
 
     exports.copyEnvironmentCommands = copyEnvironmentCommands = function (inputWidgetObject) {
         //now repeat that code in getwid, copywod, and bottom of query
@@ -3841,8 +4331,21 @@ function getRandomNumberByLength(length) {
 
         if (inputWidgetObject)
             delete inputWidgetObject['command']['environment'];
-    }
+    };
+
+    // DriEnvironment class
+    exports.drienvironment = drienvironment = function drienvironment(environment) {
+        this.environment = environment;
+        this.execute = function(params, callback) {
+            if (!params.command) { params.command = {}; }
+
+            if (params.command.environment) { extend(true, params.command.environment, this.environment); }
+            else { params.command.environment = this.environment; }
+
+            execute(params, function (err, results) { callback(err, results); });
+        };
+    };
 
 
-
+   
 })();

@@ -4554,85 +4554,6 @@ exports.authortoauthortest = authortoauthortest = function authortoauthortest(pa
         function(err, res) {
             proxyprinttodiv('authortoauthortest addwidmaster result: ', res, 99);
 
-            //debuglevel = 38;
-            execute({
-                "executethis": "getwidmaster",
-                "wid": "wid1"
-            }, function(err, res1) {
-                proxyprinttodiv("authortoauthortest getwidmaster result: ", res1, 99);
-                callback(err, res);
-            });
-        });
-}
-
-exports.authortoauthortesto = authortoauthortesto = function authortoauthortesto(params, callback) {
-    //debuglevel=38
-    execute([{
-            "executethis": "addwidmaster",
-            "wid": "authordto",
-            "metadata.method": "authordto",
-            "name": "string",
-            "metadata.authordto.type": "onetomany"
-        }, { //authordto - authordto
-            "executethis": "addwidmaster",
-            "wid": "rel_author_author",
-            "metadata.method": "relationshipdto",
-            "relationshiptype": "attributes",
-            "linktype": "onetomany",
-            "primarywid": "authordto",
-            "primarymethod": "authordto",
-            "secondarywid": "authordto",
-            "secondarymethod": "authordto"
-        }, {
-            "executethis": "addwidmaster",
-            "wid": "wid1",
-            "metadata.method": "authordto",
-            "name": "author1",
-            "authordto.authordto.authordto.name": "authortoauthor1"
-        }],
-        function(err, res) {
-            proxyprinttodiv('authortoauthortest addwidmaster result: ', res, 99);
-
-            debuglevel = 93;
-            execute({
-                "executethis": "getwidmaster",
-                "wid": "wid1"
-            }, function(err, res1) {
-                proxyprinttodiv("authortoauthortest getwidmaster result: ", res1, 99);
-                callback(err, res);
-            });
-        });
-}
-
-
-
-exports.authortoauthortestm = authortoauthortestm = function authortoauthortestm(params, callback) {
-    execute([{
-            "executethis": "addwidmaster",
-            "wid": "authordto",
-            "metadata.method": "authordto",
-            "name": "string",
-            "metadata.authordto.type": "manytomany"
-        }, { //authordto - authordto
-            "executethis": "addwidmaster",
-            "wid": "rel_author_author",
-            "metadata.method": "relationshipdto",
-            "relationshiptype": "attributes",
-            "linktype": "manytomany",
-            "primarywid": "authordto",
-            "primarymethod": "authordto",
-            "secondarywid": "authordto",
-            "secondarymethod": "authordto"
-        }, {
-            "executethis": "addwidmaster",
-            "wid": "wid1",
-            "metadata.method": "authordto",
-            "name": "author1",
-            "authordto.authordto.authordto.name": "authortoauthor1"
-        }],
-        function(err, res) {
-            proxyprinttodiv('authortoauthortest addwidmaster result: ', res, 99);
-
             debuglevel = 38;
             execute({
                 "executethis": "getwidmaster",
@@ -8922,7 +8843,6 @@ exports.etdguid = etdguid = function etdguid(params, callback) {
     });
 }
 
-
 /*
     objectoperations() test
 */
@@ -9048,4 +8968,32 @@ exports.testquerywid = testquerywid = function testquerywid(params, callback) {
         proxyprinttodiv('testquerywid res', res, 99);
         callback(err, res);
     });
-}
+};
+
+exports.ettestupdatewid = ettestupdatewid = function ettestupdatewid(params, callback) {
+    execute({executethis:'updatewid',wid:'testdata123',key1:'value1',key2:'value2'}, function (err, result) {
+        proxyprinttodiv('updatewid results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestgetwid = ettestgetwid = function ettestgetwid(params, callback) {
+    execute({executethis:'getwid',wid:'testdata123'}, function (err, result) {
+        proxyprinttodiv('getwid results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestaddwidmaster = ettestaddwidmaster = function ettestaddwidmaster(params, callback) {
+    execute({executethis:'addwidmaster',wid:'mastertestdata123',key1:'value1',key2:'value2'}, function (err, result) {
+        proxyprinttodiv('addwidmaster results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestgetwidmaster = ettestgetwidmaster = function ettestgetwidmaster(params, callback) {
+    execute({executethis:'getwidmaster',wid:'mastertestdata123'}, function (err, result) {
+        proxyprinttodiv('getwid results', result, 99);
+        callback(err, result);
+    });
+};
