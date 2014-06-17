@@ -568,39 +568,24 @@
                 proxyprinttodiv("getdtoobject about to getwidmaster dtotype ", dtotype, 93); //93
                 console.log("getdtoobject about to getwidmaster  " + JSON.stringify(obj)); //93
 
-
                 var etEnvironment = new drienvironment({
+                    "getwidmaster": {
+                        "convertmethod": "dto",
+                        "execute": "ConvertFromDOTdri"
+                    },
                     "run": {
                         "executeid": obj.command.environment.run.executeid,
-                        "executelevel": obj.command.environment.run.executelevel
+                        "executelevel": obj.command.environment.run.executelevel,
+                        "type": "series"
                     }
                 });
 
                 var executeobject = {
                     "executethis": "getwidmaster",
-                    "wid": dtotype,
-                    "command": {
-                        "getwidmaster": {
-                            "convertmethod": "dto",
-                            "execute": "ConvertFromDOTdri"
-                        },
-                        "environment": {
-                            "run": {
-                                "type": "series"
-                            }
-                        }
-                    }
+                    "wid": dtotype
                 };
 
                 etEnvironment.execute(executeobject, function(err, res) {
-
-
-                    // execute({
-                    //     "executethis": "getwidmaster",
-                    //     "wid": dtotype,
-                    //     "command.getwidmaster.convertmethod": "dto",
-                    //     "command.getwidmaster.execute": "ConvertFromDOTdri"
-                    // }, function (err, res) {
 
                     if (err && Object.keys(err).length > 0) { // If error, bounce out
                         callback(err, res);
@@ -665,6 +650,7 @@
 
                     targetwid = widInput;
                     executeobject = parameters;
+                    executeobject.executethis = "getwid";
                     //executeobject["wid"] = widInput;
                     //executeobject["command.convertmethod"]="toobject";
 
@@ -735,13 +721,18 @@
                                     }
 
                                     var etEnvironment = new drienvironment({
-                                        "getwidmaster.inheritflag": "false",
-                                        "getwidmaster.execute": "ConvertFromDOTdri",
-                                        "run.executeid": parameters.command.environment.run.executeid,
-                                        "run.type": parameters.command.environment.run.group,
-                                        "run.executelevel": parameters.command.environment.run.executelevel
+                                        "getwidmaster":{
+                                            "inheritflag": "false",
+                                            "execute": "ConvertFromDOTdri"
+                                        },
+                                        "run":{
+                                            "executeid": parameters.command.environment.run.executeid,
+//                                            "type": parameters.command.environment.run.group,
+                                            "type": "series",
+                                            "executelevel": parameters.command.environment.run.executelevel
+                                        }
                                     });
-                                    eachresult.command.environment.run.type = "series";
+
                                     eachresult.executethis = "getwidmaster";
                                     //eachresult.command.getwidmaster.convertmethod="nowid";
                                     // eachresult.command.getwidmaster.inheritflag = "false";
@@ -821,10 +812,15 @@
                                     // execute(executeobject, function (err, res) {
 
                                     var etEnvironment = new drienvironment({
-                                        "getwidmaster.convertmethod": "dto",
-                                        "getwidmaster.execute": "ConvertFromDOTdri",
-                                        "run.executeid": parameters.command.environment.run.executeid,
-                                        "run.executelevel": parameters.command.environment.run.executelevel
+                                        "getwidmaster":{
+                                            "convertmethod": "dto",
+                                            "execute": "ConvertFromDOTdri"
+                                        },
+                                        "run": {
+                                            "executeid": parameters.command.environment.run.executeid,
+                                            "executelevel": parameters.command.environment.run.executelevel,
+                                            "type": "series"
+                                        }
                                     });
 
                                     var executeobject = {
@@ -836,12 +832,7 @@
                                         "mongorelationshipdirection": "forward",
                                         "mongowidmethod": "",
                                         "command": {
-                                            "result": "queryresult",
-                                            "environment": {
-                                                "run": {
-                                                    "type": "series"
-                                                }
-                                            }
+                                            "result": "queryresult"
                                         }
                                     };
 
@@ -1103,35 +1094,25 @@
                         // parameterobject.command.inherit.push({"wid" : "systemdefault", "command":{"dtotype":"", "adopt":"default"}})
                         // if (command.getwidmaster.inheritflag === "true") {
                         if (widName !== "systemdto") {
-                            // var executeobject = {};
-                            // executeobject["command"] = {
-                            //     "result": "systemdto",
-                            //     "getwidmaster.execute": "ConvertFromDOTdri",
-                            //     "getwidmaster.convertmethod": "dto",
-                            //     "getwidmaster.inheritflag": "true" // changed from false
-                            // };
-                            // executeobject["executethis"] = "getwidmaster";
-                            // executeobject["wid"] = "systemdto";
-                            // execute(executeobject, function (err, res) {
 
                             var etEnvironment = new drienvironment({
-                                "getwidmaster.convertmethod": "dto",
-                                "getwidmaster.execute": "ConvertFromDOTdri",
-                                "getwidmaster.inheritflag": "true",
-                                "executeid": parameters.command.environment.run.executeid,
-                                "executelevel": parameters.command.environment.run.executelevel
+                                "getwidmaster":{
+                                    "convertmethod": "dto",
+                                    "execute": "ConvertFromDOTdri",
+                                    "inheritflag": "true"
+                                },
+                                "run" : {
+                                    "executeid": parameters.command.environment.run.executeid,
+                                    "executelevel": parameters.command.environment.run.executelevel,
+                                    "type": "series"
+                                }
                             });
 
                             var executeobject = {
                                 "executethis": "getwidmaster",
                                 "wid": "systemdto",
-                                "command": {
-                                    "environment": {
-                                        "result": "systemdto",
-                                        "run" : {
-                                            "type": "series"
-                                        }
-                                    }
+                                "command":{
+                                    "result": "systemdto"
                                 }
                             };
 
@@ -1231,32 +1212,25 @@
 
                         // add logic to look for dtotype
                         dtoToGet = resultObj.metadata.method;
-                        // execute({
-                        //     "executethis": "getwidmaster",
-                        //     "wid": dtoToGet,
-                        //     "command.getwidmaster.execute": "ConvertFromDOTdri",
-                        //     "command.getwidmaster.convertmethod": "dto",
-                        //     "command.getwidmaster.inheritflag": "false" // ### enabled by Roger
-                        // }, function (err, res) {
 
                         var etEnvironment = new drienvironment({
-                            "getwidmaster.convertmethod": "dto",
-                            "getwidmaster.execute": "ConvertFromDOTdri",
-                            "getwidmaster.inheritflag": "false",
-                            "executeid": resultObj.command.environment.run.executeid,
-                            "executelevel": resultObj.command.environment.run.executelevel
+                            "getwidmaster":{
+                                "convertmethod": "dto",
+                                "execute": "ConvertFromDOTdri",
+                                "inheritflag": "false"
+                            },
+                            "run": {
+                                "executeid": resultObj.command.environment.run.executeid,
+                                "executelevel": resultObj.command.environment.run.executelevel,
+                                "type": "series"
+                            }
                         });
 
                         var executeobject = {
                             "executethis": "getwidmaster",
                             "wid": dtoToGet,
-                            "command": {
-                                "environment": {
-                                    "result": "systemdto",
-                                    "run": {
-                                        "type": "series"
-                                    }
-                                }
+                            "command":{
+                                "result": "systemdto"
                             }
                         };
 
@@ -1354,26 +1328,25 @@
                                     //eachresult.command.getwidmaster.convertmethod="nowid";
                                     eachresult.command.getwidmaster.inheritflag = "false";
                                     eachresult.command.getwidmaster.execute = "ConvertFromDOTdri";
-                                    if (!eachresult.command) {
-                                        eachresult.command = {}
-                                    }
-                                    if (!eachresult.command.resultparameters) {
-                                        eachresult.command.resultparameters = {};
-                                    }
+
+                                    if (!eachresult.command) { eachresult.command = {}; }
+                                    if (!eachresult.command.resultparameters) { eachresult.command.resultparameters = {}; }
+
                                     extend(true, eachresult.command.resultparameters, resultObj);
                                     eachresult.command.resultparameters = resultObj;
                                     proxyprinttodiv('call being done for inherit', eachresult, 38);
-                                    // execute(
-                                    //     eachresult, function (err, res) {
-
-                                    eachresult.command.environment.run.type = "series";
 
                                     var etEnvironment = new drienvironment({
-                                        "getwidmaster.convertmethod": "dto",
-                                        "getwidmaster.execute": "ConvertFromDOTdri",
-                                        "getwidmaster.inheritflag": "false",
+                                        "getwidmaster":{
+                                            "convertmethod": "dto",
+                                            "execute": "ConvertFromDOTdri",
+                                            "inheritflag": "false"
+                                        },
                                         "executeid": resultObj.command.environment.run.executeid,
-                                        "executelevel": resultObj.command.environment.run.executelevel
+                                        "executelevel": resultObj.command.environment.run.executelevel,
+                                        "run":{
+                                            "type": "series"
+                                        }
                                     });
 
                                     etEnvironment.execute(eachresult, function(err, res) {
