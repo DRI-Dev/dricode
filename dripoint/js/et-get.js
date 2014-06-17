@@ -675,7 +675,7 @@
                             proxyprinttodiv('Function getwidmongo getwid res', res, 38);
                             res = res[0];
 
-                            if (Object.keys(res).length !== 0) {
+                            if (res !== null && typeof res == 'object' && Object.keys(res).length !== 0) {
                                 parameterobject = res;
                                 proxyprinttodiv('Function getwidmongo getwid res', res, 38);
                                 //moreDTOParameters=parameterobject;  &&& taken out roger 2/7
