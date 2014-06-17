@@ -111,12 +111,12 @@
             var currentexecutecount = command.resulttable[currentexecuteid].tryset.length; // seq based on how many are existing
             for (var eachitem in executionparameters) 
             {
-                // if no type then make default type group
+                // if no type then make default type series
                  proxyprinttodiv("inparams executionparameters[eachitem]", executionparameters[eachitem],11);
                 if (!executionparameters[eachitem].command) {executionparameters[eachitem].command={};}
                 if (!executionparameters[eachitem].command.environment) {executionparameters[eachitem].command.environment={};}
                 if (!executionparameters[eachitem].command.environment.run) {executionparameters[eachitem].command.environment.run={};}
-                if (!executionparameters[eachitem].command.environment.run.type) {executionparameters[eachitem].command.environment.run.type="group";}
+                if (!executionparameters[eachitem].command.environment.run.type) {executionparameters[eachitem].command.environment.run.type="series";}
 
                 var eachexecute = {};
                 eachexecute.executeseq = currentexecutecount;
@@ -166,7 +166,7 @@
 
         if (!executionpreferences.command.environment.run.executelevel) {executionpreferences.command.environment.run.executelevel=0;}
         if (!executionpreferences.command.environment.run.executeid) {executionpreferences.command.environment.run.executeid=createNewGuid();}
-        if (!executionpreferences.command.environment.run.type) {executionpreferences.command.environment.run.type="group";}
+        if (!executionpreferences.command.environment.run.type) {executionpreferences.command.environment.run.type="series";}
 
         if (inparams.command.processfn)
         {
