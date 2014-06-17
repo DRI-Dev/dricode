@@ -832,7 +832,7 @@
         {
             var params = {};
             extend(true, params, inparams);
-            params.wid = params.executethis;
+//            params.wid = params.executethis;
             params.executethis='getwid';
             params.command.processfn = "execute_function";
             params.command.keepaddthis=false;
