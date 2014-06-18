@@ -264,16 +264,28 @@ exports.execute_server = window.execute_server = execute_server = function execu
         extend(true, inbound_parameters, params);
         params = toLowerKeys(params);
 
-        // temporary code to stay local... uncomment below to enable server
-        param.command.xrun=param.serverfn;
-        delete param.serverfn;
+
+        // note this code should be deleted...only for testing server locally
+        if (params.serverfn) 
+        {
+            params.command.xrun=params.serverfn;
+            delete params.serverfn;
+        }
         proxyprinttodiv('test ***** calling server', param, 99);
-//        execute(param, callback);
-        
-        executeAjax("", params, function (data) {
-             proxyprinttodiv('Function server FROM ------', params, 99);
-             callback(null, data);
-        });
+
+
+        // temporary code to stay local
+
+        // either use this line
+        execute(param, callback);
+
+        // or these 3 lines:     
+        // executeAjax("", params, function (data) {
+        //      proxyprinttodiv('Function server FROM ------', params, 99);
+        //      callback(null, data);
+        // });
+
+
 };
 
 
