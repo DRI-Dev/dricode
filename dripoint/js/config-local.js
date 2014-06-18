@@ -310,7 +310,6 @@ exports.server = window.server = server = function server(params, callback) {
     }
 };
 
-
 function setdefaultparm() {
 
     exports.config = config = config123();
@@ -332,7 +331,6 @@ function setdefaultparm() {
     exports.environment = "local";
     exports.Debug = Debug;
     exports.debuglevel = debuglevel;
-
 }
 
 
@@ -346,14 +344,14 @@ function config123() {
     configuration.defaultdatastore = 'localstorage';
     configuration.defaultkeycollection = 'dricollectionkey';
     configuration.defaultdatabasetable = 'wikiwallettesting';
-    configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment"
-    configuration.d = {}
-    configuration.d.defaultcollection = configuration.defaultcollection
-    configuration.d.defaultdb = configuration.defaultdb
-    configuration.d.defaultdatastore =  configuration.defaultdatastore
-    configuration.d.defaultkeycollection = configuration.defaultkeycollection
-    configuration.d.defaultdatabasetable = configuration.defaultdatabasetable
-    configuration.d.platform = configuration.environment
+    configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment";
+    configuration.d = {};
+    configuration.d.defaultcollection = configuration.defaultcollection;
+    configuration.d.defaultdb = configuration.defaultdb;
+    configuration.d.defaultdatastore =  configuration.defaultdatastore;
+    configuration.d.defaultkeycollection = configuration.defaultkeycollection;
+    configuration.d.defaultdatabasetable = configuration.defaultdatabasetable;
+    configuration.d.environment.platform = configuration.environment;
 
     return {
         "configuration": configuration
