@@ -271,7 +271,7 @@ exports.execute_server = window.execute_server = execute_server = function execu
             params.command.xrun=params.serverfn;
             delete params.serverfn;
         }
-        proxyprinttodiv('test ***** calling server', param, 99);
+        proxyprinttodiv('test ***** calling server', params, 99);
 
 
         // temporary code to stay local
