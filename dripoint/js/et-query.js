@@ -13,6 +13,37 @@
         return parameters;
     };
 
+    exports.querywidmaster = querywidmaster = function querywidmaster(params, callback) {
+        querywid(params, function (err, results) {
+            var formattedResults = [];
+
+            for (var i = 0; i < results.length; i++) {
+                var thisObj = {};
+
+                for (var prop in results[i]) {
+                    if (results[i].hasOwnProperty(prop)) {
+                        if (results[i][prop] instanceof Object
+                            && results[i][prop] !== null
+                            && prop.toLowerCase() !== 'metadata'
+                            && prop.toLowerCase() !== 'command') {
+                            extend(true, thisObj, results[i][prop]);
+                        }
+                        else if (prop.toLowerCase() === 'metadata') {
+                            thisObj.metadata = results[i][prop];
+                        }
+                        else if (prop.toLowerCase() === 'command') {
+                            thisObj.command = results[i][prop];
+                        }
+
+                        formattedResults.push(thisObj);
+                    }
+                }
+            }
+
+            callback(err, formattedResults);
+        });
+    };
+
     //Starting of querywid function...formerly MongoDataQuery
     //exports.querywid = querywid = function (parameters,target,callback) {
     exports.querywid = querywid = function querywid(parameters, callback) { // can change to call back
