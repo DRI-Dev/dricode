@@ -2232,7 +2232,7 @@ exports.ettestct9 = widtests.ettestct9 = ettestct9 = function ettestct9(params, 
 }
 widtests.ettestct9.category = "execute";
 widtests.ettestct9.subcategory = "daily";
-widtests.ettestct9.js = exports. "minute";
+widtests.ettestct9.js = exports.ettestct9;
 widtests.ettestct9.description = "this does a test";
 
 // This test is to call does_not_exist, remapped to a function in the parameters. So far it does not work...never has.
@@ -2256,7 +2256,7 @@ exports.ettestct9a = widtests.ettestct9a = ettestct9a = function ettestct9a(para
 }
 widtests.ettestct9a.category = "execute";
 widtests.ettestct9a.subcategory = "daily";
-widtests.ettestct9a.js = exports. "minute";
+widtests.ettestct9a.js = exports.ettestct9a;
 widtests.ettestct9a.description = "this does a test";
 
 
@@ -2290,7 +2290,7 @@ exports.ettestct10 = widtests.ettestct10 = ettestct10 = function ettestct10(para
 }
 widtests.ettestct10.category = "execute";
 widtests.ettestct10.subcategory = "daily";
-widtests.ettestct10.js = exports. "minute";
+widtests.ettestct10.js = exports.ettestct10;
 widtests.ettestct10.description = "this does a test";
 
 
@@ -2328,7 +2328,7 @@ exports.ettestct11 = widtests.ettestct11 = ettestct11 = function ettestct11(para
 }
 widtests.ettestct11.category = "execute";
 widtests.ettestct11.subcategory = "daily";
-widtests.ettestct11.js = exports. "minute";
+widtests.ettestct11.js = exports.ettestct11;
 widtests.ettestct11.description = "this does a test";
 
 
@@ -2376,7 +2376,7 @@ exports.ettestct12 = widtests.ettestct12 = ettestct12 = function ettestct12(para
 }
 widtests.ettestct12.category = "execute";
 widtests.ettestct12.subcategory = "daily";
-widtests.ettestct12.js = exports. "minute";
+widtests.ettestct12.js = exports.ettestct12;
 widtests.ettestct12.description = "this does a test";
 
 
@@ -2433,7 +2433,7 @@ exports.ettestct13 = widtests.ettestct13 = ettestct13 = function ettestct13(para
 }
 widtests.ettestct13.category = "execute";
 widtests.ettestct13.subcategory = "daily";
-widtests.ettestct13.js = exports. "minute";
+widtests.ettestct13.js = exports.ettestct13;
 widtests.ettestct13.description = "this does a test";
 
 
@@ -2524,7 +2524,7 @@ exports.ettestct14 = widtests.ettestct14 = ettestct14 = function ettestct14(para
 }
 widtests.ettestct14.category = "execute";
 widtests.ettestct14.subcategory = "daily";
-widtests.ettestct14.js = exports. "minute";
+widtests.ettestct14.js = exports.ettestct14;
 widtests.ettestct14.description = "this does a test";
 
 
@@ -2612,7 +2612,7 @@ exports.ettestct15 = widtests.ettestct15 = ettestct15 = function ettestct15(para
 }
 widtests.ettestct15.category = "execute";
 widtests.ettestct15.subcategory = "daily";
-widtests.ettestct15.js = exports. "minute";
+widtests.ettestct15.js = exports.ettestct15;
 widtests.ettestct15.description = "this does a test";
 
 // Here the object is to get a set of config params from the config itself by using setconfig2 and checking for the 
@@ -2704,7 +2704,7 @@ exports.ettestct16 = widtests.ettestct16 = ettestct16 = function ettestct16(para
 }
 widtests.ettestct16.category = "execute";
 widtests.ettestct16.subcategory = "daily";
-widtests.ettestct16.js = exports. "minute";
+widtests.ettestct16.js = exports.ettestct16;
 widtests.ettestct16.description = "this does a test";
 
 // This is to use the params in preexecute to ensure that the preexecute params are getting used by dothis
@@ -2753,7 +2753,7 @@ exports.ettestct17 = widtests.ettestct17 = ettestct17 = function ettestct17(para
 }
 widtests.ettestct17.category = "execute";
 widtests.ettestct17.subcategory = "daily";
-widtests.ettestct17.js = exports. "minute";
+widtests.ettestct17.js = exports.ettestct17;
 widtests.ettestct17.description = "this does a test";
 
 
@@ -2805,7 +2805,7 @@ exports.ettestct18 = widtests.ettestct18 = ettestct18 = function ettestct18(para
 }
 widtests.ettestct18.category = "execute";
 widtests.ettestct18.subcategory = "daily";
-widtests.ettestct18.js = exports. "minute";
+widtests.ettestct18.js = exports.ettestct18;
 widtests.ettestct18.description = "this does a test";
 
 // This test is to send params to executethis. There will be params in the call to executethis, config file, and the config in the params
@@ -2894,7 +2894,7 @@ exports.ettestct19 = widtests.ettestct19 = ettestct19 = function ettestct19(para
 }
 widtests.ettestct19.category = "execute";
 widtests.ettestct19.subcategory = "daily";
-widtests.ettestct19.js = exports. "minute";
+widtests.ettestct19.js = exports.ettestct19;
 widtests.ettestct19.description = "this does a test";
 
 // Here the goal is to see if the config of the left and right conflict, which wins? Ad of now, the right side wins. The params for func_a,b,c are 
@@ -2978,7 +2978,7 @@ exports.ettestct20 = widtests.ettestct20 = ettestct20 = function ettestct20(para
 }
 widtests.ettestct20.category = "execute";
 widtests.ettestct20.subcategory = "daily";
-widtests.ettestct20.js = exports. "minute";
+widtests.ettestct20.js = exports.ettestct20;
 widtests.ettestct20.description = "this does a test";
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
@@ -3004,7 +3004,7 @@ exports.ct1000 = widtests.ct1000 = ct1000 = function ct1000(params, callback) {
 }
 widtests.ct1000.category = "execute";
 widtests.ct1000.subcategory = "daily";
-widtests.ct1000.js = exports. "minute";
+widtests.ct1000.js = exports.ct1000;
 widtests.ct1000.description = "this does a test";
 
 // This is just a stub function to do a little work...really just a way to show that
@@ -3020,7 +3020,7 @@ exports.alertFn1 = widtests.alertFn1 = alertFn1 = function alertFn1(params, call
 }
 widtests.alertFn1.category = "execute";
 widtests.alertFn1.subcategory = "daily";
-widtests.alertFn1.js = exports. "minute";
+widtests.alertFn1.js = exports.alertFn1;
 widtests.alertFn1.description = "this does a test";
 
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
@@ -3041,7 +3041,7 @@ exports.func_a = widtests.func_a = func_a = function func_a(params, callback) {
 }
 widtests.func_a.category = "execute";
 widtests.func_a.subcategory = "daily";
-widtests.func_a.js = exports. "minute";
+widtests.func_a.js = exports.func_a;
 widtests.func_a.description = "this does a test";
 
 
@@ -3056,7 +3056,7 @@ exports.func_b = widtests.func_b = func_b = function func_b(params, callback) {
 }
 widtests.func_b.category = "execute";
 widtests.func_b.subcategory = "daily";
-widtests.func_b.js = exports. "minute";
+widtests.func_b.js = exports.func_b;
 widtests.func_b.description = "this does a test";
 
 exports.func_c = widtests.func_c = func_c = function func_c(parameters, callback) {
@@ -3069,7 +3069,7 @@ exports.func_c = widtests.func_c = func_c = function func_c(parameters, callback
 }
 widtests.func_c.category = "execute";
 widtests.func_c.subcategory = "daily";
-widtests.func_c.js = exports. "minute";
+widtests.func_c.js = exports.func_c;
 widtests.func_c.description = "this does a test";
 
 // This is used when a and b do not exist, but the fire_c
@@ -3083,7 +3083,7 @@ exports.fire_c = widtests.fire_c = fire_c = function fire_c(parameters, callback
 }
 widtests.fire_c.category = "execute";
 widtests.fire_c.subcategory = "daily";
-widtests.fire_c.js = exports. "minute";
+widtests.fire_c.js = exports.fire_c;
 widtests.fire_c.description = "this does a test";
 
 // These are the async versions of the above func_a, _b, and _c.
@@ -3096,7 +3096,7 @@ exports.async_func_a = widtests.async_func_a = async_func_a = function async_fun
 }
 widtests.async_func_a.category = "execute";
 widtests.async_func_a.subcategory = "daily";
-widtests.async_func_a.js = exports. "minute";
+widtests.async_func_a.js = exports.async_func_a;
 widtests.async_func_a.description = "this does a test";
 
 //exports.async_func_b = async_func_b = function async_func_b(parameters, callback) {
@@ -3110,7 +3110,7 @@ exports.async_func_b = widtests.async_func_b = async_func_b = function async_fun
 }
 widtests.async_func_b.category = "execute";
 widtests.async_func_b.subcategory = "daily";
-widtests.async_func_b.js = exports. "minute";
+widtests.async_func_b.js = exports.async_func_b;
 widtests.async_func_b.description = "this does a test";
 
 //exports.async_func_c = async_func_c = function async_func_c(parameters, callback) {
@@ -3124,7 +3124,7 @@ exports.async_func_c = widtests.async_func_c = async_func_c = function async_fun
 }
 widtests.async_func_c.category = "execute";
 widtests.async_func_c.subcategory = "daily";
-widtests.async_func_c.js = exports. "minute";
+widtests.async_func_c.js = exports.async_func_c;
 widtests.async_func_c.description = "this does a test";
 
 // 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
@@ -3189,7 +3189,7 @@ exports.ettestag11 = widtests.ettestag11 = ettestag11 = function ettestag11(para
 }
 widtests.ettestag11.category = "execute";
 widtests.ettestag11.subcategory = "daily";
-widtests.ettestag11.js = exports. "minute";
+widtests.ettestag11.js = exports.ettestag11;
 widtests.ettestag11.description = "this does a test";
 
 //exports.ettestag12 = ettestag12 = function ettestag12(params, callback) {
@@ -3253,7 +3253,7 @@ exports.ettestag12 = widtests.ettestag12 = ettestag12 = function ettestag12(para
 }
 widtests.ettestag12.category = "execute";
 widtests.ettestag12.subcategory = "daily";
-widtests.ettestag12.js = exports. "minute";
+widtests.ettestag12.js = exports.ettestag12;
 widtests.ettestag12.description = "this does a test";
 
 // This will test the ability to write a dto to the db and retrieve it
@@ -3302,7 +3302,7 @@ exports.ettestag1 = widtests.ettestag1 = ettestag1 = function ettestag1(params, 
 
 widtests.ettestag1.category = "execute";
 widtests.ettestag1.subcategory = "daily";
-widtests.ettestag1.js = exports. "minute";
+widtests.ettestag1.js = exports.ettestag1;
 widtests.ettestag1.description = "this does a test";
 
 
@@ -3346,7 +3346,7 @@ exports.ettestag1a = widtests.ettestag1a = ettestag1a = function ettestag1a(para
 }
 widtests.ettestag1a.category = "execute";
 widtests.ettestag1a.subcategory = "daily";
-widtests.ettestag1a.js = exports. "minute";
+widtests.ettestag1a.js = exports.ettestag1a;
 widtests.ettestag1a.description = "this does a test";
 
 // // This will test the ability to write a dto to the db, use that dto to write
@@ -3420,7 +3420,7 @@ exports.ettestag122 = widtests.ettestag122 = ettestag122 = function ettestag122(
 }
 widtests.ettestag122.category = "execute";
 widtests.ettestag122.subcategory = "daily";
-widtests.ettestag122.js = exports. "minute";
+widtests.ettestag122.js = exports.ag211;
 widtests.ettestag122.description = "this does a test";
 
 // This will test the ability to write a dto to the db, use that dto to write
@@ -3475,7 +3475,7 @@ exports.ettestag2 = widtests.ettestag2 = ettestag2 = function ettestag2(params, 
 };
 widtests.ettestag2.category = "execute";
 widtests.ettestag2.subcategory = "daily";
-widtests.ettestag2.js = exports. "minute";
+widtests.ettestag2.js = exports.ettestag2;
 widtests.ettestag2.description = "this does a test";
 
 // This is a 2 level test of the dtos...instantiate song1 with a songdto, and some sounddto values
@@ -3690,7 +3690,7 @@ exports.ettestag3 = widtests.ettestag3 = ettestag3 = function ettestag3(params, 
 }
 widtests.ettestag3.category = "execute";
 widtests.ettestag3.subcategory = "daily";
-widtests.ettestag3.js = exports. "minute";
+widtests.ettestag3.js = exports.ettestag3;
 widtests.ettestag3.description = "this does a test";
 
 // This test does not add the data records correctly
@@ -3772,7 +3772,7 @@ exports.ettestag3b = widtests.ettestag3b = ettestag3b = function ettestag3b(para
 }
 widtests.ettestag3b.category = "execute";
 widtests.ettestag3b.subcategory = "daily";
-widtests.ettestag3b.js = exports. "minute";
+widtests.ettestag3b.js = exports.ettestag3b;
 widtests.ettestag3b.description = "this does a test";
 
 // Test for supporting jsononetomany
@@ -3877,7 +3877,7 @@ exports.ettestag5 = widtests.ettestag5 = ettestag5 = function ettestag5(params, 
 }
 widtests.ettestag5.category = "execute";
 widtests.ettestag5.subcategory = "daily";
-widtests.ettestag5.js = exports. "minute";
+widtests.ettestag5.js = exports.ettestag5;
 widtests.ettestag5.description = "this does a test";
 
 //exports.ettestag6 = ettestag6 = function ettestag6(params, callback) {
@@ -3947,7 +3947,7 @@ exports.ettestag6 = widtests.ettestag6 = ettestag6 = function ettestag6(params, 
 }
 widtests.ettestag6.category = "execute";
 widtests.ettestag6.subcategory = "daily";
-widtests.ettestag6.js = exports. "minute";
+widtests.ettestag6.js = exports.ettestag6;
 widtests.ettestag6.description = "this does a test";
 
 // {
@@ -3999,7 +3999,7 @@ exports.ettestag7 = widtests.ettestag7 = ettestag7 = function ettestag7(params, 
 }
 widtests.ettestag7.category = "execute";
 widtests.ettestag7.subcategory = "daily";
-widtests.ettestag7.js = exports. "minute";
+widtests.ettestag7.js = exports.ettestag7;
 widtests.ettestag7.description = "this does a test";
 
 //exports.ettestag8 = ettestag8 = function ettestag8(params, callback) {
@@ -4044,7 +4044,7 @@ exports.ettestag8 = widtests.ettestag8 = ettestag8 = function ettestag8(params, 
 }
 widtests.ettestag8.category = "execute";
 widtests.ettestag8.subcategory = "daily";
-widtests.ettestag8.js = exports. "minute";
+widtests.ettestag8.js = exports.ettestag8;
 widtests.ettestag8.description = "this does a test";
 
 //exports.ettestag9 = ettestag9 = function ettestag9(params, callback) {
@@ -4123,7 +4123,7 @@ exports.ettestag9 = widtests.ettestag9 = ettestag9 = function ettestag9(params, 
 }
 widtests.ettestag9.category = "execute";
 widtests.ettestag9.subcategory = "daily";
-widtests.ettestag9.js = exports. "minute";
+widtests.ettestag9.js = exports.ettestag9;
 widtests.ettestag9.description = "this does a test";
 
 //exports.ettestag3a = ettestag3a = function ettestag3a(params, callback) {
@@ -4202,7 +4202,7 @@ exports.ettestag3a = widtests.ettestag3a = ettestag3a = function ettestag3a(para
 }
 widtests.ettestag3a.category = "execute";
 widtests.ettestag3a.subcategory = "daily";
-widtests.ettestag3a.js = exports. "minute";
+widtests.ettestag3a.js = exports.ettestag3a;
 widtests.ettestag3a.description = "this does a test";
 
 //88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
@@ -4222,7 +4222,7 @@ exports.sleep = widtests.sleep = sleep = function sleep(params, callback) {
 }
 widtests.sleep.category = "execute";
 widtests.sleep.subcategory = "daily";
-widtests.sleep.js = exports. "minute";
+widtests.sleep.js = exports.sleep;
 widtests.sleep.description = "this does a test";
 
 // exports.func_async = func_async = function func_async(parameters, callback) {
@@ -4304,7 +4304,7 @@ exports.uwid1 = widtests.uwid1 = uwid1 = function uwid1(params, callback) {
 }
 widtests.uwid1.category = "execute";
 widtests.uwid1.subcategory = "daily";
-widtests.uwid1.js = exports. "minute";
+widtests.uwid1.js = exports.func_async;
 widtests.uwid1.description = "this does a test";
 
 // Used as a test for having a postexecute deply nested deep in the params in the parameters
@@ -4337,7 +4337,7 @@ exports.uwid2 = widtests.uwid2 = uwid2 = function uwid2(params, callback) {
 }
 widtests.uwid2.category = "execute";
 widtests.uwid2.subcategory = "daily";
-widtests.uwid2.js = exports. "minute";
+widtests.uwid2.js = exports.uwid2;
 widtests.uwid2.description = "this does a test";
 
 //exports.mut = mut = function mut(params, callback) {
@@ -4374,7 +4374,7 @@ exports.mut = widtests.mut = mut = function mut(params, callback) {
 }
 widtests.mut.category = "execute";
 widtests.mut.subcategory = "daily";
-widtests.mut.js = exports. "minute";
+widtests.mut.js = exports.mut;
 widtests.mut.description = "this does a test";
 
 exports.addwid4params = widtests.addwid4params = addwid4params = function addwid4params(a, b, c, d, callback) {
@@ -4387,7 +4387,7 @@ exports.addwid4params = widtests.addwid4params = addwid4params = function addwid
 }
 widtests.addwid4params.category = "execute";
 widtests.addwid4params.subcategory = "daily";
-widtests.addwid4params.js = exports. "minute";
+widtests.addwid4params.js = exports.addwid4params;
 widtests.addwid4params.description = "this does a test";
 
 //exports.testnested1 = testnested1 = function testnested1(params, callback) {
@@ -4427,7 +4427,7 @@ exports.testnested1 = widtests.testnested1 = testnested1 = function testnested1(
 }
 widtests.testnested1.category = "execute";
 widtests.testnested1.subcategory = "daily";
-widtests.testnested1.js = exports. "minute";
+widtests.testnested1.js = exports.testnested1;
 widtests.testnested1.description = "this does a test";
 
 
@@ -4469,7 +4469,7 @@ exports.testnested3 = widtests.testnested3 = testnested3 = function testnested3(
 }
 widtests.testnested3.category = "execute";
 widtests.testnested3.subcategory = "daily";
-widtests.testnested3.js = exports. "minute";
+widtests.testnested3.js = exports.testnested3;
 widtests.testnested3.description = "this does a test";
 
 //exports.testnested4 = testnested4 = function testnested4(params, callback) {
@@ -4491,7 +4491,7 @@ exports.testnested4 = widtests.testnested4 = testnested4 = function testnested4(
 }
 widtests.testnested4.category = "execute";
 widtests.testnested4.subcategory = "daily";
-widtests.testnested4.js = exports. "minute";
+widtests.testnested4.js = exports.testnested4;
 widtests.testnested4.description = "this does a test";
 
 //exports.testnested5 = testnested5 = function testnested5(params, callback) {
@@ -4509,7 +4509,7 @@ exports.testnested5 = widtests.testnested5 = testnested5 = function testnested5(
 }
 widtests.testnested5.category = "execute";
 widtests.testnested5.subcategory = "daily";
-widtests.testnested5.js = exports. "minute";
+widtests.testnested5.js = exports.testnested5;
 widtests.testnested5.description = "this does a test";
 
 //exports.testnested6 = testnested6 = function testnested6(params, callback) {
@@ -4525,7 +4525,7 @@ exports.testnested6 = widtests.testnested6 = testnested6 = function testnested6(
 }
 widtests.testnested6.category = "execute";
 widtests.testnested6.subcategory = "daily";
-widtests.testnested6.js = exports. "minute";
+widtests.testnested6.js = exports.testnested6;
 widtests.testnested6.description = "this does a test";
 
 //exports.testnested2 = testnested2 = function testnested2(params, callback) {
@@ -4566,7 +4566,7 @@ exports.testnested2 = widtests.testnested2 = testnested2 = function testnested2(
 }
 widtests.testnested2.category = "execute";
 widtests.testnested2.subcategory = "daily";
-widtests.testnested2.js = exports. "minute";
+widtests.testnested2.js = exports.testnested2;
 widtests.testnested2.description = "this does a test";
 
 
@@ -4620,7 +4620,7 @@ exports.testmultiplenested = widtests.testmultiplenested = testmultiplenested = 
 }
 widtests.testmultiplenested.category = "execute";
 widtests.testmultiplenested.subcategory = "daily";
-widtests.testmultiplenested.js = exports. "minute";
+widtests.testmultiplenested.js = exports.testmultiplenested;
 widtests.testmultiplenested.description = "this does a test";
 
 // exports.t121212 = t121212 = function t121212(params, callback) {
@@ -4684,7 +4684,7 @@ exports.exec_mul_test = widtests.exec_mul_test = exec_mul_test = function exec_m
 }
 widtests.exec_mul_test.category = "execute";
 widtests.exec_mul_test.subcategory = "daily";
-widtests.exec_mul_test.js = exports. "minute";
+widtests.exec_mul_test.js = exports.t121212;
 widtests.exec_mul_test.description = "this does a test";
 
 
@@ -4785,7 +4785,7 @@ exports.newt = widtests.newt = newt = function newt(params, callback) {
 }
 widtests.newt.category = "execute";
 widtests.newt.subcategory = "daily";
-widtests.newt.js = exports. "minute";
+widtests.newt.js = exports.newt;
 widtests.newt.description = "this does a test";
 
 //exports.newt2 = newt2 = function newt2(params, callback) {
@@ -4857,7 +4857,7 @@ exports.newt2 = widtests.newt2 = newt2 = function newt2(params, callback) {
 }
 widtests.newt2.category = "execute";
 widtests.newt2.subcategory = "daily";
-widtests.newt2.js = exports. "minute";
+widtests.newt2.js = exports.newt2;
 widtests.newt2.description = "this does a test";
 
 //exports.newt3 = newt3 = function newt3(params, callback) {
@@ -4868,7 +4868,7 @@ exports.newt3 = widtests.newt3 = newt3 = function newt3(params, callback) {
 }
 widtests.newt3.category = "execute";
 widtests.newt3.subcategory = "daily";
-widtests.newt3.js = exports. "minute";
+widtests.newt3.js = exports.newt3;
 widtests.newt3.description = "this does a test";
 
 //exports.newt4 = newt4 = function newt4(params, callback) {
@@ -5049,7 +5049,7 @@ exports.newt4 = widtests.newt4 = newt4 = function newt4(params, callback) {
 }
 widtests.newt4.category = "execute";
 widtests.newt4.subcategory = "daily";
-widtests.newt4.js = exports. "minute";
+widtests.newt4.js = exports.newt4;
 widtests.newt4.description = "this does a test";
 
 
@@ -5139,7 +5139,7 @@ exports.newt5 = widtests.newt5 = newt5 = function newt5(params, callback) {
 }
 widtests.newt5.category = "execute";
 widtests.newt5.subcategory = "daily";
-widtests.newt5.js = exports. "minute";
+widtests.newt5.js = exports.newt5;
 widtests.newt5.description = "this does a test";
 
 
@@ -5175,7 +5175,7 @@ exports.test121212 = widtests.test121212 = test121212 = function test121212(para
 }
 widtests.test121212.category = "execute";
 widtests.test121212.subcategory = "daily";
-widtests.test121212.js = exports. "minute";
+widtests.test121212.js = exports.test121212;
 widtests.test121212.description = "this does a test";
 
 
@@ -5219,7 +5219,7 @@ exports.test141414 = widtests.test141414 = test141414 = function test141414(para
 }
 widtests.test141414.category = "execute";
 widtests.test141414.subcategory = "daily";
-widtests.test141414.js = exports. "minute";
+widtests.test141414.js = exports.test141414;
 widtests.test141414.description = "this does a test";
 
 
@@ -5270,7 +5270,7 @@ exports.test151515 = widtests.test151515 = test151515 = function test151515(para
 }
 widtests.test151515.category = "execute";
 widtests.test151515.subcategory = "daily";
-widtests.test151515.js = exports. "minute";
+widtests.test151515.js = exports.test151515;
 widtests.test151515.description = "this does a test";
 
 
@@ -5319,7 +5319,7 @@ exports.test161616 = widtests.test161616 = test161616 = function test161616(para
 }
 widtests.test161616.category = "execute";
 widtests.test161616.subcategory = "daily";
-widtests.test161616.js = exports. "minute";
+widtests.test161616.js = exports.test161616;
 widtests.test161616.description = "this does a test";
 
 
@@ -5335,7 +5335,7 @@ exports.sample1 = widtests.sample1 = sample1 = function sample1(params, callback
 }
 widtests.sample1.category = "execute";
 widtests.sample1.subcategory = "daily";
-widtests.sample1.js = exports. "minute";
+widtests.sample1.js = exports.sample1;
 widtests.sample1.description = "this does a test";
 
 exports.sample2 = widtests.sample2 = sample2 = function sample2(params, callback) {
@@ -5351,7 +5351,7 @@ exports.sample2 = widtests.sample2 = sample2 = function sample2(params, callback
 }
 widtests.sample2.category = "execute";
 widtests.sample2.subcategory = "daily";
-widtests.sample2.js = exports. "minute";
+widtests.sample2.js = exports.sample2;
 widtests.sample2.description = "this does a test";
 
 // getclean(resultObj, command, callback)
@@ -5369,7 +5369,7 @@ exports.sample3 = widtests.sample3 = sample3 = function sample3(params, callback
 }
 widtests.sample3.category = "execute";
 widtests.sample3.subcategory = "daily";
-widtests.sample3.js = exports. "minute";
+widtests.sample3.js = exports.sample3;
 widtests.sample3.description = "this does a test";
 
 //function test171717 (params, callback) {
@@ -5425,7 +5425,7 @@ exports.test171717 = widtests.test171717 = test171717 = function test171717(para
 }
 widtests.test171717.category = "execute";
 widtests.test171717.subcategory = "daily";
-widtests.test171717.js = exports. "minute";
+widtests.test171717.js = exports.test171717;
 widtests.test171717.description = "this does a test";
 
 
@@ -5441,7 +5441,7 @@ exports.func_b2 = widtests.func_b2 = func_b2 = function func_b2(p1, p2, p3, p4, 
 }
 widtests.func_b2.category = "execute";
 widtests.func_b2.subcategory = "daily";
-widtests.func_b2.js = exports. "minute";
+widtests.func_b2.js = exports.func_b2;
 widtests.func_b2.description = "this does a test";
 
 
@@ -5462,7 +5462,7 @@ exports.func_b22 = widtests.func_b22 = func_b22 = function func_b22(params, call
 }
 widtests.func_b22.category = "execute";
 widtests.func_b22.subcategory = "daily";
-widtests.func_b22.js = exports. "minute";
+widtests.func_b22.js = exports.func_b22;
 widtests.func_b22.description = "this does a test";
 
 //function func_b3(p1, p2, p3, p4, callback) {
@@ -5478,7 +5478,7 @@ exports.func_b3 = widtests.func_b3 = func_b3 = function func_b3(p1, p2, p3, p4, 
 }
 widtests.func_b3.category = "execute";
 widtests.func_b3.subcategory = "daily";
-widtests.func_b3.js = exports. "minute";
+widtests.func_b3.js = exports.func_b3;
 widtests.func_b3.description = "this does a test";
 
 
@@ -5498,7 +5498,7 @@ exports.func_b33 = widtests.func_b33 = func_b33 = function func_b33(params, call
 }
 widtests.func_b33.category = "execute";
 widtests.func_b33.subcategory = "daily";
-widtests.func_b33.js = exports. "minute";
+widtests.func_b33.js = exports.func_b33;
 widtests.func_b33.description = "this does a test";
 
 
@@ -5523,7 +5523,7 @@ exports.err1 = widtests.err1 = err1 = function err1(params, callback) {
 }
 widtests.err1.category = "execute";
 widtests.err1.subcategory = "daily";
-widtests.err1.js = exports. "minute";
+widtests.err1.js = exports.err1;
 widtests.err1.description = "this does a test";
 
 //exports.wrapped1 = wrapped1 = function wrapped1 (params, callback) {
@@ -5548,7 +5548,7 @@ exports.wrapped1 = widtests.wrapped1 = wrapped1 = function wrapped1(params, call
 }
 widtests.wrapped1.category = "execute";
 widtests.wrapped1.subcategory = "daily";
-widtests.wrapped1.js = exports. "minute";
+widtests.wrapped1.js = exports.wrapped1;
 widtests.wrapped1.description = "this does a test";
 
 // data, defaults, filter
@@ -5577,7 +5577,7 @@ exports.lwr1 = widtests.lwr1 = lwr1 = function lwr1(params, callback) {
 }
 widtests.lwr1.category = "execute";
 widtests.lwr1.subcategory = "daily";
-widtests.lwr1.js = exports. "minute";
+widtests.lwr1.js = exports.lwr1;
 widtests.lwr1.description = "this does a test";
 
 //exports.lwr2 = lwr2 = function lwr2(params, callback) {
@@ -5606,7 +5606,7 @@ exports.lwr2 = widtests.lwr2 = lwr2 = function lwr2(params, callback) {
 }
 widtests.lwr2.category = "execute";
 widtests.lwr2.subcategory = "daily";
-widtests.lwr2.js = exports. "minute";
+widtests.lwr2.js = exports.lwr2;
 widtests.lwr2.description = "this does a test";
 
 //exports.lwr3 = lwr3 = function lwr3(params, callback) {
@@ -5635,7 +5635,7 @@ exports.lwr3 = widtests.lwr3 = lwr3 = function lwr3(params, callback) {
 }
 widtests.lwr3.category = "execute";
 widtests.lwr3.subcategory = "daily";
-widtests.lwr3.js = exports. "minute";
+widtests.lwr3.js = exports.lwr3;
 widtests.lwr3.description = "this does a test";
 
 //exports.lwr4 = lwr4 = function lwr4(params, callback) {
@@ -5663,7 +5663,7 @@ exports.lwr4 = widtests.lwr4 = lwr4 = function lwr4(params, callback) {
 }
 widtests.lwr4.category = "execute";
 widtests.lwr4.subcategory = "daily";
-widtests.lwr4.js = exports. "minute";
+widtests.lwr4.js = exports.lwr4;
 widtests.lwr4.description = "this does a test";
 
 //exports.lwr5 = lwr5 = function lwr5(params, callback) {
@@ -5691,7 +5691,7 @@ exports.lwr5 = widtests.lwr5 = lwr5 = function lwr5(params, callback) {
 }
 widtests.lwr5.category = "execute";
 widtests.lwr5.subcategory = "daily";
-widtests.lwr5.js = exports. "minute";
+widtests.lwr5.js = exports.lwr5;
 widtests.lwr5.description = "this does a test";
 
 
@@ -5720,7 +5720,7 @@ exports.lwr6 = widtests.lwr6 = lwr6 = function lwr6(params, callback) {
 }
 widtests.lwr6.category = "execute";
 widtests.lwr6.subcategory = "daily";
-widtests.lwr6.js = exports. "minute";
+widtests.lwr6.js = exports.lwr6;
 widtests.lwr6.description = "this does a test";
 
 //exports.lwr7 = lwr7 = function lwr7(params, callback) {
@@ -5741,7 +5741,7 @@ exports.lwr7 = widtests.lwr7 = lwr7 = function lwr7(params, callback) {
 }
 widtests.lwr7.category = "execute";
 widtests.lwr7.subcategory = "daily";
-widtests.lwr7.js = exports. "minute";
+widtests.lwr7.js = exports.lwr7;
 widtests.lwr7.description = "this does a test";
 
 //exports.lwr8 = lwr8 = function lwr8(params, callback) {
@@ -5762,7 +5762,7 @@ exports.lwr8 = widtests.lwr8 = lwr8 = function lwr8(params, callback) {
 }
 widtests.lwr8.category = "execute";
 widtests.lwr8.subcategory = "daily";
-widtests.lwr8.js = exports. "minute";
+widtests.lwr8.js = exports.lwr8;
 widtests.lwr8.description = "this does a test";
 
 //exports.lwr9 = lwr9 = function lwr9(params, callback) {
@@ -5789,7 +5789,7 @@ exports.lwr9 = widtests.lwr9 = lwr9 = function lwr9(params, callback) {
 }
 widtests.lwr9.category = "execute";
 widtests.lwr9.subcategory = "daily";
-widtests.lwr9.js = exports. "minute";
+widtests.lwr9.js = exports.lwr9;
 widtests.lwr9.description = "this does a test";
 
 //exports.lwr10 = lwr10 = function lwr10(params, callback) {
@@ -5815,7 +5815,7 @@ exports.lwr10 = widtests.lwr10 = lwr10 = function lwr10(params, callback) {
 }
 widtests.lwr10.category = "execute";
 widtests.lwr10.subcategory = "daily";
-widtests.lwr10.js = exports. "minute";
+widtests.lwr10.js = exports.lwr10;
 widtests.lwr10.description = "this does a test";
 
 //exports.lwr11 = lwr11 = function lwr11(params, callback) {
@@ -5843,7 +5843,7 @@ exports.lwr11 = widtests.lwr11 = lwr11 = function lwr11(params, callback) {
 }
 widtests.lwr11.category = "execute";
 widtests.lwr11.subcategory = "daily";
-widtests.lwr11.js = exports. "minute";
+widtests.lwr11.js = exports.lwr11;
 widtests.lwr11.description = "this does a test";
 
 exports.lwr12 = widtests.lwr12 = lwr12 = function lwr12(params, callback) {
@@ -5869,7 +5869,7 @@ exports.lwr12 = widtests.lwr12 = lwr12 = function lwr12(params, callback) {
 }
 widtests.lwr12.category = "execute";
 widtests.lwr12.subcategory = "daily";
-widtests.lwr12.js = exports. "minute";
+widtests.lwr12.js = exports.lwr12;
 widtests.lwr12.description = "this does a test";
 
 exports.lwr13 = widtests.lwr13 = lwr13 = function lwr13(params, callback) {
@@ -5894,7 +5894,7 @@ exports.lwr13 = widtests.lwr13 = lwr13 = function lwr13(params, callback) {
 }
 widtests.lwr13.category = "execute";
 widtests.lwr13.subcategory = "daily";
-widtests.lwr13.js = exports. "minute";
+widtests.lwr13.js = exports.lwr13;
 widtests.lwr13.description = "this does a test";
 
 exports.lwr14 = widtests.lwr14 = lwr14 = function lwr14(params, callback) {
@@ -5920,7 +5920,7 @@ exports.lwr14 = widtests.lwr14 = lwr14 = function lwr14(params, callback) {
 }
 widtests.lwr14.category = "execute";
 widtests.lwr14.subcategory = "daily";
-widtests.lwr14.js = exports. "minute";
+widtests.lwr14.js = exports.lwr14;
 widtests.lwr14.description = "this does a test";
 
 exports.lwr15 = widtests.lwr15 = lwr15 = function lwr15(params, callback) {
@@ -5940,7 +5940,7 @@ exports.lwr15 = widtests.lwr15 = lwr15 = function lwr15(params, callback) {
 }
 widtests.lwr15.category = "execute";
 widtests.lwr15.subcategory = "daily";
-widtests.lwr15.js = exports. "minute";
+widtests.lwr15.js = exports.lwr15;
 widtests.lwr15.description = "this does a test";
 
 exports.lwr16 = widtests.lwr16 = lwr16 = function lwr16(params, callback) {
@@ -5960,7 +5960,7 @@ exports.lwr16 = widtests.lwr16 = lwr16 = function lwr16(params, callback) {
 }
 widtests.lwr16.category = "execute";
 widtests.lwr16.subcategory = "daily";
-widtests.lwr16.js = exports. "minute";
+widtests.lwr16.js = exports.lwr16;
 widtests.lwr16.description = "this does a test";
 
 exports.pu1 = widtests.pu1 = pu1 = function pu1(params, callback) {
@@ -5984,7 +5984,7 @@ exports.pu1 = widtests.pu1 = pu1 = function pu1(params, callback) {
 }
 widtests.pu1.category = "execute";
 widtests.pu1.subcategory = "daily";
-widtests.pu1.js = exports. "minute";
+widtests.pu1.js = exports.pu1;
 widtests.pu1.description = "this does a test";
 
 
@@ -6079,7 +6079,7 @@ exports.ettest_recurseModObj = widtests.ettest_recurseModObj = ettest_recurseMod
 }
 widtests.ettest_recurseModObj.category = "execute";
 widtests.ettest_recurseModObj.subcategory = "daily";
-widtests.ettest_recurseModObj.js = exports. "minute";
+widtests.ettest_recurseModObj.js = exports.ettest_recurseModObj;
 widtests.ettest_recurseModObj.description = "this does a test";
 
 
@@ -6308,7 +6308,7 @@ exports.ettss1 = widtests.ettss1 = ettss1 = function ettss1(params, callback) {
 }
 widtests.ettss1.category = "execute";
 widtests.ettss1.subcategory = "daily";
-widtests.ettss1.js = exports. "minute";
+widtests.ettss1.js = exports.ettss1;
 widtests.ettss1.description = "this does a test";
 
 /*
@@ -6417,7 +6417,7 @@ exports.ett1 = widtests.ett1 = ett1 = function ett1(params, callback) {
 }
 widtests.ett1.category = "execute";
 widtests.ett1.subcategory = "daily";
-widtests.ett1.js = exports. "minute";
+widtests.ett1.js = exports.ett1;
 widtests.ett1.description = "this does a test";
 
 /*
@@ -6552,7 +6552,7 @@ exports.ett2 = widtests.ett2 = ett2 = function ett2(params, callback) {
 }
 widtests.ett2.category = "execute";
 widtests.ett2.subcategory = "daily";
-widtests.ett2.js = exports. "minute";
+widtests.ett2.js = exports.ett2;
 widtests.ett2.description = "this does a test";
 
 /*
@@ -6638,7 +6638,7 @@ exports.ett3 = widtests.ett3 = ett3 = function ett3(params, callback) {
 }
 widtests.ett3.category = "execute";
 widtests.ett3.subcategory = "daily";
-widtests.ett3.js = exports. "minute";
+widtests.ett3.js = exports.ett3;
 widtests.ett3.description = "this does a test";
 
 // enter lots of data in series, the same data when inserted via different executes results in Max Range error
@@ -7145,7 +7145,7 @@ exports.ettss2 = widtests.ettss2 = ettss2 = function ettss2(params, callback) {
 }
 widtests.ettss2.category = "execute";
 widtests.ettss2.subcategory = "daily";
-widtests.ettss2.js = exports. "minute";
+widtests.ettss2.js = exports.ettss2;
 widtests.ettss2.description = "this does a test";
 
 // test to enter lots of data at once :: created to raise the Maximum range reached error in Chrome
@@ -7452,7 +7452,7 @@ exports.ettss3 = widtests.ettss3 = ettss3 = function ettss3(params, callback) {
 }
 widtests.ettss3.category = "execute";
 widtests.ettss3.subcategory = "daily";
-widtests.ettss3.js = exports. "minute";
+widtests.ettss3.js = exports.ettss3;
 widtests.ettss3.description = "this does a test";
 
 // simple test to setup data and then test against that
@@ -7502,7 +7502,7 @@ exports.sectest1 = widtests.sectest1 = sectest1 = function sectest1(parm, callba
 }
 widtests.sectest1.category = "execute";
 widtests.sectest1.subcategory = "daily";
-widtests.sectest1.js = exports. "minute";
+widtests.sectest1.js = exports.sectest1;
 widtests.sectest1.description = "this does a test";
 
 // simple test which sets up all data and then runs sectest1 test after that 
@@ -7531,7 +7531,7 @@ exports.tsa1 = widtests.tsa1 = tsa1 = function tsa1(params, callback) {
 }
 widtests.tsa1.category = "execute";
 widtests.tsa1.subcategory = "daily";
-widtests.tsa1.js = exports. "minute";
+widtests.tsa1.js = exports.tsa1;
 widtests.tsa1.description = "this does a test";
 
 
@@ -7545,7 +7545,7 @@ exports.ttsa3 = widtests.ttsa3 = ttsa3 = function(params, callback) {
 };
 widtests.ttsa3.category = "execute";
 widtests.ttsa3.subcategory = "daily";
-widtests.ttsa3.js = exports. "minute";
+widtests.ttsa3.js = exports.ttsa3;
 widtests.ttsa3.description = "this does a test";
 
 // test getting groups recursively :: dependent on sectest1
@@ -7562,7 +7562,7 @@ exports.ttsa4 = widtests.ttsa4 = ttsa4 = function(params, callback) {
 };
 widtests.ttsa4.category = "execute";
 widtests.ttsa4.subcategory = "daily";
-widtests.ttsa4.js = exports. "minute";
+widtests.ttsa4.js = exports.ttsa4;
 widtests.ttsa4.description = "this does a test";
 
 
@@ -7572,7 +7572,7 @@ exports.ttsa6 = widtests.ttsa6 = ttsa6 = function(params, callback) {
 };
 widtests.ttsa6.category = "execute";
 widtests.ttsa6.subcategory = "daily";
-widtests.ttsa6.js = exports. "minute";
+widtests.ttsa6.js = exports.ttsa6;
 widtests.ttsa6.description = "this does a test";
 
 
@@ -7668,7 +7668,7 @@ exports.etadd01 = widtests.etadd01 = etadd01 = function etadd01(parameters, call
 }
 widtests.etadd01.category = "execute";
 widtests.etadd01.subcategory = "daily";
-widtests.etadd01.js = exports. "minute";
+widtests.etadd01.js = exports.etadd01;
 widtests.etadd01.description = "this does a test";
 
 exports.etadd0 = widtests.etadd0 = etadd0 = function etadd0(parameters, callback) {
@@ -7770,7 +7770,7 @@ exports.etadd0 = widtests.etadd0 = etadd0 = function etadd0(parameters, callback
 }
 widtests.etadd0.category = "execute";
 widtests.etadd0.subcategory = "daily";
-widtests.etadd0.js = exports. "minute";
+widtests.etadd0.js = exports.etadd0;
 widtests.etadd0.description = "this does a test";
 
 exports.etadd1 = widtests.etadd1 = etadd1 = function etadd1(parameters, callback) {
@@ -7863,7 +7863,7 @@ exports.etadd1 = widtests.etadd1 = etadd1 = function etadd1(parameters, callback
 }
 widtests.etadd1.category = "execute";
 widtests.etadd1.subcategory = "daily";
-widtests.etadd1.js = exports. "minute";
+widtests.etadd1.js = exports.etadd1;
 widtests.etadd1.description = "this does a test";
 
 exports.etadd11 = widtests.etadd11 = etadd11 = function etadd11(parameters, callback) {
@@ -7957,7 +7957,7 @@ exports.etadd11 = widtests.etadd11 = etadd11 = function etadd11(parameters, call
 }
 widtests.etadd11.category = "execute";
 widtests.etadd11.subcategory = "daily";
-widtests.etadd11.js = exports. "minute";
+widtests.etadd11.js = exports.etadd11;
 widtests.etadd11.description = "this does a test";
 
 /*
@@ -8065,7 +8065,7 @@ exports.etget4 = widtests.etget4 = etget4 = function etget4(parameters, callback
 }
 widtests.etget4.category = "execute";
 widtests.etget4.subcategory = "daily";
-widtests.etget4.js = exports. "minute";
+widtests.etget4.js = exports.etget4;
 widtests.etget4.description = "this does a test";
 
 exports.etget22 = widtests.etget22 = etget22 = function etget22(parameters, callback) { //add clean test
@@ -8166,7 +8166,7 @@ exports.etget22 = widtests.etget22 = etget22 = function etget22(parameters, call
 }
 widtests.etget22.category = "execute";
 widtests.etget22.subcategory = "daily";
-widtests.etget22.js = exports. "minute";
+widtests.etget22.js = exports.etget22;
 widtests.etget22.description = "this does a test";
 
 /*
@@ -8268,7 +8268,7 @@ exports.etget5 = widtests.etget5 = etget5 = function etget5(parameters, callback
 }
 widtests.etget5.category = "execute";
 widtests.etget5.subcategory = "daily";
-widtests.etget5.js = exports. "minute";
+widtests.etget5.js = exports.etget5;
 widtests.etget5.description = "this does a test";
 
 /*
@@ -8371,7 +8371,7 @@ exports.etget6 = widtests.etget6 = etget6 = function etget6(parameters, callback
 }
 widtests.etget6.category = "execute";
 widtests.etget6.subcategory = "daily";
-widtests.etget6.js = exports. "minute";
+widtests.etget6.js = exports.etget6;
 widtests.etget6.description = "this does a test";
 
 /*
@@ -8478,7 +8478,7 @@ exports.etget7 = widtests.etget7 = etget7 = function etget7(parameters, callback
 }
 widtests.etget7.category = "execute";
 widtests.etget7.subcategory = "daily";
-widtests.etget7.js = exports. "minute";
+widtests.etget7.js = exports.etget7;
 widtests.etget7.description = "this does a test";
 
 /*
@@ -8582,7 +8582,7 @@ exports.etget8 = widtests.etget8 = etget8 = function etget8(parameters, callback
 }
 widtests.etget8.category = "execute";
 widtests.etget8.subcategory = "daily";
-widtests.etget8.js = exports. "minute";
+widtests.etget8.js = exports.etget8;
 widtests.etget8.description = "this does a test";
 
 /*
@@ -8660,7 +8660,7 @@ exports.etaddwidtest = widtests.etaddwidtest = etaddwidtest = function etaddwidt
 }
 widtests.etaddwidtest.category = "execute";
 widtests.etaddwidtest.subcategory = "daily";
-widtests.etaddwidtest.js = exports. "minute";
+widtests.etaddwidtest.js = exports.etaddwidtest;
 widtests.etaddwidtest.description = "this does a test";
 
 /*
@@ -8726,7 +8726,7 @@ exports.etaddwidtest2 = widtests.etaddwidtest2 = etaddwidtest2 = function etaddw
 }
 widtests.etaddwidtest2.category = "execute";
 widtests.etaddwidtest2.subcategory = "daily";
-widtests.etaddwidtest2.js = exports. "minute";
+widtests.etaddwidtest2.js = exports.etaddwidtest2;
 widtests.etaddwidtest2.description = "this does a test";
 
 /*
@@ -8795,7 +8795,7 @@ exports.etaddwidtest3 = widtests.etaddwidtest3 = etaddwidtest3 = function etaddw
 }
 widtests.etaddwidtest3.category = "execute";
 widtests.etaddwidtest3.subcategory = "daily";
-widtests.etaddwidtest3.js = exports. "minute";
+widtests.etaddwidtest3.js = exports.etaddwidtest3;
 widtests.etaddwidtest3.description = "this does a test";
 
 /*
@@ -8872,7 +8872,7 @@ exports.etaddwidtest4 = widtests.etaddwidtest4 = etaddwidtest4 = function etaddw
 }
 widtests.etaddwidtest4.category = "execute";
 widtests.etaddwidtest4.subcategory = "daily";
-widtests.etaddwidtest4.js = exports. "minute";
+widtests.etaddwidtest4.js = exports.etaddwidtest4;
 widtests.etaddwidtest4.description = "this does a test";
 
 /*
@@ -8941,7 +8941,7 @@ exports.etaddwidtest5 = widtests.etaddwidtest5 = etaddwidtest5 = function etaddw
 }
 widtests.etaddwidtest5.category = "execute";
 widtests.etaddwidtest5.subcategory = "daily";
-widtests.etaddwidtest5.js = exports. "minute";
+widtests.etaddwidtest5.js = exports.etaddwidtest5;
 widtests.etaddwidtest5.description = "this does a test";
 
 /*
@@ -9023,7 +9023,7 @@ exports.etaddwidtest6 = widtests.etaddwidtest6 = etaddwidtest6 = function etaddw
 }
 widtests.etaddwidtest6.category = "execute";
 widtests.etaddwidtest6.subcategory = "daily";
-widtests.etaddwidtest6.js = exports. "minute";
+widtests.etaddwidtest6.js = exports.etaddwidtest6;
 widtests.etaddwidtest6.description = "this does a test";
 
 /*
@@ -9107,7 +9107,7 @@ exports.etaddwidtest7 = widtests.etaddwidtest7 = etaddwidtest7 = function etaddw
 }
 widtests.etaddwidtest7.category = "execute";
 widtests.etaddwidtest7.subcategory = "daily";
-widtests.etaddwidtest7.js = exports. "minute";
+widtests.etaddwidtest7.js = exports.etaddwidtest7;
 widtests.etaddwidtest7.description = "this does a test";
 
 exports.etadd2 = widtests.etadd2 = etadd2 = function etadd2(parameters, callback) {
@@ -9177,7 +9177,7 @@ exports.etadd2 = widtests.etadd2 = etadd2 = function etadd2(parameters, callback
 }
 widtests.etadd2.category = "execute";
 widtests.etadd2.subcategory = "daily";
-widtests.etadd2.js = exports. "minute";
+widtests.etadd2.js = exports.etadd2;
 widtests.etadd2.description = "this does a test";
 
 
@@ -9291,7 +9291,7 @@ exports.etget1 = widtests.etget1 = etget1 = function etget1(parameters, callback
 }
 widtests.etget1.category = "execute";
 widtests.etget1.subcategory = "daily";
-widtests.etget1.js = exports. "minute";
+widtests.etget1.js = exports.etget1;
 widtests.etget1.description = "this does a test";
 
 exports.etget3 = widtests.etget3 = etget3 = function etget3(parameters, callback) {
@@ -9398,7 +9398,7 @@ exports.etget3 = widtests.etget3 = etget3 = function etget3(parameters, callback
 }
 widtests.etget3.category = "execute";
 widtests.etget3.subcategory = "daily";
-widtests.etget3.js = exports. "minute";
+widtests.etget3.js = exports.etget3;
 widtests.etget3.description = "this does a test";
 
 exports.etget2 = widtests.etget2 = etget2 = function etget2(parameters, callback) {
@@ -9532,7 +9532,7 @@ exports.etget2 = widtests.etget2 = etget2 = function etget2(parameters, callback
 }
 widtests.etget2.category = "execute";
 widtests.etget2.subcategory = "daily";
-widtests.etget2.js = exports. "minute";
+widtests.etget2.js = exports.etget2;
 widtests.etget2.description = "this does a test";
 
 exports.etget11 = widtests.etget11 = etget11 = function etget11(parameters, callback) {
@@ -9686,7 +9686,7 @@ exports.etget11 = widtests.etget11 = etget11 = function etget11(parameters, call
 }
 widtests.etget11.category = "execute";
 widtests.etget11.subcategory = "daily";
-widtests.etget11.js = exports. "minute";
+widtests.etget11.js = exports.etget11;
 widtests.etget11.description = "this does a test";
 
 /* Adding data for the survey */
@@ -9793,7 +9793,7 @@ exports.surveydata = widtests.surveydata = surveydata = function surveydata(para
 }
 widtests.surveydata.category = "execute";
 widtests.surveydata.subcategory = "daily";
-widtests.surveydata.js = exports. "minute";
+widtests.surveydata.js = exports.surveydata;
 widtests.surveydata.description = "this does a test";
 
 /* Adding data for the survey with addwidmaster */
@@ -9868,7 +9868,7 @@ exports.surveydata2 = widtests.surveydata2 = surveydata2 = function surveydata2(
 }
 widtests.surveydata2.category = "execute";
 widtests.surveydata2.subcategory = "daily";
-widtests.surveydata2.js = exports. "minute";
+widtests.surveydata2.js = exports.surveydata2;
 widtests.surveydata2.description = "this does a test";
 
 /* Adding data for a flat survey */
@@ -9968,7 +9968,7 @@ exports.surveydtoflat = widtests.surveydtoflat = surveydtoflat = function survey
 }
 widtests.surveydtoflat.category = "execute";
 widtests.surveydtoflat.subcategory = "daily";
-widtests.surveydtoflat.js = exports. "minute";
+widtests.surveydtoflat.js = exports.surveydtoflat;
 widtests.surveydtoflat.description = "this does a test";
 // Wids :--
 // {"wid": "colordto", "metadata.method": "colordto", "hue": "string", "sat": "string"}
@@ -10230,7 +10230,7 @@ exports.etmttest4 = widtests.etmttest4 = etmttest4 = function etmttest4(params, 
 }
 widtests.etmttest4.category = "execute";
 widtests.etmttest4.subcategory = "daily";
-widtests.etmttest4.js = exports. "minute";
+widtests.etmttest4.js = exports.etmttest4;
 widtests.etmttest4.description = "this does a test";
 
 exports.testcallback = widtests.testcallback = testcallback = function testcallback(params, callback) {
@@ -10240,7 +10240,7 @@ exports.testcallback = widtests.testcallback = testcallback = function testcallb
 }
 widtests.testcallback.category = "execute";
 widtests.testcallback.subcategory = "daily";
-widtests.testcallback.js = exports. "minute";
+widtests.testcallback.js = exports.testcallback;
 widtests.testcallback.description = "this does a test";
 
 exports.executegetwidtest = widtests.executegetwidtest = executegetwidtest = function executegetwidtest(params, callback) {
@@ -10271,7 +10271,7 @@ exports.executegetwidtest = widtests.executegetwidtest = executegetwidtest = fun
 }
 widtests.executegetwidtest.category = "execute";
 widtests.executegetwidtest.subcategory = "daily";
-widtests.executegetwidtest.js = exports. "minute";
+widtests.executegetwidtest.js = exports.executegetwidtest;
 widtests.executegetwidtest.description = "this does a test";
 
 exports.qw1 = widtests.qw1 = qw1 = function(params, callback) {
@@ -10289,7 +10289,7 @@ exports.qw1 = widtests.qw1 = qw1 = function(params, callback) {
 }
 widtests.qw1.category = "execute";
 widtests.qw1.subcategory = "daily";
-widtests.qw1.js = exports. "minute";
+widtests.qw1.js = exports.qw1;
 widtests.qw1.description = "this does a test";
 
 exports.qw2 = widtests.qw2 = qw2 = function(params, callback) {
@@ -10311,7 +10311,7 @@ exports.qw2 = widtests.qw2 = qw2 = function(params, callback) {
 }
 widtests.qw2.category = "execute";
 widtests.qw2.subcategory = "daily";
-widtests.qw2.js = exports. "minute";
+widtests.qw2.js = exports.qw2;
 widtests.qw2.description = "this does a test";
 
 exports.mongoquery1 = widtests.mongoquery1 = mongoquery1 = function(params, callback) {
@@ -10335,7 +10335,7 @@ exports.mongoquery1 = widtests.mongoquery1 = mongoquery1 = function(params, call
 }
 widtests.mongoquery1.category = "execute";
 widtests.mongoquery1.subcategory = "daily";
-widtests.mongoquery1.js = exports. "minute";
+widtests.mongoquery1.js = exports.mongoquery1;
 widtests.mongoquery1.description = "this does a test";
 
 
@@ -10519,7 +10519,7 @@ exports.mts1 = widtests.mts1 = mts1 = function mts1(params, callback) {
 }
 widtests.mts1.category = "execute";
 widtests.mts1.subcategory = "daily";
-widtests.mts1.js = exports. "minute";
+widtests.mts1.js = exports.mts1;
 widtests.mts1.description = "this does a test";
 
 exports.mts2 = widtests.mts2 = mts2 = function mts2(params, callback) {
@@ -10578,7 +10578,7 @@ exports.mts2 = widtests.mts2 = mts2 = function mts2(params, callback) {
 }
 widtests.mts2.category = "execute";
 widtests.mts2.subcategory = "daily";
-widtests.mts2.js = exports. "minute";
+widtests.mts2.js = exports.mts2;
 widtests.mts2.description = "this does a test";
 
 exports.etmttest1 = widtests.etmttest1 = etmttest1 = function etmttest1(params, callback) {
@@ -10856,7 +10856,7 @@ exports.etmttest1 = widtests.etmttest1 = etmttest1 = function etmttest1(params, 
 }
 widtests.etmttest1.category = "execute";
 widtests.etmttest1.subcategory = "daily";
-widtests.etmttest1.js = exports. "minute";
+widtests.etmttest1.js = exports.etmttest1;
 widtests.etmttest1.description = "this does a test";
 
 function addmttestdata(callback) {
@@ -10919,7 +10919,7 @@ exports.t1example = widtests.t1example = t1example = function t1example(params, 
 }
 widtests.t1example.category = "execute";
 widtests.t1example.subcategory = "daily";
-widtests.t1example.js = exports. "minute";
+widtests.t1example.js = exports.t1example;
 widtests.t1example.description = "this does a test";
 
 exports.etmttest2 = widtests.etmttest2 = etmttest2 = function etmttest2(params, callback) {
@@ -11077,7 +11077,7 @@ exports.etmttest2 = widtests.etmttest2 = etmttest2 = function etmttest2(params, 
 }
 widtests.etmttest2.category = "execute";
 widtests.etmttest2.subcategory = "daily";
-widtests.etmttest2.js = exports. "minute";
+widtests.etmttest2.js = exports.etmttest2;
 widtests.etmttest2.description = "this does a test";
 
 exports.etmttest3 = widtests.etmttest3 = etmttest3 = function etmttest3(params, callback) {
@@ -11264,7 +11264,7 @@ exports.etmttest3 = widtests.etmttest3 = etmttest3 = function etmttest3(params, 
 }
 widtests.etmttest3.category = "execute";
 widtests.etmttest3.subcategory = "daily";
-widtests.etmttest3.js = exports. "minute";
+widtests.etmttest3.js = exports.etmttest3;
 widtests.etmttest3.description = "this does a test";
 
 exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(params, callback) {
@@ -11728,7 +11728,7 @@ exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(
 }
 widtests.etmttest333.category = "execute";
 widtests.etmttest333.subcategory = "daily";
-widtests.etmttest333.js = exports. "minute";
+widtests.etmttest333.js = exports.etmttest333;
 widtests.etmttest333.description = "this does a test";
 
 exports.mt3 = widtests.mt3 = mt3 = function mt3(params, callback) {
@@ -11889,7 +11889,7 @@ exports.mt3 = widtests.mt3 = mt3 = function mt3(params, callback) {
 }
 widtests.mt3.category = "execute";
 widtests.mt3.subcategory = "daily";
-widtests.mt3.js = exports. "minute";
+widtests.mt3.js = exports.mt3;
 widtests.mt3.description = "this does a test";
 
 exports.etar100 = widtests.etar100 = etar100 = function etar100(params, callback) {
@@ -11955,7 +11955,7 @@ exports.etar100 = widtests.etar100 = etar100 = function etar100(params, callback
 }
 widtests.etar100.category = "execute";
 widtests.etar100.subcategory = "daily";
-widtests.etar100.js = exports. "minute";
+widtests.etar100.js = exports.etar100;
 widtests.etar100.description = "this does a test";
 
 /*
@@ -12096,7 +12096,7 @@ exports.etd1 = widtests.etd1 = etd1 = function etd1(params, callback) {
 }
 widtests.etd1.category = "execute";
 widtests.etd1.subcategory = "daily";
-widtests.etd1.js = exports. "minute";
+widtests.etd1.js = exports.etd1;
 widtests.etd1.description = "this does a test";
 
 /*
@@ -12192,7 +12192,7 @@ exports.etd2 = widtests.etd2 = etd2 = function etd2(params, callback) {
 }
 widtests.etd2.category = "execute";
 widtests.etd2.subcategory = "daily";
-widtests.etd2.js = exports. "minute";
+widtests.etd2.js = exports.etd2;
 widtests.etd2.description = "this does a test";
 
 /*
@@ -12244,7 +12244,7 @@ exports.etd3 = widtests.etd3 = etd3 = function etd3(params, callback) {
 }
 widtests.etd3.category = "execute";
 widtests.etd3.subcategory = "daily";
-widtests.etd3.js = exports. "minute";
+widtests.etd3.js = exports.etd3;
 widtests.etd3.description = "this does a test";
 
 /*
@@ -12285,7 +12285,7 @@ exports.dupdateget4 = widtests.dupdateget4 = dupdateget4 = function dupdateget4(
 }
 widtests.dupdateget4.category = "execute";
 widtests.dupdateget4.subcategory = "daily";
-widtests.dupdateget4.js = exports. "minute";
+widtests.dupdateget4.js = exports.dupdateget4;
 widtests.dupdateget4.description = "this does a test";
 
 /*    
@@ -12396,7 +12396,7 @@ exports.etd5 = widtests.etd5 = etd5 = function etd5(params, callback) {
 }
 widtests.etd5.category = "execute";
 widtests.etd5.subcategory = "daily";
-widtests.etd5.js = exports. "minute";
+widtests.etd5.js = exports.etd5;
 widtests.etd5.description = "this does a test";
 
 /*    
@@ -12473,7 +12473,7 @@ exports.etd6 = widtests.etd6 = etd6 = function etd6(params, callback) {
 }
 widtests.etd6.category = "execute";
 widtests.etd6.subcategory = "daily";
-widtests.etd6.js = exports. "minute";
+widtests.etd6.js = exports.etd6;
 widtests.etd6.description = "this does a test";
 
 /*    
@@ -12569,7 +12569,7 @@ exports.etd7 = widtests.etd7 = etd7 = function etd7(params, callback) {
 }
 widtests.etd7.category = "execute";
 widtests.etd7.subcategory = "daily";
-widtests.etd7.js = exports. "minute";
+widtests.etd7.js = exports.etd7;
 widtests.etd7.description = "this does a test";
 
 /*    
@@ -12638,7 +12638,7 @@ exports.etd8 = widtests.etd8 = etd8 = function etd8(params, callback) {
 }
 widtests.etd8.category = "execute";
 widtests.etd8.subcategory = "daily";
-widtests.etd8.js = exports. "minute";
+widtests.etd8.js = exports.etd8;
 widtests.etd8.description = "this does a test";
 
 /*
@@ -12698,7 +12698,7 @@ exports.etd10 = widtests.etd10 = etd10 = function etd10(params, callback) {
 }
 widtests.etd10.category = "execute";
 widtests.etd10.subcategory = "daily";
-widtests.etd10.js = exports. "minute";
+widtests.etd10.js = exports.etd10;
 widtests.etd10.description = "this does a test";
 
 exports.etd10b = widtests.etd10b = etd10b = function etd10b(params, callback) {
@@ -12786,7 +12786,7 @@ exports.etd10b = widtests.etd10b = etd10b = function etd10b(params, callback) {
 }
 widtests.etd10b.category = "execute";
 widtests.etd10b.subcategory = "daily";
-widtests.etd10b.js = exports. "minute";
+widtests.etd10b.js = exports.etd10b;
 widtests.etd10b.description = "this does a test";
 
 /*
@@ -12963,7 +12963,7 @@ exports.etd11 = widtests.etd11 = etd11 = function etd11(params, callback) {
 }
 widtests.etd11.category = "execute";
 widtests.etd11.subcategory = "daily";
-widtests.etd11.js = exports. "minute";
+widtests.etd11.js = exports.etd11;
 widtests.etd11.description = "this does a test";
 
 /*
@@ -13041,7 +13041,7 @@ exports.etd12 = widtests.etd12 = etd12 = function etd12(params, callback) {
 }
 widtests.etd12.category = "execute";
 widtests.etd12.subcategory = "daily";
-widtests.etd12.js = exports. "minute";
+widtests.etd12.js = exports.etd12;
 widtests.etd12.description = "this does a test";
 
 /*
@@ -13129,7 +13129,7 @@ exports.etd13 = widtests.etd13 = etd13 = function etd13(params, callback) {
 }
 widtests.etd13.category = "execute";
 widtests.etd13.subcategory = "daily";
-widtests.etd13.js = exports. "minute";
+widtests.etd13.js = exports.etd13;
 widtests.etd13.description = "this does a test";
 
 /*
@@ -13219,7 +13219,7 @@ exports.etd14 = widtests.etd14 = etd14 = function etd14(params, callback) {
 }
 widtests.etd14.category = "execute";
 widtests.etd14.subcategory = "daily";
-widtests.etd14.js = exports. "minute";
+widtests.etd14.js = exports.etd14;
 widtests.etd14.description = "this does a test";
 
 exports.etalldeepfiltertests = widtests.etalldeepfiltertests = etalldeepfiltertests = function etalldeepfiltertests(params, callback) {
@@ -13272,7 +13272,7 @@ exports.etalldeepfiltertests = widtests.etalldeepfiltertests = etalldeepfilterte
 }
 widtests.etalldeepfiltertests.category = "execute";
 widtests.etalldeepfiltertests.subcategory = "daily";
-widtests.etalldeepfiltertests.js = exports. "minute";
+widtests.etalldeepfiltertests.js = exports.etalldeepfiltertests;
 widtests.etalldeepfiltertests.description = "this does a test";
 
 exports.etd9 = widtests.etd9 = etd9 = function etd9(params, callback) {
@@ -13564,7 +13564,7 @@ exports.etd9 = widtests.etd9 = etd9 = function etd9(params, callback) {
 }
 widtests.etd9.category = "execute";
 widtests.etd9.subcategory = "daily";
-widtests.etd9.js = exports. "minute";
+widtests.etd9.js = exports.etd9;
 widtests.etd9.description = "this does a test";
 
 /*
@@ -13594,7 +13594,7 @@ exports.getnewwid1 = widtests.getnewwid1 = getnewwid1 = function getnewwid1(para
 }
 widtests.getnewwid1.category = "execute";
 widtests.getnewwid1.subcategory = "daily";
-widtests.getnewwid1.js = exports. "minute";
+widtests.getnewwid1.js = exports.getnewwid1;
 widtests.getnewwid1.description = "this does a test";
 
 // DTO 1, dot > object 3, dot
@@ -13671,7 +13671,7 @@ exports.ettest1dot3dot = widtests.ettest1dot3dot = ettest1dot3dot = function ett
 }
 widtests.ettest1dot3dot.category = "execute";
 widtests.ettest1dot3dot.subcategory = "daily";
-widtests.ettest1dot3dot.js = exports. "minute";
+widtests.ettest1dot3dot.js = exports.ettest1dot3dot;
 widtests.ettest1dot3dot.description = "this does a test";
 
 // DTO 3, dot > object 3, dot
@@ -13762,7 +13762,7 @@ exports.ettest3dot3dot = widtests.ettest3dot3dot = ettest3dot3dot = function ett
 }
 widtests.ettest3dot3dot.category = "execute";
 widtests.ettest3dot3dot.subcategory = "daily";
-widtests.ettest3dot3dot.js = exports. "minute";
+widtests.ettest3dot3dot.js = exports.ettest3dot3dot;
 widtests.ettest3dot3dot.description = "this does a test";
 
 // DTO 3, dot > object 3, dot
@@ -13843,7 +13843,7 @@ exports.ettest3dot1dot = widtests.ettest3dot1dot = ettest3dot1dot = function ett
 }
 widtests.ettest3dot1dot.category = "execute";
 widtests.ettest3dot1dot.subcategory = "daily";
-widtests.ettest3dot1dot.js = exports. "minute";
+widtests.ettest3dot1dot.js = exports.ettest3dot1dot;
 widtests.ettest3dot1dot.description = "this does a test";
 
 // DTO 3, dot > object 3, dot
@@ -13912,7 +13912,7 @@ exports.ettest1dot1dot = widtests.ettest1dot1dot = ettest1dot1dot = function ett
 }
 widtests.ettest1dot1dot.category = "execute";
 widtests.ettest1dot1dot.subcategory = "daily";
-widtests.ettest1dot1dot.js = exports. "minute";
+widtests.ettest1dot1dot.js = exports.ettest1dot1dot;
 widtests.ettest1dot1dot.description = "this does a test";
 
 /* jsononetomany tests */
@@ -13991,7 +13991,7 @@ exports.ettest1dot3dotjsonmany = widtests.ettest1dot3dotjsonmany = ettest1dot3do
 }
 widtests.ettest1dot3dotjsonmany.category = "execute";
 widtests.ettest1dot3dotjsonmany.subcategory = "daily";
-widtests.ettest1dot3dotjsonmany.js = exports. "minute";
+widtests.ettest1dot3dotjsonmany.js = exports.ettest1dot3dotjsonmany;
 widtests.ettest1dot3dotjsonmany.description = "this does a test";
 
 // DTO 3, dot > object 3, dot,, jsononetomany
@@ -14073,7 +14073,7 @@ exports.ettest3dot3dotjsonmany = widtests.ettest3dot3dotjsonmany = ettest3dot3do
 }
 widtests.ettest3dot3dotjsonmany.category = "execute";
 widtests.ettest3dot3dotjsonmany.subcategory = "daily";
-widtests.ettest3dot3dotjsonmany.js = exports. "minute";
+widtests.ettest3dot3dotjsonmany.js = exports.ettest3dot3dotjsonmany;
 widtests.ettest3dot3dotjsonmany.description = "this does a test";
 
 // DTO 3, dot > object 3, dot,, jsononetomany
@@ -14145,7 +14145,7 @@ exports.ettest3dot1dotjsonmany = widtests.ettest3dot1dotjsonmany = ettest3dot1do
 }
 widtests.ettest3dot1dotjsonmany.category = "execute";
 widtests.ettest3dot1dotjsonmany.subcategory = "daily";
-widtests.ettest3dot1dotjsonmany.js = exports. "minute";
+widtests.ettest3dot1dotjsonmany.js = exports.ettest3dot1dotjsonmany;
 widtests.ettest3dot1dotjsonmany.description = "this does a test";
 
 // DTO 3, dot > object 3, dot,, jsononetomany
@@ -14205,7 +14205,7 @@ exports.ettest1dot1dotjsonmany = widtests.ettest1dot1dotjsonmany = ettest1dot1do
 }
 widtests.ettest1dot1dotjsonmany.category = "execute";
 widtests.ettest1dot1dotjsonmany.subcategory = "daily";
-widtests.ettest1dot1dotjsonmany.js = exports. "minute";
+widtests.ettest1dot1dotjsonmany.js = exports.ettest1dot1dotjsonmany;
 widtests.ettest1dot1dotjsonmany.description = "this does a test";
 
 /* jsononetoone tests */
@@ -14277,7 +14277,7 @@ exports.ettest1dot3dotjsonone = widtests.ettest1dot3dotjsonone = ettest1dot3dotj
 }
 widtests.ettest1dot3dotjsonone.category = "execute";
 widtests.ettest1dot3dotjsonone.subcategory = "daily";
-widtests.ettest1dot3dotjsonone.js = exports. "minute";
+widtests.ettest1dot3dotjsonone.js = exports.ettest1dot3dotjsonone;
 widtests.ettest1dot3dotjsonone.description = "this does a test";
 
 // DTO 3, dot > object 3, dot,, jsononetoone
@@ -14357,7 +14357,7 @@ exports.ettest3dot3dotjsonone = widtests.ettest3dot3dotjsonone = ettest3dot3dotj
 }
 widtests.ettest3dot3dotjsonone.category = "execute";
 widtests.ettest3dot3dotjsonone.subcategory = "daily";
-widtests.ettest3dot3dotjsonone.js = exports. "minute";
+widtests.ettest3dot3dotjsonone.js = exports.ettest3dot3dotjsonone;
 widtests.ettest3dot3dotjsonone.description = "this does a test";
 
 // DTO 3, dot > object 3, dot,, jsononetoone
@@ -14429,7 +14429,7 @@ exports.ettest3dot1dotjsonone = widtests.ettest3dot1dotjsonone = ettest3dot1dotj
 }
 widtests.ettest3dot1dotjsonone.category = "execute";
 widtests.ettest3dot1dotjsonone.subcategory = "daily";
-widtests.ettest3dot1dotjsonone.js = exports. "minute";
+widtests.ettest3dot1dotjsonone.js = exports.ettest3dot1dotjsonone;
 widtests.ettest3dot1dotjsonone.description = "this does a test";
 
 // DTO 3, dot > object 3, dot,, jsononetoone
@@ -14488,7 +14488,7 @@ exports.ettest1dot1dotjsonone = widtests.ettest1dot1dotjsonone = ettest1dot1dotj
 }
 widtests.ettest1dot1dotjsonone.category = "execute";
 widtests.ettest1dot1dotjsonone.subcategory = "daily";
-widtests.ettest1dot1dotjsonone.js = exports. "minute";
+widtests.ettest1dot1dotjsonone.js = exports.ettest1dot1dotjsonone;
 widtests.ettest1dot1dotjsonone.description = "this does a test";
 
 /* object tests */
@@ -14583,7 +14583,7 @@ exports.ettest1dot3dotobject = widtests.ettest1dot3dotobject = ettest1dot3dotobj
 }
 widtests.ettest1dot3dotobject.category = "execute";
 widtests.ettest1dot3dotobject.subcategory = "daily";
-widtests.ettest1dot3dotobject.js = exports. "minute";
+widtests.ettest1dot3dotobject.js = exports.ettest1dot3dotobject;
 widtests.ettest1dot3dotobject.description = "this does a test";
 
 // DTO 3, dot > object 3, dot,, object
@@ -14681,7 +14681,7 @@ exports.ettest3dot3dotobject = widtests.ettest3dot3dotobject = ettest3dot3dotobj
 }
 widtests.ettest3dot3dotobject.category = "execute";
 widtests.ettest3dot3dotobject.subcategory = "daily";
-widtests.ettest3dot3dotobject.js = exports. "minute";
+widtests.ettest3dot3dotobject.js = exports.ettest3dot3dotobject;
 widtests.ettest3dot3dotobject.description = "this does a test";
 
 // DTO 3, dot > object 3, dot,, object
@@ -14759,7 +14759,7 @@ exports.ettest3dot1dotobject = widtests.ettest3dot1dotobject = ettest3dot1dotobj
 }
 widtests.ettest3dot1dotobject.category = "execute";
 widtests.ettest3dot1dotobject.subcategory = "daily";
-widtests.ettest3dot1dotobject.js = exports. "minute";
+widtests.ettest3dot1dotobject.js = exports.ettest3dot1dotobject;
 widtests.ettest3dot1dotobject.description = "this does a test";
 
 // DTO 3, dot > object 3, dot,, object
@@ -14834,7 +14834,7 @@ exports.ettest1dot1dotobject = widtests.ettest1dot1dotobject = ettest1dot1dotobj
 }
 widtests.ettest1dot1dotobject.category = "execute";
 widtests.ettest1dot1dotobject.subcategory = "daily";
-widtests.ettest1dot1dotobject.js = exports. "minute";
+widtests.ettest1dot1dotobject.js = exports.ettest1dot1dotobject;
 widtests.ettest1dot1dotobject.description = "this does a test";
 
 /*
@@ -14898,7 +14898,7 @@ exports.ettestdot = widtests.ettestdot = ettestdot = function ettestdot(params, 
 }
 widtests.ettestdot.category = "execute";
 widtests.ettestdot.subcategory = "daily";
-widtests.ettestdot.js = exports. "minute";
+widtests.ettestdot.js = exports.ettestdot;
 widtests.ettestdot.description = "this does a test";
 
 /*
@@ -15054,7 +15054,7 @@ exports.etd16 = widtests.etd16 = etd16 = function etd16(params, callback) {
 }
 widtests.etd16.category = "execute";
 widtests.etd16.subcategory = "daily";
-widtests.etd16.js = exports. "minute";
+widtests.etd16.js = exports.etd16;
 widtests.etd16.description = "this does a test";
 
 /*
@@ -15072,7 +15072,7 @@ exports.etd17 = widtests.etd17 = etd17 = function etd17(params, callback) {
 }
 widtests.etd17.category = "execute";
 widtests.etd17.subcategory = "daily";
-widtests.etd17.js = exports. "minute";
+widtests.etd17.js = exports.etd17;
 widtests.etd17.description = "this does a test";
 
 /*
@@ -15091,7 +15091,7 @@ exports.etd18 = widtests.etd18 = etd18 = function etd18(params, callback) {
 }
 widtests.etd18.category = "execute";
 widtests.etd18.subcategory = "daily";
-widtests.etd18.js = exports. "minute";
+widtests.etd18.js = exports.etd18;
 widtests.etd18.description = "this does a test";
 
 /*
@@ -15110,7 +15110,7 @@ exports.etd19 = widtests.etd19 = etd19 = function etd19(params, callback) {
 }
 widtests.etd19.category = "execute";
 widtests.etd19.subcategory = "daily";
-widtests.etd19.js = exports. "minute";
+widtests.etd19.js = exports.etd19;
 widtests.etd19.description = "this does a test";
 
 /*
@@ -15291,7 +15291,7 @@ exports.etd26 = widtests.etd26 = etd26 = function etd26(params, callback) {
 }
 widtests.etd26.category = "execute";
 widtests.etd26.subcategory = "daily";
-widtests.etd26.js = exports. "minute";
+widtests.etd26.js = exports.etd26;
 widtests.etd26.description = "this does a test";
 
 /*
@@ -15328,7 +15328,7 @@ exports.etd27 = widtests.etd27 = etd27 = function etd27(params, callback) {
 }
 widtests.etd27.category = "execute";
 widtests.etd27.subcategory = "daily";
-widtests.etd27.js = exports. "minute";
+widtests.etd27.js = exports.etd27;
 widtests.etd27.description = "this does a test";
 
 /*
@@ -15366,7 +15366,7 @@ exports.etd28 = widtests.etd28 = etd28 = function etd28(params, callback) {
 }
 widtests.etd28.category = "execute";
 widtests.etd28.subcategory = "daily";
-widtests.etd28.js = exports. "minute";
+widtests.etd28.js = exports.etd28;
 widtests.etd28.description = "this does a test";
 
 /*
@@ -15404,7 +15404,7 @@ exports.etd29 = widtests.etd29 = etd29 = function etd29(params, callback) {
 }
 widtests.etd29.category = "execute";
 widtests.etd29.subcategory = "daily";
-widtests.etd29.js = exports. "minute";
+widtests.etd29.js = exports.etd29;
 widtests.etd29.description = "this does a test";
 
 // exports.etd16 = etd16 = function etd16(params, callback) {
@@ -15566,7 +15566,7 @@ exports.etd30 = widtests.etd30 = etd30 = function etd30(params, callback) {
 }
 widtests.etd30.category = "execute";
 widtests.etd30.subcategory = "daily";
-widtests.etd30.js = exports. "minute";
+widtests.etd30.js = exports.etd16;
 widtests.etd30.description = "this does a test";
 
 exports.lmetd2 = widtests.lmetd2 = lmetd2 = function lmetd2(params, callback) {
@@ -15622,7 +15622,7 @@ exports.lmetd2 = widtests.lmetd2 = lmetd2 = function lmetd2(params, callback) {
 }
 widtests.lmetd2.category = "execute";
 widtests.lmetd2.subcategory = "daily";
-widtests.lmetd2.js = exports. "minute";
+widtests.lmetd2.js = exports.lmetd2;
 widtests.lmetd2.description = "this does a test";
 
 // I thought I could turn an integer into a string, but no go....leaves it an integer
@@ -15663,7 +15663,7 @@ exports.lmetd3 = widtests.lmetd3 = lmetd3 = function lmetd3(params, callback) {
 }
 widtests.lmetd3.category = "execute";
 widtests.lmetd3.subcategory = "daily";
-widtests.lmetd3.js = exports. "minute";
+widtests.lmetd3.js = exports.lmetd3;
 widtests.lmetd3.description = "this does a test";
 
 
@@ -15706,7 +15706,7 @@ exports.lmetd4 = widtests.lmetd4 = lmetd4 = function lmetd4(params, callback) {
 }
 widtests.lmetd4.category = "execute";
 widtests.lmetd4.subcategory = "daily";
-widtests.lmetd4.js = exports. "minute";
+widtests.lmetd4.js = exports.lmetd4;
 widtests.lmetd4.description = "this does a test";
 
 // 
@@ -15748,7 +15748,7 @@ exports.lmetd5 = widtests.lmetd5 = lmetd5 = function lmetd5(params, callback) {
 };
 widtests.lmetd5.category = "execute";
 widtests.lmetd5.subcategory = "daily";
-widtests.lmetd5.js = exports. "minute";
+widtests.lmetd5.js = exports.lmetd5;
 widtests.lmetd5.description = "this does a test";
 
 exports.ettestag3v2 = widtests.ettestag3v2 = ettestag3v2 = function ettestag3v2(params, callback) {
@@ -15838,7 +15838,7 @@ exports.ettestag3v2 = widtests.ettestag3v2 = ettestag3v2 = function ettestag3v2(
 };
 widtests.ettestag3v2.category = "execute";
 widtests.ettestag3v2.subcategory = "daily";
-widtests.ettestag3v2.js = exports. "minute";
+widtests.ettestag3v2.js = exports.ettestag3v2;
 widtests.ettestag3v2.description = "this does a test";
 
 //
@@ -15881,7 +15881,7 @@ exports.test_logverifyvariable_1 = widtests.test_logverifyvariable_1 = test_logv
 }
 widtests.test_logverifyvariable_1.category = "execute";
 widtests.test_logverifyvariable_1.subcategory = "daily";
-widtests.test_logverifyvariable_1.js = exports. "minute";
+widtests.test_logverifyvariable_1.js = exports.test_logverifyvariable_1;
 widtests.test_logverifyvariable_1.description = "this does a test";
 
 exports.test_logverifyvariable_2 = widtests.test_logverifyvariable_2 = test_logverifyvariable_2 = function test_logverifyvariable_2(param, callback) {
@@ -15916,5 +15916,5 @@ exports.test_logverifyvariable_2 = widtests.test_logverifyvariable_2 = test_logv
 }
 widtests.test_logverifyvariable_2.category = "execute";
 widtests.test_logverifyvariable_2.subcategory = "daily";
-widtests.test_logverifyvariable_2.js = exports. "minute";
+widtests.test_logverifyvariable_2.js = exports.test_logverifyvariable_2;
 widtests.test_logverifyvariable_2.description = "this does a test";
