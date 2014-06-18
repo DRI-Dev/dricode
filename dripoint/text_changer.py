@@ -21,12 +21,20 @@ for line in f:
 					js = re.findall(reg2,ln)
 					if js:
 						mod_js = ".js = " + fnname
-						nline = ln.split(".js = ")[0] + mod_js + ';'
+						nline = ln.split(".js = ")[0] + mod_js + ';\n'
 						#print(nline)
 						filearray.append(nline)
 						break
 				else:
 					filearray.append(ln)
+	
+name, ext = sys.argv[1].split('.')
+n = open(name + '_mod.' + ext,"a");
+	
+for line in filearray:
+	n.write(line)
+
+
 					
 					
 			

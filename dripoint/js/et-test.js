@@ -8982,6 +8982,18 @@ exports.ettestupdatewid = ettestupdatewid = function ettestupdatewid(params, cal
     });
 };
 
+exports.ettestupdatewidserver = ettestupdatewidserver = function ettestupdatewidserver(params, callback) {
+
+
+    var etEnvironment = new drienvironment(params.command.environment)
+    var executeobject = {'serverfn':'updatewid', 'executethis':'error-updatewid','wid':'testdata123','key1':'value1','key2':'value2'}
+    etEnvironment.execute(executeobject, function (error_obj, result_obj) {
+    //execute({executethis:'updatewid',wid:'testdata123',key1:'value1',key2:'value2'}, function (err, result) {
+        proxyprinttodiv('updatewid results', result, 99);
+        callback(err, result);
+    });
+};
+
 exports.ettestgetwid = ettestgetwid = function ettestgetwid(params, callback) {
     execute({executethis:'getwid',wid:'testdata123'}, function (err, result) {
         proxyprinttodiv('getwid results', result, 99);
