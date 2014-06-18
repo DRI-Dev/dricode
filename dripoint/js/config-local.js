@@ -277,13 +277,13 @@ exports.execute_server = window.execute_server = execute_server = function execu
         // temporary code to stay local
 
         // either use this line
-        execute(param, callback);
+//        execute(param, callback);
 
         // or these 3 lines:     
-        // executeAjax("", params, function (data) {
-        //      proxyprinttodiv('Function server FROM ------', params, 99);
-        //      callback(null, data);
-        // });
+        executeAjax("", params, function (data) {
+              proxyprinttodiv('Function server FROM ------', params, 99);
+              callback(null, data);
+        });
 
 
 };

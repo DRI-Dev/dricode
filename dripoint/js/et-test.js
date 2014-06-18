@@ -8971,24 +8971,18 @@ exports.testquerywid = testquerywid = function testquerywid(params, callback) {
 };
 
 exports.ettestupdatewid = ettestupdatewid = function ettestupdatewid(params, callback) {
-
-
-    var etEnvironment = new drienvironment(params.command.environment)
-    var executeobject = {executethis:'updatewid',wid:'testdata123',key1:'value1',key2:'value2'}
-    etEnvironment.execute(executeobject, function (error_obj, result_obj) {
-    //execute({executethis:'updatewid',wid:'testdata123',key1:'value1',key2:'value2'}, function (err, result) {
+    var etEnvironment = new drienvironment(params.command.environment);
+    var executeobject = {executethis:'updatewid',wid:'testdata123',key1:'value1',key2:'value2'};
+    etEnvironment.execute(executeobject, function (err, result) {
         proxyprinttodiv('updatewid results', result, 99);
         callback(err, result);
     });
 };
 
 exports.ettestupdatewidserver = ettestupdatewidserver = function ettestupdatewidserver(params, callback) {
-
-
-    var etEnvironment = new drienvironment(params.command.environment)
-    var executeobject = {'serverfn':'updatewid', 'executethis':'error-updatewid','wid':'testdata123','key1':'value1','key2':'value2'}
-    etEnvironment.execute(executeobject, function (error_obj, result_obj) {
-    //execute({executethis:'updatewid',wid:'testdata123',key1:'value1',key2:'value2'}, function (err, result) {
+    var etEnvironment = new drienvironment(params.command.environment);
+    var executeobject = {'serverfn':'updatewid', 'executethis':'error-updatewid','wid':'testdata123','key1':'value1','key2':'value2'};
+    etEnvironment.execute(executeobject, function (err, result) {
         proxyprinttodiv('updatewid results', result, 99);
         callback(err, result);
     });
