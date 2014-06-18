@@ -8989,21 +8989,24 @@ exports.ettestupdatewidserver = ettestupdatewidserver = function ettestupdatewid
 };
 
 exports.ettestgetwid = ettestgetwid = function ettestgetwid(params, callback) {
-    execute({executethis:'getwid',wid:'testdata123'}, function (err, result) {
+    var etEnvironment = new drienvironment(params.command.environment);
+    etEnvironment.execute({executethis:'getwid',wid:'testdata123'}, function (err, result) {
         proxyprinttodiv('getwid results', result, 99);
         callback(err, result);
     });
 };
 
 exports.ettestaddwidmaster = ettestaddwidmaster = function ettestaddwidmaster(params, callback) {
-    execute({executethis:'addwidmaster',wid:'mastertestdata123',key1:'value1',key2:'value2'}, function (err, result) {
+    var etEnvironment = new drienvironment(params.command.environment);
+    etEnvironment.execute({executethis:'addwidmaster',wid:'mastertestdata123',key1:'value1',key2:'value2'}, function (err, result) {
         proxyprinttodiv('addwidmaster results', result, 99);
         callback(err, result);
     });
 };
 
 exports.ettestgetwidmaster = ettestgetwidmaster = function ettestgetwidmaster(params, callback) {
-    execute({executethis:'getwidmaster',wid:'mastertestdata123'}, function (err, result) {
+    var etEnvironment = new drienvironment(params.command.environment);
+    etEnvironment.execute({executethis:'getwidmaster',wid:'mastertestdata123'}, function (err, result) {
         proxyprinttodiv('getwid results', result, 99);
         callback(err, result);
     });
