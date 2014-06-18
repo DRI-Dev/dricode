@@ -88,7 +88,6 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                 "db":"",
                 "databasetable":"",
                 "convertmethod":"",
-                "keepaddthis":"",
                 "environment":"",
                 "keepaddthis":""
             }
