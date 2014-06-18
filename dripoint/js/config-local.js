@@ -21,7 +21,7 @@ if (!debugon) { // debugfn
 // *********** EVENTS **************************************************
 exports.eventappinstall = eventappinstall = function eventappinstall() {
    if (exports.environment === 'local') {
-       clearLocalStorage();
+//       clearLocalStorage();
    }
 };
 
@@ -335,7 +335,7 @@ function setdefaultparm() {
 
 
 function config123() {
-    var configuration = {};
+    var configuration = {d:{environment:{}}};
 
     configuration.environment = 'local';
     configuration.widmasterkey = 'widmasterkey';
@@ -345,7 +345,6 @@ function config123() {
     configuration.defaultkeycollection = 'dricollectionkey';
     configuration.defaultdatabasetable = 'wikiwallettesting';
     configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment";
-    configuration.d = {environment:{}};
     configuration.d.defaultcollection = configuration.defaultcollection;
     configuration.d.defaultdb = configuration.defaultdb;
     configuration.d.defaultdatastore =  configuration.defaultdatastore;
