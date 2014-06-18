@@ -606,10 +606,10 @@ function etunittesttester(params, callback) {
 
 // at stands for 'all tests', this will run a suite 
 // of tests that are known to run, but not necessarily pass
-
 var wid = wid || {};
+var widtests = widtests || {};
 //exports.ettestat = ettestat = function ettestat(params, callback) {
-exports.ettestat = wid.ettestat = ettestat = function ettestat(params, callback) {
+exports.ettestat = widtests.ettestat = ettestat = function ettestat(params, callback) {
 
     var result = [];
     var err;
@@ -626,7 +626,7 @@ exports.ettestat = wid.ettestat = ettestat = function ettestat(params, callback)
                         result.push(r5);
                         ettestdot(result, function(err, r6) {
                             result.push(r6);
-
+							console.log('finished with ettestat');
                             callback(err, result);
 
                         });
@@ -636,10 +636,10 @@ exports.ettestat = wid.ettestat = ettestat = function ettestat(params, callback)
         });
     });
 }
-wid.ettestat.category = "executeit";
-wid.ettestat.subcategory = "dothis";
-wid.ettestat.type = "minute";
-wid.ettestat.name = "this does a test";
+widtests.ettestat.category = "cat1";
+widtests.ettestat.subcategory = "dothis";
+widtests.ettestat.type = "minute";
+widtests.ettestat.name = "this does a test";
 
 //exports.ettestat2 = ettestat2 = function ettestat2(params, callback) {
 exports.ettestat2 = wid.ettestat2 = ettestat2 = function ettestat2(params, callback) {
@@ -8946,7 +8946,7 @@ wid.etaddwidtest5.name = "this does a test";
 /*
 addwid with inherit that DOES matter ... deep should return name of roger + more
 */
-exports.etaddwidtest6 = wid.etaddwidtest6 = etaddwidtest6 = function etaddwidtest6(parameters, callback) {
+exports.etaddwidtest6 = widtests.etaddwidtest6 = etaddwidtest6 = function etaddwidtest6(parameters, callback) {
     debuglevel = 17;
     eventappinstall();
     var executeList = [{
@@ -9020,10 +9020,10 @@ exports.etaddwidtest6 = wid.etaddwidtest6 = etaddwidtest6 = function etaddwidtes
         });
     });
 }
-wid.etaddwidtest6.category = "executeit";
-wid.etaddwidtest6.subcategory = "dothis";
-wid.etaddwidtest6.type = "minute";
-wid.etaddwidtest6.name = "this does a test";
+widtests.etaddwidtest6.category = "executeit";
+widtests.etaddwidtest6.subcategory = "dothis";
+widtests.etaddwidtest6.type = "minute";
+widtests.etaddwidtest6.name = "this does a test";
 
 /*
 addwid without inherit  ... should add inputobject -- test of deep filter string, number, boolean, date -- did it convert it?

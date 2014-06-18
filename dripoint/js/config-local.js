@@ -335,8 +335,10 @@ function setdefaultparm() {
 
 
 function config123() {
-    var configuration = {d:{environment:{}}};
+    //var configuration = {d:{environment:{}}};
 
+    var configuration = {};
+    
     configuration.environment = 'local';
     configuration.widmasterkey = 'widmasterkey';
     configuration.defaultcollection = 'dricollection';
@@ -345,11 +347,13 @@ function config123() {
     configuration.defaultkeycollection = 'dricollectionkey';
     configuration.defaultdatabasetable = 'wikiwallettesting';
     configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment";
+    configuration.d = {}
     configuration.d.defaultcollection = configuration.defaultcollection;
     configuration.d.defaultdb = configuration.defaultdb;
     configuration.d.defaultdatastore =  configuration.defaultdatastore;
     configuration.d.defaultkeycollection = configuration.defaultkeycollection;
     configuration.d.defaultdatabasetable = configuration.defaultdatabasetable;
+    configuration.d.environment = {}
     configuration.d.environment.platform = configuration.environment;
 
     return {

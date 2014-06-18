@@ -1,61 +1,13 @@
 
-// create the namespace
-var widtests = widtests || {};
+function run_cat1_tests(params, callback)
+{
+	var filter = {'category':'cat1'};
+	console.log('sending param {"category":"cat1"} to run_filtered_functions()');
+	run_filtered_functions(filter, function (err, res) {
+			console.log('end run_cat1_tests');
+		});
 
-exports.testA = widtests.testA = testA = function testA(params, callback) {
-	console.log('This is testA');
-	console.log(' - params are - ' + JSON.stringify(params));
-	callback(null, null);
 }
-exports.testB = widtests.testB = testB = function testB(params, callback) {
-	console.log('This is testB');
-	console.log(' - params are - ' + JSON.stringify(params));
-	callback(null, null);
-}
-exports.testC = widtests.testC = testC = function testC(params, callback) {
-	console.log('This is testC');
-	console.log(' - params are - ' + JSON.stringify(params));
-	callback(null, null);
-}
-exports.testD = widtests.testD = testD = function testD(params, callback) {
-	console.log('This is testD');
-	console.log(' - params are - ' + JSON.stringify(params));
-	callback(null, null);
-}
-exports.testE = widtests.testE = testE = function testE(params, callback) {
-	console.log('This is testE');
-	console.log(' - params are - ' + JSON.stringify(params));
-	callback(null, null);
-}
-exports.testF = widtests.testF = testF = function testF(params, callback) {
-	console.log('This is testF');
-	console.log(' - params are - ' + JSON.stringify(params));
-	callback(null, null);
-}
-
-exports.testA.category = 'cat1';
-exports.testA.subcategory = 'cat13';
-exports.testA.js = exports.testA;
-
-exports.testB.category = 'cat1';
-exports.testB.subcategory = 'cat44';
-exports.testB.js = exports.testB;
-
-exports.testC.category = 'cat2';
-exports.testC.subcategory = 'cat13';
-exports.testC.js = exports.testC;
-
-exports.testD.category = 'cat2';
-exports.testD.subcategory = 'cat7';
-exports.testD.js = exports.testD;
-
-exports.testE.category = 'cat3';
-exports.testE.subcategory = 'cat3';
-exports.testE.js = exports.testE;
-
-exports.testF.category = 'cat4';
-exports.testF.subcategory = 'cat41';
-exports.testF.js = exports.testF;
 
 function runwidtest(fnName, params, callback)
 {

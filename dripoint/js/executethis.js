@@ -175,7 +175,9 @@
         }
         else
         {
-            if (executionpreferences.command.environment.run.executelevel===0 && executionpreferences.command.environment.platform==='local')
+            //if (executionpreferences.command.environment.run.executelevel===0 && executionpreferences.command.environment.platform==='local')
+            if (executionpreferences.command.environment.run.executelevel===0 && config.environment==='local')
+
             {
                 executionpreferences.command.processfn="create_how_to_do_list";
             }
@@ -832,7 +834,7 @@
         {
             var params = {};
             extend(true, params, inparams);
-//            params.wid = params.executethis;
+            params.wid = params.executethis;
             params.executethis='getwid';
             params.command.processfn = "execute_function";
             params.command.keepaddthis=false;
