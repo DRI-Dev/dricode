@@ -3420,7 +3420,7 @@ exports.ettestag122 = widtests.ettestag122 = ettestag122 = function ettestag122(
 }
 widtests.ettestag122.category = "execute";
 widtests.ettestag122.subcategory = "daily";
-widtests.ettestag122.js = exports.ag211;
+widtests.ettestag122.js = exports.ettestag122;
 widtests.ettestag122.description = "this does a test";
 
 // This will test the ability to write a dto to the db, use that dto to write
@@ -4304,7 +4304,7 @@ exports.uwid1 = widtests.uwid1 = uwid1 = function uwid1(params, callback) {
 }
 widtests.uwid1.category = "execute";
 widtests.uwid1.subcategory = "daily";
-widtests.uwid1.js = exports.func_async;
+widtests.uwid1.js = exports.uwid1;
 widtests.uwid1.description = "this does a test";
 
 // Used as a test for having a postexecute deply nested deep in the params in the parameters
@@ -4684,7 +4684,7 @@ exports.exec_mul_test = widtests.exec_mul_test = exec_mul_test = function exec_m
 }
 widtests.exec_mul_test.category = "execute";
 widtests.exec_mul_test.subcategory = "daily";
-widtests.exec_mul_test.js = exports.t121212;
+widtests.exec_mul_test.js = exports.exec_mul_test;
 widtests.exec_mul_test.description = "this does a test";
 
 
@@ -15566,7 +15566,7 @@ exports.etd30 = widtests.etd30 = etd30 = function etd30(params, callback) {
 }
 widtests.etd30.category = "execute";
 widtests.etd30.subcategory = "daily";
-widtests.etd30.js = exports.etd16;
+widtests.etd30.js = exports.etd30;
 widtests.etd30.description = "this does a test";
 
 exports.lmetd2 = widtests.lmetd2 = lmetd2 = function lmetd2(params, callback) {

@@ -9,6 +9,66 @@ function run_cat1_tests(params, callback)
 
 }
 
+function run_daily_tests(params, callback)
+{
+	var filter = {'subcategory':'daily'};
+	console.log('sending param {"subcategory":"daily"} to run_filtered_functions()');
+	run_filtered_functions(filter, function (err, res) {
+			console.log('end run_daily_tests');
+		});
+
+}
+
+function run_adhoc_tests(params, callback)
+{
+	var filter = {'subcategory':'adhoc'};
+	console.log('sending param {"subcategory":"adhoc"} to run_filtered_functions()');
+	run_filtered_functions(filter, function (err, res) {
+			console.log('end run_adhoc_tests');
+		});
+
+}
+
+function run_expensive_tests(params, callback)
+{
+	var filter = {'subcategory':'expensive'};
+	console.log('sending param {"subcategory":"expensive"} to run_filtered_functions()');
+	run_filtered_functions(filter, function (err, res) {
+			console.log('end run_expensive_tests');
+		});
+
+}
+
+function run_push_tests(params, callback)
+{
+	var filter = {'subcategory':'push'};
+	console.log('sending param {"subcategory":"push"} to run_filtered_functions()');
+	run_filtered_functions(filter, function (err, res) {
+			console.log('end run_push_tests');
+		});
+
+}
+
+function run_query_tests(params, callback)
+{
+	var filter = {'subcategory':'query'};
+	console.log('sending param {"subcategory":"query"} to run_filtered_functions()');
+	run_filtered_functions(filter, function (err, res) {
+			console.log('end run_query_tests');
+		});
+
+}
+
+function run_execute_tests(params, callback)
+{
+	var filter = {'category':'execute'};
+	console.log('sending param {"category":"execute"} to run_filtered_functions()');
+	run_filtered_functions(filter, function (err, res) {
+			console.log('end run_execute_tests');
+		});
+
+}
+
 function runwidtest(fnName, params, callback)
 {
 	if (widtests.hasOwnProperty(fnName) && typeof widtests[fnName] == "function")

@@ -38,6 +38,7 @@ exports.testf = widtests.testf = testf = function testf(params, callback) {
 widtests.testa.category = 'cat1';
 widtests.testa.subcategory = 'cat13';
 widtests.testa.js = exports.testa;
+widtests.testa.description = 'hola';
 
 exports.testb.category = 'cat1';
 exports.testb.subcategory = 'cat44';
