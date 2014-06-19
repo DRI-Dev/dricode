@@ -168,10 +168,10 @@
         if (!executionpreferences.command.environment.run.executeid) {executionpreferences.command.environment.run.executeid=createNewGuid();}
         if (!executionpreferences.command.environment.run.type) {executionpreferences.command.environment.run.type="series";}
 
-        if (inparams.command.processfn)
+        if (inparams.command.environment.processfn)
         {
-            executionpreferences.command.processfn=inparams.command.processfn;
-            delete inparams.command.processfn;
+            executionpreferences.command.environment.processfn = inparams.command.environment.processfn;
+            delete inparams.command.environment.processfn;
         }
         else
         {
@@ -180,11 +180,11 @@
             if (executionpreferences.command.environment.run.executelevel===0 && config.configuration.environment==='local')
 
             {
-                executionpreferences.command.processfn="create_how_to_do_list";
+                executionpreferences.command.environment.processfn="create_how_to_do_list";
             }
-            else
+        else
             {
-                executionpreferences.command.processfn="create_what_to_do_list";
+                executionpreferences.command.environment.processfn="create_what_to_do_list";
             }
         }
 
@@ -307,18 +307,17 @@
                     extend(true, executionparameters, inparams);
                     proxyprinttodiv("converttocommand - executionparameters", executionparameters, 11);
 
-                    var tempArray=[];
+                    var tempArray = [];
                     tempArray.push(executionparameters);
                     executionparameters=tempArray;
                 }
                 if (isArray(inparams.command.xrun))
                 {   // create executionparameters and executionpreferences from what we have
                     //proxyprinttodiv("converttocommand - outside iteration - inparams", inparams, 11, true);
-                    executionparameters=inparams.command.xrun.slice(0); // make a copy of array
+                    executionparameters = inparams.command.xrun.slice(0); // make a copy of array
                     //proxyprinttodiv("converttocommand - outside iteration - executionparameters I", executionparameters, 11, true);
                     delete inparams.command.xrun;
                     extend(true, executionpreferences, inparams); // extra stuff in inparams goes to extraparams
-                    //delete inparams; -- does not matter since not needed any more
                 }
 
             } 
@@ -326,7 +325,7 @@
             {   
                 // if object all along then those are the execution parameters
                 executionparameters=inparams;
-                var tempArray=[];
+                var tempArray = [];
                 tempArray.push(executionparameters);
                 executionparameters=tempArray;
             }
@@ -355,18 +354,19 @@
     //  a-based on type fix current iteration's try parameters (i.e use previous results for waterfall)
     //  b-merge current iteration with executionpreferences
     // 4) massage parameters through function command.processparameterfn
-    // 5) call execute based on command.processfn
+    // 5) call execute based on command.environment.processfn
     // 6) based on type save parameters & results
     // 7) interpret results and provide a consolidated err, res
     exports.execute = window.execute = execute = function execute(input, callback) {
         var color  = Number(getglobal('debugcolor')); color++; saveglobal('debugcolor', color);
         var indent  = Number(getglobal('debugindent')); indent++; saveglobal('debugindent', indent);
-        var previousresults=null;
-        var skipexecute = false;
-        var overallerror=null;
-        var arrayresult=[];
-        var trycount = 0;
-        var incomingparams = {};
+
+        var previousresults=null,
+            skipexecute = false,
+            overallerror = null,
+            arrayresult = [],
+            trycount = 0,
+            incomingparams = {};
 
         extend(true, incomingparams, input);              // make copy of input 
         incomingparams=ConvertFromDOTdri(incomingparams); // convert from dot notation -- not necessary if dot notation not sent in
@@ -388,13 +388,13 @@
         // maybe delete command object if empty
         if (executionpreferences.command && 
             executionpreferences.command.environment && 
-            Object.keys(executionpreferences.command.environment).length === 0) 
+            Object.keys(executionpreferences.command.environment).length === 0)
         {
             delete executionpreferences.command.environment;
         }
 
         if (executionpreferences.command && 
-            Object.keys(executionpreferences.command).length === 0) 
+            Object.keys(executionpreferences.command).length === 0)
         {
             delete executionpreferences.command;
         }
@@ -472,7 +472,7 @@
                             proxyprinttodiv("execute step 00 outgoingparm", outgoingparm, 11, true);
                             proxyprinttodiv('execute step 00 type', type, 11);
                             // step1 massage parameters based on command.processparameterfn, send results via outgoingparam
-                            // step2 execute based on command.processfn, send results and error in from stestep02res/err
+                            // step2 execute based on command.environment.processfn, send results and error in from stestep02res/err
                             // step3 log the results based on type
                             var fromstep02res={};
                             var fromstep02err=null;
@@ -489,14 +489,14 @@
                                     proxyprinttodiv("execute step02 outgoingparam", outgoingparam, 11, true);
                                     var processfn;
                                     
-                                    if (outgoingparam && outgoingparam.command && outgoingparam.command.processfn) 
+                                    if (outgoingparam && outgoingparam.command && outgoingparam.command.environment.processfn)
                                     {
-                                        proxyprinttodiv("after processfn", outgoingparam.command.processfn, 11);
-                                        processfn=window[outgoingparam.command.processfn];
-                                        delete outgoingparam.command.processfn;
+                                        proxyprinttodiv("after processfn", outgoingparam.command.environment.processfn, 11);
+                                        processfn = window[outgoingparam.command.environment.processfn];
+                                        delete outgoingparam.command.environment.processfn;
                                     }
-                                    if (processfn) proxyprinttodiv("after processfn II", processfn.name, 11);
 
+                                    if (processfn) proxyprinttodiv("after processfn II", processfn.name, 11);
                                         if (processfn) 
                                         {
                                             //proxyprinttodiv("execute calling processfn",processfn.name , 11);
@@ -667,38 +667,38 @@
                     proxyprinttodiv('execute step6 level type --', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
                     delete command.resulttable[currentexecuteid].tryset;
                     proxyprinttodiv('execute step05 SUMMARY command ', command, 11, true);
-                    var errorsummary=null;
+                    var errorsummary = null;
                     var resultsummary;
 
-                    if (arrayresult.length===0) {resultsummary={};}
-                    else if (arrayresult.length===1) {resultsummary=arrayresult[0];}
-                    else {resultsummary=arrayresult;}
+                    if (arrayresult.length === 0) { resultsummary = {}; }
+                    else if (arrayresult.length === 1) { resultsummary = arrayresult[0]; }
+                    else { resultsummary = arrayresult; }
 
                     proxyprinttodiv('execute end resultsummary ', resultsummary, 11);
 
                     // if fn, parm, executegetwid could not find -- not sure if this should be in previous section
-                    if (overallerror && overallerror.errorname==="fnnotfound") 
-                    {overallerror.errorname="notfound";}
+                    if (overallerror && overallerror.errorname === "fnnotfound")
+                    { overallerror.errorname="notfound"; }
 
                     // if we were top level then nothing else to do if notfound
-                    if (level===0 && overallerror && overallerror.errorname==="notfound") 
-                    {overallerror.errorname="failnotfound";}
+                    if (level === 0 && overallerror && overallerror.errorname === "notfound")
+                    { overallerror.errorname = "failnotfound"; }
 
-                    command.resulttable[currentexecuteid].overallerror=errorsummary;
-                    command.resulttable[currentexecuteid].overallresult=resultsummary;
+                    command.resulttable[currentexecuteid].overallerror = errorsummary;
+                    command.resulttable[currentexecuteid].overallresult = resultsummary;
                     // future we may need to support multiple executeids
-                    command.resulttable.overallerror=errorsummary;
-                    command.resulttable.overallresult=resultsummary;
+                    command.resulttable.overallerror = errorsummary;
+                    command.resulttable.overallresult = resultsummary;
 
                     if (overallerror && Object.keys(overallerror).length > 0) 
                     {
-                        errorsummary=overallerror;
+                        errorsummary = overallerror;
 
-                        resultsummary={};
+                        resultsummary = {};
                         proxyprinttodiv('execute type', type, 11);
-                        if (type ==="group")
+                        if (type === "group")
                         {   // if group then results of interest to previous level
-                            resultsummary.command=command;
+                            resultsummary.command = command;
                             // tbd how to clean resulttable
                             // maybe resultsummary.command=command.details
                             // or delete executionpreferences, etc
@@ -708,15 +708,14 @@
                             extend(true, environment, resultsummary.command.resulttable.executionpreferences.command.environment);
                             delete resultsummary.command.resulttable.executionpreferences;
                             delete resultsummary.command.resulttable.tryset;
-                            resultsummary.command.resulttable.executionpreferences={};
-                            resultsummary.command.resulttable.executionpreferences.command={};
-                            resultsummary.command.resulttable.executionpreferences.command.environment=environment;
+                            resultsummary.command.resulttable.executionpreferences = {};
+                            resultsummary.command.resulttable.executionpreferences.command = {};
+                            resultsummary.command.resulttable.executionpreferences.command.environment = environment;
                             proxyprinttodiv('execute resultsummary', resultsummary, 11);
                         }
-
                         else
                         {   // if not group then the previous level can do nothing with this detail
-                            resultsummary=null;
+                            resultsummary = null;
                         }
                     }
 
@@ -724,11 +723,21 @@
                     proxyprinttodiv('execute SUMMARY resultsummary ', resultsummary, 11, true);
                     var color  = Number(getglobal('debugcolor')); color --; saveglobal('debugcolor', color);
                     var indent  = Number(getglobal('debugindent')); indent --; saveglobal('debugindent', indent);
-                    callback(errorsummary, resultsummary)
+
+                    // clear processfn at this point if executelevel is 0
+                    if (executionpreferences.command.environment.run.executelevel == 0) {
+                        if (resultsummary.command
+                            && resultsummary.command.environment
+                            && resultsummary.command.environment.processfn) {
+                            delete resultsummary.command.environment.processfn;
+                        }
+                    }
+
+                    callback(errorsummary, resultsummary);
                 }); // mapseries
             } // parallel
-            } // execute level
-        }; // end
+        } // execute level
+    }; // end
 
     // this function expands inparams to be two calls, usually one to local and one to server
     // they are set to "runfirstone", it will not go to server unless first call fails
@@ -738,36 +747,36 @@
         proxyprinttodiv("create_how_to_do_list inparams", inparams, 11);
         // create outside wrapper--copy command, set "runfirstone"
         //var type = inparams.command.environment.run.type
-        var outparams={};
-        outparams.command={};
+        var outparams = {};
+        outparams.command = {};
         extend(true, outparams.command, inparams.command);
         outparams.command.environment.run.type = "runfirstonewaterfall";
         outparams.command.xrun = [];
 
-            // create step1 of inside--copy all minus processparameterfn, set create_what_to_do_list
-            var firstcopy = {};
-            extend(true, firstcopy, inparams);
-            delete firstcopy.serverfn;
-            outparams.command.xrun.push(firstcopy); 
+        // create step1 of inside--copy all minus processparameterfn, set create_what_to_do_list
+        var firstcopy = {};
+        extend(true, firstcopy, inparams);
+        delete firstcopy.serverfn;
+        outparams.command.xrun.push(firstcopy);
 
-            // second step will waterfall parameters from above
-            var secondcopy={};
-            extend(true, secondcopy, inparams);
-            //secondcopy.serverfn = inparams.serverfn;          // uncomment
-            //secondcopy.command.processparameterfn="execute_nothing";  // take it out
-            //delete secondcopy.serverfn;
-            secondcopy.command.environment.run.executelevel=0;
+        // second step will waterfall parameters from above
+        var secondcopy = {};
+        extend(true, secondcopy, inparams);
+        //secondcopy.serverfn = inparams.serverfn;          // uncomment
+        //secondcopy.command.processparameterfn="execute_nothing";  // take it out
+        //delete secondcopy.serverfn;
+        secondcopy.command.environment.run.executelevel = 0;
 
-            //secondcopy.command.environment.platform='server';  // note this should be take out before live
-            secondcopy.command.processfn = "execute_server"; // change to "server" before going live
-                                                              // server fn should delete processfn
-            outparams.command.xrun.push(secondcopy);
+        //secondcopy.command.environment.platform='server';  // note this should be take out before live
+        secondcopy.command.environment.processfn = "execute_server"; // change to "server" before going live
+                                                          // server fn should delete processfn
+        outparams.command.xrun.push(secondcopy);
             
         proxyprinttodiv("create_how_to_do_list outparams", outparams, 11, true);
         execute(outparams, cb);
         
         //cb(null, outparams);
-    }
+    };
 
     // this function expands inparams to be three calls, to execute_function, execute_parameter, execute_get_wid
     // it sets these to "runfirstone" 
@@ -776,98 +785,94 @@
         proxyprinttodiv("create_what_to_do_list inparams", inparams, 11);
         // create outside wrapper--copy command, set "runfirstone"
 
-        var outparams={};
+        var outparams = {};
         outparams.command = {};
         extend(true, outparams.command, inparams.command);
         outparams.command.environment.run.type = "runfirstone";
         outparams.command.xrun = [];
-        //outparams.command.processparameterfn = "execute_nothing";
-        outparams.command.processfn = "execute_function";
-
-        //nest all of below into one xrun
+        outparams.command.environment.processfn = "execute_function";
         
-            // create step1 of inside--copy all minus processparameterfn, set execute_function
-            var firstcopy={};
-            extend(true, firstcopy, inparams);
-            firstcopy.command.processfn = "execute_function";
-            outparams.command.xrun.push(firstcopy);
+        // create step1 of inside--copy all minus processparameterfn, set execute_function
+        var firstcopy = {};
+        extend(true, firstcopy, inparams);
+        firstcopy.command.environment.processfn = "execute_function";
+        outparams.command.xrun.push(firstcopy);
 
-            // create step2 of inside--processparameterfn=execute_parameter, set execute_parameter
-            var secondcopy={};
-            extend(true, secondcopy, inparams);
-            secondcopy.command.processfn = "execute_parameter";     
-            outparams.command.xrun.push(secondcopy);
+        // create step2 of inside--processparameterfn=execute_parameter, set execute_parameter
+        var secondcopy = {};
+        extend(true, secondcopy, inparams);
+        secondcopy.command.environment.processfn = "execute_parameter";
+        outparams.command.xrun.push(secondcopy);
 
-            // create third copy for execute get wid
-            var thirdcopy={};
-            extend(true, thirdcopy, inparams);
-            thirdcopy.command.processfn = "execute_get_wid";
-            outparams.command.xrun.push(thirdcopy);
+        // create third copy for execute get wid
+        var thirdcopy = {};
+        extend(true, thirdcopy, inparams);
+        thirdcopy.command.environment.processfn = "execute_get_wid";
+        outparams.command.xrun.push(thirdcopy);
 
         proxyprinttodiv("create_what_to_do_list outparams", outparams, 11, true);
         execute(outparams, cb);
-      }
+    };
 
 
     // executes the function stored in parameter
     // if params are {et:x, x:fn1} then it will execute fn1
     window.execute_parameter = function execute_parameter(params, cb) {
         if (!params[params.executethis]) {
-            params.command.processfn="execute_createerror";
+            params.command.environment.processfn = "execute_createerror";
         } 
-        else 
-        {
+        else {
             params.executethis = params[params.executethis];
         }
-        params.command.processfn="execute_function";
+        params.command.environment.processfn = "execute_function";
         proxyprinttodiv('execute end of execute_parameter', params, 11);
         execute_function(params, cb);
-    }
+    };
 
     // if parms are {et: x} then to a getwid to x ... then excucte the results of x
     // to this by doing the getwid in step01 (processparameterfn) and the execute of resutls in step02
     window.execute_get_wid =  function execute_get_wid(inparams, cb) { 
 		if (!inparams.executethis) {
             proxyprinttodiv('execute end of execute_get_wid I', inparams, 11);
-            execute_createerror(params, cb);
+            execute_createerror(inparams, cb);
         } 
         else 
         {
             var params = {};
             extend(true, params, inparams);
             params.wid = params.executethis;
-            params.executethis='getwid';
-            params.command.processfn = "execute_function";
-            params.command.keepaddthis=false;
+            params.executethis = 'getwid';
+            params.command.environment.processfn = "execute_function";
+            params.command.keepaddthis = false;
             execute(params, function (err, res) {
                 if (err) 
                 {
-                    if (!res) {res={};}
-                    if (!res.command) {res.command={};}
+                    if (!res) { res = {}; }
+                    if (!res.command) { res.command = {}; }
                     execute_createerror(params, cb);
                 }
                 else
 				{
                     // set the results to execute
-                    inparams.command.processfn = "execute_function";
+                    inparams.command.environment.processfn = "execute_function";
                     res = extend(true, {}, inparams, res);
                     execute_function(res, cb);
                 }
             })
         }
-    }
+    };
 
     // function for where there is nothing to do
     window.execute_nothing =  function execute_nothing(params, callback) {
         proxyprinttodiv('execute end of execute_nothing', params, 11);
         callback(null, params);
-    }
+    };
  
      // when whattodo fn, parm, executeget wid is unable to do something in that try
     window.execute_createerror =  function execute_createerror(params, callback) {
         proxyprinttodiv('execute end of execute_nothing', params, 11);
         callback({"errorname":"fnnotfound"}, params);
-    }
+    };
 
     // main execute function
     window.execute_function = function execute_function(incomingparams, callback) {
@@ -1871,7 +1876,7 @@
             // var thirdcopy={}
             // extend(true, thirdcopy, inparams)
             // delete thirdcopy.command.processparameterfn
-            // thirdcopy.command.processfn = "execute_function";
+            // thirdcopy.command.environment.processfn = "execute_function";
             // thirdcopy.command.environment.run.type="waterfall"
             // thirdcopy.command.xrun = [];
 
@@ -1879,7 +1884,7 @@
             //     var thirdcopy1={}
             //     extend(true, thirdcopy1, inparams)
             //     thirdcopy1.command.processparameterfn = "execute_get_wid"
-            //     thirdcopy1.command.processfn = "execute_function";
+            //     thirdcopy1.command.environment.processfn = "execute_function";
             //     // thirdcopy1.command.environment.run.type="series"    // keep whatever was sent in
             //     thirdcopy.command.xrun.push(thirdcopy1);
 

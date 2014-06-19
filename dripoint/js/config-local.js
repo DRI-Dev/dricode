@@ -266,11 +266,11 @@ exports.execute_server = window.execute_server = execute_server = function execu
 
 
         // note this code should be deleted...only for testing server locally
-        if (params.serverfn) 
-        {
-            params.command.xrun=params.serverfn;
-            delete params.serverfn;
-        }
+//        if (params.serverfn)
+//        {
+//            params.command.xrun = params.serverfn;
+//            delete params.serverfn;
+//        }
         proxyprinttodiv('test ***** calling server', params, 99);
 
 
