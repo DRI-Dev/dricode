@@ -723,15 +723,13 @@
                     proxyprinttodiv('execute SUMMARY resultsummary ', resultsummary, 11, true);
                     var color  = Number(getglobal('debugcolor')); color --; saveglobal('debugcolor', color);
                     var indent  = Number(getglobal('debugindent')); indent --; saveglobal('debugindent', indent);
+                    executionpreferences.command.environment.run.executelevel--;
 
-                    // clear processfn at this point if executelevel is 0
-                    if (executionpreferences.command.environment.run.executelevel == 0) {
-                        if (resultsummary.command
-                            && resultsummary.command.environment
-                            && resultsummary.command.environment.processfn) {
-                            delete resultsummary.command.environment.processfn;
-                        }
-                    }
+//                    if (executionpreferences.command.environment.run.executelevel == 0) {
+//                        // clear out run on last iteration (or rather the ending of the original iteration)
+//                        executionpreferences.command.environment.run = {};
+//                        checkenviornment(executionpreferences.command.environment);
+//                    }
 
                     callback(errorsummary, resultsummary);
                 }); // mapseries
