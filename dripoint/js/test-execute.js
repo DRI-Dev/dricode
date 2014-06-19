@@ -3885,10 +3885,10 @@ exports.ettestag3 = widtests.ettestag3 = ettestag3 = function ettestag3(params, 
             //       "command":{"getwidmaster":{"convertmethod":"dto",
             //                               "execute":"ConvertFromDOTdri",
             //                               "inheritflag":"true","dtotype":""}}}, function (err, res1) {
-            execute({
+            execute([{
                 "executethis": "getwidmaster",
                 "wid": "song1"
-            }, function(err, res1) {
+            }], function(err, res1) {
                 proxyprinttodiv('Function ag3 result LAST ', res1, 99);
                 callback(err, res);
 
@@ -4410,4 +4410,183 @@ exports.ettestag3a = widtests.ettestag3a = ettestag3a = function ettestag3a(para
 widtests.ettestag3a.category = "execute";
 widtests.ettestag3a.subcategory = "daily";
 widtests.ettestag3a.js = exports.ettestag3a;
-widtests.ettestag3a.description = "this does a test";	  
+widtests.ettestag3a.description = "this does a test";
+
+//exports.testnested1 = testnested1 = function testnested1(params, callback) {
+exports.testnested1 = widtests.testnested1 = testnested1 = function testnested1(params, callback) {
+
+    eventappinstall();
+
+    var inparams = [
+        [{
+            "executethis": "addwidmaster",
+            "wid": "a2-56",
+            "a2": "b2"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "a2-56"
+        }],
+        [{
+            "executethis": "addwidmaster",
+            "wid": "a2-57",
+            "a2": "b2"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "a2-57"
+        }],
+        [{
+            "executethis": "addwidmaster",
+            "wid": "a2-58",
+            "a2": "b2"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "a2-58"
+        }]
+
+    ];
+
+    execute(inparams, callback);
+}
+widtests.testnested1.category = "execute";
+widtests.testnested1.subcategory = "daily";
+widtests.testnested1.js = exports.testnested1;
+widtests.testnested1.description = "this does a test";
+
+
+//exports.testnested3 = testnested3 = function testnested3(params, callback) {
+exports.testnested3 = widtests.testnested3 = testnested3 = function testnested3(params, callback) {
+
+    eventappinstall();
+
+    var inparams = [{
+            "executethis": "addwidmaster",
+            "wid": "a2-56",
+            "a2": "b2"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "a2-56"
+        },
+        [{
+            "executethis": "addwidmaster",
+            "wid": "a2-57",
+            "a2": "b2"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "a2-57"
+        }],
+        [
+            [{
+                "executethis": "addwidmaster",
+                "wid": "a2-58",
+                "a2": "b2"
+            }, {
+                "executethis": "getwidmaster",
+                "wid": "a2-58"
+            }]
+        ]
+
+    ];
+
+    execute(inparams, callback);
+}
+widtests.testnested3.category = "execute";
+widtests.testnested3.subcategory = "daily";
+widtests.testnested3.js = exports.testnested3;
+widtests.testnested3.description = "this does a test";
+
+//exports.testnested4 = testnested4 = function testnested4(params, callback) {
+exports.testnested4 = widtests.testnested4 = testnested4 = function testnested4(params, callback) {
+
+    eventappinstall();
+
+    var inparams = [{
+        "executethis": "addwidmaster",
+        "wid": "a2-56",
+        "a2": "b2"
+    }, {
+        "executethis": "getwidmaster",
+        "wid": "a2-56",
+        "a2": "b2"
+    }];
+
+    execute(inparams, callback);
+}
+widtests.testnested4.category = "execute";
+widtests.testnested4.subcategory = "daily";
+widtests.testnested4.js = exports.testnested4;
+widtests.testnested4.description = "this does a test";
+
+//exports.testnested5 = testnested5 = function testnested5(params, callback) {
+exports.testnested5 = widtests.testnested5 = testnested5 = function testnested5(params, callback) {
+
+    eventappinstall();
+
+    var inparams = {
+        "executethis": "addwidmaster",
+        "wid": "a2-56",
+        "a2": "b2"
+    };
+
+    execute(inparams, callback);
+}
+widtests.testnested5.category = "execute";
+widtests.testnested5.subcategory = "daily";
+widtests.testnested5.js = exports.testnested5;
+widtests.testnested5.description = "this does a test";
+
+//exports.testnested6 = testnested6 = function testnested6(params, callback) {
+exports.testnested6 = widtests.testnested6 = testnested6 = function testnested6(params, callback) {
+
+    eventappinstall();
+
+    var inparams = {
+        "executethis": "test121212"
+    };
+
+    execute(inparams, callback);
+}
+widtests.testnested6.category = "execute";
+widtests.testnested6.subcategory = "daily";
+widtests.testnested6.js = exports.testnested6;
+widtests.testnested6.description = "this does a test";
+
+//exports.testnested2 = testnested2 = function testnested2(params, callback) {
+exports.testnested2 = widtests.testnested2 = testnested2 = function testnested2(params, callback) {
+
+    eventappinstall();
+
+    var inparams = [
+        [{
+            "executethis": "addwidmaster",
+            "wid": "a2-56",
+            "a2-56": "b2-56"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "a2-56"
+        }],
+        [
+            [{
+                "executethis": "addwidmaster",
+                "wid": "a2-57",
+                "a2-57": "b2-57"
+            }, {
+                "executethis": "getwidmaster",
+                "wid": "a2-57"
+            }],
+            [{
+                "executethis": "addwidmaster",
+                "wid": "a2-58",
+                "a2-58": "b2-58"
+            }, {
+                "executethis": "getwidmaster",
+                "wid": "a2-58"
+            }]
+        ]
+    ];
+
+    execute(inparams, callback);
+}
+widtests.testnested2.category = "execute";
+widtests.testnested2.subcategory = "daily";
+widtests.testnested2.js = exports.testnested2;
+widtests.testnested2.description = "this does a test";	  

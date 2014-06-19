@@ -1,6 +1,874 @@
 // This file is for tests that rely on functionality no longer present
 
 var widtests = widtests || {};
+
+//************************************************************
+// offlineupdatewid() not found
+//************************************************************
+
+//exports.sample1 = sample1 = function sample1 (params, callback) {
+// offlineupdatewid() not found
+exports.sample1 = widtests.sample1 = sample1 = function sample1(params, callback) {
+
+    saveglobal("debugsubcat", "code");
+    offlineupdatewid({
+        "wid": "wid1",
+        "a": "b"
+    }, callback);
+    debugfn("offlinegetwid code generator END", "ag2", "", "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
+}
+widtests.sample1.category = "execute";
+widtests.sample1.subcategory = "daily";
+widtests.sample1.js = exports.sample1;
+widtests.sample1.description = "this does a test";
+
+
+//************************************************************
+// mergeoptions() not found
+//************************************************************
+
+// mergeoptions() not found
+exports.sample2 = widtests.sample2 = sample2 = function sample2(params, callback) {
+    saveglobal("debugsubcat", "code");
+    merge_options({
+        "wid": "wid1",
+        "a": "b"
+    }, {
+        "wid": "wid2",
+        "y": "z"
+    });
+    debugfn("offlinegetwid code generator END", "ag2", "", "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
+}
+widtests.sample2.category = "execute";
+widtests.sample2.subcategory = "daily";
+widtests.sample2.js = exports.sample2;
+widtests.sample2.description = "this does a test";
+
+
+//************************************************************
+// executethismultiple() not found
+//************************************************************
+
+//function test171717 (params, callback) {
+// executethismultiple() not found
+exports.test171717 = widtests.test171717 = test171717 = function test171717(params, callback) {
+
+    eventappinstall();
+    var todolist = [
+        [{
+                "fn": "test_and_verify"
+            },
+            [
+                "MongoAddEditPrepare",
+                "MongoAddEditPrepare", [
+                    [],
+                    [{
+                        "key": "metadata.method",
+                        "value": "colordto"
+                    }, {
+                        "key": "wid",
+                        "value": "colordto"
+                    }, {
+                        "key": "hue",
+                        "value": "string"
+                    }],
+                    "colordto",
+                    "colordto"
+                ], {
+                    "metadata.method": "colordto",
+                    "wid": "colordto",
+                    "hue": "string"
+                }, {
+                    "initialwid": {
+                        "wid": "initialwid",
+                        "initialwid": "for key hello from bootprocess"
+                    },
+                    "colordto": {
+                        "data": {
+                            "hue": "string"
+                        },
+                        "wid": "colordto",
+                        "metadata": {
+                            "method": "colordto",
+                            "date": "2014-02-06T21:59:08.567Z"
+                        }
+                    }
+                }, {
+                    "command": "null"
+                }
+            ]
+        ]
+    ];
+    executethismultiple(todolist, callback);
+}
+widtests.test171717.category = "execute";
+widtests.test171717.subcategory = "daily";
+widtests.test171717.js = exports.test171717;
+widtests.test171717.description = "this does a test";
+
+
+//exports.newt = newt = function newt(params, callback) {
+exports.newt = widtests.newt = newt = function newt(params, callback) {
+
+    // var todolist = 
+    //     [
+    //         [
+    //             {
+    //                 "fn": "test_and_verify"
+    //             },
+    //             [
+    //                 "offlineupdatewid",
+    //                 "offlineupdatewid",
+    //                 {
+    //                     "0": {
+    //                         "metadata.method": "sounddto",
+    //                         "wid": "sounddto",
+    //                         "note": "string"
+    //                     }
+    //                 },
+    //                 {
+    //                     "data": {
+    //                         "note": "string"
+    //                     },
+    //                     "wid": "sounddto",
+    //                     "metadata": {
+    //                         "method": "sounddto",
+    //                         "date": "2014-02-04T15:54:34.378Z"
+    //                     }
+    //                 },
+    //                 {
+    //                     "initialwid": {
+    //                         "wid": "initialwid",
+    //                         "initialwid": "for key hello from bootprocess"
+    //                     },
+    //                     "sounddto": {
+    //                         "data": {
+    //                             "note": "string"
+    //                         },
+    //                         "wid": "sounddto",
+    //                         "metadata": {
+    //                             "method": "sounddto",
+    //                             "date": "2014-02-04T15:54:34.378Z"
+    //                         }
+    //                     }
+    //                 },
+    //                 {"command": "null"}
+    //             ]
+    //         ]
+    //     ]
+    var todolist = [
+        [{
+                "fn": "test_and_verify"
+            },
+            [
+                "offlineupdatewid",
+                "offlineupdatewid", {
+                    "metadata.method": "sounddto",
+                    "note": "string",
+                    "wid": "sounddto"
+                }, {
+                    "data": {
+                        "note": "string"
+                    },
+                    "metadata": {
+                        "date": "2014-02-04T18:20:44.503Z",
+                        "method": "sounddto"
+                    },
+                    "wid": "sounddto"
+                }, {
+                    "initialwid": {
+                        "initialwid": "for key hello from bootprocess",
+                        "wid": "initialwid"
+                    },
+                    "sounddto": {
+                        "data": {
+                            "note": "string"
+                        },
+                        "metadata": {
+                            "date": "2014-02-04T18:20:44.503Z",
+                            "method": "sounddto"
+                        },
+                        "wid": "sounddto"
+                    }
+                }, {
+                    "command": "null"
+                }
+            ]
+        ]
+    ]
+
+    // var db = {"initialwid":{"wid":"initialwid","initialwid":"for key hello from bootprocess"},"sounddto":{"data":{"note":"string"},"wid":"sounddto","metadata":{"method":"sounddto","date":"2014-02-04T16:18:51.732Z"}}};
+    // addToLocalStorage("DRIKEY", db);   
+    executethismultiple(todolist, callback);
+
+}
+widtests.newt.category = "execute";
+widtests.newt.subcategory = "daily";
+widtests.newt.js = exports.newt;
+widtests.newt.description = "this does a test";
+
+//exports.newt2 = newt2 = function newt2(params, callback) {
+exports.newt2 = widtests.newt2 = newt2 = function newt2(params, callback) {
+
+    var todolist = [
+        [{
+                "fn": "test_and_verify"
+            },
+            [
+                "getwidmaster",
+                "getwidmaster", {
+                    "wid": "sonddto",
+                    "command.convertmethod": "dto",
+                    "command.dtotype": "sonddto"
+                }, {
+                    "title": "string",
+                    "metadata.sounddto.type": "onetomany",
+                    "sounddto.note": "string",
+                    "sounddto.wid": "sounddto",
+                    "sounddto.metadata.method": "sounddto"
+                }, {
+                    "initialwid": {
+                        "wid": "initialwid",
+                        "initialwid": "for key hello from bootprocess"
+                    },
+                    "sounddto": {
+                        "data": {
+                            "note": "string"
+                        },
+                        "wid": "sounddto",
+                        "metadata": {
+                            "method": "sounddto",
+                            "date": "2014-02-04T18:31:01.199Z"
+                        }
+                    },
+                    "sonddto": {
+                        "data": {
+                            "title": "string"
+                        },
+                        "wid": "sonddto",
+                        "metadata": {
+                            "method": "sonddto",
+                            "sounddto": {
+                                "type": "onetomany"
+                            },
+                            "date": "2014-02-04T18:31:01.313Z"
+                        }
+                    },
+                    "rel_sound_to_song": {
+                        "data": {
+                            "primarywid": "sonddto",
+                            "secondarywid": "sounddto",
+                            "relationshiptype": "attributes"
+                        },
+                        "wid": "rel_sound_to_song",
+                        "metadata": {
+                            "method": "defaultdto",
+                            "date": "2014-02-04T18:31:01.389Z"
+                        }
+                    }
+                }, {
+                    "command": "null"
+                }
+            ]
+        ]
+    ]
+    executethismultiple(todolist, callback);
+}
+widtests.newt2.category = "execute";
+widtests.newt2.subcategory = "daily";
+widtests.newt2.js = exports.newt2;
+widtests.newt2.description = "this does a test";
+
+//exports.newt3 = newt3 = function newt3(params, callback) {
+exports.newt3 = widtests.newt3 = newt3 = function newt3(params, callback) {
+
+    var todolist = [];
+    executethismultiple(todolist, callback);
+}
+widtests.newt3.category = "execute";
+widtests.newt3.subcategory = "daily";
+widtests.newt3.js = exports.newt3;
+widtests.newt3.description = "this does a test";
+
+//exports.newt4 = newt4 = function newt4(params, callback) {
+exports.newt4 = widtests.newt4 = newt4 = function newt4(params, callback) {
+    var todolist = [
+        [{
+                "fn": "test_and_verify"
+            },
+            [
+                "getcleanparameters",
+                "getcleanparameters", [{
+                        "title": "Highway to Hell",
+                        "wid": "song1",
+                        "metadata.method": "sonddto",
+                        "sounddto.0.note": "A flat",
+                        "sounddto.0.wid": "1",
+                        "sounddto.0.metadata.method": "sounddto",
+                        "sounddto.1.note": "B sharp",
+                        "sounddto.1.wid": "3",
+                        "sounddto.1.metadata.method": "sounddto",
+                        "sounddto.2.note": "C flat",
+                        "sounddto.2.wid": "5",
+                        "sounddto.2.metadata.method": "sounddto"
+                    },
+                    "",
+                    "",
+                    "remove",
+                    ""
+                ], {
+                    "parms": {
+                        "title": "Highway to Hell",
+                        "wid": "song1",
+                        "metadata.method": "sonddto",
+                        "sounddto.0.note": "A flat",
+                        "sounddto.0.wid": "1",
+                        "sounddto.0.metadata.method": "sounddto",
+                        "sounddto.1.note": "B sharp",
+                        "sounddto.1.wid": "3",
+                        "sounddto.1.metadata.method": "sounddto",
+                        "sounddto.2.note": "C flat",
+                        "sounddto.2.wid": "5",
+                        "sounddto.2.metadata.method": "sounddto"
+                    },
+                    "dto": {
+                        "title": "Highway to Hell",
+                        "wid": "song1",
+                        "metadata.method": "sonddto",
+                        "sounddto.note": "string",
+                        "sounddto.wid": "sounddto",
+                        "sounddto.metadata.method": "sounddto"
+                    }
+                }, {
+                    "1": {
+                        "data": {
+                            "note": "A flat"
+                        },
+                        "wid": "1",
+                        "metadata": {
+                            "method": "sounddto",
+                            "date": "2014-02-05T18:43:43.175Z"
+                        }
+                    },
+                    "2": {
+                        "data": {
+                            "primarywid": "song1",
+                            "secondarywid": "1",
+                            "relationshiptype": "attributes",
+                            "linktype": "onetomany"
+                        },
+                        "wid": "2",
+                        "metadata": {
+                            "method": "relationshipdto",
+                            "date": "2014-02-05T18:43:43.248Z"
+                        }
+                    },
+                    "3": {
+                        "data": {
+                            "note": "B sharp"
+                        },
+                        "wid": "3",
+                        "metadata": {
+                            "method": "sounddto",
+                            "date": "2014-02-05T18:43:43.273Z"
+                        }
+                    },
+                    "4": {
+                        "data": {
+                            "primarywid": "song1",
+                            "secondarywid": "3",
+                            "relationshiptype": "attributes",
+                            "linktype": "onetomany"
+                        },
+                        "wid": "4",
+                        "metadata": {
+                            "method": "relationshipdto",
+                            "date": "2014-02-05T18:43:43.348Z"
+                        }
+                    },
+                    "5": {
+                        "data": {
+                            "note": "C flat"
+                        },
+                        "wid": "5",
+                        "metadata": {
+                            "method": "sounddto",
+                            "date": "2014-02-05T18:43:43.366Z"
+                        }
+                    },
+                    "6": {
+                        "data": {
+                            "primarywid": "song1",
+                            "secondarywid": "5",
+                            "relationshiptype": "attributes",
+                            "linktype": "onetomany"
+                        },
+                        "wid": "6",
+                        "metadata": {
+                            "method": "relationshipdto",
+                            "date": "2014-02-05T18:43:43.437Z"
+                        }
+                    },
+                    "initialwid": {
+                        "wid": "initialwid",
+                        "initialwid": "for key hello from bootprocess"
+                    },
+                    "sounddto": {
+                        "data": {
+                            "note": "string"
+                        },
+                        "wid": "sounddto",
+                        "metadata": {
+                            "method": "sounddto",
+                            "date": "2014-02-05T18:43:42.711Z"
+                        }
+                    },
+                    "sonddto": {
+                        "data": {
+                            "title": "string"
+                        },
+                        "wid": "sonddto",
+                        "metadata": {
+                            "method": "sonddto",
+                            "sounddto": {
+                                "type": "onetomany"
+                            },
+                            "date": "2014-02-05T18:43:42.827Z"
+                        }
+                    },
+                    "rel_sound_to_song": {
+                        "data": {
+                            "primarywid": "sonddto",
+                            "secondarywid": "sounddto",
+                            "relationshiptype": "attributes"
+                        },
+                        "wid": "rel_sound_to_song",
+                        "metadata": {
+                            "method": "defaultdto",
+                            "date": "2014-02-05T18:43:42.888Z"
+                        }
+                    },
+                    "song1": {
+                        "data": {
+                            "title": "Highway to Hell"
+                        },
+                        "wid": "song1",
+                        "metadata": {
+                            "method": "sonddto",
+                            "date": "2014-02-05T18:43:43.088Z"
+                        }
+                    }
+                }, {
+                    "command": "null"
+                }
+            ]
+        ]
+    ]
+    executethismultiple(todolist, callback);
+}
+widtests.newt4.category = "execute";
+widtests.newt4.subcategory = "daily";
+widtests.newt4.js = exports.newt4;
+widtests.newt4.description = "this does a test";
+
+
+
+//exports.newt5 = newt5 = function newt5(params, callback) {
+exports.newt5 = widtests.newt5 = newt5 = function newt5(params, callback) {
+
+
+    var todolist =
+
+    [
+        [{
+                "fn": "test_and_verify"
+            },
+            [
+                "offlineupdatewid",
+                "offlineupdatewid", [{
+                    "metadata.method": "sonddto",
+                    "wid": "song1",
+                    "title": "Highway to Hell"
+                }], {
+                    "data": {
+                        "title": "Highway to Hell"
+                    },
+                    "wid": "song1",
+                    "metadata": {
+                        "method": "sonddto",
+                        "date": "2014-02-05T21:11:19.461Z"
+                    }
+                }, {
+                    "initialwid": {
+                        "wid": "initialwid",
+                        "initialwid": "for key hello from bootprocess"
+                    },
+                    "sounddto": {
+                        "data": {
+                            "note": "string"
+                        },
+                        "wid": "sounddto",
+                        "metadata": {
+                            "method": "sounddto",
+                            "date": "2014-02-05T21:11:18.876Z"
+                        }
+                    },
+                    "sonddto": {
+                        "data": {
+                            "title": "string"
+                        },
+                        "wid": "sonddto",
+                        "metadata": {
+                            "method": "sonddto",
+                            "sounddto": {
+                                "type": "onetomany"
+                            },
+                            "date": "2014-02-05T21:11:19.040Z"
+                        }
+                    },
+                    "rel_sound_to_song": {
+                        "data": {
+                            "primarywid": "sonddto",
+                            "secondarywid": "sounddto",
+                            "relationshiptype": "attributes"
+                        },
+                        "wid": "rel_sound_to_song",
+                        "metadata": {
+                            "method": "defaultdto",
+                            "date": "2014-02-05T21:11:19.141Z"
+                        }
+                    },
+                    "song1": {
+                        "data": {
+                            "title": "Highway to Hell"
+                        },
+                        "wid": "song1",
+                        "metadata": {
+                            "method": "sonddto",
+                            "date": "2014-02-05T21:11:19.461Z"
+                        }
+                    }
+                }, {
+                    "command": "null"
+                }
+            ]
+        ]
+    ]
+    executethismultiple(todolist, callback);
+}
+widtests.newt5.category = "execute";
+widtests.newt5.subcategory = "daily";
+widtests.newt5.js = exports.newt5;
+widtests.newt5.description = "this does a test";
+
+
+// test1212 calls fnb
+// fn b accepts one object and produces one array result
+
+//exports.test121212 = test121212 = function test121212(params, callback) {
+exports.test121212 = widtests.test121212 = test121212 = function test121212(params, callback) {
+
+    eventappinstall();
+    var todolist = [
+        [{
+                "fn": "test_and_verify"
+            },
+            [
+                "func_b",
+                "func_b", {
+                    "c": "0",
+                    "d": "1",
+                    "e": "2"
+                },
+                [{
+                    "c": "0",
+                    "d": "1",
+                    "g": "4"
+                }], {}, {
+                    "command": "null"
+                }
+            ]
+        ]
+    ];
+    executethismultiple(todolist, callback);
+}
+widtests.test121212.category = "execute";
+widtests.test121212.subcategory = "daily";
+widtests.test121212.js = exports.test121212;
+widtests.test121212.description = "this does a test";
+
+
+
+// test141414
+
+//function test141414 (params, callback) {
+exports.test141414 = widtests.test141414 = test141414 = function test141414(params, callback) {
+
+    // Calling func_b2 with single
+    eventappinstall();
+    var todolist = [
+        [{
+                "fn": "test_and_verify"
+            },
+            [
+                "func_b2",
+                "func_b2", [
+                    "test", {
+                        "a": "b",
+                        "x": "y"
+                    }, {
+                        "a": "b",
+                        "e": "z"
+                    }, {
+                        "c": "d",
+                        "more": "m"
+                    }
+                ], {
+                    "test": "hello",
+                    "a": "b",
+                    "c": "d",
+                    "more": "m"
+                }, {}, {
+                    "command": "null"
+                }
+            ]
+        ]
+    ];
+    executethismultiple(todolist, callback);
+}
+widtests.test141414.category = "execute";
+widtests.test141414.subcategory = "daily";
+widtests.test141414.js = exports.test141414;
+widtests.test141414.description = "this does a test";
+
+
+// func_b2 and func_b22 accepts 4 objects and produces one object result
+
+// test151515
+// func_b3 and func_b33 accepts 4 arrays and produces one object result
+
+//function test151515 (params, callback) {
+exports.test151515 = widtests.test151515 = test151515 = function test151515(params, callback) {
+
+    eventappinstall();
+    var todolist = [
+        [{
+                "fn": "test_and_verify"
+            },
+            [
+                "func_b3",
+                "func_b3", [{
+                        "c": "0",
+                        "d": "1",
+                        "e": "2"
+                    },
+                    "two", ["a", {
+                        "b": "c"
+                    }],
+                    "four"
+                ],
+
+                {
+                    "a": {
+                        "c": "0",
+                        "d": "1",
+                        "e": "2"
+                    },
+                    "b": "two",
+                    "c": ["a", {
+                        "b": "c"
+                    }],
+                    "d": "four"
+                }, {}, {
+                    "command": "null"
+                }
+            ]
+        ]
+    ];
+    executethismultiple(todolist, callback);
+}
+widtests.test151515.category = "execute";
+widtests.test151515.subcategory = "daily";
+widtests.test151515.js = exports.test151515;
+widtests.test151515.description = "this does a test";
+
+
+//function test161616 (params, callback) {
+exports.test161616 = widtests.test161616 = test161616 = function test161616(params, callback) {
+
+    eventappinstall();
+    var todolist = [
+        [{
+                "fn": "test_and_verify"
+            },
+            [
+                "offlineupdatewid",
+                "offlineupdatewid", [{
+                    "wid": "wid1",
+                    "a": "b"
+                }], {
+                    "data": {
+                        "a": "b"
+                    },
+                    "wid": "wid1",
+                    "metadata": {
+                        "date": "2014-02-06T19:29:52.958Z"
+                    }
+                }, {
+                    "initialwid": {
+                        "wid": "initialwid",
+                        "initialwid": "for key hello from bootprocess"
+                    },
+                    "wid1": {
+                        "data": {
+                            "a": "b"
+                        },
+                        "wid": "wid1",
+                        "metadata": {
+                            "date": "2014-02-06T19:29:52.958Z"
+                        }
+                    }
+                }, {
+                    "command": "null"
+                }
+            ]
+        ]
+    ];
+    executethismultiple(todolist, callback);
+}
+widtests.test161616.category = "execute";
+widtests.test161616.subcategory = "daily";
+widtests.test161616.js = exports.test161616;
+widtests.test161616.description = "this does a test";
+
+
+//exports.mut = mut = function mut(params, callback) {
+// executethismultiple() not defined
+exports.mut = widtests.mut = mut = function mut(params, callback) {
+
+    eventappinstall();
+
+    var commandobject = {};
+    commandobject['executemethod'] = "execute";
+    commandobject['executelimit'] = 15;
+    commandobject['executeorder'] = 'series';
+    commandobject['executefilter'] = 'addwid';
+    // commandobject['executefilter'] = 'offlineupdatewid';
+
+    var data = [];
+    data.push(
+        [{
+                "fn": "func_b2"
+            },
+            [
+                "test", {
+                    "a": "b"
+                }, {
+                    "c": "d"
+                }
+            ]
+        ]
+    );
+
+
+    executethismultiple(data, function(err, res) {
+        callback(err, res)
+    });
+}
+widtests.mut.category = "execute";
+widtests.mut.subcategory = "daily";
+widtests.mut.js = exports.mut;
+widtests.mut.description = "this does a test";
+
+//exports.testmultiplenested = testmultiplenested = function testmultiplenested(params, callback) {
+// executethismultiple() not defined
+exports.testmultiplenested = widtests.testmultiplenested = testmultiplenested = function testmultiplenested(params, callback) {
+
+    eventappinstall();
+
+    var inparams = [
+        [{
+            "fn": "addwidmaster",
+            "wid": "a2-56",
+            "a2": "b2"
+        }, {
+            "fn": "getwidmaster",
+            "wid": "a2-56"
+        }],
+        [
+            [{
+                "fn": "addwidmaster",
+                "wid": "a2-57",
+                "a2": "b2"
+            }, {
+                "fn": "getwidmaster",
+                "wid": "a2-57"
+            }],
+            [{
+                "fn": "addwidmaster",
+                "wid": "a2-58",
+                "a2": "b2"
+            }, {
+                "fn": "getwidmaster",
+                "wid": "a2-58"
+            }],
+            [
+                [{
+                        "fn": "addwid4params"
+                    },
+                    [
+                        "a",
+                        "b",
+                        "c",
+                        "d"
+                    ]
+                ]
+            ]
+        ]
+    ];
+
+    executethismultiple(inparams, callback);
+}
+widtests.testmultiplenested.category = "execute";
+widtests.testmultiplenested.subcategory = "daily";
+widtests.testmultiplenested.js = exports.testmultiplenested;
+widtests.testmultiplenested.description = "this does a test";
+
+
+//************************************************************
+// executetest() not found
+//************************************************************
+
+// Template for a new test, yet to be determined
+//exports.ct1000 = ct1000 = function ct1000(params, callback) {
+
+// executetest() not found
+exports.ct1000 = widtests.ct1000 = ct1000 = function ct1000(params, callback) {
+
+    eventappinstall();
+    executetest("executethis", {
+        "executethis": "func_b",
+        "c": "0",
+        "d": "1",
+        "e": "2"
+    }, "ct1000_output", "");
+    params = logverify("c_unit_tests", "ct1000_result", "ct1000_output", "", "", {
+        "c": "0",
+        "d": "1",
+        "g": "4"
+    });
+    callback(err, params);
+}
+widtests.ct1000.category = "execute";
+widtests.ct1000.subcategory = "daily";
+widtests.ct1000.js = exports.ct1000;
+widtests.ct1000.description = "this does a test";
+
+
+//************************************************************
+// logverifyvariable() not found
+//************************************************************
+
 //
 // russ see me about naming of functions
 // russ see me about putting things in brackets or not
@@ -78,6 +946,11 @@ widtests.test_logverifyvariable_2.category = "execute";
 widtests.test_logverifyvariable_2.subcategory = "daily";
 widtests.test_logverifyvariable_2.js = exports.test_logverifyvariable_2;
 widtests.test_logverifyvariable_2.description = "this does a test";
+
+
+//************************************************************
+// Pre, Mid, and Post tests
+//************************************************************
 
 // Pre, Mid, Post tests are a thing of the past??
 
@@ -1911,3 +2784,39 @@ widtests.ettestag12.subcategory = "daily";
 widtests.ettestag12.js = exports.ettestag12;
 widtests.ettestag12.description = "this does a test";
 
+
+//************************************************************
+// offlineaddtomongo() not found
+//************************************************************
+
+
+exports.executegetwidtest = widtests.executegetwidtest = executegetwidtest = function executegetwidtest(params, callback) {
+
+    offlineaddtomongo({
+        "wid": "getexecutetest",
+        "metadata": {
+            "method": "testdto"
+        },
+        "data": {
+            "executethis": "testcallback",
+            "a": "Hello",
+            "b": "goodbye"
+        }
+    }, {}, function(err, res) {
+
+        executeList = [{
+            "executethis": "getexecutetest"
+        }]
+        debuglevel = 11;
+        execute(executeList, function(err, res) {
+            proxyprinttodiv('Function executegetwidtest ', res, 17);
+            //res = logverify("unit_tests", "getexecutetest", "", res, "", {});
+            callback(err, res)
+
+        });
+    });
+}
+widtests.executegetwidtest.category = "execute";
+widtests.executegetwidtest.subcategory = "daily";
+widtests.executegetwidtest.js = exports.executegetwidtest;
+widtests.executegetwidtest.description = "this does a test";
