@@ -162,7 +162,7 @@
         if (!inparams.command.environment.run) {inparams.command.environment.run={};}
 
         extend(true, executionpreferences.command.environment, inparams.command.environment);
-        delete inparams.command.environment;
+//        delete inparams.command.environment;
 
         if (!executionpreferences.command.environment.run.executelevel) {executionpreferences.command.environment.run.executelevel=0;}
         if (!executionpreferences.command.environment.run.executeid) {executionpreferences.command.environment.run.executeid=createNewGuid();}
