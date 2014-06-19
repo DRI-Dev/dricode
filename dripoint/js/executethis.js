@@ -725,11 +725,11 @@
                     var indent  = Number(getglobal('debugindent')); indent --; saveglobal('debugindent', indent);
                     executionpreferences.command.environment.run.executelevel--;
 
-//                    if (executionpreferences.command.environment.run.executelevel == 0) {
-//                        // clear out run on last iteration (or rather the ending of the original iteration)
-//                        executionpreferences.command.environment.run = {};
-//                        checkenviornment(executionpreferences.command.environment);
-//                    }
+                    if (executionpreferences.command.environment.run.executelevel == 0) {
+                        // clear out run on last iteration (or rather the ending of the original iteration)
+                        executionpreferences.command.environment.run = {};
+                        checkenviornment(executionpreferences.command.environment);
+                    }
 
                     callback(errorsummary, resultsummary);
                 }); // mapseries
