@@ -751,9 +751,7 @@
             && inparams.command.environment.run
             && inparams.command.environment.run.executelevel == 0)
         {
-            // clear out run on last iteration (or rather the ending of the original iteration)
-            inparams.command.environment.run = {};
-            checkenviornment(inparams.command.environment);
+            inparams.command.environment.processfn = "execute_function";
         }
 
         var outparams = {};
