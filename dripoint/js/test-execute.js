@@ -21,23 +21,26 @@
 // names of tests
 
 // This is the master test. this test calls all of the individual testing groups.
+// Don't execute this without prints disabled... ridding all prints brings total execution time down to ~ 1.3ms
 exports.ettest_allexecute = 
+//wid.ettest_allexecute = 
 ettest_allexecute = 
 function ettest_allexecute(executeobject, callback) 
 {
+	var start = new Date().getTime()
     async.series(
     [   
     function (cb1) {ettest_serieslevel0({}, function (err, res) {cb1(null, res)})},
     function (cb1) {ettest_serieslevel1({}, function (err, res) {cb1(null, res)})},
-    function (cb1) {ettest_grouplevel0({}, function (err, res) {cb1(null, res)})}//,
-	//function (cb1) {ettest_grouplevel1({}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {ettest_waterfalllevel1({}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {ettest_runfirstonelevel1({}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {ettest_runfirstwaterfalllevel1({}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {ettest_whattodo({}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {ettest_howtodo({}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {ettest_executemisc({}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {ettest_nestedtestslevel1({}, function (err, res) {cb1(null, res)})}
+    function (cb1) {ettest_grouplevel0({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {ettest_grouplevel1({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {ettest_waterfalllevel1({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {ettest_runfirstonelevel1({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {ettest_runfirstwaterfalllevel1({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {ettest_whattodo({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {ettest_howtodo({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {ettest_executemisc({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {ettest_nestedtestslevel1({}, function (err, res) {cb1(null, res)})} // all work to this point if color>205
     //ettest_grouplevel1
     //ettest_waterfalllevel1
     //ettest_runfirstonelevel1
@@ -46,9 +49,15 @@ function ettest_allexecute(executeobject, callback)
     function (err, res) {
       proxyprinttodiv('result from many array', res, 99);
       callback(null,res)
+	  proxyprinttodiv('total elapsed time ', new Date().getTime() - start, 99);
     })
 }
-
+/*
+wid.ettest_allexecute.category = "executeit";
+wid.ettest_allexecute.subcategory = "dothis";
+wid.ettest_allexecute.type = "na";
+wid.ettest_allexecute.name = "This is the master test. this test calls all of the individual testing groups for testing execute.";
+*/
 // /*===============================================*/  
 // /******* SECTION: series Level 0 		*********/
 // /*===============================================*/
@@ -84,8 +93,7 @@ function ettest_serieslevel0(executeobject, callback)
 		  //executeobject.command.environment.run.type="series"
 		  executeobject.command.environment.run.executelevel=0
 		  executeobject.command.environment.platform='local'          // used for server testing
-		  executeobject.command.processparameterfn="execute_nothing"  // how to massage parameters
-		  executeobject.command.processfn="execute_function"          // what function handles functions
+		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
 		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun={
 									  "executethis": 'test_return_noerror_result'
@@ -105,6 +113,12 @@ function ettest_serieslevel0(executeobject, callback)
 				callback(null, composite_obj)
 		  })
 	}
+	/*
+	wid.ettest_serieslevel0pass1.category = "executeit";
+	wid.ettest_serieslevel0pass1.subcategory = "dothis";
+	wid.ettest_serieslevel0pass1.type = "daily";
+	wid.ettest_serieslevel0pass1.name = "series, level 0, 1 function that passes locally";
+*/
 
 	//series, level 0, 3 tests pass locally
 	exports.ettest_serieslevel0pass3 = 
@@ -120,8 +134,8 @@ function ettest_serieslevel0(executeobject, callback)
 		  //executeobject.command.environment.run.type="series"
 		  executeobject.command.environment.run.executelevel=0
 		  executeobject.command.environment.platform='local'          // used for server testing
-		  executeobject.command.processparameterfn="execute_nothing"  // how to massage parameters
-		  executeobject.command.processfn="execute_function"          // what function handles functions
+
+		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
 		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun=[{"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
@@ -154,8 +168,8 @@ function ettest_serieslevel0(executeobject, callback)
 		  executeobject.command.environment.run.type="series"
 		  executeobject.command.environment.run.executelevel=0
 		  executeobject.command.environment.platform='local'          
-		  executeobject.command.processparameterfn="execute_nothing"  
-		  executeobject.command.processfn="execute_function"
+  
+		  executeobject.command.environment.processfn="execute_function"
 		  executeobject.serverfn="test_return_noerror_result"
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
@@ -172,11 +186,11 @@ function ettest_serieslevel0(executeobject, callback)
 		  {
 		   
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
-				proxyprinttodiv('expected result', global_resulttable_assertion2, 99, true);
+				proxyprinttodiv('expected result000', null, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_failnotfound, 99);
 				
-				composite_obj=logverifycomplex("ettest_serieslevel0fail3middle", result_obj,global_resulttable_assertion2, error_obj, global_failnotfound);
+				composite_obj=logverifycomplex("ettest_serieslevel0fail3middle", result_obj,null, error_obj, global_failnotfound);
 				callback(null, composite_obj)
 		  } 
 		);
@@ -194,8 +208,8 @@ function ettest_serieslevel0(executeobject, callback)
 		  executeobject.command.environment.run.type="series"
 		  executeobject.command.environment.run.executelevel=0
 		  executeobject.command.environment.platform='local'          
-		  executeobject.command.processparameterfn="execute_nothing"  
-		  executeobject.command.processfn="execute_function"
+  
+		  executeobject.command.environment.processfn="execute_function"
 		  executeobject.serverfn="test_return_noerror_result"
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
@@ -208,11 +222,11 @@ function ettest_serieslevel0(executeobject, callback)
 		  {
 		   
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
-				proxyprinttodiv('expected result', global_resulttable_assertion2, 99, true);
+				proxyprinttodiv('expected result', null, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_failnotfound, 99);
 				
-				composite_obj=logverifycomplex("ettest_serieslevel0fail3last", result_obj,global_resulttable_assertion2, error_obj, global_failnotfound);
+				composite_obj=logverifycomplex("ettest_serieslevel0fail3last", result_obj,null, error_obj, global_failnotfound);
 				callback(null, composite_obj)
 		  } 
 		);
@@ -242,7 +256,7 @@ function ettest_serieslevel1(executeobject, callback)
 }
 
 
-	//series
+	// series, level 1, 1 test that passes
 	exports.ettest_serieslevel1pass1 = 
 	ettest_serieslevel1pass1 = 
 	function ettest_serieslevel1pass1(executeobject, callback) 
@@ -254,8 +268,8 @@ function ettest_serieslevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="series"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          // used for server testing
-		  executeobject.command.processparameterfn="execute_nothing"  // how to massage parameters
-		  executeobject.command.processfn="execute_function"          // what function handles functions
+
+		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
 		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun={
 									  "executethis": 'test_return_noerror_result'
@@ -276,7 +290,7 @@ function ettest_serieslevel1(executeobject, callback)
 		  })
 	}
 
-	//series
+	// series, level 1, 3 tests that all pass
 	exports.ettest_serieslevel1pass3 = 
 	ettest_serieslevel1pass3 = 
 	function ettest_serieslevel1pass3(executeobject, callback) 
@@ -290,8 +304,8 @@ function ettest_serieslevel1(executeobject, callback)
 		  //executeobject.command.environment.run.type="series"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          // used for server testing
-		  executeobject.command.processparameterfn="execute_nothing"  // how to massage parameters
-		  executeobject.command.processfn="execute_function"          // what function handles functions
+
+		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
 		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun=[{"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
@@ -312,7 +326,7 @@ function ettest_serieslevel1(executeobject, callback)
 		  })
 	}
 
-	// series
+	// series, level 1, 3 tests: 1st passes, 2nd fails, 3rd passes
 	exports.ettest_serieslevel1fail3middle = 
 	ettest_serieslevel1fail3middle = 
 	function ettest_serieslevel1fail3middle(executeobject, callback) 
@@ -324,8 +338,8 @@ function ettest_serieslevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="series"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          
-		  executeobject.command.processparameterfn="execute_nothing"  
-		  executeobject.command.processfn="execute_function"
+  
+		  executeobject.command.environment.processfn="execute_function"
 		  executeobject.serverfn="test_return_noerror_result"
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
@@ -338,17 +352,17 @@ function ettest_serieslevel1(executeobject, callback)
 		  {
 		   
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
-				proxyprinttodiv('expected result', global_resulttable_assertion2, 99, true);
+				proxyprinttodiv('expected result', null, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_realerror, 99);
 				
-				composite_obj=logverifycomplex("ettest_serieslevel1fail3middle", result_obj,global_resulttable_assertion2, error_obj, global_realerror);
+				composite_obj=logverifycomplex("ettest_serieslevel1fail3middle", result_obj,null, error_obj, global_realerror);
 				callback(null, composite_obj)
 		  } 
 		);
 	}
 
-	// series
+	// series, level 1, 3 tests: 1st passes, 2nd passes, 3rd fails
 	exports.ettest_serieslevel1fail3last = 
 	ettest_serieslevel1fail3last = 
 	function ettest_serieslevel1fail3last(executeobject, callback) 
@@ -360,8 +374,8 @@ function ettest_serieslevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="series"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          
-		  executeobject.command.processparameterfn="execute_nothing"  
-		  executeobject.command.processfn="execute_function"
+  
+		  executeobject.command.environment.processfn="execute_function"
 		  executeobject.serverfn="test_return_noerror_result"
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
@@ -374,11 +388,11 @@ function ettest_serieslevel1(executeobject, callback)
 		  {
 		   
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
-				proxyprinttodiv('expected result', global_resulttable_assertion2, 99, true);
+				proxyprinttodiv('expected result', null, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_realerror, 99);
 				
-				composite_obj=logverifycomplex("ettest_serieslevel1fail3last", result_obj,global_resulttable_assertion2, error_obj, global_realerror);
+				composite_obj=logverifycomplex("ettest_serieslevel1fail3last", result_obj,null, error_obj, global_realerror);
 				callback(null, composite_obj)
 		  } 
 		);
@@ -387,7 +401,9 @@ function ettest_serieslevel1(executeobject, callback)
 // /*===============================================*/  
 // /******* SECTION: group Level 0 			*********/
 // /*===============================================*/
-// group - level = 0 do them in any order.. if pass return a list, if fail return error and resulttable
+
+// A function for testing 'group' in 4 ways: 1 test that passes; 3 tests that pass; 
+// 		3 tests, 2 of which pass and the middle fails; 3 tests, 2 of which pass and the last fails.
 exports.ettest_grouplevel0 = 
 ettest_grouplevel0 = 
 function ettest_grouplevel0(executeobject, callback) 
@@ -405,6 +421,7 @@ function ettest_grouplevel0(executeobject, callback)
 	})
 }
 
+	// group, level 0, 1 test that passes
 	exports.ettest_grouplevel0pass1 = 
 	ettest_grouplevel0pass1 = 
 	function ettest_grouplevel0pass1(executeobject, callback) 
@@ -416,8 +433,8 @@ function ettest_grouplevel0(executeobject, callback)
 		  executeobject.command.environment.run.type="group"
 		  executeobject.command.environment.run.executelevel=0
 		  executeobject.command.environment.platform='local'          // used for server testing
-		  executeobject.command.processparameterfn="execute_nothing"  // how to massage parameters
-		  executeobject.command.processfn="execute_function"          // what function handles functions
+
+		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
 		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun={
 									  "executethis": 'test_return_noerror_result'
@@ -438,7 +455,7 @@ function ettest_grouplevel0(executeobject, callback)
 		  })
 	}
 
-	//group
+	// group, level 0, 3 tests that pass
 	exports.ettest_grouplevel0pass3 = 
 	ettest_grouplevel0pass3 = 
 	function ettest_grouplevel0pass3(executeobject, callback) 
@@ -451,8 +468,8 @@ function ettest_grouplevel0(executeobject, callback)
 		  executeobject.command.environment.run.type="group"
 		  executeobject.command.environment.run.executelevel=0
 		  executeobject.command.environment.platform='local'          // used for server testing
-		  executeobject.command.processparameterfn="execute_nothing"  // how to massage parameters
-		  executeobject.command.processfn="execute_function"          // what function handles functions
+
+		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
 		  executeobject.serverfn="test_return_notfound_result"        
 		  var result_assertion = {"a":"b","env":executeobject.command.environment.platform}
 			executeobject.command.xrun=[
@@ -479,7 +496,7 @@ function ettest_grouplevel0(executeobject, callback)
 		);
 	}
 
-	// group
+	// group, level 0, 3 tests: 1st passes, 2nd fails, 3rd passes
 	exports.ettest_grouplevel0fail3middle = 
 	ettest_grouplevel0fail3middle = 
 	function ettest_grouplevel0fail3middle(executeobject, callback) 
@@ -491,8 +508,8 @@ function ettest_grouplevel0(executeobject, callback)
 		  executeobject.command.environment.run.type="group"
 		  executeobject.command.environment.run.executelevel=0
 		  executeobject.command.environment.platform='local'          
-		  executeobject.command.processparameterfn="execute_nothing"  
-		  executeobject.command.processfn="execute_function"
+  
+		  executeobject.command.environment.processfn="execute_function"
 		  executeobject.serverfn="test_return_noerror_result"
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
@@ -519,7 +536,7 @@ function ettest_grouplevel0(executeobject, callback)
 		);
 	}
 
-	// group
+	// group, level 0, 3 tests: 1st passes, 2nd passes, 3rd fails
 	exports.ettest_grouplevel0fail3last = 
 	ettest_grouplevel0fail3last = 
 	function ettest_grouplevel0fail3last(executeobject, callback) 
@@ -531,8 +548,8 @@ function ettest_grouplevel0(executeobject, callback)
 		  executeobject.command.environment.run.type="group"
 		  executeobject.command.environment.run.executelevel=0
 		  executeobject.command.environment.platform='local'          
-		  executeobject.command.processparameterfn="execute_nothing"  
-		  executeobject.command.processfn="execute_function"
+  
+		  executeobject.command.environment.processfn="execute_function"
 		  executeobject.serverfn="test_return_noerror_result"
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
@@ -558,7 +575,9 @@ function ettest_grouplevel0(executeobject, callback)
 // /*===============================================*/  
 // /******* SECTION: group Level 1 			*********/
 // /*===============================================*/
-// group - level = 1 do them in any order.. if pass return a list, if fail return error and resulttable
+
+// A function for testing 'group' at level 1 in 4 ways: 1 test that passes; 3 tests that pass; 
+// 		3 tests, 2 of which pass and the middle fails; 3 tests, 2 of which pass and the last fails.
 exports.ettest_grouplevel1 = 
 ettest_grouplevel1 = 
 function ettest_grouplevel1(executeobject, callback) 
@@ -576,7 +595,7 @@ function ettest_grouplevel1(executeobject, callback)
 	})  
 }
 
-	// group
+	// group, level 1, 1 test that passes
 	exports.ettest_grouplevel1pass1 = 
 	ettest_grouplevel1pass1 = 
 	function ettest_grouplevel1pass1(executeobject, callback) 
@@ -588,8 +607,8 @@ function ettest_grouplevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="group"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          // used for server testing
-		  executeobject.command.processparameterfn="execute_nothing"  // how to massage parameters
-		  executeobject.command.processfn="execute_function"          // what function handles functions
+
+		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
 		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun={
 									  "executethis": 'test_return_noerror_result'
@@ -610,7 +629,7 @@ function ettest_grouplevel1(executeobject, callback)
 		  })
 	}
 
-	//group
+	// group, level 1, 3 tests that pass
 	exports.ettest_grouplevel1pass3 = 
 	ettest_grouplevel1pass3 = 
 	function ettest_grouplevel1pass3(executeobject, callback) 
@@ -624,8 +643,8 @@ function ettest_grouplevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="group"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          // used for server testing
-		  executeobject.command.processparameterfn="execute_nothing"  // how to massage parameters
-		  executeobject.command.processfn="execute_function"          // what function handles functions
+
+		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
 		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun=[{"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
@@ -646,7 +665,7 @@ function ettest_grouplevel1(executeobject, callback)
 		  })
 	}
 
-	// group
+	// group, level 1, 3 tests: 1st passes, 2nd fails, 3rd passes
 	exports.ettest_grouplevel1fail3middle = 
 	ettest_grouplevel1fail3middle = 
 	function ettest_grouplevel1fail3middle(executeobject, callback) 
@@ -658,8 +677,8 @@ function ettest_grouplevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="group"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          
-		  executeobject.command.processparameterfn="execute_nothing"  
-		  executeobject.command.processfn="execute_function"
+  
+		  executeobject.command.environment.processfn="execute_function"
 		  executeobject.serverfn="test_return_noerror_result"
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
@@ -682,7 +701,7 @@ function ettest_grouplevel1(executeobject, callback)
 		);
 	}
 
-	// group
+	// group, level 1, 3 tests: 1st passes, 2nd passes, 3rd fails
 	exports.ettest_grouplevel1fail3last = 
 	ettest_grouplevel1fail3last = 
 	function ettest_grouplevel1fail3last(executeobject, callback) 
@@ -694,8 +713,8 @@ function ettest_grouplevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="group"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          
-		  executeobject.command.processparameterfn="execute_nothing"  
-		  executeobject.command.processfn="execute_function"
+  
+		  executeobject.command.environment.processfn="execute_function"
 		  executeobject.serverfn="test_return_noerror_result"
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
@@ -721,7 +740,9 @@ function ettest_grouplevel1(executeobject, callback)
 // /*===============================================*/  
 // /******* SECTION: waterfall Level 1 		*********/
 // /*===============================================*/
-// waterfall - level = 1 output of call one becomes input to the next one — if pass returns one result, if fail return error and resulttable
+
+// A function for testing 'waterfall' at level 1 in 4 ways: 1 test that passes; 3 tests that pass; 
+// 		3 tests, 2 of which pass and the middle fails; 3 tests, 2 of which pass and the last fails.
 exports.ettest_waterfalllevel1 = 
 ettest_waterfalllevel1 = 
 function ettest_waterfalllevel1(executeobject, callback) 
@@ -739,7 +760,7 @@ function ettest_waterfalllevel1(executeobject, callback)
 	})      
 }
 
-	// waterfall
+	// waterfall, level 1, 1 test that passes
 	exports.ettest_waterfalllevel1pass1 = 
 	ettest_waterfalllevel1pass1 = 
 	function ettest_waterfalllevel1pass1(executeobject, callback) 
@@ -751,8 +772,8 @@ function ettest_waterfalllevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="waterfall"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          // used for server testing
-		  executeobject.command.processparameterfn="execute_nothing"  // how to massage parameters
-		  executeobject.command.processfn="execute_function"          // what function handles functions
+
+		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
 		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun={
 									  "executethis": 'test_return_noerror_result'
@@ -773,7 +794,7 @@ function ettest_waterfalllevel1(executeobject, callback)
 		  })
 	}
 
-	// waterfall
+	// waterfall, level 1, 3 tests that pass
 	exports.ettest_waterfalllevel1pass3 = 
 	ettest_waterfalllevel1pass3 = 
 	function ettest_waterfalllevel1pass3(executeobject, callback) 
@@ -787,8 +808,8 @@ function ettest_waterfalllevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="waterfall"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          // used for server testing
-		  executeobject.command.processparameterfn="execute_nothing"  // how to massage parameters
-		  executeobject.command.processfn="execute_function"          // what function handles functions
+
+		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
 		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun=[{"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
@@ -809,7 +830,7 @@ function ettest_waterfalllevel1(executeobject, callback)
 		  })
 	}
 
-	// waterfall
+	// waterfall, level 1, 3 tests: 1st fails, 2nd passes, 3rd fails
 	exports.ettest_waterfalllevel1fail3middle = 
 	ettest_waterfalllevel1fail3middle = 
 	function ettest_waterfalllevel1fail3middle(executeobject, callback) 
@@ -821,8 +842,8 @@ function ettest_waterfalllevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="waterfall"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          
-		  executeobject.command.processparameterfn="execute_nothing"  
-		  executeobject.command.processfn="execute_function"
+  
+		  executeobject.command.environment.processfn="execute_function"
 		  executeobject.serverfn="test_return_noerror_result"
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
@@ -835,17 +856,17 @@ function ettest_waterfalllevel1(executeobject, callback)
 		  {
 		   
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
-				proxyprinttodiv('expected result', global_resulttable_assertion2, 99, true);
+				proxyprinttodiv('expected result', null, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_failnotfound, 99);
 				
-				composite_obj=logverifycomplex("ettest_waterfalllevel1fail3middle", result_obj,global_resulttable_assertion2, error_obj, global_failnotfound);
+				composite_obj=logverifycomplex("ettest_waterfalllevel1fail3middle", result_obj,null, error_obj, global_failnotfound);
 				callback(null, composite_obj)
 		  } 
 		);
 	}
 
-	// waterfall
+	// waterfall, level 1, 3 tests: 1st passes, 2nd passes, 3rd fails
 	exports.ettest_waterfalllevel1fail3last = 
 	ettest_waterfalllevel1fail3last = 
 	function ettest_waterfalllevel1fail3last(executeobject, callback) 
@@ -857,8 +878,8 @@ function ettest_waterfalllevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="waterfall"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          
-		  executeobject.command.processparameterfn="execute_nothing"  
-		  executeobject.command.processfn="execute_function"
+  
+		  executeobject.command.environment.processfn="execute_function"
 		  executeobject.serverfn="test_return_noerror_result"
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
@@ -871,11 +892,11 @@ function ettest_waterfalllevel1(executeobject, callback)
 		  {
 		   
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
-				proxyprinttodiv('expected result', global_resulttable_assertion2, 99, true);
+				proxyprinttodiv('expected result', null, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_realerror, 99);
 				
-				composite_obj=logverifycomplex("ettest_waterfalllevel1fail3last", result_obj,global_resulttable_assertion2, error_obj, global_realerror);
+				composite_obj=logverifycomplex("ettest_waterfalllevel1fail3last", result_obj,null, error_obj, global_realerror);
 				callback(null, composite_obj)
 		  } 
 		);
@@ -884,7 +905,9 @@ function ettest_waterfalllevel1(executeobject, callback)
 // /*===============================================*/  
 // /******* SECTION: runfirstone Level 1 	*********/
 // /*===============================================*/
-// runfirstone - level = 1 keep trying from the list until the first one runs — if pass returns one result, if fail return error and resulttable
+
+// A function for testing 'runfirstone' at level 1 in 4 ways: 1 test that passes; 3 tests that pass; 
+// 		3 tests, 2 of which pass and the middle fails; 3 tests, 2 of which pass and the last fails.
 exports.ettest_runfirstonelevel1 = 
 ettest_runfirstonelevel1 = 
 function ettest_runfirstonelevel1(executeobject, callback) 
@@ -902,7 +925,7 @@ function ettest_runfirstonelevel1(executeobject, callback)
 	})       
 }
 
-	// runfirstone
+	// runfirstone, level 1, 1 test that passes
 	exports.ettest_runfirstonelevel1pass1 = 
 	ettest_runfirstonelevel1pass1 = 
 	function ettest_runfirstonelevel1pass1(executeobject, callback) 
@@ -914,8 +937,8 @@ function ettest_runfirstonelevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="runfirstone"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          // used for server testing
-		  executeobject.command.processparameterfn="execute_nothing"  // how to massage parameters
-		  executeobject.command.processfn="execute_function"          // what function handles functions
+
+		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
 		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun={
 									  "executethis": 'test_return_noerror_result'
@@ -936,7 +959,7 @@ function ettest_runfirstonelevel1(executeobject, callback)
 		  })
 	}
 
-	// runfirstone
+	// runfirstone, level 1, 3 tests that pass
 	exports.ettest_runfirstonelevel1pass3 = 
 	ettest_runfirstonelevel1pass3 = 
 	function ettest_runfirstonelevel1pass3(executeobject, callback) 
@@ -950,8 +973,8 @@ function ettest_runfirstonelevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="runfirstone"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          // used for server testing
-		  executeobject.command.processparameterfn="execute_nothing"  // how to massage parameters
-		  executeobject.command.processfn="execute_function"          // what function handles functions
+
+		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
 		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun=[{"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
@@ -972,7 +995,7 @@ function ettest_runfirstonelevel1(executeobject, callback)
 		  })
 	}
 
-	// runfirstone
+	// runfirstone, level 1, 3 tests: 1st passes, 2nd fails, 3rd passes
 	exports.ettest_runfirstonelevel1fail3middle = 
 	ettest_runfirstonelevel1fail3middle = 
 	function ettest_runfirstonelevel1fail3middle(executeobject, callback) 
@@ -984,8 +1007,8 @@ function ettest_runfirstonelevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="runfirstone"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          
-		  executeobject.command.processparameterfn="execute_nothing"  
-		  executeobject.command.processfn="execute_function"
+  
+		  executeobject.command.environment.processfn="execute_function"
 		  executeobject.serverfn="test_return_noerror_result2"
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_realerror_result'},
@@ -1009,7 +1032,7 @@ function ettest_runfirstonelevel1(executeobject, callback)
 		);
 	}
 
-	// runfirstone
+	// runfirstone, level 1, 1st passes, 2nd passes, 3rd fails
 	exports.ettest_runfirstonelevel1fail3last = 
 	ettest_runfirstonelevel1fail3last = 
 	function ettest_runfirstonelevel1fail3last(executeobject, callback) 
@@ -1021,8 +1044,8 @@ function ettest_runfirstonelevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="runfirstone"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          
-		  executeobject.command.processparameterfn="execute_nothing"  
-		  executeobject.command.processfn="execute_function"
+  
+		  executeobject.command.environment.processfn="execute_function"
 		  executeobject.serverfn="test_return_noerror_result"
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_failnotfound_result'},
@@ -1035,11 +1058,11 @@ function ettest_runfirstonelevel1(executeobject, callback)
 		  {
 		   
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
-				proxyprinttodiv('expected result', global_resulttable_assertion2, 99, true);
+				proxyprinttodiv('expected result', null, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_realerror, 99);
 				
-				composite_obj=logverifycomplex("ettest_runfirstonelevel1fail3last", result_obj,global_resulttable_assertion2, error_obj, global_realerror);
+				composite_obj=logverifycomplex("ettest_runfirstonelevel1fail3last", result_obj,null, error_obj, global_realerror);
 				callback(null, composite_obj)
 		  } 
 		);
@@ -1048,7 +1071,9 @@ function ettest_runfirstonelevel1(executeobject, callback)
 // /*===============================================*/  
 // /******* SECTION: runfirstwaterfall Level 1 	*********/
 // /*===============================================*/
-// runfirstwaterfall - level = 1 combination of waterfalls/runfirstone — if pass returns one result, if fail return error and resulttable
+
+// A function for testing 'runfirstonewaterfall' at level 1 in 4 ways: 1 test that passes; 3 tests that pass; 
+// 		3 tests, 2 of which pass and the middle fails; 3 tests, 2 of which pass and the last fails.
 exports.ettest_runfirstwaterfalllevel1 = 
 ettest_runfirstwaterfalllevel1 = 
 function ettest_runfirstwaterfalllevel1(executeobject, callback) 
@@ -1066,7 +1091,7 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 	})    
 }
 
-	//runfirstwaterfall
+	// runfirstwaterfall, level 1, 1 test that passes
 	exports.ettest_runfirstwaterfalllevel1pass1 = 
 	ettest_runfirstwaterfalllevel1pass1 = 
 	function ettest_runfirstwaterfalllevel1pass1(executeobject, callback) 
@@ -1078,8 +1103,8 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="runfirstonewaterfall"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          
-		  executeobject.command.processparameterfn="execute_nothing"  
-		  executeobject.command.processfn="execute_function"
+  
+		  executeobject.command.environment.processfn="execute_function"
 		  executeobject.serverfn="test_return_noerror_result"
 		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'}  
 		  var etEnvironment = new drienvironment(executeobject.command.environment)
@@ -1097,7 +1122,7 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 		);
 	}
 
-	// runfirstonewaterfall
+	// runfirstonewaterfall, level 1, 3 tests that pass
 	exports.ettest_runfirstwaterfalllevel1pass3 = 
 	ettest_runfirstwaterfalllevel1pass3 = 
 	function ettest_runfirstwaterfalllevel1pass3(executeobject, callback) 
@@ -1111,8 +1136,8 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="runfirstonewaterfall"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          // used for server testing
-		  executeobject.command.processparameterfn="execute_nothing"  // how to massage parameters
-		  executeobject.command.processfn="execute_function"          // what function handles functions
+
+		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
 		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun=[{"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
@@ -1133,7 +1158,7 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 		  })
 	}
 
-	// runfirstonewaterfall
+	// runfirstonewaterfall, level 1, 3 tests: 1st passes, 2nd fails, 3rd passes
 	exports.ettest_runfirstwaterfalllevel1fail3middle = 
 	ettest_runfirstwaterfalllevel1fail3middle = 
 	function ettest_runfirstwaterfalllevel1fail3middle(executeobject, callback) 
@@ -1145,8 +1170,8 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="runfirstonewaterfall"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          
-		  executeobject.command.processparameterfn="execute_nothing"  
-		  executeobject.command.processfn="execute_function"
+  
+		  executeobject.command.environment.processfn="execute_function"
 		  executeobject.serverfn="test_return_noerror_result"
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_realerror_result'},
@@ -1170,7 +1195,7 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 		);
 	}
 
-	// runfirstonewaterfall
+	// runfirstonewaterfall, level 1, 3 tests: 1st passes, 2nd passes, 3rd fails
 	exports.ettest_runfirstwaterfalllevel1fail3last = 
 	ettest_runfirstwaterfalllevel1fail3last = 
 	function ettest_runfirstwaterfalllevel1fail3last(executeobject, callback) 
@@ -1182,8 +1207,8 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 		  executeobject.command.environment.run.type="runfirstonewaterfall"
 		  executeobject.command.environment.run.executelevel=1
 		  executeobject.command.environment.platform='local'          
-		  executeobject.command.processparameterfn="execute_nothing"  
-		  executeobject.command.processfn="execute_function"
+  
+		  executeobject.command.environment.processfn="execute_function"
 		  executeobject.serverfn="test_return_noerror_result"
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_failnotfound_result'},
@@ -1195,11 +1220,11 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
-				proxyprinttodiv('expected result', global_resulttable_assertion2, 99, true);
+				proxyprinttodiv('expected result', null, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_realerror, 99);
 				
-				composite_obj=logverifycomplex("ettest_runfirstwaterfalllevel1fail3last", result_obj,global_resulttable_assertion2, error_obj, global_realerror);
+				composite_obj=logverifycomplex("ettest_runfirstwaterfalllevel1fail3last", result_obj,null, error_obj, global_realerror);
 				callback(null, composite_obj)
 		  } 
 		);
@@ -1208,7 +1233,9 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 // /*===============================================*/  
 // /******* SECTION: what to do 	*********/
 // /*===============================================*/
-// what_to_do 
+
+// A function for testing 'what_to_do_list' in 3 ways: 1 test that just calls execute_function;
+//		1 test that calls create_what_to_do_list directly; and 1 test that simulates making a server call
 exports.ettest_whattodo = 
 ettest_whattodo = 
 function ettest_whattodo(executeobject, callback) 
@@ -1237,9 +1264,9 @@ function ettest_whattodo(executeobject, callback)
 		  executeobject.command.environment.run.type="series"
 		  executeobject.command.environment.run.executelevel=0
 		  executeobject.command.environment.platform='local'
-		  executeobject.command.processparameterfn="create_what_to_do_list"    
-		  //executeobject.command.processparameterfn="execute_nothing"  
-		  executeobject.command.processfn="execute_function"          
+    
+  
+		  executeobject.command.environment.processfn="execute_function"          
 		  executeobject.serverfn="test_return_noerror_result2"        
 		  executeobject.command.xrun={
 									  "executethis": 'test_return_noerror_result'
@@ -1272,10 +1299,10 @@ function ettest_whattodo(executeobject, callback)
 		  executeobject.command.environment.run.type="series"
 		  executeobject.command.environment.run.executelevel=0
 		  executeobject.command.environment.platform='local'
-			//executeobject.command.processparameterfn="execute_parameter" // tells the system to execute the paramter of 
+ 
 																	   // the function as if it was a name of a function
-		  //executeobject.command.processparameterfn="create_what_to_do_list"
-		  executeobject.command.processfn="create_what_to_do_list"         
+
+		  executeobject.command.environment.processfn="create_what_to_do_list"         
 		  executeobject.serverfn="test_return_noerror_result2"        
 		  executeobject.command.xrun={
 									  "executethis": 'a',
@@ -1309,8 +1336,8 @@ function ettest_whattodo(executeobject, callback)
 	   executeobject.command.environment.run.type="series"
 	   executeobject.command.environment.run.executelevel=0
 	   executeobject.command.environment.platform='server'   // within test this will redirect to second function       
-	   executeobject.command.processparameterfn="execute_nothing"  
-	   executeobject.command.processfn="execute_function"
+  
+	   executeobject.command.environment.processfn="execute_function"
 	   executeobject.serverfn="test_return_noerror_result"  // this function should execute
 	   executeobject.command.xrun={"executethis": 'test_return_realerror_result'}
 
@@ -1347,8 +1374,8 @@ function ettest_howtodo(executeobject, callback)
 	[   
 	function (cb1) {ettest_runfirstwaterfall3pass({}, function (err, res) {cb1(null, res)})},
 	function (cb1) {ettest_serieslevel0pass1server({}, function (err, res) {cb1(null, res)})}, // simulate server call. if platform = server then when in fn1 go to fn2
-	function (cb1) {ettest_runfirstwaterfall3passxxxxxxxx({}, function (err, res) {cb1(null, res)})}, // simulate server call. if platform = server then when in fn1 go to fn2
-	function (cb1) {ettest_series1passnormalgwxxxxxxx({}, function (err, res) {cb1(null, res)})}, // simulate server call. if platform = server then when in fn1 go to fn2
+	function (cb1) {ettest_serieslevel0pass3server({}, function (err, res) {cb1(null, res)})}, // simulate server call. if platform = server then when in fn1 go to fn2
+	function (cb1) {ettest_series1passnormalgw({}, function (err, res) {cb1(null, res)})}, // simulate server call. if platform = server then when in fn1 go to fn2
 	function (cb1) {ettest_grouplevel0pass3server({}, function (err, res) {cb1(null, res)})} // simulate server call. if platform = server then execute serverfn
 	],
 	function (err, res) {
@@ -1379,7 +1406,7 @@ function ettest_howtodo(executeobject, callback)
 				proxyprinttodiv('actual error',error_obj, 99, true);
 				proxyprinttodiv('expected error', null, 99, true);
 				
-				composite_obj=logverifycomplex("ettest_ne16", result_obj,result_assertion, error_obj, null);
+				composite_obj=logverifycomplex("ettest_runfirstwaterfall3pass", result_obj,result_assertion, error_obj, null);
 				callback(null, composite_obj)
 		  } 
 		);
@@ -1399,8 +1426,8 @@ function ettest_howtodo(executeobject, callback)
 		  executeobject.command.environment.run.type="series"
 		  executeobject.command.environment.run.executelevel=0
 		  executeobject.command.environment.platform='local'
-		  //executeobject.command.processparameterfn="create_how_to_do_list"
-		  //executeobject.command.processfn="execute_function"
+
+		  //executeobject.command.environment.processfn="execute_function"
 		  //executeobject.serverfn="test_return_noerror_result2"
 		  executeobject.command.xrun=[{
 									"executethis": 'test_return_realerror_result',
@@ -1417,7 +1444,7 @@ function ettest_howtodo(executeobject, callback)
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_serieslevel0pass3", result_obj, result_assertion, error_obj, null);
+				composite_obj=logverifycomplex("ettest_serieslevel0pass1server", result_obj, result_assertion, error_obj, null);
 				callback(null, composite_obj)
 		  })
 	}
@@ -1444,8 +1471,8 @@ function ettest_howtodo(executeobject, callback)
 		  executeobject.command.environment.run.type="series"
 		  executeobject.command.environment.run.executelevel=0
 		  executeobject.command.environment.platform='local'
-		  //executeobject.command.processparameterfn="create_how_to_do_list"
-		  //executeobject.command.processfn="execute_function"
+
+		  //executeobject.command.environment.processfn="execute_function"
 		  //executeobject.serverfn="test_return_noerror_result2"
 		  executeobject.command.xrun=[{
 									"executethis": 'test_return_realerror_result',
@@ -1470,7 +1497,7 @@ function ettest_howtodo(executeobject, callback)
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_serieslevel0pass3", result_obj, result_assertion, error_obj, null);
+				composite_obj=logverifycomplex("ettest_serieslevel0pass3server", result_obj, result_assertion, error_obj, null);
 				callback(null, composite_obj)
 		  })
 	}
@@ -1489,8 +1516,8 @@ function ettest_howtodo(executeobject, callback)
 		  executeobject.command.environment.run.type="group"
 		  executeobject.command.environment.run.executelevel=0
 		  executeobject.command.environment.platform='local'
-		  //executeobject.command.processparameterfn="create_how_to_do_list"
-		  //executeobject.command.processfn="execute_function"
+
+		  //executeobject.command.environment.processfn="execute_function"
 		  //executeobject.serverfn="test_return_noerror_result2"
 		  executeobject.command.xrun=[{
 									"executethis": 'test_return_noerror_result',
@@ -1515,7 +1542,7 @@ function ettest_howtodo(executeobject, callback)
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_serieslevel0pass3", result_obj, result_assertion, error_obj, null);
+				composite_obj=logverifycomplex("ettest_grouplevel0pass3server", result_obj, result_assertion, error_obj, null);
 				callback(null, composite_obj)
 		  })
 	}
@@ -1534,8 +1561,8 @@ function ettest_howtodo(executeobject, callback)
 		  executeobject.command.environment.run.type="group"
 		  executeobject.command.environment.run.executelevel=0
 		  executeobject.command.environment.platform='local'
-		  //executeobject.command.processparameterfn="create_how_to_do_list"
-		  //executeobject.command.processfn="execute_function"
+
+		  //executeobject.command.environment.processfn="execute_function"
 		  //executeobject.serverfn="test_return_noerror_result2"
 		  executeobject.command.xrun=[{
 									"executethis": 'test_return_realerror_result',
@@ -1560,7 +1587,7 @@ function ettest_howtodo(executeobject, callback)
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_serieslevel0pass3", result_obj, result_assertion, error_obj, null);
+				composite_obj=logverifycomplex("ettest_grouplevel0pass1server", result_obj, result_assertion, error_obj, null);
 				callback(null, composite_obj)
 		  })
 	}
@@ -1591,9 +1618,9 @@ function ettest_howtodo(executeobject, callback)
 			  executeobject.command.environment.run.type="series"
 			  executeobject.command.environment.run.executelevel=0
 			  executeobject.command.environment.platform='local'
-			  //executeobject.command.processparameterfn="create_what_to_do_list"   
-			  //executeobject.command.processparameterfn="execute_get_wid"  
-			  //executeobject.command.processfn="execute_function"          
+   
+  
+			  //executeobject.command.environment.processfn="execute_function"          
 			  executeobject.serverfn="test_return_noerror_result2"        
 			  executeobject.command.xrun={
 										  "executethis": 'callpassfunction'
@@ -1649,9 +1676,9 @@ function ettest_executemisc(executeobject, callback)
 		  executeobject.command.environment.run.type="series"
 		  executeobject.command.environment.run.executelevel=0
 		  executeobject.command.environment.platform='local'
-		  executeobject.command.processparameterfn="execute_nothing"    
-		  //executeobject.command.processparameterfn="execute_nothing"  
-		  executeobject.command.processfn="execute_function"          
+    
+  
+		  executeobject.command.environment.processfn="execute_function"          
 		  executeobject.serverfn="test_return_noerror_result2"        
 		  executeobject.command.xrun={
 									  "executethis": 'test_return_noerror_result'
@@ -1684,10 +1711,10 @@ function ettest_executemisc(executeobject, callback)
 		  executeobject.command.environment.run.type="series"
 		  executeobject.command.environment.run.executelevel=0
 		  executeobject.command.environment.platform='local'
-			executeobject.command.processparameterfn="execute_parameter" // tells the system to execute the paramter of 
+ 
 																	   // the function as if it was a name of a function
-			//executeobject.command.processparameterfn="create_what_to_do_list"
-		  executeobject.command.processfn="execute_function"          
+
+		  executeobject.command.environment.processfn="execute_parameter"          
 		  executeobject.serverfn="test_return_noerror_result2"        
 		  executeobject.command.xrun={
 									  "executethis": 'a',
@@ -1729,9 +1756,9 @@ function ettest_executemisc(executeobject, callback)
 		  executeobject.command.environment.run.type="series"
 		  executeobject.command.environment.run.executelevel=0
 		  executeobject.command.environment.platform='local'
-		  //executeobject.command.processparameterfn="create_what_to_do_list"	  
-		  executeobject.command.processparameterfn="execute_get_wid"  
-		  executeobject.command.processfn="execute_function"          
+	  
+  
+		  executeobject.command.environment.processfn="execute_get_wid"          
 		  executeobject.serverfn="test_return_noerror_result2"        
 		  executeobject.command.xrun={
 									  "executethis": 'callpassfunction'
@@ -1774,9 +1801,9 @@ function ettest_executemisc(executeobject, callback)
 		  executeobject.command.environment.run.type="series"
 		  executeobject.command.environment.run.executelevel=0
 		  executeobject.command.environment.platform='local'
-		  executeobject.command.processparameterfn="create_what_to_do_list"	  
-		  //executeobject.command.processparameterfn="execute_get_wid"  
-		  executeobject.command.processfn="execute_function"          
+	  
+  
+		  executeobject.command.environment.processfn="execute_get_wid"          
 		  executeobject.serverfn="test_return_noerror_result2"        
 		  executeobject.command.xrun={
 									  "executethis": 'callpassfunction'
@@ -1821,8 +1848,8 @@ function ettest_series1update1(executeobject, callback)
         executeobject.command.environment.run.type="series"
         executeobject.command.environment.run.executelevel=0
         executeobject.command.environment.platform='local'          // used for server testing
-        //executeobject.command.processparameterfn="execute_nothing"  // how to massage parameters
-        executeobject.command.processfn="execute_function"          // what function handles functions
+
+        executeobject.command.environment.processfn="execute_function"          // what function handles functions
         executeobject.serverfn={"executethis": 'callpassfunction'}        // so we can test fail local, pass server on same machine
         executeobject.command.xrun={"executethis": 'test_return_failnotfound_result'}
 
@@ -1862,8 +1889,8 @@ function ettest_group3failpassserver(executeobject, callback)
     executeobject.command.environment.run.type="group"     // should default to group
     executeobject.command.environment.run.executelevel=0
     executeobject.command.environment.platform='local'          // used for server testing
-    //executeobject.command.processparameterfn="execute_nothing"  // how to massage parameters
-    executeobject.command.processfn="execute_function"          // what function handles functions
+
+    executeobject.command.environment.processfn="execute_function"          // what function handles functions
     executeobject.serverfn="test_return_noerror_result2"        
     executeobject.command.xrun=[
                       {"executethis": 'test_return_noerror_result', 'serverfn':'test test_return_realerror_result2'},
@@ -1921,23 +1948,71 @@ function ettest_nestedtestslevel1(executeobject, callback)
 	 	  executeobject.command.environment.run.type="series"
 	 	  executeobject.command.environment.run.executelevel=1
 	 	  executeobject.command.environment.platform='local'          
-	 	  executeobject.command.processparameterfn="execute_parameter"  
-	 	  executeobject.command.processfn="execute_function"
-	 	  executeobject.serverfn="test_return_noerror_result"
-	 	  executeobject.command.xrun=[
-	 								  {
-									"executethis": 'a',
-									  "a":{
-											"command":{
-												"xrun":[
+  
+	 	  executeobject.command.environment.processfn="execute_parameter"
+	 	  //executeobject.serverfn="test_return_noerror_result"
+	 	  executeobject.command.xrun=
+								[
+	 								{
+										"command":
+											{
+												"xrun":
+												[
+													{
+													"executethis":"test_return_noerror_result"
+													}
+												]
+											}
+									}
+								]; 
+
+	 	  var etEnvironment = new drienvironment(executeobject.command.environment)
+	 	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+	 	  {
+				var result = {"a":"b","env":"local"}
+				var result_assertion = result
+	 			proxyprinttodiv('actual result', result_obj, 99, true);                         
+	 			proxyprinttodiv('expected result', result_assertion, 99, true);
+	 			proxyprinttodiv('actual error',error_obj, 99);
+	 			proxyprinttodiv('expected error', null, 99);
+				
+	 			composite_obj=logverifycomplex("ettest_nestedtestslevel1pass1", result_obj,result_assertion, error_obj, null);
+	 			callback(null, composite_obj)
+	 	  } 
+	 	);
+	 }
+	
+	//this test calls a, and a is an execution object with xrun = [noerror,noerror,noerror]
+	 exports.ettest_nestedtestslevel1pass3 = 
+	 ettest_nestedtestslevel1pass3 = 
+	 function ettest_nestedtestslevel1pass3(executeobject, callback) 
+	 {		
+	 	  if (!executeobject.command) {
+	 	  executeobject.command={},
+	 	  executeobject.command.environment={},
+	 	  executeobject.command.environment.run={}}
+	 	  executeobject.command.environment.run.type="series"
+	 	  executeobject.command.environment.run.executelevel=1
+	 	  executeobject.command.environment.platform='local'          
+  
+	 	  executeobject.command.environment.processfn="execute_parameter"
+	 	  //executeobject.serverfn="test_return_noerror_result"
+	 	  executeobject.command.xrun=
+								[
+	 								{
+
+										"command":
+											{
+											"xrun":
+												[
 													{"executethis":"test_return_noerror_result"},
 													{"executethis":"test_return_noerror_result"},
 													{"executethis":"test_return_noerror_result"}
-														]
-													}
+												]
 											}
-										}
-	 								  ]; 
+											
+									}
+	 							]; 
 
 	 	  var etEnvironment = new drienvironment(executeobject.command.environment)
 	 	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
@@ -1954,8 +2029,99 @@ function ettest_nestedtestslevel1(executeobject, callback)
 	 	  } 
 	 	);
 	 }
-	
+	 
+		 //this test calls a, and a is an execution object with xrun = [noerror,noerror,noerror]
+	 exports.ettest_nestedtestslevel1fail3middle = 
+	 ettest_nestedtestslevel1fail3middle = 
+	 function ettest_nestedtestslevel1fail3middle(executeobject, callback) 
+	 {		
+	 	  if (!executeobject.command) {
+	 	  executeobject.command={},
+	 	  executeobject.command.environment={},
+	 	  executeobject.command.environment.run={}}
+	 	  executeobject.command.environment.run.type="series"
+	 	  executeobject.command.environment.run.executelevel=1
+	 	  executeobject.command.environment.platform='local'          
+  
+	 	  executeobject.command.environment.processfn="execute_parameter"
+	 	  executeobject.serverfn="test_return_noerror_result"
+	 	  executeobject.command.xrun=
+								[
+	 								{
 
+										"command":
+											{
+											"xrun":
+												[
+													{"executethis":"test_return_noerror_result"},
+													{"executethis":"test_return_realerror_result"},
+													{"executethis":"test_return_noerror_result"}
+												]
+											}
+											
+									}
+	 							]; 
+
+	 	  var etEnvironment = new drienvironment(executeobject.command.environment)
+	 	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+	 	  {
+	 			proxyprinttodiv('actual result', result_obj, 99, true);                         
+	 			proxyprinttodiv('expected result', null, 99, true);
+	 			proxyprinttodiv('actual error',error_obj, 99);
+	 			proxyprinttodiv('expected error', global_realerror, 99);
+				
+	 			composite_obj=logverifycomplex("ettest_nestedtestslevel1pass1", result_obj,null, error_obj, global_realerror);
+	 			callback(null, composite_obj)
+	 	  } 
+	 	);
+	 }
+	 
+	 		 //this test calls a, and a is an execution object with xrun = [noerror,noerror,noerror]
+	 exports.ettest_nestedtestslevel1fail3fail = 
+	 ettest_nestedtestslevel1fail3fail = 
+	 function ettest_nestedtestslevel1fail3fail(executeobject, callback) 
+	 {		
+	 	  if (!executeobject.command) {
+	 	  executeobject.command={},
+	 	  executeobject.command.environment={},
+	 	  executeobject.command.environment.run={}}
+	 	  executeobject.command.environment.run.type="series"
+	 	  executeobject.command.environment.run.executelevel=1
+	 	  executeobject.command.environment.platform='local'          
+  
+	 	  executeobject.command.environment.processfn="execute_parameter"
+	 	  executeobject.serverfn="test_return_noerror_result"
+	 	  executeobject.command.xrun=
+								[
+	 								{
+
+										"command":
+											{
+											"xrun":
+												[
+													{"executethis":"test_return_noerror_result"},
+													{"executethis":"test_return_noerror_result"},
+													{"executethis":"test_return_realerror_result"}
+												]
+											}
+											
+									}
+	 							]; 
+
+	 	  var etEnvironment = new drienvironment(executeobject.command.environment)
+	 	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+	 	  {
+	 			proxyprinttodiv('actual result', result_obj, 99, true);                         
+	 			proxyprinttodiv('expected result', null, 99, true);
+	 			proxyprinttodiv('actual error',error_obj, 99);
+	 			proxyprinttodiv('expected error', global_realerror, 99);
+				
+	 			composite_obj=logverifycomplex("ettest_nestedtestslevel1pass1", result_obj,null, error_obj, global_realerror);
+	 			callback(null, composite_obj)
+	 	  } 
+	 	);
+	 }
+	 
 // /*===============================================*/  
 // /******* SECTION: misc runfirst LEVEL 0 	*********/
 // /*===============================================*/
@@ -1972,8 +2138,8 @@ function ettest_runfirst3real(executeobject, callback)
       executeobject.command.environment.run.type="runfirstonewaterfall"
       executeobject.command.environment.run.executelevel=0
       executeobject.command.environment.platform='local'          
-      executeobject.command.processparameterfn="execute_nothing"  
-      executeobject.command.processfn="execute_function"
+  
+      executeobject.command.environment.processfn="execute_function"
       executeobject.serverfn="test_return_noerror_result"
       executeobject.command.xrun=[
                                   {"executethis": 'test_return_realerror_result'},
@@ -2007,8 +2173,44 @@ function ettest_runfirst3pass_lvl1(executeobject, callback)
       executeobject.command.environment.run.type="runfirstone"
       executeobject.command.environment.run.executelevel=0
       executeobject.command.environment.platform='local'          
-      executeobject.command.processparameterfn="execute_nothing"  
-      executeobject.command.processfn="execute_function"
+  
+      executeobject.command.environment.processfn="execute_function"
+      executeobject.serverfn="test_return_noerror_result"
+      executeobject.command.xrun=[
+                                  {"executethis": 'test_return_noerror_result'},
+                                  {"executethis": 'test_return_noerror_result'},
+                                  {"executethis": 'test_return_noerror_result2'}
+                                  ];
+  var expectedresult = {"a":"b","env":executeobject.command.environment.platform}    
+      var etEnvironment = new drienvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', result_obj, 99);
+            composite_obj=logverifycomplex("ettest_runfirst3pass_lvl1", result_obj,expectedresult, error_obj, null);
+            callback(null, composite_obj)
+      } 
+    );
+}
+
+// /*===============================================*/  
+// /******* SECTION: New execute() tests 	*********/
+// /*===============================================*/
+
+function ettest_executestring1 = ettest_executestring1 = function ettest_executestring1(executeobject, callback) 
+{
+      if (!executeobject.command) {
+      executeobject.command={},
+      executeobject.command.environment={},
+      executeobject.command.environment.run={}}
+      executeobject.command.environment.run.type="runfirstone"
+      executeobject.command.environment.run.executelevel=0
+      executeobject.command.environment.platform='local'          
+  
+      executeobject.command.environment.processfn="execute_function"
       executeobject.serverfn="test_return_noerror_result"
       executeobject.command.xrun=[
                                   {"executethis": 'test_return_noerror_result'},
@@ -2166,23 +2368,23 @@ exports.test_return_noerror_result = test_return_noerror_result = function test_
     proxyprinttodiv('test_return_noerror_result- incoming parm', param, 99);
     var error_obj = null;
     var env = param.command.environment.platform
-    // if (env==="server" && param.serverfn)     // if environment = server and serverfn parameter exist then redirect 
-    //                                           // to different function--that way we can on same machine pass locally and
-    //                                           // fail server
-    // {
-    //   // var serverfn = window[param.serverfn]
-    //   // param.executethis=serverfn
-    //   param.command.xrun=param.serverfn
-    //   // debugger;
-    //   delete param.serverfn
-    //   proxyprinttodiv('test ***** calling server', param, 99);
-    //   // serverfn(param, callback)
-    //   execute(param, callback) 
+    if (env==="server" && param.serverfn)     // if environment = server and serverfn parameter exist then redirect 
+                                              // to different function--that way we can on same machine pass locally and
+                                              // fail server
+    {
+      // var serverfn = window[param.serverfn]
+      // param.executethis=serverfn
+      param.command.xrun=param.serverfn
+      // debugger;
+      delete param.serverfn
+      proxyprinttodiv('test ***** calling server', param, 99);
+      // serverfn(param, callback)
+      execute(param, callback) 
 
-    // } else {
+    } else {
       var result_obj = { 'a':'b', env: env };
       callback( error_obj, result_obj );
-    //}
+    }
 }
 
 exports.test_return_noerror_result2 = test_return_noerror_result2 = function test_return_noerror_result2 (param, callback) 
