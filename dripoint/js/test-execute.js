@@ -4495,7 +4495,7 @@ exports.ettestag9 = widtests.ettestag9 = ettestag9 = function ettestag9(params, 
             "sounddto.1.metadata.method": "sounddto",
             "sounddto.2.wid": "3",
             "sounddto.2.note": "C flat",
-            "sounddto.2.metadata.method": "sounddto",
+            "sounddto.2.metadata.method": "sounddto"
         }, {
             "executethis": "getwidmaster",
             "wid": "song1"
@@ -4574,7 +4574,7 @@ exports.ettestag3a = widtests.ettestag3a = ettestag3a = function ettestag3a(para
             "sounddto.1.metadata.method": "sounddto",
             "sounddto.2.wid": "3",
             "sounddto.2.note": "C flat",
-            "sounddto.2.metadata.method": "sounddto",
+            "sounddto.2.metadata.method": "sounddto"
         }, {
             "executethis": "getwidmaster",
             "wid": "song1"
@@ -4791,4 +4791,4 @@ exports.testnested2 = widtests.testnested2 = testnested2 = function testnested2(
 widtests.testnested2.category = "execute";
 widtests.testnested2.subcategory = "daily";
 widtests.testnested2.js = exports.testnested2;
-widtests.testnested2.description = "this does a test";	  
+widtests.testnested2.description = "this does a test";}
