@@ -2200,25 +2200,25 @@ function ettest_runfirst3pass_lvl1(executeobject, callback)
 // /******* SECTION: New execute() tests 	*********/
 // /*===============================================*/
 
-function ettest_executestring1 = ettest_executestring1 = function ettest_executestring1(executeobject, callback) 
+exports.ettest_executestring1 = ettest_executestring1 = function ettest_executestring1(executeobject, callback)
 {
       if (!executeobject.command) {
-      executeobject.command={},
-      executeobject.command.environment={},
-      executeobject.command.environment.run={}}
-      executeobject.command.environment.run.type="runfirstone"
-      executeobject.command.environment.run.executelevel=0
-      executeobject.command.environment.platform='local'          
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+      executeobject.command.environment.run.type="runfirstone";
+      executeobject.command.environment.run.executelevel=0;
+      executeobject.command.environment.platform='local';
   
-      executeobject.command.environment.processfn="execute_function"
-      executeobject.serverfn="test_return_noerror_result"
+      executeobject.command.environment.processfn="execute_function";
+      executeobject.serverfn="test_return_noerror_result";
       executeobject.command.xrun=[
                                   {"executethis": 'test_return_noerror_result'},
                                   {"executethis": 'test_return_noerror_result'},
                                   {"executethis": 'test_return_noerror_result2'}
                                   ];
-  var expectedresult = {"a":"b","env":executeobject.command.environment.platform}    
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+  var expectedresult = {"a":"b","env":executeobject.command.environment.platform};
+      var etEnvironment = new drienvironment(executeobject.command.environment);
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
