@@ -27,7 +27,7 @@ exports.ettest_allexecute =
 ettest_allexecute = 
 function ettest_allexecute(executeobject, callback) 
 {
-	var start = new Date().getTime()
+	var start = new Date().getTime();
     async.series(
     [   
     function (cb1) {ettest_serieslevel0({}, function (err, res) {cb1(null, res)})},
@@ -48,10 +48,10 @@ function ettest_allexecute(executeobject, callback)
     ],
     function (err, res) {
       proxyprinttodiv('result from many array', res, 99);
-      callback(null,res)
+      callback(null,res);
 	  proxyprinttodiv('total elapsed time ', new Date().getTime() - start, 99);
     })
-}
+};
 /*
 wid.ettest_allexecute.category = "executeit";
 wid.ettest_allexecute.subcategory = "dothis";
@@ -79,7 +79,7 @@ function ettest_serieslevel0(executeobject, callback)
 	  proxyprinttodiv('result from many array', res, 99);
 	  callback(null,res)
 	})
-}
+};
 
 	// series, level 0, 1 function that passes locally
 	exports.ettest_serieslevel0pass1 = 
@@ -87,19 +87,18 @@ function ettest_serieslevel0(executeobject, callback)
 	function ettest_serieslevel0pass1(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
 		  //executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'          // used for server testing
-		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
-		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
-		  executeobject.command.xrun={
-									  "executethis": 'test_return_noerror_result'
-											  }
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';          // used for server testing
+		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
+		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
+		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -108,11 +107,11 @@ function ettest_serieslevel0(executeobject, callback)
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_serieslevel0pass1", result_obj, result_assertion, error_obj, null);
+				var composite_obj = logverifycomplex("ettest_serieslevel0pass1", result_obj, result_assertion, error_obj, null);
 				proxyprinttodiv('composite_obj', composite_obj, 99);
 				callback(null, composite_obj)
-		  })
-	}
+		  });
+	};
 	/*
 	wid.ettest_serieslevel0pass1.category = "executeit";
 	wid.ettest_serieslevel0pass1.subcategory = "dothis";
@@ -132,29 +131,29 @@ function ettest_serieslevel0(executeobject, callback)
 			executeobject.command.environment.run={};
 		  }
 		  //executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'          // used for server testing
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';        // used for server testing
 
-		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
-		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
+		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
+		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun=[{"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
-									  {"executethis": 'test_return_noerror_result'}]
+									  {"executethis": 'test_return_noerror_result'}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {          
 				var result={"a":"b", "env":executeobject.command.environment.platform};   
-				var result_assertion=[result, result, result]           
+				var result_assertion=[result, result, result];
 				proxyprinttodiv('expected error', null, 99);
 				proxyprinttodiv('actual error', error_obj, 99);
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_serieslevel0pass3", result_obj, result_assertion, error_obj, null);
-				callback(null, composite_obj)
-		  })
-	}
+                var composite_obj=logverifycomplex("ettest_serieslevel0pass3", result_obj, result_assertion, error_obj, null);
+				callback(null, composite_obj);
+		  });
+	};
 
 	// series, level 0, 3 tests, 2nd test is fail not found
 	exports.ettest_serieslevel0fail3middle = 
@@ -162,15 +161,16 @@ function ettest_serieslevel0(executeobject, callback)
 	function ettest_serieslevel0fail3middle(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="series";
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';
   
-		  executeobject.command.environment.processfn="execute_function"
-		  executeobject.serverfn="test_return_noerror_result"
+		  executeobject.command.environment.processfn="execute_function";
+		  executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_failnotfound_result'},
@@ -181,20 +181,19 @@ function ettest_serieslevel0(executeobject, callback)
 		  //var expectedresult2 = {"a":"b","env":executeobject.command.environment.platform}      
 		  //var expectedresult3 = {"a":"b","env":executeobject.command.environment.platform}	  
 			//var result_assertion = [expectedresult1, expectedresult2, expectedresult3]
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
-		   
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
 				proxyprinttodiv('expected result000', null, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_failnotfound, 99);
 				
 				composite_obj=logverifycomplex("ettest_serieslevel0fail3middle", result_obj,null, error_obj, global_failnotfound);
-				callback(null, composite_obj)
+				callback(null, composite_obj);
 		  } 
 		);
-	}
+	};
 
 	// series, level 0, 3 tests, last test is fail not found
 	exports.ettest_serieslevel0fail3last = 
@@ -202,22 +201,23 @@ function ettest_serieslevel0(executeobject, callback)
 	function ettest_serieslevel0fail3last(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="series";
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';
   
-		  executeobject.command.environment.processfn="execute_function"
-		  executeobject.serverfn="test_return_noerror_result"
+		  executeobject.command.environment.processfn="execute_function";
+		  executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_failnotfound_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 		   
@@ -226,11 +226,11 @@ function ettest_serieslevel0(executeobject, callback)
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_failnotfound, 99);
 				
-				composite_obj=logverifycomplex("ettest_serieslevel0fail3last", result_obj,null, error_obj, global_failnotfound);
-				callback(null, composite_obj)
+				var composite_obj=logverifycomplex("ettest_serieslevel0fail3last", result_obj,null, error_obj, global_failnotfound);
+				callback(null, composite_obj);
 		  } 
 		);
-	}
+	};
 
 // /*===============================================*/  
 // /******* SECTION: series Level 1 		*********/
@@ -251,9 +251,9 @@ function ettest_serieslevel1(executeobject, callback)
 	],
 	function (err, res) {
 	  proxyprinttodiv('result from many array', res, 99);
-	  callback(null,res)
-	})
-}
+	  callback(null,res);
+	});
+};
 
 
 	// series, level 1, 1 test that passes
@@ -262,33 +262,32 @@ function ettest_serieslevel1(executeobject, callback)
 	function ettest_serieslevel1pass1(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          // used for server testing
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="series";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';          // used for server testing
 
-		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
-		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
-		  executeobject.command.xrun={
-									  "executethis": 'test_return_noerror_result'
-											  }
+		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
+		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
+		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
-		  {        
+		  {
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
 				proxyprinttodiv('expected error', null, 99);
 				proxyprinttodiv('actual error', error_obj, 99);
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_serieslevel1pass1", result_obj, result_assertion, error_obj, null);
+				var composite_obj=logverifycomplex("ettest_serieslevel1pass1", result_obj, result_assertion, error_obj, null);
 				proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj)
-		  })
-	}
+				callback(null, composite_obj);
+		  });
+	};
 
 	// series, level 1, 3 tests that all pass
 	exports.ettest_serieslevel1pass3 = 
@@ -302,16 +301,16 @@ function ettest_serieslevel1(executeobject, callback)
 			executeobject.command.environment.run={};
 		  }
 		  //executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          // used for server testing
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';          // used for server testing
 
-		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
-		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
+		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
+		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun=[{"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
-									  {"executethis": 'test_return_noerror_result'}]
+									  {"executethis": 'test_return_noerror_result'}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {          
 				var result={"a":"b", "env":executeobject.command.environment.platform};   
@@ -321,10 +320,10 @@ function ettest_serieslevel1(executeobject, callback)
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_serieslevel1pass3", result_obj, result_assertion, error_obj, null);
-				callback(null, composite_obj)
-		  })
-	}
+				var composite_obj=logverifycomplex("ettest_serieslevel1pass3", result_obj, result_assertion, error_obj, null);
+				callback(null, composite_obj);
+		  });
+	};
 
 	// series, level 1, 3 tests: 1st passes, 2nd fails, 3rd passes
 	exports.ettest_serieslevel1fail3middle = 
@@ -332,35 +331,36 @@ function ettest_serieslevel1(executeobject, callback)
 	function ettest_serieslevel1fail3middle(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="series";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';
   
-		  executeobject.command.environment.processfn="execute_function"
-		  executeobject.serverfn="test_return_noerror_result"
+		  executeobject.command.environment.processfn="execute_function";
+		  executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_realerror_result'},
 									  {"executethis": 'test_return_noerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 		   
-				proxyprinttodiv('actual result', result_obj, 99, true);                         
+				proxyprinttodiv('actual result', result_obj, 99, true);
 				proxyprinttodiv('expected result', null, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_realerror, 99);
 				
-				composite_obj=logverifycomplex("ettest_serieslevel1fail3middle", result_obj,null, error_obj, global_realerror);
-				callback(null, composite_obj)
+				var composite_obj=logverifycomplex("ettest_serieslevel1fail3middle", result_obj,null, error_obj, global_realerror);
+				callback(null, composite_obj);
 		  } 
 		);
-	}
+	};
 
 	// series, level 1, 3 tests: 1st passes, 2nd passes, 3rd fails
 	exports.ettest_serieslevel1fail3last = 
@@ -368,22 +368,23 @@ function ettest_serieslevel1(executeobject, callback)
 	function ettest_serieslevel1fail3last(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="series";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';
   
-		  executeobject.command.environment.processfn="execute_function"
-		  executeobject.serverfn="test_return_noerror_result"
+		  executeobject.command.environment.processfn="execute_function";
+		  executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_realerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 		   
@@ -392,11 +393,11 @@ function ettest_serieslevel1(executeobject, callback)
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_realerror, 99);
 				
-				composite_obj=logverifycomplex("ettest_serieslevel1fail3last", result_obj,null, error_obj, global_realerror);
-				callback(null, composite_obj)
+				var composite_obj=logverifycomplex("ettest_serieslevel1fail3last", result_obj,null, error_obj, global_realerror);
+				callback(null, composite_obj);
 		  } 
 		);
-	}
+	};
 
 // /*===============================================*/  
 // /******* SECTION: group Level 0 			*********/
@@ -417,9 +418,9 @@ function ettest_grouplevel0(executeobject, callback)
 	],
 	function (err, res) {
 	  proxyprinttodiv('result from many array', res, 99);
-	  callback(null,res)
-	})
-}
+	  callback(null,res);
+	});
+};
 
 	// group, level 0, 1 test that passes
 	exports.ettest_grouplevel0pass1 = 
@@ -427,20 +428,19 @@ function ettest_grouplevel0(executeobject, callback)
 	function ettest_grouplevel0pass1(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="group"
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'          // used for server testing
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="group";
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';         // used for server testing
 
-		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
-		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
-		  executeobject.command.xrun={
-									  "executethis": 'test_return_noerror_result'
-											  }
+		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
+		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
+		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -449,11 +449,11 @@ function ettest_grouplevel0(executeobject, callback)
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_grouplevel0pass1", result_obj, result_assertion, error_obj, null);
+				var composite_obj=logverifycomplex("ettest_grouplevel0pass1", result_obj, result_assertion, error_obj, null);
 				proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj)
+				callback(null, composite_obj);
 		  })
-	}
+	};
 
 	// group, level 0, 3 tests that pass
 	exports.ettest_grouplevel0pass3 = 
@@ -461,17 +461,17 @@ function ettest_grouplevel0(executeobject, callback)
 	function ettest_grouplevel0pass3(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-			executeobject.command={},
-			executeobject.command.environment={},
-			executeobject.command.environment.run={}
+			executeobject.command={};
+			executeobject.command.environment={};
+			executeobject.command.environment.run={};
 		  }
-		  executeobject.command.environment.run.type="group"
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'          // used for server testing
+		  executeobject.command.environment.run.type="group";
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';          // used for server testing
 
-		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
-		  executeobject.serverfn="test_return_notfound_result"        
-		  var result_assertion = {"a":"b","env":executeobject.command.environment.platform}
+		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
+		  executeobject.serverfn="test_return_notfound_result";
+		  var result_assertion = {"a":"b","env":executeobject.command.environment.platform};
 			executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
@@ -480,9 +480,9 @@ function ettest_grouplevel0(executeobject, callback)
 
 		  var expectedresult = [result_assertion, 
 								result_assertion,
-								result_assertion]
+								result_assertion];
 										
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 									
@@ -490,11 +490,11 @@ function ettest_grouplevel0(executeobject, callback)
 				proxyprinttodiv('actual error', null, 99);
 				proxyprinttodiv('expected result', expectedresult, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
-				composite_obj=logverifycomplex("ettest_grouplevel0pass3", result_obj,expectedresult, error_obj, null);
-				callback(null, composite_obj)
+				var composite_obj=logverifycomplex("ettest_grouplevel0pass3", result_obj,expectedresult, error_obj, null);
+				callback(null, composite_obj);
 		  } 
 		);
-	}
+	};
 
 	// group, level 0, 3 tests: 1st passes, 2nd fails, 3rd passes
 	exports.ettest_grouplevel0fail3middle = 
@@ -502,15 +502,16 @@ function ettest_grouplevel0(executeobject, callback)
 	function ettest_grouplevel0fail3middle(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="group"
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="group";
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';
   
-		  executeobject.command.environment.processfn="execute_function"
-		  executeobject.serverfn="test_return_noerror_result"
+		  executeobject.command.environment.processfn="execute_function";
+		  executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_failnotfound_result'},
@@ -521,20 +522,19 @@ function ettest_grouplevel0(executeobject, callback)
 		  //var expectedresult2 = {"a":"b","env":executeobject.command.environment.platform}      
 		  //var expectedresult3 = {"a":"b","env":executeobject.command.environment.platform}	  
 			//var result_assertion = [expectedresult1, expectedresult2, expectedresult3]
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
-		   
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
 				proxyprinttodiv('expected result', global_resulttable_assertion2, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_failnotfound, 99);
 				
-				composite_obj=logverifycomplex("ettest_grouplevel0fail3middle", result_obj,global_resulttable_assertion2, error_obj, global_failnotfound);
-				callback(null, composite_obj)
+				var composite_obj=logverifycomplex("ettest_grouplevel0fail3middle", result_obj,global_resulttable_assertion2, error_obj, global_failnotfound);
+				callback(null, composite_obj);
 		  } 
 		);
-	}
+	};
 
 	// group, level 0, 3 tests: 1st passes, 2nd passes, 3rd fails
 	exports.ettest_grouplevel0fail3last = 
@@ -542,22 +542,23 @@ function ettest_grouplevel0(executeobject, callback)
 	function ettest_grouplevel0fail3last(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="group"
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="group";
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';
   
-		  executeobject.command.environment.processfn="execute_function"
-		  executeobject.serverfn="test_return_noerror_result"
+		  executeobject.command.environment.processfn="execute_function";
+		  executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_failnotfound_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 		   
@@ -566,11 +567,11 @@ function ettest_grouplevel0(executeobject, callback)
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_failnotfound, 99);
 				
-				composite_obj=logverifycomplex("ettest_grouplevel0fail3last", result_obj,global_resulttable_assertion2, error_obj, global_failnotfound);
-				callback(null, composite_obj)
+				var composite_obj=logverifycomplex("ettest_grouplevel0fail3last", result_obj,global_resulttable_assertion2, error_obj, global_failnotfound);
+				callback(null, composite_obj);
 		  } 
 		);
-	}
+	};
 
 // /*===============================================*/  
 // /******* SECTION: group Level 1 			*********/
@@ -591,9 +592,9 @@ function ettest_grouplevel1(executeobject, callback)
 	],
 	function (err, res) {
 	  proxyprinttodiv('result from many array', res, 99);
-	  callback(null,res)
-	})  
-}
+	  callback(null,res);
+	});
+};
 
 	// group, level 1, 1 test that passes
 	exports.ettest_grouplevel1pass1 = 
@@ -601,20 +602,19 @@ function ettest_grouplevel1(executeobject, callback)
 	function ettest_grouplevel1pass1(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="group"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          // used for server testing
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="group";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';          // used for server testing
 
-		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
-		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
-		  executeobject.command.xrun={
-									  "executethis": 'test_return_noerror_result'
-											  }
+		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
+		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
+		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -623,11 +623,11 @@ function ettest_grouplevel1(executeobject, callback)
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_grouplevel1pass1", result_obj, result_assertion, error_obj, null);
+				var composite_obj=logverifycomplex("ettest_grouplevel1pass1", result_obj, result_assertion, error_obj, null);
 				proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj)
-		  })
-	}
+				callback(null, composite_obj);
+		  });
+	};
 
 	// group, level 1, 3 tests that pass
 	exports.ettest_grouplevel1pass3 = 
@@ -640,30 +640,30 @@ function ettest_grouplevel1(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  executeobject.command.environment.run.type="group"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          // used for server testing
+		  executeobject.command.environment.run.type="group";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';          // used for server testing
 
-		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
-		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
+		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
+		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun=[{"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
-									  {"executethis": 'test_return_noerror_result'}]
+									  {"executethis": 'test_return_noerror_result'}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {          
-				var result={"a":"b", "env":executeobject.command.environment.platform};   
-				var result_assertion=[result, result, result]           
+				var result={"a":"b", "env":executeobject.command.environment.platform};
+				var result_assertion=[result, result, result];
 				proxyprinttodiv('expected error', null, 99);
 				proxyprinttodiv('actual error', error_obj, 99);
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_grouplevel1pass3", result_obj, result_assertion, error_obj, null);
-				callback(null, composite_obj)
-		  })
-	}
+				var composite_obj=logverifycomplex("ettest_grouplevel1pass3", result_obj, result_assertion, error_obj, null);
+				callback(null, composite_obj);
+		  });
+	};
 
 	// group, level 1, 3 tests: 1st passes, 2nd fails, 3rd passes
 	exports.ettest_grouplevel1fail3middle = 
@@ -671,35 +671,35 @@ function ettest_grouplevel1(executeobject, callback)
 	function ettest_grouplevel1fail3middle(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="group"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="group";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';
   
-		  executeobject.command.environment.processfn="execute_function"
-		  executeobject.serverfn="test_return_noerror_result"
+		  executeobject.command.environment.processfn="execute_function";
+		  executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_realerror_result'},
 									  {"executethis": 'test_return_noerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
-		   
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
 				proxyprinttodiv('expected result', global_resulttable_assertion2, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_realerror, 99);
 				
-				composite_obj=logverifycomplex("ettest_grouplevel1fail3middle", result_obj,global_resulttable_assertion2, error_obj, global_realerror);
-				callback(null, composite_obj)
+				var composite_obj=logverifycomplex("ettest_grouplevel1fail3middle", result_obj,global_resulttable_assertion2, error_obj, global_realerror);
+				callback(null, composite_obj);
 		  } 
 		);
-	}
+	};
 
 	// group, level 1, 3 tests: 1st passes, 2nd passes, 3rd fails
 	exports.ettest_grouplevel1fail3last = 
@@ -707,35 +707,35 @@ function ettest_grouplevel1(executeobject, callback)
 	function ettest_grouplevel1fail3last(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="group"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="group";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';
   
-		  executeobject.command.environment.processfn="execute_function"
-		  executeobject.serverfn="test_return_noerror_result"
+		  executeobject.command.environment.processfn="execute_function";
+		  executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_realerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
-		   
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
 				proxyprinttodiv('expected result', global_resulttable_assertion2, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_realerror, 99);
 				
 				composite_obj=logverifycomplex("ettest_grouplevel1fail3last", result_obj,global_resulttable_assertion2, error_obj, global_realerror);
-				callback(null, composite_obj)
+				callback(null, composite_obj);
 		  } 
 		);
-	}
+	};
 
 // /*===============================================*/  
 // /******* SECTION: waterfall Level 1 		*********/
@@ -756,9 +756,9 @@ function ettest_waterfalllevel1(executeobject, callback)
 	],
 	function (err, res) {
 	  proxyprinttodiv('result from many array', res, 99);
-	  callback(null,res)
-	})      
-}
+	  callback(null,res);
+	});
+};
 
 	// waterfall, level 1, 1 test that passes
 	exports.ettest_waterfalllevel1pass1 = 
@@ -766,22 +766,21 @@ function ettest_waterfalllevel1(executeobject, callback)
 	function ettest_waterfalllevel1pass1(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="waterfall"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          // used for server testing
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="waterfall";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';          // used for server testing
 
-		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
-		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
-		  executeobject.command.xrun={
-									  "executethis": 'test_return_noerror_result'
-											  }
+		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
+		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
+		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
-		  {        
+		  {
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
 				proxyprinttodiv('expected error', null, 99);
 				proxyprinttodiv('actual error', error_obj, 99);
@@ -790,9 +789,9 @@ function ettest_waterfalllevel1(executeobject, callback)
 
 				composite_obj=logverifycomplex("ettest_waterfalllevel1pass1", result_obj, result_assertion, error_obj, null);
 				proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj)
-		  })
-	}
+				callback(null, composite_obj);
+		  });
+	};
 
 	// waterfall, level 1, 3 tests that pass
 	exports.ettest_waterfalllevel1pass3 = 
@@ -805,30 +804,29 @@ function ettest_waterfalllevel1(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  executeobject.command.environment.run.type="waterfall"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          // used for server testing
+		  executeobject.command.environment.run.type="waterfall";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';          // used for server testing
 
-		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
-		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
+		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
+		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun=[{"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
-									  {"executethis": 'test_return_noerror_result'}]
+									  {"executethis": 'test_return_noerror_result'}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {          
-				var result={"a":"b", "env":executeobject.command.environment.platform};   
-				var result_assertion=result          
+				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};
 				proxyprinttodiv('expected error', null, 99);
 				proxyprinttodiv('actual error', error_obj, 99);
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_waterfalllevel1pass3", result_obj, result_assertion, error_obj, null);
-				callback(null, composite_obj)
-		  })
-	}
+				var composite_obj=logverifycomplex("ettest_waterfalllevel1pass3", result_obj, result_assertion, error_obj, null);
+				callback(null, composite_obj);
+		  });
+	};
 
 	// waterfall, level 1, 3 tests: 1st fails, 2nd passes, 3rd fails
 	exports.ettest_waterfalllevel1fail3middle = 
@@ -836,35 +834,35 @@ function ettest_waterfalllevel1(executeobject, callback)
 	function ettest_waterfalllevel1fail3middle(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="waterfall"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="waterfall";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';
   
-		  executeobject.command.environment.processfn="execute_function"
-		  executeobject.serverfn="test_return_noerror_result"
+		  executeobject.command.environment.processfn="execute_function";
+		  executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_failnotfound_result'},
 									  {"executethis": 'test_return_noerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
-		   
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
 				proxyprinttodiv('expected result', null, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_failnotfound, 99);
 				
-				composite_obj=logverifycomplex("ettest_waterfalllevel1fail3middle", result_obj,null, error_obj, global_failnotfound);
-				callback(null, composite_obj)
+				var composite_obj=logverifycomplex("ettest_waterfalllevel1fail3middle", result_obj,null, error_obj, global_failnotfound);
+				callback(null, composite_obj);
 		  } 
 		);
-	}
+	};
 
 	// waterfall, level 1, 3 tests: 1st passes, 2nd passes, 3rd fails
 	exports.ettest_waterfalllevel1fail3last = 
@@ -872,35 +870,35 @@ function ettest_waterfalllevel1(executeobject, callback)
 	function ettest_waterfalllevel1fail3last(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="waterfall"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="waterfall";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';
   
-		  executeobject.command.environment.processfn="execute_function"
-		  executeobject.serverfn="test_return_noerror_result"
+		  executeobject.command.environment.processfn="execute_function";
+		  executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_realerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
-		   
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
 				proxyprinttodiv('expected result', null, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_realerror, 99);
 				
-				composite_obj=logverifycomplex("ettest_waterfalllevel1fail3last", result_obj,null, error_obj, global_realerror);
-				callback(null, composite_obj)
+				var composite_obj=logverifycomplex("ettest_waterfalllevel1fail3last", result_obj,null, error_obj, global_realerror);
+				callback(null, composite_obj);
 		  } 
 		);
-	}
+	};
 
 // /*===============================================*/  
 // /******* SECTION: runfirstone Level 1 	*********/
@@ -921,9 +919,9 @@ function ettest_runfirstonelevel1(executeobject, callback)
 	],
 	function (err, res) {
 	  proxyprinttodiv('result from many array', res, 99);
-	  callback(null,res)
-	})       
-}
+	  callback(null,res);
+	});
+};
 
 	// runfirstone, level 1, 1 test that passes
 	exports.ettest_runfirstonelevel1pass1 = 
@@ -931,20 +929,19 @@ function ettest_runfirstonelevel1(executeobject, callback)
 	function ettest_runfirstonelevel1pass1(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="runfirstone"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          // used for server testing
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="runfirstone";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';          // used for server testing
 
-		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
-		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
-		  executeobject.command.xrun={
-									  "executethis": 'test_return_noerror_result'
-											  }
+		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
+		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
+		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -953,11 +950,11 @@ function ettest_runfirstonelevel1(executeobject, callback)
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_runfirstonelevel1pass1", result_obj, result_assertion, error_obj, null);
+				var composite_obj=logverifycomplex("ettest_runfirstonelevel1pass1", result_obj, result_assertion, error_obj, null);
 				proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj)
+				callback(null, composite_obj);
 		  })
-	}
+	};
 
 	// runfirstone, level 1, 3 tests that pass
 	exports.ettest_runfirstonelevel1pass3 = 
@@ -970,30 +967,29 @@ function ettest_runfirstonelevel1(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  executeobject.command.environment.run.type="runfirstone"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          // used for server testing
+		  executeobject.command.environment.run.type="runfirstone";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';          // used for server testing
 
-		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
-		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
+		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
+		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun=[{"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
-									  {"executethis": 'test_return_noerror_result'}]
+									  {"executethis": 'test_return_noerror_result'}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {          
-				var result={"a":"b", "env":executeobject.command.environment.platform};   
-				var result_assertion=result           
+				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};
 				proxyprinttodiv('expected error', null, 99);
 				proxyprinttodiv('actual error', error_obj, 99);
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_runfirstonelevel1pass3", result_obj, result_assertion, error_obj, null);
+				var composite_obj=logverifycomplex("ettest_runfirstonelevel1pass3", result_obj, result_assertion, error_obj, null);
 				callback(null, composite_obj)
 		  })
-	}
+	};
 
 	// runfirstone, level 1, 3 tests: 1st passes, 2nd fails, 3rd passes
 	exports.ettest_runfirstonelevel1fail3middle = 
@@ -1001,36 +997,36 @@ function ettest_runfirstonelevel1(executeobject, callback)
 	function ettest_runfirstonelevel1fail3middle(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="runfirstone"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="runfirstone";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';
   
-		  executeobject.command.environment.processfn="execute_function"
-		  executeobject.serverfn="test_return_noerror_result2"
+		  executeobject.command.environment.processfn="execute_function";
+		  executeobject.serverfn="test_return_noerror_result2";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_realerror_result'},
 									  {"executethis": 'test_return_failnotfound_result'},
 									  {"executethis": 'test_return_noerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
-				var result={"a":"b", "env":executeobject.command.environment.platform};   
-				var result_assertion=result
+				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
 				proxyprinttodiv('expected result', result_assertion, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', null, 99);
 				
-				composite_obj=logverifycomplex("ettest_runfirstonelevel1fail3middle", result_obj,result_assertion, error_obj, null);
-				callback(null, composite_obj)
+				var composite_obj=logverifycomplex("ettest_runfirstonelevel1fail3middle", result_obj,result_assertion, error_obj, null);
+				callback(null, composite_obj);
 		  } 
 		);
-	}
+	};
 
 	// runfirstone, level 1, 1st passes, 2nd passes, 3rd fails
 	exports.ettest_runfirstonelevel1fail3last = 
@@ -1038,35 +1034,35 @@ function ettest_runfirstonelevel1(executeobject, callback)
 	function ettest_runfirstonelevel1fail3last(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="runfirstone"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="runfirstone";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';
   
-		  executeobject.command.environment.processfn="execute_function"
-		  executeobject.serverfn="test_return_noerror_result"
+		  executeobject.command.environment.processfn="execute_function";
+		  executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_failnotfound_result'},
 									  {"executethis": 'test_return_failnotfound_result'},
 									  {"executethis": 'test_return_realerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
-		   
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
 				proxyprinttodiv('expected result', null, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_realerror, 99);
 				
-				composite_obj=logverifycomplex("ettest_runfirstonelevel1fail3last", result_obj,null, error_obj, global_realerror);
-				callback(null, composite_obj)
+				var composite_obj=logverifycomplex("ettest_runfirstonelevel1fail3last", result_obj,null, error_obj, global_realerror);
+				callback(null, composite_obj);
 		  } 
 		);
-	}
+	};
 
 // /*===============================================*/  
 // /******* SECTION: runfirstwaterfall Level 1 	*********/
@@ -1087,9 +1083,9 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 	],
 	function (err, res) {
 	  proxyprinttodiv('result from many array', res, 99);
-	  callback(null,res)
-	})    
-}
+	  callback(null,res);
+	});
+};
 
 	// runfirstwaterfall, level 1, 1 test that passes
 	exports.ettest_runfirstwaterfalllevel1pass1 = 
@@ -1097,30 +1093,31 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 	function ettest_runfirstwaterfalllevel1pass1(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="runfirstonewaterfall"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="runfirstonewaterfall";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';
   
-		  executeobject.command.environment.processfn="execute_function"
-		  executeobject.serverfn="test_return_noerror_result"
-		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'}  
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  executeobject.command.environment.processfn="execute_function";
+		  executeobject.serverfn="test_return_noerror_result";
+		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'};
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
-				var result={"a":"b","env":"local"}
+				var result={"a":"b","env":"local"};
 				proxyprinttodiv('actual result', result_obj, 99);                         
 				proxyprinttodiv('expected result', result, 99);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', null, 99);
 				
-				composite_obj=logverifycomplex("ettest_runfirstwaterfalllevel1pass1", result_obj,result, error_obj, null);
-				callback(null, composite_obj)
+				var composite_obj=logverifycomplex("ettest_runfirstwaterfalllevel1pass1", result_obj,result, error_obj, null);
+				callback(null, composite_obj);
 		  } 
 		);
-	}
+	};
 
 	// runfirstonewaterfall, level 1, 3 tests that pass
 	exports.ettest_runfirstwaterfalllevel1pass3 = 
@@ -1133,30 +1130,29 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  executeobject.command.environment.run.type="runfirstonewaterfall"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          // used for server testing
+		  executeobject.command.environment.run.type="runfirstonewaterfall";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';          // used for server testing
 
-		  executeobject.command.environment.processfn="execute_function"          // what function handles functions
-		  executeobject.serverfn="test_return_notfound_result"        // so we can test fail local, pass server on same machine
+		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
+		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun=[{"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
-									  {"executethis": 'test_return_noerror_result'}]
+									  {"executethis": 'test_return_noerror_result'}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {          
-				var result={"a":"b", "env":executeobject.command.environment.platform};   
-				var result_assertion=result           
+				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};
 				proxyprinttodiv('expected error', null, 99);
 				proxyprinttodiv('actual error', error_obj, 99);
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_runfirstwaterfalllevel1pass3", result_obj, result_assertion, error_obj, null);
-				callback(null, composite_obj)
+				var composite_obj=logverifycomplex("ettest_runfirstwaterfalllevel1pass3", result_obj, result_assertion, error_obj, null);
+				callback(null, composite_obj);
 		  })
-	}
+	};
 
 	// runfirstonewaterfall, level 1, 3 tests: 1st passes, 2nd fails, 3rd passes
 	exports.ettest_runfirstwaterfalllevel1fail3middle = 
@@ -1164,36 +1160,36 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 	function ettest_runfirstwaterfalllevel1fail3middle(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="runfirstonewaterfall"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="runfirstonewaterfall";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';
   
-		  executeobject.command.environment.processfn="execute_function"
-		  executeobject.serverfn="test_return_noerror_result"
+		  executeobject.command.environment.processfn="execute_function";
+		  executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_realerror_result'},
 									  {"executethis": 'test_return_failnotfound_result'},
 									  {"executethis": 'test_return_noerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
-				var result={"a":"b", "env":executeobject.command.environment.platform};   
-				var result_assertion=result
+				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
 				proxyprinttodiv('expected result', result_assertion, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', null, 99);
 				
-				composite_obj=logverifycomplex("ettest_runfirstwaterfalllevel1fail3middle", result_obj,result_assertion, error_obj, null);
-				callback(null, composite_obj)
+				var composite_obj=logverifycomplex("ettest_runfirstwaterfalllevel1fail3middle", result_obj,result_assertion, error_obj, null);
+				callback(null, composite_obj);
 		  } 
 		);
-	}
+	};
 
 	// runfirstonewaterfall, level 1, 3 tests: 1st passes, 2nd passes, 3rd fails
 	exports.ettest_runfirstwaterfalllevel1fail3last = 
@@ -1201,22 +1197,23 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 	function ettest_runfirstwaterfalllevel1fail3last(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="runfirstonewaterfall"
-		  executeobject.command.environment.run.executelevel=1
-		  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="runfirstonewaterfall";
+		  executeobject.command.environment.run.executelevel=1;
+		  executeobject.command.environment.platform='local';
   
-		  executeobject.command.environment.processfn="execute_function"
-		  executeobject.serverfn="test_return_noerror_result"
+		  executeobject.command.environment.processfn="execute_function";
+		  executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_failnotfound_result'},
 									  {"executethis": 'test_return_failnotfound_result'},
 									  {"executethis": 'test_return_realerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
@@ -1224,11 +1221,11 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_realerror, 99);
 				
-				composite_obj=logverifycomplex("ettest_runfirstwaterfalllevel1fail3last", result_obj,null, error_obj, global_realerror);
-				callback(null, composite_obj)
+				var composite_obj=logverifycomplex("ettest_runfirstwaterfalllevel1fail3last", result_obj,null, error_obj, global_realerror);
+				callback(null, composite_obj);
 		  } 
 		);
-	}
+	};
 
 // /*===============================================*/  
 // /******* SECTION: what to do 	*********/
@@ -1248,9 +1245,9 @@ function ettest_whattodo(executeobject, callback)
 	],
 	function (err, res) {
 	  proxyprinttodiv('result from many array', res, 99);
-	  callback(null,res)
-	})   
-}
+	  callback(null,res);
+	});
+};
 
 	// uses create_what_to_do_list and relies on execute_function
 	exports.ettest_series1passef2 = 
@@ -1258,21 +1255,20 @@ function ettest_whattodo(executeobject, callback)
 	function ettest_series1passef2(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="series";
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';
     
   
-		  executeobject.command.environment.processfn="execute_function"          
-		  executeobject.serverfn="test_return_noerror_result2"        
-		  executeobject.command.xrun={
-									  "executethis": 'test_return_noerror_result'
-											  }
+		  executeobject.command.environment.processfn="execute_function";
+		  executeobject.serverfn="test_return_noerror_result2";
+		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -1281,11 +1277,11 @@ function ettest_whattodo(executeobject, callback)
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_series1passef2", result_obj, result_assertion, error_obj, null);
+				var composite_obj=logverifycomplex("ettest_series1passef2", result_obj, result_assertion, error_obj, null);
 				proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj)
-		  })
-	}
+				callback(null, composite_obj);
+		  });
+	};
 
 	// uses create_what_to_do_list and relies on execute_parameter
 	exports.ettest_series1passep2 = 
@@ -1293,23 +1289,21 @@ function ettest_whattodo(executeobject, callback)
 	function ettest_series1passep2(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="series";
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';
  
 																	   // the function as if it was a name of a function
 
-		  executeobject.command.environment.processfn="create_what_to_do_list"         
-		  executeobject.serverfn="test_return_noerror_result2"        
-		  executeobject.command.xrun={
-									  "executethis": 'a',
-													  "a"          : "test_return_noerror_result"
-									 }
+		  executeobject.command.environment.processfn="create_what_to_do_list";
+		  executeobject.serverfn="test_return_noerror_result2";
+		  executeobject.command.xrun={"executethis": 'a', "a": "test_return_noerror_result"};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -1318,11 +1312,11 @@ function ettest_whattodo(executeobject, callback)
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_series1passep2", result_obj, result_assertion, error_obj, null);
+				var composite_obj=logverifycomplex("ettest_series1passep2", result_obj, result_assertion, error_obj, null);
 				proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj)
-		  })
-	}
+				callback(null, composite_obj);
+		  });
+	};
 
 	// simulate server call. if platform = server then when in fn1 go to fn2
 	exports.ettest_series_S_1pass  = 
@@ -1330,34 +1324,30 @@ function ettest_whattodo(executeobject, callback)
 	function ettest_series_S_1pass(executeobject, callback) 
 	{
 	   if (!executeobject.command) {
-	   executeobject.command={},
-	   executeobject.command.environment={},
-	   executeobject.command.environment.run={}}
-	   executeobject.command.environment.run.type="series"
-	   executeobject.command.environment.run.executelevel=0
-	   executeobject.command.environment.platform='server'   // within test this will redirect to second function       
+           executeobject.command={};
+           executeobject.command.environment={};
+           executeobject.command.environment.run={};
+       }
+	   executeobject.command.environment.run.type="series";
+	   executeobject.command.environment.run.executelevel=0;
+	   executeobject.command.environment.platform='server';   // within test this will redirect to second function
   
-	   executeobject.command.environment.processfn="execute_function"
-	   executeobject.serverfn="test_return_noerror_result"  // this function should execute
-	   executeobject.command.xrun={"executethis": 'test_return_realerror_result'}
+	   executeobject.command.environment.processfn="execute_function";
+	   executeobject.serverfn="test_return_noerror_result"; // this function should execute
+	   executeobject.command.xrun={"executethis": 'test_return_realerror_result'};
 
-	   var result_assertion = {"a":"b","env":executeobject.command.environment.platform}    
-	   var expectedresult = result_assertion
-	   var etEnvironment = new drienvironment(executeobject.command.environment)
+	   var expectedresult = {"a":"b","env":executeobject.command.environment.platform};
+	   var etEnvironment = new drienvironment(executeobject.command.environment);
 	   etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 	   {
-								
 			 proxyprinttodiv('expected error', null, 99);
 			 proxyprinttodiv('actual error', null, 99);
 			 proxyprinttodiv('expected result', expectedresult, 99);
 			 proxyprinttodiv('actual result', result_obj, 99);
-			 composite_obj=logverifycomplex("ettest_series_S_1pass", result_obj,expectedresult, error_obj, null);
-			 callback(null, composite_obj)
-	   } 
-	 );
-	}
-
-
+			 var composite_obj=logverifycomplex("ettest_series_S_1pass", result_obj,expectedresult, error_obj, null);
+			 callback(null, composite_obj);
+	   });
+	};
 
 // /*===============================================*/  
 // /******* SECTION: how to do 	*********/
@@ -1382,35 +1372,35 @@ function ettest_howtodo(executeobject, callback)
 	  proxyprinttodiv('result from many array', res, 99);
 	  callback(null,res)
 	})   
-}
+};
 
 	exports.ettest_runfirstwaterfall3pass = 
 	ettest_runfirstwaterfall3pass = 
 	function ettest_runfirstwaterfall3pass(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'          
-		  executeobject.serverfn={"executethis": "test_return_noerror_result"}
-		  executeobject.command.xrun=[
-										{"executethis": "test_return_realerror_result"}]
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';
+		  executeobject.serverfn={"executethis": "test_return_noerror_result"};
+		  executeobject.command.xrun=[{"executethis": "test_return_realerror_result"}];
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
-			var result_assertion={"a":"b", "env":"server"}; 
+			    var result_assertion={"a":"b", "env":"server"};
 				proxyprinttodiv('actual result', result_obj, 99, true, true);                         
 				proxyprinttodiv('expected result', result_assertion, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99, true);
 				proxyprinttodiv('expected error', null, 99, true);
 				
-				composite_obj=logverifycomplex("ettest_runfirstwaterfall3pass", result_obj,result_assertion, error_obj, null);
-				callback(null, composite_obj)
+				var composite_obj=logverifycomplex("ettest_runfirstwaterfall3pass", result_obj,result_assertion, error_obj, null);
+				callback(null, composite_obj);
 		  } 
 		);
-	}
+	};
 
 
 	exports.ettest_serieslevel0pass1server = 
@@ -1423,18 +1413,18 @@ function ettest_howtodo(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'
+		  executeobject.command.environment.run.type="series";
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';
 
 		  //executeobject.command.environment.processfn="execute_function"
 		  //executeobject.serverfn="test_return_noerror_result2"
 		  executeobject.command.xrun=[{
 									"executethis": 'test_return_realerror_result',
 									"serverfn": "test_return_noerror_result2"
-									}]
+									}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				//var result_assertion=[result, result, result]           
@@ -1445,16 +1435,9 @@ function ettest_howtodo(executeobject, callback)
 				proxyprinttodiv('actual result', result_obj, 99);
 
 				composite_obj=logverifycomplex("ettest_serieslevel0pass1server", result_obj, result_assertion, error_obj, null);
-				callback(null, composite_obj)
-		  })
-	}
-
-
-
-
-
-
-
+				callback(null, composite_obj);
+		  });
+	};
 
 	// gets stuck in infinite loop
 	//series
@@ -1468,9 +1451,9 @@ function ettest_howtodo(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'
+		  executeobject.command.environment.run.type="series";
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';
 
 		  //executeobject.command.environment.processfn="execute_function"
 		  //executeobject.serverfn="test_return_noerror_result2"
@@ -1485,9 +1468,9 @@ function ettest_howtodo(executeobject, callback)
 									{
 									"executethis": 'test_return_failnotfound_result',
 									"serverfn": "test_return_noerror_result4"
-									}]
+									}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				//var result_assertion=[result, result, result]           
@@ -1497,10 +1480,10 @@ function ettest_howtodo(executeobject, callback)
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_serieslevel0pass3server", result_obj, result_assertion, error_obj, null);
-				callback(null, composite_obj)
-		  })
-	}
+				var composite_obj=logverifycomplex("ettest_serieslevel0pass3server", result_obj, result_assertion, error_obj, null);
+				callback(null, composite_obj);
+		  });
+	};
 
 	//group
 	exports.ettest_grouplevel0pass3server = 
@@ -1513,9 +1496,9 @@ function ettest_howtodo(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  executeobject.command.environment.run.type="group"
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'
+		  executeobject.command.environment.run.type="group";
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';
 
 		  //executeobject.command.environment.processfn="execute_function"
 		  //executeobject.serverfn="test_return_noerror_result2"
@@ -1530,9 +1513,9 @@ function ettest_howtodo(executeobject, callback)
 									{
 									"executethis": 'test_return_noerror_result4',
 									"serverfn": "test_return_noerror_result5"
-									}]
+									}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				//var result_assertion=[result, result, result]           
@@ -1542,10 +1525,10 @@ function ettest_howtodo(executeobject, callback)
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_grouplevel0pass3server", result_obj, result_assertion, error_obj, null);
-				callback(null, composite_obj)
-		  })
-	}
+				var composite_obj=logverifycomplex("ettest_grouplevel0pass3server", result_obj, result_assertion, error_obj, null);
+				callback(null, composite_obj);
+		  });
+	};
 
 		//group
 	exports.ettest_grouplevel0pass1server = 
@@ -1558,9 +1541,9 @@ function ettest_howtodo(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  executeobject.command.environment.run.type="group"
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'
+		  executeobject.command.environment.run.type="group";
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';
 
 		  //executeobject.command.environment.processfn="execute_function"
 		  //executeobject.serverfn="test_return_noerror_result2"
@@ -1575,9 +1558,9 @@ function ettest_howtodo(executeobject, callback)
 									{
 									"executethis": 'test_return_noerror_result5',
 									"serverfn": "test_return_noerror_result6"
-									}]
+									}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				//var result_assertion=[result, result, result]           
@@ -1587,10 +1570,10 @@ function ettest_howtodo(executeobject, callback)
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_grouplevel0pass1server", result_obj, result_assertion, error_obj, null);
-				callback(null, composite_obj)
-		  })
-	}
+				var composite_obj=logverifycomplex("ettest_grouplevel0pass1server", result_obj, result_assertion, error_obj, null);
+				callback(null, composite_obj);
+		  });
+	};
 
 	// test executegetwid from the inside of howtodolist and whattodolist
 	// create a wid called callpassfunction ... this wid, if called (i.e. et:callpassfunction) will execute "test_return_noerror_result" 
@@ -1612,21 +1595,20 @@ function ettest_howtodo(executeobject, callback)
 
 			if (!executeobject.command) 
 			{
-			  executeobject.command={},
-			  executeobject.command.environment={},
-			  executeobject.command.environment.run={}}
-			  executeobject.command.environment.run.type="series"
-			  executeobject.command.environment.run.executelevel=0
-			  executeobject.command.environment.platform='local'
+                  executeobject.command={};
+                  executeobject.command.environment={};
+                  executeobject.command.environment.run={};
+            }
+			  executeobject.command.environment.run.type="series";
+			  executeobject.command.environment.run.executelevel=0;
+			  executeobject.command.environment.platform='local';
    
   
 			  //executeobject.command.environment.processfn="execute_function"          
-			  executeobject.serverfn="test_return_noerror_result2"        
-			  executeobject.command.xrun={
-										  "executethis": 'callpassfunction'
-												  }
+			  executeobject.serverfn="test_return_noerror_result2";
+			  executeobject.command.xrun={"executethis": 'callpassfunction'};
 
-			  var etEnvironment = new drienvironment(executeobject.command.environment)
+			  var etEnvironment = new drienvironment(executeobject.command.environment);
 			  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 			  {        
 					var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -1635,13 +1617,13 @@ function ettest_howtodo(executeobject, callback)
 					proxyprinttodiv('expected result', result_assertion, 99);
 					proxyprinttodiv('actual result', result_obj, 99);
 
-					composite_obj=logverifycomplex("ettest_series1passnormalgw", result_obj, result_assertion, error_obj, null);
+					var composite_obj=logverifycomplex("ettest_series1passnormalgw", result_obj, result_assertion, error_obj, null);
 					proxyprinttodiv('composite_obj', composite_obj, 99);
-					callback(null, composite_obj)
-			  })
+					callback(null, composite_obj);
+			  });
 		}
 	  );
-	}
+	};
 
 // /*===============================================*/  
 // /******* SECTION: misc series LEVEL 1 	*********/
@@ -1660,9 +1642,9 @@ function ettest_executemisc(executeobject, callback)
 	],
 	function (err, res) {
 		proxyprinttodiv('result from many array', res, 99);
-		callback(null,res)
+		callback(null,res);
 	})     
-}
+};
 
 	// testing executefn by itself
 	exports.ettest_series1passef = 
@@ -1670,21 +1652,20 @@ function ettest_executemisc(executeobject, callback)
 	function ettest_series1passef(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="series";
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';
     
   
-		  executeobject.command.environment.processfn="execute_function"          
-		  executeobject.serverfn="test_return_noerror_result2"        
-		  executeobject.command.xrun={
-									  "executethis": 'test_return_noerror_result'
-											  }
+		  executeobject.command.environment.processfn="execute_function";
+		  executeobject.serverfn="test_return_noerror_result2";
+		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -1693,11 +1674,11 @@ function ettest_executemisc(executeobject, callback)
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_series1passef", result_obj, result_assertion, error_obj, null);
+				var composite_obj=logverifycomplex("ettest_series1passef", result_obj, result_assertion, error_obj, null);
 				proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj)
-		  })
-	}
+				callback(null, composite_obj);
+		  });
+	};
 
 	// test of execute parameter
 	exports.ettest_series1passep = 
@@ -1705,23 +1686,21 @@ function ettest_executemisc(executeobject, callback)
 	function ettest_series1passep(executeobject, callback) 
 	{
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="series";
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';
  
 																	   // the function as if it was a name of a function
 
-		  executeobject.command.environment.processfn="execute_parameter"          
-		  executeobject.serverfn="test_return_noerror_result2"        
-		  executeobject.command.xrun={
-									  "executethis": 'a',
-													  "a"          : "test_return_noerror_result"
-									 }
+		  executeobject.command.environment.processfn="execute_parameter";
+		  executeobject.serverfn="test_return_noerror_result2";
+		  executeobject.command.xrun={"executethis": 'a', "a": "test_return_noerror_result"};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -1730,11 +1709,11 @@ function ettest_executemisc(executeobject, callback)
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_series1passep", result_obj, result_assertion, error_obj, null);
+				var composite_obj=logverifycomplex("ettest_series1passep", result_obj, result_assertion, error_obj, null);
 				proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj)
-		  })
-	}
+				callback(null, composite_obj);
+		  });
+	};
 
 	// test of executegetwid -- save a wid then execute it
 	exports.ettest_series1passegw = 
@@ -1750,21 +1729,20 @@ function ettest_executemisc(executeobject, callback)
 				function (err,res) {
 
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="series";
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';
 	  
   
-		  executeobject.command.environment.processfn="execute_get_wid"          
-		  executeobject.serverfn="test_return_noerror_result2"        
-		  executeobject.command.xrun={
-									  "executethis": 'callpassfunction'
-											  }
+		  executeobject.command.environment.processfn="execute_get_wid";
+		  executeobject.serverfn="test_return_noerror_result2";
+		  executeobject.command.xrun={"executethis": 'callpassfunction'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -1773,13 +1751,13 @@ function ettest_executemisc(executeobject, callback)
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_series1passegw", result_obj, result_assertion, error_obj, null);
+				var composite_obj=logverifycomplex("ettest_series1passegw", result_obj, result_assertion, error_obj, null);
 				proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj)
-		  })
+				callback(null, composite_obj);
+		  });
 		}
 	  );
-	}
+	};
 
 	// test of executegetwid -- save a wid then execute it
 	exports.ettest_series1passegw2 = 
@@ -1795,21 +1773,20 @@ function ettest_executemisc(executeobject, callback)
 				function (err,res) {
 
 		  if (!executeobject.command) {
-		  executeobject.command={},
-		  executeobject.command.environment={},
-		  executeobject.command.environment.run={}}
-		  executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=0
-		  executeobject.command.environment.platform='local'
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="series";
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';
 	  
   
-		  executeobject.command.environment.processfn="execute_get_wid"          
-		  executeobject.serverfn="test_return_noerror_result2"        
-		  executeobject.command.xrun={
-									  "executethis": 'callpassfunction'
-											  }
+		  executeobject.command.environment.processfn="execute_get_wid";
+		  executeobject.serverfn="test_return_noerror_result2";
+		  executeobject.command.xrun={"executethis": 'callpassfunction'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -1818,13 +1795,13 @@ function ettest_executemisc(executeobject, callback)
 				proxyprinttodiv('expected result', result_assertion, 99);
 				proxyprinttodiv('actual result', result_obj, 99);
 
-				composite_obj=logverifycomplex("ettest_series1pass", result_obj, result_assertion, error_obj, null);
+				var composite_obj=logverifycomplex("ettest_series1pass", result_obj, result_assertion, error_obj, null);
 				proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj)
-		  })
+				callback(null, composite_obj);
+		  });
 		}
 	  );
-	}
+	};
 
 exports.ettest_series1update1 = 
 ettest_series1update1 = 
@@ -1841,19 +1818,19 @@ function ettest_series1update1(executeobject, callback)
 
         if (!executeobject.command) 
         {
-            executeobject.command={},
-            executeobject.command.environment={},
-            executeobject.command.environment.run={}
+            executeobject.command={};
+            executeobject.command.environment={};
+            executeobject.command.environment.run={};
         }
-        executeobject.command.environment.run.type="series"
-        executeobject.command.environment.run.executelevel=0
-        executeobject.command.environment.platform='local'          // used for server testing
+        executeobject.command.environment.run.type="series";
+        executeobject.command.environment.run.executelevel=0;
+        executeobject.command.environment.platform='local';          // used for server testing
 
-        executeobject.command.environment.processfn="execute_function"          // what function handles functions
-        executeobject.serverfn={"executethis": 'callpassfunction'}        // so we can test fail local, pass server on same machine
-        executeobject.command.xrun={"executethis": 'test_return_failnotfound_result'}
+        executeobject.command.environment.processfn="execute_function";          // what function handles functions
+        executeobject.serverfn={"executethis": 'callpassfunction'};        // so we can test fail local, pass server on same machine
+        executeobject.command.xrun={"executethis": 'test_return_failnotfound_result'};
 
-        var etEnvironment = new drienvironment(executeobject.command.environment)
+        var etEnvironment = new drienvironment(executeobject.command.environment);
         etEnvironment.execute(executeobject, 
           function (error_obj, result_obj) 
           {        
@@ -1863,14 +1840,14 @@ function ettest_series1update1(executeobject, callback)
               proxyprinttodiv('expected result', result_assertion, 99);
               proxyprinttodiv('actual result', result_obj, 99);
 
-              composite_obj=logverifycomplex("ettest_series1update1", result_obj, result_assertion, error_obj, null);
+              var composite_obj=logverifycomplex("ettest_series1update1", result_obj, result_assertion, error_obj, null);
               proxyprinttodiv('composite_obj', composite_obj, 99);
-              callback(null, composite_obj)
+              callback(null, composite_obj);
           }
         );  
       }
     )
-}
+};
 
 // /*===============================================*/  
 // /******* SECTION: misc group LEVEL 0 	*********/
@@ -1882,23 +1859,23 @@ function ettest_group3failpassserver(executeobject, callback)
 {
     if (!executeobject.command) 
     {
-        executeobject.command={},
-        executeobject.command.environment={},
-        executeobject.command.environment.run={}
+        executeobject.command={};
+        executeobject.command.environment={};
+        executeobject.command.environment.run={};
     }
-    executeobject.command.environment.run.type="group"     // should default to group
-    executeobject.command.environment.run.executelevel=0
-    executeobject.command.environment.platform='local'          // used for server testing
+    executeobject.command.environment.run.type="group";     // should default to group
+    executeobject.command.environment.run.executelevel=0;
+    executeobject.command.environment.platform='local';          // used for server testing
 
-    executeobject.command.environment.processfn="execute_function"          // what function handles functions
-    executeobject.serverfn="test_return_noerror_result2"        
+    executeobject.command.environment.processfn="execute_function";          // what function handles functions
+    executeobject.serverfn="test_return_noerror_result2";
     executeobject.command.xrun=[
                       {"executethis": 'test_return_noerror_result', 'serverfn':'test test_return_realerror_result2'},
                       {"executethis": 'test_return_notfound_result', 'serverfn':'test_return_noerror_result2'},
                       {"executethis": 'test_return_noerror_result2', 'serverfn':'test test_return_failnotfound_result2'}
                       ]; 
 
-    var etEnvironment = new drienvironment(executeobject.command.environment)
+    var etEnvironment = new drienvironment(executeobject.command.environment);
     etEnvironment.execute(executeobject, function (error_obj, result_obj) 
     {        
         var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -1909,9 +1886,9 @@ function ettest_group3failpassserver(executeobject, callback)
 
         composite_obj=logverifycomplex("ettest_series1pass", result_obj, result_assertion, error_obj, null);
         proxyprinttodiv('composite_obj', composite_obj, 99);
-        callback(null, composite_obj)
-    })
-}
+        callback(null, composite_obj);
+    });
+};
 
 
 // /*===============================================*/  
@@ -1931,9 +1908,9 @@ function ettest_nestedtestslevel1(executeobject, callback)
 	],
 	function (err, res) {
 	  proxyprinttodiv('result from many array', res, 99);
-	  callback(null,res)
-	}) 
-}
+	  callback(null,res);
+	});
+};
 
 
 	 //this test calls a, and a is an execution object with xrun = [noerror,noerror,noerror]
@@ -1942,15 +1919,16 @@ function ettest_nestedtestslevel1(executeobject, callback)
 	 function ettest_nestedtestslevel1pass1(executeobject, callback) 
 	 {		
 	 	  if (!executeobject.command) {
-	 	  executeobject.command={},
-	 	  executeobject.command.environment={},
-	 	  executeobject.command.environment.run={}}
-	 	  executeobject.command.environment.run.type="series"
-	 	  executeobject.command.environment.run.executelevel=1
-	 	  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+	 	  executeobject.command.environment.run.type="series";
+	 	  executeobject.command.environment.run.executelevel=1;
+	 	  executeobject.command.environment.platform='local';
   
-	 	  executeobject.command.environment.processfn="execute_parameter"
-	 	  //executeobject.serverfn="test_return_noerror_result"
+	 	  executeobject.command.environment.processfn="execute_parameter";
+	 	  //executeobject.serverfn="test_return_noerror_result";
 	 	  executeobject.command.xrun=
 								[
 	 								{
@@ -1966,21 +1944,20 @@ function ettest_nestedtestslevel1(executeobject, callback)
 									}
 								]; 
 
-	 	  var etEnvironment = new drienvironment(executeobject.command.environment)
+	 	  var etEnvironment = new drienvironment(executeobject.command.environment);
 	 	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 	 	  {
-				var result = {"a":"b","env":"local"}
-				var result_assertion = result
+				var result_assertion = {"a":"b","env":"local"};
 	 			proxyprinttodiv('actual result', result_obj, 99, true);                         
 	 			proxyprinttodiv('expected result', result_assertion, 99, true);
 	 			proxyprinttodiv('actual error',error_obj, 99);
 	 			proxyprinttodiv('expected error', null, 99);
 				
-	 			composite_obj=logverifycomplex("ettest_nestedtestslevel1pass1", result_obj,result_assertion, error_obj, null);
-	 			callback(null, composite_obj)
+	 			var composite_obj=logverifycomplex("ettest_nestedtestslevel1pass1", result_obj,result_assertion, error_obj, null);
+	 			callback(null, composite_obj);
 	 	  } 
 	 	);
-	 }
+	 };
 	
 	//this test calls a, and a is an execution object with xrun = [noerror,noerror,noerror]
 	 exports.ettest_nestedtestslevel1pass3 = 
@@ -1988,47 +1965,44 @@ function ettest_nestedtestslevel1(executeobject, callback)
 	 function ettest_nestedtestslevel1pass3(executeobject, callback) 
 	 {		
 	 	  if (!executeobject.command) {
-	 	  executeobject.command={},
-	 	  executeobject.command.environment={},
-	 	  executeobject.command.environment.run={}}
-	 	  executeobject.command.environment.run.type="series"
-	 	  executeobject.command.environment.run.executelevel=1
-	 	  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+	 	  executeobject.command.environment.run.type="series";
+	 	  executeobject.command.environment.run.executelevel=1;
+	 	  executeobject.command.environment.platform='local';
   
-	 	  executeobject.command.environment.processfn="execute_parameter"
-	 	  //executeobject.serverfn="test_return_noerror_result"
+	 	  executeobject.command.environment.processfn="execute_parameter";
+	 	  //executeobject.serverfn="test_return_noerror_result";
 	 	  executeobject.command.xrun=
 								[
 	 								{
-
-										"command":
-											{
-											"xrun":
-												[
-													{"executethis":"test_return_noerror_result"},
-													{"executethis":"test_return_noerror_result"},
-													{"executethis":"test_return_noerror_result"}
-												]
-											}
-											
+										"command": {
+											"xrun": [
+                                                {"executethis":"test_return_noerror_result"},
+                                                {"executethis":"test_return_noerror_result"},
+                                                {"executethis":"test_return_noerror_result"}
+                                            ]
+                                        }
 									}
 	 							]; 
 
-	 	  var etEnvironment = new drienvironment(executeobject.command.environment)
+	 	  var etEnvironment = new drienvironment(executeobject.command.environment);
 	 	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 	 	  {
-				var result = {"a":"b","env":"local"}
-				var result_assertion = [result,result,result]
+				var result = {"a":"b","env":"local"};
+				var result_assertion = [result,result,result];
 	 			proxyprinttodiv('actual result', result_obj, 99, true);                         
 	 			proxyprinttodiv('expected result', result_assertion, 99, true);
 	 			proxyprinttodiv('actual error',error_obj, 99);
 	 			proxyprinttodiv('expected error', null, 99);
 				
 	 			composite_obj=logverifycomplex("ettest_nestedtestslevel1pass1", result_obj,result_assertion, error_obj, null);
-	 			callback(null, composite_obj)
+	 			callback(null, composite_obj);
 	 	  } 
 	 	);
-	 }
+	 };
 	 
 		 //this test calls a, and a is an execution object with xrun = [noerror,noerror,noerror]
 	 exports.ettest_nestedtestslevel1fail3middle = 
@@ -2036,33 +2010,30 @@ function ettest_nestedtestslevel1(executeobject, callback)
 	 function ettest_nestedtestslevel1fail3middle(executeobject, callback) 
 	 {		
 	 	  if (!executeobject.command) {
-	 	  executeobject.command={},
-	 	  executeobject.command.environment={},
-	 	  executeobject.command.environment.run={}}
-	 	  executeobject.command.environment.run.type="series"
-	 	  executeobject.command.environment.run.executelevel=1
-	 	  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+	 	  executeobject.command.environment.run.type="series";
+	 	  executeobject.command.environment.run.executelevel=1;
+	 	  executeobject.command.environment.platform='local';
   
-	 	  executeobject.command.environment.processfn="execute_parameter"
-	 	  executeobject.serverfn="test_return_noerror_result"
+	 	  executeobject.command.environment.processfn="execute_parameter";
+	 	  executeobject.serverfn="test_return_noerror_result";
 	 	  executeobject.command.xrun=
 								[
 	 								{
-
-										"command":
-											{
-											"xrun":
-												[
-													{"executethis":"test_return_noerror_result"},
-													{"executethis":"test_return_realerror_result"},
-													{"executethis":"test_return_noerror_result"}
-												]
-											}
-											
+										"command": {
+											"xrun": [
+                                                {"executethis":"test_return_noerror_result"},
+                                                {"executethis":"test_return_realerror_result"},
+                                                {"executethis":"test_return_noerror_result"}
+                                            ]
+                                        }
 									}
 	 							]; 
 
-	 	  var etEnvironment = new drienvironment(executeobject.command.environment)
+	 	  var etEnvironment = new drienvironment(executeobject.command.environment);
 	 	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 	 	  {
 	 			proxyprinttodiv('actual result', result_obj, 99, true);                         
@@ -2070,11 +2041,11 @@ function ettest_nestedtestslevel1(executeobject, callback)
 	 			proxyprinttodiv('actual error',error_obj, 99);
 	 			proxyprinttodiv('expected error', global_realerror, 99);
 				
-	 			composite_obj=logverifycomplex("ettest_nestedtestslevel1pass1", result_obj,null, error_obj, global_realerror);
-	 			callback(null, composite_obj)
+	 			var composite_obj=logverifycomplex("ettest_nestedtestslevel1pass1", result_obj,null, error_obj, global_realerror);
+	 			callback(null, composite_obj);
 	 	  } 
 	 	);
-	 }
+	 };
 	 
 	 		 //this test calls a, and a is an execution object with xrun = [noerror,noerror,noerror]
 	 exports.ettest_nestedtestslevel1fail3fail = 
@@ -2082,33 +2053,30 @@ function ettest_nestedtestslevel1(executeobject, callback)
 	 function ettest_nestedtestslevel1fail3fail(executeobject, callback) 
 	 {		
 	 	  if (!executeobject.command) {
-	 	  executeobject.command={},
-	 	  executeobject.command.environment={},
-	 	  executeobject.command.environment.run={}}
-	 	  executeobject.command.environment.run.type="series"
-	 	  executeobject.command.environment.run.executelevel=1
-	 	  executeobject.command.environment.platform='local'          
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+	 	  executeobject.command.environment.run.type="series";
+	 	  executeobject.command.environment.run.executelevel=1;
+	 	  executeobject.command.environment.platform='local';
   
-	 	  executeobject.command.environment.processfn="execute_parameter"
-	 	  executeobject.serverfn="test_return_noerror_result"
+	 	  executeobject.command.environment.processfn="execute_parameter";
+	 	  executeobject.serverfn="test_return_noerror_result";
 	 	  executeobject.command.xrun=
 								[
 	 								{
-
-										"command":
-											{
-											"xrun":
-												[
-													{"executethis":"test_return_noerror_result"},
-													{"executethis":"test_return_noerror_result"},
-													{"executethis":"test_return_realerror_result"}
-												]
-											}
-											
+										"command": {
+											"xrun": [
+                                                {"executethis":"test_return_noerror_result"},
+                                                {"executethis":"test_return_noerror_result"},
+                                                {"executethis":"test_return_realerror_result"}
+                                            ]
+                                        }
 									}
 	 							]; 
 
-	 	  var etEnvironment = new drienvironment(executeobject.command.environment)
+	 	  var etEnvironment = new drienvironment(executeobject.command.environment);
 	 	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 	 	  {
 	 			proxyprinttodiv('actual result', result_obj, 99, true);                         
@@ -2116,11 +2084,11 @@ function ettest_nestedtestslevel1(executeobject, callback)
 	 			proxyprinttodiv('actual error',error_obj, 99);
 	 			proxyprinttodiv('expected error', global_realerror, 99);
 				
-	 			composite_obj=logverifycomplex("ettest_nestedtestslevel1pass1", result_obj,null, error_obj, global_realerror);
-	 			callback(null, composite_obj)
+	 			var composite_obj=logverifycomplex("ettest_nestedtestslevel1pass1", result_obj,null, error_obj, global_realerror);
+	 			callback(null, composite_obj);
 	 	  } 
 	 	);
-	 }
+	 };
 	 
 // /*===============================================*/  
 // /******* SECTION: misc runfirst LEVEL 0 	*********/
@@ -2132,91 +2100,89 @@ ettest_runfirst3real =
 function ettest_runfirst3real(executeobject, callback) 
 {
       if (!executeobject.command) {
-      executeobject.command={},
-      executeobject.command.environment={},
-      executeobject.command.environment.run={}}
-      executeobject.command.environment.run.type="runfirstonewaterfall"
-      executeobject.command.environment.run.executelevel=0
-      executeobject.command.environment.platform='local'          
+          executeobject.command={};
+          executeobject.command.environment={};
+          executeobject.command.environment.run={};
+      }
+      executeobject.command.environment.run.type="runfirstonewaterfall";
+      executeobject.command.environment.run.executelevel=0;
+      executeobject.command.environment.platform='local';
   
-      executeobject.command.environment.processfn="execute_function"
-      executeobject.serverfn="test_return_noerror_result"
+      executeobject.command.environment.processfn="execute_function";
+      executeobject.serverfn="test_return_noerror_result";
       executeobject.command.xrun=[
                                   {"executethis": 'test_return_realerror_result'},
                                   {"executethis": 'test_return_notfound_result'},
                                   {"executethis": 'test_return_failnotfound_result'}
                                   ];  
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new drienvironment(executeobject.command.environment);
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
-       
             proxyprinttodiv('actual result', result_obj, 99, true);                         
             proxyprinttodiv('expected result', global_resulttable_assertion, 99);
             proxyprinttodiv('actual error',error_obj, 99);
             proxyprinttodiv('expected error', global_realerror, 99);
             
-            composite_obj=logverifycomplex("ettest_ne16", result_obj,global_resulttable_assertion, error_obj, global_realerror);
-            callback(null, composite_obj)
+            var composite_obj=logverifycomplex("ettest_ne16", result_obj,global_resulttable_assertion, error_obj, global_realerror);
+            callback(null, composite_obj);
       } 
     );
-}
+};
 
 // runfirstone, level 0, all pass locally
-exports.ettest_runfirst3pass_lvl1 = 
-ettest_runfirst3pass_lvl1 = 
-function ettest_runfirst3pass_lvl1(executeobject, callback) 
+exports.ettest_runfirst3pass_lvl1 = ettest_runfirst3pass_lvl1 = function ettest_runfirst3pass_lvl1(executeobject, callback)
 {
       if (!executeobject.command) {
-      executeobject.command={},
-      executeobject.command.environment={},
-      executeobject.command.environment.run={}}
-      executeobject.command.environment.run.type="runfirstone"
-      executeobject.command.environment.run.executelevel=0
-      executeobject.command.environment.platform='local'          
+          executeobject.command={};
+          executeobject.command.environment={};
+          executeobject.command.environment.run={};
+      }
+      executeobject.command.environment.run.type="runfirstone";
+      executeobject.command.environment.run.executelevel=0;
+      executeobject.command.environment.platform='local';
   
-      executeobject.command.environment.processfn="execute_function"
-      executeobject.serverfn="test_return_noerror_result"
+      executeobject.command.environment.processfn="execute_function";
+      executeobject.serverfn="test_return_noerror_result";
       executeobject.command.xrun=[
                                   {"executethis": 'test_return_noerror_result'},
                                   {"executethis": 'test_return_noerror_result'},
                                   {"executethis": 'test_return_noerror_result2'}
                                   ];
-  var expectedresult = {"a":"b","env":executeobject.command.environment.platform}    
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+  var expectedresult = {"a":"b","env":executeobject.command.environment.platform};
+      var etEnvironment = new drienvironment(executeobject.command.environment);
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
-                                
             proxyprinttodiv('expected error', null, 99);
             proxyprinttodiv('actual error', error_obj, 99);
             proxyprinttodiv('expected result', expectedresult, 99);
             proxyprinttodiv('actual result', result_obj, 99);
-            composite_obj=logverifycomplex("ettest_runfirst3pass_lvl1", result_obj,expectedresult, error_obj, null);
-            callback(null, composite_obj)
+            var composite_obj=logverifycomplex("ettest_runfirst3pass_lvl1", result_obj,expectedresult, error_obj, null);
+            callback(null, composite_obj);
       } 
     );
-}
+};
 
 // /*===============================================*/  
 // /******* SECTION: New execute() tests 	*********/
 // /*===============================================*/
 
-function ettest_executestring1 = ettest_executestring1 = function ettest_executestring1(executeobject, callback) 
+exports.ettest_executestring1 = ettest_executestring1 = function ettest_executestring1(executeobject, callback)
 {
       execute("test_return_noerror_result",function (err, res) {
 			proxyprinttodiv('executestring1 res --', res, 99);
 			//callback(err,res);
 		});
-}
+};
 
-function ettest_executeobject1 = ettest_executeobject1 = function ettest_executeobject1(executeobject, callback) 
+exports.ettest_executeobject1 = ettest_executeobject1 = function ettest_executeobject1(executeobject, callback)
 {
       execute({"executethis":"test_return_noerror_result"},function (err, res) {
 			proxyprinttodiv('executestring1 res --', res, 99);
 			//callback(err,res);
 		});
-}
+};
 
-function ettest_executelist1 = ettest_executelist1 = function ettest_executelist1(executeobject, callback) 
+exports.ettest_executelist1 = ettest_executelist1 = function ettest_executelist1(executeobject, callback)
 {
       execute({"command.xrun":[
 				{"executethis":"test_return_noerror_result"},
@@ -2226,9 +2192,9 @@ function ettest_executelist1 = ettest_executelist1 = function ettest_executelist
 			proxyprinttodiv('executestring1 res --', res, 99);
 			//callback(err,res);
 		});
-}
+};
 
-function ettest_executelist2 = ettest_executelist2 = function ettest_executelist2(executeobject, callback) 
+exports.ettest_executelist2 = ettest_executelist2 = function ettest_executelist2(executeobject, callback)
 {
       execute({"command.xrun":[
 				{"executethis":"test_return_noerror_result"},
@@ -2238,32 +2204,32 @@ function ettest_executelist2 = ettest_executelist2 = function ettest_executelist
 			proxyprinttodiv('executestring1 res --', res, 99);
 			//callback(err,res);
 		});
-}
+};
 
 // /*===============================================*/  
 // /***** SECTION: test environment.attributes 	*****/
 // /*===============================================*/
 
-function ettest_executewithattributes1 = 
+exports.ettest_executewithattributes1 =
 ettest_executewithattributes1 = 
 function ettest_executewithattributes1(executeobject, callback) 
 {
       execute([{"command.environment.attributes":{"a":"b","c":"d"},
 				"executethis":"updatewid",
 				"wid":"wid1",
-				"creator":"cody"}
+				"creator":"cody"
 			}],function (err, res) {
 			proxyprinttodiv('executestring1 res --', res, 99);
 			//callback(err,res);
-		});
-}
+		})
+};
 
 
 // /*===============================================*/  
 // /***** SECTION: test command.usernamespace 	*****/
 // /*===============================================*/
 
-function ettest_usernamespace1 = 
+exports.ettest_usernamespace1 =
 ettest_usernamespace1 = 
 function ettest_usernamespace1(executeobject, callback) 
 {
@@ -2276,14 +2242,14 @@ function ettest_usernamespace1(executeobject, callback)
 			proxyprinttodiv('executestring1 res --', res, 99);
 			//callback(err,res);
 		});
-}
+};
 
 
 // /*===============================================*/  
 // /***** SECTION: test command.appnamespace 	*****/
 // /*===============================================*/
 
-function ettest_appnamespace1 = 
+exports.ettest_appnamespace1 =
 ettest_appnamespace1 = 
 function ettest_appnamespace1(executeobject, callback) 
 {
@@ -2296,7 +2262,7 @@ function ettest_appnamespace1(executeobject, callback)
 			proxyprinttodiv('executestring1 res --', res, 99);
 			//callback(err,res);
 		});
-}
+};
 		
 /*
     logverify() test - simple - does {a:b} match {a:b} - 
@@ -2310,7 +2276,7 @@ exports.testlogverify = testlogverify = function testlogverify(params, callback)
   
   var expectedresult_object = {
     "test_name": test_name,
-    test_name: "PASS",
+//    test_name: "PASS",
     test_name_diff: {
       "a": {
           "data": "b",
@@ -2319,19 +2285,15 @@ exports.testlogverify = testlogverify = function testlogverify(params, callback)
       "data":"b",
       "type":"unchanged"
     }
-  }
+  };
   debugger;
 
   var resultMap = deepDiffMapper.map(res, expectedresult_object);
 
-
-
-
-  // debugger;
   //var res =  logverify("testlogverify", {a:"b"}, {a:"c"});  //FAIL
   proxyprinttodiv('testlogverify res', res, 99);
   callback({}, res);
-}
+};
 
 
 
@@ -2340,39 +2302,38 @@ exports.testlogverify2 = testlogverify2 = function testlogverify2(params, callba
 var res =  logverify("testlogverify",
   {"command":{"resulttable":{"445a16aa-cc85-a14e-36ad-746ab78ab4de":{"detail":[{"executeid":"445a16aa-cc85-a14e-36ad-746ab78ab4de","outgoingparm":{"command":{"environment":{"defaultcollection":"dricollection","defaultdb":"data","defaultdatastore":"localstorage","defaultkeycollection":"dricollectionkey","defaultdatabasetable":"wikiwallettesting","platform":"local","run":{"type":"runfirstonewaterfall","executelevel":1,"executeid":"445a16aa-cc85-a14e-36ad-746ab78ab4de"},"accesstoken":"fab4d18b-a3dd-da47-d524-4f8aae0af98c"}},"executethis":"test_return_realerror_result","serverfn":"test_return_noerror_result"},"err":{"errorname":"realerror"},"res":{"x":"y","env":"local","command":{"environment":{"run":{"executeid":"445a16aa-cc85-a14e-36ad-746ab78ab4de"}}}},"executeseq":0}],"overallresult":{},"overallerror":null},"extraparameters":{"command":{"environment":{"defaultcollection":"dricollection","defaultdb":"data","defaultdatastore":"localstorage","defaultkeycollection":"dricollectionkey","defaultdatabasetable":"wikiwallettesting","platform":"local","run":{"type":"runfirstonewaterfall","executelevel":1,"executeid":"445a16aa-cc85-a14e-36ad-746ab78ab4de"},"accesstoken":"fab4d18b-a3dd-da47-d524-4f8aae0af98c"},"processparameterfn":"execute_nothing","processfn":"execute_function"}},"overallresult":{},"overallerror":null}}},
   {"command":{"resulttable":{"c1bf93f0-d3f5-6c14-baad-d4af535b0dc8":{"detail":[{"executeseq":{"exception":["created","changed","unchanged"]},"executeid":{"exception":["created","changed","unchanged"]},"outgoingparm":{"executethis":"test_return_failnotfound_result","command":{"environment":{"defaultcollection":"dricollection","defaultdb":"data","defaultdatastore":"localstorage","defaultkeycollection":"dricollectionkey","defaultdatabasetable":"wikiwallettesting","run":{"type":"group","executelevel":{"exception":["created","changed","unchanged"]},"executeid":{"exception":["created","changed","unchanged"]}},"accesstoken":{"exception":["created","changed","unchanged"]}}}},"err":{"errorname":"failnotfound"},"res":{"x":"y","command":{"environment":{"defaultcollection":"dricollection","defaultdb":"data","defaultdatastore":"localstorage","defaultkeycollection":"dricollectionkey","defaultdatabasetable":"wikiwallettesting","run":{"type":"group","executelevel":{"exception":["created","changed","unchanged"]},"executeid":{"exception":["created","changed","unchanged"]}},"accesstoken":{"exception":["created","changed","unchanged"]}},"error":{"errorname":"failnotfound"}}}}],"tryrecords":[],"tryseq":[],"summary":{"overallresult":{},"overallerror":{},"executeseq":{"exception":["created","changed","unchanged"]}}}}}}
-)
+);
     proxyprinttodiv('testlogverify2 res', res, 99);
     callback({}, res);
-}
+};
 
 exports.testlogverify3 = testlogverify3 = function testlogverify3(params, callback)
 {
     var res = logverify('testlogverify3', null, null);
     proxyprinttodiv('testlogverify3 res', res, 99);
     callback({}, res);
-}
+};
 
 exports.testlogverify4 = testlogverify4 = function testlogverify4(params, callback)
 {
     var res = logverify('testlogverify4', {}, null);
     proxyprinttodiv('testlogverify4 res', res, 99);
     callback({}, res);
-}
-
+};
 
 exports.testlogverify5 = testlogverify5 = function testlogverify5(params, callback)
 {
     var res = logverify('testlogverify5', 'a', 'a');
     proxyprinttodiv('testlogverify5 res', res, 99);
     callback({}, res);
-}
+};
 
 exports.testlogverify6 = testlogverify6 = function testlogverify6(params, callback)
 {
     var res = logverify('testlogverify6', 'a', 'z');
     proxyprinttodiv('testlogverify6 res', res, 99);
     callback({}, res);
-}
+};
 
 exports.testlogverify7 = testlogverify7 = function testlogverify7(params, callback)
 {
@@ -2389,7 +2350,7 @@ exports.testlogverify7 = testlogverify7 = function testlogverify7(params, callba
         'data': 'z',
         'type': 'updated'
       }
-    } 
+    };
     debugger;
     var result0 = deepDiffMapper.map(res, res2);
     var xresult = distillresults('xx', result0);
@@ -2403,7 +2364,7 @@ exports.testlogverify7 = testlogverify7 = function testlogverify7(params, callba
     }
     proxyprinttodiv('testlogverify7 res', res, 99);
     callback({}, xresult);
-}
+};
 
 
 /*
@@ -2415,7 +2376,7 @@ exports.testlogverifycomplex = testlogverifycomplex = function testlogverifycomp
   var res = logverifycomplex("testlogverifycomplex", {a:"b"}, {a:"c"},{c:"d"},{c:"d"}); //FAIL
     proxyprinttodiv('testlogverifycomplex res', res, 99);
     callback({}, res);
-}
+};
 
 /*
     logverifycomplex() test
@@ -2426,156 +2387,156 @@ exports.testlogverifycomplex2 = testlogverifycomplex2 = function testlogverifyco
   var res = logverifycomplex("testlogverifycomplex", {a:"b", b:"c"}, {a:"c"},{c:"d"},{c:"d"});
     proxyprinttodiv('testlogverifycomplex res', res, 99);
     callback({}, res);
-}
+};
 
 exports.test_return_noerror_result = test_return_noerror_result = function test_return_noerror_result (param, callback) 
 {
     // debugger;
     proxyprinttodiv('test_return_noerror_result- incoming parm', param, 99);
     var error_obj = null;
-    var env = param.command.environment.platform
+    var env = param.command.environment.platform;
     if (env==="server" && param.serverfn)     // if environment = server and serverfn parameter exist then redirect 
                                               // to different function--that way we can on same machine pass locally and
                                               // fail server
     {
       // var serverfn = window[param.serverfn]
       // param.executethis=serverfn
-      param.command.xrun=param.serverfn
+      param.command.xrun=param.serverfn;
       // debugger;
-      delete param.serverfn
+      delete param.serverfn;
       proxyprinttodiv('test ***** calling server', param, 99);
       // serverfn(param, callback)
-      execute(param, callback) 
+      execute(param, callback);
 
     } else {
       var result_obj = { 'a':'b', env: env };
       callback( error_obj, result_obj );
     }
-}
+};
 
 exports.test_return_noerror_result2 = test_return_noerror_result2 = function test_return_noerror_result2 (param, callback) 
 {
     // debugger;
     proxyprinttodiv('test_return_noerror_result2- incoming parm', param, 99);
     var error_obj = null;
-    var env = param.command.environment.platform
+    var env = param.command.environment.platform;
     if (env==="server" && param.serverfn)     // if environment = server and serverfn parameter exist then redirect 
                                               // to different function--that way we can on same machine pass locally and
                                               // fail server
     {
-        param.command.xrun=param.serverfn
-        delete param.serverfn
+        param.command.xrun=param.serverfn;
+        delete param.serverfn;
         proxyprinttodiv('test ***** calling server', param, 99);
-        execute(param, callback) 
+        execute(param, callback) ;
     } else {
         var result_obj = { 'x':'y', env: env };
         callback( error_obj, result_obj );
     }
-}
+};
 
 exports.test_return_noerror_result3 = test_return_noerror_result3 = function test_return_noerror_result3 (param, callback) 
 {
     // debugger;
     proxyprinttodiv('test_return_noerror_result2- incoming parm', param, 99);
     var error_obj = null;
-    var env = param.command.environment.platform
+    var env = param.command.environment.platform;
     if (env==="server" && param.serverfn)     // if environment = server and serverfn parameter exist then redirect 
                                               // to different function--that way we can on same machine pass locally and
                                               // fail server
     {
-        param.command.xrun=param.serverfn
-        delete param.serverfn
+        param.command.xrun=param.serverfn;
+        delete param.serverfn;
         proxyprinttodiv('test ***** calling server', param, 99);
-        execute(param, callback) 
+        execute(param, callback);
     } else {
         var result_obj = { 'x3':'y3', env: env };
         callback( error_obj, result_obj );
     }
-}
+};
 
 exports.test_return_noerror_result4 = test_return_noerror_result4 = function test_return_noerror_result4 (param, callback) 
 {
     // debugger;
     proxyprinttodiv('test_return_noerror_result4- incoming parm', param, 99);
     var error_obj = null;
-    var env = param.command.environment.platform
+    var env = param.command.environment.platform;
     if (env==="server" && param.serverfn)     // if environment = server and serverfn parameter exist then redirect 
                                               // to different function--that way we can on same machine pass locally and
                                               // fail server
     {
-        param.command.xrun=param.serverfn
-        delete param.serverfn
+        param.command.xrun=param.serverfn;
+        delete param.serverfn;
         proxyprinttodiv('test ***** calling server', param, 99);
-        execute(param, callback) 
+        execute(param, callback);
     } else {
         var result_obj = { 'x4':'y4', env: env };
         callback( error_obj, result_obj );
     }
-}
+};
 
 exports.test_return_noerror_result5 = test_return_noerror_result5 = function test_return_noerror_result5 (param, callback) 
 {
     // debugger;
     proxyprinttodiv('test_return_noerror_result5- incoming parm', param, 99);
     var error_obj = null;
-    var env = param.command.environment.platform
+    var env = param.command.environment.platform;
     if (env==="server" && param.serverfn)     // if environment = server and serverfn parameter exist then redirect 
                                               // to different function--that way we can on same machine pass locally and
                                               // fail server
     {
-        param.command.xrun=param.serverfn
-        delete param.serverfn
+        param.command.xrun=param.serverfn;
+        delete param.serverfn;
         proxyprinttodiv('test ***** calling server', param, 99);
-        execute(param, callback) 
+        execute(param, callback);
     } else {
         var result_obj = { 'x5':'y5', env: env };
         callback( error_obj, result_obj );
     }
-}
+};
 
 exports.test_return_noerror_result6 = test_return_noerror_result6 = function test_return_noerror_result6 (param, callback) 
 {
     // debugger;
     proxyprinttodiv('test_return_noerror_result6- incoming parm', param, 99);
     var error_obj = null;
-    var env = param.command.environment.platform
+    var env = param.command.environment.platform;
     if (env==="server" && param.serverfn)     // if environment = server and serverfn parameter exist then redirect 
                                               // to different function--that way we can on same machine pass locally and
                                               // fail server
     {
-        param.command.xrun=param.serverfn
-        delete param.serverfn
+        param.command.xrun=param.serverfn;
+        delete param.serverfn;
         proxyprinttodiv('test ***** calling server', param, 99);
-        execute(param, callback) 
+        execute(param, callback);
     } else {
         var result_obj = { 'x6':'y6', env: env };
         callback( error_obj, result_obj );
     }
-}
+};
 
 exports.test_return_noerror_waterfall = test_return_noerror_waterfall = function test_return_noerror_waterfall (param, callback) 
 {
     // debugger;
     proxyprinttodiv('test_return_noerror_waterfall -  incoming param', param, 99);
     var error_obj = null;
-    var env = param.command.environment.platform
+    var env = param.command.environment.platform;
     if (env==="server" && param.serverfn)     // if environment = server and serverfn parameter exist then redirect 
                                               // to different function--that way we can on same machine pass locally and
                                               // fail server
     {
-        param.command.xrun=param.serverfn
-        delete param.serverfn
+        param.command.xrun=param.serverfn;
+        delete param.serverfn;
         proxyprinttodiv('test ***** calling server', param, 99);
-        execute(param, callback) 
+        execute(param, callback);
     } else {
         var result_obj = { 'a':'b', env: env };
-        var copy = {}
-        extend(true, copy, param)
-        delete copy.command
-        result_obj.x=copy
+        var copy = {};
+        extend(true, copy, param);
+        delete copy.command;
+        result_obj.x=copy;
         callback( error_obj, result_obj );
     }
-}
+};
 
 exports.test_return_notfound_result = test_return_notfound_result = function test_return_notfound_result(param, callback) 
 {
@@ -2583,18 +2544,18 @@ exports.test_return_notfound_result = test_return_notfound_result = function tes
     proxyprinttodiv('test_return_notfound_result - incoming parm', param, 99);
     var error_obj = { 'errorname': 'notfound' } ;
     //var result_obj = { 'x': 'y' };
-    var env = param.command.environment.platform
+    var env = param.command.environment.platform;
     if (env==="server" && param.serverfn) 
     {
-        param.command.xrun=param.serverfn
-        delete param.serverfn
+        param.command.xrun=param.serverfn;
+        delete param.serverfn;
         proxyprinttodiv('test ***** calling server', param, 99);
-        execute(param, callback) 
+        execute(param, callback);
     } else {
       var result_obj = { 'x':'y', env: env };
       callback( error_obj, result_obj );
     }
-}
+};
 
 exports.test_return_failnotfound_result = test_return_failnotfound_result = function test_return_failnotfound_result(param, callback) 
 {
@@ -2602,18 +2563,18 @@ exports.test_return_failnotfound_result = test_return_failnotfound_result = func
     proxyprinttodiv('test_return_failnotfound_result - incoming param', param, 99);
     var error_obj = { 'errorname': 'failnotfound' } ;
     //var result_obj = { 'x': 'y' };
-    var env = param.command.environment.platform
+    var env = param.command.environment.platform;
     if (env==="server" && param.serverfn) 
     {
-        param.command.xrun=param.serverfn
-        delete param.serverfn
+        param.command.xrun=param.serverfn;
+        delete param.serverfn;
         proxyprinttodiv('test ***** calling server', param, 99);
-        execute(param, callback) 
+        execute(param, callback);
     } else  {
         var result_obj = { 'x':'y', env: env };
         callback( error_obj, result_obj );
     }
-}
+};
 
 exports.test_return_realerror_result = test_return_realerror_result = function test_return_realerror_result(param, callback) 
 {
@@ -2621,7 +2582,7 @@ exports.test_return_realerror_result = test_return_realerror_result = function t
     proxyprinttodiv('test_return_realerror_result - incoming param', param, 99);
     var error_obj = { 'errorname': 'realerror' } ;
     //var result_obj = { 'x': 'y' };
-    var env = param.command.environment.platform
+    var env = param.command.environment.platform;
     if (env==="server" && param.serverfn) 
     {
         param.command.xrun=param.serverfn;
@@ -2632,7 +2593,7 @@ exports.test_return_realerror_result = test_return_realerror_result = function t
         var result_obj = { 'x':'y', env: env };
         callback( error_obj, result_obj );
     }
-}
+};
 
 var global_resulttable_assertion2=
 {
@@ -2647,7 +2608,7 @@ var global_resulttable_assertion2=
           }
       }
   }
-}
+};
 
 
     var global_resulttable_assertion=
@@ -2767,7 +2728,7 @@ var global_resulttable_assertion2=
             }
         }
     }
-}
+};
        
       var global_failnotfound = {'errorname':'failnotfound'};
       var global_notfound = {'errorname':'notfound'};
@@ -2902,7 +2863,7 @@ exports.ettestat = widtests.ettestat = ettestat = function ettestat(params, call
             });
         });
     });
-}
+};
 widtests.ettestat.category = "execute";
 widtests.ettestat.subcategory = "daily";
 widtests.ettestat.js = exports.ettestat;
@@ -2920,7 +2881,7 @@ exports.ettestat2 = widtests.ettestat2 = ettestat2 = function ettestat2(params, 
     result = etunittesttester(target, function(err, result) {
         callback(err, result);
     });
-}
+};
 widtests.ettestat2.category = "execute";
 widtests.ettestat2.subcategory = "daily";
 widtests.ettestat2.js = exports.ettestat2;
@@ -2937,7 +2898,7 @@ exports.ettestat3 = widtests.ettestat3 = ettestat3 = function ettestat3(params, 
     result = etunittesttester(target, function(err, result) {
         callback(err, result);
     });
-}
+};
 widtests.ettestat3.category = "execute";
 widtests.ettestat3.subcategory = "daily";
 widtests.ettestat3.js = exports.ettestat3;
@@ -2954,7 +2915,7 @@ exports.ettestat4 = widtests.ettestat4 = ettestat4 = function ettestat4(params, 
     result = etunittesttester(target, function(err, result) {
         callback(err, result);
     });
-}
+};
 widtests.ettestat4.category = "execute";
 widtests.ettestat4.subcategory = "daily";
 widtests.ettestat4.js = exports.ettestat4;
@@ -2971,7 +2932,7 @@ exports.ettestat5 = widtests.ettestat5 = ettestat5 = function ettestat5(params, 
     result = etunittesttester(target, function(err, result) {
         callback(err, result);
     });
-}
+};
 widtests.ettestat5.category = "execute";
 widtests.ettestat5.subcategory = "daily";
 widtests.ettestat5.js = exports.ettestat5;
@@ -3037,7 +2998,7 @@ exports.ettesttt = widtests.ettesttt = ettesttt = function ettesttt(params, call
             });
         });
     });
-}
+};
 widtests.ettesttt.category = "execute";
 widtests.ettesttt.subcategory = "daily";
 widtests.ettesttt.js = exports.ettesttt;
@@ -3098,7 +3059,7 @@ exports.ettestastt = widtests.ettestastt = ettestastt = function ettestastt(para
             });
         });
     });
-}
+};
 widtests.ettestastt.category = "execute";
 widtests.ettestastt.subcategory = "daily";
 widtests.ettestastt.js = exports.ettestastt;
@@ -3223,7 +3184,7 @@ exports.ettestctt = widtests.ettestctt = ettestctt = function ettestctt(params, 
             });
         });
     });
-}
+};
 widtests.ettestctt.category = "execute";
 widtests.ettestctt.subcategory = "daily";
 widtests.ettestctt.js = exports.ettestctt;
@@ -3259,7 +3220,7 @@ exports.ettestagtt = widtests.ettestagtt = ettestagtt = function ettestagtt(para
             });
         });
     });
-}
+};
 widtests.ettestagtt.category = "execute";
 widtests.ettestagtt.subcategory = "daily";
 widtests.ettestagtt.js = exports.ettestagtt;
@@ -3285,7 +3246,7 @@ exports.ettestetdtt = widtests.ettestetdtt = ettestetdtt = function ettestetdtt(
             });
         });
     });
-}
+};
 widtests.ettestetdtt.category = "execute";
 widtests.ettestetdtt.subcategory = "daily";
 widtests.ettestetdtt.js = exports.ettestetdtt;
@@ -3316,7 +3277,7 @@ exports.ettestt1 = widtests.ettestt1 = ettestt1 = function ettestt1(params, call
             }]);
             callback(err, res);
         });
-}
+};
 widtests.ettestt1.category = "execute";
 widtests.ettestt1.subcategory = "daily";
 widtests.ettestt1.js = exports.ettestt1;
@@ -3339,7 +3300,7 @@ exports.ettestt1s = widtests.ettestt1s = ettestt1s = function ettestt1s(params, 
     });
     var err;
     callback(err, res);
-}
+};
 widtests.ettestt1s.category = "execute";
 widtests.ettestt1s.subcategory = "daily";
 widtests.ettestt1s.js = exports.ettestt1s;
@@ -3362,7 +3323,7 @@ exports.ettestt1sf = widtests.ettestt1sf = ettestt1sf = function ettestt1sf(para
     });
     var err;
     callback(err, res);
-}
+};
 widtests.ettestt1sf.category = "execute";
 widtests.ettestt1sf.subcategory = "daily";
 widtests.ettestt1sf.js = exports.ettestt1sf;
@@ -3391,7 +3352,7 @@ exports.ss1 = widtests.ss1 = ss1 = function ss1(params, callback) {
             callback(err, res[0])
         }
     );
-}
+};
 widtests.ss1.category = "execute";
 widtests.ss1.subcategory = "daily";
 widtests.ss1.js = exports.ss1;
@@ -3420,7 +3381,7 @@ exports.ettestast1 = widtests.ettestast1 = ettestast1 = function ettestast1(para
             }]);
             callback(err, res);
         });
-}
+};
 widtests.ettestast1.category = "execute";
 widtests.ettestast1.subcategory = "daily";
 widtests.ettestast1.js = exports.ettestast1;
@@ -3460,7 +3421,7 @@ exports.ettestct1 = widtests.ettestct1 = ettestct1 = function ettestct1(params, 
                 "params": {}
             }]
         }
-    }
+    };
     var assert = [];
     assert.push({
         "d": "1",
@@ -3486,7 +3447,7 @@ exports.ettestct1 = widtests.ettestct1 = ettestct1 = function ettestct1(params, 
                 "params": {}
             }]
         }
-    })
+    });
     // var res = master_test_and_verify (testname,          parameters, assert, database, command, callback) {
 
     var res = master_test_and_verify("ettestct1", parameters, assert, {}, {
@@ -3494,7 +3455,7 @@ exports.ettestct1 = widtests.ettestct1 = ettestct1 = function ettestct1(params, 
     }, function(err, res) {
         callback(err, res)
     });
-}
+};
 widtests.ettestct1.category = "execute";
 widtests.ettestct1.subcategory = "daily";
 widtests.ettestct1.js = exports.ettestct1;
@@ -3514,7 +3475,7 @@ exports.ettestct9 = widtests.ettestct9 = ettestct9 = function ettestct9(params, 
         "c": "0",
         "d": "1",
         "e": "2"
-    }
+    };
     // since we are overiding how functions are maped here, "does_not_exist_* are not deleted from the params
     var assert = [];
     assert.push({
@@ -3528,7 +3489,7 @@ exports.ettestct9 = widtests.ettestct9 = ettestct9 = function ettestct9(params, 
     }, function(err, res) {
         callback(err, res)
     });
-}
+};
 widtests.ettestct9.category = "execute";
 widtests.ettestct9.subcategory = "daily";
 widtests.ettestct9.js = exports.ettestct9;
@@ -3542,7 +3503,7 @@ exports.ettestct9a = widtests.ettestct9a = ettestct9a = function ettestct9a(para
     var parameters = {
         "executethis": "does_not_exist",
         "does_not_exist": "function () { return {data: 'Keg of Beer'}; }"
-    }
+    };
     var assert = [];
     assert.push({
         "data": "Keg of Beer"
@@ -3552,7 +3513,7 @@ exports.ettestct9a = widtests.ettestct9a = ettestct9a = function ettestct9a(para
     }, function(err, res) {
         callback(err, res)
     });
-}
+};
 widtests.ettestct9a.category = "execute";
 widtests.ettestct9a.subcategory = "daily";
 widtests.ettestct9a.js = exports.ettestct9a;
@@ -3574,7 +3535,7 @@ exports.func_a = widtests.func_a = func_a = function func_a(params, callback) {
     parameters["f"] = "3";
     var err;
     callback(err, parameters);
-}
+};
 widtests.func_a.category = "execute";
 widtests.func_a.subcategory = "daily";
 widtests.func_a.js = exports.func_a;
@@ -3589,7 +3550,7 @@ exports.func_b = widtests.func_b = func_b = function func_b(params, callback) {
     params["g"] = "4";
     var err;
     callback(err, params);
-}
+};
 widtests.func_b.category = "execute";
 widtests.func_b.subcategory = "daily";
 widtests.func_b.js = exports.func_b;
@@ -3602,7 +3563,7 @@ exports.func_c = widtests.func_c = func_c = function func_c(parameters, callback
     parameters["h"] = "5";
     var err;
     callback(err, parameters);
-}
+};
 widtests.func_c.category = "execute";
 widtests.func_c.subcategory = "daily";
 widtests.func_c.js = exports.func_c;
@@ -3616,7 +3577,7 @@ exports.fire_c = widtests.fire_c = fire_c = function fire_c(parameters, callback
     parameters["fire_c"] = "fire_c is now fired";
     var err;
     callback(err, parameters);
-}
+};
 widtests.fire_c.category = "execute";
 widtests.fire_c.subcategory = "daily";
 widtests.fire_c.js = exports.fire_c;
@@ -3629,7 +3590,7 @@ exports.async_func_a = widtests.async_func_a = async_func_a = function async_fun
     //sleep(500);
     var err;
     callback(err, parameters);
-}
+};
 widtests.async_func_a.category = "execute";
 widtests.async_func_a.subcategory = "daily";
 widtests.async_func_a.js = exports.async_func_a;
@@ -3643,7 +3604,7 @@ exports.async_func_b = widtests.async_func_b = async_func_b = function async_fun
     sleep(500);
     var err;
     callback(err, parameters);
-}
+};
 widtests.async_func_b.category = "execute";
 widtests.async_func_b.subcategory = "daily";
 widtests.async_func_b.js = exports.async_func_b;
@@ -3657,7 +3618,7 @@ exports.async_func_c = widtests.async_func_c = async_func_c = function async_fun
     //sleep(500);
     var err;
     callback(err, parameters);
-}
+};
 widtests.async_func_c.category = "execute";
 widtests.async_func_c.subcategory = "daily";
 widtests.async_func_c.js = exports.async_func_c;
@@ -3722,7 +3683,7 @@ exports.ettestag11 = widtests.ettestag11 = ettestag11 = function ettestag11(para
 
             callback(err, res);
         });
-}
+};
 widtests.ettestag11.category = "execute";
 widtests.ettestag11.subcategory = "daily";
 widtests.ettestag11.js = exports.ettestag11;
@@ -3773,7 +3734,7 @@ exports.ettestag1 = widtests.ettestag1 = ettestag1 = function ettestag1(params, 
 
             callback(err, res);
         });
-}
+};
 
 widtests.ettestag1.category = "execute";
 widtests.ettestag1.subcategory = "daily";
@@ -3818,7 +3779,7 @@ exports.ettestag1a = widtests.ettestag1a = ettestag1a = function ettestag1a(para
 
             callback(err, res);
         });
-}
+};
 widtests.ettestag1a.category = "execute";
 widtests.ettestag1a.subcategory = "daily";
 widtests.ettestag1a.js = exports.ettestag1a;
@@ -3869,7 +3830,7 @@ exports.ettestag122 = widtests.ettestag122 = ettestag122 = function ettestag122(
             }
         },
         "executethis": "getwidmaster"
-    }
+    };
     proxyprinttodiv('>>>> before a', a, 99);
     var filter_data = getcommand(a, {
         "command.internalcall": false
@@ -3892,7 +3853,7 @@ exports.ettestag122 = widtests.ettestag122 = ettestag122 = function ettestag122(
     }, true);
     proxyprinttodiv('>>>> after a', filter_data.output, 99);
 
-}
+};
 widtests.ettestag122.category = "execute";
 widtests.ettestag122.subcategory = "daily";
 widtests.ettestag122.js = exports.ag211;
@@ -4561,7 +4522,7 @@ exports.ettestag9 = widtests.ettestag9 = ettestag9 = function ettestag9(params, 
             "sounddto.1.metadata.method": "sounddto",
             "sounddto.2.wid": "3",
             "sounddto.2.note": "C flat",
-            "sounddto.2.metadata.method": "sounddto",
+            "sounddto.2.metadata.method": "sounddto"
         }, {
             "executethis": "getwidmaster",
             "wid": "song1"
@@ -4640,7 +4601,7 @@ exports.ettestag3a = widtests.ettestag3a = ettestag3a = function ettestag3a(para
             "sounddto.1.metadata.method": "sounddto",
             "sounddto.2.wid": "3",
             "sounddto.2.note": "C flat",
-            "sounddto.2.metadata.method": "sounddto",
+            "sounddto.2.metadata.method": "sounddto"
         }, {
             "executethis": "getwidmaster",
             "wid": "song1"
