@@ -2202,36 +2202,102 @@ function ettest_runfirst3pass_lvl1(executeobject, callback)
 
 function ettest_executestring1 = ettest_executestring1 = function ettest_executestring1(executeobject, callback) 
 {
-      if (!executeobject.command) {
-      executeobject.command={},
-      executeobject.command.environment={},
-      executeobject.command.environment.run={}}
-      executeobject.command.environment.run.type="runfirstone"
-      executeobject.command.environment.run.executelevel=0
-      executeobject.command.environment.platform='local'          
-  
-      executeobject.command.environment.processfn="execute_function"
-      executeobject.serverfn="test_return_noerror_result"
-      executeobject.command.xrun=[
-                                  {"executethis": 'test_return_noerror_result'},
-                                  {"executethis": 'test_return_noerror_result'},
-                                  {"executethis": 'test_return_noerror_result2'}
-                                  ];
-  var expectedresult = {"a":"b","env":executeobject.command.environment.platform}    
-      var etEnvironment = new drienvironment(executeobject.command.environment)
-      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
-      {
-                                
-            proxyprinttodiv('expected error', null, 99);
-            proxyprinttodiv('actual error', error_obj, 99);
-            proxyprinttodiv('expected result', expectedresult, 99);
-            proxyprinttodiv('actual result', result_obj, 99);
-            composite_obj=logverifycomplex("ettest_runfirst3pass_lvl1", result_obj,expectedresult, error_obj, null);
-            callback(null, composite_obj)
-      } 
-    );
+      execute("test_return_noerror_result",function (err, res) {
+			proxyprinttodiv('executestring1 res --', res, 99);
+			//callback(err,res);
+		});
 }
 
+function ettest_executeobject1 = ettest_executeobject1 = function ettest_executeobject1(executeobject, callback) 
+{
+      execute({"executethis":"test_return_noerror_result"},function (err, res) {
+			proxyprinttodiv('executestring1 res --', res, 99);
+			//callback(err,res);
+		});
+}
+
+function ettest_executelist1 = ettest_executelist1 = function ettest_executelist1(executeobject, callback) 
+{
+      execute({"command.xrun":[
+				{"executethis":"test_return_noerror_result"},
+				{"executethis":"test_return_noerror_result2"},
+				{"executethis":"test_return_noerror_result3"}
+			]},function (err, res) {
+			proxyprinttodiv('executestring1 res --', res, 99);
+			//callback(err,res);
+		});
+}
+
+function ettest_executelist2 = ettest_executelist2 = function ettest_executelist2(executeobject, callback) 
+{
+      execute({"command.xrun":[
+				{"executethis":"test_return_noerror_result"},
+				{"executethis":"test_return_noerror_result2"},
+				"test_return_noerror_result3"
+			]},function (err, res) {
+			proxyprinttodiv('executestring1 res --', res, 99);
+			//callback(err,res);
+		});
+}
+
+// /*===============================================*/  
+// /***** SECTION: test environment.attributes 	*****/
+// /*===============================================*/
+
+function ettest_executewithattributes1 = 
+ettest_executewithattributes1 = 
+function ettest_executewithattributes1(executeobject, callback) 
+{
+      execute([{"command.environment.attributes":{"a":"b","c":"d"},
+				"executethis":"updatewid",
+				"wid":"wid1",
+				"creator":"cody"}
+			}],function (err, res) {
+			proxyprinttodiv('executestring1 res --', res, 99);
+			//callback(err,res);
+		});
+}
+
+
+// /*===============================================*/  
+// /***** SECTION: test command.usernamespace 	*****/
+// /*===============================================*/
+
+function ettest_usernamespace1 = 
+ettest_usernamespace1 = 
+function ettest_usernamespace1(executeobject, callback) 
+{
+      execute([{"command":{
+					"usernamespace":"cody123"},
+				"executethis":"updatewid",
+				"wid":"wid1",
+				"creator":"cody"
+			}],function (err, res) {
+			proxyprinttodiv('executestring1 res --', res, 99);
+			//callback(err,res);
+		});
+}
+
+
+// /*===============================================*/  
+// /***** SECTION: test command.appnamespace 	*****/
+// /*===============================================*/
+
+function ettest_appnamespace1 = 
+ettest_appnamespace1 = 
+function ettest_appnamespace1(executeobject, callback) 
+{
+      execute([{"command":{
+					"appnamespace":"true"},
+				"executethis":"updatewid",
+				"wid":"wid1",
+				"creator":"cody"
+			}],function (err, res) {
+			proxyprinttodiv('executestring1 res --', res, 99);
+			//callback(err,res);
+		});
+}
+		
 /*
     logverify() test - simple - does {a:b} match {a:b} - 
 */
