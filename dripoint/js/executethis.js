@@ -725,11 +725,11 @@
                     var indent  = Number(getglobal('debugindent')); indent --; saveglobal('debugindent', indent);
                     executionpreferences.command.environment.run.executelevel--;
 
-                    if (executionpreferences.command.environment.run.executelevel == 0) {
-                        // clear out run on last iteration (or rather the ending of the original iteration)
-                        executionpreferences.command.environment.run = {};
-                        checkenviornment(executionpreferences.command.environment);
-                    }
+//                    if (executionpreferences.command.environment.run.executelevel == 0) {
+//                        // clear out run on last iteration (or rather the ending of the original iteration)
+//                        executionpreferences.command.environment.run = {};
+//                        checkenviornment(executionpreferences.command.environment);
+//                    }
 
                     callback(errorsummary, resultsummary);
                 }); // mapseries
@@ -739,12 +739,23 @@
 
     // this function expands inparams to be two calls, usually one to local and one to server
     // they are set to "runfirstone", it will not go to server unless first call fails
-    // within each call it sets up to first call process parameters "create_what_to_do_list"
+    // within each call it sets up to first call process parameters "create_what_to_do_list"see
     //
     window.create_how_to_do_list = function create_how_to_do_list(inparams, cb) { 
         proxyprinttodiv("create_how_to_do_list inparams", inparams, 11);
         // create outside wrapper--copy command, set "runfirstone"
         //var type = inparams.command.environment.run.type
+
+        if (inparams.command
+            && inparams.command.environment
+            && inparams.command.environment.run
+            && inparams.command.environment.run.executelevel == 0)
+        {
+            // clear out run on last iteration (or rather the ending of the original iteration)
+            inparams.command.environment.run = {};
+            checkenviornment(inparams.command.environment);
+        }
+
         var outparams = {};
         outparams.command = {};
         extend(true, outparams.command, inparams.command);
