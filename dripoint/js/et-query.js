@@ -254,6 +254,9 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
     proxyprinttodiv('querywid command[mongorawquery]', qparms['mongorawquery'], 99);
     proxyprinttodiv('querywid command[mongowid]', qparms['mongowid'], 99);
 
+    if (!parameters.command) { parameters.command = {environment:{run:{}}}; }
+    else if (!parameters.command.environment) { parameters.command.environment = {run:{}}; }
+    
     var etEnvironment = new drienvironment({
        run:{
            "executeid":parameters.command.environment.executeid,
