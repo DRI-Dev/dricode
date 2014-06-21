@@ -149,138 +149,174 @@ function setdefaultparm() {
 
 
 
+function config123() {
+    //var configuration = {d:{environment:{}}};
 
-
-var config123 = function () {
     var configuration = {};
-
+    
+    // what envrioment and what defaults should be used
     configuration.environment = 'server';
-    configuration.widmasterkey = 'widmasterkey'
+    configuration.defaultsyncrule = 'execute_nothing';
     configuration.defaultcollection = 'dricollection';
     configuration.defaultdb = 'data';
-    configuration.defaultdatastore = 'mongo'
-    configuration.defaultkeycollection = 'dricollectionkey'
-    configuration.defaultmongodb = 'wikiwallettesting'
-    configuration.defaultdatabasetable = 'wikiwallettesting'
+    configuration.defaultdatastore = 'localstorage';
+    configuration.defaultkeycollection = 'dricollectionkey';
+    configuration.defaultdatabasetable = 'wikiwallettesting';
 
-    configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment"
-    configuration.d = {}
-    configuration.d.defaultcollection = configuration.defaultcollection
-    configuration.d.defaultdb = configuration.defaultdb
-    configuration.d.defaultdatastore =  configuration.defaultdatastore
-    configuration.d.defaultkeycollection = configuration.defaultkeycollection
-    configuration.d.defaultdatabasetable = configuration.defaultdatabasetable
+    // configuration.e is the wid name for "environment"
+    configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment";
 
+    // configuration.d are the defaults that should be copied into command.environment during each execute
+    configuration.d = {};
+    configuration.d.defaultcollection = configuration.defaultcollection;
+    configuration.d.defaultdb = configuration.defaultdb;
+    configuration.d.defaultdatastore =  configuration.defaultdatastore;
+    configuration.d.defaultkeycollection = configuration.defaultkeycollection;
+    configuration.d.defaultdatabasetable = configuration.defaultdatabasetable;
+    configuration.d.platform = configuration.environment;
+    configuration.d.syncrule = configuration.defaultsyncrule;
 
-
-    configuration.preExecute = [];
-    configuration.preExecute[0] = {};
-    configuration.preExecute[0].executeorder = 1;
-    configuration.preExecute[0].tryorder = 1;
-    configuration.preExecute[0].dothis = 'dothis';
-    configuration.preExecute[0].params = {};
-    configuration.preExecute[1] = {};
-    configuration.preExecute[1].executeorder = 1;
-    configuration.preExecute[1].tryorder = 2;
-    configuration.preExecute[1].dothis = 'executeparam';
-    configuration.preExecute[1].params = {};
-    configuration.preExecute[2] = {};
-    configuration.preExecute[2].executeorder = 1;
-    configuration.preExecute[2].tryorder = 3;
-    configuration.preExecute[2].dothis = 'executegetwid';
-    configuration.preExecute[2].params = {};
-    // configuration.preExecute[3] = {};
-    // configuration.preExecute[3].executeorder = 1;
-    // configuration.preExecute[3].tryorder = 4;
-    // configuration.preExecute[3].dothis = 'server';
-    // configuration.preExecute[3].params = {};
-
-    configuration.midExecute = [];
-    configuration.midExecute[0] = {};
-    configuration.midExecute[0].executeorder = 1;
-    configuration.midExecute[0].tryorder = 1;
-    configuration.midExecute[0].dothis = 'dothis';
-    configuration.midExecute[0].params = {};
-    configuration.midExecute[1] = {};
-    configuration.midExecute[1].executeorder = 1;
-    configuration.midExecute[1].tryorder = 2;
-    configuration.midExecute[1].dothis = 'executeparam';
-    configuration.midExecute[1].params = {};
-    configuration.midExecute[2] = {};
-    configuration.midExecute[2].executeorder = 1;
-    configuration.midExecute[2].tryorder = 3;
-    configuration.midExecute[2].dothis = 'executegetwid';
-    configuration.midExecute[2].params = {};
-    // configuration.midExecute[3] = {};
-    // configuration.midExecute[3].executeorder = 1;
-    // configuration.midExecute[3].tryorder = 4;
-    // configuration.midExecute[3].dothis = 'server';
-    // configuration.midExecute[3].params = {};
-
-    configuration.postExecute = [];
-    configuration.postExecute[0] = {};
-    configuration.postExecute[0].executeorder = 1;
-    configuration.postExecute[0].tryorder = 1;
-    configuration.postExecute[0].dothis = 'dothis';
-    configuration.postExecute[0].params = {};
-    configuration.postExecute[1] = {};
-    configuration.postExecute[1].executeorder = 1;
-    configuration.postExecute[1].tryorder = 2;
-    configuration.postExecute[1].dothis = 'executeparam';
-    configuration.postExecute[1].params = {};
-    configuration.postExecute[2] = {};
-    configuration.postExecute[2].executeorder = 1;
-    configuration.postExecute[2].tryorder = 3;
-    configuration.postExecute[2].dothis = 'executegetwid';
-    configuration.postExecute[2].params = {};
-    // configuration.postExecute[3] = {};
-    // configuration.postExecute[3].executeorder = 1;
-    // configuration.postExecute[3].tryorder = 4;
-    // configuration.postExecute[3].dothis = 'server';
-    // configuration.postExecute[3].params = {};
-
-
-
-
-    //    configuration.getwid = [];
-    //    configuration.getwid[0] = {};
-    //    configuration.getwid[0].executeorder = 0;
-    //    configuration.getwid[0].tryorder = 0;
-    //    configuration.getwid[0].dothis = 'getwid';
-    //    configuration.getwid[0].params = {};
-    //
-    //    configuration.updatewid = [];
-    //    configuration.updatewid[0] = {};
-    //    configuration.updatewid[0].executeorder = 0;
-    //    configuration.updatewid[0].tryorder = 0;
-    //    configuration.updatewid[0].dothis = 'updatewid';
-    //    configuration.updatewid[0].params = {};
-    //
-    //    configuration.getfrommongo = [];
-    //    configuration.getfrommongo[0] = {};
-    //    configuration.getfrommongo[0].executeorder = 0;
-    //    configuration.getfrommongo[0].tryorder = 0;
-    //    configuration.getfrommongo[0].dothis = 'getfrommongo';
-    //    configuration.getfrommongo[0].params = {};
-
-
-
-
-
-    // configuration.MONGODB_URL = 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/';
-    // configuration.MONGODB_URL = 'mongodb://localhost:27017/'
-    // configuration.MONGODB_OPTIONS = {
-    //     'safe': true,
-    //     'server': true,
-    //     'auto_reconnect': true,
-    //     'pool': 5
-    // };
-   
+    // configuration.d.environment = {};
+    // configuration.d.environment.platform = configuration.environment;
+    // configuration.d.environment.syncrule = "sync_local_server";
+    //configuration.widmasterkey = 'widmasterkey';
 
     return {
         "configuration": configuration
-    }
-};
+    };
+}
+
+
+// var config123 = function () {
+//     var configuration = {};
+
+//     configuration.environment = 'server';
+//     configuration.widmasterkey = 'widmasterkey'
+//     configuration.defaultcollection = 'dricollection';
+//     configuration.defaultdb = 'data';
+//     configuration.defaultdatastore = 'mongo'
+//     configuration.defaultkeycollection = 'dricollectionkey'
+//     configuration.defaultmongodb = 'wikiwallettesting'
+//     configuration.defaultdatabasetable = 'wikiwallettesting'
+
+//     configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment"
+//     configuration.d = {}
+//     configuration.d.defaultcollection = configuration.defaultcollection
+//     configuration.d.defaultdb = configuration.defaultdb
+//     configuration.d.defaultdatastore =  configuration.defaultdatastore
+//     configuration.d.defaultkeycollection = configuration.defaultkeycollection
+//     configuration.d.defaultdatabasetable = configuration.defaultdatabasetable
+
+
+
+//     configuration.preExecute = [];
+//     configuration.preExecute[0] = {};
+//     configuration.preExecute[0].executeorder = 1;
+//     configuration.preExecute[0].tryorder = 1;
+//     configuration.preExecute[0].dothis = 'dothis';
+//     configuration.preExecute[0].params = {};
+//     configuration.preExecute[1] = {};
+//     configuration.preExecute[1].executeorder = 1;
+//     configuration.preExecute[1].tryorder = 2;
+//     configuration.preExecute[1].dothis = 'executeparam';
+//     configuration.preExecute[1].params = {};
+//     configuration.preExecute[2] = {};
+//     configuration.preExecute[2].executeorder = 1;
+//     configuration.preExecute[2].tryorder = 3;
+//     configuration.preExecute[2].dothis = 'executegetwid';
+//     configuration.preExecute[2].params = {};
+//     // configuration.preExecute[3] = {};
+//     // configuration.preExecute[3].executeorder = 1;
+//     // configuration.preExecute[3].tryorder = 4;
+//     // configuration.preExecute[3].dothis = 'server';
+//     // configuration.preExecute[3].params = {};
+
+//     configuration.midExecute = [];
+//     configuration.midExecute[0] = {};
+//     configuration.midExecute[0].executeorder = 1;
+//     configuration.midExecute[0].tryorder = 1;
+//     configuration.midExecute[0].dothis = 'dothis';
+//     configuration.midExecute[0].params = {};
+//     configuration.midExecute[1] = {};
+//     configuration.midExecute[1].executeorder = 1;
+//     configuration.midExecute[1].tryorder = 2;
+//     configuration.midExecute[1].dothis = 'executeparam';
+//     configuration.midExecute[1].params = {};
+//     configuration.midExecute[2] = {};
+//     configuration.midExecute[2].executeorder = 1;
+//     configuration.midExecute[2].tryorder = 3;
+//     configuration.midExecute[2].dothis = 'executegetwid';
+//     configuration.midExecute[2].params = {};
+//     // configuration.midExecute[3] = {};
+//     // configuration.midExecute[3].executeorder = 1;
+//     // configuration.midExecute[3].tryorder = 4;
+//     // configuration.midExecute[3].dothis = 'server';
+//     // configuration.midExecute[3].params = {};
+
+//     configuration.postExecute = [];
+//     configuration.postExecute[0] = {};
+//     configuration.postExecute[0].executeorder = 1;
+//     configuration.postExecute[0].tryorder = 1;
+//     configuration.postExecute[0].dothis = 'dothis';
+//     configuration.postExecute[0].params = {};
+//     configuration.postExecute[1] = {};
+//     configuration.postExecute[1].executeorder = 1;
+//     configuration.postExecute[1].tryorder = 2;
+//     configuration.postExecute[1].dothis = 'executeparam';
+//     configuration.postExecute[1].params = {};
+//     configuration.postExecute[2] = {};
+//     configuration.postExecute[2].executeorder = 1;
+//     configuration.postExecute[2].tryorder = 3;
+//     configuration.postExecute[2].dothis = 'executegetwid';
+//     configuration.postExecute[2].params = {};
+//     // configuration.postExecute[3] = {};
+//     // configuration.postExecute[3].executeorder = 1;
+//     // configuration.postExecute[3].tryorder = 4;
+//     // configuration.postExecute[3].dothis = 'server';
+//     // configuration.postExecute[3].params = {};
+
+
+
+
+//     //    configuration.getwid = [];
+//     //    configuration.getwid[0] = {};
+//     //    configuration.getwid[0].executeorder = 0;
+//     //    configuration.getwid[0].tryorder = 0;
+//     //    configuration.getwid[0].dothis = 'getwid';
+//     //    configuration.getwid[0].params = {};
+//     //
+//     //    configuration.updatewid = [];
+//     //    configuration.updatewid[0] = {};
+//     //    configuration.updatewid[0].executeorder = 0;
+//     //    configuration.updatewid[0].tryorder = 0;
+//     //    configuration.updatewid[0].dothis = 'updatewid';
+//     //    configuration.updatewid[0].params = {};
+//     //
+//     //    configuration.getfrommongo = [];
+//     //    configuration.getfrommongo[0] = {};
+//     //    configuration.getfrommongo[0].executeorder = 0;
+//     //    configuration.getfrommongo[0].tryorder = 0;
+//     //    configuration.getfrommongo[0].dothis = 'getfrommongo';
+//     //    configuration.getfrommongo[0].params = {};
+
+
+
+
+
+//     // configuration.MONGODB_URL = 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/';
+//     // configuration.MONGODB_URL = 'mongodb://localhost:27017/'
+//     // configuration.MONGODB_OPTIONS = {
+//     //     'safe': true,
+//     //     'server': true,
+//     //     'auto_reconnect': true,
+//     //     'pool': 5
+//     // };
+   
+
+//     return {
+//         "configuration": configuration
+//     }
+// };
 
 
 exports.config = config = config123();

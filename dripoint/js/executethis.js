@@ -16,7 +16,7 @@
 
     // function reads & updates wid environment when running locally
     function checkenviornment(environment) {
-        // merge incoming environment wiht default envrionment with incomming winning
+        // merge incoming environment wiht default environment with incomming winning
         environment = extend(true, {}, config.configuration.d, environment);
         if (config.configuration.environment === "local") 
         {
