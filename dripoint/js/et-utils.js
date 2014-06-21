@@ -103,6 +103,7 @@ function getdatabaseinfo(command, datastore, collection, keycollection, db, data
         }
         keydatabase = getFromLocalStorage(databasetable + keycollection);
     } else if (datastore === "localstore") {
+        console.log("datastore is currently localstore");
         database = getfromlocal(databasetable + collection); // &&& localstorage&&&
         if (!database) {
             addtolocal(databasetable + collection, [tempobj]);
