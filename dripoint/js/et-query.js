@@ -659,7 +659,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                     proxyprinttodiv('querywid before output', output, 17);
                     //proxyprinttodiv('querywid before output aggParams', aggParams, 17);
                     var aggParams={"mongosetfieldsexclude" : qparms["mongosetfieldsexclude"]};
-                    formatListFinal(output, environmentdb, extraparameters, aggParams, command, function (err, output) {
+                    formatListFinal(output, environmentdb, extraparameters, command, function (err, output) {
                         // If error, bounce out
                         if (err && Object.keys(err).length > 0) {
                             callback(err, output);
@@ -759,7 +759,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
     // takes inlist, looks for wid, then goes to main database to get a get clean complete converted copy of that wid
     // also looks in extra paramters, append information found about that wid to results also
 
-    function formatListFinal(inlist, environmentdb, extraparameters, command, command, callback) {
+    function formatListFinal(inlist, environmentdb, extraparameters, command, callback) {
         //try {
         // proxyprinttodiv('querywid finalformatlist aggParams ', aggParams, 17);
         var inbound_parameters_120 = JSON.parse(JSON.stringify(arguments));
