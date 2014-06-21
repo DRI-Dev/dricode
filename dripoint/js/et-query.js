@@ -254,6 +254,14 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
     proxyprinttodiv('querywid command[mongorawquery]', qparms['mongorawquery'], 99);
     proxyprinttodiv('querywid command[mongowid]', qparms['mongowid'], 99);
 
+    var etEnvironment = new drienvironment({
+       run:{
+           "executeid":parameters.command.environment.executeid,
+           "executelevel":parameters.command.environment.executelevel,
+           type:parameters.command.environment.type || "series"
+       }
+    });
+
     if (!((qparms['mongosinglequery'] !== undefined && qparms['mongosinglequery'] !== "") ||
         (qparms['mongowid'] !== undefined && qparms['mongowid'] !== "") ||
         (qparms['mongorawquery'] !== undefined && qparms['mongorawquery'] !== "") ||
@@ -270,7 +278,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                 if (qparms['mongosinglequery'] !== "") {
                     console.log('singlemongoquery => ' + qparms['mongosinglequery']);
                     var wid = qparms['mongosinglequery'];
-                    execute({
+                    etEnvironment.execute({
                         'executethis': 'getwid',
                         'wid': wid
                     }, function (err, res) {
@@ -315,7 +323,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                     var paramList = {};
                     wid = qparms['mongomultiplequery'];
 
-                    execute({
+                    etEnvironment.execute({
                         'executethis': 'getwid',
                         'wid': wid
                     }, function (err, res) {
@@ -338,7 +346,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
 
                                 async.mapSeries(todolist, function (w, cbMap) {
                                         async.nextTick(function () {
-                                            execute({
+                                            etEnvironment.execute({
                                                 'executethis': 'getwid',
                                                 'wid': w
                                                 //getwid({
@@ -765,6 +773,14 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
             proxyprinttodiv('querywid finalformatlist excludeset ', excludeset, 17);
         }
 
+        var etEnvironment = new drienvironment({
+            run:{
+                "executeid":command.environment.run.executeid,
+                "executelevel":command.environment.run.executelevel,
+                "type":command.environment.run.type || "series"
+            }
+        });
+
         if (inlist === undefined || inlist.length === 0) {
             callback(null, []);
         } else {
@@ -792,7 +808,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                         async.series([
                             function (cb1) {
                                 if (!database[wid]) {
-                                    execute({
+                                    etEnvironment.execute({
                                         'executethis': 'getwid',
                                         'wid': wid
                                     }, function (err, res) {
@@ -858,7 +874,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
 
                         // step1
                         // if (!database[wid]) {
-                        //     execute({
+                        //     etEnvironment.execute({
                         //         'executethis': 'getwid',
                         //         'wid': wid
                         //     }, function (err, widrecord) {
