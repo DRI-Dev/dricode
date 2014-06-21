@@ -268,14 +268,14 @@ exports.execute_server = window.execute_server = execute_server = function execu
         {
             params.command.xrun = params.serverfn;
             delete params.serverfn;
-            params.command.environment.platform = "server"
+            params.command.environment.platform = "server";
             proxyprinttodiv('server calling execute params', params, 99);
             execute(params, function (err, res) {
                 proxyprinttodiv('server results res',res, 99, true);
                 // reset back to local
-                params.command.environment.platform = "local"
+                params.command.environment.platform = "local";
                 checkenviornment(params.command.environment);
-                callback(err, res)
+                callback(err, res);
             });
         }
         else 
@@ -353,7 +353,7 @@ function config123() {
     
     // what envrioment and what defaults should be used
     configuration.environment = 'local';
-    configuration.defaultsynchrule = 'synch_local_server';
+    configuration.defaultsyncrule = 'sync_local_server';
     configuration.defaultcollection = 'dricollection';
     configuration.defaultdb = 'data';
     configuration.defaultdatastore = 'localstorage';
@@ -364,18 +364,18 @@ function config123() {
     configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment";
 
     // configuration.d are the defaults that should be copied into command.environment during each execute
-    configuration.d = {}
+    configuration.d = {};
     configuration.d.defaultcollection = configuration.defaultcollection;
     configuration.d.defaultdb = configuration.defaultdb;
     configuration.d.defaultdatastore =  configuration.defaultdatastore;
     configuration.d.defaultkeycollection = configuration.defaultkeycollection;
     configuration.d.defaultdatabasetable = configuration.defaultdatabasetable;
     configuration.d.platform = configuration.environment;
-    configuration.d.synchrule = configuration.defaultsynchrule
+    configuration.d.syncrule = configuration.defaultsyncrule;
 
-    // configuration.d.environment = {}
+    // configuration.d.environment = {};
     // configuration.d.environment.platform = configuration.environment;
-    // configuration.d.environment.synchrule = "synch_local_server"
+    // configuration.d.environment.syncrule = "sync_local_server";
     //configuration.widmasterkey = 'widmasterkey';
 
     return {

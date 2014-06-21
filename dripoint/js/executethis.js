@@ -5,7 +5,7 @@
 // segregation of commands and errors (formatting, environment/user), regarding execute
 // 12) support for eval sending parameters into it
 //
-// commmand.environment.default_how_to_do_list =  "synch_local_server"
+// commmand.environment.default_how_to_do_list =  "sync_local_server"
 // search for configuration.environment 
 // future we may need to support multiple executeids
 
@@ -203,7 +203,7 @@
     //   if xrun array, left overs to executionpreferences or executionparameters
     //
     //   set defaults get executeid, executelevel, type -- create them if they do not exist
-    //   if level 0 then make command.processparameterfn=synch_local_server
+    //   if level 0 then make command.processparameterfn=sync_local_server
     //
     // process command.resulttable.details to command.resulttable.tryset (based on type)
     //
@@ -459,8 +459,6 @@
                             var fromstep02res={};
                             var fromstep02err=null;
 
-                            var outgoingparam=outgoingparam;
-
                             async.series(
                             [   
                                 function step01(cbstep1) 
@@ -480,9 +478,9 @@
                                         else
                                         {   // if level 0 (and processparameterfn was not sent in) then get defaults
                                             if (level===0) 
-                                            {   // level 0 look at synchrule (local-server)
-                                                pp = outgoingparam.command.environment.synchrule;
-                                                if (!pp) {pp=execute_nothing}
+                                            {   // level 0 look at syncrule (local-server)
+                                                pp = outgoingparam.command.environment.syncrule;
+                                                if (!pp) { pp = execute_nothing; }
                                             }
                                             else
                                             {   // other levels do execute_function, execute_parameter, execute_get_wid
@@ -493,11 +491,10 @@
                                         // go an "massage" the outgoing parameters to get better outgoing parameters
                                         pp(outgoingparam, function (err, res) 
                                             {
-                                                
                                                 if (err) 
                                                 {   
-                                                    fromstep02res = res
-                                                    fromstep02err = err
+                                                    fromstep02res = res;
+                                                    fromstep02err = err;
                                                 }
                                                 else 
                                                 {
@@ -766,8 +763,8 @@
     // they are set to "runfirstone", it will not go to server unless first call fails
     // within each call it sets up to first call process parameters "create_what_to_do_list"
     //
-    window.synch_local_server = function synch_local_server(inparams, cb) { 
-        proxyprinttodiv("synch_local_server inparams", inparams, 11);
+    window.sync_local_server = function sync_local_server(inparams, cb) { 
+        proxyprinttodiv("sync_local_server inparams", inparams, 11);
         // create outside wrapper--copy command, set "runfirstone"
         var outparams={};
         outparams.command={};
@@ -789,18 +786,18 @@
             secondcopy.command.processfn = "execute_server";                                                              
             outparams.command.xrun.push(secondcopy);
             
-        proxyprinttodiv("synch_local_server outparams", outparams, 11, true);
-        callback(null, outparams)
-    }
+        proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
+        callback(null, outparams);
+    };
 
-    window.synch_server = function synch_server(inparams, cb) { 
-        proxyprinttodiv("synch_local_server inparams", inparams, 11);
+    window.sync_server = function sync_server(inparams, cb) { 
+        proxyprinttodiv("sync_local_server inparams", inparams, 11);
         var outparams = {};
         extend(true, outparams, inparams);
         outparams.command.processfn = "execute_server";
-        proxyprinttodiv("synch_local_server outparams", outparams, 11, true);
+        proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
         callback(null, outparams);
-    }
+    };
 
     // this function expands inparams to be three calls, to execute_function, execute_parameter, execute_get_wid
     // it sets these to "runfirstone" 
@@ -840,7 +837,7 @@
 
         proxyprinttodiv("create_what_to_do_list outparams", outparams, 11, true);
         callback(null, outparams);
-      }
+      };
 
 
     // executes the function stored in parameter
@@ -857,7 +854,7 @@
         params.command.processfn="execute_function";
         proxyprinttodiv('execute end of execute_parameter', params, 11);
         callback(null, params)
-    }
+    };
 
     // if parms are {et: x} then to a getwid to x ... then excucte the results of x
     // to this by doing the getwid in step01 (processparameterfn) and the execute of resutls in step02
@@ -892,19 +889,19 @@
                 }
             })
         }
-    }
+    };
 
     // function for where there is nothing to do
     window.execute_nothing =  function execute_nothing(params, callback) {
         proxyprinttodiv('execute end of execute_nothing', params, 11);
         callback(null, params);
-    }
+    };
  
      // when whattodo fn, parm, executeget wid is unable to do something in that try
     window.execute_createerror =  function execute_createerror(params, callback) {
         proxyprinttodiv('execute end of execute_nothing', params, 11);
         callback({"errorname":"fnnotfound"}, params);
-    }
+    };
 
     // main execute function
     window.execute_function = function execute_function(incomingparams, callback) {
@@ -1541,7 +1538,7 @@
 
     //             }); // asych what
 
-    //         }); // asynch nexttick
+    //         }); // async nexttick
     //     }, // mapseries function
 
     //     function (err, res) {
@@ -1576,7 +1573,7 @@
     //     proxyprinttodiv("execute - resultsArr *******", outputResultsArr, 11);
 
     //     callback(err, resultparameters);
-    //     }); // asynch nextseries end
+    //     }); // async nextseries end
     // } // end executelist
 
 
