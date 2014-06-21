@@ -741,7 +741,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                 // }
                 // proxyprinttodiv('Function datastore command -- get output 3', output, 12);
                 //callback(err, output);
-                callback(err, resultobject);
+                callback(err, output);
             });
         } else { // if not mongo
             output = convertfromdriformatenhanced(output, command, originalarguments);
