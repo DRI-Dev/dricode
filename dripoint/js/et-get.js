@@ -1219,9 +1219,9 @@
                                 "inheritflag": "false"
                             },
                             "run": {
-                                "executeid": resultObj.command.environment.run.executeid,
-                                "executelevel": resultObj.command.environment.run.executelevel,
-                                "type": "series"
+                                "executeid": command.environment.run.executeid,
+                                "executelevel": command.environment.run.executelevel,
+                                "type": command.environment.run.type || "series"
                             }
                         });
 
