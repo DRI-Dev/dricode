@@ -724,7 +724,8 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
             }
         } else if (datastore === 'mongo') {
             mget(inputWidgetObject, command, function (err, output) {
-                if (!keepaddthis && output) { // i.e. remove add this
+//                if (!keepaddthis && output) { // i.e. remove add this
+                if (output) {  // remove add this
                     if (output.hasOwnProperty("addthis")) {
                         var _add_this = output["addthis"];
                         delete output["addthis"];
