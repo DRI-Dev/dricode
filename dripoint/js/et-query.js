@@ -541,8 +541,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
 
                     proxyprinttodiv('querywid output before rel', output, 99);
 
-                    //mQueryString = relationShipQuery(relParams, output, "data");
-                    mQueryString = relationShipQuery(command, output, "data");
+                    mQueryString = relationShipQuery(parameters, output, "data");
 
                     proxyprinttodiv('mQueryString at step03 =>', mQueryString, 99);
                     if (mQueryString !== "" && Object.keys(JSON.parse(mQueryString)).length > 0) {
