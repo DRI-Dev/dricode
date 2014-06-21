@@ -673,7 +673,6 @@
                             cb(err, res);
                         } else {
                             proxyprinttodiv('Function getwidmongo getwid res', res, 38);
-                            res = res[0];
 
                             if (res !== null && typeof res == 'object' && Object.keys(res).length !== 0) {
                                 parameterobject = res;
