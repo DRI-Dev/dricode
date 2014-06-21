@@ -763,7 +763,7 @@
     // they are set to "runfirstone", it will not go to server unless first call fails
     // within each call it sets up to first call process parameters "create_what_to_do_list"
     //
-    window.sync_local_server = function sync_local_server(inparams, cb) { 
+    window.sync_local_server = function sync_local_server(inparams, callback) {
         proxyprinttodiv("sync_local_server inparams", inparams, 11);
         // create outside wrapper--copy command, set "runfirstone"
         var outparams={};
@@ -773,24 +773,24 @@
         outparams.command.processfn = "execute_function";
         outparams.command.xrun = [];
 
-            // create step1 of inside--copy all minus processparameterfn, set create_what_to_do_list
-            var firstcopy = {};
-            extend(true, firstcopy, inparams);
-            firstcopy.command.processfn = "execute_function";
-            outparams.command.xrun.push(firstcopy); 
+        // create step1 of inside--copy all minus processparameterfn, set create_what_to_do_list
+        var firstcopy = {};
+        extend(true, firstcopy, inparams);
+        firstcopy.command.processfn = "execute_function";
+        outparams.command.xrun.push(firstcopy);
 
-            // second step will waterfall parameters from above
-            var secondcopy={};
-            extend(true, secondcopy, inparams);
-            secondcopy.command.environment.run.executelevel=0;
-            secondcopy.command.processfn = "execute_server";                                                              
-            outparams.command.xrun.push(secondcopy);
+        // second step will waterfall parameters from above
+        var secondcopy={};
+        extend(true, secondcopy, inparams);
+        secondcopy.command.environment.run.executelevel=0;
+        secondcopy.command.processfn = "execute_server";
+        outparams.command.xrun.push(secondcopy);
             
         proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
         callback(null, outparams);
     };
 
-    window.sync_server = function sync_server(inparams, cb) { 
+    window.sync_server = function sync_server(inparams, callback) {
         proxyprinttodiv("sync_local_server inparams", inparams, 11);
         var outparams = {};
         extend(true, outparams, inparams);
@@ -802,7 +802,7 @@
     // this function expands inparams to be three calls, to execute_function, execute_parameter, execute_get_wid
     // it sets these to "runfirstone" 
     // it further splits executegetwid into getwic and execute_function, its set these to "waterfall"
-    window.create_what_to_do_list =  function create_what_to_do_list(inparams, cb) { 
+    window.create_what_to_do_list =  function create_what_to_do_list(inparams, callback) {
         proxyprinttodiv("create_what_to_do_list inparams", inparams, 11);
         // create outside wrapper--copy command, set "runfirstone"
 
@@ -813,27 +813,27 @@
         outparams.command.processfn = "execute_function";
         outparams.command.xrun = [];
 
-            //nest all of below into one xrun
-            // create step1 of inside--set execute_function
-            var firstcopy={};
-            extend(true, firstcopy, inparams);
-            firstcopy.command.processparameterfn = "execute_nothing"; // so create_what is not called again
-            firstcopy.command.processfn = "execute_function";
-            outparams.command.xrun.push(firstcopy);
+        //nest all of below into one xrun
+        // create step1 of inside--set execute_function
+        var firstcopy={};
+        extend(true, firstcopy, inparams);
+        firstcopy.command.processparameterfn = "execute_nothing"; // so create_what is not called again
+        firstcopy.command.processfn = "execute_function";
+        outparams.command.xrun.push(firstcopy);
 
-            // create step2 of inside--set execute_parameter
-            var secondcopy={};
-            extend(true, secondcopy, inparams);
-            secondcopy.command.processparameterfn = "execute_nothing"; // so create_what is not called again
-            secondcopy.command.processfn = "execute_parameter";     
-            outparams.command.xrun.push(secondcopy);
+        // create step2 of inside--set execute_parameter
+        var secondcopy={};
+        extend(true, secondcopy, inparams);
+        secondcopy.command.processparameterfn = "execute_nothing"; // so create_what is not called again
+        secondcopy.command.processfn = "execute_parameter";
+        outparams.command.xrun.push(secondcopy);
 
-            // create third copy for execute get wid
-            var thirdcopy={};
-            extend(true, thirdcopy, inparams);
-            thirdcopy.command.processparameterfn = "execute_nothing"; // so create_what is not called again
-            thirdcopy.command.processfn = "execute_get_wid";
-            outparams.command.xrun.push(thirdcopy);
+        // create third copy for execute get wid
+        var thirdcopy={};
+        extend(true, thirdcopy, inparams);
+        thirdcopy.command.processparameterfn = "execute_nothing"; // so create_what is not called again
+        thirdcopy.command.processfn = "execute_get_wid";
+        outparams.command.xrun.push(thirdcopy);
 
         proxyprinttodiv("create_what_to_do_list outparams", outparams, 11, true);
         callback(null, outparams);
@@ -842,7 +842,7 @@
 
     // executes the function stored in parameter
     // if params are {et:x, x:fn1} then it will execute fn1
-    window.execute_parameter = function execute_parameter(params, cb) {
+    window.execute_parameter = function execute_parameter(params, callback) {
         if (!params[params.executethis]) 
         {
             params.command.processfn="execute_createerror";
@@ -885,7 +885,7 @@
                     // if we got results from get wid, then execute them
                     inparams.command.processfn = "execute_function";
                     res = extend(true, {}, inparams, res);
-                    callback(null, res)
+                    cb(null, res)
                 }
             })
         }
