@@ -479,7 +479,7 @@
                                         {   // if level 0 (and processparameterfn was not sent in) then get defaults
                                             if (level===0) 
                                             {   // level 0 look at syncrule (local-server)
-                                                pp = outgoingparam.command.environment.syncrule;
+                                                pp = window[outgoingparam.command.environment.syncrule];
                                                 if (!pp) { pp = execute_nothing; }
                                             }
                                             else
