@@ -92,6 +92,7 @@ function getdatabaseinfo(command, datastore, collection, keycollection, db, data
         "configuration": config.configuration.environment
     };
     if (datastore === "localstorage") {
+        console.log("datastore is currently localstorage");
         database = getFromLocalStorage(databasetable + collection);
         if (!database) {
             addToLocalStorage(databasetable + collection, [tempobj]);
