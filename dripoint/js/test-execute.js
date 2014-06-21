@@ -169,7 +169,8 @@ function ettest_serieslevel0(executeobject, callback)
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';
   
-		  executeobject.command.environment.processfn="execute_function";
+		  //executeobject.command.environment.processfn="execute_function";
+		  executeobject.command.processparameterfn="execute_nothing";
 		  executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},

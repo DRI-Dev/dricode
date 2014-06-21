@@ -169,6 +169,7 @@
         if (!executionpreferences.command.environment.run.executelevel) {executionpreferences.command.environment.run.executelevel=0;}
         if (!executionpreferences.command.environment.run.executeid) {executionpreferences.command.environment.run.executeid=createNewGuid();}
         if (!executionpreferences.command.environment.run.type) {executionpreferences.command.environment.run.type="series";}
+        //if (!executionpreferences.command.environment.syncrule) {executionpreferences.command.environment.syncrule=config.environment.syncrule}
 
         if (inparams.executethis)
         {
