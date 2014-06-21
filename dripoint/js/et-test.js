@@ -8988,15 +8988,6 @@ exports.ettestupdatewidserver = ettestupdatewidserver = function ettestupdatewid
     });
 };
 
-//exports.ettestupdatewidserver = ettestupdatewidserver = function ettestupdatewidserver(params, callback) {
-//    var etEnvironment = new drienvironment(params.command.environment);
-//    var executeobject = {'serverfn':'updatewid', 'executethis':'error-updatewid','wid':'testdata123','key1':'value1','key2':'value2'};
-//    etEnvironment.execute(executeobject, function (err, result) {
-//        proxyprinttodiv('updatewid results', result, 99);
-//        callback(err, result);
-//    });
-//};
-
 exports.ettestgetwid = ettestgetwid = function ettestgetwid(params, callback) {
     var etEnvironment = new drienvironment(params.command.environment);
     etEnvironment.execute({executethis:'getwid',wid:'testdata123'}, function (err, result) {
@@ -9008,6 +8999,14 @@ exports.ettestgetwid = ettestgetwid = function ettestgetwid(params, callback) {
 exports.ettestaddwidmaster = ettestaddwidmaster = function ettestaddwidmaster(params, callback) {
     var etEnvironment = new drienvironment(params.command.environment);
     etEnvironment.execute({executethis:'addwidmaster',wid:'mastertestdata123',key1:'value1',key2:'value2'}, function (err, result) {
+        proxyprinttodiv('addwidmaster results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestaddwidmasterserver = ettestaddwidmasterserver = function ettestaddwidmasterserver(params, callback) {
+    var etEnvironment = new drienvironment(params.command.environment);
+    etEnvironment.execute({command:{processparameterfn:'sync_server'},executethis:'addwidmaster',wid:'mastertestdata123',key1:'value1',key2:'value2'}, function (err, result) {
         proxyprinttodiv('addwidmaster results', result, 99);
         callback(err, result);
     });
