@@ -260,67 +260,67 @@ exports.deletelist = deletelist = function deletelist(listToDo, eventname, callb
 exports.execute_server = window.execute_server = execute_server = function execute_server(params, callback) {
     proxyprinttodiv('Function server TO ------', params, 99);
 
-        var inbound_parameters = {};
-        extend(true, inbound_parameters, params);
-        params = toLowerKeys(params);
+        //var inbound_parameters = {};
+        //extend(true, inbound_parameters, params);
+        //params = toLowerKeys(params);
 
-
-        // note this code should be deleted...only for testing server locally
-//        if (params.serverfn)
-//        {
-//            params.command.xrun = params.serverfn;
-//            delete params.serverfn;
-//        }
-        proxyprinttodiv('test ***** calling server', params, 99);
-
-
-        // temporary code to stay local
-
-        // either use this line
-//        execute(param, callback);
-
-        // or these 3 lines:     
-        executeAjax("", params, function (data) {
-              proxyprinttodiv('Function server FROM ------', params, 99);
-              callback(null, data);
-        });
-
-
-};
-
-
-exports.server = window.server = server = function server(params, callback) {
-    proxyprinttodiv('Function server ------', params, 30);
-    try {
-        var inbound_parameters = {};
-        extend(true, inbound_parameters, params);
-
-        console.log('execute server called with ' + JSON.stringify(params));
-        delete params['configuration'];
-        params = toLowerKeys(params);
-
-        var currentUser = window.localStorage ? JSON.parse(window.localStorage.getItem('driUser')) : undefined;
-        if (currentUser) {
-            if (!params.etenvironment) {
-                params.etenvironment = {};
-            }
-            params.etenvironment.accesstoken = currentUser.at;
+        if (params.serverfn) // note the first par of if should be deleted...only for testing server locally
+        {
+            params.command.xrun = params.serverfn;
+            delete params.serverfn;
+            params.command.environment.platform = "server"
+            proxyprinttodiv('server calling execute params', params, 99);
+            execute(params, function (err, res) {
+                proxyprinttodiv('server results res',res, 99, true);
+                // reset back to local
+                params.command.environment.platform = "local"
+                checkenviornment(params.command.environment);
+                callback(err, res)
+            });
         }
-
-        executeAjax("", params, function (data) {
-            console.log("Return from server: " + JSON.stringify(data));
-            var err;
-            callback(null, data);
-        });
-    } // end try
-    catch (err) {
-        var finalobject =
-            createfinalobject({
-                "result": "server"
-            }, {}, "server", err, inbound_parameters);
-        callback(finalobject.err, finalobject.res);
-    }
+        else 
+        {
+            proxyprinttodiv('server calling ajax params', params, 99);
+            executeAjax("", params, function (data) {
+                  proxyprinttodiv('server results data',data, 99, true);
+                  callback(null, data);
+            });
+        }
 };
+
+
+// exports.server = window.server = server = function server(params, callback) {
+//     proxyprinttodiv('Function server ------', params, 30);
+//     try {
+//         var inbound_parameters = {};
+//         extend(true, inbound_parameters, params);
+
+//         console.log('execute server called with ' + JSON.stringify(params));
+//         delete params['configuration'];
+//         params = toLowerKeys(params);
+
+//         var currentUser = window.localStorage ? JSON.parse(window.localStorage.getItem('driUser')) : undefined;
+//         if (currentUser) {
+//             if (!params.etenvironment) {
+//                 params.etenvironment = {};
+//             }
+//             params.etenvironment.accesstoken = currentUser.at;
+//         }
+
+//         executeAjax("", params, function (data) {
+//             console.log("Return from server: " + JSON.stringify(data));
+//             var err;
+//             callback(null, data);
+//         });
+//     } // end try
+//     catch (err) {
+//         var finalobject =
+//             createfinalobject({
+//                 "result": "server"
+//             }, {}, "server", err, inbound_parameters);
+//         callback(finalobject.err, finalobject.res);
+//     }
+// };
 
 function setdefaultparm() {
 
@@ -351,22 +351,32 @@ function config123() {
 
     var configuration = {};
     
+    // what envrioment and what defaults should be used
     configuration.environment = 'local';
-    configuration.widmasterkey = 'widmasterkey';
+    configuration.defaultsynchrule = 'synch_local_server';
     configuration.defaultcollection = 'dricollection';
     configuration.defaultdb = 'data';
     configuration.defaultdatastore = 'localstorage';
     configuration.defaultkeycollection = 'dricollectionkey';
     configuration.defaultdatabasetable = 'wikiwallettesting';
+
+    // configuration.e is the wid name for "environment"
     configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment";
+
+    // configuration.d are the defaults that should be copied into command.environment during each execute
     configuration.d = {}
     configuration.d.defaultcollection = configuration.defaultcollection;
     configuration.d.defaultdb = configuration.defaultdb;
     configuration.d.defaultdatastore =  configuration.defaultdatastore;
     configuration.d.defaultkeycollection = configuration.defaultkeycollection;
     configuration.d.defaultdatabasetable = configuration.defaultdatabasetable;
-    configuration.d.environment = {}
-    configuration.d.environment.platform = configuration.environment;
+    configuration.d.platform = configuration.environment;
+    configuration.d.synchrule = configuration.defaultsynchrule
+
+    // configuration.d.environment = {}
+    // configuration.d.environment.platform = configuration.environment;
+    // configuration.d.environment.synchrule = "synch_local_server"
+    //configuration.widmasterkey = 'widmasterkey';
 
     return {
         "configuration": configuration
