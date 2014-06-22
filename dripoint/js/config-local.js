@@ -16,51 +16,86 @@ if (!debugon) { // debugfn
     var debugon = false;
 }
 
-//debuglevel=11
+function setdefaultparm() {
+
+    exports.config = config = config123();
+    //test_results = {};
+    //potentialwid = 0;
+
+    saveglobal("debuglevel", 0);
+    saveglobal("Debug", 'false');
+    saveglobal("debugon", false);
+    saveglobal("debugname", "");
+    saveglobal("debugsubcat", "");
+    saveglobal("debugcat", "");
+    saveglobal("debugfilter", "");
+    saveglobal("debugdestination", 0);
+    saveglobal("debugcolor", 0);
+    saveglobal("debugindent", 0);
+    saveglobal("debuglinenum", 0);
+
+    exports.environment = "local";
+    exports.Debug = Debug;
+    exports.debuglevel = debuglevel;
+    exports.everyMinuteInterval = 0;
+    exports.everyTenMinuteInterval = 0;
+    //exports.everyMinuteInterval = setInterval(exports.eventonemin,1000);
+    //exports.everyTenMinuteInterval = setInterval(exports.eventtenmin,10 * minutes);
+}
+
+
+function config123() {
+    var configuration = {};   
+    // what envrioment and what defaults should be used
+    configuration.environment = 'local';
+    configuration.defaultsyncrule = 'sync_local_server';
+    configuration.defaultcollection = 'dricollection';
+    configuration.defaultdb = 'data';
+    configuration.defaultdatastore = 'localstorage';
+    configuration.defaultkeycollection = 'dricollectionkey';
+    configuration.defaultdatabasetable = 'wikiwallettesting';
+    // configuration.e is the wid name for "environment"
+    configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment";
+
+    // configuration.d are the defaults that should be copied into command.environment during each execute
+    configuration.d = {};
+    configuration.d.defaultcollection = configuration.defaultcollection;
+    configuration.d.defaultdb = configuration.defaultdb;
+    configuration.d.defaultdatastore =  configuration.defaultdatastore;
+    configuration.d.defaultkeycollection = configuration.defaultkeycollection;
+    configuration.d.defaultdatabasetable = configuration.defaultdatabasetable;
+    configuration.d.platform = configuration.environment;
+    configuration.d.syncrule = configuration.defaultsyncrule;
+
+    // configuration.d.environment = {};
+    // configuration.d.environment.platform = configuration.environment;
+    // configuration.d.environment.syncrule = "sync_local_server";
+    // configuration.widmasterkey = 'widmasterkey';
+
+    return {
+        "configuration": configuration
+    };
+}
+
 
 // *********** EVENTS **************************************************
 exports.eventappinstall = eventappinstall = function eventappinstall() {
    if (exports.environment === 'local') {
-//       clearLocalStorage();
+       clearLocalStorage();
    }
 };
 
-exports.everyMinuteInterval = 0;
-exports.everyTenMinuteInterval = 0;
 exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
     setdefaultparm();
-    //debuglevel=11
-    // if (!getFromLocalStorage(config.configuration.defaultkeycollection)) {
-    //     eventappinstall();
-    // }
+    if (!getFromLocalStorage(config.configuration.defaultkeycollection)) {
+        eventappinstall();
+    }
 
     // start eventonemin, eventtenmin and save the interval value so 
     // you can use "clearInterval" in the future if desired to stop things
     var minutes = 60 * 1000;
-    //exports.everyMinuteInterval = setInterval(exports.eventonemin,1000);
-    //exports.everyTenMinuteInterval = setInterval(exports.eventtenmin,10 * minutes);
 
-    // execute([{"executethis":"addwidmaster", 
-    //             "metadata.method":"systemdto",
-    //             "wid":"systemdto",
-    //             "expirationtimer":"string",
-    //             "expirationdate":"string",
-				// "executecount":"integer",
-    //             "metadata.inherit.0": {"wid" : "systemdefault", "command" : { "dtotype":"", "adopt":"default"}}
-    //     },{
-    //         "executethis":"addwidmaster",
-    //         "wid":"systemdefault",
-    //         "metadata.method":"systemdto",
-    //         "expirationtimer":"90",
-    //         "expirationdate":"6/14/14"
-    //     }
-    //     ],
-    //     function (err, res) {
-    //         updatewid({"wid":"initialwid", "date": new Date()}, function (err, res) {
-    //             callback(err, res);
-    //             });
-    //     });
-callback(null,null);
+    callback(null,null);
 };
 
 exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
@@ -322,66 +357,6 @@ exports.execute_server = window.execute_server = execute_server = function execu
 //     }
 // };
 
-function setdefaultparm() {
-
-    exports.config = config = config123();
-    test_results = {};
-    potentialwid = 0;
-
-    saveglobal("debuglevel", 0);
-    saveglobal("Debug", 'false');
-    saveglobal("debugon", false);
-    saveglobal("debugname", "");
-    saveglobal("debugsubcat", "");
-    saveglobal("debugcat", "");
-    saveglobal("debugfilter", "");
-    saveglobal("debugdestination", 0);
-    saveglobal("debugcolor", 0);
-    saveglobal("debugindent", 0);
-    saveglobal("debuglinenum", 0);
-
-    exports.environment = "local";
-    exports.Debug = Debug;
-    exports.debuglevel = debuglevel;
-}
-
-
-function config123() {
-    //var configuration = {d:{environment:{}}};
-
-    var configuration = {};
-    
-    // what envrioment and what defaults should be used
-    configuration.environment = 'local';
-    configuration.defaultsyncrule = 'sync_local_server';
-    configuration.defaultcollection = 'dricollection';
-    configuration.defaultdb = 'data';
-    configuration.defaultdatastore = 'localstorage';
-    configuration.defaultkeycollection = 'dricollectionkey';
-    configuration.defaultdatabasetable = 'wikiwallettesting';
-
-    // configuration.e is the wid name for "environment"
-    configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment";
-
-    // configuration.d are the defaults that should be copied into command.environment during each execute
-    configuration.d = {};
-    configuration.d.defaultcollection = configuration.defaultcollection;
-    configuration.d.defaultdb = configuration.defaultdb;
-    configuration.d.defaultdatastore =  configuration.defaultdatastore;
-    configuration.d.defaultkeycollection = configuration.defaultkeycollection;
-    configuration.d.defaultdatabasetable = configuration.defaultdatabasetable;
-    configuration.d.platform = configuration.environment;
-    configuration.d.syncrule = configuration.defaultsyncrule;
-
-    // configuration.d.environment = {};
-    // configuration.d.environment.platform = configuration.environment;
-    // configuration.d.environment.syncrule = "sync_local_server";
-    //configuration.widmasterkey = 'widmasterkey';
-
-    return {
-        "configuration": configuration
-    };
-}
 
 exports.getFromLocalStorage = window.getFromLocalStorage = getFromLocalStorage = function getFromLocalStorage(key) {
     return JSON.parse(localStorage.getItem(key));
@@ -394,7 +369,6 @@ exports.addToLocalStorage = window.addToLocalStorage = addToLocalStorage = funct
 exports.clearLocalStorage = window.clearLocalStorage = clearLocalStorage = function clearLocalStorage() {
     proxyprinttodiv('clear clearLocalStorage', 'hi', 38);
     localStorage.clear();
-    //potentialwid = 0;
     // items below can probably be cleared now
     addToLocalStorage(config.configuration.defaultdatabasetable + config.configuration.defaultcollection, [{
         "wid": "initialwid",
@@ -468,57 +442,6 @@ function test2(params, callback) {
         "test": "test2 on local called"
     });
 }
-
-
-
-// exports.server2 = window.server2 = server2 = function server2(params, callback) {
-//     proxyprinttodiv('Function server2 ------', params, 30);
-//     params.command.server = "server2";
-//     server(params, callback);
-// };
-
-// exports.getDriApiData = getDriApiData = function getDriApiData(params, callback) {
-//     // set up object in syntax that driApi is expecting
-//     // also get getdata/<action> action from params object
-//     var driExecuteObj = {
-//         actionQueryString: params.dri_action,
-//         parameterDTOs: []
-//     };
-
-//     // convert passed in object to parameterdto list
-//     for (var prop in params) {
-//         if (params.hasOwnProperty(prop)) {
-//             driExecuteObj.parameterDTOs.push({
-//                 ParameterName: prop,
-//                 ParameterValue: params[prop]
-//             });
-//         }
-//     }
-
-//     $.ajax({
-//         url: '/getdata',
-//         type: 'PUT',
-//         headers: {
-//             'content-type': 'application/json'
-//         },
-//         cache: false,
-//         async: false,
-//         dataType: 'json',
-//         data: JSON.stringify(driExecuteObj),
-//         success: function (results) {
-//             // convert returned list of DataModelDTOs to an object
-//             var resultsObj = {};
-//             for (var i = 0; i < results.length; i++) {
-//                 resultsObj[results[i].Key] = results[i].Value;
-//             }
-
-//             callback(null, resultsObj);
-//         },
-//         error: function (err) {
-//             callback(err.responseText, null);
-//         }
-//     });
-// };
 
 
 exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, callback) {

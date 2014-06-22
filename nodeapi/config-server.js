@@ -1,3 +1,7 @@
+// copyright (c) 2014 DRI 
+
+// eventdeviceready() call to set up defaults 
+
 var needle = require('needle');
 var twilio = require('twilio')('AC909f1981261f4461abbc7985bd202897', '7bb26fabe1f818f11f4a178359e0f19a');
 var spawn = require('child_process').spawn;
@@ -6,147 +10,89 @@ var url = require('url');
 exports.consolere = require('console-remote-client').connect('console.re','80','dev-dri');
 exports.console = exports.consolere;
 
-
 var localStorage = exports.localStorage = {};
 
 exports.environment = 'server';
 exports.server = 'server1';
 
-// *********** EVENTS **************************************************
-exports.eventappinstall = eventappinstall = function eventappinstall() {
-    setdefaultparm();
-    if (exports.environment === 'server') {
-        clearLocalStorage()
-    }
-};
-exports.eventdeviceready = eventdeviceready = function eventdeviceready() {
-    if (Object.keys(config).length === 0) {
-        eventappinstall()
-    }
-    // start eventonemin, etc
-
-
-    // create needed dtos
-    // createalldtos({}, function (err, res) {
-    //     updatewid({
-    //         "wid": "initialwid",
-    //         "date": new Date()
-    //     }, function (err, res) {
-    //         callback(err, res);
-    //     });
-    // });
-};
-exports.eventnewpage = eventnewpage = function eventnewpage() {};
-exports.eventonline = eventonline = function eventonline() {};
-exports.eventoffline = eventoffline = function eventoffline() {};
-exports.eventonemin = eventonemin = function eventonemin() {};
-exports.eventtenmin = eventtenmin = function eventtenmin() {};
-exports.eventdaily = eventdaily = function eventdaily() {};
-exports.eventmonthly = eventmonthly = function eventmonthly() {};
-exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess() {};
-exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail() {};
-exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent() {};
-exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent() {};
-exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent() {};
-exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent() {};
-exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent() {};
-exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent() {};
-exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend() {};
-exports.eventexecuteend = eventexecuteend = function eventexecuteend() {};
-
-
-exports.Debug = Debug = 'false';
-exports.debuglevel = debuglevel = 0;
-exports.widMasterKey = widMasterKey = "widmaster_";
-exports.test_results = test_results = {};
-exports.potentialwid = potentialwid = 0;
-
-//do not change these constants
-exports.debugon = debugon = true;
-exports.debugname = debugname = "";
-exports.debugsubcat = debugsubcat = "";
-exports.debugcat = debugcat = "";
-exports.debugfilter = debugfilter = "";
-exports.debugdestination = debugdestination = 1;
-exports.debugcolor = debugcolor = 0;
-exports.debugindent = debugindent = 0;
-exports.environment = environment = 'server';
-
-
-
-exports.debuglinenum = debuglinenum = 1;
-
-// function etappinstall() { // exeucte only the first time app is installed -- once per lifetime
-//     setappinstallparm();
-//     if (exports.environment === 'server') {
-//         clearLocalStorage();
-//         addToLocalStorage("DRI", [{
-//             "wid": "initialwid",
-//             "initialwid": "hello from bootprocess"
-//         }]);
-//         addToLocalStorage("DRIKEY", {
-//             "initialwid": {
-//                 "wid": "initialwid",
-//                 "initialwid": "for key hello from bootprocess"
-//             }
-//         });
-//     }
-// }
-
-// function etappstarted() {} // execute only once per day when app is started
-
-// function etappnewpage() {} // execute each time we go to new page
-
-
-
-// //bootprocess();
-// //exports.config = config = config123(); //moved by Bill per Roger
-
-// function setappinstallparm() {}
-
 function setdefaultparm() {
-    localStore.clear();
-    Debug = 'false'; // **** Saurabh ::  changed to make node compatible ****
-    debuglevel = 0;
-    widMasterKey = "widmaster_";
-    test_results = {};
-    potentialwid = 0;
-    debugon = false;
-    debugname = "";
-    debugsubcat = "";
-    debugcat = "";
-    debugfilter = "";
-    debugdestination = 1;
-    debugcolor = 0;
-    debugindent = 0;
-    debuglinenum = 1;
-    environment = "server";
-    exports.environment = environment;
-    test_results = {}; // can take out
-    debuglog = {};
-    exports.debuglog = debuglog;
+
+    exports.config = config = config123();
+    //test_results = {};
+    //potentialwid = 0;
+
+    saveglobal("debuglevel", 0);
+    saveglobal("Debug", 'false');
+    saveglobal("debugon", false);
+    saveglobal("debugname", "");
+    saveglobal("debugsubcat", "");
+    saveglobal("debugcat", "");
+    saveglobal("debugfilter", "");
+    saveglobal("debugdestination", 0);
+    saveglobal("debugcolor", 0);
+    saveglobal("debugindent", 0);
+    saveglobal("debuglinenum", 0);
+
+    exports.environment = "server";
     exports.Debug = Debug;
     exports.debuglevel = debuglevel;
-    exports.widMasterKey = widMasterKey;
-    exports.test_results = test_results;
-    exports.potentialwid = potentialwid;
-    exports.debugon = debugon;
-    exports.debugname = debugname;
-    exports.debugsubcat = debugsubcat;
-    exports.debugcat = debugcat =
-        exports.debugfilter = debugfilter;
-    exports.debugdestination = debugdestination;
-    exports.debugcolor = debugcolor;
-    exports.debugindent = debugindent;
-    exports.debuglinenum = debuglinenum;
-}
-// exports.bootprocess = bootprocess = function bootprocess() {
-//     setdefaultparm();
-//     test_results = {};
-//     //testAddWids();
-//     //displayAllWids();
-// }
 
+}
+
+// exports.Debug = Debug = 'false';
+// exports.debuglevel = debuglevel = 0;
+// exports.widMasterKey = widMasterKey = "widmaster_";
+// exports.test_results = test_results = {};
+// exports.potentialwid = potentialwid = 0;
+
+// //do not change these constants
+// exports.debugon = debugon = true;
+// exports.debugname = debugname = "";
+// exports.debugsubcat = debugsubcat = "";
+// exports.debugcat = debugcat = "";
+// exports.debugfilter = debugfilter = "";
+// exports.debugdestination = debugdestination = 1;
+// exports.debugcolor = debugcolor = 0;
+// exports.debugindent = debugindent = 0;
+// exports.environment = environment = 'server';
+// exports.debuglinenum = debuglinenum = 1;
+
+// function setdefaultparm() {
+//     localStore.clear();
+//     Debug = 'false'; // **** Saurabh ::  changed to make node compatible ****
+//     debuglevel = 0;
+//     widMasterKey = "widmaster_";
+//     test_results = {};
+//     potentialwid = 0;
+//     debugon = false;
+//     debugname = "";
+//     debugsubcat = "";
+//     debugcat = "";
+//     debugfilter = "";
+//     debugdestination = 1;
+//     debugcolor = 0;
+//     debugindent = 0;
+//     debuglinenum = 1;
+//     environment = "server";
+//     exports.environment = environment;
+//     test_results = {}; // can take out
+//     debuglog = {};
+//     exports.debuglog = debuglog;
+//     exports.Debug = Debug;
+//     exports.debuglevel = debuglevel;
+//     exports.widMasterKey = widMasterKey;
+//     exports.test_results = test_results;
+//     exports.potentialwid = potentialwid;
+//     exports.debugon = debugon;
+//     exports.debugname = debugname;
+//     exports.debugsubcat = debugsubcat;
+//     exports.debugcat = debugcat =
+//     exports.debugfilter = debugfilter;
+//     exports.debugdestination = debugdestination;
+//     exports.debugcolor = debugcolor;
+//     exports.debugindent = debugindent;
+//     exports.debuglinenum = debuglinenum;
+// }
 
 
 function config123() {
@@ -154,13 +100,14 @@ function config123() {
 
     var configuration = {};
     
-    // what envrioment and what defaults should be used
+    // what environment and what defaults should be used
     configuration.environment = 'server';
     configuration.defaultsyncrule = 'execute_nothing';
     configuration.defaultcollection = 'dricollection';
     configuration.defaultdb = 'data';
-    configuration.defaultdatastore = 'localstorage';
+    configuration.defaultdatastore = 'mongo';
     configuration.defaultkeycollection = 'dricollectionkey';
+    // configuration.defaultmongodb = 'wikiwallettesting'  // *******
     configuration.defaultdatabasetable = 'wikiwallettesting';
 
     // configuration.e is the wid name for "environment"
@@ -179,147 +126,200 @@ function config123() {
     // configuration.d.environment = {};
     // configuration.d.environment.platform = configuration.environment;
     // configuration.d.environment.syncrule = "sync_local_server";
-    //configuration.widmasterkey = 'widmasterkey';
+    // configuration.widmasterkey = 'widmasterkey';
 
     return {
         "configuration": configuration
     };
 }
 
+// *********** EVENTS **************************************************
+exports.eventappinstall = eventappinstall = function eventappinstall() {
+    if (exports.environment === 'local') { // only clear local storage locally
+        clearLocalStorage()
+    }
+};
 
-// var config123 = function () {
-//     var configuration = {};
+exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
+    setdefaultparm();
+    //if (!getFromLocalStorage(config.configuration.defaultkeycollection)) {
+    if (Object.keys(config).length === 0) { // this will never happen on server
+        eventappinstall();
+    }
 
-//     configuration.environment = 'server';
-//     configuration.widmasterkey = 'widmasterkey'
-//     configuration.defaultcollection = 'dricollection';
-//     configuration.defaultdb = 'data';
-//     configuration.defaultdatastore = 'mongo'
-//     configuration.defaultkeycollection = 'dricollectionkey'
-//     configuration.defaultmongodb = 'wikiwallettesting'
-//     configuration.defaultdatabasetable = 'wikiwallettesting'
+    // start eventonemin, eventtenmin and save the interval value so 
+    // you can use "clearInterval" in the future if desired to stop things
+    var minutes = 60 * 1000;
 
-//     configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment"
-//     configuration.d = {}
-//     configuration.d.defaultcollection = configuration.defaultcollection
-//     configuration.d.defaultdb = configuration.defaultdb
-//     configuration.d.defaultdatastore =  configuration.defaultdatastore
-//     configuration.d.defaultkeycollection = configuration.defaultkeycollection
-//     configuration.d.defaultdatabasetable = configuration.defaultdatabasetable
+    callback(null,null);
+};
+
+eventdeviceready();
+
+exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+
+};
+
+exports.eventonline = eventonline = function eventonline(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventoffline = eventoffline = function eventoffline(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventonemin = eventonemin = function eventonemin() {
+    proxyprinttodiv("eventonemin", 'one sec', 30);
+    processevent(arguments.callee.name, function (err, res) {
+        //cb(err, res);
+    });
+};
+
+exports.eventtenmin = eventtenmin = function eventtenmin(params, cb) {    
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventdaily = eventdaily = function eventdaily(params, cb) {    
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventmonthly = eventmonthly = function eventmonthly(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend(params, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters, cb) {
+    processevent(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.processevent = processevent = function processevent(eventname, callback) {
+    callback(null,null)
+    // proxyprinttodiv("processeventqueue eventname----", eventname, 99);
+    // getexecutelist(eventname, "queuecollection", function (err, executetodolist) {
+    //     proxyprinttodiv("processeventqueue executelist", executetodolist, 17);
+    //     executelistfn(executetodolist, execute, function (err, res) {
+    //         deletelist(executetodolist, eventname, function (err, res) {
+    //             callback(err, res);
+    //             });
+    //         });
+    //     });
+    };
+
+exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, callback) {
+    async.mapSeries(listToDo, function (eachresult, cbMap) {
+        async.nextTick(function () {
+            fn(eachresult, function (err, res){
+                cbMap(err, res);
+            });
+        });
+    }, function (err, res) {
+        callback(err, res);
+    });
+};
+
+
+exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eventtype, callback) {
+    proxyprinttodiv("getexecutelist eventname(collection)", eventname, 17);
+    proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
+    var executeobject = {"command": {"result": "queryresult"}};
+    var executetodolist=[];
+    executeobject.command.databasetable = eventtype;
+    executeobject.command.collection = eventname;
+    executeobject.command.db = "queuedata";
+    //executeobject.command.result = "queueresult";
+    executeobject["executethis"] = "querywid";
+    //executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
+    executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]}   
+    proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
+    
+    execute(executeobject, function (err, res) {
+        proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
+        if (res.length === 0) {
+            executetodolist = [];
+        }
+        else if(res[0] && res[0]["queryresult"]){
+            for (var everyaction in res[0]["queryresult"]){
+                proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
+                //if (res[0]["queryresult"][everyaction]
+                executetodolist.push(res[0]["queryresult"][everyaction]);
+            }
+
+        }
+        callback(null, executetodolist);
+    })
+};
 
 
 
-//     configuration.preExecute = [];
-//     configuration.preExecute[0] = {};
-//     configuration.preExecute[0].executeorder = 1;
-//     configuration.preExecute[0].tryorder = 1;
-//     configuration.preExecute[0].dothis = 'dothis';
-//     configuration.preExecute[0].params = {};
-//     configuration.preExecute[1] = {};
-//     configuration.preExecute[1].executeorder = 1;
-//     configuration.preExecute[1].tryorder = 2;
-//     configuration.preExecute[1].dothis = 'executeparam';
-//     configuration.preExecute[1].params = {};
-//     configuration.preExecute[2] = {};
-//     configuration.preExecute[2].executeorder = 1;
-//     configuration.preExecute[2].tryorder = 3;
-//     configuration.preExecute[2].dothis = 'executegetwid';
-//     configuration.preExecute[2].params = {};
-//     // configuration.preExecute[3] = {};
-//     // configuration.preExecute[3].executeorder = 1;
-//     // configuration.preExecute[3].tryorder = 4;
-//     // configuration.preExecute[3].dothis = 'server';
-//     // configuration.preExecute[3].params = {};
 
-//     configuration.midExecute = [];
-//     configuration.midExecute[0] = {};
-//     configuration.midExecute[0].executeorder = 1;
-//     configuration.midExecute[0].tryorder = 1;
-//     configuration.midExecute[0].dothis = 'dothis';
-//     configuration.midExecute[0].params = {};
-//     configuration.midExecute[1] = {};
-//     configuration.midExecute[1].executeorder = 1;
-//     configuration.midExecute[1].tryorder = 2;
-//     configuration.midExecute[1].dothis = 'executeparam';
-//     configuration.midExecute[1].params = {};
-//     configuration.midExecute[2] = {};
-//     configuration.midExecute[2].executeorder = 1;
-//     configuration.midExecute[2].tryorder = 3;
-//     configuration.midExecute[2].dothis = 'executegetwid';
-//     configuration.midExecute[2].params = {};
-//     // configuration.midExecute[3] = {};
-//     // configuration.midExecute[3].executeorder = 1;
-//     // configuration.midExecute[3].tryorder = 4;
-//     // configuration.midExecute[3].dothis = 'server';
-//     // configuration.midExecute[3].params = {};
-
-//     configuration.postExecute = [];
-//     configuration.postExecute[0] = {};
-//     configuration.postExecute[0].executeorder = 1;
-//     configuration.postExecute[0].tryorder = 1;
-//     configuration.postExecute[0].dothis = 'dothis';
-//     configuration.postExecute[0].params = {};
-//     configuration.postExecute[1] = {};
-//     configuration.postExecute[1].executeorder = 1;
-//     configuration.postExecute[1].tryorder = 2;
-//     configuration.postExecute[1].dothis = 'executeparam';
-//     configuration.postExecute[1].params = {};
-//     configuration.postExecute[2] = {};
-//     configuration.postExecute[2].executeorder = 1;
-//     configuration.postExecute[2].tryorder = 3;
-//     configuration.postExecute[2].dothis = 'executegetwid';
-//     configuration.postExecute[2].params = {};
-//     // configuration.postExecute[3] = {};
-//     // configuration.postExecute[3].executeorder = 1;
-//     // configuration.postExecute[3].tryorder = 4;
-//     // configuration.postExecute[3].dothis = 'server';
-//     // configuration.postExecute[3].params = {};
-
-
-
-
-//     //    configuration.getwid = [];
-//     //    configuration.getwid[0] = {};
-//     //    configuration.getwid[0].executeorder = 0;
-//     //    configuration.getwid[0].tryorder = 0;
-//     //    configuration.getwid[0].dothis = 'getwid';
-//     //    configuration.getwid[0].params = {};
-//     //
-//     //    configuration.updatewid = [];
-//     //    configuration.updatewid[0] = {};
-//     //    configuration.updatewid[0].executeorder = 0;
-//     //    configuration.updatewid[0].tryorder = 0;
-//     //    configuration.updatewid[0].dothis = 'updatewid';
-//     //    configuration.updatewid[0].params = {};
-//     //
-//     //    configuration.getfrommongo = [];
-//     //    configuration.getfrommongo[0] = {};
-//     //    configuration.getfrommongo[0].executeorder = 0;
-//     //    configuration.getfrommongo[0].tryorder = 0;
-//     //    configuration.getfrommongo[0].dothis = 'getfrommongo';
-//     //    configuration.getfrommongo[0].params = {};
-
-
-
-
-
-//     // configuration.MONGODB_URL = 'mongodb://trugate:tempalte-77@ds045627.mongolab.com:45627/';
-//     // configuration.MONGODB_URL = 'mongodb://localhost:27017/'
-//     // configuration.MONGODB_OPTIONS = {
-//     //     'safe': true,
-//     //     'server': true,
-//     //     'auto_reconnect': true,
-//     //     'pool': 5
-//     // };
-   
-
-//     return {
-//         "configuration": configuration
-//     }
-// };
-
-
-exports.config = config = config123();
 
 
 function executeAjax(allConfig, executeItem, callback, returnCallback) {

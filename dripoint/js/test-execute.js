@@ -41,10 +41,6 @@ function ettest_allexecute(executeobject, callback)
 	function (cb1) {ettest_howtodo({}, function (err, res) {cb1(null, res)})},
 	function (cb1) {ettest_executemisc({}, function (err, res) {cb1(null, res)})},
 	function (cb1) {ettest_nestedtestslevel1({}, function (err, res) {cb1(null, res)})} // all work to this point if color>205
-    //ettest_grouplevel1
-    //ettest_waterfalllevel1
-    //ettest_runfirstonelevel1
-    //ettest_runfirstwaterfalllevel1
     ],
     function (err, res) {
       proxyprinttodiv('result from many array', res, 99);
