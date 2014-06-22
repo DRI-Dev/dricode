@@ -1,10 +1,6 @@
 // put multiple config files in root
 // create a file boxconfiguration.js
 
-exports.config = require('./config-server.js');
-
-exports.configuration = configuration = config.configuration;
-
 // console.log(JSON.stringify(config));
 
 // switch between the location of core files
@@ -19,6 +15,10 @@ require(DIR_TO_CORE_JS + 'et-test.js');
 require(DIR_TO_CORE_JS + 'et-query.js');
 require(DIR_TO_CORE_JS + 'et-unit_tests.js');
 exports.executethis = require(DIR_TO_CORE_JS + 'executethis.js');
+
+exports.config = require('./config-server.js');
+
+exports.configuration = configuration = config.configuration;
 
 exports.serverconfig = serverconfig = {
     SERVER_PORT: 3000,

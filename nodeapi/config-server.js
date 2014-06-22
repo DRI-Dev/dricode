@@ -31,17 +31,17 @@ function setdefaultparm() {
     //test_results = {};
     //potentialwid = 0;
 
-//    saveglobal("debuglevel", 0);
-//    saveglobal("Debug", 'false');
-//    saveglobal("debugon", false);
-//    saveglobal("debugname", "");
-//    saveglobal("debugsubcat", "");
-//    saveglobal("debugcat", "");
-//    saveglobal("debugfilter", "");
-//    saveglobal("debugdestination", 0);
-//    saveglobal("debugcolor", 0);
-//    saveglobal("debugindent", 0);
-//    saveglobal("debuglinenum", 0);
+    saveglobal("debuglevel", 0);
+    saveglobal("Debug", 'false');
+    saveglobal("debugon", false);
+    saveglobal("debugname", "");
+    saveglobal("debugsubcat", "");
+    saveglobal("debugcat", "");
+    saveglobal("debugfilter", "");
+    saveglobal("debugdestination", 0);
+    saveglobal("debugcolor", 0);
+    saveglobal("debugindent", 0);
+    saveglobal("debuglinenum", 0);
 
     exports.environment = "server";
     exports.Debug = Debug;
