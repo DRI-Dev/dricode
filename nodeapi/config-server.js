@@ -15,6 +15,16 @@ var localStorage = exports.localStorage = {};
 exports.environment = 'server';
 exports.server = 'server1';
 
+if (!Debug) { // printdiv
+    var Debug = 'false';
+}
+if (!debuglevel) { // printdiv
+    var debuglevel = 0;
+}
+if (!debugon) { // debugfn
+    var debugon = false;
+}
+
 function setdefaultparm() {
 
     exports.config = config = config123();
@@ -34,9 +44,8 @@ function setdefaultparm() {
 //    saveglobal("debuglinenum", 0);
 
     exports.environment = "server";
-//    exports.Debug = Debug;
-//    exports.debuglevel = debuglevel;
-
+    exports.Debug = Debug;
+    exports.debuglevel = debuglevel;
 }
 
 // exports.Debug = Debug = 'false';
