@@ -649,15 +649,13 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
 
             if (config.configuration.environment === "local") {
                 getfromangular(inputWidgetObject, function (angularerr, resultobject) {
-                    if (!resultobject) {
-                        resultobject = {};
+                    if (resultobject) {
                         if (output) { // resultobject && output
                             output = extend(true, resultobject, output);
                         } else { // resultobject && !output
-                            output = resultobject
+                            output = resultobject;
                         }
                     }
-                    // if not resultobject then just leave output alone
 
                     if (output) {
                         err = null;
