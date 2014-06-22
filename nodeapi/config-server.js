@@ -174,7 +174,7 @@ exports.eventoffline = eventoffline = function eventoffline(params, cb) {
 };
 
 exports.eventonemin = eventonemin = function eventonemin() {
-    proxyprinttodiv("eventonemin", 'one sec', 30);
+//    proxyprinttodiv("eventonemin", 'one sec', 30);
     processevent(arguments.callee.name, function (err, res) {
         //cb(err, res);
     });
@@ -285,8 +285,8 @@ exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, cal
 
 
 exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eventtype, callback) {
-    proxyprinttodiv("getexecutelist eventname(collection)", eventname, 17);
-    proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
+//    proxyprinttodiv("getexecutelist eventname(collection)", eventname, 17);
+//    proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
     var executeobject = {"command": {"result": "queryresult"}};
     var executetodolist=[];
     executeobject.command.databasetable = eventtype;
@@ -296,16 +296,16 @@ exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eve
     executeobject["executethis"] = "querywid";
     //executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
     executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]}   
-    proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
+//    proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
     
     execute(executeobject, function (err, res) {
-        proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
+//        proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
         if (res.length === 0) {
             executetodolist = [];
         }
         else if(res[0] && res[0]["queryresult"]){
             for (var everyaction in res[0]["queryresult"]){
-                proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
+//                proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
                 //if (res[0]["queryresult"][everyaction]
                 executetodolist.push(res[0]["queryresult"][everyaction]);
             }
@@ -370,11 +370,11 @@ exports.test2 = test2 = function test2(name, callback) {
             "test": "test2 on server called, modified by " + JSON.stringify(use_name)
         }
     );
-}
+};
 
 exports.sayHello = sayHello = function (params, callback) {
 
-}
+};
 
 // Utility function to return json with all keys in lowercase
 
@@ -404,7 +404,7 @@ exports.twilioPassThrough = function (params, callback) {
     var twilioHost = 'api.twilio.com';
     var twilioApiVersion = '2010-04-01';
     var twilioPort = 443;
-    var twilioBasePath = '/' + twilioApiVersion + '/Accounts/' + accountSid
+    var twilioBasePath = '/' + twilioApiVersion + '/Accounts/' + accountSid;
     var callerFrom = '+12312259665'; // Who will this call appear to originate from?
     // this number MUST be registered with our
     // twilio account or the call will fail
@@ -523,7 +523,7 @@ exports.sendsms = sendsms = function (params, cb) {
     var twilioParameters = {
         'To': params['to'],
         'Body': params['body']
-    }
+    };
     exports.twilioPassThrough({
             'twilioFunction': twilioFunction,
             'twilioParameters': twilioParameters
@@ -732,9 +732,6 @@ exports.server2 = server2 = function server2(params, callback) {
 
 
 eventdeviceready({}, function (err, res) {
-
-
-
 });
 
 sendsms({
@@ -751,6 +748,7 @@ exports.getPropertyOrDefault = getPropertyOrDefault = function(params, propName,
         return defaultValue;
     }
 };
+
 exports.zapier_passthrough = zapier_passthrough = function(params, cb) {
     //var zapURL = 'https://zapier.com/hooks/catch/gurm8/';
     //jQuery.getJSON(zapURL, onZapSent);
