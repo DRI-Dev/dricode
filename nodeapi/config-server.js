@@ -34,8 +34,8 @@ function setdefaultparm() {
 //    saveglobal("debuglinenum", 0);
 
     exports.environment = "server";
-    exports.Debug = Debug;
-    exports.debuglevel = debuglevel;
+//    exports.Debug = Debug;
+//    exports.debuglevel = debuglevel;
 
 }
 
@@ -154,8 +154,6 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
     callback(null,null);
 };
 
-eventdeviceready();
-
 exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
     processevent(arguments.callee.name, function (err, res) {
         cb(err, res);
@@ -261,7 +259,7 @@ exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters,
 };
 
 exports.processevent = processevent = function processevent(eventname, callback) {
-    callback(null,null)
+    callback(null,null);
     // proxyprinttodiv("processeventqueue eventname----", eventname, 99);
     // getexecutelist(eventname, "queuecollection", function (err, executetodolist) {
     //     proxyprinttodiv("processeventqueue executelist", executetodolist, 17);
