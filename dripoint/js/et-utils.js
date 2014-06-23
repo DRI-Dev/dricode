@@ -4269,22 +4269,14 @@ function totalStorageSize(){
     exports.drienvironment = drienvironment = function drienvironment(environment) {
         this.environment = environment;
         this.execute = function(params, callback) {
+            var executeobject = {};
+
             if (!params.command) { params.command = {}; }
 
-            if (isString(params))
-            {
-                var executeobject = {}
-                    executeobject.executethis=params
-                params = executeobject
-            }
+            if (isString(params)) { executeobject = {executethis:params}; }
+            else if (Array.isArray(params)) { executeobject = {command:{xrun:params}}; }
 
-            if (isArray(params))
-            {
-                var executeobject = {}
-                    executeobject.command={}
-                    executeobject.command.xrun = params
-                params = executeobject
-            }
+            params = executeobject;
 
             if (params.command.environment) { extend(true, params.command.environment, this.environment); }
             else { params.command.environment = this.environment; }
