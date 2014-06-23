@@ -41,6 +41,7 @@ function ettest_allexecute(executeobject, callback)
 	function (cb1) {ettest_howtodo({}, function (err, res) {cb1(null, res)})},
 	function (cb1) {ettest_executemisc({}, function (err, res) {cb1(null, res)})},
 	function (cb1) {ettest_nestedtestslevel1({}, function (err, res) {cb1(null, res)})} // all work to this point if color>205
+	//function (cb1) {ettest_nestedtestslevel1({}, function (err, res) {cb1(null, res)})}
     ],
     function (err, res) {
       proxyprinttodiv('result from many array', res, 99);
@@ -2163,12 +2164,20 @@ exports.ettest_runfirst3pass_lvl1 = ettest_runfirst3pass_lvl1 = function ettest_
 // /******* SECTION: New execute() tests 	*********/
 // /*===============================================*/
 
-exports.ettest_executestring1 = ettest_executestring1 = function ettest_executestring1(executeobject, callback)
+exports.ettest_executestring1 = 
+ettest_executestring1 = 
+function ettest_executestring1(executeobject, callback)
 {
+
       execute("test_return_noerror_result",function (err, res) {
 			proxyprinttodiv('executestring1 res --', res, 99);
+			var expected_result = {"a":"b","env":"local"};
+			var expected_error = null;
+			result = logverifycomplex("ettest_executestring1",res,expected_result,err,expected_error);
+			callback(null, result);
 			//callback(err,res);
 		});
+
 };
 
 exports.ettest_executeobject1 = ettest_executeobject1 = function ettest_executeobject1(executeobject, callback)
