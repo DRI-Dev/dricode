@@ -3,6 +3,17 @@
 
 // copyright (c) 2014 DRI
 
+// adding defaults here as this is loaded before config-server server side
+if (!Debug) { // printdiv
+    var Debug = 'false';
+}
+if (!debuglevel) { // printdiv
+    var debuglevel = 0;
+}
+if (!debugon) { // debugfn
+    var debugon = false;
+}
+
 function getdatabaseinfo(command, datastore, collection, keycollection, db, databasetable) {
     proxyprinttodiv('Function getdatabaseinfo collection', collection, 12);
     proxyprinttodiv('Function getdatabaseinfo keycollection', keycollection, 12);
