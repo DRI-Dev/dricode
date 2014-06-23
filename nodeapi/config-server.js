@@ -11,7 +11,7 @@ if (!Debug) { // printdiv
     var Debug = 'false';
 }
 if (!debuglevel) { // printdiv
-    var debuglevel = 0;
+    var debuglevel = exports.debuglevel = 0;
 }
 if (!debugon) { // debugfn
     var debugon = false;
