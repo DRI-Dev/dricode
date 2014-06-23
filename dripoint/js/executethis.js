@@ -831,15 +831,15 @@
         // create step2 of inside--set execute_parameter
         var secondcopy={};
         extend(true, secondcopy, inparams);
-        secondcopy.command.processparameterfn = "execute_nothing"; // so create_what is not called again
-        secondcopy.command.processfn = "execute_parameter";
+        secondcopy.command.processparameterfn = "execute_parameter"; // so create_what is not called again
+        secondcopy.command.processfn = "execute_function";
         outparams.command.xrun.push(secondcopy);
 
         // create third copy for execute get wid
         var thirdcopy={};
         extend(true, thirdcopy, inparams);
-        thirdcopy.command.processparameterfn = "execute_nothing"; // so create_what is not called again
-        thirdcopy.command.processfn = "execute_get_wid";
+        thirdcopy.command.processparameterfn = "execute_get_wid"; // so create_what is not called again
+        thirdcopy.command.processfn = "execute_function";
         outparams.command.xrun.push(thirdcopy);
 
         proxyprinttodiv("create_what_to_do_list outparams", outparams, 11, true);
