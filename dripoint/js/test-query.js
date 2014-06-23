@@ -1,6 +1,167 @@
 
 var widtests = widtests || {};
 
+
+exports.etmttest2 = widtests.etmttest2 = etmttest2 = function etmttest2(params, callback) {
+    debuglevel = 17;
+    console.log("<< mongoquery_two_test >>");
+
+    eventappinstall();
+
+    //To add wid data
+    var executeList = [];
+    var dtoObj = {
+        "executethis": "updatewid",
+        "metadata.method": "testdto",
+        "wid": "testdto",
+        "a": "string",
+        "b": "string"
+    };
+    executeList.push(dtoObj);
+    for (var i = 1; i <= 5; i++) {
+        var executeobj = {};
+        executeobj["executethis"] = "updatewid";
+        executeobj["metadata.method"] = "testdto";
+        executeobj["wid"] = "wid" + i;
+        executeobj["a"] = "" + (i);
+        executeobj["b"] = "" + (i * i);
+        executeList.push(executeobj);
+    }
+
+    //To query data
+    var queryobj = {};
+
+    queryobj["executethis"] = "querywid";
+    queryobj["rawmongoquery"] = {
+        "$or": [{
+            "data.a": "string"
+        }]
+    };
+    executeList.push(queryobj);
+
+    queryobj["rawmongoquery"] = {
+        "$or": [{
+            "data.a": "1"
+        }, {
+            "data.b": "1"
+        }]
+    };
+    executeList.push(queryobj);
+
+    queryobj["rawmongoquery"] = {
+        "$or": [{
+            "data.a": "1"
+        }, {
+            "data.b": "16"
+        }]
+    };
+    executeList.push(queryobj);
+
+    proxyprinttodiv("execute list ", executeList, 17);
+
+    execute(executeList, function(err, res) {
+        proxyprinttodiv('Function verifytestresults', res, 17);
+        console.log(' >>> final response after executerray >>> ' + JSON.stringify(res));
+        var expectedResultList = [{
+            "wid": "wid4",
+            "metadata.method": "testdto",
+            "data.a": "4",
+            "data.b": "16"
+        }, {
+            "wid": "wid5",
+            "metadata.method": "testdto",
+            "data.a": "5",
+            "data.b": "25"
+        }];
+
+        proxyprinttodiv("res --", res, 17);
+        var actual_result = [res];
+        proxyprinttodiv("actual_result --", actual_result, 17);
+
+        var expected_result = [
+            [{
+                "data": {
+                    "a": "string",
+                    "b": "string"
+                },
+                "wid": "testdto",
+                "metadata": {
+                    "method": "testdto",
+                    "date": "2014-03-19T11:37:35.827Z"
+                }
+            }],
+            [{
+                "data": {
+                    "a": "1",
+                    "b": "1"
+                },
+                "wid": "wid1",
+                "metadata": {
+                    "method": "testdto",
+                    "date": "2014-03-19T11:37:35.878Z"
+                }
+            }],
+            [{
+                "data": {
+                    "a": "2",
+                    "b": "4"
+                },
+                "wid": "wid2",
+                "metadata": {
+                    "method": "testdto",
+                    "date": "2014-03-19T11:37:35.952Z"
+                }
+            }],
+            [{
+                "data": {
+                    "a": "3",
+                    "b": "9"
+                },
+                "wid": "wid3",
+                "metadata": {
+                    "method": "testdto",
+                    "date": "2014-03-19T11:37:35.998Z"
+                }
+            }],
+            [{
+                "data": {
+                    "a": "4",
+                    "b": "16"
+                },
+                "wid": "wid4",
+                "metadata": {
+                    "method": "testdto",
+                    "date": "2014-03-19T11:37:36.049Z"
+                }
+            }],
+            [{
+                "data": {
+                    "a": "5",
+                    "b": "25"
+                },
+                "wid": "wid5",
+                "metadata": {
+                    "method": "testdto",
+                    "date": "2014-03-19T11:37:36.097Z"
+                }
+            }],
+            [],
+            [],
+            []
+        ];
+        proxyprinttodiv("expected_result --", expected_result, 17);
+
+        res = logverify("logverify", actual_result, expected_result);
+        callback(err, res);
+    });
+}
+widtests.etmttest2.category = "execute";
+widtests.etmttest2.subcategory = "daily";
+widtests.etmttest2.js = exports.etmttest2;
+widtests.etmttest2.description = "this does a test";
+
+
+
 exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(params, callback) {
     debuglevel = 17;
     console.log("<< mttest3 >>");

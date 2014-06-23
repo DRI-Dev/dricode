@@ -22,8 +22,11 @@
 
 // This is the master test. this test calls all of the individual testing groups.
 // Don't execute this without prints disabled... ridding all prints brings total execution time down to ~ 1.3ms
+
+var widtests = widtests || {};
+
 exports.ettest_allexecute = 
-//wid.ettest_allexecute = 
+widtests.ettest_allexecute = 
 ettest_allexecute = 
 function ettest_allexecute(executeobject, callback) 
 {
@@ -41,20 +44,23 @@ function ettest_allexecute(executeobject, callback)
 	function (cb1) {ettest_howtodo({}, function (err, res) {cb1(null, res)})},
 	function (cb1) {ettest_executemisc({}, function (err, res) {cb1(null, res)})},
 	function (cb1) {ettest_nestedtestslevel1({}, function (err, res) {cb1(null, res)})} // all work to this point if color>205
-	//function (cb1) {ettest_nestedtestslevel1({}, function (err, res) {cb1(null, res)})}
+	//function (cb1) {ettest_executestring1({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {environment.sync({}, function (err, res) {cb1(null, res)})}
+	
     ],
     function (err, res) {
       proxyprinttodiv('result from many array', res, 99);
       callback(null,res);
 	  proxyprinttodiv('total elapsed time ', new Date().getTime() - start, 99);
     })
+	console.log('end ettest_allexecute');
 };
-/*
-wid.ettest_allexecute.category = "executeit";
-wid.ettest_allexecute.subcategory = "dothis";
-wid.ettest_allexecute.type = "na";
-wid.ettest_allexecute.name = "This is the master test. this test calls all of the individual testing groups for testing execute.";
-*/
+
+widtests.ettest_allexecute.category = "daily";
+widtests.ettest_allexecute.subcategory = "push";
+widtests.ettest_allexecute.js = ettest_allexecute;
+widtests.ettest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing execute.";
+
 // /*===============================================*/  
 // /******* SECTION: series Level 0 		*********/
 // /*===============================================*/
@@ -108,13 +114,8 @@ function ettest_serieslevel0(executeobject, callback)
 				proxyprinttodiv('composite_obj', composite_obj, 99);
 				callback(null, composite_obj)
 		  });
+
 	};
-	/*
-	wid.ettest_serieslevel0pass1.category = "executeit";
-	wid.ettest_serieslevel0pass1.subcategory = "dothis";
-	wid.ettest_serieslevel0pass1.type = "daily";
-	wid.ettest_serieslevel0pass1.name = "series, level 0, 1 function that passes locally";
-*/
 
 	//series, level 0, 3 tests pass locally
 	exports.ettest_serieslevel0pass3 = 
@@ -183,7 +184,7 @@ function ettest_serieslevel0(executeobject, callback)
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
-				proxyprinttodiv('expected result000', null, 99, true);
+				proxyprinttodiv('expected result', null, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
 				proxyprinttodiv('expected error', global_failnotfound, 99);
 				
@@ -989,7 +990,7 @@ function ettest_runfirstonelevel1(executeobject, callback)
 		  })
 	};
 
-	// runfirstone, level 1, 3 tests: 1st passes, 2nd fails, 3rd passes
+	// runfirstone, level 1, 3 tests: 1st fails, 2nd fails, 3rd passes
 	exports.ettest_runfirstonelevel1fail3middle = 
 	ettest_runfirstonelevel1fail3middle = 
 	function ettest_runfirstonelevel1fail3middle(executeobject, callback) 
@@ -1026,7 +1027,7 @@ function ettest_runfirstonelevel1(executeobject, callback)
 		);
 	};
 
-	// runfirstone, level 1, 1st passes, 2nd passes, 3rd fails
+	// runfirstone, level 1, 1st fails, 2nd fails, 3rd fails
 	exports.ettest_runfirstonelevel1fail3last = 
 	ettest_runfirstonelevel1fail3last = 
 	function ettest_runfirstonelevel1fail3last(executeobject, callback) 
@@ -2180,11 +2181,16 @@ function ettest_executestring1(executeobject, callback)
 
 };
 
-exports.ettest_executeobject1 = ettest_executeobject1 = function ettest_executeobject1(executeobject, callback)
+exports.ettest_executeobject1 = 
+ettest_executeobject1 = 
+function ettest_executeobject1(executeobject, callback)
 {
       execute({"executethis":"test_return_noerror_result"},function (err, res) {
 			proxyprinttodiv('executestring1 res --', res, 99);
-			//callback(err,res);
+			var expected_result = {"a":"b","env":"local"};
+			var expected_error = null;
+			result = logverifycomplex("ettest_executeobject1",res,expected_result,err,expected_error);
+			callback(null, result);
 		});
 };
 
@@ -2196,7 +2202,10 @@ exports.ettest_executelist1 = ettest_executelist1 = function ettest_executelist1
 				{"executethis":"test_return_noerror_result3"}
 			]},function (err, res) {
 			proxyprinttodiv('executestring1 res --', res, 99);
-			//callback(err,res);
+			var expected_result = [{"a":"b","env":"local"},{"x":"y","env":"local"},{"x3":"y3","env":"local"}];
+			var expected_error = null;
+			result = logverifycomplex("ettest_executelist1",res,expected_result,err,expected_error);
+			callback(null, result);
 		});
 };
 
@@ -2208,7 +2217,10 @@ exports.ettest_executelist2 = ettest_executelist2 = function ettest_executelist2
 				"test_return_noerror_result3"
 			]},function (err, res) {
 			proxyprinttodiv('executestring1 res --', res, 99);
-			//callback(err,res);
+			var expected_result = [{"a":"b","env":"local"},{"x":"y","env":"local"},{"x3":"y3","env":"local"}];
+			var expected_error = null;
+			result = logverifycomplex("ettest_executelist2",res,expected_result,err,expected_error);
+			callback(null, result);
 		});
 };
 
@@ -2246,15 +2258,9 @@ function ettest_executewithattributes1(executeobject, callback)
   
       executeobject.command.environment.processfn="execute_function";
       executeobject.command.xrun=[
-								//{"executethis":"updatewid",
-									//"wid":"colordto",
-									//"metadata":{"method":"colordto"},
-									//"color":"string"
-                                  //}, 
 								{
 								"executethis": "updatewid",
 								"wid":"wid1",
-								//"metadata":{"method":"colordto"},
 								"color":"red"}];
 	var expectedresult = {
 			"data": {

@@ -11,8 +11,8 @@ function run_cat1_tests(params, callback)
 
 function run_daily_tests(params, callback)
 {
-	var filter = {'subcategory':'daily'};
-	console.log('sending param {"subcategory":"daily"} to run_filtered_functions()');
+	var filter = {'category':'daily'};
+	console.log('sending param {"category":"daily"} to run_filtered_functions()');
 	run_filtered_functions(filter, function (err, res) {
 			console.log('end run_daily_tests');
 		});
