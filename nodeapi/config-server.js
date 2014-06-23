@@ -7,6 +7,15 @@
 //     var exports = {};
 // }
 
+if (!Debug) { // printdiv
+    var Debug = 'false';
+}
+if (!debuglevel) { // printdiv
+    var debuglevel = 0;
+}
+if (!debugon) { // debugfn
+    var debugon = false;
+}
 
 exports.localStore = localStore = function () {
     var json = {};
