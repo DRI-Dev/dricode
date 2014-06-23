@@ -4273,10 +4273,13 @@ function totalStorageSize(){
 
             if (!params.command) { params.command = {}; }
 
-            if (isString(params)) { executeobject = {executethis:params}; }
-            else if (Array.isArray(params)) { executeobject = {command:{xrun:params}}; }
-
-            params = executeobject;
+            if (isString(params)) {
+                executeobject = {executethis:params};
+                params = executeobject;
+            } else if (Array.isArray(params)) {
+                executeobject = {command:{xrun:params}};
+                params = executeobject;
+            }
 
             if (params.command.environment) { extend(true, params.command.environment, this.environment); }
             else { params.command.environment = this.environment; }
