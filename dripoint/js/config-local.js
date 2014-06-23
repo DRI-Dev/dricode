@@ -1,9 +1,7 @@
 // copyright (c) 2014 DRI 
+
 if (!exports) {
     var exports = {};
-}
-if (!config) { // used in executethis
-    var config = {};
 }
 
 if (!Debug) { // printdiv
@@ -15,6 +13,72 @@ if (!debuglevel) { // printdiv
 if (!debugon) { // debugfn
     var debugon = false;
 }
+
+exports.localStore = localStore = function () {
+    var json = {};
+
+    function clear() {
+        this.json = {};
+    }
+
+    function push(key, val) {
+        this.json[key] = val;
+    }
+
+    function get(key) {
+        return this.json[key];
+    }
+
+    function remove(key) {
+        delete this.json[key];
+    }
+
+    return {
+        "clear": clear,
+        "json": json,
+        "push": push,
+        "remove": remove,
+        "get": get
+    };
+
+}();
+
+localStore.clear();
+
+exports.getglobal = getglobal = function getglobal(varname) {
+    return localStore.get(varname);
+};
+
+exports.saveglobal = saveglobal = function saveglobal(varname, varvalue) {
+    return localStore.push(varname, varvalue);
+};
+
+// logic to add things to localStore object
+exports.addtolocal = addtolocal = function addtolocal(widName, widobject) {
+    if (!widobject) {
+        widobject = {};
+    }
+    if (widName) {
+        //localStore.push(config.configuration.widmasterkey + widName, widobject);
+        localStore.push(widName, widobject);
+    }
+};
+
+// logic to get things from localStore object
+exports.getfromlocal = getfromlocal = function getfromlocal(inputWidgetObject) {
+    var output = null;
+    output = localStore.get(inputWidgetObject);
+    //if (output === null) { output = {}; }
+    proxyprinttodiv('getfromlocal output', output, 38);
+    return output;
+};
+
+exports.clearLocal = clearLocal = function clearLocal() {
+    // widMasterKey = "widmaster_";
+    localStore.clear();
+    //potentialwid = 0;
+};
+
 
 function setdefaultparm() {
 

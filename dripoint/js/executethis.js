@@ -114,6 +114,7 @@
             for (var eachitem in executionparameters) 
             {
                 // if no type then make default type series
+                // I think this code can be taken out since executeion preferences wil have this default
                  proxyprinttodiv("inparams executionparameters[eachitem]", executionparameters[eachitem],11);
                 if (!executionparameters[eachitem].command) {executionparameters[eachitem].command={};}
                 if (!executionparameters[eachitem].command.environment) {executionparameters[eachitem].command.environment={};}
@@ -166,6 +167,7 @@
         extend(true, executionpreferences.command.environment, inparams.command.environment);
         delete inparams.command.environment;
 
+        // should executelevel be increased here?
         if (!executionpreferences.command.environment.run.executelevel) {executionpreferences.command.environment.run.executelevel=0;}
         if (!executionpreferences.command.environment.run.executeid) {executionpreferences.command.environment.run.executeid=createNewGuid();}
         if (!executionpreferences.command.environment.run.type) {executionpreferences.command.environment.run.type="series";}
@@ -449,6 +451,10 @@
                             //proxyprinttodiv('execute executionpreferences.command.environment.run.executelevel I', executionpreferences.command.environment.run.executelevel, 11);
 
                             extend(true, outgoingparam, previousresults, executionpreferences, currentexecute);
+
+                            // use the new level in outgoing params
+                            outgoingparam.command.environment.run.executelevel=executionpreferences.command.environment.run.executelevel;
+
                             //proxyprinttodiv('execute executionpreferences.command.environment.run.executelevel II', executionpreferences.command.environment.run.executelevel, 11);
                             //proxyprinttodiv("before execute outgoingparam", outgoingparam, 11);
                             //proxyprinttodiv("before execute executionpreferences", executionpreferences, 11);
