@@ -235,7 +235,7 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
     callback(null,null);
 };
 
-eventdeviceready();
+
 
 exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
     processevent(arguments.callee.name, function (err, res) {
