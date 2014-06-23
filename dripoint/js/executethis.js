@@ -806,6 +806,16 @@
         callback(null, outparams);
     };
 
+    window.sync_local = function sync_local(inparams, callback) {
+        proxyprinttodiv("sync_local_server inparams", inparams, 11);
+        var outparams = {};
+        extend(true, outparams, inparams);
+        outparams.command.processfn = "execute_function";
+        outparams.command.processparameterfn = "execute_nothing";
+        proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
+        callback(null, outparams);
+    };
+
     // this function expands inparams to be three calls, to execute_function, execute_parameter, execute_get_wid
     // it sets these to "runfirstone" 
     // it further splits executegetwid into getwic and execute_function, its set these to "waterfall"

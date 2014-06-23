@@ -352,7 +352,8 @@ exports.execute_server = window.execute_server = execute_server = function execu
 
         //var inbound_parameters = {};
         //extend(true, inbound_parameters, params);
-        //params = toLowerKeys(params);
+        //params =
+    delete params.command.processfn;
 
         if (params.serverfn) // note the first par of if should be deleted...only for testing server locally
         {
