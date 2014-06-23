@@ -9004,6 +9004,14 @@ exports.ettestgetwidserver = ettestgetwidserver = function ettestgetwidserver(pa
     });
 };
 
+exports.ettestdeletewid = ettestdeletewid = function ettestdeletewid(params, callback) {
+    var etEnvironment = new drienvironment(params.command.environment);
+    etEnvironment.execute({executethis:'deletewid',wid:'testdata123'}, function (err, result) {
+        proxyprinttodiv('getwid results', result, 99);
+        callback(err, result);
+    });
+};
+
 exports.ettestaddwidmaster = ettestaddwidmaster = function ettestaddwidmaster(params, callback) {
     var etEnvironment = new drienvironment(params.command.environment);
     etEnvironment.execute({executethis:'addwidmaster',wid:'mastertestdata123',key1:'value1',key2:'value2'}, function (err, result) {
