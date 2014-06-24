@@ -845,7 +845,7 @@ function ettest_waterfalllevel1(executeobject, callback)
 		  executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
-									  {"executethis": 'test_return_failnotfound_result'},
+									  {"executethis": 'test_return_notfound_result'},
 									  {"executethis": 'test_return_noerror_result'}
 									  ]; 
 
@@ -855,9 +855,9 @@ function ettest_waterfalllevel1(executeobject, callback)
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
 				proxyprinttodiv('expected result', null, 99, true);
 				proxyprinttodiv('actual error',error_obj, 99);
-				proxyprinttodiv('expected error', global_failnotfound, 99);
+				proxyprinttodiv('expected error', global_notfound, 99);
 				
-				var composite_obj=logverifycomplex("ettest_waterfalllevel1fail3middle", result_obj,null, error_obj, global_failnotfound);
+				var composite_obj=logverifycomplex("ettest_waterfalllevel1fail3middle", result_obj,null, error_obj, global_notfound);
 				callback(null, composite_obj);
 		  } 
 		);
@@ -1207,8 +1207,8 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 		  executeobject.command.environment.processfn="execute_function";
 		  executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun=[
-									  {"executethis": 'test_return_failnotfound_result'},
-									  {"executethis": 'test_return_failnotfound_result'},
+									  {"executethis": 'test_return_notfound_result'},
+									  {"executethis": 'test_return_notfound_result'},
 									  {"executethis": 'test_return_realerror_result'}
 									  ]; 
 
@@ -2047,9 +2047,9 @@ function ettest_nestedtestslevel1(executeobject, callback)
 	 };
 	 
 	 		 //this test calls a, and a is an execution object with xrun = [noerror,noerror,noerror]
-	 exports.ettest_nestedtestslevel1fail3fail = 
-	 ettest_nestedtestslevel1fail3fail = 
-	 function ettest_nestedtestslevel1fail3fail(executeobject, callback) 
+	 exports.ettest_nestedtestslevel1fail3last = 
+	 ettest_nestedtestslevel1fail3last = 
+	 function ettest_nestedtestslevel1fail3last(executeobject, callback) 
 	 {		
 	 	  if (!executeobject.command) {
               executeobject.command={};
