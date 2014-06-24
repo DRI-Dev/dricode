@@ -590,7 +590,7 @@
                                     {arrayresult=[];}
 
                                     // if error and if not past error OR if new error "bigger" than notfound then save it
-                                    if (fromstep02err) 
+                                    if (fromstep02err)
                                     {
                                         if (!overallerror) // if not overallerror then create one
                                         {
@@ -604,7 +604,7 @@
                                             {   // anything is "bigger than not found"
                                     
                                                 skipexecute=true;
-                                                overallerror=fromstep02err; 
+                                                overallerror=fromstep02err;
                                             }
                                             else
                                             {   // anything is bigger than failnotfound...execpt not found
@@ -811,7 +811,7 @@
         var outparams = {};
         extend(true, outparams, inparams);
         outparams.command.processfn = "execute_function";
-        outparams.command.processparameterfn = "execute_nothing";
+//        outparams.command.processparameterfn = "execute_nothing";
         proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
         callback(null, outparams);
     };
@@ -827,7 +827,7 @@
         outparams.command = {};
         extend(true, outparams.command, inparams.command);
         outparams.command.environment.run.type = "runfirstone";
-        outparams.command.processfn = "execute_function";
+//        outparams.command.processfn = "execute_function";
         outparams.command.xrun = [];
 
         //nest all of below into one xrun
@@ -879,7 +879,7 @@
 		if (!inparams.executethis) 
         {
             proxyprinttodiv('execute end of execute_get_wid I', inparams, 11);
-            execute_createerror(params, cb);
+            execute_createerror(inparams, cb);
         } 
         else 
         {
@@ -891,18 +891,20 @@
             params.command.processfn = "execute_function";
             params.command.keepaddthis=false;
             execute(params, function (err, res) {
+                if (!res) {res={};}
+                if (!res.command) {res.command={};}
+
                 if (err) 
                 {
-                    if (!res) {res={};}
-                    if (!res.command) {res.command={};}
-                    execute_createerror(params, cb);
+                    execute_createerror(res, cb);
                 }
                 else
 				{
                     // if we got results from get wid, then execute them
-                    inparams.command.processparameterfn = "execute_nothing";
-                    inparams.command.processfn = "execute_function";
-                    res = extend(true, {}, inparams, res);
+//                    inparams.command.processparameterfn = "execute_nothing";
+//                    inparams.command.processfn = "execute_function";
+//                    res = extend(true, {}, inparams, res);
+                    res.command.processparameterfn = res.command.processparameterfn || "execute_nothing";
                     cb(null, res)
                 }
             })
