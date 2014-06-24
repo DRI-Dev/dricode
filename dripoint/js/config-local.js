@@ -348,35 +348,35 @@ exports.deletelist = deletelist = function deletelist(listToDo, eventname, callb
 
 
 exports.execute_server = window.execute_server = execute_server = function execute_server(params, callback) {
-    proxyprinttodiv('Function server TO ------', params, 99);
+    proxyprinttodiv('Function server TO ------', params, 99, true);
 
         //var inbound_parameters = {};
         //extend(true, inbound_parameters, params);
         //params =
     delete params.command.processfn;
 
-        if (params.serverfn) // note the first par of if should be deleted...only for testing server locally
-        {
-            params.command.xrun = params.serverfn;
-            delete params.serverfn;
-            params.command.environment.platform = "server";
-            proxyprinttodiv('server calling execute params', params, 99, true);
-            execute(params, function (err, res) {
-                proxyprinttodiv('server results res',res, 99, true, true);
-                // reset back to local
-                params.command.environment.platform = "local";
-                checkenviornment(params.command.environment);
-                callback(err, res);
-            });
-        }
-        else 
-        {
-            proxyprinttodiv('server calling ajax params', params, 99, true);
-            executeAjax("", params, function (data) {
-                  proxyprinttodiv('server results data',data, 99, true);
-                  callback(null, data);
-            });
-        }
+    if (params.serverfn) // note the first par of if should be deleted...only for testing server locally
+    {
+        params.command.xrun = params.serverfn;
+        delete params.serverfn;
+        params.command.environment.platform = "server";
+        proxyprinttodiv('server calling execute params', params, 99, true);
+        execute(params, function (err, res) {
+            proxyprinttodiv('server results res',res, 99, true, true);
+            // reset back to local
+            params.command.environment.platform = "local";
+            checkenviornment(params.command.environment);
+            callback(err, res);
+        });
+    }
+    else
+    {
+        proxyprinttodiv('server calling ajax params', params, 99, true);
+        executeAjax("", params, function (data) {
+              proxyprinttodiv('server results data',data, 99, true);
+              callback(null, data);
+        });
+    }
 };
 
 
