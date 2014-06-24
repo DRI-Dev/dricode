@@ -920,7 +920,8 @@
      // when whattodo fn, parm, executeget wid is unable to do something in that try
     window.execute_createerror =  function execute_createerror(params, callback) {
         proxyprinttodiv('execute end of execute_nothing', params, 11);
-        callback({"errorname":"fnnotfound"}, params);
+//        callback({"errorname":"fnnotfound"}, params);
+        callback({"errorname":"fnnotfound"}, null);
     };
 
     // main execute function
