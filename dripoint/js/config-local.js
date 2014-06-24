@@ -360,7 +360,7 @@ exports.execute_server = window.execute_server = execute_server = function execu
             params.command.xrun = params.serverfn;
             delete params.serverfn;
             params.command.environment.platform = "server";
-            proxyprinttodiv('server calling execute params', params, 99);
+            proxyprinttodiv('server calling execute params', params, 99, true);
             execute(params, function (err, res) {
                 proxyprinttodiv('server results res',res, 99, true);
                 // reset back to local
