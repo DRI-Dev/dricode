@@ -525,7 +525,7 @@
                                         proxyprinttodiv("execute step02 outgoingparam", outgoingparam, 11, true);
                                         var processfn;
                                         
-                                        if (outgoingparam && outgoingparam.command && outgoingparam.command.processfn) 
+                                        if (outgoingparam && outgoingparam.command && outgoingparam.command.processfn)
                                         {
                                             proxyprinttodiv("after processfn", outgoingparam.command.processfn, 11);
                                             processfn=window[outgoingparam.command.processfn];
@@ -777,7 +777,7 @@
         outparams.command={};
         extend(true, outparams.command, inparams.command);
         outparams.command.environment.run.type = "runfirstonewaterfall";
-        outparams.command.processfn = "execute_function";
+//        outparams.command.processfn = "execute_function";
         outparams.command.xrun = [];
 
         // create step1 of inside--copy all minus processparameterfn, set create_what_to_do_list
