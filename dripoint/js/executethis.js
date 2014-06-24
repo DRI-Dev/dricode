@@ -900,6 +900,7 @@
                 else
 				{
                     // if we got results from get wid, then execute them
+                    inparams.command.processparameterfn = "execute_nothing";
                     inparams.command.processfn = "execute_function";
                     res = extend(true, {}, inparams, res);
                     cb(null, res)
