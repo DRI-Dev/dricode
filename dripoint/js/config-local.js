@@ -362,7 +362,7 @@ exports.execute_server = window.execute_server = execute_server = function execu
             params.command.environment.platform = "server";
             proxyprinttodiv('server calling execute params', params, 99, true);
             execute(params, function (err, res) {
-                proxyprinttodiv('server results res',res, 99, true);
+                proxyprinttodiv('server results res',res, 99, true, true);
                 // reset back to local
                 params.command.environment.platform = "local";
                 checkenviornment(params.command.environment);
@@ -371,7 +371,7 @@ exports.execute_server = window.execute_server = execute_server = function execu
         }
         else 
         {
-            proxyprinttodiv('server calling ajax params', params, 99);
+            proxyprinttodiv('server calling ajax params', params, 99, true);
             executeAjax("", params, function (data) {
                   proxyprinttodiv('server results data',data, 99, true);
                   callback(null, data);

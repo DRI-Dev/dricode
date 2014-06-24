@@ -2047,9 +2047,9 @@ function ettest_nestedtestslevel1(executeobject, callback)
 	 };
 	 
 	 		 //this test calls a, and a is an execution object with xrun = [noerror,noerror,noerror]
-	 exports.ettest_nestedtestslevel1fail3fail = 
-	 ettest_nestedtestslevel1fail3fail = 
-	 function ettest_nestedtestslevel1fail3fail(executeobject, callback) 
+	 exports.ettest_nestedtestslevel1fail3last = 
+	 ettest_nestedtestslevel1fail3last = 
+	 function ettest_nestedtestslevel1fail3last(executeobject, callback) 
 	 {		
 	 	  if (!executeobject.command) {
               executeobject.command={};
