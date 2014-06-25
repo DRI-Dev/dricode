@@ -921,3 +921,128 @@ widtests.ettestt1s.category = "execute";
 widtests.ettestt1s.subcategory = "daily";
 widtests.ettestt1s.js = exports.ettestt1s;
 widtests.ettestt1s.description = "this does a test";
+
+
+// this one inserts same amount of data but does not fail
+// enter lots of data in series, ths inserts data via different executes results in Max Range error
+//exports.ettest_recurseModObj = ettest_recurseModObj = function ettest_recurseModObj(params, callback) {
+exports.ettest_recurseModObj = widtests.ettest_recurseModObj = ettest_recurseModObj = function ettest_recurseModObj(params, callback) {
+    eventappinstall();
+    debuglevel = 17;
+    // config = setconfig1();
+    var recModObj = recurseModObj({
+        "metadata": {
+            "method": "wid2"
+        },
+        "a": "b",
+        "c": "30",
+        "e": "f",
+        "d": "6/23/1912",
+        "q": {
+            "w": {
+                "e": "t"
+            }
+        },
+        "g": "true"
+    }, {
+        "metadata": {
+            "method": "wid2"
+        },
+        "a": "string",
+        "c": "number",
+        "d": "date",
+        "q": {
+            "w": {
+                "e": "string"
+            }
+        },
+        "g": "boolean"
+    }, {}, function(err, res) {
+
+        proxyprinttodiv('recurseModObj inputObject', {
+            "metadata": {
+                "method": "wid2"
+            },
+            "a": "b",
+            "c": "30",
+            "e": "f",
+            "d": "6/23/1912",
+            "q": {
+                "w": {
+                    "e": "t"
+                }
+            },
+            "g": "true"
+        }, 17);
+        proxyprinttodiv('recurseModObj inputDTO', {
+            "metadata": {
+                "method": "wid2"
+            },
+            "a": "string",
+            "c": "number",
+            "d": "date",
+            "q": {
+                "w": {
+                    "e": "string"
+                }
+            },
+            "g": "boolean"
+        }, 17);
+        proxyprinttodiv("res --", res, 17);
+        var actual_result = [res];
+        proxyprinttodiv("actual_result --", actual_result, 17);
+
+        var expected_result = [{
+            "metadata": {
+                "method": "wid2"
+            },
+            "a": "b",
+            "c": "30",
+            "d": "6/23/1912",
+            "q": {
+                "w": {
+                    "e": "t"
+                }
+            },
+            "g": "true"
+        }];
+        proxyprinttodiv("expected_result --", expected_result, 17);
+
+        res = logverify("logverify", actual_result, expected_result);
+        callback(err, res);
+    });
+}
+widtests.ettest_recurseModObj.category = "daily";
+widtests.ettest_recurseModObj.subcategory = "addhoc";
+widtests.ettest_recurseModObj.js = exports.ettest_recurseModObj;
+widtests.ettest_recurseModObj.description = "this does a test";
+
+
+//*********************************************
+// pack_up_params() tests
+//*********************************************
+
+
+exports.pu1 = widtests.pu1 = pu1 = function pu1(params, callback) {
+    var params = {
+        "Alpha": "1",
+        "Beta": "2",
+        "Charlie": "3",
+        "Delta": "4"
+    };
+    var command = {
+        "command": {
+            "somefunction": "orange",
+            "action": "reaction"
+        }
+    };
+    var err;
+    var result = {};
+
+    result = pack_up_params(params, command, "somefunction");
+    callback(err, result);
+}
+widtests.pu1.category = "daily";
+widtests.pu1.subcategory = "addhoc";
+widtests.pu1.js = exports.pu1;
+widtests.pu1.description = "this does a test";

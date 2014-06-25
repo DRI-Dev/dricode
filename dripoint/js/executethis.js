@@ -790,6 +790,7 @@
         var secondcopy={};
         extend(true, secondcopy, inparams);
         secondcopy.command.environment.run.executelevel=0;
+        secondcopy.command.environment.platform="server";
         secondcopy.command.processfn = "execute_server";
         outparams.command.xrun.push(secondcopy);
             
@@ -862,15 +863,17 @@
     window.execute_parameter = function execute_parameter(params, callback) {
         if (!params[params.executethis]) 
         {
-            params.command.processfn="execute_createerror";
+            execute_createerror(inparams, cb);
+            //params.command.processfn="execute_createerror";
         } 
         else 
         {
             params.executethis = params[params.executethis];
-        }
+        //}
         params.command.processfn="execute_function";
         proxyprinttodiv('execute end of execute_parameter', params, 11);
         callback(null, params)
+        }
     };
 
     // if parms are {et: x} then to a getwid to x ... then excucte the results of x

@@ -252,39 +252,6 @@ widtests.lwr14.js = exports.lwr14;
 widtests.lwr14.description = "this does a test";
 
 
-
-//*********************************************
-// pack_up_params() tests
-//*********************************************
-
-exports.pu1 = widtests.pu1 = pu1 = function pu1(params, callback) {
-    var params = {
-        "Alpha": "1",
-        "Beta": "2",
-        "Charlie": "3",
-        "Delta": "4"
-    };
-    var command = {
-        "command": {
-            "somefunction": "orange",
-            "action": "reaction"
-        }
-    };
-    var err;
-    var result = {};
-
-    result = pack_up_params(params, command, "somefunction");
-    callback(err, result);
-}
-widtests.pu1.category = "daily";
-widtests.pu1.subcategory = "addhoc";
-widtests.pu1.js = exports.pu1;
-widtests.pu1.description = "this does a test";
-
-
-
-
-
 //*********************************************
 // insertbydtotype() tests
 //*********************************************

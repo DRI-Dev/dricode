@@ -135,9 +135,9 @@ function config123() {
 
 // *********** EVENTS **************************************************
 exports.eventappinstall = eventappinstall = function eventappinstall() {
-//   if (exports.environment === 'local') {
-//       clearLocalStorage();
-//   }
+  if (exports.environment === 'local') {
+      clearLocalStorage();
+  }
 };
 
 exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
