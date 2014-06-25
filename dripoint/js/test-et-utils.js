@@ -5,6 +5,34 @@ var widtests = widtests || {};
 // getcommand() tests
 //*********************************************
 
+// These are the deepfilter tests
+//exports.ettestetdtt = ettestetdtt = function ettestetdtt(params, callback) {
+exports.ettestetdtt = widtests.ettestetdtt = ettestetdtt = function ettestetdtt(params, callback) {
+
+    var result = [];
+    var err;
+
+    etd16(result, function(err, r1) {
+        result.push(r1);
+        etd17(result, function(err, r2) {
+            result.push(r2);
+            etd18(result, function(err, r3) {
+                result.push(r3);
+                etd19(result, function(err, r4) {
+                    result.push(r4);
+                    callback(err, result);
+                });
+            });
+        });
+    });
+};
+widtests.ettestetdtt.category = "execute";
+widtests.ettestetdtt.subcategory = "daily";
+widtests.ettestetdtt.js = exports.ettestetdtt;
+widtests.ettestetdtt.description = "this does a test";
+
+
+
 // data, defaults, filter
 //exports.lwr1 = lwr1 = function lwr1(params, callback) {
 exports.lwr1 = widtests.lwr1 = lwr1 = function lwr1(params, callback) {

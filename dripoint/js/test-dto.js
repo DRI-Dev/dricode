@@ -1,6 +1,42 @@
 
 var widtests = widtests || {};
 
+// These are the add/get tests to stress out the dto/dot notation system
+//exports.ettestagtt = ettestagtt = function ettestagtt(params, callback) {
+exports.ettestagtt = widtests.ettestagtt = ettestagtt = function ettestagtt(params, callback) {
+
+    // execute([{
+    //         "executethis": "ettestag1"
+    //     }, {
+    //         "executethis": "ettestag2"
+    //     }, {
+    //         "executethis": "ettestag3"
+    //     }],
+    //     function (err, res) {
+    //         callback(err, res);
+    //     }
+    // );
+
+    var result = [];
+    var err;
+
+    ettestag1(result, function(err, r1) {
+        result.push(r1);
+        ettestag2(result, function(err, r2) {
+            result.push(r2);
+            ettestag3(result, function(err, r3) {
+                result.push(r3);
+                callback(err, result);
+            });
+        });
+    });
+};
+widtests.ettestagtt.category = "execute";
+widtests.ettestagtt.subcategory = "daily";
+widtests.ettestagtt.js = exports.ettestagtt;
+widtests.ettestagtt.description = "this does a test";
+
+
 exports.ettestag3v2 = widtests.ettestag3v2 = ettestag3v2 = function ettestag3v2(params, callback) {
     debuglevel = 0;
     execute([{
@@ -2942,3 +2978,1017 @@ widtests.etget11.category = "execute";
 widtests.etget11.subcategory = "daily";
 widtests.etget11.js = exports.etget11;
 widtests.etget11.description = "this does a test";
+
+
+//exports.ettestag11 = ettestag11 = function ettestag11(params, callback) {
+exports.ettestag11 = widtests.ettestag11 = ettestag11 = function ettestag11(parameters, callback) {
+
+    eventappinstall();
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "first_wid",
+            "data_1": "Red"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "second_wid",
+            "data_2": "Green"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "third_wid",
+            "data_3": "Blue"
+        }, {
+            "executethis": "first_wid"
+        }, {
+            "executethis": "second_wid"
+        }, {
+            "executethis": "third_wid"
+        }],
+        function(err, res) {
+
+            console.log('Function ag11 result\n' + JSON.stringify(res, '-', 4));
+
+            // res = logverify("ettestag11_result", res[3], [{
+            //     "data_1": "Red",
+            //     "wid": "first_wid",
+            //     "metadata": {}
+            // }]);
+
+            // res = logverify("ettestag11_result", res[4], [{
+            //     "data_2": "Green",
+            //     "wid": "second_wid",
+            //     "metadata": {}
+            // }]);
+
+            res = logverify("ettestag11_result", res[4], [{
+                "0": {
+                    "data_2": "Green",
+                    "wid": "second_wid",
+                    "metadata": {}
+                }
+            }])
+
+            // res = logverify("ettestag11_result", res[5], [{
+            //     "data_3": "Blue",
+            //     "wid": "third_wid",
+            //     "metadata": {}
+            // }]);
+
+            callback(err, res);
+        });
+};
+widtests.ettestag11.category = "execute";
+widtests.ettestag11.subcategory = "daily";
+widtests.ettestag11.js = exports.ettestag11;
+widtests.ettestag11.description = "this does a test";
+
+//exports.ettestag12 = ettestag12 = function ettestag12(params, callback) {
+
+
+// This will test the ability to write a dto to the db and retrieve it
+
+//exports.ettestag1 = ettestag1 = function ettestag1(params, callback) {
+exports.ettestag1 = widtests.ettestag1 = ettestag1 = function ettestag1(params, callback) {
+    // var debugger;
+    // debuglevel = 18;
+    // eventappinstall();
+
+    proxyprinttodiv("Ag1  params ", params, 99);
+    var env = new drienvironment(params.command.environment);
+    proxyprinttodiv("Ag1  env ", env, 99);
+    env.execute([{
+            //execute([{
+            "executethis": "addwidmaster",
+            "wid": "sounddto",
+            "metadata.method": "sounddto",
+            "note": "string"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "sounddto"
+        }],
+        function(err, res1) {
+            proxyprinttodiv("Ag1  result ", res1, 99);
+            // var res = res1[1]; //~~~ changed by SAURABH 
+            var res = res1[1];
+
+            proxyprinttodiv('Function ag1 expected res ', {
+                "note": "string",
+                "wid": "sounddto",
+                "metadata.method": "sounddto"
+            }, 99);
+            proxyprinttodiv('Function ag1 actual result ', res, 99);
+            res = logverify("ettestag1_result", res, {
+                "wid": "sounddto",
+                "metadata": {
+                    "method": "sounddto"
+                },
+                "note": "string"
+            });
+
+            callback(err, res);
+        });
+};
+
+widtests.ettestag1.category = "execute";
+widtests.ettestag1.subcategory = "daily";
+widtests.ettestag1.js = exports.ettestag1;
+widtests.ettestag1.description = "this does a test";
+
+
+//exports.ettestag1a = ettestag1a = function ettestag1a(params, callback) {
+exports.ettestag1a = widtests.ettestag1a = ettestag1a = function ettestag1a(params, callback) {
+    eventappinstall();
+
+    debuglevel = 75;
+    saveglobal("debugname", "updatewid");
+    saveglobal("debugcat", "");
+    debugsubcat = "";
+
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "superhero",
+            "name": "Nick"
+        }, {
+            "executethis": "updatewid",
+            "wid": "superhero",
+            "name": "Nick Fury"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "superhero"
+        }],
+        function(err, res) {
+            proxyprinttodiv('Function ag1 result ', res, 17);
+            res = logverify("ettestag1a_result", res[2], {
+                "name": "Nick Fury",
+                "wid": "superhero",
+                "metadata.method": ""
+            });
+
+
+            debugfn("updatewid code generator END", "updatewid", "add", "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 5);
+            saveglobal("debugname", "");
+            saveglobal("debugcat", "");
+            debugsubcat = "";
+
+            callback(err, res);
+        });
+};
+widtests.ettestag1a.category = "execute";
+widtests.ettestag1a.subcategory = "daily";
+widtests.ettestag1a.js = exports.ettestag1a;
+widtests.ettestag1a.description = "this does a test";
+
+// // This will test the ability to write a dto to the db, use that dto to write
+// // a wid with that dto, and get the results of getting that widtests.
+// exports.ag211 = ag211 = function ag211(params, callback) {
+//  // eventappinstall();
+//  // ag2_setup();
+//  executetest("getwidmaster", {
+//      "wid": "color1"
+//  }, "get_color1_result", "");
+
+//  params = logverify("alpha_unit_tests", "ag2_result", "get_color1_result", "", "", {
+//      "hue": "red",
+//      "wid": "color1",
+//      "metadata.method": "defaultdto"
+//  });
+
+//  console.log(' >>>>>> ' + params);
+
+//  if (callback instanceof Function) {
+//      var err;callback(err,params);
+//  } else {
+//      return params;
+//  }
+// }
+
+//exports.ettestag122 = ettestag122 = function ettestag122(params, callback) {
+exports.ettestag122 = widtests.ettestag122 = ettestag122 = function ettestag122(params, callback) {
+
+    var a = {
+        "wid": "systemdefault",
+        "command": {
+            "dtotype": "",
+            "adopt": "default",
+            "getwidmaster": {
+                "inheritflag": "false",
+                "execute": "ConvertFromDOTdri"
+            },
+            "resultparameters": {
+                "note": "string",
+                "wid": "sounddto",
+                "metadata": {
+                    "method": "sounddto"
+                }
+            }
+        },
+        "executethis": "getwidmaster"
+    };
+    proxyprinttodiv('>>>> before a', a, 99);
+    var filter_data = getcommand(a, {
+        "command.internalcall": false
+        //     // "beginexecute" : {"execute":"","parameters":{}},
+        //     // "beforemidexecute" : {"execute":"","parameters":{}},
+        //     // "beforepostexecute" : {"execute":"","parameters":{}},
+        //     // "endexecute" : {"execute":"","parameters":{}},
+        //     // "securitycheck" : {"execute":"","parameters":{}},
+        //     // "multiple" : {"execute":"","parameters":{}}
+
+    }, {
+        "command.internalcall": ""
+        // "beginexecute" : {"execute":"","parameters":{}},
+        // "beforemidexecute" : {"execute":"","parameters":{}},
+        // "beforepostexecute" : {"execute":"","parameters":{}},
+        // "endexecute" : {"execute":"","parameters":{}},
+        // "securitycheck" : {"execute":"","parameters":{}},
+        // "multiple" : {"execute":"","parameters":{}}
+
+    }, true);
+    proxyprinttodiv('>>>> after a', filter_data.output, 99);
+
+};
+widtests.ettestag122.category = "execute";
+widtests.ettestag122.subcategory = "daily";
+widtests.ettestag122.js = exports.ag211;
+widtests.ettestag122.description = "this does a test";
+
+// This will test the ability to write a dto to the db, use that dto to write
+// a wid with that dto, and get the results of getting that widtests.
+//exports.ettestag2 = ettestag2 = function ettestag2(params, callback) {
+exports.ettestag2 = widtests.ettestag2 = ettestag2 = function ettestag2(params, callback) {
+
+    //    eventappinstall();
+    // alert('here');
+
+    debuglevel = 75;
+    saveglobal("debugname", "");
+    saveglobal("debugcat", "");
+    saveglobal("debugsubcat", "code");
+
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "colordto",
+            "metadata.method": "colordto",
+            "hue": "string"
+        }, {
+            "executethis": "addwidmaster",
+            //"metadata.method": "colordto", // added by joe
+            "wid": "color1",
+            "hue": "red"
+        }, {
+            "executethis": "addwidmaster",
+            //"metadata.method": "colordto", // added by joe
+            "wid": "color2",
+            "hue": "blue"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "color1"
+        }],
+        function(err, res) {
+            debugfn("offlinegetwid code generator END", "ag2", "", "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
+
+            saveglobal("debugname", "");
+            saveglobal("debugcat", "");
+            debugsubcat = "";
+            proxyprinttodiv('Function ag2 result ', res, 38);
+            res = logverify("ettestag2_result", res[3], {
+                "hue": "red",
+                "wid": "color1",
+                "metadata": {
+                    "method": "defaultdto"
+                } // changed by joe
+                //"metadata": {"method":"colordto"}
+            });
+            callback(err, res);
+        });
+};
+widtests.ettestag2.category = "execute";
+widtests.ettestag2.subcategory = "daily";
+widtests.ettestag2.js = exports.ettestag2;
+widtests.ettestag2.description = "this does a test";
+
+// This is a 2 level test of the dtos...instantiate song1 with a songdto, and some sounddto values
+// failing due to a command object being sent back
+//exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
+exports.ettestag3 = widtests.ettestag3 = ettestag3 = function ettestag3(params, callback) {
+
+    //eventappinstall();
+
+    //debuglevel = 17;
+    //saveglobal("debugname", "");
+
+    //%%%%%%%%%%%%%%%%%%%%%
+    // Functions of --- config-local
+    // saveglobal("debugname", "offlineupdatewid");
+
+    // saveglobal("debugname", "offlinegetwid");
+    //%%%%%%%%%%%%%%%%%%%%%
+    // Functions of --- add
+
+    // %%%%%%%%%%%%%%%%%%%%%
+    // Functions of --- query
+    // saveglobal("debugname", "querywid");
+
+    // %%%%%%%%%%%%%%%%%%%%%
+    // Functions of --- get
+    // saveglobal("debugname", "getwid");
+
+    // saveglobal("debugname", "aggressivedto");
+
+    // saveglobal("debugname", "getcleanparameters");
+
+    // saveglobal("debugname", "getwidmaster");
+
+    // saveglobal("debugname", "getwidmongo");
+    // saveglobal("debugname", "getcleanparameters");
+    // %%%%%%%%%%%%%%%%%%%%%
+
+    // saveglobal("debugcat", "");
+    // saveglobal("debugsubcat", "code");
+
+    debuglevel = 0;
+    execute([{
+            // "executethis": "addwidmaster",
+            // "wid": "songdto",
+            // "metadata.method": "songdto",
+            // "title": "string",
+            // "metadata.sounddto.type": "onetomany",
+            // "sounddto.wid": "sounddto",
+            // "sounddto.metadata.method": "sounddto",
+            // "sounddto.note": "string"
+            //, {
+            "executethis": "addwidmaster",
+            "wid": "sounddto",
+            "metadata.method": "sounddto",
+            "note": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "songdto",
+            "metadata.method": "songdto",
+            "title": "string",
+            "metadata.sounddto.type": "onetomany"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_sound_to_song",
+            "metadata.method": "relationshipdto",
+            "primarywid": "songdto",
+            "secondarywid": "sounddto",
+            "primarymethod": "songdto",
+            "secondarymethod": "sounddto",
+            "linktype": "onetomany",
+            "relationshiptype": "attributes"
+            // }, {
+            //     "executethis": "addwidmaster",
+            //     "wid": "song1",
+            //     "metadata.method": "songdto",
+            //     "title": "Highway to Hell",
+            //     "sounddto.0.note": "A flat",
+            //     "sounddto.1.note": "B sharp",
+            //     "sounddto.2.note": "C flat"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "songdto",
+            "title": "Highway to Hell",
+            "sounddto.wid": "ag3aflat",
+            "sounddto.note": "A flat"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "songdto",
+            "title": "Highway to Hell",
+            "sounddto.wid": "ag3bsharp",
+            "sounddto.note": "B sharp"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "songdto",
+            "title": "Highway to Hell",
+            "sounddto.wid": "ag3cflat",
+            "sounddto.note": "C flat"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "song1",
+            "command": {
+                "getwidmaster": {
+                    "execute": "ConvertToDOTdri"
+                }
+            }
+        }],
+        // execute([{
+        //  "executethis": "updatewid", 
+        //  "wid": "authordto",
+        //  "metadata.method": "authordto",
+        //  "Author": "string"
+        // },
+        // {    
+        //  "executethis": "updatewid", 
+        //  "wid": "bookdto",
+        //  "metadata.method": "bookdto",
+        //  "title": "string"
+        // },
+        // {    
+        //  "executethis": "updatewid", 
+        //  "wid": "rel_author_to_book",
+        //  "primarywid": "authordto",
+        //  "secondarywid": "bookdto",
+        //  "relationshiptype": "attributes"
+        // },
+        // {    
+        //  "executethis": "updatewid", 
+        //  "wid": "book1",
+        //  "metadata.method": "bookdto",
+        //  "title": "The book of testing",
+        //  "authordto.0.author": "Sammy Sample"
+        // },
+        // {
+        //  "executethis": "getwidmaster",
+        //  "wid": "book1"
+        // }],
+
+        function(err, res) {
+            // alert('err' + JSON.stringify(err, '-', 4));
+
+
+            // debugfn("update code generator END", "updatewid", "add", "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 5);
+            // 
+            // These will create the code on the screen from the logged data
+
+            //%%%%%%%%%%%%%%%%%%%%%
+            // Functions of --- config-local
+
+            // debugfn("update code generator END",        "offlineupdatewid", "add",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
+            // debugfn("offlinegetwid code generator END", "offlinegetwid",    "get",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
+            debugfn("offlinegetwid code generator END", "", "", "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
+
+            //%%%%%%%%%%%%%%%%%%%%%
+            // Functions of --- add
+
+            //%%%%%%%%%%%%%%%%%%%%%
+            // Functions of --- query
+
+            // debugfn("querywid code generator END",      "querywid",         "query", "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
+
+            // %%%%%%%%%%%%%%%%%%%%%
+            // Functions of --- get
+
+            // debugfn("getwidmaster code generator END",  "getwidmaster",     "get",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
+            // debugfn("getWidMongo code generator END",   "getWidMongo",      "get",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
+            // debugfn("getcleanparameters code generator END",   "getcleanparameters",      "get",   "code", getglobal("debugcolor"), getglobal("debugindent"), {}, 9);
+
+            // %%%%%%%%%%%%%%%%%%%%%
+            // saveglobal("debugname", "");
+            // saveglobal("debugcat", "");
+            // saveglobal("debugsubcat", "");
+
+            proxyprinttodiv('Function ag3 result Full res', res, 17);
+            proxyprinttodiv('Function ag3 result ', res[6], 17);
+
+            res = logverify("ettestag3_result", res[6], {
+                "title": "Highway to Hell",
+                "wid": "song1",
+                "metadata.method": "songdto",
+                "metadata.sounddto.type": "onetomany",
+                "sounddto.0.note": "A flat",
+                "sounddto.0.wid": "ag3aflat",
+                "sounddto.0.metadata.method": "sounddto",
+                "sounddto.0.metadata.parentwidtests.song1": "songdto",
+                "sounddto.1.note": "B sharp",
+                "sounddto.1.wid": "ag3bsharp",
+                "sounddto.1.metadata.method": "sounddto",
+                "sounddto.1.metadata.parentwidtests.song1": "songdto",
+                "sounddto.2.note": "C flat",
+                "sounddto.2.wid": "ag3cflat",
+                "sounddto.2.metadata.method": "sounddto",
+                "sounddto.2.metadata.parentwidtests.song1": "songdto"
+            });
+            debuglevel = 0;
+            // execute({"executethis": "getwidmaster","wid": "songdto",
+            //       "command":{"getwidmaster":{"convertmethod":"dto",
+            //                               "execute":"ConvertFromDOTdri",
+            //                               "inheritflag":"true","dtotype":""}}}, function (err, res1) {
+            execute([{
+                "executethis": "getwidmaster",
+                "wid": "song1"
+            }], function(err, res1) {
+                proxyprinttodiv('Function ag3 result LAST ', res1, 99);
+                callback(err, res);
+
+            })
+        });
+}
+widtests.ettestag3.category = "execute";
+widtests.ettestag3.subcategory = "daily";
+widtests.ettestag3.js = exports.ettestag3;
+widtests.ettestag3.description = "this does a test";
+
+// This test does not add the data records correctly
+//exports.ettestag3b = ettestag3b = function ettestag3b(params, callback) {
+exports.ettestag3b = widtests.ettestag3b = ettestag3b = function ettestag3b(params, callback) {
+
+    eventappinstall();
+
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "sonddto",
+            "metadata.method": "sonddto",
+            "title": "string",
+            "metadata.sounddto.type": "jsononetomany",
+            "sounddto.wid": "sounddto",
+            "sounddto.metadata.method": "sounddto",
+            "sounddto.note": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "sonddto",
+            "title": "Highway to Hell",
+            "sounddto.0.note": "A flat"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "sonddto",
+            "title": "Highway to Hell",
+            "sounddto.0.note": "B sharp"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "sonddto",
+            "title": "Highway to Hell",
+            "sounddto.0.note": "C flat"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "song1"
+        }],
+
+        function(err, res) {
+
+            proxyprinttodiv('Function ag3 result Full res', res, 17);
+            proxyprinttodiv('Function ag3 result ', res[4], 17);
+
+            res = logverify("ettestag3_result", res[4], [{
+                "title": "Highway to Hell",
+                "wid": "song1",
+                "metadata.method": "sonddto",
+                "sounddto.0.note": "A flat",
+                "sounddto.0.wid": "2",
+                "sounddto.0.metadata.method": "sounddto",
+                "sounddto.1.note": "B sharp",
+                "sounddto.1.wid": "4",
+                "sounddto.1.metadata.method": "sounddto",
+                "sounddto.2.note": "C flat",
+                "sounddto.2.wid": "6",
+                "sounddto.2.metadata.method": "sounddto"
+            }]);
+            debuglevel = 38;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "sonddto",
+                "command": {
+                    "getwidmaster": {
+                        "convertmethod": "dto",
+                        "execute": "ConvertFromDOTdri",
+                        "inheritflag": "true",
+                        "dtotype": ""
+                    }
+                }
+            }, function(err, res1) {
+                //execute({"executethis": "getwidmaster","wid": "song1"}, function (err, res1) {
+                proxyprinttodiv('Function ag3 result LAST ', res1, 17);
+                callback(err, res);
+
+            })
+        });
+}
+widtests.ettestag3b.category = "execute";
+widtests.ettestag3b.subcategory = "daily";
+widtests.ettestag3b.js = exports.ettestag3b;
+widtests.ettestag3b.description = "this does a test";
+
+// Test for supporting jsononetomany
+// *** warning clear local storage ***
+// 2/26/2014 -et-add - small amount of changes added today, ag5 is now makking it all the way through 
+// Major fix was making sure relationship was passed in correctly, bracket was also missing on else in addwid
+// Next step will be to add array processing to update wid
+// 2/27/2014
+// Goal for ag5's return
+// [ { 
+//     "title" : "Highway to Hell",
+//     "sounddto.0.note" : "A flat",
+//     "sounddto.0.wid" : "2",
+//     "sounddto.0.metadata.method" : "sounddto",
+//     "sounddto.1.note" : "B sharp",
+//     "sounddto.1.wid" : "4",
+//     "sounddto.1.metadata.method" : "sounddto",
+//     "sounddto.2.note" : "C flat",
+//     "sounddto.2.wid" : "6",
+//     "sounddto.2.metadata.method" : "sounddto",
+//     "wid" : "song1",
+//     "metadata.method" : "songdto"
+// } ]
+
+//exports.ettestag5 = ettestag5 = function ettestag5(params, callback) {
+exports.ettestag5 = widtests.ettestag5 = ettestag5 = function ettestag5(params, callback) {
+
+    eventappinstall();
+    addToLocalStorage("DRI", [{
+        "wid": "initialwid",
+        "initialwid": "hello from bootprocess"
+    }]);
+    addToLocalStorage("DRIKEY", {
+        "initialwid": {
+            "wid": "initialwid",
+            "initialwid": "for key hello from bootprocess"
+        }
+    });
+
+    //debuglevel = 17;
+
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "Songdto",
+            "metadata.method": "Songdto",
+            "title": "string",
+            "metadata.sounddto.type": "jsononetomany",
+            "sounddto.0.wid": "sounddto",
+            "sounddto.0.metadata.method": "sounddto",
+            "sounddto.0.note": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "Songdto",
+            "title": "Highway to Hell",
+            "sounddto.note": "A flat"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "Songdto",
+            "title": "Highway to Hell",
+            "sounddto.note": "B sharp"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "Songdto",
+            "title": "Highway to Hell",
+            "sounddto.note": "C flat"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "song1"
+        }],
+        function(err, res) {
+            proxyprinttodiv('Function ag5 result Full res', res, 17);
+            proxyprinttodiv('Function ag5 result ', res[4], 17);
+
+            res = logverify("ettestag5_result", res[4], [{
+                "title": "Highway to Hell",
+                "wid": "song1",
+                "metadata.method": "songdto",
+                "sounddto.0.note": "A flat",
+                "sounddto.0.wid": "2",
+                "sounddto.0.metadata.method": "sounddto",
+                "sounddto.1.note": "B sharp",
+                "sounddto.1.wid": "4",
+                "sounddto.1.metadata.method": "sounddto",
+                "sounddto.2.note": "C flat",
+                "sounddto.2.wid": "6",
+                "sounddto.2.metadata.method": "sounddto"
+            }]);
+
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "songdto",
+                "command.getwidmaster.convertmethod": "dto",
+                "command.getwidmaster.execute": "ConvertFromDOTdri"
+            }, function(err, res1) {
+                proxyprinttodiv('Function ag5 result LAST ', res1, 17);
+                callback(err, res);
+            });
+        });
+}
+widtests.ettestag5.category = "execute";
+widtests.ettestag5.subcategory = "daily";
+widtests.ettestag5.js = exports.ettestag5;
+widtests.ettestag5.description = "this does a test";
+
+//exports.ettestag6 = ettestag6 = function ettestag6(params, callback) {
+exports.ettestag6 = widtests.ettestag6 = ettestag6 = function ettestag6(params, callback) {
+
+    eventappinstall();
+    addToLocalStorage("DRI", [{
+        "wid": "initialwid",
+        "initialwid": "hello from bootprocess"
+    }]);
+    addToLocalStorage("DRIKEY", {
+        "initialwid": {
+            "wid": "initialwid",
+            "initialwid": "for key hello from bootprocess"
+        }
+    });
+
+    //debuglevel = 17;
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "Songdto",
+            "title": "Highway to Hell",
+            "sounddto[0].note": "A flat"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "Songdto",
+            "title": "Highway to Hell",
+            "sounddto.0.note": "B sharp"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "Songdto",
+            "title": "Highway to Hell",
+            "sounddto.0.note": "C flat"
+        }],
+        function(err, res) {
+            proxyprinttodiv('Function ag5 result Full res', res, 17);
+            proxyprinttodiv('Function ag5 result ', res[4], 17);
+
+            res = logverify("ettestag5_result", res[4], [{
+                "title": "Highway to Hell",
+                "wid": "song1",
+                "metadata.method": "songdto",
+                "sounddto.0.note": "A flat",
+                "sounddto.0.wid": "2",
+                "sounddto.0.metadata.method": "sounddto",
+                "sounddto.1.note": "B sharp",
+                "sounddto.1.wid": "4",
+                "sounddto.1.metadata.method": "sounddto",
+                "sounddto.2.note": "C flat",
+                "sounddto.2.wid": "6",
+                "sounddto.2.metadata.method": "sounddto"
+            }]);
+
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "songdto",
+                "command.getwidmaster.convertmethod": "dto",
+                "command.getwidmaster.execute": "ConvertFromDOTdri"
+            }, function(err, res1) {
+                proxyprinttodiv('Function ag5 result LAST ', res1, 17);
+                callback(err, res);
+            });
+        });
+}
+widtests.ettestag6.category = "execute";
+widtests.ettestag6.subcategory = "daily";
+widtests.ettestag6.js = exports.ettestag6;
+widtests.ettestag6.description = "this does a test";
+
+// {
+//     "executethis": "addwidmaster",
+//     "wid": "song1",
+//     "metadata": {
+//         "method": "Songdto"
+//     },
+//     "title": "Highway to Hell",
+//     "sounddto": [
+//         {
+//             "note": "A flat"
+//         }
+//     ]
+// }
+//exports.ettestag7 = ettestag7 = function ettestag7(params, callback) {
+exports.ettestag7 = widtests.ettestag7 = ettestag7 = function ettestag7(params, callback) {
+
+    var obj = {
+        "executethis": "addwidmaster",
+        "wid": "song1",
+        "metadata": {
+            "method": "Songdto"
+        },
+        "title": "Highway to Hell",
+        "sounddto": [
+
+            {
+                "note": "A flat"
+            }, {
+                "tempo": "fast"
+            }
+
+
+        ]
+    }
+
+    // var temp = ConvertToDOTdri(obj);
+    // proxyprinttodiv("ettestag7 converToDot -- DOT --> ", temp, 17);
+
+    // temp = ConvertFromDOTdri(obj);
+    // proxyprinttodiv("ettestag7 converFromDot -- JSON --> ", temp, 17);
+
+    getdtoobject(obj, {
+        "dtotype": "defaultdto"
+    }, function(err, res) {
+        proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
+    });
+}
+widtests.ettestag7.category = "execute";
+widtests.ettestag7.subcategory = "daily";
+widtests.ettestag7.js = exports.ettestag7;
+widtests.ettestag7.description = "this does a test";
+
+//exports.ettestag8 = ettestag8 = function ettestag8(params, callback) {
+exports.ettestag8 = widtests.ettestag8 = ettestag8 = function ettestag8(params, callback) {
+
+    eventappinstall();
+    addToLocalStorage("DRI", [{
+        "wid": "initialwid",
+        "initialwid": "hello from bootprocess"
+    }]);
+    addToLocalStorage("DRIKEY", {
+        "initialwid": {
+            "wid": "initialwid",
+            "initialwid": "for key hello from bootprocess"
+        }
+    });
+
+    //debuglevel = 17;
+
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "Songdto",
+            "metadata.method": "Songdto",
+            "title": "string",
+            "metadata.sounddto.type": "jsononetomany",
+            "sounddto.0.wid": "sounddto",
+            "sounddto.0.metadata.method": "sounddto",
+            "sounddto.0.note": "string"
+        }],
+        function(err, res) {
+
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "songdto",
+                "command.getwidmaster.convertmethod": "dto",
+                "command.getwidmaster.execute": "ConvertFromDOTdri"
+            }, function(err, res1) {
+                proxyprinttodiv('Function ag8 result LAST ', res1, 17);
+                callback(err, res);
+            });
+        });
+}
+widtests.ettestag8.category = "execute";
+widtests.ettestag8.subcategory = "daily";
+widtests.ettestag8.js = exports.ettestag8;
+widtests.ettestag8.description = "this does a test";
+
+//exports.ettestag9 = ettestag9 = function ettestag9(params, callback) {
+exports.ettestag9 = widtests.ettestag9 = ettestag9 = function ettestag9(params, callback) {
+
+    eventappinstall();
+    addToLocalStorage("DRI", [{
+        "wid": "initialwid",
+        "initialwid": "hello from bootprocess"
+    }]);
+    addToLocalStorage("DRIKEY", {
+        "initialwid": {
+            "wid": "initialwid",
+            "initialwid": "for key hello from bootprocess"
+        }
+    });
+
+    //debuglevel = 17;
+
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "Songdto",
+            "metadata.method": "Songdto",
+            "title": "string",
+            "metadata.sounddto.type": "jsononetomany",
+            "sounddto.0.wid": "string",
+            "sounddto.0.metadata.method": "string",
+            "sounddto.0.note": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "Songdto",
+            "title": "Highway to Hell",
+            "sounddto.0.wid": "1",
+            "sounddto.0.note": "A flat",
+            "sounddto.0.metadata.method": "sounddto",
+            "sounddto.1.wid": "2",
+            "sounddto.1.note": "B sharp",
+            "sounddto.1.metadata.method": "sounddto",
+            "sounddto.2.wid": "3",
+            "sounddto.2.note": "C flat",
+            "sounddto.2.metadata.method": "sounddto"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "song1"
+        }],
+        function(err, res) {
+            proxyprinttodiv('Function ag5 result Full res', res, 17);
+            proxyprinttodiv('Function ag5 result ', res[3], 17);
+
+            res = logverify("ettestag5_result", res[3], [{
+                "title": "Highway to Hell",
+                "wid": "song1",
+                "metadata.method": "songdto",
+                "sounddto.0.note": "A flat",
+                "sounddto.0.wid": "2",
+                "sounddto.0.metadata.method": "sounddto",
+                "sounddto.1.note": "B sharp",
+                "sounddto.1.wid": "4",
+                "sounddto.1.metadata.method": "sounddto",
+                "sounddto.2.note": "C flat",
+                "sounddto.2.wid": "6",
+                "sounddto.2.metadata.method": "sounddto"
+            }]);
+
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "songdto",
+                "command.getwidmaster.convertmethod": "dto",
+                "command.getwidmaster.execute": "ConvertFromDOTdri"
+            }, function(err, res1) {
+                proxyprinttodiv('Function ag5 result LAST ', res1, 17);
+                callback(err, res);
+            });
+        });
+}
+widtests.ettestag9.category = "execute";
+widtests.ettestag9.subcategory = "daily";
+widtests.ettestag9.js = exports.ettestag9;
+widtests.ettestag9.description = "this does a test";
+
+//exports.ettestag3a = ettestag3a = function ettestag3a(params, callback) {
+exports.ettestag3a = widtests.ettestag3a = ettestag3a = function ettestag3a(params, callback) {
+
+    eventappinstall();
+    addToLocalStorage("DRI", [{
+        "wid": "initialwid",
+        "initialwid": "hello from bootprocess"
+    }]);
+    addToLocalStorage("DRIKEY", {
+        "initialwid": {
+            "wid": "initialwid",
+            "initialwid": "for key hello from bootprocess"
+        }
+    });
+
+    //debuglevel = 17;
+
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "Songdto",
+            "metadata.method": "Songdto",
+            "title": "string",
+            "metadata.sounddto.type": "onetomany",
+            "sounddto.wid": "string",
+            "sounddto.metadata.method": "string",
+            "sounddto.note": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "Songdto",
+            "title": "Highway to Hell",
+            "sounddto.0.wid": "1",
+            "sounddto.0.note": "A flat",
+            "sounddto.0.metadata.method": "sounddto",
+            "sounddto.1.wid": "2",
+            "sounddto.1.note": "B sharp",
+            "sounddto.1.metadata.method": "sounddto",
+            "sounddto.2.wid": "3",
+            "sounddto.2.note": "C flat",
+            "sounddto.2.metadata.method": "sounddto"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "song1"
+        }],
+        function(err, res) {
+            proxyprinttodiv('Function ag5 result Full res', res, 17);
+            proxyprinttodiv('Function ag5 result ', res[2], 17);
+
+            res = logverify("ettestag5_result", res[2], [{
+                "title": "Highway to Hell",
+                "wid": "song1",
+                "metadata.method": "songdto",
+                "sounddto.0.note": "A flat",
+                "sounddto.0.wid": "2",
+                "sounddto.0.metadata.method": "sounddto",
+                "sounddto.1.note": "B sharp",
+                "sounddto.1.wid": "4",
+                "sounddto.1.metadata.method": "sounddto",
+                "sounddto.2.note": "C flat",
+                "sounddto.2.wid": "6",
+                "sounddto.2.metadata.method": "sounddto"
+            }]);
+
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "songdto",
+                "command.getwidmaster.convertmethod": "dto",
+                "command.getwidmaster.execute": "ConvertFromDOTdri"
+            }, function(err, res1) {
+                proxyprinttodiv('Function ag5 result LAST ', res1, 17);
+                callback(err, res);
+            });
+        });
+}
+widtests.ettestag3a.category = "execute";
+widtests.ettestag3a.subcategory = "daily";
+widtests.ettestag3a.js = exports.ettestag3a;
+widtests.ettestag3a.description = "this does a test";

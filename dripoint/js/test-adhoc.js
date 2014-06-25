@@ -844,3 +844,80 @@ widtests.alertFn1.category = "daily";
 widtests.alertFn1.subcategory = "adhoc";
 widtests.alertFn1.js = exports.alertFn1;
 widtests.alertFn1.description = "this does a test";
+
+
+//exports.ss1 = ss1 = function ss1(params, callback) {
+exports.ss1 = widtests.ss1 = ss1 = function ss1(params, callback) {
+    proxyprinttodiv('Function ss1 ', '--', 99);
+    // execute(
+    //     [ 
+    //         {
+    //             "executethis":"sendsms", 
+    //               "tonumber": "+12145644732",
+    //               "msgbody": "This the server- I just restarted "
+    //             //"To":"+12145644732", 
+    //               //To": "+12313133930",
+    //             //"Body":"test msg"
+    //         }
+    //     ], 
+    sendsms({
+            //"to": "+12145644732",
+            "to": "+12315341764",
+            "body": "test"
+        },
+        function(err, res) {
+            callback(err, res[0])
+        }
+    );
+};
+widtests.ss1.category = "execute";
+widtests.ss1.subcategory = "daily";
+widtests.ss1.js = exports.ss1;
+widtests.ss1.description = "this does a test";
+
+
+// Not an 'at' test...used to tes the veryify system. This is a failing test.
+//exports.ettestt1sf = ettestt1sf = function ettestt1sf(params, callback) {
+exports.ettestt1sf = widtests.ettestt1sf = ettestt1sf = function ettestt1sf(params, callback) {
+
+    eventappinstall();
+    res = logverify("ettestt1sf_result", {
+        "d": "1",
+        "c": "0",
+        "g": "4"
+    }, {
+        "d": "1",
+        "c": "0",
+        "g": "4",
+        "h": "5"
+    });
+    var err;
+    callback(err, res);
+};
+widtests.ettestt1sf.category = "execute";
+widtests.ettestt1sf.subcategory = "daily";
+widtests.ettestt1sf.js = exports.ettestt1sf;
+widtests.ettestt1sf.description = "this does a test";
+
+
+// Not an 'at' test...used to test the verify system. This is a passing test.
+//exports.ettestt1s = ettestt1s = function ettestt1s(params, callback) {
+exports.ettestt1s = widtests.ettestt1s = ettestt1s = function ettestt1s(params, callback) {
+
+    eventappinstall();
+    res = logverify("ettestt1s_result", {
+        "d": "1",
+        "c": "0",
+        "g": "4"
+    }, {
+        "d": "1",
+        "c": "0",
+        "g": "4"
+    });
+    var err;
+    callback(err, res);
+};
+widtests.ettestt1s.category = "execute";
+widtests.ettestt1s.subcategory = "daily";
+widtests.ettestt1s.js = exports.ettestt1s;
+widtests.ettestt1s.description = "this does a test";
