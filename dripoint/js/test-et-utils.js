@@ -5,34 +5,6 @@ var widtests = widtests || {};
 // getcommand() tests
 //*********************************************
 
-// These are the deepfilter tests
-//exports.ettestetdtt = ettestetdtt = function ettestetdtt(params, callback) {
-exports.ettestetdtt = widtests.ettestetdtt = ettestetdtt = function ettestetdtt(params, callback) {
-
-    var result = [];
-    var err;
-
-    etd16(result, function(err, r1) {
-        result.push(r1);
-        etd17(result, function(err, r2) {
-            result.push(r2);
-            etd18(result, function(err, r3) {
-                result.push(r3);
-                etd19(result, function(err, r4) {
-                    result.push(r4);
-                    callback(err, result);
-                });
-            });
-        });
-    });
-};
-widtests.ettestetdtt.category = "execute";
-widtests.ettestetdtt.subcategory = "daily";
-widtests.ettestetdtt.js = exports.ettestetdtt;
-widtests.ettestetdtt.description = "this does a test";
-
-
-
 // data, defaults, filter
 //exports.lwr1 = lwr1 = function lwr1(params, callback) {
 exports.lwr1 = widtests.lwr1 = lwr1 = function lwr1(params, callback) {
@@ -57,39 +29,10 @@ exports.lwr1 = widtests.lwr1 = lwr1 = function lwr1(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
-widtests.lwr1.category = "execute";
-widtests.lwr1.subcategory = "daily";
+widtests.lwr1.category = "daily";
+widtests.lwr1.subcategory = "addhoc";
 widtests.lwr1.js = exports.lwr1;
 widtests.lwr1.description = "this does a test";
-
-//exports.lwr2 = lwr2 = function lwr2(params, callback) {
-exports.lwr2 = widtests.lwr2 = lwr2 = function lwr2(params, callback) {
-
-    var params = {
-        "Alpha": "1",
-        "bEta": "2",
-        "Charlie": "3",
-        "Delta": "4"
-    };
-    var defaults = {
-        "Beta": "555",
-        "charlie": "777"
-    };
-
-    var filter = {
-        "Beta": "",
-        "charlie": ""
-    };
-    var err;
-    var result = {};
-
-    result = getcommand(params, defaults, filter, false);
-    callback(err, result);
-}
-widtests.lwr2.category = "execute";
-widtests.lwr2.subcategory = "daily";
-widtests.lwr2.js = exports.lwr2;
-widtests.lwr2.description = "this does a test";
 
 //exports.lwr3 = lwr3 = function lwr3(params, callback) {
 exports.lwr3 = widtests.lwr3 = lwr3 = function lwr3(params, callback) {
@@ -115,38 +58,11 @@ exports.lwr3 = widtests.lwr3 = lwr3 = function lwr3(params, callback) {
     callback(err, result);
 
 }
-widtests.lwr3.category = "execute";
-widtests.lwr3.subcategory = "daily";
+widtests.lwr3.category = "daily";
+widtests.lwr3.subcategory = "addhoc";
 widtests.lwr3.js = exports.lwr3;
 widtests.lwr3.description = "this does a test";
 
-//exports.lwr4 = lwr4 = function lwr4(params, callback) {
-exports.lwr4 = widtests.lwr4 = lwr4 = function lwr4(params, callback) {
-
-    var params = {
-        "Alpha": "1",
-        "Beta": "2",
-        "Charlie": "3",
-        "Delta": "4"
-    };
-    var defaults = {
-        "Beta": "",
-        "charlie": ""
-    };
-    var filter = {
-        "beta": "",
-        "charlie": ""
-    };
-    var err;
-    var result = {};
-
-    result = getcommand(params, defaults, filter, false);
-    callback(err, result);
-}
-widtests.lwr4.category = "execute";
-widtests.lwr4.subcategory = "daily";
-widtests.lwr4.js = exports.lwr4;
-widtests.lwr4.description = "this does a test";
 
 //exports.lwr5 = lwr5 = function lwr5(params, callback) {
 exports.lwr5 = widtests.lwr5 = lwr5 = function lwr5(params, callback) {
@@ -171,8 +87,8 @@ exports.lwr5 = widtests.lwr5 = lwr5 = function lwr5(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
-widtests.lwr5.category = "execute";
-widtests.lwr5.subcategory = "daily";
+widtests.lwr5.category = "daily";
+widtests.lwr5.subcategory = "addhoc";
 widtests.lwr5.js = exports.lwr5;
 widtests.lwr5.description = "this does a test";
 
@@ -200,8 +116,8 @@ exports.lwr6 = widtests.lwr6 = lwr6 = function lwr6(params, callback) {
     result = getcommand(params, defaults, filter, false);
     callback(err, result);
 }
-widtests.lwr6.category = "execute";
-widtests.lwr6.subcategory = "daily";
+widtests.lwr6.category = "daily";
+widtests.lwr6.subcategory = "addhoc";
 widtests.lwr6.js = exports.lwr6;
 widtests.lwr6.description = "this does a test";
 
@@ -221,31 +137,11 @@ exports.lwr7 = widtests.lwr7 = lwr7 = function lwr7(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
-widtests.lwr7.category = "execute";
-widtests.lwr7.subcategory = "daily";
+widtests.lwr7.category = "daily";
+widtests.lwr7.subcategory = "addhoc";
 widtests.lwr7.js = exports.lwr7;
 widtests.lwr7.description = "this does a test";
 
-//exports.lwr8 = lwr8 = function lwr8(params, callback) {
-exports.lwr8 = widtests.lwr8 = lwr8 = function lwr8(params, callback) {
-
-    var params = {
-        "Alpha": "1",
-        "Beta": "2",
-        "Delta": "4"
-    };
-    var defaults = {};
-    var filter = {};
-    var err;
-    var result = {};
-
-    result = getcommand(params, defaults, filter, false);
-    callback(err, result);
-}
-widtests.lwr8.category = "execute";
-widtests.lwr8.subcategory = "daily";
-widtests.lwr8.js = exports.lwr8;
-widtests.lwr8.description = "this does a test";
 
 //exports.lwr9 = lwr9 = function lwr9(params, callback) {
 exports.lwr9 = widtests.lwr9 = lwr9 = function lwr9(params, callback) {
@@ -269,36 +165,11 @@ exports.lwr9 = widtests.lwr9 = lwr9 = function lwr9(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
-widtests.lwr9.category = "execute";
-widtests.lwr9.subcategory = "daily";
+widtests.lwr9.category = "daily";
+widtests.lwr9.subcategory = "addhoc";
 widtests.lwr9.js = exports.lwr9;
 widtests.lwr9.description = "this does a test";
 
-//exports.lwr10 = lwr10 = function lwr10(params, callback) {
-exports.lwr10 = widtests.lwr10 = lwr10 = function lwr10(params, callback) {
-    var params = {
-        "Alpha": "1",
-        "Beta": "2",
-        "Delta": "4"
-    };
-    var defaults = {
-        "beta": "555",
-        "charlie": "777"
-    };
-    var filter = {
-        "beta": "",
-        "charlie": ""
-    };
-    var err;
-    var result = {};
-
-    result = getcommand(params, defaults, filter, false);
-    callback(err, result);
-}
-widtests.lwr10.category = "execute";
-widtests.lwr10.subcategory = "daily";
-widtests.lwr10.js = exports.lwr10;
-widtests.lwr10.description = "this does a test";
 
 //exports.lwr11 = lwr11 = function lwr11(params, callback) {
 exports.lwr11 = widtests.lwr11 = lwr11 = function lwr11(params, callback) {
@@ -323,36 +194,11 @@ exports.lwr11 = widtests.lwr11 = lwr11 = function lwr11(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
-widtests.lwr11.category = "execute";
-widtests.lwr11.subcategory = "daily";
+widtests.lwr11.category = "daily";
+widtests.lwr11.subcategory = "addhoc";
 widtests.lwr11.js = exports.lwr11;
 widtests.lwr11.description = "this does a test";
 
-exports.lwr12 = widtests.lwr12 = lwr12 = function lwr12(params, callback) {
-
-    var params = {
-        "Alpha": "1",
-        "Beta": "2",
-        "Delta": "4"
-    };
-    var defaults = {
-        "beta": "",
-        "charlie": ""
-    };
-    var filter = {
-        "beta": "",
-        "charlie": ""
-    };
-    var err;
-    var result = {};
-
-    result = getcommand(params, defaults, filter, false);
-    callback(err, result);
-}
-widtests.lwr12.category = "execute";
-widtests.lwr12.subcategory = "daily";
-widtests.lwr12.js = exports.lwr12;
-widtests.lwr12.description = "this does a test";
 
 exports.lwr13 = widtests.lwr13 = lwr13 = function lwr13(params, callback) {
     var params = {
@@ -374,8 +220,8 @@ exports.lwr13 = widtests.lwr13 = lwr13 = function lwr13(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
-widtests.lwr13.category = "execute";
-widtests.lwr13.subcategory = "daily";
+widtests.lwr13.category = "daily";
+widtests.lwr13.subcategory = "addhoc";
 widtests.lwr13.js = exports.lwr13;
 widtests.lwr13.description = "this does a test";
 
@@ -400,50 +246,11 @@ exports.lwr14 = widtests.lwr14 = lwr14 = function lwr14(params, callback) {
 	console.log('ran lwr14');
     callback(err, result);
 }
-widtests.lwr14.category = "execute";
-widtests.lwr14.subcategory = "daily";
+widtests.lwr14.category = "daily";
+widtests.lwr14.subcategory = "addhoc";
 widtests.lwr14.js = exports.lwr14;
 widtests.lwr14.description = "this does a test";
 
-exports.lwr15 = widtests.lwr15 = lwr15 = function lwr15(params, callback) {
-    var params = {
-        "Alpha": "1",
-        "Beta": "2",
-        "Charlie": "3",
-        "Delta": "4"
-    };
-    var defaults = {};
-    var filter = {};
-    var err;
-    var result = {};
-
-    result = getcommand(params, defaults, filter, true);
-    callback(err, result);
-}
-widtests.lwr15.category = "execute";
-widtests.lwr15.subcategory = "daily";
-widtests.lwr15.js = exports.lwr15;
-widtests.lwr15.description = "this does a test";
-
-exports.lwr16 = widtests.lwr16 = lwr16 = function lwr16(params, callback) {
-    var params = {
-        "Alpha": "1",
-        "Beta": "2",
-        "Charlie": "3",
-        "Delta": "4"
-    };
-    var defaults = {};
-    var filter = {};
-    var err;
-    var result = {};
-
-    result = getcommand(params, defaults, filter, false);
-    callback(err, result);
-}
-widtests.lwr16.category = "execute";
-widtests.lwr16.subcategory = "daily";
-widtests.lwr16.js = exports.lwr16;
-widtests.lwr16.description = "this does a test";
 
 
 //*********************************************
@@ -469,109 +276,13 @@ exports.pu1 = widtests.pu1 = pu1 = function pu1(params, callback) {
     result = pack_up_params(params, command, "somefunction");
     callback(err, result);
 }
-widtests.pu1.category = "execute";
-widtests.pu1.subcategory = "daily";
+widtests.pu1.category = "daily";
+widtests.pu1.subcategory = "addhoc";
 widtests.pu1.js = exports.pu1;
 widtests.pu1.description = "this does a test";
 
 
-//*********************************************
-// pack_up_params() tests
-//*********************************************
 
-// this one inserts same amount of data but does not fail
-// enter lots of data in series, ths inserts data via different executes results in Max Range error
-//exports.ettest_recurseModObj = ettest_recurseModObj = function ettest_recurseModObj(params, callback) {
-exports.ettest_recurseModObj = widtests.ettest_recurseModObj = ettest_recurseModObj = function ettest_recurseModObj(params, callback) {
-    eventappinstall();
-    debuglevel = 17;
-    // config = setconfig1();
-    var recModObj = recurseModObj({
-        "metadata": {
-            "method": "wid2"
-        },
-        "a": "b",
-        "c": "30",
-        "e": "f",
-        "d": "6/23/1912",
-        "q": {
-            "w": {
-                "e": "t"
-            }
-        },
-        "g": "true"
-    }, {
-        "metadata": {
-            "method": "wid2"
-        },
-        "a": "string",
-        "c": "number",
-        "d": "date",
-        "q": {
-            "w": {
-                "e": "string"
-            }
-        },
-        "g": "boolean"
-    }, {}, function(err, res) {
-
-        proxyprinttodiv('recurseModObj inputObject', {
-            "metadata": {
-                "method": "wid2"
-            },
-            "a": "b",
-            "c": "30",
-            "e": "f",
-            "d": "6/23/1912",
-            "q": {
-                "w": {
-                    "e": "t"
-                }
-            },
-            "g": "true"
-        }, 17);
-        proxyprinttodiv('recurseModObj inputDTO', {
-            "metadata": {
-                "method": "wid2"
-            },
-            "a": "string",
-            "c": "number",
-            "d": "date",
-            "q": {
-                "w": {
-                    "e": "string"
-                }
-            },
-            "g": "boolean"
-        }, 17);
-        proxyprinttodiv("res --", res, 17);
-        var actual_result = [res];
-        proxyprinttodiv("actual_result --", actual_result, 17);
-
-        var expected_result = [{
-            "metadata": {
-                "method": "wid2"
-            },
-            "a": "b",
-            "c": "30",
-            "d": "6/23/1912",
-            "q": {
-                "w": {
-                    "e": "t"
-                }
-            },
-            "g": "true"
-        }];
-        proxyprinttodiv("expected_result --", expected_result, 17);
-
-        res = logverify("logverify", actual_result, expected_result);
-        callback(err, res);
-    });
-}
-widtests.ettest_recurseModObj.category = "execute";
-widtests.ettest_recurseModObj.subcategory = "daily";
-widtests.ettest_recurseModObj.js = exports.ettest_recurseModObj;
-widtests.ettest_recurseModObj.description = "this does a test";
 
 
 //*********************************************
@@ -681,8 +392,8 @@ exports.etget4 = widtests.etget4 = etget4 = function etget4(parameters, callback
     res = logverify("logverify", actual_result, expected_result);
     callback(null, res);
 }
-widtests.etget4.category = "execute";
-widtests.etget4.subcategory = "daily";
+widtests.etget4.category = "daily";
+widtests.etget4.subcategory = "addhoc";
 widtests.etget4.js = exports.etget4;
 widtests.etget4.description = "this does a test";
 
@@ -782,8 +493,8 @@ exports.etget22 = widtests.etget22 = etget22 = function etget22(parameters, call
     res = logverify("logverify", actual_result, expected_result);
     callback(null, res);
 }
-widtests.etget22.category = "execute";
-widtests.etget22.subcategory = "daily";
+widtests.etget22.category = "daily";
+widtests.etget22.subcategory = "addhoc";
 widtests.etget22.js = exports.etget22;
 widtests.etget22.description = "this does a test";
 
@@ -884,8 +595,8 @@ exports.etget5 = widtests.etget5 = etget5 = function etget5(parameters, callback
     res = logverify("logverify", actual_result, expected_result);
     callback(null, res);
 }
-widtests.etget5.category = "execute";
-widtests.etget5.subcategory = "daily";
+widtests.etget5.category = "daily";
+widtests.etget5.subcategory = "addhoc";
 widtests.etget5.js = exports.etget5;
 widtests.etget5.description = "this does a test";
 
@@ -987,8 +698,8 @@ exports.etget6 = widtests.etget6 = etget6 = function etget6(parameters, callback
     res = logverify("logverify", actual_result, expected_result);
     callback(null, res);
 }
-widtests.etget6.category = "execute";
-widtests.etget6.subcategory = "daily";
+widtests.etget6.category = "daily";
+widtests.etget6.subcategory = "addhoc";
 widtests.etget6.js = exports.etget6;
 widtests.etget6.description = "this does a test";
 
@@ -1094,8 +805,8 @@ exports.etget7 = widtests.etget7 = etget7 = function etget7(parameters, callback
     res = logverify("logverify", actual_result, expected_result);
     callback(null, res);
 }
-widtests.etget7.category = "execute";
-widtests.etget7.subcategory = "daily";
+widtests.etget7.category = "daily";
+widtests.etget7.subcategory = "addhoc";
 widtests.etget7.js = exports.etget7;
 widtests.etget7.description = "this does a test";
 
@@ -1198,8 +909,8 @@ exports.etget8 = widtests.etget8 = etget8 = function etget8(parameters, callback
     res = logverify("logverify", actual_result, expected_result);
     callback(null, res);
 }
-widtests.etget8.category = "execute";
-widtests.etget8.subcategory = "daily";
+widtests.etget8.category = "daily";
+widtests.etget8.subcategory = "addhoc";
 widtests.etget8.js = exports.etget8;
 widtests.etget8.description = "this does a test";
 
@@ -1207,6 +918,34 @@ widtests.etget8.description = "this does a test";
 //*********************************************
 // deepfilter() tests
 //*********************************************
+
+
+// These are the deepfilter tests
+//exports.ettestetdtt = ettestetdtt = function ettestetdtt(params, callback) {
+exports.ettestetdtt = widtests.ettestetdtt = ettestetdtt = function ettestetdtt(params, callback) {
+
+    var result = [];
+    var err;
+
+    etd16(result, function(err, r1) {
+        result.push(r1);
+        etd17(result, function(err, r2) {
+            result.push(r2);
+            etd18(result, function(err, r3) {
+                result.push(r3);
+                etd19(result, function(err, r4) {
+                    result.push(r4);
+                    callback(err, result);
+                });
+            });
+        });
+    });
+};
+widtests.ettestetdtt.category = "daily";
+widtests.ettestetdtt.subcategory = "addhoc";
+widtests.ettestetdtt.js = exports.ettestetdtt;
+widtests.ettestetdtt.description = "this does a test";
+
 
 /*
       deep filter test
@@ -1344,8 +1083,8 @@ exports.etd1 = widtests.etd1 = etd1 = function etd1(params, callback) {
         });
     });
 }
-widtests.etd1.category = "execute";
-widtests.etd1.subcategory = "daily";
+widtests.etd1.category = "daily";
+widtests.etd1.subcategory = "addhoc";
 widtests.etd1.js = exports.etd1;
 widtests.etd1.description = "this does a test";
 
@@ -1440,8 +1179,8 @@ exports.etd2 = widtests.etd2 = etd2 = function etd2(params, callback) {
         });
     });
 }
-widtests.etd2.category = "execute";
-widtests.etd2.subcategory = "daily";
+widtests.etd2.category = "daily";
+widtests.etd2.subcategory = "addhoc";
 widtests.etd2.js = exports.etd2;
 widtests.etd2.description = "this does a test";
 
@@ -1492,8 +1231,8 @@ exports.etd3 = widtests.etd3 = etd3 = function etd3(params, callback) {
         });
     });
 }
-widtests.etd3.category = "execute";
-widtests.etd3.subcategory = "daily";
+widtests.etd3.category = "daily";
+widtests.etd3.subcategory = "addhoc";
 widtests.etd3.js = exports.etd3;
 widtests.etd3.description = "this does a test";
 
@@ -1533,8 +1272,8 @@ exports.dupdateget4 = widtests.dupdateget4 = dupdateget4 = function dupdateget4(
         callback(err, params);
     });
 }
-widtests.dupdateget4.category = "execute";
-widtests.dupdateget4.subcategory = "daily";
+widtests.dupdateget4.category = "daily";
+widtests.dupdateget4.subcategory = "addhoc";
 widtests.dupdateget4.js = exports.dupdateget4;
 widtests.dupdateget4.description = "this does a test";
 
@@ -1644,8 +1383,8 @@ exports.etd5 = widtests.etd5 = etd5 = function etd5(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd5.category = "execute";
-widtests.etd5.subcategory = "daily";
+widtests.etd5.category = "daily";
+widtests.etd5.subcategory = "addhoc";
 widtests.etd5.js = exports.etd5;
 widtests.etd5.description = "this does a test";
 
@@ -1721,8 +1460,8 @@ exports.etd6 = widtests.etd6 = etd6 = function etd6(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd6.category = "execute";
-widtests.etd6.subcategory = "daily";
+widtests.etd6.category = "daily";
+widtests.etd6.subcategory = "addhoc";
 widtests.etd6.js = exports.etd6;
 widtests.etd6.description = "this does a test";
 
@@ -1817,8 +1556,8 @@ exports.etd7 = widtests.etd7 = etd7 = function etd7(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd7.category = "execute";
-widtests.etd7.subcategory = "daily";
+widtests.etd7.category = "daily";
+widtests.etd7.subcategory = "addhoc";
 widtests.etd7.js = exports.etd7;
 widtests.etd7.description = "this does a test";
 
@@ -1886,8 +1625,8 @@ exports.etd8 = widtests.etd8 = etd8 = function etd8(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd8.category = "execute";
-widtests.etd8.subcategory = "daily";
+widtests.etd8.category = "daily";
+widtests.etd8.subcategory = "addhoc";
 widtests.etd8.js = exports.etd8;
 widtests.etd8.description = "this does a test";
 
@@ -1946,8 +1685,8 @@ exports.etd10 = widtests.etd10 = etd10 = function etd10(params, callback) {
         });
     });
 }
-widtests.etd10.category = "execute";
-widtests.etd10.subcategory = "daily";
+widtests.etd10.category = "daily";
+widtests.etd10.subcategory = "addhoc";
 widtests.etd10.js = exports.etd10;
 widtests.etd10.description = "this does a test";
 
@@ -2034,8 +1773,8 @@ exports.etd10b = widtests.etd10b = etd10b = function etd10b(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd10b.category = "execute";
-widtests.etd10b.subcategory = "daily";
+widtests.etd10b.category = "daily";
+widtests.etd10b.subcategory = "addhoc";
 widtests.etd10b.js = exports.etd10b;
 widtests.etd10b.description = "this does a test";
 
@@ -2211,8 +1950,8 @@ exports.etd11 = widtests.etd11 = etd11 = function etd11(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd11.category = "execute";
-widtests.etd11.subcategory = "daily";
+widtests.etd11.category = "daily";
+widtests.etd11.subcategory = "addhoc";
 widtests.etd11.js = exports.etd11;
 widtests.etd11.description = "this does a test";
 
@@ -2289,8 +2028,8 @@ exports.etd12 = widtests.etd12 = etd12 = function etd12(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd12.category = "execute";
-widtests.etd12.subcategory = "daily";
+widtests.etd12.category = "daily";
+widtests.etd12.subcategory = "addhoc";
 widtests.etd12.js = exports.etd12;
 widtests.etd12.description = "this does a test";
 
@@ -2377,8 +2116,8 @@ exports.etd13 = widtests.etd13 = etd13 = function etd13(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd13.category = "execute";
-widtests.etd13.subcategory = "daily";
+widtests.etd13.category = "daily";
+widtests.etd13.subcategory = "addhoc";
 widtests.etd13.js = exports.etd13;
 widtests.etd13.description = "this does a test";
 
@@ -2467,8 +2206,8 @@ exports.etd14 = widtests.etd14 = etd14 = function etd14(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd14.category = "execute";
-widtests.etd14.subcategory = "daily";
+widtests.etd14.category = "daily";
+widtests.etd14.subcategory = "addhoc";
 widtests.etd14.js = exports.etd14;
 widtests.etd14.description = "this does a test";
 
@@ -2520,8 +2259,8 @@ exports.etalldeepfiltertests = widtests.etalldeepfiltertests = etalldeepfilterte
 
     });
 }
-widtests.etalldeepfiltertests.category = "execute";
-widtests.etalldeepfiltertests.subcategory = "daily";
+widtests.etalldeepfiltertests.category = "daily";
+widtests.etalldeepfiltertests.subcategory = "addhoc";
 widtests.etalldeepfiltertests.js = exports.etalldeepfiltertests;
 widtests.etalldeepfiltertests.description = "this does a test";
 
@@ -2812,8 +2551,8 @@ exports.etd9 = widtests.etd9 = etd9 = function etd9(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd9.category = "execute";
-widtests.etd9.subcategory = "daily";
+widtests.etd9.category = "daily";
+widtests.etd9.subcategory = "addhoc";
 widtests.etd9.js = exports.etd9;
 widtests.etd9.description = "this does a test";
 
@@ -2968,8 +2707,8 @@ exports.etd16 = widtests.etd16 = etd16 = function etd16(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd16.category = "execute";
-widtests.etd16.subcategory = "daily";
+widtests.etd16.category = "daily";
+widtests.etd16.subcategory = "addhoc";
 widtests.etd16.js = exports.etd16;
 widtests.etd16.description = "this does a test";
 
@@ -2986,8 +2725,8 @@ exports.etd17 = widtests.etd17 = etd17 = function etd17(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd17.category = "execute";
-widtests.etd17.subcategory = "daily";
+widtests.etd17.category = "daily";
+widtests.etd17.subcategory = "addhoc";
 widtests.etd17.js = exports.etd17;
 widtests.etd17.description = "this does a test";
 
@@ -3005,8 +2744,8 @@ exports.etd18 = widtests.etd18 = etd18 = function etd18(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd18.category = "execute";
-widtests.etd18.subcategory = "daily";
+widtests.etd18.category = "daily";
+widtests.etd18.subcategory = "addhoc";
 widtests.etd18.js = exports.etd18;
 widtests.etd18.description = "this does a test";
 
@@ -3024,8 +2763,8 @@ exports.etd19 = widtests.etd19 = etd19 = function etd19(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd19.category = "execute";
-widtests.etd19.subcategory = "daily";
+widtests.etd19.category = "daily";
+widtests.etd19.subcategory = "addhoc";
 widtests.etd19.js = exports.etd19;
 widtests.etd19.description = "this does a test";
 
@@ -3205,8 +2944,8 @@ exports.etd26 = widtests.etd26 = etd26 = function etd26(params, callback) {
             callback(err, res);
         });
 }
-widtests.etd26.category = "execute";
-widtests.etd26.subcategory = "daily";
+widtests.etd26.category = "daily";
+widtests.etd26.subcategory = "addhoc";
 widtests.etd26.js = exports.etd26;
 widtests.etd26.description = "this does a test";
 
@@ -3242,8 +2981,8 @@ exports.etd27 = widtests.etd27 = etd27 = function etd27(params, callback) {
             callback(err, res);
         });
 }
-widtests.etd27.category = "execute";
-widtests.etd27.subcategory = "daily";
+widtests.etd27.category = "daily";
+widtests.etd27.subcategory = "addhoc";
 widtests.etd27.js = exports.etd27;
 widtests.etd27.description = "this does a test";
 
@@ -3280,8 +3019,8 @@ exports.etd28 = widtests.etd28 = etd28 = function etd28(params, callback) {
             callback(err, res);
         });
 }
-widtests.etd28.category = "execute";
-widtests.etd28.subcategory = "daily";
+widtests.etd28.category = "daily";
+widtests.etd28.subcategory = "addhoc";
 widtests.etd28.js = exports.etd28;
 widtests.etd28.description = "this does a test";
 
@@ -3318,8 +3057,8 @@ exports.etd29 = widtests.etd29 = etd29 = function etd29(params, callback) {
             callback(err, res);
         });
 }
-widtests.etd29.category = "execute";
-widtests.etd29.subcategory = "daily";
+widtests.etd29.category = "daily";
+widtests.etd29.subcategory = "addhoc";
 widtests.etd29.js = exports.etd29;
 widtests.etd29.description = "this does a test";
 
@@ -3480,8 +3219,8 @@ exports.etd30 = widtests.etd30 = etd30 = function etd30(params, callback) {
         });
     });
 }
-widtests.etd30.category = "execute";
-widtests.etd30.subcategory = "daily";
+widtests.etd30.category = "daily";
+widtests.etd30.subcategory = "addhoc";
 widtests.etd30.js = exports.etd16;
 widtests.etd30.description = "this does a test";
 
@@ -3536,8 +3275,8 @@ exports.lmetd2 = widtests.lmetd2 = lmetd2 = function lmetd2(params, callback) {
         });
     });
 }
-widtests.lmetd2.category = "execute";
-widtests.lmetd2.subcategory = "daily";
+widtests.lmetd2.category = "daily";
+widtests.lmetd2.subcategory = "addhoc";
 widtests.lmetd2.js = exports.lmetd2;
 widtests.lmetd2.description = "this does a test";
 
@@ -3577,8 +3316,8 @@ exports.lmetd3 = widtests.lmetd3 = lmetd3 = function lmetd3(params, callback) {
         });
     });
 }
-widtests.lmetd3.category = "execute";
-widtests.lmetd3.subcategory = "daily";
+widtests.lmetd3.category = "daily";
+widtests.lmetd3.subcategory = "addhoc";
 widtests.lmetd3.js = exports.lmetd3;
 widtests.lmetd3.description = "this does a test";
 
@@ -3620,8 +3359,8 @@ exports.lmetd4 = widtests.lmetd4 = lmetd4 = function lmetd4(params, callback) {
         });
     });
 }
-widtests.lmetd4.category = "execute";
-widtests.lmetd4.subcategory = "daily";
+widtests.lmetd4.category = "daily";
+widtests.lmetd4.subcategory = "addhoc";
 widtests.lmetd4.js = exports.lmetd4;
 widtests.lmetd4.description = "this does a test";
 
@@ -3662,7 +3401,7 @@ exports.lmetd5 = widtests.lmetd5 = lmetd5 = function lmetd5(params, callback) {
         });
     });
 };
-widtests.lmetd5.category = "execute";
-widtests.lmetd5.subcategory = "daily";
+widtests.lmetd5.category = "daily";
+widtests.lmetd5.subcategory = "addhoc";
 widtests.lmetd5.js = exports.lmetd5;
 widtests.lmetd5.description = "this does a test";
