@@ -9044,6 +9044,21 @@ exports.ettestquerywid = ettestquerywid = function ettestquerywid(params, callba
     });
 };
 
+exports.ettestquerywidmaster = ettestquerywidmaster = function ettestquerywidmaster(params, callback) {
+    var etEnvironment = new drienvironment(params.command.environment);
+    etEnvironment.execute({executethis:'querywidmaster',mongorawquery:{"wid":"testdata123"}}, function (err, result) {
+        proxyprinttodiv('querywid results', result, 99);
+        callback(err, result);
+    });
+};
+exports.ettestquerywid = ettestquerywid = function ettestquerywid(params, callback) {
+    var etEnvironment = new drienvironment(params.command.environment);
+    etEnvironment.execute({executethis:'querywid',mongorawquery:{"wid":"testdata123"}}, function (err, result) {
+        proxyprinttodiv('querywid results', result, 99);
+        callback(err, result);
+    });
+};
+
 exports.ettestquerywidserver = ettestquerywidserver = function ettestquerywidserver(params, callback) {
     var etEnvironment = new drienvironment(params.command.environment);
     etEnvironment.execute({command:{processparameterfn:'sync_server'},executethis:'querywid',mongorawquery:{"wid":"testdata123"}}, function (err, result) {
