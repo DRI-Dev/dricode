@@ -863,7 +863,7 @@
     window.execute_parameter = function execute_parameter(params, callback) {
         if (!params[params.executethis]) 
         {
-            execute_createerror(inparams, cb);
+            execute_createerror(params, cb);
             //params.command.processfn="execute_createerror";
         } 
         else 
