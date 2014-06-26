@@ -819,7 +819,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                                         cb1(null);
                                     });
                                 } else {
-                                    widrecord = []
+                                    widrecord = [];
                                     widrecord[0] = database[wid];
                                     cb1(null);
                                 }
@@ -828,14 +828,14 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
 
                             function (cb1) {
                                 proxyprinttodiv('querywid finalformatlist widrecord ', widrecord, 17);
-                                var widrecordFixed = {};
-                                widrecordFixed['data'] = widrecord[0];
-                                widrecordFixed['metadata'] = widrecord[0]['metadata'];
-                                widrecordFixed['wid'] = widrecord[0]['wid'];
-                                extrarecord[environmentdb] = extraparameters[wid];
-                                delete widrecord[0]['wid'];
-                                delete widrecord[0]['metadata'];
-                                widrecord = widrecordFixed;
+//                                var widrecordFixed = {};
+//                                widrecordFixed['data'] = Array.isArray(widrecord) ? widrecord[0] : widrecord;
+//                                widrecordFixed['metadata'] = Array.isArray(widrecord) ? widrecord[0]['metadata'] : widrecord['metadata'];
+//                                widrecordFixed['wid'] = Array.isArray(widrecord) ? widrecord[0]['wid'] : widrecord['wid'];
+//                                extrarecord[environmentdb] = extraparameters[wid];
+//                                Array.isArray(widrecord) ? delete widrecord[0]['wid'] : delete widrecord['wid'];
+//                                Array.isArray(widrecord) ? delete widrecord[0]['metadata'] : delete widrecord['metadata'];
+//                                widrecord = widrecordFixed;
 
                                 proxyprinttodiv('querywid finalformatlist widrecord', convertfromdriformat(widrecord), 17);
                                 proxyprinttodiv('querywid finalformatlist extraparameters[wid]', extrarecord, 17);
