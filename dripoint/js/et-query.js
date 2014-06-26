@@ -506,7 +506,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                 // throw ({'Sample_error': 'querywid_async_step02'});
 
                 // Primary Wid Section **********
-                if (qparms['mongowid'] !== undefined) {
+                if (qparms['mongowid'] !== undefined && qparms['mongowid'] !== '') {
                     console.log('mongowid = > ' + JSON.stringify(qparms['mongowid']));
                     //proxyprinttodiv('querywid output before format list mongowid', queParams, 17);
                     output = formatlist(output, "wid", "wid", environmentdb);

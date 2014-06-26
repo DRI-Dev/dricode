@@ -403,6 +403,8 @@ function execute_stuff(isTest, isServer, servername) {
         var my_execute_object = {
             "executethis": function_to_execute,
             "command": {
+                "processparameterfn":"execute_nothing",
+                "processfn":"execute_function",
                 "environment": {
                     "run": {
                         "type": "series",
@@ -422,21 +424,24 @@ function execute_stuff(isTest, isServer, servername) {
             }
         }
 
-        // if ($('#server_caller').prop('checked')) {
         if (isServer) {
-            my_execute_object['configuration'] = {
-                "midexecute": [{
-                    "dothis": "server",
-                    "tryorder": 0,
-                    "executeorder": 0,
-                    "params": {}
-                }]
-            };
-            my_execute_object['command.debug'] = 'true';
-            if(servername){
-                my_execute_object['command']={'server':servername};
-            }
+            my_execute_object.command.processfn='execute_server'
         }
+        // if ($('#server_caller').prop('checked')) {
+        // if (isServer) {
+        //     my_execute_object['configuration'] = {
+        //         "midexecute": [{
+        //             "dothis": "server",
+        //             "tryorder": 0,
+        //             "executeorder": 0,
+        //             "params": {}
+        //         }]
+        //     };
+        //     my_execute_object['command.debug'] = 'true';
+        //     if(servername){
+        //         my_execute_object['command']={'server':servername};
+        //     }
+        // }
         // Change the Clean local storage checkbox to 'unchecked'
         $("#localStorageClean").prop('checked', false);
         // ******** This actually executes the function and show the output ********

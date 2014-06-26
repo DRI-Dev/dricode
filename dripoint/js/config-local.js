@@ -354,6 +354,8 @@ exports.execute_server = window.execute_server = execute_server = function execu
         //extend(true, inbound_parameters, params);
         //params =
     delete params.command.processfn;
+    var temp = params.command.environment.syncrule
+    params.command.environment.syncrule = "create_what_to_do_list";
 
     if (params.serverfn) // note the first par of if should be deleted...only for testing server locally
     {
@@ -365,6 +367,7 @@ exports.execute_server = window.execute_server = execute_server = function execu
             proxyprinttodiv('server results res',res, 99, true, true);
             // reset back to local
             params.command.environment.platform = "local";
+            params.command.environment.syncrule = temp;
             checkenviornment(params.command.environment);
             callback(err, res);
         });
