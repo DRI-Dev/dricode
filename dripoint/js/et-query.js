@@ -829,16 +829,18 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                             function (cb1) {
                                 proxyprinttodiv('querywid finalformatlist widrecord ', widrecord, 17);
 
-//                                if (Array.isArray(widrecord)) {
-//                                    var widrecordFixed = {};
-//                                    widrecordFixed['data'] = widrecord[0];
-//                                    widrecordFixed['metadata'] = widrecord[0]['metadata'];
-//                                    widrecordFixed['wid'] = widrecord[0]['wid'];
-//                                    extrarecord[environmentdb] = extraparameters[wid];
-//                                    delete widrecord[0]['wid'];
-//                                    delete widrecord[0]['metadata'];
-//                                    widrecord = widrecordFixed;
-//                                }
+                                if (Array.isArray(widrecord)) {
+                                    var widrecordFixed = {};
+                                    widrecordFixed[config.configuration.defaultdb] = widrecord[0];
+                                    widrecordFixed['metadata'] = widrecord[0]['metadata'];
+                                    widrecordFixed['wid'] = widrecord[0]['wid'];
+                                    extrarecord[environmentdb] = extraparameters[wid];
+                                    delete widrecord[0]['wid'];
+                                    delete widrecord[0]['metadata'];
+                                    widrecord = widrecordFixed;
+                                } else if (!widrecord[config.configuration.defaultdb]) {
+                                    widrecord = converttodriformat(widrecord);
+                                }
 
                                 proxyprinttodiv('querywid finalformatlist widrecord', convertfromdriformat(widrecord), 17);
                                 proxyprinttodiv('querywid finalformatlist extraparameters[wid]', extrarecord, 17);
