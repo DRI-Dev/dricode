@@ -650,17 +650,22 @@
                                     // if waterfall load these results as the input for the next
                                     if ((type === "waterfall") || (type === "runfirstonewaterfall"))
                                     {
-                                        if (fromstep02res)
-                                        {
-                                            previousresults = fromstep02res;
-                                        }
-                                        else // if results were null then send incoming parameters as input
-                                        {
-                                            proxyprinttodiv('execute step03 previousresults', previousresults, 11, true);
-                                            proxyprinttodiv('execute step03 currentexecute', currentexecute, 11, true);
-                                            previousresults = outgoingparam;
-                                        }
+                                        previousresults = fromstep02res;
                                     }
+                                    // if ((type === "waterfall") || (type === "runfirstonewaterfall"))
+                                    // {
+                                    //     if (fromstep02res)  // or fromstep02err
+                                    //     {
+                                    //         previousresults = fromstep02res;
+                                    //     }
+                                    //     else // if results were null then send incoming parameters as input
+                                    //     {
+                                    //         proxyprinttodiv('execute step03 previousresults before change', previousresults, 11, true);
+                                    //         proxyprinttodiv('execute step03 currentexecute', currentexecute, 11, true);
+                                    //         previousresults = outgoingparam;
+                                    //         proxyprinttodiv('execute step03 previousresults after change', previousresults, 11, true);
+                                    //     }
+                                    // }
 
                                     // if group, then do not care about not found, will be done later
                                     if (type === "group" &&  
