@@ -10,7 +10,8 @@ var express = require('express'),
     app = express(),
     request = require('request'),
     server = require('./routes/server'),
-    convert = require('./routes/convert.js');
+    convert = require('./routes/convert.js'),
+    imageService = require('./routes/images.js');
 
 
 
@@ -56,6 +57,7 @@ app.configure('development', function() {
 //// *********************** Route Mapping for Application follows   ***********************
 app.put('/executethis', server.putrunExecutethis);
 app.put('/filetowid', convert.convertFileToWid);
+app.put('/base64toserver', imageService.saveBase64ToServer);
 
 console.log('server config is ' + serverconfig.SERVER_PORT);
 
