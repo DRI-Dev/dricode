@@ -9074,3 +9074,11 @@ exports.ettestquerywidmaster = ettestquerywidmaster = function ettestquerywidmas
         callback(err, result);
     });
 };
+
+exports.ettestquerywidmasterserver = ettestquerywidmasterserver = function ettestquerywidmasterserver(params, callback) {
+    var etEnvironment = new drienvironment(params.command.environment);
+    etEnvironment.execute({command:{processparameterfn:'sync_server'},executethis:'querywidmaster',mongorawquery:{"wid":"testdata123"}}, function (err, result) {
+        proxyprinttodiv('querywid results', result, 99);
+        callback(err, result);
+    });
+};
