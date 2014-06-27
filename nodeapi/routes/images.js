@@ -6,7 +6,7 @@ exports.saveBase64ToServer = saveBase64ToServer = function saveBase64ToServer(re
     var parameters = req.body,
         path = parameters.path,
         startIndex = (path.indexOf('\\') >= 0 ? path.lastIndexOf('\\') : path.lastIndexOf('/')),
-        filename = path.substring(startIndex),
+        filename = path.substring(startIndex + 1),
         base64image = parameters.imagesrc.replace(/^data:image\/png;base64,/,"");
 
     console.log('** Image service is saving ' + filename + ' from base64 string **');

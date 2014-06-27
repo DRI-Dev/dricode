@@ -62,29 +62,41 @@ if (typeof angular !== 'undefined') {
     widApp.factory('imageService', function($http) {
         return {
             saveBase64ToServer: function (path, base64image, callback) {
-                var params = JSON.stringify({path:path, imagesrc:base64image});
-                $.ajax({
-                    type: 'PUT',
-                    dataType: 'json',
-                    url: '/base64toserver',
-                    headers: {
-                        'content-type': 'application/json'
-                    },
-                    global: 'false',
-                    cache: 'false',
-                    async: 'false',
-                    data: params,
-                    success: function (data) {
+//                var params = JSON.stringify({path:path, imagesrc:base64image});
+//                $.ajax({
+//                    type: 'PUT',
+//                    dataType: 'json',
+//                    url: '/base64toserver',
+//                    headers: {
+//                        'content-type': 'application/json'
+//                    },
+//                    global: 'false',
+//                    cache: 'false',
+//                    async: 'false',
+//                    data: params,
+//                    success: function (data) {
+//                        console.log('** Image service saved ' + path + ' to dripoint.com **');
+//                        $('#successlog').html('** Image service saved ' + path + ' to dripoint.com **');
+//                        if (callback instanceof Function) { callback(null); }
+//                    },
+//                    error: function (data) {
+//                        console.log('** Image service incountered an error saving ' + path + ' **');
+//                        $('#errorlog').html('** Image service incountered an error saving ' + path + ' **');
+//                        if (callback instanceof Function) { callback(null); }
+//                    }
+//                });
+
+                $http.put('/base64toserver', {path:path, imagesrc:base64image}, {headers:{"content-type": "application/json"}}).
+                    success(function(data, status, lheaders, config) {
                         console.log('** Image service saved ' + path + ' to dripoint.com **');
                         $('#successlog').html('** Image service saved ' + path + ' to dripoint.com **');
                         if (callback instanceof Function) { callback(null); }
-                    },
-                    error: function (data) {
+                    }).
+                    error(function(data, status, headers, config) {
                         console.log('** Image service incountered an error saving ' + path + ' **');
                         $('#errorlog').html('** Image service incountered an error saving ' + path + ' **');
                         if (callback instanceof Function) { callback(null); }
-                    }
-                });
+                    });
             }
         }
     });
