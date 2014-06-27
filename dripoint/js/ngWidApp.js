@@ -61,15 +61,17 @@ if (typeof angular !== 'undefined') {
     // image service that will save to the server and eventually amazon s3
     widApp.factory('imageService', function($http) {
         return {
-            saveBase64ToServer: function (path, base64image) {
+            saveBase64ToServer: function (path, base64image, callback) {
                 $http.put('/base64toserver', {path:path, imagesrc:base64image}, {headers: {'content-type': 'application/json'}}).
                     success(function(data, status, lheaders, config) {
                         console.log('** Image service saved ' + path + ' to dripoint.com **');
-                        $('#successlog').html('** Image service saved ' + path + ' to dripoint.com **')
+                        $('#successlog').html('** Image service saved ' + path + ' to dripoint.com **');
+                        if (callback instanceof Function) { callback(null); }
                     }).
                     error(function(data, status, headers, config) {
                         console.log('** Image service incountered an error saving ' + path + ' **');
                         $('#errorlog').html('** Image service incountered an error saving ' + path + ' **');
+                        if (callback instanceof Function) { callback(null); }
                     });
             }
         }
@@ -225,8 +227,8 @@ if (typeof angular !== 'undefined') {
             };
 
             // save image to server based on path and base64 image
-            $scope.imagetoserver = function (path, base64image) {
-                imageService.saveBase64ToServer(path, base64image);
+            $scope.imagetoserver = function (path, base64image, callback) {
+                imageService.saveBase64ToServer(path, base64image, callback);
             };
 
             // clears success and error logs on page
@@ -253,7 +255,7 @@ if (typeof angular !== 'undefined') {
 
     // base64toserver image saving function wrapper that can be called through execute()
     exports.imagetoserver = imagetoserver = function imagetoserver(params, callback) {
-        if ($ && $('body').scope) { $('body').scope().imagetoserver(params.path, params.imagesrc); callback(null); }
+        if ($ && $('body').scope) { $('body').scope().imagetoserver(params.path, params.imagesrc, callback); }
     };
 
     // angularExecute wrapper that is called from html elements
