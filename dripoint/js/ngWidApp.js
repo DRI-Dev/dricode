@@ -65,7 +65,7 @@ if (typeof angular !== 'undefined') {
                 $http.put('/base64toserver', {path:path, imagesrc:base64image}, {headers:{"content-type": "application/json"}}).
                     success(function(data, status, lheaders, config) {
                         console.log('** Image service saved ' + path + ' to dripoint.com **');
-                        $('#successlog').html('** Image service saved ' + path + ' to dripoint.com **');
+                        $('#successlog').html('** Image service successfully saved ' + path + ' to dripoint.com **');
                         if (callback instanceof Function) { callback(null); }
                     }).
                     error(function(data, status, headers, config) {
@@ -303,6 +303,7 @@ if (typeof angular !== 'undefined') {
     }
 
     // mostly processes wid names found in execute results
+    // TODO : remove this as all of these variables are depricated and no longer used
     exports.etProcessScreenWid = etProcessScreenWid = function etProcessScreenWid(parameters, scope, callback) {
         var widforview = [],
             widforbase = [],
