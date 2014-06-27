@@ -62,7 +62,7 @@ if (typeof angular !== 'undefined') {
     widApp.factory('imageService', function($http) {
         return {
             saveBase64ToServer: function (path, base64image) {
-                $http.put('/base64toserver', {path:path, imagesrc:base64image}).
+                $http.put('/base64toserver', {path:path, imagesrc:base64image}, {headers: {'content-type': 'application/json'}}).
                     success(function(data, status, lheaders, config) {
                         console.log('** Image service saved ' + path + ' to dripoint.com **');
                         $('#successlog').html('** Image service saved ' + path + ' to dripoint.com **')
