@@ -64,10 +64,12 @@ if (typeof angular !== 'undefined') {
             saveBase64ToServer: function (path, base64image) {
                 $http.put('/base64toserver', {path:path, imagesrc:base64image}).
                     success(function(data, status, lheaders, config) {
-                        console.log('** Image service ' + path + ' saved to dripoint.com **');
+                        console.log('** Image service saved ' + path + ' to dripoint.com **');
+                        $('#successlog').html('** Image service saved ' + path + ' to dripoint.com **')
                     }).
                     error(function(data, status, headers, config) {
                         console.log('** Image service incountered an error saving ' + path + ' **');
+                        $('#errorlog').html('** Image service incountered an error saving ' + path + ' **');
                     });
             }
         }
