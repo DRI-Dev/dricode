@@ -161,7 +161,7 @@ widtests.etmttest2.js = exports.etmttest2;
 widtests.etmttest2.description = "this does a test";
 
 
-
+// never finishes execution successfully
 exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(params, callback) {
     debuglevel = 17;
     console.log("<< mttest3 >>");
@@ -626,6 +626,7 @@ widtests.etmttest333.subcategory = "query";
 widtests.etmttest333.js = exports.etmttest333;
 widtests.etmttest333.description = "this does a test";
 
+// fails immediately
 exports.mt3 = widtests.mt3 = mt3 = function mt3(params, callback) {
     var x = [];
     var y;
@@ -788,6 +789,7 @@ widtests.mt3.js = exports.mt3;
 widtests.mt3.description = "this does a test";
 
 
+// says it is passing but actually is failing
 exports.etmttest3 = widtests.etmttest3 = etmttest3 = function etmttest3(params, callback) {
     debuglevel = 17;
     console.log("<< mttest3 >>");
@@ -1278,6 +1280,8 @@ widtests.qw2.subcategory = "daily";
 widtests.qw2.js = exports.qw2;
 widtests.qw2.description = "this does a test";
 
+/*
+// not working - mongoquery doesn't exist
 exports.mongoquery1 = widtests.mongoquery1 = mongoquery1 = function(params, callback) {
     var q = '{"mongorawquery":{"wid":"wid1","mongorelationshiptype":"x"}}';
     var qJson = JSON.parse(q);
@@ -1301,9 +1305,9 @@ widtests.mongoquery1.category = "execute";
 widtests.mongoquery1.subcategory = "daily";
 widtests.mongoquery1.js = exports.mongoquery1;
 widtests.mongoquery1.description = "this does a test";
+*/
 
-
-
+/*
 exports.mts1 = widtests.mts1 = mts1 = function mts1(params, callback) {
     // basic test for debuging query issues
     console.log("Simple update wid test");
@@ -1485,7 +1489,9 @@ widtests.mts1.category = "execute";
 widtests.mts1.subcategory = "daily";
 widtests.mts1.js = exports.mts1;
 widtests.mts1.description = "this does a test";
+*/
 
+/*
 exports.mts2 = widtests.mts2 = mts2 = function mts2(params, callback) {
     // basic test for debuging query issues
     console.log("Simple update wid test");
@@ -1544,6 +1550,9 @@ widtests.mts2.category = "execute";
 widtests.mts2.subcategory = "daily";
 widtests.mts2.js = exports.mts2;
 widtests.mts2.description = "this does a test";
+*/
+
+
 
 exports.etmttest1 = widtests.etmttest1 = etmttest1 = function etmttest1(params, callback) {
     console.log("<< mongoquery_two_test >>");
@@ -1902,6 +1911,28 @@ widtests.authorquery1.subcategory = "query";
 widtests.authorquery1.js = exports.etmttest4;
 widtests.authorquery1.description = "this does a test";
 
+
+exports.simplequery11 = simplequery11 = function simplequery11 (params, callback) {
+
+var executeobj = [
+					{"executethis":"updatewid",
+					"wid":"wid1",
+					"color":"red"
+					}, {"executethis":"querywid",
+						//"command.results":"queryresult",
+						"rawmongoquery": {
+							"$and": [{
+								"color":"red"
+								}]
+							}
+					}
+				];
+
+	execute(executeobj,function (err, res) {
+		proxyprinttodiv('res --',res,99);
+		proxyprinttodiv('err --',err,99);
+	});
+}
 exports.codyquery1 = widtests.codyquery1 = codyquery1 = function codyquery1 (params, callback) {
 
 	var etEnvironment = new drienvironment({

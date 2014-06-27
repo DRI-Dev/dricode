@@ -45,13 +45,12 @@ exports.querywidmaster = querywidmaster = function querywidmaster(params, callba
 
 //Starting of querywid function...formerly MongoDataQuery
 //exports.querywid = querywid = function (parameters,target,callback) {
-exports.querywid = querywid = function querywid(parameters, callback) { // can change to call back
+exports.querywid = querywid = function querywid(inparameters, callback) { // can change to call back
     // Fish out params
-    proxyprinttodiv('querywid parameters', parameters, 99);
-    //try {
-    var inbound_parameters_107 = arguments;
 
-    delete parameters['executethis']; //** added 11/2
+    //try {
+    //var inbound_parameters_107 = arguments;
+
 
     // var x = window['mongoquery'];
     // if (exports.environment === "local") {
@@ -67,103 +66,147 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
     //      return querywidlocal(parameters);
     //  };
 
-    var output = [];
-    var mQueryString = "";
+
 
     //var p = fishOut(parameters);
 
-    var filter_data = getcommand(parameters, {
-            "command":{
-                "datastore": config.configuration.defaultdatastore,
-                "collection":config.configuration.defaultcollection,
-                "db":config.configuration.defaultdb,
-                "databasetable":config.configuration.defaultdatabasetable,
-                "convertmethod":"toobject",
-                "keepaddthis":true
-            }
-        }, {
-            "command":{
-                "datastore": "",
-                "collection":"",
-                "db":"",
-                "databasetable":"",
-                "convertmethod":"",
-                "environment":"",
-                "keepaddthis":""
-            }
-        },
-        true);
-
-    var command = filter_data.filteredobject.command;
-    parameters = filter_data.output;
-
-    var filter_data = getcommand(parameters, {
-            "mongowid": "",
-            "mongorawquery": "",
-            "mongoquerywid": "",
-            "mongosinglequery": "",
-            "mongomultiplequery": "",
-            "mongorelationshipdirection": "",
-            "mongorelationshiptype": "",
-            "mongorelationshipmethod": "",
-            "mongorelationshiprawquery": "",
-            "mongorelationshiplink": "",
-            "mongorelationshipquery": "",
-            "mongodtotype": "",
-            "mongorelquery": "",
-            "mongoaggregation": "",
-            "mongoaggquery": "",
-            "mongosetfieldsinclude": "",
-            "mongosetfieldsexclude": "",
-            "mongosetlimit": "",
-            "mongosetskip": "",
-            "mongosethint": "",
-            "mongosetmax": "",
-            "mongosetsortby": "",
-            "mongoreturncount": "",
-            "mongoexplain": "",
-            "mongosize": "",
-            "mongosetsortorder": "",
-            "mongowidmethod": ""
-        },{
-            "mongowid": "",
-            "mongorawquery": "",
-            "mongoquerywid": "",
-            "mongosinglequery": "",
-            "mongomultiplequery": "",
-            "mongorelationshipdirection": "",
-            "mongorelationshiptype": "",
-            "mongorelationshipmethod": "",
-            "mongorelationshiprawquery": "",
-            "mongorelationshiplink": "",
-            "mongorelationshipquery": "",
-            "mongodtotype": "",
-            "mongorelquery": "",
-            "mongoaggregation": "",
-            "mongoaggquery": "",
-            "mongosetfieldsinclude": "",
-            "mongosetfieldsexclude": "",
-            "mongosetlimit": "",
-            "mongosetskip": "",
-            "mongosethint": "",
-            "mongosetmax": "",
-            "mongosetsortby": "",
-            "mongoreturncount": "",
-            "mongoexplain": "",
-            "mongosize": "",
-            "mongosetsortorder": "",
-            "mongowidmethod": ""
-        },
-        true);
-
+    // var filter_data = getcommand(parameters, {
+    //         "command":{
+    //             "datastore": config.configuration.defaultdatastore,
+    //             "collection":config.configuration.defaultcollection,
+    //             "db":config.configuration.defaultdb,
+    //             "databasetable":config.configuration.defaultdatabasetable,
+    //             "convertmethod":"toobject",
+    //             "keepaddthis":true
+    //         }
+    //     }, {
+    //         "command":{
+    //             "datastore": "",
+    //             "collection":"",
+    //             "db":"",
+    //             "databasetable":"",
+    //             "convertmethod":"",
+    //             "environment":"",
+    //             "keepaddthis":""
+    //         }
+    //     },
+    //     true);
     //proxyprinttodiv('querywid filter_data', filter_data, 99, true);
     //proxyprinttodiv('querywid filter_data.filteredobject', filter_data.filteredobject, 99);
     //proxyprinttodiv('querywid filter_data.output', filter_data.output, 99);
     //proxyprinttodiv('querywid filter_data.filteredobject.command', filter_data.filteredobject.command, 17);
 
-    var qparms = filter_data.filteredobject;
-    var xparms = filter_data.output;
+    var parameters={}
+    extend(true, parameters, inparameters)
+    delete parameters['executethis']; //** added 11/2
+    var output = [];
+    var mQueryString = "";
+    proxyprinttodiv('querywid parameters', parameters, 99);
 
+    var filter_data = getcommand(parameters, 
+            {"command":{
+            "datastore": config.configuration.defaultdatastore,
+            "collection":config.configuration.defaultcollection,
+            "db":config.configuration.defaultdb,
+            "databasetable":config.configuration.defaultdatabasetable,
+            "convertmethod":"toobject",
+            "keepaddthis":true
+            },
+            "mongowid": "",
+            "mongorawquery": "",
+            "mongoquerywid": "",
+            "mongosinglequery": "",
+            "mongomultiplequery": "",
+            "mongorelationshipdirection": "",
+            "mongorelationshiptype": "",
+            "mongorelationshipmethod": "",
+            "mongorelationshiprawquery": "",
+            "mongorelationshiplink": "",
+            "mongorelationshipquery": "",
+            "mongodtotype": "",
+            "mongorelquery": "",
+            "mongoaggregation": "",
+            "mongoaggquery": "",
+            "mongosetfieldsinclude": "",
+            "mongosetfieldsexclude": "",
+            "mongosetlimit": "",
+            "mongosetskip": "",
+            "mongosethint": "",
+            "mongosetmax": "",
+            "mongosetsortby": "",
+            "mongoreturncount": "",
+            "mongoexplain": "",
+            "mongosize": "",
+            "mongosetsortorder": "",
+            "mongowidmethod": ""
+            },
+            {"command":{
+            "datastore": "",
+            "collection":"",
+            "db":"",
+            "databasetable":"",
+            "convertmethod":"",
+            "environment":"",
+            "keepaddthis":""
+            },
+            "mongowid": "",
+            "mongorawquery": "",
+            "mongoquerywid": "",
+            "mongosinglequery": "",
+            "mongomultiplequery": "",
+            "mongorelationshipdirection": "",
+            "mongorelationshiptype": "",
+            "mongorelationshipmethod": "",
+            "mongorelationshiprawquery": "",
+            "mongorelationshiplink": "",
+            "mongorelationshipquery": "",
+            "mongodtotype": "",
+            "mongorelquery": "",
+            "mongoaggregation": "",
+            "mongoaggquery": "",
+            "mongosetfieldsinclude": "",
+            "mongosetfieldsexclude": "",
+            "mongosetlimit": "",
+            "mongosetskip": "",
+            "mongosethint": "",
+            "mongosetmax": "",
+            "mongosetsortby": "",
+            "mongoreturncount": "",
+            "mongoexplain": "",
+            "mongosize": "",
+            "mongosetsortorder": "",
+            "mongowidmethod": ""
+            },
+        true);
+
+    proxyprinttodiv('querywid filteredobject', filter_data, 99);
+    parameters = filter_data.filteredobject;
+    var xparms = filter_data.output;
+    var filter_data = getcommand(parameters, 
+            {"command":{
+            "datastore": config.configuration.defaultdatastore,
+            "collection":config.configuration.defaultcollection,
+            "db":config.configuration.defaultdb,
+            "databasetable":config.configuration.defaultdatabasetable,
+            "convertmethod":"toobject",
+            "keepaddthis":true,
+            }},
+            {"command":{
+            "datastore": "",
+            "collection":"",
+            "db":"",
+            "databasetable":"",
+            "convertmethod":"",
+            "environment":"",
+            "keepaddthis":""
+            }},
+            true
+            )
+
+    var command= filter_data.filteredobject.command;
+    var qparms = filter_data.output;
+
+    proxyprinttodiv('querywid filteredobject', filter_data, 99);
     proxyprinttodiv('querywid command', command, 99);
     proxyprinttodiv('querywid qparms', qparms, 99);
     proxyprinttodiv('querywid xparms', xparms, 99);
