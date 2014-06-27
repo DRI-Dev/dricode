@@ -12,7 +12,7 @@ exports.saveBase64ToServer = saveBase64ToServer = function saveBase64ToServer(re
 
     console.log('** Image service is saving ' + filename + ' from base64 string **');
 
-    fs.writeFile("C:\\Users\\Administrator\\Copy\\Live_Images\\created_by_browser\\" + filename + ".hstd", "", "String",
+    fs.writeFile("C:\\Users\\Administrator\\Copy\\Live_Images\\created_by_browser\\" + filename + ".hstd", "", "utf8",
         function(err) { });
 
     fs.writeFile("C:\\servers\\master\\dripoint\\images\\" + filename, imageBuffer.data, 'base64', function(err) {
