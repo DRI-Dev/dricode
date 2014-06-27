@@ -1833,214 +1833,708 @@ widtests.etmttest1.js = exports.etmttest1;
 widtests.etmttest1.description = "this does a test";
 
 
-exports.authorquery1 = widtests.authorquery1 = authorquery1 = function authorquery1 (params, callback) {
-
-	var etEnvironment = new drienvironment({
-		"getwidmaster":{
-			"convertmethod": "dto",
-			"execute": "ConvertFromDOTdri"
-		},
-		"run": {
-			"executeid": params.command.environment.run.executeid,
-			"executelevel": params.command.environment.run.executelevel,
-			"type": "series"
-		}
-	});
-
-
-	var executelist = [{
-						"executethis":"updatewid",
-						"wid":"authordto",
-						"metadata.method":"authordto",
-						"name":"string"
-						}, {
-						"executethis":"updatewid",
-						"wid":"charles",
-						"metadata.method":"authordto",
-						"name":"Charles",
-						}, {
-						"executethis":"updatewid",
-						"wid":"tom",
-						"metadata.method":"authordto",
-						"name":"Tom",
-						}, {
-						"executethis":"updatewid",
-						"wid":"Walter",
-						"metadata.method":"authordto",
-						"name":"walter",
-						}, {
-						"executethis":"updatewid",
-						"wid":"jessica",
-						"metadata.method":"authordto",
-						"name":"Jessica",
-						}, {
-						"executethis":"getwid",
-						"metadata.method":"authordto",
-						"wid":"charles_xavier"
-						}];
-
-	execute(executelist,function (err, res) {
-		proxyprinttodiv('res --', res, 99);
-		callback(err, res);
-	});
-	
-	var targetwid = "charles";
-	var excludeset = {};
-	
-	var executeobject = {
-		"executethis": "querywid",
-		"mongosetfieldsexclude": excludeset,
-		"mongowid": targetwid,
-		"mongorelationshiptype": "attributes",
-		"mongorelationshipmethod": "all",
-		"mongorelationshipdirection": "forward",
-		"mongowidmethod": "",
-		"command": {
-			"result": "queryresult"
-		}
-	};
-	
-	etEnvironment.execute(executeobject, function(err, res) {
-		proxyprinttodiv('Function getwidmongo results res', res, 99);
-		res = res["queryresult"];
-		proxyprinttodiv('Function getwidmongo query res', res, 99);
-	});
-}
-widtests.authorquery1.category = "execute";
-widtests.authorquery1.subcategory = "query";
-widtests.authorquery1.js = exports.etmttest4;
-widtests.authorquery1.description = "this does a test";
-
-
-exports.simplequery11 = simplequery11 = function simplequery11 (params, callback) {
+// this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
+exports.simpleonewidquery1 =  
+widtests.simpleonewidquery1 = 
+simpleonewidquery1 = 
+function simpleonewidquery1 (params, callback) {
 
 var executeobj = [
 					{"executethis":"updatewid",
 					"wid":"wid1",
 					"color":"red"
 					}, {"executethis":"querywid",
-						//"command.results":"queryresult",
-						"rawmongoquery": {
-							"$and": [{
-								"color":"red"
+						"mongorawquery": {
+							"$or": [{
+								"data.color":"red"
 								}]
 							}
 					}
 				];
 
 	execute(executeobj,function (err, res) {
-		proxyprinttodiv('res --',res,99);
+		proxyprinttodiv('full result --', res, 99);
+		proxyprinttodiv('query result --',res[1],99);
 		proxyprinttodiv('err --',err,99);
 	});
 }
-exports.codyquery1 = widtests.codyquery1 = codyquery1 = function codyquery1 (params, callback) {
-
-	var etEnvironment = new drienvironment({
-		"getwidmaster":{
-			"convertmethod": "dto",
-			"execute": "ConvertFromDOTdri"
-		},
-		"run": {
-			"executeid": params.command.environment.run.executeid,
-			"executelevel": params.command.environment.run.executelevel,
-			"type": "series"
-		}
-	});
+widtests.simpleonewidquery1.category = "daily";
+widtests.simpleonewidquery1.subcategory = "push";
+widtests.simpleonewidquery1.js = exports.etmttest4;
+widtests.simpleonewidquery1.description = "this does a test";
 
 
-	var executelist = [{
-						"executethis":"updatewid",
-						"wid":"authordto",
-						"metadata.method":"authordto",
-						"name":"string",
-						"metadata.bookdto.type":"onetomany"
-						}, {
-						"executethis":"updatewid",
-						"wid":"bookdto",
-						"metadata.method":"bookdto",
-						"title":"string"
-						}, {
-						"executethis":"updatewid",
-						"wid":"book0",
-						"title":"book0"
-						}, {
-						"executethis":"updatewid",
-						"wid":"book1",
-						"title":"book1"
-						}, {
-						"executethis":"updatewid",
-						"wid":"book2",
-						"title":"book2"
-						}, {
-						"executethis":"updatewid",
-						"wid":"charles_xavier",
-						"metadata.method":"authordto",
-						"name":"Charles Xavier",
-						"bookdto.0.wid":"book0",
-						"bookdto.1.wid":"book1",
-						"bookdto.2.wid":"book2"
-						}, {
-						"executethis": "updatewid",
-						"wid": "rel_author_book",
-						"metadata.method": "relationshipdto",
-						"relationshiptype": "attributes",
-						"linktype": "onetomany",
-						"primarywid": "authordto",
-						"primarymethod": "authordto",
-						"secondarywid": "bookdto",
-						"secondarymethod": "bookdto"
-						}, {
-						"executethis":"getwid",
-						"metadata.method":"authordto",
-						"wid":"charles_xavier"
-						}];
-	/*			
-	async.series([
-		function (cb1) {
-			execute(executelist, function (err, res) {
-						cb1(null);
-					});
-			},
-		function (cb1) {
-			createrelationship("authordto","bookdto","onetomany",function (err, res) {
-					cb1(null);
-				});
-			},
-		function (cb1) {
-			execute([{
-					"executethis":"getwidmaster",
-					"wid":"charles_xavier"
-					}]
-		],
-		function (err, res) {
-			proxyprinttodiv('result --', res, 99);
-		});	
-	*/
 
-	execute(executelist,function (err, res) {
-		proxyprinttodiv('res --', res, 99);
-		callback(err, res);
-	});
+// 5 wids are setup, the query looks for color = red. the returned query result should contain 2 wids: wid1 and wid5
+exports.simplefivewidquery1 =  
+widtests.simplefivewidquery1 = 
+simplefivewidquery1 = 
+function simplefivewidquery1 (params, callback) {
+
+var executeobj = [
+					{
+					"executethis":"updatewid",
+					"wid":"wid1",
+					"color":"red"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid2",
+					"color":"blue"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid3",
+					"color":"green"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid4",
+					"color":"purple"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid5",
+					"color":"red"
+					}
+				];
+				
+	var queryobj = [
+				{"executethis":"querywid",
+						"mongorawquery": {
+							"$or": [{
+								"data.color":"red"
+								}]
+							}
+					}
+				];
 	
-	var targetwid = "charles_xavier";
-	var excludeset = {"book2":"book2"};
-	
-	var executeobject = {
-		"executethis": "querywid",
-		"mongosetfieldsexclude": excludeset,
-		"mongowid": targetwid,
-		"mongorelationshiptype": "attributes",
-		"mongorelationshipmethod": "all",
-		"mongorelationshipdirection": "forward",
-		"mongowidmethod": "",
-		"command": {
-			"result": "queryresult"
-		}
-	};
-	
-	etEnvironment.execute(executeobject, function(err, res) {
-		proxyprinttodiv('Function getwidmongo results res', res, 99);
-		res = res["queryresult"];
-		proxyprinttodiv('Function getwidmongo query res', res, 38);
+	var expectedresult = [
+					{
+						"wid1":{
+							"color":"red",
+							"wid":"wid1",
+							"metadata":{
+								"expirationdate":"2014-06-27T16:32:37.925Z"}
+								}
+					}, {
+						"wid5":{
+							"color":"red",
+							"wid":"wid5",
+							"metadata":{
+								"expirationdate":"2014-06-27T16:32:38.395Z"}
+								}
+						}
+				];
+				
+				
+				
+	execute(executeobj,function (err, res) {
+		proxyprinttodiv('full result --', res, 99);
+		proxyprinttodiv('err --',err,99);
+			
+		execute(queryobj, function (err, res) {
+			proxyprinttodiv('query result --', res, 99);
+			result = logverifycomplex('logverify',res,expectedresult,err,null);
+			callback(err,result);
+		});
+
 	});
 }
+widtests.simplefivewidquery1.category = "daily";
+widtests.simplefivewidquery1.subcategory = "push";
+widtests.simplefivewidquery1.js = exports.etmttest4;
+widtests.simplefivewidquery1.description = "this does a test";
+
+
+// 5 wids are setup, the query looks for color = red OR color = blue. the returned query result should contain 3 wids: wid1, wid2 and wid5
+exports.complexfivewidquery1or =  
+widtests.complexfivewidquery1or = 
+complexfivewidquery1or = 
+function complexfivewidquery1or (params, callback) {
+
+var executeobj = [
+					{
+					"executethis":"updatewid",
+					"wid":"wid1",
+					"color":"red"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid2",
+					"color":"blue"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid3",
+					"color":"green"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid4",
+					"color":"purple"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid5",
+					"color":"red"
+					}
+				];
+				
+	var queryobj = [
+				{"executethis":"querywid",
+						"mongorawquery": {
+							"$or": [{
+								"data.color":"red"
+								}, {
+								"data.color":"blue"
+								}]
+							}
+					}
+				];
+	
+	var expectedresult = [
+						{
+							"wid1":{
+								"color":"red",
+								"wid":"wid1",
+								"metadata":{
+									"expirationdate":"2014-06-27T17:08:39.105Z"
+											}
+								}
+						}, {
+							"wid2":{
+								"color":"blue",
+								"wid":"wid2",
+								"metadata":{
+									"expirationdate":"2014-06-27T17:08:39.202Z"
+								}
+							}
+						}, {
+							"wid5":{
+								"color":"red",
+								"wid":"wid5",
+								"metadata":{
+									"expirationdate":"2014-06-27T17:08:39.558Z"
+								}
+							}
+						}
+					];
+				
+				
+				
+	execute(executeobj,function (err, res) {
+		proxyprinttodiv('full result --', res, 99);
+		proxyprinttodiv('err --',err,99);
+			
+		execute(queryobj, function (err, res) {
+			proxyprinttodiv('query result --', res, 99);
+			result = logverifycomplex('logverify',res,expectedresult,err,null);
+			callback(err,result);
+		});
+
+	});
+}
+widtests.complexfivewidquery1or.category = "daily";
+widtests.complexfivewidquery1or.subcategory = "push";
+widtests.complexfivewidquery1or.js = exports.etmttest4;
+widtests.complexfivewidquery1or.description = "this does a test";
+
+
+
+// 5 wids are setup, the query looks for color = red and hue = light. the returned query result should contain 1 wid: wid1
+exports.complexfivewidquery1and =  
+widtests.complexfivewidquery1and = 
+complexfivewidquery1and = 
+function complexfivewidquery1and (params, callback) {
+
+var executeobj = [
+					{
+					"executethis":"updatewid",
+					"wid":"wid1",
+					"color":"red",
+					"hue":"light"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid2",
+					"color":"blue",
+					"hue":"dark"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid3",
+					"color":"green",
+					"hue":"light"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid4",
+					"color":"purple",
+					"hue":"light"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid5",
+					"color":"red",
+					"hue":"dark"
+					}
+				];
+				
+	var queryobj = [
+				{"executethis":"querywid",
+						"mongorawquery": {
+							"$and": [{
+								"data.color":"red"
+								}, {
+								"data.hue":"light"
+								}]
+							}
+					}
+				];
+	
+	var expectedresult = [
+							{
+								"wid1":{
+									"color":"red",
+									"hue":"light",
+									"wid":"wid1",
+									"metadata":{
+										"expirationdate":"2014-06-27T17:10:26.406Z"
+									}
+								}
+							}
+						];
+				
+				
+				
+	execute(executeobj,function (err, res) {
+		proxyprinttodiv('full result --', res, 99);
+		proxyprinttodiv('err --',err,99);
+			
+		execute(queryobj, function (err, res) {
+			proxyprinttodiv('query result --', res, 99);
+			result = logverifycomplex('logverify',res,expectedresult,err,null);
+			callback(err,result);
+		});
+
+	});
+}
+widtests.complexfivewidquery1and.category = "daily";
+widtests.complexfivewidquery1and.subcategory = "push";
+widtests.complexfivewidquery1and.js = exports.etmttest4;
+widtests.complexfivewidquery1and.description = "this does a test";
+
+
+// 5 wids are setup, the query looks for color = red and hue = light. the returned query result should contain 1 wid: wid1
+exports.complexfivewidquery1andor =  
+widtests.complexfivewidquery1andor = 
+complexfivewidquery1andor  = 
+function complexfivewidquery1andor (params, callback) {
+
+var executeobj = [
+					{
+					"executethis":"updatewid",
+					"wid":"wid1",
+					"color":"red",
+					"hue":"light"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid2",
+					"color":"blue",
+					"hue":"dark"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid3",
+					"color":"green",
+					"hue":"light"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid4",
+					"color":"red",
+					"hue":"medium"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid5",
+					"color":"red",
+					"hue":"dark"
+					}
+				];
+				
+	var queryobj = [
+				{"executethis":"querywid",
+						"mongorawquery": {
+							"$and": [{
+								"data.color":"red"
+								}],
+							"$or": [{
+								"data.hue":"light"
+								}, {
+								"data.hue":"dark"
+								}]
+							}
+					}
+				];
+	
+	var expectedresult = [
+							{
+								"wid1":{
+									"color":"red",
+									"hue":"light",
+									"wid":"wid1",
+									"metadata":{
+										"expirationdate":"2014-06-27T17:16:54.251Z"
+									}
+								}
+							}, {
+								"wid5":{
+									"color":"red",
+									"hue":"dark",
+									"wid":"wid5",
+									"metadata":{
+										"expirationdate":"2014-06-27T17:16:54.723Z"
+									}
+								}
+							}
+						];
+				
+				
+				
+	execute(executeobj,function (err, res) {
+		proxyprinttodiv('full result --', res, 99);
+		proxyprinttodiv('err --',err,99);
+			
+		execute(queryobj, function (err, res) {
+			proxyprinttodiv('query result --', res, 99);
+			result = logverifycomplex('logverify',res,expectedresult,err,null);
+			callback(err,result);
+		});
+
+	});
+}
+widtests.complexfivewidquery1andor.category = "daily";
+widtests.complexfivewidquery1andor.subcategory = "push";
+widtests.complexfivewidquery1andor.js = exports.etmttest4;
+widtests.complexfivewidquery1andor.description = "this does a test";
+
+
+// 5 wids are setup, the query looks for hue = red OR (color = red OR color = green). the returned query result should contain 4 wids: wid1, wid3, wid4, wid5
+exports.complexfivewidquery1nestedor =  
+widtests.complexfivewidquery1nestedor = 
+complexfivewidquery1nestedor  = 
+function complexfivewidquery1nestedor (params, callback) {
+
+var executeobj = [
+					{
+					"executethis":"updatewid",
+					"wid":"wid1",
+					"color":"red",
+					"hue":"light"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid2",
+					"color":"blue",
+					"hue":"dark"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid3",
+					"color":"green",
+					"hue":"light"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid4",
+					"color":"red",
+					"hue":"medium"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid5",
+					"color":"red",
+					"hue":"dark"
+					}
+				];
+				
+	var queryobj = [
+				{"executethis":"querywid",
+						"mongorawquery": {
+							"$or": [{
+								"hue":"light"
+								}, {
+								"$or": [{
+									"data.color":"red"
+									}, {
+									"data.color":"green"
+									}]
+								}]
+							}
+					}
+				];
+	
+	var expectedresult = [
+							{
+								"wid1":{
+									"color":"red",
+									"hue":"light",
+									"wid":"wid1",
+									"metadata":{
+										"expirationdate":"2014-06-27T18:52:40.235Z"
+									}
+								}
+							}, {
+								"wid3":{
+									"color":"green",
+									"hue":"light",
+									"wid":"wid3",
+									"metadata":{
+										"expirationdate":"2014-06-27T18:52:40.429Z"
+									}
+								}
+							}, {
+								"wid4":{
+									"color":"red",
+									"hue":"medium",
+									"wid":"wid4",
+									"metadata":{
+										"expirationdate":"2014-06-27T18:52:40.553Z"
+									}
+								}
+							}, {
+								"wid5":{
+									"color":"red",
+									"hue":"dark",
+									"wid":"wid5",
+									"metadata":{
+										"expirationdate":"2014-06-27T18:52:40.711Z"
+									}
+								}
+							}
+						];
+				
+				
+				
+	execute(executeobj,function (err, res) {
+		proxyprinttodiv('full result --', res, 99);
+		proxyprinttodiv('err --',err,99);
+			
+		execute(queryobj, function (err, res) {
+			proxyprinttodiv('query result --', res, 99);
+			result = logverifycomplex('logverify',res,expectedresult,err,null);
+			callback(err,result);
+		});
+
+	});
+}
+widtests.complexfivewidquery1nestedor.category = "daily";
+widtests.complexfivewidquery1nestedor.subcategory = "push";
+widtests.complexfivewidquery1nestedor.js = exports.etmttest4;
+widtests.complexfivewidquery1nestedor.description = "this does a test";
+
+
+
+// 5 wids are setup, the query looks for hue = light AND (color = green AND number = 3). the returned query result should contain 1 wid: wid3
+exports.complexfivewidquery1nestedand =  
+widtests.complexfivewidquery1nestedand = 
+complexfivewidquery1nestedand  = 
+function complexfivewidquery1nestedand (params, callback) {
+
+var executeobj = [
+					{
+					"executethis":"updatewid",
+					"wid":"wid1",
+					"color":"red",
+					"hue":"light",
+					"number":"1"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid2",
+					"color":"blue",
+					"hue":"dark",
+					"number":"2"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid3",
+					"color":"green",
+					"hue":"light",
+					"number":"3"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid4",
+					"color":"red",
+					"hue":"medium",
+					"number":"4"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid5",
+					"color":"green",
+					"hue":"light",
+					"number":"5"
+					}
+				];
+				
+	var queryobj = [
+				{"executethis":"querywid",
+						"mongorawquery": {
+							"$and": [{
+								"data.hue":"light"
+								}, {
+								"$and": [{
+									"data.color":"green"
+									}, {
+									"data.number":"3"
+									}]
+								}]
+							}
+					}
+				];
+	
+	var expectedresult = [
+							{
+								"wid1":{
+									"color":"red",
+									"hue":"light",
+									"wid":"wid1",
+									"metadata":{
+										"expirationdate":"2014-06-27T18:59:17.772Z"
+									}
+								}
+							}, {
+								"wid3":{
+									"color":"green",
+									"hue":"light",
+									"wid":"wid3",
+									"metadata":{
+										"expirationdate":"2014-06-27T18:59:17.973Z"
+									}
+								}
+							}
+						];
+				
+				
+				
+	execute(executeobj,function (err, res) {
+		proxyprinttodiv('full result --', res, 99);
+		proxyprinttodiv('err --',err,99);
+			
+		execute(queryobj, function (err, res) {
+			proxyprinttodiv('query result --', res, 99);
+			result = logverifycomplex('logverify',res,expectedresult,err,null);
+			callback(err,result);
+		});
+
+	});
+}
+widtests.complexfivewidquery1nestedand.category = "daily";
+widtests.complexfivewidquery1nestedand.subcategory = "push";
+widtests.complexfivewidquery1nestedand.js = exports.etmttest4;
+widtests.complexfivewidquery1nestedand.description = "this does a test";
+
+
+// 5 wids are setup, the query looks for hue = light AND (color = red OR color = green). the returned query result should contain 2 wids: wid1 and wid3
+exports.complexfivewidquery1nestedandor =  
+widtests.complexfivewidquery1nestedandor = 
+complexfivewidquery1nestedandor  = 
+function complexfivewidquery1nestedandor (params, callback) {
+
+var executeobj = [
+					{
+					"executethis":"updatewid",
+					"wid":"wid1",
+					"color":"red",
+					"hue":"light"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid2",
+					"color":"blue",
+					"hue":"dark"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid3",
+					"color":"green",
+					"hue":"light"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid4",
+					"color":"red",
+					"hue":"medium"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid5",
+					"color":"red",
+					"hue":"dark"
+					}
+				];
+				
+	var queryobj = [
+				{"executethis":"querywid",
+						"mongorawquery": {
+							"$and": [{
+								"data.hue":"light"
+								}, {
+								"$or": [{
+									"data.color":"red"
+									}, {
+									"data.color":"green"
+									}]
+								}]
+							}
+					}
+				];
+	
+	var expectedresult = [
+							{
+								"wid1":{
+									"color":"red",
+									"hue":"light",
+									"wid":"wid1",
+									"metadata":{
+										"expirationdate":"2014-06-27T18:59:17.772Z"
+									}
+								}
+							}, {
+								"wid3":{
+									"color":"green",
+									"hue":"light",
+									"wid":"wid3",
+									"metadata":{
+										"expirationdate":"2014-06-27T18:59:17.973Z"
+									}
+								}
+							}
+						];
+				
+				
+				
+	execute(executeobj,function (err, res) {
+		proxyprinttodiv('full result --', res, 99);
+		proxyprinttodiv('err --',err,99);
+			
+		execute(queryobj, function (err, res) {
+			proxyprinttodiv('query result --', res, 99);
+			result = logverifycomplex('logverify',res,expectedresult,err,null);
+			callback(err,result);
+		});
+
+	});
+}
+widtests.complexfivewidquery1nestedandor.category = "daily";
+widtests.complexfivewidquery1nestedandor.subcategory = "push";
+widtests.complexfivewidquery1nestedandor.js = exports.etmttest4;
+widtests.complexfivewidquery1nestedandor.description = "this does a test";
+
+
+// this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
+exports.simpledeepfiltertest1 =  
+widtests.simpledeepfiltertest1 = 
+simpledeepfiltertest1 = 
+function simpledeepfiltertest1 (params, callback) {
+
+var executeobj = [
+					{"executethis":"updatewid",
+					"wid":"wid1",
+					"color":"red"
+					}, {"executethis":"querywid",
+						"mongorawquery": {
+							"$or": [{
+								"data.color":"red"
+								}]
+							}
+					}
+				];
+
+	execute(executeobj,function (err, res) {
+		proxyprinttodiv('full result --', res, 99);
+		proxyprinttodiv('query result --',res[1],99);
+		proxyprinttodiv('err --',err,99);
+	});
+}
+widtests.simpledeepfiltertest1.category = "daily";
+widtests.simpledeepfiltertest1.subcategory = "push";
+widtests.simpledeepfiltertest1.js = exports.etmttest4;
+widtests.simpledeepfiltertest1.description = "this does a test";

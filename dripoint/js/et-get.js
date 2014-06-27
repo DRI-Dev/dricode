@@ -837,7 +837,7 @@
 
                                     etEnvironment.execute(executeobject, function(err, res) {
                                         // If error, bounce out
-                                        proxyprinttodiv('Function getwidmongo results res', res, 38);
+                                        proxyprinttodiv('Function getwidmongo results res', res, 99);
                                         res = res["queryresult"];
                                         if (!res) {
                                             res = []
@@ -845,7 +845,7 @@
                                         if (err && Object.keys(err).length > 0) {
                                             cb1(err, 'step2n1');
                                         } else {
-                                            proxyprinttodiv('Function getwidmongo query res', res, 38);
+                                            proxyprinttodiv('Function getwidmongo query res', res, 99);
                                             if (Object.keys(res).length !== 0) {
                                                 moreDTOParameters = res;
                                             }
