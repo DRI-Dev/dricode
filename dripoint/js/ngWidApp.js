@@ -58,6 +58,25 @@ if (typeof angular !== 'undefined') {
         }
     });
 
+    // image service that will save to the server and eventually amazon s3
+    widApp.factory('imageService', function($http) {
+        return {
+            saveBase64ToServer: function (path, base64image, callback) {
+                $http.put('/base64toserver', {path:path, imagesrc:base64image}, {headers:{"content-type": "application/json"}}).
+                    success(function(data, status, lheaders, config) {
+                        console.log('** Image service successfully saved ' + path + ' to dripoint.com **');
+                        $('#successlog').html('** Image service successfully saved ' + path + ' to dripoint.com **');
+                        if (callback instanceof Function) { callback(null); }
+                    }).
+                    error(function(data, status, headers, config) {
+                        console.log('** Image service incountered an error saving ' + path + ' **');
+                        $('#errorlog').html('** Image service incountered an error saving ' + path + ' **');
+                        if (callback instanceof Function) { callback(null); }
+                    });
+            }
+        }
+    });
+
     // angular execute service, mainly an execute() wrapper
     // which processes results into the dri/angularJS universe
     widApp.factory('executeService', function($http, $compile, dataService) {
@@ -171,8 +190,8 @@ if (typeof angular !== 'undefined') {
     });
 
     // main wid controller (powers dripoint.com landing spot)
-    widApp.controller('widCtrl', ['$scope', '$compile', 'dataService', 'executeService',
-        function($scope, $compile, dataService, executeService) {
+    widApp.controller('widCtrl', ['$scope', '$compile', 'dataService', 'executeService', 'imageService',
+        function($scope, $compile, dataService, executeService, imageService) {
             $scope.data = {}; // general catchall for all properties stored in model
 
             var querystring = window.location.search,
@@ -204,8 +223,12 @@ if (typeof angular !== 'undefined') {
 //                for (var i = 0; i < $scope.length; i++) {
 //
 //                }
-
                 $scope = {};
+            };
+
+            // save image to server based on path and base64 image
+            $scope.imagetoserver = function (path, base64image, callback) {
+                imageService.saveBase64ToServer(path, base64image, callback);
             };
 
             // clears success and error logs on page
@@ -228,6 +251,11 @@ if (typeof angular !== 'undefined') {
     // cleardata wrapper that can be called through execute()
     exports.clearangulardata = clearangulardata = function clearangulardata(params, callback) {
         if ($ && $('body').scope) { $('body').scope().cleardata(); callback(null); }
+    };
+
+    // base64toserver image saving function wrapper that can be called through execute()
+    exports.imagetoserver = imagetoserver = function imagetoserver(params, callback) {
+        if ($ && $('body').scope) { $('body').scope().imagetoserver(params.path, params.imagesrc, callback); }
     };
 
     // angularExecute wrapper that is called from html elements
@@ -275,6 +303,7 @@ if (typeof angular !== 'undefined') {
     }
 
     // mostly processes wid names found in execute results
+    // TODO : remove this as all of these variables are depricated and no longer used
     exports.etProcessScreenWid = etProcessScreenWid = function etProcessScreenWid(parameters, scope, callback) {
         var widforview = [],
             widforbase = [],
