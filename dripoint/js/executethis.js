@@ -979,8 +979,8 @@
                     true);
 
                 // keep command.environment/command.run.executeid as part of parameter
-                proxyprinttodiv('>>>> execute filter_data', filter_data, 11, true);
-                command = filter_data.filteredobject.command;
+                //proxyprinttodiv('>>>> execute filter_data', filter_data, 11, true);
+                var command = filter_data.filteredobject.command;
                 inboundparms = filter_data.output;
                 proxyprinttodiv('>>>> execute command', command, 11, true);
                 proxyprinttodiv('>>>> execute inboundparms', inboundparms, 11, true);
@@ -1000,6 +1000,7 @@
                             proxyprinttodiv("execute after do this inboundparms", inboundparms, 11);
                             proxyprinttodiv("execute after do this resultparameters", resultparameters, 11);
                             proxyprinttodiv("execute after do this err", err, 11);
+                            proxyprinttodiv('execute after do this command', command, 11, true);
                             if (!resultparameters) {resultparameters={};}
                             if (!resultparameters.command) {resultparameters.command={};}
                             if (!resultparameters.command.environment) {resultparameters.command.environment={};}
@@ -1122,7 +1123,7 @@
 
     function checkcache(objkey, callback) {
         if (objkey) {
-            proxyprinttodiv("checkcache objkey", objkey, 17);
+            proxyprinttodiv("checkcache objkey **************", objkey, 99);
             var executeobject = {
                 "wid": objkey,
                 "command": {
