@@ -14,6 +14,18 @@
 
     var execute;
 
+    // get other parameters that might be for this function
+    function enhanceparameters(inboundparms) {
+        // first save and get from environment
+        checkenviornment(inboundparms.command.environment);
+        // then bring items deeply nested in environmnet to "this" level
+        extend(true, inboundparms, 
+                    inboundparms.environment.global, 
+                    inboundparms.environment.var[inboundparms.executethis]
+                    )
+        inboundparms.environment.var = {}; // clear it out so it does not grow forever
+    }
+
     // function reads & updates wid environment when running locally
     function checkenviornment(environment) {
         // merge incoming environment wiht default environment with incomming winning
@@ -40,6 +52,14 @@
             if (!environment.accesstoken) // if no ac then create one
             {
                 environment.accesstoken = createNewGuid();
+            }
+            if (!environment.var)
+            {
+                environment.var = {};
+            }
+            if (!environment.global)
+            {
+                environment.global = {};
             }
 
             // store it back to wid
@@ -164,6 +184,9 @@
         if (!inparams.command.environment) {inparams.command.environment={};}
         if (!inparams.command.environment.run) {inparams.command.environment.run={};}
 
+        // make parameters better by dealing with command.environmnet
+        enhanceparameters(inparams);
+
         extend(true, executionpreferences.command.environment, inparams.command.environment);
         delete inparams.command.environment;
 
@@ -248,6 +271,7 @@
             extend(true, inparams, inparamscopy.command.parameters);
             delete inparams.command.parameters; // delete after unbundle
         }
+
         // inparams is now better, inparamscopy is copy of original
         var command={};
         var currentexecuteid;
@@ -368,7 +392,7 @@
         var trylength = tryset.length;
 
         // read and save environment parameters
-        executionpreferences.command.environment = checkenviornment(executionpreferences.command.environment);
+        //executionpreferences.command.environment = checkenviornment(executionpreferences.command.environment);
 
         // maybe delete command object if empty
         if (executionpreferences.command && 
