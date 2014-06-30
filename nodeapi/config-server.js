@@ -183,7 +183,7 @@ function config123() {
     
     // what environment and what defaults should be used
     configuration.environment = 'server';
-    configuration.defaultsyncrule = 'execute_nothing';
+    configuration.defaultsyncrule = 'create_what_to_do_list';
     configuration.defaultcollection = 'dricollection';
     configuration.defaultdb = 'data';
     configuration.defaultdatastore = 'mongo';

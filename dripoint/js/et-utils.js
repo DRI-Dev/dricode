@@ -4070,23 +4070,7 @@ function getRandomNumberByLength(length) {
     };
 
     //##
-    exports.hashobj = hashobj = function hashobj(inobj, command) {
-        if (command && command.skipcache) {
-            return null;
-        } else {
-            var obj = {};
-            extend(true, obj, inobj);
-            delete obj.executethis;
-            delete obj.preexecute;
-            delete obj.postexecute;
-            delete obj.command; // take out later
 
-            var result = sortObj(obj, function (a, b) {
-                return a.key < b.key;
-            });
-            return JSON.stringify(result);
-        }
-    };
 
 /*
     object operations

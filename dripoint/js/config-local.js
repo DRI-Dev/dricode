@@ -133,6 +133,7 @@ function config123() {
 }
 
 
+
 // *********** EVENTS **************************************************
 exports.eventappinstall = eventappinstall = function eventappinstall() {
   if (exports.environment === 'local') {
@@ -257,94 +258,6 @@ exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters,
     });
 };
 
-exports.processevent = processevent = function processevent(eventname, callback) {
-    callback(null,null)
-    // proxyprinttodiv("processeventqueue eventname----", eventname, 99);
-    // getexecutelist(eventname, "queuecollection", function (err, executetodolist) {
-    //     proxyprinttodiv("processeventqueue executelist", executetodolist, 17);
-    //     executelistfn(executetodolist, execute, function (err, res) {
-    //         deletelist(executetodolist, eventname, function (err, res) {
-    //             callback(err, res);
-    //             });
-    //         });
-    //     });
-    };
-
-exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, callback) {
-    async.mapSeries(listToDo, function (eachresult, cbMap) {
-        async.nextTick(function () {
-            fn(eachresult, function (err, res){
-                cbMap(err, res);
-            });
-        });
-    }, function (err, res) {
-        callback(err, res);
-    });
-};
-
-
-exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eventtype, callback) {
-    proxyprinttodiv("getexecutelist eventname(collection)", eventname, 17);
-	proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
-	var executeobject = {"command": {"result": "queryresult"}};
-    var executetodolist=[];
-    executeobject.command.databasetable = eventtype;
-    executeobject.command.collection = eventname;
-    executeobject.command.db = "queuedata";
-    //executeobject.command.result = "queueresult";
-    executeobject["executethis"] = "querywid";
-    //executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
-    executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]}  	
-	proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
-	
-    execute(executeobject, function (err, res) {
-		proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
-        if (res.length === 0) {
-            executetodolist = [];
-        }
-        else if(res[0] && res[0]["queryresult"]){
-            for (var everyaction in res[0]["queryresult"]){
-				proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
-                //if (res[0]["queryresult"][everyaction]
-                executetodolist.push(res[0]["queryresult"][everyaction]);
-            }
-
-        }
-        callback(null, executetodolist);
-    })
-};
-
-
-exports.deletelist = deletelist = function deletelist(listToDo, eventname, callback) {
-    proxyprinttodiv("deletelist listToDo", listToDo, 17);
-    var eachcmd={};
-    eachcmd["command"] = {
-            "fromdatabasetable":"queuecollection",
-            "fromdatastore": "",
-            "fromcollection":eventname,
-            "fromkeycollection":eventname+"key",
-            "fromdb":"queuedata",
-            "todatabasetable":"completedqueuecollection",
-            "todatastore": "",
-            "tocollection":eventname,
-            "tokeycollection":eventname+"key",
-            "todb":"queuedata",
-            "towid":"",
-            "delete":true
-        };
-
-    async.mapSeries(listToDo, function (eachresult, cbMap) {
-        async.nextTick(function () {
-            var eachaction=eachresult;
-            eachaction = extend(true, eachaction, eachcmd);
-            copywid(eachaction, function (err, res){
-                cbMap(err, res);
-            });
-        });
-    }, function (err, res) {
-        callback(err, res);
-    });
-};
 
 
 exports.execute_server = window.execute_server = execute_server = function execute_server(params, callback) {

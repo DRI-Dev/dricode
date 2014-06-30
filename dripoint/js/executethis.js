@@ -2,10 +2,18 @@
 //
 // 10) hash remove all command except environment
 // 11) environment look at appdto
-// segregation of commands and errors (formatting, environment/user), regarding execute
+// - environment.global
+// - envrionment.var[fn]
+// - environment.attributes
+// - environment.run / type-level-executeid
 // 12) support for eval sending parameters into it
 //
-// commmand.environment.default_how_to_do_list =  "sync_local_server"
+// command.processparameterfn
+// command.processfn
+// sync_local, sync_server, sync_local_server, sync_local_cache
+//
+// command.skipcache
+//
 // search for configuration.environment 
 // future we may need to support multiple executeids
 
@@ -795,166 +803,7 @@
             } // execute level
         }; // end
 
-    // this function expands inparams to be two calls, usually one to local and one to server
-    // they are set to "runfirstone", it will not go to server unless first call fails
-    // within each call it sets up to first call process parameters "create_what_to_do_list"
-    //
-    window.sync_local_server = function sync_local_server(inparams, callback) {
-        proxyprinttodiv("sync_local_server inparams", inparams, 11);
-        // create outside wrapper--copy command, set "runfirstone"
-        var outparams={};
-        outparams.command={};
-        extend(true, outparams.command, inparams.command);
-        outparams.command.environment.run.type = "runfirstonewaterfall";
-//        outparams.command.processfn = "execute_function";
-        outparams.command.xrun = [];
 
-        // create step1 of inside--copy all minus processparameterfn, set create_what_to_do_list
-        var firstcopy = {};
-        extend(true, firstcopy, inparams);
-        firstcopy.command.processfn = "execute_function";
-        outparams.command.xrun.push(firstcopy);
-
-        // second step will waterfall parameters from above
-        var secondcopy={};
-        extend(true, secondcopy, inparams);
-        secondcopy.command.environment.run.executelevel=0;
-        secondcopy.command.environment.platform="server";
-        secondcopy.command.processfn = "execute_server";
-        outparams.command.xrun.push(secondcopy);
-            
-        proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
-        callback(null, outparams);
-    };
-
-    window.sync_server = function sync_server(inparams, callback) {
-        proxyprinttodiv("sync_local_server inparams", inparams, 11);
-        var outparams = {};
-        extend(true, outparams, inparams);
-        outparams.command.processfn = "execute_server";
-        proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
-        callback(null, outparams);
-    };
-
-    window.sync_local = function sync_local(inparams, callback) {
-        proxyprinttodiv("sync_local_server inparams", inparams, 11);
-        var outparams = {};
-        extend(true, outparams, inparams);
-        outparams.command.processfn = "execute_function";
-//        outparams.command.processparameterfn = "execute_nothing";
-        proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
-        callback(null, outparams);
-    };
-
-    // this function expands inparams to be three calls, to execute_function, execute_parameter, execute_get_wid
-    // it sets these to "runfirstone" 
-    // it further splits executegetwid into getwic and execute_function, its set these to "waterfall"
-    window.create_what_to_do_list =  function create_what_to_do_list(inparams, callback) {
-        proxyprinttodiv("create_what_to_do_list inparams", inparams, 11);
-        // create outside wrapper--copy command, set "runfirstone"
-
-        var outparams={};
-        outparams.command = {};
-        extend(true, outparams.command, inparams.command);
-        outparams.command.environment.run.type = "runfirstone";
-//        outparams.command.processfn = "execute_function";
-        outparams.command.xrun = [];
-
-        //nest all of below into one xrun
-        // create step1 of inside--set execute_function
-        var firstcopy={};
-        extend(true, firstcopy, inparams);
-        firstcopy.command.processparameterfn = "execute_nothing"; // so create_what is not called again
-        firstcopy.command.processfn = "execute_function";
-        outparams.command.xrun.push(firstcopy);
-
-        // create step2 of inside--set execute_parameter
-        var secondcopy={};
-        extend(true, secondcopy, inparams);
-        secondcopy.command.processparameterfn = "execute_parameter"; // so create_what is not called again
-        secondcopy.command.processfn = "execute_function";
-        outparams.command.xrun.push(secondcopy);
-
-        // create third copy for execute get wid
-        var thirdcopy={};
-        extend(true, thirdcopy, inparams);
-        thirdcopy.command.processparameterfn = "execute_get_wid"; // so create_what is not called again
-        thirdcopy.command.processfn = "execute_function";
-        outparams.command.xrun.push(thirdcopy);
-
-        proxyprinttodiv("create_what_to_do_list outparams", outparams, 11, true);
-        callback(null, outparams);
-      };
-
-
-    // executes the function stored in parameter
-    // if params are {et:x, x:fn1} then it will execute fn1
-    window.execute_parameter = function execute_parameter(params, callback) {
-        if (!params[params.executethis]) 
-        {
-            execute_createerror(params, callback);
-            //params.command.processfn="execute_createerror";
-        } 
-        else 
-        {
-            params.executethis = params[params.executethis];
-        //}
-        params.command.processfn="execute_function";
-        proxyprinttodiv('execute end of execute_parameter', params, 11);
-        callback(null, params)
-        }
-    };
-
-    // if parms are {et: x} then to a getwid to x ... then excucte the results of x
-    // to this by doing the getwid in step01 (processparameterfn) and the execute of resutls in step02
-    window.execute_get_wid =  function execute_get_wid(inparams, cb) { 
-		if (!inparams.executethis) 
-        {
-            proxyprinttodiv('execute end of execute_get_wid I', inparams, 11);
-            execute_createerror(inparams, cb);
-        } 
-        else 
-        {
-            var params = {};
-            extend(true, params, inparams);
-            params.wid = params.executethis;
-            params.executethis='getwid';
-            params.command.processparameterfn = "execute_nothing";
-            params.command.processfn = "execute_function";
-            params.command.keepaddthis=false;
-            execute(params, function (err, res) {
-                if (!res) {res={};}
-                if (!res.command) {res.command={};}
-
-                if (err) 
-                {
-                    execute_createerror(res, cb);
-                }
-                else
-				{
-                    // if we got results from get wid, then execute them
-//                    inparams.command.processparameterfn = "execute_nothing";
-//                    inparams.command.processfn = "execute_function";
-//                    res = extend(true, {}, inparams, res);
-                    res.command.processparameterfn = res.command.processparameterfn || "execute_nothing";
-                    cb(null, res)
-                }
-            })
-        }
-    };
-
-    // function for where there is nothing to do
-    window.execute_nothing =  function execute_nothing(params, callback) {
-        proxyprinttodiv('execute end of execute_nothing', params, 11);
-        callback(null, params);
-    };
- 
-     // when whattodo fn, parm, executeget wid is unable to do something in that try
-    window.execute_createerror =  function execute_createerror(params, callback) {
-        proxyprinttodiv('execute end of execute_nothing', params, 11);
-//        callback({"errorname":"fnnotfound"}, params);
-        callback({"errorname":"fnnotfound"}, null);
-    };
 
     // main execute function
     window.execute_function = function execute_function(incomingparams, callback) {
@@ -1179,6 +1028,304 @@
         }
     }
 
+exports.hashobj = hashobj = function hashobj(inobj, command) {
+        if (command && command.skipcache) {
+            return null;
+        } else {
+            var obj = {};
+            extend(true, obj, inobj);
+            delete obj.executethis;
+            delete obj.command.environment; // 
+
+            var result = sortObj(obj, function (a, b) {
+                return a.key < b.key;
+            });
+            return JSON.stringify(result);
+        }
+    };
+
+    // this function expands inparams to be two calls, usually one to local and one to server
+    // they are set to "runfirstone", it will not go to server unless first call fails
+    // within each call it sets up to first call process parameters "create_what_to_do_list"
+    //
+    window.sync_local_server = function sync_local_server(inparams, callback) {
+        proxyprinttodiv("sync_local_server inparams", inparams, 11);
+        // create outside wrapper--copy command, set "runfirstone"
+        var outparams={};
+        outparams.command={};
+        extend(true, outparams.command, inparams.command);
+        outparams.command.environment.run.type = "runfirstonewaterfall";
+//        outparams.command.processfn = "execute_function";
+        outparams.command.xrun = [];
+
+        // create step1 of inside--copy all minus processparameterfn, set create_what_to_do_list
+        var firstcopy = {};
+        extend(true, firstcopy, inparams);
+        firstcopy.command.processfn = "execute_function";
+        outparams.command.xrun.push(firstcopy);
+
+        // second step will waterfall parameters from above
+        var secondcopy={};
+        extend(true, secondcopy, inparams);
+        secondcopy.command.environment.run.executelevel=0;
+        secondcopy.command.environment.platform="server";
+        secondcopy.command.processfn = "execute_server";
+        outparams.command.xrun.push(secondcopy);
+            
+        proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
+        callback(null, outparams);
+    };
+
+    window.sync_local_cache = function sync_local_server(inparams, callback) {
+        proxyprinttodiv("sync_local_server inparams", inparams, 11);
+        // create outside wrapper--copy command, set "runfirstone"
+        var outparams={};
+        outparams.command={};
+        extend(true, outparams.command, inparams.command);
+        outparams.command.environment.run.type = "runfirstonewaterfall";
+//        outparams.command.processfn = "execute_function";
+        outparams.command.xrun = [];
+
+        // create step1 of inside--copy all minus processparameterfn, set create_what_to_do_list
+        var firstcopy = {};
+        extend(true, firstcopy, inparams);
+        firstcopy.command.processfn = "execute_function";
+        outparams.command.xrun.push(firstcopy);
+
+        // second step will waterfall parameters from above
+        var secondcopy={};
+        extend(true, secondcopy, inparams);
+        secondcopy.command.environment.run.executelevel=0;
+        secondcopy.command.environment.platform="server";
+        secondcopy.command.processfn = "execute_server";
+        outparams.command.xrun.push(secondcopy);
+            
+        proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
+        callback(null, outparams);
+    };
+
+    window.sync_server = function sync_server(inparams, callback) {
+        proxyprinttodiv("sync_local_server inparams", inparams, 11);
+        var outparams = {};
+        extend(true, outparams, inparams);
+        outparams.command.processfn = "execute_server";
+        proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
+        callback(null, outparams);
+    };
+
+    window.sync_local = function sync_local(inparams, callback) {
+        proxyprinttodiv("sync_local_server inparams", inparams, 11);
+        var outparams = {};
+        extend(true, outparams, inparams);
+        outparams.command.processfn = "execute_function";
+//        outparams.command.processparameterfn = "execute_nothing";
+        proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
+        callback(null, outparams);
+    };
+
+    // this function expands inparams to be three calls, to execute_function, execute_parameter, execute_get_wid
+    // it sets these to "runfirstone" 
+    // it further splits executegetwid into getwic and execute_function, its set these to "waterfall"
+    window.create_what_to_do_list =  function create_what_to_do_list(inparams, callback) {
+        proxyprinttodiv("create_what_to_do_list inparams", inparams, 11);
+        // create outside wrapper--copy command, set "runfirstone"
+
+        var outparams={};
+        outparams.command = {};
+        extend(true, outparams.command, inparams.command);
+        outparams.command.environment.run.type = "runfirstone";
+//        outparams.command.processfn = "execute_function";
+        outparams.command.xrun = [];
+
+        //nest all of below into one xrun
+        // create step1 of inside--set execute_function
+        var firstcopy={};
+        extend(true, firstcopy, inparams);
+        firstcopy.command.processparameterfn = "execute_nothing"; // so create_what is not called again
+        firstcopy.command.processfn = "execute_function";
+        outparams.command.xrun.push(firstcopy);
+
+        // create step2 of inside--set execute_parameter
+        var secondcopy={};
+        extend(true, secondcopy, inparams);
+        secondcopy.command.processparameterfn = "execute_parameter"; // so create_what is not called again
+        secondcopy.command.processfn = "execute_function";
+        outparams.command.xrun.push(secondcopy);
+
+        // create third copy for execute get wid
+        var thirdcopy={};
+        extend(true, thirdcopy, inparams);
+        thirdcopy.command.processparameterfn = "execute_get_wid"; // so create_what is not called again
+        thirdcopy.command.processfn = "execute_function";
+        outparams.command.xrun.push(thirdcopy);
+
+        proxyprinttodiv("create_what_to_do_list outparams", outparams, 11, true);
+        callback(null, outparams);
+      };
+
+
+    // executes the function stored in parameter
+    // if params are {et:x, x:fn1} then it will execute fn1
+    window.execute_parameter = function execute_parameter(params, callback) {
+        if (!params[params.executethis]) 
+        {
+            execute_createerror(params, callback);
+            //params.command.processfn="execute_createerror";
+        } 
+        else 
+        {
+            params.executethis = params[params.executethis];
+        //}
+        params.command.processfn="execute_function";
+        proxyprinttodiv('execute end of execute_parameter', params, 11);
+        callback(null, params)
+        }
+    };
+
+    // if parms are {et: x} then to a getwid to x ... then excucte the results of x
+    // to this by doing the getwid in step01 (processparameterfn) and the execute of resutls in step02
+    window.execute_get_wid =  function execute_get_wid(inparams, cb) { 
+        if (!inparams.executethis) 
+        {
+            proxyprinttodiv('execute end of execute_get_wid I', inparams, 11);
+            execute_createerror(inparams, cb);
+        } 
+        else 
+        {
+            var params = {};
+            extend(true, params, inparams);
+            params.wid = params.executethis;
+            params.executethis='getwid';
+            params.command.processparameterfn = "execute_nothing";
+            params.command.processfn = "execute_function";
+            params.command.keepaddthis=false;
+            execute(params, function (err, res) {
+                if (!res) {res={};}
+                if (!res.command) {res.command={};}
+
+                if (err) 
+                {
+                    execute_createerror(res, cb);
+                }
+                else
+                {
+                    // if we got results from get wid, then execute them
+//                    inparams.command.processparameterfn = "execute_nothing";
+//                    inparams.command.processfn = "execute_function";
+//                    res = extend(true, {}, inparams, res);
+                    res.command.processparameterfn = res.command.processparameterfn || "execute_nothing";
+                    cb(null, res)
+                }
+            })
+        }
+    };
+
+    // function for where there is nothing to do
+    window.execute_nothing =  function execute_nothing(params, callback) {
+        proxyprinttodiv('execute end of execute_nothing', params, 11);
+        callback(null, params);
+    };
+ 
+     // when whattodo fn, parm, executeget wid is unable to do something in that try
+    window.execute_createerror =  function execute_createerror(params, callback) {
+        proxyprinttodiv('execute end of execute_nothing', params, 11);
+//        callback({"errorname":"fnnotfound"}, params);
+        callback({"errorname":"fnnotfound"}, null);
+    };
+
+    exports.saveexecuteevent = saveexecuteevent = function saveexecuteevent(eventname, callback) {
+        callback(null,null)
+
+        };
+
+    exports.processevent = processevent = function processevent(eventname, callback) {
+        callback(null,null)
+        proxyprinttodiv("processeventqueue eventname----", eventname, 99);
+        getexecutelist(eventname, "queuecollection", function (err, executetodolist) {
+            proxyprinttodiv("processeventqueue executelist", executetodolist, 17);
+            executelistfn(executetodolist, execute, function (err, res) {
+                deletelist(executetodolist, eventname, function (err, res) {
+                    callback(err, res);
+                    });
+                });
+            });
+        };
+
+    exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, callback) {
+        async.mapSeries(listToDo, function (eachresult, cbMap) {
+            async.nextTick(function () {
+                fn(eachresult, function (err, res){
+                    cbMap(err, res);
+                });
+            });
+        }, function (err, res) {
+            callback(err, res);
+        });
+    };
+
+
+    exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eventtype, callback) {
+        proxyprinttodiv("getexecutelist eventname(collection)", eventname, 17);
+        proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
+        var executeobject = {"command": {"result": "queryresult"}};
+        var executetodolist=[];
+        executeobject.command.databasetable = eventtype;
+        executeobject.command.collection = eventname;
+        executeobject.command.db = "queuedata";
+        //executeobject.command.result = "queueresult";
+        executeobject["executethis"] = "querywid";
+        //executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
+        executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]}   
+        proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
+        
+        execute(executeobject, function (err, res) {
+            proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
+            if (res.length === 0) {
+                executetodolist = [];
+            }
+            else if(res[0] && res[0]["queryresult"]){
+                for (var everyaction in res[0]["queryresult"]){
+                    proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
+                    //if (res[0]["queryresult"][everyaction]
+                    executetodolist.push(res[0]["queryresult"][everyaction]);
+                }
+
+            }
+            callback(null, executetodolist);
+        })
+    };
+
+
+    exports.deletelist = deletelist = function deletelist(listToDo, eventname, callback) {
+        proxyprinttodiv("deletelist listToDo", listToDo, 17);
+        var eachcmd={};
+        eachcmd["command"] = {
+                "fromdatabasetable":"queuecollection",
+                "fromdatastore": "",
+                "fromcollection":eventname,
+                "fromkeycollection":eventname+"key",
+                "fromdb":"queuedata",
+                "todatabasetable":"completedqueuecollection",
+                "todatastore": "",
+                "tocollection":eventname,
+                "tokeycollection":eventname+"key",
+                "todb":"queuedata",
+                "towid":"",
+                "delete":true
+            };
+
+        async.mapSeries(listToDo, function (eachresult, cbMap) {
+            async.nextTick(function () {
+                var eachaction=eachresult;
+                eachaction = extend(true, eachaction, eachcmd);
+                copywid(eachaction, function (err, res){
+                    cbMap(err, res);
+                });
+            });
+        }, function (err, res) {
+            callback(err, res);
+        });
+    };
 
 
     // function dothisprocessor(params, target, objkey, callback) {
