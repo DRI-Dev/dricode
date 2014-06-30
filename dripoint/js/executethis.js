@@ -29,7 +29,7 @@
         // then bring items deeply nested in environmnet to "this" level
         extend(true, inboundparams,
                     inboundparams.command.environment.global || {},
-                    inboundparams.command.environment.var[inboundparams.executethis] || {});
+                    inboundparams.command.environment.var ? inboundparams.command.environment.var[inboundparams.executethis] || {} : {});
 
         inboundparams.command.environment.var = {}; // clear it out so it does not grow forever
 
