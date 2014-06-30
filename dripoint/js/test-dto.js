@@ -3074,7 +3074,9 @@ exports.ettestag1 = widtests.ettestag1 = ettestag1 = function ettestag1(params, 
             proxyprinttodiv('Function ag1 expected res ', {
                 "note": "string",
                 "wid": "sounddto",
-                "metadata.method": "sounddto"
+                "metadata": {
+                    "method": "sounddto"
+                },
             }, 99);
             proxyprinttodiv('Function ag1 actual result ', res, 99);
             res = logverify("ettestag1_result", res, {
@@ -3082,7 +3084,8 @@ exports.ettestag1 = widtests.ettestag1 = ettestag1 = function ettestag1(params, 
                 "metadata": {
                     "method": "sounddto"
                 },
-                "note": "string"
+                "note": "string",
+                "expirationdate":{"exception":["created","changed","unchanged"]}
             });
 
             callback(err, res);
