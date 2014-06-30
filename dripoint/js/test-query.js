@@ -2474,7 +2474,7 @@ var executeobj = [
 									"hue":"light",
 									"wid":"wid1",
 									"metadata":{
-										"expirationdate":"2014-06-27T18:59:17.772Z"
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
 									}
 								}
 							}, {
@@ -2483,7 +2483,7 @@ var executeobj = [
 									"hue":"light",
 									"wid":"wid3",
 									"metadata":{
-										"expirationdate":"2014-06-27T18:59:17.973Z"
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
 									}
 								}
 							}
@@ -2497,7 +2497,7 @@ var executeobj = [
 			
 		execute(queryobj, function (err, res) {
 			proxyprinttodiv('query result --', res, 99);
-			result = logverifycomplex('logverify',res,expectedresult,err,null);
+			result = logverify('logverify',res,expectedresult);
 			callback(err,result);
 		});
 
