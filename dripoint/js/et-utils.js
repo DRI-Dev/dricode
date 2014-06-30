@@ -2594,13 +2594,13 @@ function getRandomNumberByLength(length) {
         var resulttable_result=logverifyresulttable(test_name, data_object, assertion_object)
 
         var result0 = deepDiffMapper.map(assertion_object, data_object);
-        proxyprinttodiv('logverify  result0', result0, 98);
+        proxyprinttodiv('logverify  result0', result0, 99);
 
         // collapse the results so they are easy to check -- same level
         var result = {};
         //collapsediffobj(result0, result)
         generatepropertylist(result0, result)
-        proxyprinttodiv('logverify result', result, 98);
+        proxyprinttodiv('logverify result', result, 99);
         var xresults = distillresults(test_name, result);
         proxyprinttodiv('logverify x I', xresults, 99, true);
         if (xresults[test_name] === "PASS")
@@ -2611,6 +2611,9 @@ function getRandomNumberByLength(length) {
             var diff_obj = xresults[test_name + '_diff'];
             var type_count = 0;
             var matching_type_count = 0;
+            var eachassertionobject = {};
+                generatepropertylist(assertion_object, eachassertionobject);
+
             for (key_name in diff_obj)
             {
                 var diff_obj_item = diff_obj[key_name];
@@ -2620,11 +2623,16 @@ function getRandomNumberByLength(length) {
                     var diff_type = diff_obj_item['type'];
                     type_count += 1;
                     // Something is different here
-                    if (assertion_object && assertion_object.hasOwnProperty(key_name))
+                    // if (assertion_object && assertion_object.hasOwnProperty(key_name))
+                    // {
+                    //     if (assertion_object[key_name].hasOwnProperty('exception'))
+                    //     {
+                    //          exception_types = assertion_object[key_name].exception;
+                    if (eachassertionobject && eachassertionobject.hasOwnProperty(key_name))
                     {
-                        if (assertion_object[key_name].hasOwnProperty('exception'))
+                        if (eachassertionobject[key_name].hasOwnProperty('exception'))
                         {
-                            exception_types = assertion_object[key_name].exception;
+                            exception_types = eachassertionobject[key_name].exception;
                             // A specific type of exception was defined here.  
                             // If this exception type is not found, then it should fail
                             if (exception_types.indexOf(diff_type) > -1)
