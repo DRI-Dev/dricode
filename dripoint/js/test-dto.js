@@ -3076,16 +3076,16 @@ exports.ettestag1 = widtests.ettestag1 = ettestag1 = function ettestag1(params, 
                 "wid": "sounddto",
                 "metadata": {
                     "method": "sounddto"
-                },
+                }
             }, 99);
             proxyprinttodiv('Function ag1 actual result ', res, 99);
             res = logverify("ettestag1_result", res, {
                 "wid": "sounddto",
                 "metadata": {
-                    "method": "sounddto"
+                    "method": "sounddto",
+                    "expirationdate":{"exception":["created","changed","unchanged"]}
                 },
-                "note": "string",
-                "expirationdate":{"exception":["created","changed","unchanged"]}
+                "note": "string"
             });
 
             callback(err, res);
