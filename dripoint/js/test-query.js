@@ -2509,7 +2509,95 @@ widtests.complexfivewidquery1nestedandor.js = exports.etmttest4;
 widtests.complexfivewidquery1nestedandor.description = "this does a test";
 
 
-// this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
+
+// this test sets up 3 wids: 1 parent and two children. A query for the parent should bring back all 3 records
+exports.simplerelatedquery1 =  
+widtests.simplerelatedquery1 = 
+simplerelatedquery1  = 
+function simplerelatedquery1 (params, callback) {
+
+var executeobj = [
+					{
+					"executethis":"updatewid",
+					"metadata.method":"authordto",
+					"metadata.bookdto.type":"onetomany",
+					"wid":"authordto",
+					"name":"string"
+					}, {
+					"executethis":"updatewid",
+					"metadata.method":"bookdto",
+					"wid":"bookdto",
+					"title":"string"
+					}, {
+					"executethis": "updatewid",
+					"metadata.method": "relationshipdto",
+					"wid": "rel_author_books",
+					"primarywid": "authordto",
+					"secondarywid": "bookdto",
+					"relationshiptype": "attributes"
+					}, {
+					"executethis":"updatewid",
+					"metadata.method":"authordto",
+					"wid":"author1",
+					"name":"andrew",
+					"bookdto.0.title":"Haunted Houses",
+					"bookdto.1.title":"History of WWII",
+					"bookdto.2.title":"Time of the Dinosaurs"
+					}
+				];
+				
+	var queryobj = [
+				{"executethis":"querywid",
+					"mongowid":"author1",
+					"mongorelationshiptype":"attributes",
+					"mongorelationshipmethod":"forward"
+					}
+				];
+	
+	var expectedresult = [
+							{
+								"wid1":{
+									"color":"red",
+									"hue":"light",
+									"wid":"wid1",
+									"metadata":{
+										"expirationdate":"2014-06-27T18:59:17.772Z"
+									}
+								}
+							}, {
+								"wid3":{
+									"color":"green",
+									"hue":"light",
+									"wid":"wid3",
+									"metadata":{
+										"expirationdate":"2014-06-27T18:59:17.973Z"
+									}
+								}
+							}
+						];
+				
+				
+				
+	execute(executeobj,function (err, res) {
+		proxyprinttodiv('full result --', res, 99);
+		proxyprinttodiv('err --',err,99);
+			
+		execute(queryobj, function (err, res) {
+			proxyprinttodiv('query result --', res, 99);
+			result = logverifycomplex('logverify',res,expectedresult,err,null);
+			callback(err,result);
+		});
+
+	});
+}
+widtests.simplerelatedquery1.category = "daily";
+widtests.simplerelatedquery1.subcategory = "push";
+widtests.simplerelatedquery1.js = exports.etmttest4;
+widtests.simplerelatedquery1.description = "this does a test";
+
+
+
+// this sets up 1 wid and 
 exports.simpledeepfiltertest1 =  
 widtests.simpledeepfiltertest1 = 
 simpledeepfiltertest1 = 
@@ -2518,13 +2606,9 @@ function simpledeepfiltertest1 (params, callback) {
 var executeobj = [
 					{"executethis":"updatewid",
 					"wid":"wid1",
-					"color":"red"
-					}, {"executethis":"querywid",
-						"mongorawquery": {
-							"$or": [{
-								"data.color":"red"
-								}]
-							}
+					"number":"12",
+					"command.deepfilter.convert":true,
+					"command.deepfilter.totype":"integer"
 					}
 				];
 
