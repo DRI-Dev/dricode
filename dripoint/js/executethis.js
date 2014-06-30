@@ -31,7 +31,7 @@
                     inboundparms.command.environment.global,
                     inboundparms.command.environment.var[inboundparms.executethis] || {});
 
-        inboundparms.environment.var = {}; // clear it out so it does not grow forever
+        inboundparms.environment.command.var = {}; // clear it out so it does not grow forever
     }
 
     // function reads & updates wid environment when running locally
