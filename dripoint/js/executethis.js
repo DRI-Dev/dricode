@@ -17,12 +17,12 @@
     // get other parameters that might be for this function
     function enhanceparameters(inboundparms) {
         // first save and get from environment
-        checkenviornment(inboundparms.command.environment);
+        inboundparms.command.environment = checkenviornment(inboundparms.command.environment);
         // then bring items deeply nested in environmnet to "this" level
         extend(true, inboundparms, 
                     inboundparms.environment.global, 
-                    inboundparms.environment.var[inboundparms.executethis]
-                    )
+                    inboundparms.environment.var[inboundparms.executethis]);
+
         inboundparms.environment.var = {}; // clear it out so it does not grow forever
     }
 
