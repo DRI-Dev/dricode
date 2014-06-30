@@ -28,8 +28,8 @@
         inboundparms.command.environment = checkenviornment(inboundparms.command.environment);
         // then bring items deeply nested in environmnet to "this" level
         extend(true, inboundparms, 
-                    inboundparms.environment.global, 
-                    inboundparms.environment.var[inboundparms.executethis]);
+                    inboundparms.command.environment.global,
+                    inboundparms.command.environment.var[inboundparms.executethis] || {});
 
         inboundparms.environment.var = {}; // clear it out so it does not grow forever
     }
