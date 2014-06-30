@@ -2611,8 +2611,8 @@ function getRandomNumberByLength(length) {
             var diff_obj = xresults[test_name + '_diff'];
             var type_count = 0;
             var matching_type_count = 0;
-            var eachassertionobject = {};
-                generatepropertylist(assertion_object, eachassertionobject);
+            var assertionobjectproplist = {};
+                generatepropertylist(assertion_object, assertionobjectproplist);
 
             for (key_name in diff_obj)
             {
@@ -2628,11 +2628,11 @@ function getRandomNumberByLength(length) {
                     //     if (assertion_object[key_name].hasOwnProperty('exception'))
                     //     {
                     //          exception_types = assertion_object[key_name].exception;
-                    if (eachassertionobject && eachassertionobject.hasOwnProperty(key_name))
+                    if (assertionobjectproplist && assertionobjectproplist.hasOwnProperty(key_name))
                     {
-                        if (eachassertionobject[key_name].hasOwnProperty('exception'))
+                        if (assertionobjectproplist[key_name].hasOwnProperty('exception'))
                         {
-                            exception_types = eachassertionobject[key_name].exception;
+                            exception_types = assertionobjectproplist[key_name].exception;
                             // A specific type of exception was defined here.  
                             // If this exception type is not found, then it should fail
                             if (exception_types.indexOf(diff_type) > -1)
