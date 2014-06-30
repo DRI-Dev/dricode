@@ -3083,7 +3083,7 @@ exports.ettestag1 = widtests.ettestag1 = ettestag1 = function ettestag1(params, 
                 "wid": "sounddto",
                 "metadata": {
                     "method": "sounddto",
-                    "expirationdate":{"exception":["created","changed","unchanged"]}
+                    "expirationdate":{"exception":["created","changed","unchanged","updated"]}
                 },
                 "note": "string"
             });
