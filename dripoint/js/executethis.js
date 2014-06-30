@@ -23,15 +23,17 @@
     var execute;
 
     // get other parameters that might be for this function
-    function enhanceparameters(inboundparms) {
+    function enhanceparameters(inboundparams) {
         // first save and get from environment
-        inboundparms.command.environment = checkenviornment(inboundparms.command.environment);
+        inboundparams.command.environment = checkenviornment(inboundparams.command.environment);
         // then bring items deeply nested in environmnet to "this" level
-        extend(true, inboundparms, 
-                    inboundparms.command.environment.global,
-                    inboundparms.command.environment.var[inboundparms.executethis] || {});
+        extend(true, inboundparams,
+                    inboundparams.command.environment.global || {},
+                    inboundparams.command.environment.var[inboundparams.executethis] || {});
 
-        inboundparms.command.environment.var = {}; // clear it out so it does not grow forever
+        inboundparams.command.environment.var = {}; // clear it out so it does not grow forever
+
+        return inboundparams;
     }
 
     // function reads & updates wid environment when running locally
@@ -193,7 +195,7 @@
         if (!inparams.command.environment.run) {inparams.command.environment.run={};}
 
         // make parameters better by dealing with command.environmnet
-        enhanceparameters(inparams);
+        inparams = enhanceparameters(inparams);
 
         extend(true, executionpreferences.command.environment, inparams.command.environment);
         delete inparams.command.environment;
