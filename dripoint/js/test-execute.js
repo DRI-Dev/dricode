@@ -136,7 +136,8 @@ function ettest_serieslevel0(executeobject, callback)
 		  executeobject.command.environment.platform='local';        // used for server testing
 
 		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
-		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
+		  //executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
+
 		  executeobject.command.xrun=[{"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'}];
@@ -172,7 +173,7 @@ function ettest_serieslevel0(executeobject, callback)
   
 		  //executeobject.command.environment.processfn="execute_function";
 		  executeobject.command.processparameterfn="execute_nothing";
-		  executeobject.serverfn="test_return_noerror_result";
+		  //executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_failnotfound_result'},
@@ -197,6 +198,48 @@ function ettest_serieslevel0(executeobject, callback)
 		);
 	};
 
+		// series, level 0, 3 tests, 2nd test is fail not found
+	exports.ettest_serieslevel0fail3last = 
+	ettest_serieslevel0fail3last = 
+	function ettest_serieslevel0fail3last(executeobject, callback) 
+	{
+		  if (!executeobject.command) {
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.environment.run.type="series";
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';
+  
+		  //executeobject.command.environment.processfn="execute_function";
+		  executeobject.command.processparameterfn="execute_nothing";
+		  executeobject.serverfn="test_return_noerror_result";
+		  executeobject.command.xrun=[
+									  {"executethis": 'test_return_noerror_result'},
+									  {"executethis": 'test_return_noerror_result'},
+									  {"executethis": 'test_return_failnotfound_result'}
+									  ]; 
+		  //var expectedresult1 = {"a":"b","env":executeobject.command.environment.platform}  
+		  //var expectedresult2 = {"x":"y","env":executeobject.command.environment.platform} 
+		  //var expectedresult2 = {"a":"b","env":executeobject.command.environment.platform}      
+		  //var expectedresult3 = {"a":"b","env":executeobject.command.environment.platform}	  
+			//var result_assertion = [expectedresult1, expectedresult2, expectedresult3]
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+		  {
+				proxyprinttodiv('actual result', result_obj, 99, true);                         
+				proxyprinttodiv('expected result', null, 99, true);
+				proxyprinttodiv('actual error',error_obj, 99);
+				proxyprinttodiv('expected error', global_failnotfound, 99);
+				
+				composite_obj=logverifycomplex("ettest_serieslevel0fail3middle", result_obj,null, error_obj, global_failnotfound);
+				callback(null, composite_obj);
+		  } 
+		);
+	};
+
+/*	
 	// series, level 0, 3 tests, last test is fail not found
 	exports.ettest_serieslevel0fail3last = 
 	ettest_serieslevel0fail3last = 
@@ -233,6 +276,7 @@ function ettest_serieslevel0(executeobject, callback)
 		  } 
 		);
 	};
+*/
 
 // /*===============================================*/  
 // /******* SECTION: series Level 1 		*********/
@@ -471,8 +515,9 @@ function ettest_grouplevel0(executeobject, callback)
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';          // used for server testing
 
-		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
-		  executeobject.serverfn="test_return_notfound_result";
+		  //executeobject.command.environment.processfn="execute_function";          // what function handles functions
+		  executeobject.command.processparameterfn="execute_nothing";		  
+		  //executeobject.serverfn="test_return_notfound_result";
 		  var result_assertion = {"a":"b","env":executeobject.command.environment.platform};
 			executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
@@ -513,7 +558,7 @@ function ettest_grouplevel0(executeobject, callback)
 		  executeobject.command.environment.platform='local';
   
 		  executeobject.command.environment.processfn="execute_function";
-		  executeobject.serverfn="test_return_noerror_result";
+		  executeobject.command.processparameterfn="execute_nothing";		  
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_failnotfound_result'},
@@ -553,7 +598,7 @@ function ettest_grouplevel0(executeobject, callback)
 		  executeobject.command.environment.platform='local';
   
 		  executeobject.command.environment.processfn="execute_function";
-		  executeobject.serverfn="test_return_noerror_result";
+		  executeobject.command.processparameterfn="execute_nothing";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'},
@@ -1174,9 +1219,9 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 		  executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun=[
 									  {"executethis": 'test_return_realerror_result'}
-									  //,
-									  //{"executethis": 'test_return_failnotfound_result'},
-									  //{"executethis": 'test_return_noerror_result'}
+									  ,
+									  {"executethis": 'test_return_failnotfound_result'},
+									  {"executethis": 'test_return_noerror_result'}
 									  ]; 
 
 		  var etEnvironment = new drienvironment(executeobject.command.environment);
