@@ -304,7 +304,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     proxyprinttodiv('querywid command[mongorawquery]', qparms['mongorawquery'], 99);
     proxyprinttodiv('querywid command[mongowid]', qparms['mongowid'], 99);
 
-    if (!command.environment) { parameters.command.environment = {run:{}}; }
+    if (!command.environment) { command.environment = {run:{}}; }
 
     command.environment.run.type = "series";
 
