@@ -391,7 +391,7 @@
         } // end fn recurse
 
         function createdtofromresults(obj, dtoobject, dtotype) {
-            var dtotable = {}
+            var dtotable = {};
             generatedtotablelist(dtoobject, dtotable, dtotype);
 
             proxyprinttodiv("getdtoobject createdtofromresults obj", obj, 93);
@@ -400,9 +400,9 @@
             if (dtoobject.command.dtorecursive) {
                 proxyprinttodiv("getdtoobject after createdtotable, dtotable recurse", dtotable, 93);
                 if (!obj.command) {
-                    obj.command = {}
+                    obj.command = {};
                 }
-                obj.command.recursive = true
+                obj.command.recursive = true;
                 dtoobject = createdto(obj, dtotable, true)
             } else {
                 proxyprinttodiv("getdtoobject after createdtotable, dtotable, not recurse", dtotable, 93);
@@ -422,10 +422,10 @@
         var dtoobject = {};
 
         if (!obj["metadata"]) {
-            obj["metadata"] = {}
+            obj["metadata"] = {};
         }
         if (!obj["metadata"]["method"]) {
-            obj["metadata"]["method"] = "defaultdto"
+            obj["metadata"]["method"] = "defaultdto";
         }
 
         if (command && command.dtotype) {
@@ -436,14 +436,14 @@
 
         if (obj.metadata.method === "string" || obj.wid === "guid") {
             proxyprinttodiv("getdtoobject *****string ", obj, 93);
-            callback(null, obj)
+            callback(null, obj);
         } else {
 
             // if defaultdto, or trying to enter a dto (mm=wid) or relationshiptypedto just mirror back
             if (dtotype === "defaultdto" ||
                 obj.metadata.method === obj.wid ||
                 obj.metadata.method === "relationshipdto") {
-                var out = createdto(obj, {}, true)
+                var out = createdto(obj, {}, true);
                 proxyprinttodiv("getdtoobject obj ", obj, 93);
                 proxyprinttodiv("getdtoobject out ", out, 93);
                 callback(null, out); // create dto from object with no dtotable
@@ -452,12 +452,9 @@
                 proxyprinttodiv("getdtoobject about to getwidmaster dtotype ", dtotype, 93); //93
                 console.log("getdtoobject about to getwidmaster  " + JSON.stringify(obj)); //93
 
-                var etEnvironment = new drienvironment(
-                    {
-                    // "getwidmaster": {
-                    //     "convertmethod": "dto",
-                    //     "execute": "ConvertFromDOTdri"
-                    // },
+                if (!command.environment) { command.environment = {run:{}}; }
+
+                var etEnvironment = new drienvironment({
                     "run": {
                         "executeid": command.environment.run.executeid,
                         "executelevel": command.environment.run.executelevel,
@@ -483,14 +480,14 @@
                     } else {
                         proxyprinttodiv("getdtoobject input res I ", res, 93);
                         if (!res || (Object.keys(res[0]).length === 0)) {
-                            // if no results then proceed with same logic as default
-                            var out = createdto(obj, {}, true)
+                            // if no results then proceed with same logi c as default
+                            var out = createdto(obj, {}, true);
                             proxyprinttodiv("getdtoobject obj ", obj, 93);
                             proxyprinttodiv("getdtoobject out ", out, 93);
                             callback(null, out);
                         } else {
                             proxyprinttodiv("getdtoobject before createdtotable dtoobject res[0]", res[0], 93);
-                            var out = createdtofromresults(obj, res[0], dtotype)
+                            var out = createdtofromresults(obj, res[0], dtotype);
                             proxyprinttodiv("getdtoobject obj ", obj, 93);
                             proxyprinttodiv("getdtoobject res[0] ", res[0], 93);
                             proxyprinttodiv("getdtoobject out ", out, 93);
