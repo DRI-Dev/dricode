@@ -104,14 +104,16 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     proxyprinttodiv('querywid parameters', parameters, 99);
 
     var filter_data = getcommand(parameters, 
-            {"command":{
-            "datastore": config.configuration.defaultdatastore,
-            "collection":config.configuration.defaultcollection,
-            "db":config.configuration.defaultdb,
-            "databasetable":config.configuration.defaultdatabasetable,
-            "convertmethod":"toobject",
-            "keepaddthis":true
-            },
+            {"command":
+                {
+                "datastore": config.configuration.defaultdatastore,
+                "collection":config.configuration.defaultcollection,
+                "db":config.configuration.defaultdb,
+                "databasetable":config.configuration.defaultdatabasetable,
+                "convertmethod":"toobject",
+                "keepaddthis":true,
+                "environment":{}
+                },
             "mongowid": "",
             "mongorawquery": "",
             "mongoquerywid": "",
@@ -140,15 +142,17 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
             "mongosetsortorder": "",
             "mongowidmethod": ""
             },
-            {"command":{
-            "datastore": "",
-            "collection":"",
-            "db":"",
-            "databasetable":"",
-            "convertmethod":"",
-            "environment":"",
-            "keepaddthis":""
-            },
+            {"command":
+                {
+                "datastore": "",
+                "collection":"",
+                "db":"",
+                "databasetable":"",
+                "convertmethod":"",
+                "environment":"",
+                "keepaddthis":"",
+                "environment":{}
+                },
             "mongowid": "",
             "mongorawquery": "",
             "mongoquerywid": "",
@@ -182,23 +186,26 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     proxyprinttodiv('querywid filteredobject', filter_data, 99);
     parameters = filter_data.filteredobject;
     var xparms = filter_data.output;
-    var filter_data = getcommand(parameters, 
+    var filter_data = getcommand(
+            parameters, 
             {"command":{
-            "datastore": config.configuration.defaultdatastore,
-            "collection":config.configuration.defaultcollection,
-            "db":config.configuration.defaultdb,
-            "databasetable":config.configuration.defaultdatabasetable,
-            "convertmethod":"toobject",
-            "keepaddthis":true,
+                "datastore": config.configuration.defaultdatastore,
+                "collection":config.configuration.defaultcollection,
+                "db":config.configuration.defaultdb,
+                "databasetable":config.configuration.defaultdatabasetable,
+                "convertmethod":"toobject",
+                "keepaddthis":true,
+                "environment":{}
             }},
             {"command":{
-            "datastore": "",
-            "collection":"",
-            "db":"",
-            "databasetable":"",
-            "convertmethod":"",
-            "environment":"",
-            "keepaddthis":""
+                "datastore": "",
+                "collection":"",
+                "db":"",
+                "databasetable":"",
+                "convertmethod":"",
+                "environment":"",
+                "keepaddthis":"",
+                "environment":{}
             }},
             true
             )
@@ -297,16 +304,18 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     proxyprinttodiv('querywid command[mongorawquery]', qparms['mongorawquery'], 99);
     proxyprinttodiv('querywid command[mongowid]', qparms['mongowid'], 99);
 
-    if (!parameters.command) { parameters.command = {environment:{run:{}}}; }
-    else if (!parameters.command.environment) { parameters.command.environment = {run:{}}; }
+    //if (!parameters.command) { parameters.command = {environment:{run:{}}}; }
+    //else if (!parameters.command.environment) { parameters.command.environment = {run:{}}; }
     
-    var etEnvironment = new drienvironment({
-       run:{
-           "executeid":parameters.command.environment.executeid,
-           "executelevel":parameters.command.environment.executelevel,
-           type:parameters.command.environment.type || "series"
-       }
-    });
+    // var etEnvironment = new drienvironment({
+    //    run:{
+    //        "executeid":parameters.command.environment.executeid,
+    //        "executelevel":parameters.command.environment.executelevel,
+    //        type:parameters.command.environment.type || "series" //--- should be series also run
+    //    }
+    // });
+    command.environment.run.type = "series";
+    var etEnvironment = new drienvironment(command.environment);
 
     if (!((qparms['mongosinglequery'] !== undefined && qparms['mongosinglequery'] !== "") ||
         (qparms['mongowid'] !== undefined && qparms['mongowid'] !== "") ||
@@ -819,13 +828,15 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
             proxyprinttodiv('querywid finalformatlist excludeset ', excludeset, 17);
         }
 
-        var etEnvironment = new drienvironment({
+/*        var etEnvironment = new drienvironment({
             run:{
                 "executeid":command.environment.run.executeid,
                 "executelevel":command.environment.run.executelevel,
                 "type":command.environment.run.type || "series"
             }
-        });
+        });*/
+        command.environment.run.type = "series";
+        var etEnvironment = new drienvironment(command.environment);
 
         if (inlist === undefined || inlist.length === 0) {
             callback(null, []);
@@ -848,8 +859,6 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     async.nextTick(function () {
                         record = {};
                         proxyprinttodiv('querywid finalformatlist wid ', wid, 17);
-
-
 
                         async.series([
                             function (cb1) {

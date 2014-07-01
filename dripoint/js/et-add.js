@@ -1,87 +1,6 @@
 // copyright (c) 2014 DRI
 
     (function (window) {
-    // exports.updatewid = window.updatewid = updatewid = function updatewid(inputObject, callback) {
-    //     //try {
-    //     var originalarguments = {};
-    //     extend(true, originalarguments, inputObject);
-    //     proxyprinttodiv('Function updatewid inputObject', inputObject,12);
-    //     // getwidmaster environment
-    //     // get collection and db
-    //     // call add with those
-    //     var command = {};
-    //     if (inputObject.command) {
-    //         command=inputObject.command;
-    //         delete inputObject.command;
-    //     }
-
-    //     // convert to dri format before saving
-    //     proxyprinttodiv('Function updatewid inputObject', converttodriformat(inputObject, command),12);
-    //     updatedatastore(converttodriformat(inputObject, command), command, function (err, results) {
-    //         // If error, bounce out
-    //         if (err && Object.keys(err).length > 0) {
-    //             callback(err, results);
-    //         } else {
-    //             try {
-    //                 proxyprinttodiv('Function updatewid in : x', results,12);
-    //                 callback(null, results);
-    //             } // end try
-    //             catch (err) {
-    //                 var finalobject =
-    //                     createfinalobject({
-    //                         "result": "updatedatastore"
-    //                     }, {}, "updatedatastore", err, inbound_parameters);
-    //                 callback(finalobject.err, finalobject.res);
-    //             }
-    //         } // end else
-    //     });
-    //     // } // end try
-    //     // catch (err) {
-    //     //     var finalobject =
-    //     //         createfinalobject({
-    //     //             "result": "offlineupdatewid"
-    //     //         }, {}, "offlineupdatewid", err, inbound_parameters);
-    //     //     callback(finalobject.err, finalobject.res);
-    //     // }
-    // };
-
-
-    // exports.updatewid = window.updatewid = updatewid = function updatewid(inputObject, callback) {
-    //     try {
-    //         // var originalarguments=arguments;
-    //         // var executionid = new Date();
-    //         var originalarguments = {};
-    //         extend(true, originalarguments, inputObject);
-
-    //         // convert to dri format before saving
-    //         addtomongo(converttodriformat(inputObject), function (err, results) {
-
-    //             // If error, bounce out
-    //             if (err && Object.keys(err).length > 0) {
-    //                 callback(err, results);
-    //             } else {
-    //                 try {
-    //                     proxyprinttodiv('Function updatewid in : x', results, 10);
-    //                     debugfn("updatewid code generator", "updatewid", "", "code", 2, 1, {
-    //                         0: originalarguments,
-    //                         1: results
-    //                         // 2: executionid
-    //                     }, 6);
-    //                     // callback({}, results);
-    //                     callback(null, results);
-
-    //                 } catch (err) {
-    //                     var finalobject = createfinalobject({"result": "updatewid"}, {}, "updatewid", err, inbound_parameters);
-    //                     callback(finalobject.err, finalobject.res);
-    //                 }
-    //             }
-    //         });
-    //     } catch (err) {
-    //         //callback ({"status":"there was an error"}, {"try":"was caught"});        
-    //         var finalobject = createfinalobject({"result": "updatewid"}, {}, "updatewid", err, inbound_parameters);
-    //         callback(finalobject.err, finalobject.res);
-    //     }
-    // };
 
     exports.addwidmaster = addwidmaster = function addwidmaster(object, callback) {
         var inbound_parameters_102 = JSON.parse(JSON.stringify(arguments));
@@ -110,9 +29,7 @@
                 "databasetable":"",
                 "convertmethod":"",
                 "datamethod":"",
-                "environment":{
-                    "run":{}
-                }
+                "environment":{}
             }
         },
         true);
@@ -260,8 +177,8 @@
                             }
                         }}
 
-                    var env = new drienvironment(object.command.environment);
-
+                    var env = new drienvironment(command.environment);
+                    //var env = new drienvironment(object.command.environment);
                     env.execute(executeobject, function (err, res) {
                         if (err && err.errorname === "failnotfound") {err=null; res={}}
 
@@ -575,7 +492,15 @@
 
                         if (!executeobject && (relationshiptype === "manytoone")) {
                             executeobject["executethis"] = "querywid";
-                            executeobject["command"] = {"result":"queryresult"};
+                            executeobject["command"] = {"result":"queryresult", 
+                                                        "environment": 
+                                                        {
+                                                            "run": 
+                                                            {
+                                                                "type": "series"
+                                                            }
+                                                        };
+                                                        }
                             executeobject["mongorawquery"] = {
                                 "$and": [{
                                     "data.primarymethod": inputrecord["metadata"]["method"],
@@ -586,8 +511,8 @@
                             };
                         }
 
-                        var env = new drienvironment(inputrecord.command.environment);
-
+                        //var env = new drienvironment(inputrecord.command.environment);
+                        var env = new drienvironment(command.environment);
                         env.execute(executeobject, function (err, widset1) {
                         if (err && err.errorname === "failnotfound") {err=null; widset1={"queryresult":[]}}
 
@@ -960,7 +885,8 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                                          "command.getwidmaster.execute": "ConvertFromDOTdri",
                                          "command.getwidmaster.convertmethod": "nowid"
                                          }
-                        var env = new drienvironment(object.command.environment);
+                        var env = new drienvironment(command.environment);             
+                        //var env = new drienvironment(object.command.environment);
                         executeobject["command"]={"environment": {
                             "run": {
                                 "type": "series"
@@ -1090,7 +1016,8 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                 proxyprinttodiv("addwid before updatewid ", object, 18);
 
                 //not needed in this case
-                var env = new drienvironment(object.command.environment);
+                //var env = new drienvironment(object.command.environment);
+                var env = new drienvironment(command.environment);
                 object["command"]={"environment": {
                             "run": {
                                 "type": "series"

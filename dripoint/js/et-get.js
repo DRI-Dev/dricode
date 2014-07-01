@@ -2,120 +2,6 @@
 
 
 (function(window) {
-    // *** GetWid ***
-    // Purpose: Converts data to and from dri standards
-
-    // exports.getwid = window.getwid = getwid = function getwid(inputWidgetObject, callback) {
-    //     //try {
-    //     var inbound_parameters = {};
-    //     extend(true, inbound_parameters, inputWidgetObject);
-
-    //     // get envrionment
-    //     //
-    //     var command = {};
-    //     if (inputWidgetObject.command) { ///--- no !
-    //         // if (!inputWidgetObject.command) {
-    //         command = inputWidgetObject.command
-    //         delete inputWidgetObject.command
-    //     }
-
-    //     var convertedobject = {};
-    //     proxyprinttodiv('Function getwid in : inputWidgetObject', inputWidgetObject, 12);
-    //     getfromdatastore(inputWidgetObject, command, function (err, resultobject) {
-    //         proxyprinttodiv('Function getwid in : resultobject 1', resultobject, 12);
-    //         var originalarguments = {};
-    //         extend(true, originalarguments, inputWidgetObject);
-    //         // If error, bounce out
-    //         if (err && Object.keys(err).length > 0) {
-    //             callback(err, resultobject);
-    //         } else {
-    //             try {
-
-
-
-
-    //                 // if (resultobject === undefined) {
-    //                 //    callback(null, {})
-    //                 // } else {
-
-
-
-
-
-    //                 // convert the object from dri standard before returnning it
-    //                 proxyprinttodiv('Function getwid in : inputWidgetObject II', inputWidgetObject, 12);
-
-    //                 var convertedobject = convertfromdriformat(resultobject, command)
-    //                 proxyprinttodiv('Function getwid in : resultobject 2', convertedobject, 12);
-    //                 proxyprinttodiv('Function getwid in : convertedobject', convertedobject, 12);
-    //                 proxyprinttodiv('Function getwid in : resultobject', resultobject, 12);
-
-    //                 if (inputWidgetObject['command.convertmethod'] === 'toobject') {
-    //                     callback(null, ConvertFromDOTdri(convertedobject))
-    //                 } else {
-    //                     callback(null, convertedobject);
-    //                 }
-    //                 //} // else !===0
-    //             } // end try
-    //             catch (err) {
-    //                 var finalobject =
-    //                     createfinalobject({
-    //                         "result": "getfromdatastore"
-    //                     }, {}, "getfromdatastore", err, originalarguments);
-    //                 callback(finalobject.err, finalobject.res);
-    //             }
-    //         }
-    //     });
-    //     // } // end try
-    //     // catch (err) {
-    //     //     var finalobject =
-    //     //         createfinalobject({
-    //     //             "result": "offlinegetwid"
-    //     //         }, {}, "offlinegetwid", err, inbound_parameters);
-    //     //     callback(finalobject.err, finalobject.res);
-    //     // }
-    // };
-
-    // // exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
-    // //     try {
-    // //         var inbound_parameters = JSON.parse(JSON.stringify(arguments));
-
-    // //         authcall(inputWidgetObject, function (err, ret) {
-    // //             if (err || !ret) {
-    // //                 callback(err, {
-    // //                     "etstatus": "unauthorized"
-    // //                 });
-    // //             } else  {
-    // //                 try {
-    // //                     delete inputWidgetObject['executethis']; // ** added by Saurabh 38/9
-
-    // //                     proxyprinttodiv('Function getwid in : inputWidgetObject', inputWidgetObject, 1);
-
-    // //                     getfrommongo(inputWidgetObject, function (err, resultobject) {
-    // //                         if (!resultobject) {
-    // //                             resultobject = {};
-    // //                         }
-    // //                         // convert the object from dri standard before returnning it
-    // //                         callback(null, convertfromdriformat(resultobject));
-    // //                     });
-    // //                 } // end try
-    // //                 catch (err) {
-    // //                     var finalobject = createfinalobject({
-    // //                         "result": "getwid_authcall"
-    // //                     }, {}, "getwid_authcall", err, inbound_parameters);
-    // //                     callback(finalobject.err, finalobject.res);
-    // //                 }
-    // //             }
-    // //         });
-    // //     } // end try
-    // //     catch (err) {
-    // //         var finalobject = createfinalobject({
-    // //             "result": "getwid"
-    // //         }, {}, "getwid", err, inbound_parameters);
-    // //         callback(finalobject.err, finalobject.res);
-    // //     }
-    // // };
-
     // *** GetWidMaster ***
     // Purpose: splits wid and command parameters
     exports.getwidmaster = getwidmaster = function getwidmaster(parameters, callback) {
@@ -146,7 +32,7 @@
                         "execute": "",
                         "convertmethod": ""
                     },
-                    "environment": {"run":{}}
+                    "environment": {}
                 }
             }
             // {
@@ -159,11 +45,9 @@
         parameters = filter_data.output;
         command = filter_data.filteredobject.command;
 
-        proxyprinttodiv('getwidmaster command I', command, 38);
-
         proxyprinttodiv('GetWidMaster parameters.wid right before getwidmongo', parameters.wid, 38);
-        proxyprinttodiv('GetWidMaster parameters right before getwidmongo', parameters, 38);
-        proxyprinttodiv('getwidmaster command right before getwidmongo', command, 38);
+        proxyprinttodiv('GetWidMaster parameters right before getwidmongo', parameters, 99);
+        proxyprinttodiv('getwidmaster command right before getwidmongo', command, 99);
 
         // if string then return null, {}
         if (!parameters.wid) {
@@ -568,14 +452,15 @@
                 proxyprinttodiv("getdtoobject about to getwidmaster dtotype ", dtotype, 93); //93
                 console.log("getdtoobject about to getwidmaster  " + JSON.stringify(obj)); //93
 
-                var etEnvironment = new drienvironment({
-                    "getwidmaster": {
-                        "convertmethod": "dto",
-                        "execute": "ConvertFromDOTdri"
-                    },
+                var etEnvironment = new drienvironment(
+                    {
+                    // "getwidmaster": {
+                    //     "convertmethod": "dto",
+                    //     "execute": "ConvertFromDOTdri"
+                    // },
                     "run": {
-                        "executeid": obj.command.environment.run.executeid,
-                        "executelevel": obj.command.environment.run.executelevel,
+                        "executeid": command.environment.run.executeid,
+                        "executelevel": command.environment.run.executelevel,
                         "type": "series"
                     }
                 });
@@ -583,7 +468,13 @@
                 var executeobject = {
                     "executethis": "getwidmaster",
                     "wid": dtotype
-                };
+                    "command":{
+                        "getwidmaster": {
+                            "convertmethod": "dto",
+                            "execute": "ConvertFromDOTdri"
+                            }
+                        }
+                    };
 
                 etEnvironment.execute(executeobject, function(err, res) {
 
@@ -616,6 +507,8 @@
     // Notes: returns a made up dto base on maximum number of relationships, etc
     //exports.getWidMongo = getWidMongo = function getWidMongo(widInput, command, preamble, level, excludeset, callback) {
     exports.getWidMongo = getWidMongo = function getWidMongo(parameters, command, preamble, level, excludeset, callback) {
+        proxyprinttodiv('Function getwidmongo parameters:', parameters, 99);
+        proxyprinttodiv('Function getwidmongo command:', command, 99);
         var widInput = parameters.wid;
         // local vars
         var moreDTOParameters = [];
@@ -628,14 +521,12 @@
         var dtolist = {};
 
         excludeset[widInput] = widInput; // keep track of what we have done so we do not do it again
-
+        proxyprinttodiv('Function getwidmongo step 1 hit with widInput:', widInput, 38);
         async.series([
                 // getwid
                 function step1(cb) {
                     // Sample error
                     // throw({'Rocks': 'are hard'});
-                    proxyprinttodiv('Function getwidmongo step 1 hit with widInput:', widInput, 38);
-                    proxyprinttodiv('Function getwidmongo step 1 hit with command:', command, 38);
                     if (!level) {
                         level = 20;
                     } else {
@@ -657,7 +548,8 @@
                     if (!command.environment) { command.environment = {}; }
                     if (!command.environment.run) { command.environment.run = {}; }
 
-                    var etEnvironment = new drienvironment({
+                    var etEnvironment = new drienvironment(
+                        {
                         "run": {
                             "executeid": command.environment.run.executeid,
                             "executelevel": command.environment.run.executelevel,
@@ -665,7 +557,7 @@
                         }
                     });
 
-                    etEnvironment.execute(executeobject, function(err, res) {
+                    etEnvironment.execute(executeobject, function (err, res) {
                         // execute(executeobject, function (err, res) { // getwid
                         // If error, bounce out
                         if (err && Object.keys(err).length > 0) {
@@ -719,23 +611,24 @@
                                         eachresult.command.getwidmaster = {};
                                     }
 
-                                    var etEnvironment = new drienvironment({
-                                        "getwidmaster":{
-                                            "inheritflag": "false",
-                                            "execute": "ConvertFromDOTdri"
-                                        },
+                                    var etEnvironment = new drienvironment(
+                                        {
+                                        // "getwidmaster":{
+                                        //     "inheritflag": "false",
+                                        //     "execute": "ConvertFromDOTdri"
+                                        // },
                                         "run":{
-                                            "executeid": parameters.command.environment.run.executeid,
+                                            "executeid": command.environment.run.executeid,
 //                                            "type": parameters.command.environment.run.group,
                                             "type": "series",
-                                            "executelevel": parameters.command.environment.run.executelevel
+                                            "executelevel": command.environment.run.executelevel
                                         }
                                     });
 
                                     eachresult.executethis = "getwidmaster";
-                                    //eachresult.command.getwidmaster.convertmethod="nowid";
-                                    // eachresult.command.getwidmaster.inheritflag = "false";
-                                    // eachresult.command.getwidmaster.execute = "ConvertFromDOTdri";
+                                    // eachresult.command.getwidmaster.convertmethod="nowid";
+                                    eachresult.command.getwidmaster.inheritflag = "false";
+                                    eachresult.command.getwidmaster.execute = "ConvertFromDOTdri";
                                     // proxyprinttodiv('getClean inherit getwidmaster eachresult II', eachresult, 38);
 
                                     if (!eachresult.command.resultparameters) {
@@ -810,14 +703,15 @@
                                     // proxyprinttodiv('Function getwidmongo executeobject', executeobject, 38);
                                     // execute(executeobject, function (err, res) {
 
-                                    var etEnvironment = new drienvironment({
-                                        "getwidmaster":{
-                                            "convertmethod": "dto",
-                                            "execute": "ConvertFromDOTdri"
-                                        },
+                                    var etEnvironment = new drienvironment(
+                                        {
+                                        // "getwidmaster":{
+                                        //     "convertmethod": "dto",
+                                        //     "execute": "ConvertFromDOTdri"
+                                        // },
                                         "run": {
-                                            "executeid": parameters.command.environment.run.executeid,
-                                            "executelevel": parameters.command.environment.run.executelevel,
+                                            "executeid": command.environment.run.executeid,
+                                            "executelevel": command.environment.run.executelevel,
                                             "type": "series"
                                         }
                                     });
@@ -830,10 +724,17 @@
                                         "mongorelationshipmethod": "all",
                                         "mongorelationshipdirection": "forward",
                                         "mongowidmethod": "",
-                                        "command": {
+                                        "command": 
+                                            {
                                             "result": "queryresult"
+                                            // "getwidmaster":
+                                            //     {
+                                            //     "convertmethod": "dto",
+                                            //     "execute": "ConvertFromDOTdri"
+                                            //     }
+                                            // }
                                         }
-                                    };
+                                    }
 
                                     etEnvironment.execute(executeobject, function(err, res) {
                                         // If error, bounce out
@@ -938,7 +839,7 @@
                                         var widobj = {};
                                         widobj.wid = key;
                                         //getWidMongo(key, convertmethod, accesstoken, dtotype, rightparameters["metadata"]["method"], level, function (err, params) {
-                                        getWidMongo(key, command, rightparameters["metadata"]["method"], level, excludeset, function(err, params) {
+                                        getWidMongo(widobj, command, rightparameters["metadata"]["method"], level, excludeset, function (err, params) {
                                             // If error, bounce out
                                             if (err && Object.keys(err).length > 0) {
                                                 cbMap(err, params);
@@ -1094,15 +995,16 @@
                         // if (command.getwidmaster.inheritflag === "true") {
                         if (widName !== "systemdto") {
 
-                            var etEnvironment = new drienvironment({
-                                "getwidmaster":{
-                                    "convertmethod": "dto",
-                                    "execute": "ConvertFromDOTdri",
-                                    "inheritflag": "true"
-                                },
+                            var etEnvironment = new drienvironment(
+                            {
+                            //     "getwidmaster":{
+                            //         "convertmethod": "dto",
+                            //         "execute": "ConvertFromDOTdri",
+                            //         "inheritflag": "true"
+                            //     },
                                 "run" : {
-                                    "executeid": parameters.command.environment.run.executeid,
-                                    "executelevel": parameters.command.environment.run.executelevel,
+                                    "executeid": command.environment.run.executeid,
+                                    "executelevel": command.environment.run.executelevel,
                                     "type": "series"
                                 }
                             });
@@ -1110,10 +1012,17 @@
                             var executeobject = {
                                 "executethis": "getwidmaster",
                                 "wid": "systemdto",
-                                "command":{
+                                "command":
+                                    {
                                     "result": "systemdto"
-                                }
-                            };
+                                    "getwidmaster":
+                                        {
+                                        "convertmethod": "dto",
+                                        "execute": "ConvertFromDOTdri",
+                                        "inheritflag": "true"
+                                        }
+                                    }
+                                };
 
                             etEnvironment.execute(executeobject, function(err, res) {
 
@@ -1212,12 +1121,13 @@
                         // add logic to look for dtotype
                         dtoToGet = resultObj.metadata.method;
 
-                        var etEnvironment = new drienvironment({
-                            "getwidmaster":{
-                                "convertmethod": "dto",
-                                "execute": "ConvertFromDOTdri",
-                                "inheritflag": "false"
-                            },
+                        var etEnvironment = new drienvironment(
+                            {
+                            // "getwidmaster":{
+                            //     "convertmethod": "dto",
+                            //     "execute": "ConvertFromDOTdri",
+                            //     "inheritflag": "false"
+                            // },
                             "run": {
                                 "executeid": command.environment.run.executeid,
                                 "executelevel": command.environment.run.executelevel,
@@ -1228,10 +1138,17 @@
                         var executeobject = {
                             "executethis": "getwidmaster",
                             "wid": dtoToGet,
-                            "command":{
-                                "result": "systemdto"
-                            }
-                        };
+                            "command":
+                                {
+                                "result": "systemdto",
+                                "getwidmaster":
+                                    {
+                                    "convertmethod": "dto",
+                                    "execute": "ConvertFromDOTdri",
+                                    "inheritflag": "false"
+                                    }
+                                }
+                            };
 
                         etEnvironment.execute(executeobject, function(err, res) {
 
@@ -1335,14 +1252,15 @@
                                     eachresult.command.resultparameters = resultObj;
                                     proxyprinttodiv('call being done for inherit', eachresult, 38);
 
-                                    var etEnvironment = new drienvironment({
-                                        "getwidmaster":{
-                                            "convertmethod": "dto",
-                                            "execute": "ConvertFromDOTdri",
-                                            "inheritflag": "false"
-                                        },
-                                        "executeid": resultObj.command.environment.run.executeid,
-                                        "executelevel": resultObj.command.environment.run.executelevel,
+                                    var etEnvironment = new drienvironment(
+                                        {
+                                        // "getwidmaster":{
+                                        //     "convertmethod": "dto",
+                                        //     "execute": "ConvertFromDOTdri",
+                                        //     "inheritflag": "false"
+                                        // },
+                                        "executeid": command.environment.run.executeid,
+                                        "executelevel": command.environment.run.executelevel,
                                         "run":{
                                             "type": "series"
                                         }

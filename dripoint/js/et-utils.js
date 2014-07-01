@@ -708,24 +708,31 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
     proxyprinttodiv('Function getrelatedrecords obj', obj, 17);
 
     // we send in {widlist : [wid1, wid2, wid3], command.reltype:parent}
-    var filter_data = getcommand(obj, { // create defaults
-        "widlist": [],
-        "command": {
-            "reltype": "parent",
-            "recurse": true,
-            "result": "recordresult"
-        }
-    }, {}, false);
+    var filter_data = getcommand(obj, 
+        { // create defaults
+            "widlist": [],
+            "command": 
+            {
+                "reltype": "parent",
+                "recurse": true,
+                "result": "recordresult"
+            }
+        }, 
+        {        
+            "command": {}
+        }, 
+        true);
     obj = filter_data.output;
+    var command = filter_data.filteredobject.command;
     var widlist = obj["widlist"];
     proxyprinttodiv('Function getrelatedrecords widlist', widlist, 17);
     if (widlist.length === 0) {
         var res = {};
-        res[obj.command.result] = widlist;
+        res[command.result] = widlist;
         callback(null, res);
     } else {
-        var reltype = obj.command.reltype;
-        var recurse = obj.command.recurse;
+        var reltype = command.reltype;
+        var recurse = command.recurse;
         for (var index in widlist) { //we need to query every item in the incomming list
             var widName = widlist[index];
             var executeobject = {};
@@ -752,7 +759,10 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
                                 "type": "series"
                             }
                         }}
-            execute(executeobject, function (err, res) {
+
+            var env = new drienvironment(command.environment);
+            env.execute(executeobject, function (err, res) {
+            //execute(executeobject, function (err, res) {
                 proxyprinttodiv('Function getrelatedrecords query res', res, 17);
                 if (err && (Object.keys(err).length) > 0) {
                     callback({}, widlist);
@@ -789,7 +799,7 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
                             });
                         } else {
                             var res = {};
-                            res[obj.command.result] = widlist
+                            res[command.result] = widlist
                             proxyprinttodiv('Function getrelatedrecords callback1 with res', res, 17);
                             callback(null, res);
                         }
@@ -800,24 +810,24 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
                             executeobject.command = {}
                             executeobject.command.reltype = reltype
                             executeobject.command.recurse = recurse
-                            executeobject.command.result = obj.command.result
+                            executeobject.command.result = command.result
                             proxyprinttodiv('Function getrelatedrecords recurse object', executeobject, 17);
                             getrelatedrecords(executeobject, function (err, returnlist) {
                                 if (err && (Object.keys(err).length) > 0) {
                                     callback({}, widlist);
                                 } else {
                                     if (res && (Object.keys(res).length) > 0) {
-                                        for (var eachitem in returnlist[obj.command.result]) {
-                                            widlist.push(returnlist[obj.command.result][eachitem])
+                                        for (var eachitem in returnlist[command.result]) {
+                                            widlist.push(returnlist[command.result][eachitem])
                                         }
                                         proxyprinttodiv('Function getrelatedrecords callback2 with returnlist', returnlist, 17);
                                         var res = {};
-                                        res[obj.command.result] = widlist
+                                        res[command.result] = widlist
                                         proxyprinttodiv('Function getrelatedrecords callback2 with res', res, 17);
                                         callback(null, res);
                                     } else {
                                         var res = {};
-                                        res[obj.command.result] = widlist
+                                        res[command.result] = widlist
                                         proxyprinttodiv('Function getrelatedrecords callback2 with res', res, 17);
                                         callback(null, res);
                                     }
@@ -825,13 +835,13 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
                             });
                         } else {
                             var res = {};
-                            res[obj.command.result] = widlist
+                            res[command.result] = widlist
                             proxyprinttodiv('Function getrelatedrecords callback4 with res', res, 17);
                             callback(null, res);
                         }
                     } else {
                         var res = {};
-                        res[obj.command.result] = widlist
+                        res[command.result] = widlist
                         proxyprinttodiv('Function getrelatedrecords callback5 with res', res, 17);
                         callback(null, res);
                     }
@@ -1291,7 +1301,7 @@ exports.deepfilter = deepfilter = function deepfilter(inputObj, dtoObjOpt, comma
     }
 
     if (dtoObjOpt) {
-        recurseModObj(modifiedObj, dtoObjOpt, convert, totype, function (err, res) {
+        recurseModObj(modifiedObj, dtoObjOpt, convert, totype, command, function (err, res) {
             if (err && Object.keys(err).length > 0) {
                 callback(err, res);
             } else {
@@ -1304,7 +1314,7 @@ exports.deepfilter = deepfilter = function deepfilter(inputObj, dtoObjOpt, comma
     }
 };
 
-function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
+function recurseModObj(inputObject, dtoObject, convert, totype, command, callback) {
     proxyprinttodiv("recurseModObj - inputObject ", inputObject, 17);
     proxyprinttodiv("recurseModObj - dtoObject ", dtoObject, 17);
 
@@ -1526,7 +1536,7 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
                             async.mapSeries(inpVal, function (eachinputval, cb1) { // step through each inpVal
                                     async.nextTick(function () {
                                         proxyprinttodiv("recurseModObj - in mapseries eachinputval ", eachinputval, 41);
-                                        recurseModObj(eachinputval, dataType, convert, totype, function (err, result) {
+                                        recurseModObj(eachinputval, dataType, convert, totype, command, function (err, result) {
                                             if (err && Object.keys(err).length > 0) {
                                                 cb1(err, result);
                                             } else {
@@ -1556,7 +1566,7 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
                         } else if (isObject(inpVal) && isObject(dataType)) {
                             proxyprinttodiv("typeof inpVal (object) - ", inpVal, 41);
                                 proxyprinttodiv("recurseModObj - modifiedObj[inpKey] II ", modifiedObj[inpKey], 41);
-                                recurseModObj(inpVal, dataType, convert, totype, function (err, result) {
+                                recurseModObj(inpVal, dataType, convert, totype, command, function (err, result) {
                                     // If error, bounce out
                                     if (err && Object.keys(err).length > 0) {
                                         cbMap(err, result);
@@ -1570,14 +1580,18 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
                         } else { 
                                // to read wid obj via getwidmaster
                                 if (dataType !== 'string') {
+                                    var executeobject = {};
                                     executeobject["command"]={"environment": {
-                            "run": {
-                                "type": "series"
-                            }
-                        }}
-                                    execute({
-                                        "executethis": dataType
-                                    }, function (err, result) {
+                                        "run": {
+                                            "type": "series"
+                                        }
+                                    }}
+                                    executeobject.executethis=dataType;
+                                    var env = new drienvironment(command.environment);
+                                    env.execute(executeobject, function (err, res) {
+                                    // execute({
+                                    //     "executethis": dataType
+                                    // }, function (err, result) {
                                         // If error, bounce out
                                         if (err && Object.keys(err).length > 0) {
                                             cbMap(err, result);
@@ -2494,25 +2508,25 @@ function getRandomNumberByLength(length) {
 
         // debugger;
 
-        proxyprinttodiv('logverifycomplex arguments ', arguments, 99);
+        proxyprinttodiv('logverifycomplex arguments ', arguments, 91);
         // Step 1 - compare result objects
         var complex_result = {};
         complex_result = logverify(test_name + '_result', result_object, result_assertion);
-        proxyprinttodiv('logverifycomplex complex_result I ', complex_result, 99);
+        proxyprinttodiv('logverifycomplex complex_result I ', complex_result, 91);
         // Step 2 - compare error objects
         var complex_error = {};
         if (error_object)
         {
             // Only check if the error matches if there are actual error objects passed in
             complex_error = logverify(test_name + '_err', error_object, error_assertion);
-            proxyprinttodiv('logverifycomplex complex_error I ', complex_error, 99);
+            proxyprinttodiv('logverifycomplex complex_error I ', complex_error, 91);
         }
         
         // Step 3 - conslidate 
         // var return_object = {'result': complex_result, 'error': complex_error };
         return_object = extend(true, complex_result, complex_error);
         return_object = distillresults(test_name, return_object);
-        proxyprinttodiv('logverifycomplex return_object ', return_object, 99);
+        proxyprinttodiv('logverifycomplex return_object ', return_object, 91);
 
         // Step 4 - return it all
         return return_object;
@@ -2594,65 +2608,62 @@ function getRandomNumberByLength(length) {
         var resulttable_result=logverifyresulttable(test_name, data_object, assertion_object)
 
         var result0 = deepDiffMapper.map(assertion_object, data_object);
-        proxyprinttodiv('logverify  result0', result0, 99);
+        proxyprinttodiv('logverify  result0', result0, 91);
 
         // collapse the results so they are easy to check -- same level
         var result = {};
         //collapsediffobj(result0, result)
         generatepropertylist(result0, result)
-        proxyprinttodiv('logverify result', result, 99);
+        proxyprinttodiv('logverify result', result, 91);
         var xresults = distillresults(test_name, result);
-        proxyprinttodiv('logverify x I', xresults, 99, true);
+        proxyprinttodiv('logverify x I', xresults, 91, true);
         if (xresults[test_name] === "PASS")
         {
             return xresults;
         } else {
             var exception_pass = 'PASS'
             var diff_obj = xresults[test_name + '_diff'];
-            var type_count = 0;
-            var matching_type_count = 0;
-            var assertionobjectproplist = {};
-                generatepropertylist(assertion_object, assertionobjectproplist);
+            var match = undefined; 
 
+            proxyprinttodiv('logverify diff_obj', diff_obj, 91,true);
+            // go through difference object
             for (key_name in diff_obj)
             {
+                proxyprinttodiv('logverify key_name', key_name, 91);
                 var diff_obj_item = diff_obj[key_name];
-                //var diff_type = diff_obj_item['type'];
+                proxyprinttodiv('logverify diff_obj_item', diff_obj_item, 91);
+                // look for any objects with a type...those have comparisons
                 if (diff_obj_item && diff_obj_item['type']!==null && diff_obj_item['type'] !== "unchanged")
-                {
+                {   
                     var diff_type = diff_obj_item['type'];
-                    type_count += 1;
-                    // Something is different here
-                    // if (assertion_object && assertion_object.hasOwnProperty(key_name))
-                    // {
-                    //     if (assertion_object[key_name].hasOwnProperty('exception'))
-                    //     {
-                    //          exception_types = assertion_object[key_name].exception;
-                    if (assertionobjectproplist && assertionobjectproplist.hasOwnProperty(key_name))
+                    proxyprinttodiv('logverify diff_type', diff_type, 91);
+                    // if data.execption exists then we want to study it
+                    if (diff_obj[key_name].data && diff_obj[key_name].data.exception)
                     {
-                        if (assertionobjectproplist[key_name].hasOwnProperty('exception'))
+                        var exception_types = diff_obj[key_name].data.exception;
+                        
+                        proxyprinttodiv('logverify exception_types', exception_types, 91);
+                        proxyprinttodiv('logverify exception_types.indexOf(diff_type)', exception_types.indexOf(diff_type), 91);
+                        // see if actual type found matches the execption list
+                        if (exception_types.indexOf(diff_type) === -1) // not found = -1
                         {
-                            exception_types = assertionobjectproplist[key_name].exception;
-                            // A specific type of exception was defined here.  
-                            // If this exception type is not found, then it should fail
-                            if (exception_types.indexOf(diff_type) > -1)
-                            {
-                                // A diff type of something other than unchanged has been detected, 
-                                // but the assertian object didn't work with it.
-                                matching_type_count += 1;
-                            }
+                            match=false;
+                        }
+                        else
+                        {
+                            match=true;
                         }
                     }
                 }
+                if (match===false){break}; // if one bad then we can stop
             }        
-            // This is confusing - exception_pass keeps track of how many of the assertion objects
-            //     
-            if (matching_type_count == type_count)
+
+            if (match)
             {
                 xresults[test_name] = 'PASS';
-            }
+            } // it was already FAIL otherwise
         }
-        proxyprinttodiv('logverify x', xresults, 99);
+        proxyprinttodiv('logverify x', xresults, 91);
 
         extend(true, xresults, resulttable_result)
 
