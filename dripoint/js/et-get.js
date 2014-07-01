@@ -467,7 +467,7 @@
 
                 var executeobject = {
                     "executethis": "getwidmaster",
-                    "wid": dtotype
+                    "wid": dtotype,
                     "command":{
                         "getwidmaster": {
                             "convertmethod": "dto",
@@ -1014,15 +1014,14 @@
                                 "wid": "systemdto",
                                 "command":
                                     {
-                                    "result": "systemdto"
-                                    "getwidmaster":
-                                        {
+                                    "result": "systemdto",
+                                    "getwidmaster": {
                                         "convertmethod": "dto",
                                         "execute": "ConvertFromDOTdri",
                                         "inheritflag": "true"
-                                        }
                                     }
-                                };
+                                }
+                            };
 
                             etEnvironment.execute(executeobject, function(err, res) {
 

@@ -492,15 +492,16 @@
 
                         if (!executeobject && (relationshiptype === "manytoone")) {
                             executeobject["executethis"] = "querywid";
-                            executeobject["command"] = {"result":"queryresult", 
-                                                        "environment": 
-                                                        {
-                                                            "run": 
-                                                            {
-                                                                "type": "series"
-                                                            }
-                                                        };
-                                                        }
+                            executeobject["command"] =
+                            {
+                                "result":"queryresult",
+                                "environment": {
+                                    "run": {
+                                        "type": "series"
+                                    }
+                                }
+                            };
+
                             executeobject["mongorawquery"] = {
                                 "$and": [{
                                     "data.primarymethod": inputrecord["metadata"]["method"],
