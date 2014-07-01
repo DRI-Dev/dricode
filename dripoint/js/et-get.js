@@ -487,8 +487,8 @@
                             proxyprinttodiv("getdtoobject out ", out, 93);
                             callback(null, out);
                         } else {
-                            proxyprinttodiv("getdtoobject before createdtotable dtoobject res[0]", res[0], 93);
-                            out = createdtofromresults(obj, res[0], dtotype);
+                            proxyprinttodiv("getdtoobject before createdtotable dtoobject res", res, 93);
+                            out = createdtofromresults(obj, res, dtotype);
                             proxyprinttodiv("getdtoobject obj ", obj, 93);
                             proxyprinttodiv("getdtoobject res[0] ", res[0], 93);
                             proxyprinttodiv("getdtoobject out ", out, 93);
