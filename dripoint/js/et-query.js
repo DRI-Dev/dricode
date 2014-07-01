@@ -304,17 +304,10 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     proxyprinttodiv('querywid command[mongorawquery]', qparms['mongorawquery'], 99);
     proxyprinttodiv('querywid command[mongowid]', qparms['mongowid'], 99);
 
-    //if (!parameters.command) { parameters.command = {environment:{run:{}}}; }
-    //else if (!parameters.command.environment) { parameters.command.environment = {run:{}}; }
-    
-    // var etEnvironment = new drienvironment({
-    //    run:{
-    //        "executeid":parameters.command.environment.executeid,
-    //        "executelevel":parameters.command.environment.executelevel,
-    //        type:parameters.command.environment.type || "series" //--- should be series also run
-    //    }
-    // });
+    if (!command.environment) { parameters.command.environment = {run:{}}; }
+
     command.environment.run.type = "series";
+
     var etEnvironment = new drienvironment(command.environment);
 
     if (!((qparms['mongosinglequery'] !== undefined && qparms['mongosinglequery'] !== "") ||
