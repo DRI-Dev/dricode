@@ -270,7 +270,7 @@ if (typeof angular !== 'undefined') {
         if (attrObj.addtomodel) {
             var newAdd = JSON.parse(attrObj.addtomodel);
             for (var prop in newAdd) {
-                if (scope[prop]) { extend(true, scope[prop], newAdd[prop]); }
+                if (scope[prop]) { scope[prop] = extend(true, scope[prop], newAdd[prop]); }
                 else { scope[prop] = newAdd[prop]; }
             }
         }
