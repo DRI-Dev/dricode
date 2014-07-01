@@ -2519,25 +2519,40 @@ function simplerelatedquery1 (params, callback) {
 var executeobj = [
 					{
 					"executethis":"updatewid",
-					"metadata.method":"authordto",
-					"metadata.bookdto.type":"onetomany",
+					"metadata":{
+						"method":"authordto",
+						"bookdto":{
+							"type":"onetomany"
+							}
+						},
 					"wid":"authordto",
 					"name":"string"
+					
 					}, {
 					"executethis":"updatewid",
-					"metadata.method":"bookdto",
+					"metadata":{
+						"method":"bookdto"
+						},
 					"wid":"bookdto",
 					"title":"string"
+					
 					}, {
 					"executethis": "updatewid",
-					"metadata.method": "relationshipdto",
+					"metadata": {
+						"method":"relationshipdto"
+						},
 					"wid": "rel_author_books",
 					"primarywid": "authordto",
 					"secondarywid": "bookdto",
+					"primarymethod":"authordto",
+					"secondarymethod":"bookdto",
 					"relationshiptype": "attributes"
+					
 					}, {
 					"executethis":"updatewid",
-					"metadata.method":"authordto",
+					"metadata":{
+						"method":"authordto"
+						},
 					"wid":"author1",
 					"name":"andrew",
 					"bookdto.0.title":"Haunted Houses",
@@ -2547,35 +2562,15 @@ var executeobj = [
 				];
 				
 	var queryobj = [
-				{"executethis":"querywid",
-					"mongowid":"author1",
-					"mongorelationshiptype":"attributes",
-					"mongorelationshipmethod":"forward"
-					}
+				{"executethis":"querywidmaster",
+				"mongowid":"author1",
+				"mongorelationshipdirection":"forward",
+				"mongorelationshiptype":"attributes",
+				"mongorelationshipmethod":"authordto"
+				}
 				];
 	
-	var expectedresult = [
-							{
-								"wid1":{
-									"color":"red",
-									"hue":"light",
-									"wid":"wid1",
-									"metadata":{
-										"expirationdate":"2014-06-27T18:59:17.772Z"
-									}
-								}
-							}, {
-								"wid3":{
-									"color":"green",
-									"hue":"light",
-									"wid":"wid3",
-									"metadata":{
-										"expirationdate":"2014-06-27T18:59:17.973Z"
-									}
-								}
-							}
-						];
-				
+	var expectedresult = ["empty"];				
 				
 				
 	execute(executeobj,function (err, res) {
