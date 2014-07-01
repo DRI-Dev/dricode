@@ -478,16 +478,17 @@
                     if (err && Object.keys(err).length > 0) { // If error, bounce out
                         callback(err, res);
                     } else {
+                        var out;
                         proxyprinttodiv("getdtoobject input res I ", res, 93);
-                        if (!res || (Object.keys(res[0]).length === 0)) {
+                        if (!res || (Object.keys(res).length === 0)) {
                             // if no results then proceed with same logi c as default
-                            var out = createdto(obj, {}, true);
+                            out = createdto(obj, {}, true);
                             proxyprinttodiv("getdtoobject obj ", obj, 93);
                             proxyprinttodiv("getdtoobject out ", out, 93);
                             callback(null, out);
                         } else {
                             proxyprinttodiv("getdtoobject before createdtotable dtoobject res[0]", res[0], 93);
-                            var out = createdtofromresults(obj, res[0], dtotype);
+                            out = createdtofromresults(obj, res[0], dtotype);
                             proxyprinttodiv("getdtoobject obj ", obj, 93);
                             proxyprinttodiv("getdtoobject res[0] ", res[0], 93);
                             proxyprinttodiv("getdtoobject out ", out, 93);
