@@ -439,7 +439,7 @@
 
         if (color >= 15) { color = 0; }  // reset color to prevent "level too high" errors
 
-        if (executionpreferences.command.environment.run.executelevel > 10 || color > 120) {
+        if (executionpreferences.command.environment.run.executelevel > 20 || color > 120) {
             callback({"errorname":"level too high"}, null);
         } 
         else 
