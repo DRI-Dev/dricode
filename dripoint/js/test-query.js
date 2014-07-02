@@ -1852,10 +1852,23 @@ var executeobj = [
 					}
 				];
 
+	var expectedresult = [
+							{
+								"wid1":{
+									"color":"red",
+									"wid":"wid1",
+									"metadata":{
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
+										}
+									}
+								}
+							];
+							
 	execute(executeobj,function (err, res) {
 		proxyprinttodiv('full result --', res, 99);
 		proxyprinttodiv('query result --',res[1],99);
-		proxyprinttodiv('err --',err,99);
+		result = logverify('logverify',res[1],expectedresult);
+		callback(err,result);
 	});
 }
 widtests.simpleonewidquery1.category = "daily";
@@ -1863,6 +1876,47 @@ widtests.simpleonewidquery1.subcategory = "push";
 widtests.simpleonewidquery1.js = exports.etmttest4;
 widtests.simpleonewidquery1.description = "this does a test";
 
+
+// this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
+exports.simpleonewidquerymaster1 =  
+widtests.simpleonewidquerymaster1 = 
+simpleonewidquerymaster1 = 
+function simpleonewidquerymaster1 (params, callback) {
+
+var executeobj = [
+					{"executethis":"updatewid",
+					"wid":"wid1",
+					"color":"red"
+					}, {"executethis":"querywidmaster",
+						"mongorawquery": {
+							"$or": [{
+								"data.color":"red"
+								}]
+							}
+					}
+				];
+
+	var expectedresult = [
+							{
+								"color":"red",
+								"wid":"wid1",
+								"metadata":{
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
+									}
+								}
+							];
+							
+	execute(executeobj,function (err, res) {
+		proxyprinttodiv('full result --', res, 99);
+		proxyprinttodiv('query result --',res[1],99);
+		result = logverify('logverify',res[1],expectedresult);
+		callback(err,result);
+	});
+}
+widtests.simpleonewidquerymaster1.category = "daily";
+widtests.simpleonewidquerymaster1.subcategory = "push";
+widtests.simpleonewidquerymaster1.js = exports.etmttest4;
+widtests.simpleonewidquerymaster1.description = "this does a test";
 
 
 // 5 wids are setup, the query looks for color = red. the returned query result should contain 2 wids: wid1 and wid5
@@ -1911,16 +1965,18 @@ var executeobj = [
 							"color":"red",
 							"wid":"wid1",
 							"metadata":{
-								"expirationdate":"2014-06-27T16:32:37.925Z"}
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
 								}
+							}
 					}, {
 						"wid5":{
 							"color":"red",
 							"wid":"wid5",
 							"metadata":{
-								"expirationdate":"2014-06-27T16:32:38.395Z"}
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
 								}
-						}
+							}
+					}
 				];
 				
 				
@@ -1931,7 +1987,7 @@ var executeobj = [
 			
 		execute(queryobj, function (err, res) {
 			proxyprinttodiv('query result --', res, 99);
-			result = logverifycomplex('logverify',res,expectedresult,err,null);
+			result = logverify('logverify',res,expectedresult);
 			callback(err,result);
 		});
 
@@ -1991,7 +2047,7 @@ var executeobj = [
 								"color":"red",
 								"wid":"wid1",
 								"metadata":{
-									"expirationdate":"2014-06-27T17:08:39.105Z"
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
 											}
 								}
 						}, {
@@ -1999,7 +2055,7 @@ var executeobj = [
 								"color":"blue",
 								"wid":"wid2",
 								"metadata":{
-									"expirationdate":"2014-06-27T17:08:39.202Z"
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
 								}
 							}
 						}, {
@@ -2007,7 +2063,7 @@ var executeobj = [
 								"color":"red",
 								"wid":"wid5",
 								"metadata":{
-									"expirationdate":"2014-06-27T17:08:39.558Z"
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
 								}
 							}
 						}
@@ -2021,7 +2077,7 @@ var executeobj = [
 			
 		execute(queryobj, function (err, res) {
 			proxyprinttodiv('query result --', res, 99);
-			result = logverifycomplex('logverify',res,expectedresult,err,null);
+			result = logverify('logverify',res,expectedresult);
 			callback(err,result);
 		});
 
@@ -2088,7 +2144,7 @@ var executeobj = [
 									"hue":"light",
 									"wid":"wid1",
 									"metadata":{
-										"expirationdate":"2014-06-27T17:10:26.406Z"
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
 									}
 								}
 							}
@@ -2171,7 +2227,7 @@ var executeobj = [
 									"hue":"light",
 									"wid":"wid1",
 									"metadata":{
-										"expirationdate":"2014-06-27T17:16:54.251Z"
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
 									}
 								}
 							}, {
@@ -2180,7 +2236,7 @@ var executeobj = [
 									"hue":"dark",
 									"wid":"wid5",
 									"metadata":{
-										"expirationdate":"2014-06-27T17:16:54.723Z"
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
 									}
 								}
 							}
@@ -2264,7 +2320,7 @@ var executeobj = [
 									"hue":"light",
 									"wid":"wid1",
 									"metadata":{
-										"expirationdate":"2014-06-27T18:52:40.235Z"
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
 									}
 								}
 							}, {
@@ -2273,7 +2329,7 @@ var executeobj = [
 									"hue":"light",
 									"wid":"wid3",
 									"metadata":{
-										"expirationdate":"2014-06-27T18:52:40.429Z"
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
 									}
 								}
 							}, {
@@ -2282,7 +2338,7 @@ var executeobj = [
 									"hue":"medium",
 									"wid":"wid4",
 									"metadata":{
-										"expirationdate":"2014-06-27T18:52:40.553Z"
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
 									}
 								}
 							}, {
@@ -2291,7 +2347,7 @@ var executeobj = [
 									"hue":"dark",
 									"wid":"wid5",
 									"metadata":{
-										"expirationdate":"2014-06-27T18:52:40.711Z"
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
 									}
 								}
 							}
@@ -2381,7 +2437,7 @@ var executeobj = [
 									"hue":"light",
 									"wid":"wid1",
 									"metadata":{
-										"expirationdate":"2014-06-27T18:59:17.772Z"
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
 									}
 								}
 							}, {
@@ -2390,7 +2446,7 @@ var executeobj = [
 									"hue":"light",
 									"wid":"wid3",
 									"metadata":{
-										"expirationdate":"2014-06-27T18:59:17.973Z"
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
 									}
 								}
 							}
@@ -2508,6 +2564,95 @@ widtests.complexfivewidquery1nestedandor.subcategory = "push";
 widtests.complexfivewidquery1nestedandor.js = exports.etmttest4;
 widtests.complexfivewidquery1nestedandor.description = "this does a test";
 
+
+
+// 5 wids are setup, the query looks for hue = light AND (color = red OR color = green). the returned query result should contain 2 wids: wid1 and wid3
+exports.complexfivewidquerymaster1nestedandor =  
+widtests.complexfivewidquerymaster1nestedandor = 
+complexfivewidquerymaster1nestedandor  = 
+function complexfivewidquerymaster1nestedandor (params, callback) {
+
+var executeobj = [
+					{
+					"executethis":"updatewid",
+					"wid":"wid1",
+					"color":"red",
+					"hue":"light"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid2",
+					"color":"blue",
+					"hue":"dark"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid3",
+					"color":"green",
+					"hue":"light"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid4",
+					"color":"red",
+					"hue":"medium"
+					}, {
+					"executethis":"updatewid",
+					"wid":"wid5",
+					"color":"red",
+					"hue":"dark"
+					}
+				];
+				
+	var queryobj = [
+				{"executethis":"querywidmaster",
+						"mongorawquery": {
+							"$and": [{
+								"data.hue":"light"
+								}, {
+								"$or": [{
+									"data.color":"red"
+									}, {
+									"data.color":"green"
+									}]
+								}]
+							}
+					}
+				];
+	
+	var expectedresult = [
+							{
+								"color":"red",
+								"hue":"light",
+								"wid":"wid1",
+								"metadata":{
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
+									}
+							}, {
+								"color":"green",
+								"hue":"light",
+								"wid":"wid3",
+								"metadata":{
+										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
+									}
+							}
+						];
+				
+				
+				
+	execute(executeobj,function (err, res) {
+		proxyprinttodiv('full result --', res, 99);
+		proxyprinttodiv('err --',err,99);
+			
+		execute(queryobj, function (err, res) {
+			proxyprinttodiv('query result --', res, 99);
+			result = logverify('logverify',res,expectedresult);
+			callback(err,result);
+		});
+
+	});
+}
+widtests.complexfivewidquerymaster1nestedandor.category = "daily";
+widtests.complexfivewidquerymaster1nestedandor.subcategory = "push";
+widtests.complexfivewidquerymaster1nestedandor.js = exports.etmttest4;
+widtests.complexfivewidquerymaster1nestedandor.description = "this does a test";
 
 
 // this test sets up 3 wids: 1 parent and two children. A query for the parent should bring back all 3 records

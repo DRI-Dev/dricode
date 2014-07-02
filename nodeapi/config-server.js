@@ -883,4 +883,91 @@ zapier_passthrough(
     }
 ); 
 
+	// series, level 0, 1 function that passes on the server
+	exports.server_serieslevel0pass1 = 
+	server_serieslevel0pass1 = 
+	function server_serieslevel0pass1(executeobject, callback) 
+	{
+		  if (!executeobject.command) {
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  
+		  executeobject.command.environment.run.type="series"
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='server';          // used for server testing
+		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
 
+		  executeobject.command.xrun={"executethis": 'test_return_noerror_result_server'};
+
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+		  {        
+				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
+				proxyprinttodiv('expected error', null, 99);
+				proxyprinttodiv('actual error', error_obj, 99);
+				proxyprinttodiv('expected result', result_assertion, 99);
+				proxyprinttodiv('actual result', result_obj, 99);
+
+				var composite_obj = logverifycomplex("server_serieslevel0pass1", result_obj, result_assertion, error_obj, null);
+				proxyprinttodiv('composite_obj', composite_obj, 99);
+				callback(null, composite_obj)
+		  });
+
+	};
+
+	// series, level 0, 1 : server tries to find a function that only exists locally and so fails
+	exports.server_serieslevel0fail1 = 
+	server_serieslevel0fail1 = 
+	function server_serieslevel0fail1(executeobject, callback) 
+	{
+		  if (!executeobject.command) {
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  
+		  executeobject.command.environment.run.type="series"
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='server';          // used for server testing
+		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
+
+		  executeobject.command.xrun={"executethis": 'test_return_noerror_result_local'};
+
+		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+		  {        
+				//var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
+				proxyprinttodiv('expected error', global_failnotfound, 99);
+				proxyprinttodiv('actual error', error_obj, 99);
+				proxyprinttodiv('expected result', null, 99);
+				proxyprinttodiv('actual result', result_obj, 99);
+
+				var composite_obj = logverifycomplex("server_serieslevel0fail1", result_obj, null, error_obj, global_failnotfound);
+				proxyprinttodiv('composite_obj', composite_obj, 99);
+				callback(null, composite_obj)
+		  });
+
+	};
+	
+// server tests
+exports.test_return_noerror_result_server = test_return_noerror_result_server = function test_return_noerror_result_server (param, callback) 
+{
+    // debugger;
+    proxyprinttodiv('test_return_noerror_result_server- incoming parm', param, 99);
+    var error_obj = null;
+    var env = param.command.environment.platform;
+    if (env==="server" && param.serverfn)     // if environment = server and serverfn parameter exist then redirect 
+                                              // to different function--that way we can on same machine pass locally and
+                                              // fail server
+    {
+        param.command.xrun=param.serverfn;
+        delete param.serverfn;
+        proxyprinttodiv('test ***** calling server', param, 99);
+        execute(param, callback);
+    } else {
+        var result_obj = { 'a':'b', env: env };
+        callback( error_obj, result_obj );
+    }
+};
