@@ -88,6 +88,9 @@
         return environment;
     }
 
+    function resetenvironment() {
+        addtolocal(config.configuration.e, config.configuration.d);
+    }
 
     // create blank command.result or if one was existing then 
     // go through an exisiting result table to see if there are things to be done (i.e. create tryset)
@@ -385,7 +388,7 @@
     // 6) based on type save parameters & results
     // 7) interpret results and provide a consolidated err, res
     exports.execute = window.execute = execute = function execute(input, callback) {
-        var color  = Number(getglobal('debugcolor')); color++; if (color >= 15) { color = 0;}; saveglobal('debugcolor', color);
+        var color  = Number(getglobal('debugcolor')); color++; if (color >= 15) { color = 0;} saveglobal('debugcolor', color);
         var indent  = Number(getglobal('debugindent')); indent++; saveglobal('debugindent', indent);
         var previousresults=null;
         var skipexecute = false;
@@ -806,12 +809,17 @@
                     proxyprinttodiv('execute SUMMARY resultsummary ', resultsummary, 11, true);
                     var color  = Number(getglobal('debugcolor')); color --; saveglobal('debugcolor', color);
                     var indent  = Number(getglobal('debugindent')); indent --; saveglobal('debugindent', indent);
+
+                    if (executionpreferences.command.environment.run.executelevel === 0) {
+                        // reset environment now as we are at the end of the overall execute process
+                        resetenvironment();
+                    }
+
                     callback(errorsummary, resultsummary)
                 }); // mapseries
             } // parallel
-            } // execute level
-        }; // end
-
+        } // execute level
+    }; // end
 
 
     // main execute function
