@@ -873,26 +873,24 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
             function step1(step1_callback) { // getwidmaster
                  proxyprinttodiv("addwid step1 getwidmaster output", output, 18);
                  if (object['wid']) {
-                     // execute({
-                     //     "executethis": "getwidmaster",
-                     //     "wid": object['wid'],
-                     //     "command.getwidmaster.execute": "ConvertFromDOTdri",
-                     //     "command.getwidmaster.convertmethod": "nowid"
-                     //     }, function (err, res) {
 
                         var executeobject={
-                                         "executethis": "getwidmaster",
-                                         "wid": object['wid'],
-                                         "command.getwidmaster.execute": "ConvertFromDOTdri",
-                                         "command.getwidmaster.convertmethod": "nowid"
-                                         }
-                        var env = new drienvironment(command.environment);             
+                            "executethis": "getwidmaster",
+                            "wid": object['wid'],
+                            "command.getwidmaster.execute": "ConvertFromDOTdri",
+                            "command.getwidmaster.convertmethod": "nowid"
+                        };
+
+                        var env = new drienvironment(command.environment);
                         //var env = new drienvironment(object.command.environment);
-                        executeobject["command"]={"environment": {
-                            "run": {
-                                "type": "series"
+                        executeobject["command"]={
+                            "environment": {
+                                "run": {
+                                    "type": "series"
+                                }
                             }
-                        }}
+                        };
+
                         env.execute(executeobject, function (err, res) {
                         if (err && err.errorname === "failnotfound") {err=null; res={}}
 
