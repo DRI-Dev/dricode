@@ -3049,17 +3049,20 @@ widtests.ettestag11.description = "this does a test";
 //exports.ettestag1 = ettestag1 = function ettestag1(params, callback) {
 exports.ettestag1 = widtests.ettestag1 = ettestag1 = function ettestag1(params, callback) {
     var executeobject = {
-            "executethis": "addwidmaster",
-            "wid": "sounddto",
-            "metadata.method": "sounddto",
-            "note": "string"
-        }
-        executeobject.command={};
-        executeobject.command.environment={};
-        executeobject.command.environment.run={};
-        executeobject.command.environment.run.executelevel=0;
-        executeobject.command.environment.syncrule = "sync_local"
+        "executethis": "addwidmaster",
+        "wid": "sounddto",
+        "metadata.method": "sounddto",
+        "note": "string"
+    };
+
+    if (!params.command.environment) { params.command.environment = {run:{}}; }
+    if (!params.command.environment.run) { params.command.environment.run = {}; }
+
+    params.command.environment.run.executelevel=0;
+    params.command.environment.syncrule = "sync_local";
+
     proxyprinttodiv("Ag1  params ", params, 99);
+
     var env = new drienvironment(params.command.environment);
     proxyprinttodiv("Ag1  env ", env, 99);
     env.execute([executeobject, {
