@@ -12,10 +12,17 @@
 // command.processfn
 // sync_local, sync_server, sync_local_server, sync_local_cache
 //
-// command.skipcache
+// command.skipcache controls if we should not use cached results
+// if command.skipcache = false and no cache then fail
+// most queries should be command.skipcache = false
+//
+// execute_queue
 //
 // search for configuration.environment 
 // future we may need to support multiple executeids
+//if error = fnnotfound then runfirstone should stop?
+//    "executethis": "getwid""wid": "getwidmaster"
+// split command.xrun early for split local server
 
 (function (window) {
     // 'use strict';
@@ -31,7 +38,7 @@
                     inboundparams.command.environment.global || {},
                     inboundparams.command.environment.var ? inboundparams.command.environment.var[inboundparams.executethis] || {} : {});
 
-        inboundparams.command.environment.var = {}; // clear it out so it does not grow forever
+        inboundparams.command.environment.var[inboundparams.executethis] = {}; // clear it out so it does not grow forever
 
         return inboundparams;
     }
@@ -378,7 +385,7 @@
     // 6) based on type save parameters & results
     // 7) interpret results and provide a consolidated err, res
     exports.execute = window.execute = execute = function execute(input, callback) {
-        var color  = Number(getglobal('debugcolor')); color++; saveglobal('debugcolor', color);
+        var color  = Number(getglobal('debugcolor')); color++; if (color >= 15) { color = 0;}; saveglobal('debugcolor', color);
         var indent  = Number(getglobal('debugindent')); indent++; saveglobal('debugindent', indent);
         var previousresults=null;
         var skipexecute = false;
@@ -437,8 +444,6 @@
 
         //proxyprinttodiv('execute level type ', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
 
-        if (color >= 15) { color = 0; }  // reset color to prevent "level too high" errors
-
         if (executionpreferences.command.environment.run.executelevel > 20 || color > 120) {
             callback({"errorname":"level too high"}, null);
         } 
@@ -455,7 +460,7 @@
                 {
                     async.nextTick(function () 
                     {
-                        var color  = Number(getglobal('debugcolor')); color++; saveglobal('debugcolor', color);
+                        var color  = Number(getglobal('debugcolor')); color++; if (color >= 15) { color = 0; }; saveglobal('debugcolor', color);
                         //var indent  = Number(getglobal('debugindent')); indent++; saveglobal('debugindent', indent);
                         if (skipexecute) 
                         {

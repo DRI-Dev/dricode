@@ -341,6 +341,7 @@ exports.addToLocalStorage = window.addToLocalStorage = addToLocalStorage = funct
 exports.clearLocalStorage = window.clearLocalStorage = clearLocalStorage = function clearLocalStorage() {
     proxyprinttodiv('clear clearLocalStorage', 'hi', 38);
     localStorage.clear();
+    localStore.clear();
     // items below can probably be cleared now
     addToLocalStorage(config.configuration.defaultdatabasetable + config.configuration.defaultcollection, [{
         "wid": "initialwid",
