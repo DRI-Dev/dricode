@@ -2741,24 +2741,67 @@ widtests.simplerelatedquery1.description = "this does a test";
 exports.simpledeepfiltertest1 =  
 widtests.simpledeepfiltertest1 = 
 simpledeepfiltertest1 = 
-function simpledeepfiltertest1 (params, callback) {
+function simpledeepfiltertest1 (executeobject, callback) {
 
-var executeobj = [
-					{"executethis":"updatewid",
-					"wid":"wid1",
-					"number":"12",
-					"command.deepfilter.convert":true,
-					"command.deepfilter.totype":"integer"
-					}
-				];
+if (!executeobject.command) {
+           executeobject.command={};
+           executeobject.command.environment={};
+           executeobject.command.environment.run={};
+       }
+	   executeobject.command.environment.run.type="series";
+	   executeobject.command.environment.run.executelevel=0;
+	   executeobject.command.environment.platform='server';   // within test this will redirect to second function
+  
+	   executeobject.command.environment.processfn="execute_function";
 
-	execute(executeobj,function (err, res) {
-		proxyprinttodiv('full result --', res, 99);
-		proxyprinttodiv('query result --',res[1],99);
-		proxyprinttodiv('err --',err,99);
-	});
+	   executeobject.command.deepfilter={
+										"convert":true,
+										"totype":true
+										};
+	   executeobject.command.xrun=[{
+									"executethis":"addwidmaster",
+									"metadata.method":"codydto",
+									"wid":"codydto",
+									"number":"integer"
+									}, {
+									"executethis":"addwidmaster",
+									"metadata.method":"codydto",
+									"wid":"codywid1",
+									"number":"12"
+									}];
+
+	   var etEnvironment = new drienvironment(executeobject.command.environment);				
+	   etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+		{
+			proxyprinttodiv('res --', result_obj, 99);
+		});
 }
 widtests.simpledeepfiltertest1.category = "daily";
 widtests.simpledeepfiltertest1.subcategory = "push";
 widtests.simpledeepfiltertest1.js = exports.etmttest4;
 widtests.simpledeepfiltertest1.description = "this does a test";
+
+
+
+// this sets up 1 wid and 
+exports.addwidtomongo11 =  
+widtests.addwidtomongo11 = 
+addwidtomongo11 = 
+function addwidtomongo11 (params, callback) {
+
+var executeobj = [
+					{"executethis":"addwidmaster",
+					"wid":"codywid1",
+					"number":"12",
+					"creator":"cody"
+					}
+				];
+
+	execute(executeobj,function (err, res) {
+		proxyprinttodiv('full result --', res, 99);
+	});
+}
+widtests.addwidtomongo11.category = "daily";
+widtests.addwidtomongo11.subcategory = "push";
+widtests.addwidtomongo11.js = exports.etmttest4;
+widtests.addwidtomongo11.description = "this does a test";
