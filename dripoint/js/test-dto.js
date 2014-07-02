@@ -3065,12 +3065,9 @@ exports.ettestag1 = widtests.ettestag1 = ettestag1 = function ettestag1(params, 
 
     var env = new drienvironment(params.command.environment);
     proxyprinttodiv("Ag1  env ", env, 99);
-    env.execute([executeobject
-            // , 
-            // {
-            // "executethis": "getwidmaster",
-            // "wid": "sounddto"
-            // }
+    env.execute([
+            executeobject,
+            {"executethis": "getwidmaster","wid": "sounddto"}
         ],
         function (err, res1) {
             proxyprinttodiv("Ag1  result ", res1, 99);
