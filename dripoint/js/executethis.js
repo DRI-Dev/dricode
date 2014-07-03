@@ -1258,16 +1258,16 @@ exports.hashobj = hashobj = function hashobj(inobj, command) {
         };
 
     exports.processevent = processevent = function processevent(eventname, callback) {
-        callback(null,null)
+        callback(null,null);
         proxyprinttodiv("processeventqueue eventname----", eventname, 99);
-        getexecutelist(eventname, "queuecollection", function (err, executetodolist) {
-            proxyprinttodiv("processeventqueue executelist", executetodolist, 17);
-            executelistfn(executetodolist, execute, function (err, res) {
-                deletelist(executetodolist, eventname, function (err, res) {
-                    callback(err, res);
-                    });
-                });
-            });
+//        getexecutelist(eventname, "queuecollection", function (err, executetodolist) {
+//            proxyprinttodiv("processeventqueue executelist", executetodolist, 17);
+//            executelistfn(executetodolist, execute, function (err, res) {
+//                deletelist(executetodolist, eventname, function (err, res) {
+//                    callback(err, res);
+//                    });
+//                });
+//            });
         };
 
     exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, callback) {
