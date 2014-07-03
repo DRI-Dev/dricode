@@ -826,7 +826,7 @@
 
     // main execute function
     window.execute_function = function execute_function(incomingparams, callback) {
-
+        if (!incomingparams.command) { incomingparams.command = {}; }
         proxyprinttodiv('>>>> execute incomingparams ', incomingparams, 99, true);
         // see if we need to recurse ... i.e. xrun or resulttable
         if (incomingparams.command.xrun || 
