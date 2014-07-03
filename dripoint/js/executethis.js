@@ -449,7 +449,7 @@
 
         //proxyprinttodiv('execute level type ', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
 
-        if (executionpreferences.command.environment.run.executelevel > 60 || color > 120) {
+        if (executionpreferences.command.environment.run.executelevel > 100 || color > 120) {
             callback({"errorname":"level too high"}, null);
         } 
         else 
