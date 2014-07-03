@@ -32,7 +32,7 @@
     // get other parameters that might be for this function
     function enhanceparameters(inboundparams) {
         // first save and get from environment
-        inboundparams.command.environment = checkenviornment(inboundparams.command.environment);
+        inboundparams.command.environment = checkenvironment(inboundparams.command.environment);
         // then bring items deeply nested in environmnet to "this" level
         proxyprinttodiv("enhanceparameters inside enhanceparameters inboundparams", inboundparams, 99, true);
         extend(true, inboundparams,
@@ -45,7 +45,7 @@
     }
 
     // function reads & updates wid environment when running locally
-    function checkenviornment(environment) {
+    function checkenvironment(environment) {
         // merge incoming environment wiht default environment with incomming winning
         environment = extend(true, {}, config.configuration.d, environment);
         if (config.configuration.environment === "local") 
@@ -207,7 +207,7 @@
         if (!inparams.command.environment.run) {inparams.command.environment.run={};}
 
         // make parameters better by dealing with command.environmnet
-        inparams = enhanceparameters(inparams);
+//        inparams = enhanceparameters(inparams);
 
         extend(true, executionpreferences.command.environment, inparams.command.environment);
         delete inparams.command.environment;
@@ -414,7 +414,7 @@
         var trylength = tryset.length;
 
         // read and save environment parameters
-        //executionpreferences.command.environment = checkenviornment(executionpreferences.command.environment);
+        executionpreferences.command.environment = checkenvironment(executionpreferences.command.environment);
 
         // maybe delete command object if empty
         if (executionpreferences.command && 
