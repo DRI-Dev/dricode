@@ -606,12 +606,19 @@
                                 function step03(cbstep3)
                                 {   // process results
                                     //proxyprinttodiv('execute level type 03', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
-                                proxyprinttodiv("execute step03 end outgoingparam", outgoingparam, 11, true);
-                                proxyprinttodiv('execute step03 end results', fromstep02res, 11);
-                                proxyprinttodiv('execute step03 end error', fromstep02err, 11);
+                                    proxyprinttodiv("execute step03 end outgoingparam", outgoingparam, 11, true);
+                                    proxyprinttodiv('execute step03 end results', fromstep02res, 11);
+                                    proxyprinttodiv('execute step03 end error', fromstep02err, 11);
 
-                                     // do not log execute level for future use... not relevant
-                                    delete outgoingparam.command.environment.executelevel;
+                                    if (outgoingparam
+                                        && outgoingparam.command
+                                        && outgoingparam.command.environment
+                                        && outgoingparam.command.environment.executelevel)
+                                    {
+                                        // do not log execute level for future use... not relevant
+                                        delete outgoingparam.command.environment.executelevel;
+                                    }
+
                                     var executeresult={};
                                     executeresult.outgoingparam=outgoingparam;
                                     executeresult.err=fromstep02err;
