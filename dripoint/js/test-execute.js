@@ -1653,7 +1653,7 @@ function ettest_howtodo(executeobject, callback)
    
   
 			  //executeobject.command.environment.processfn="execute_function"          
-			  executeobject.serverfn="test_return_noerror_result2";
+			  //executeobject.serverfn="test_return_noerror_result2";
 			  executeobject.command.xrun={"executethis": 'callpassfunction'};
 
 			  var etEnvironment = new drienvironment(executeobject.command.environment);
