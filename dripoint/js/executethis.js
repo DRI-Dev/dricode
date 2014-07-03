@@ -39,7 +39,7 @@
                     inboundparams.command.environment.global || {},
                     inboundparams.command.environment.var ? inboundparams.command.environment.var[inboundparams.executethis] || {} : {});
 
-        inboundparams.command.environment.var[inboundparams.executethis] = {}; // clear it out so it does not grow forever
+        inboundparams.command.environment.var = {}; // clear it out so it does not grow forever
 
         return inboundparams;
     }
