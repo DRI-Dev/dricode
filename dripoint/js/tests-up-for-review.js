@@ -1,4 +1,6 @@
 /* Adding data for the survey */
+if (!widtests) { var widtests = {}; }
+
 exports.surveydata = widtests.surveydata = surveydata = function surveydata(params, callback) {
 
     saveglobal("debugname", "addmaster");
