@@ -1,5 +1,7 @@
 // 'use strict';
 
+if (!widtests) { var widtests = {}; }
+
 // exports.ettestinheritoverride = ettestinheritoverride = function ettestinheritoverride(params, callback) {
 //     eventappinstall();
 //     debuglevel = 0;

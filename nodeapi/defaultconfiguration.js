@@ -20,7 +20,7 @@ require(DIR_TO_CORE_JS + 'test-inherit.js');
 require(DIR_TO_CORE_JS + 'test-main.js');
 require(DIR_TO_CORE_JS + 'test-query.js');
 require(DIR_TO_CORE_JS + 'test-security.js');
-require(DIR_TO_CORE_JS + 'test-up-for-review.js');
+require(DIR_TO_CORE_JS + 'tests-up-for-review.js');
 require(DIR_TO_CORE_JS + 'et-query.js');
 require(DIR_TO_CORE_JS + 'et-unit_tests.js');
 exports.executethis = require(DIR_TO_CORE_JS + 'executethis.js');
