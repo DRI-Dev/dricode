@@ -3050,56 +3050,56 @@ widtests.ettestag11.description = "this does a test";
 exports.ettestag1 = widtests.ettestag1 = ettestag1 = function ettestag1(params, callback) {
         proxyprinttodiv("Ag1  params HI!!! ", params, 99);
         callback(null, null);
-    // var executeobject = 
-    //     [
-    //         {
-    //             "executethis": "addwidmaster",
-    //             "wid": "sounddto",
-    //             "metadata.method": "sounddto",
-    //             "note": "string"
-    //         }
-    //         // ,
-    //         // {
-    //         //     "executethis": "getwidmaster",
-    //         //     "wid": "sounddto"
-    //         // }
-    //     ];
+    var executeobject = 
+        [
+            {
+                "executethis": "addwidmaster",
+                "wid": "sounddto",
+                "metadata.method": "sounddto",
+                "note": "string"
+            }
+            // ,
+            // {
+            //     "executethis": "getwidmaster",
+            //     "wid": "sounddto"
+            // }
+        ];
 
-    // if (!params.command.environment) { params.command.environment = {run:{}}; }
-    // if (!params.command.environment.run) { params.command.environment.run = {}; }
+    if (!params.command.environment) { params.command.environment = {run:{}}; }
+    if (!params.command.environment.run) { params.command.environment.run = {}; }
 
-    // params.command.environment.run.executelevel=0;
-    // params.command.environment.syncrule = "sync_local";
+    params.command.environment.run.executelevel=0;
+    params.command.environment.syncrule = "sync_local";
 
-    // proxyprinttodiv("Ag1  params ", params, 99);
+    proxyprinttodiv("Ag1  params ", params, 99);
 
-    // var env = new drienvironment(params.command.environment);
-    // proxyprinttodiv("Ag1  env ", env, 99);
-    // env.execute(executeobject,
-    //     function (err, res1) {
-    //         proxyprinttodiv("Ag1  result ", res1, 99);
-    //         // var res = res1[1]; //~~~ changed by SAURABH 
-    //         var res = res1[1];
+    var env = new drienvironment(params.command.environment);
+    proxyprinttodiv("Ag1  env ", env, 99);
+    env.execute(executeobject,
+        function (err, res1) {
+            proxyprinttodiv("Ag1  result ", res1, 99);
+            // var res = res1[1]; //~~~ changed by SAURABH 
+            var res = res1[1];
 
-    //         proxyprinttodiv('Function ag1 expected res ', {
-    //             "note": "string",
-    //             "wid": "sounddto",
-    //             "metadata": {
-    //                 "method": "sounddto"
-    //             }
-    //         }, 99);
-    //         proxyprinttodiv('Function ag1 actual result ', res, 99);
-    //         res = logverify("ettestag1_result", res, {
-    //             "wid": "sounddto",
-    //             "metadata": {
-    //                 "method": "sounddto",
-    //                 "expirationdate":{"exception":["created","changed","unchanged","updated"]}
-    //             },
-    //             "note": "string"
-    //         });
+            proxyprinttodiv('Function ag1 expected res ', {
+                "note": "string",
+                "wid": "sounddto",
+                "metadata": {
+                    "method": "sounddto"
+                }
+            }, 99);
+            proxyprinttodiv('Function ag1 actual result ', res, 99);
+            res = logverify("ettestag1_result", res, {
+                "wid": "sounddto",
+                "metadata": {
+                    "method": "sounddto",
+                    "expirationdate":{"exception":["created","changed","unchanged","updated"]}
+                },
+                "note": "string"
+            });
 
-    //         callback(err, res);
-    //     });
+            callback(err, res);
+        });
 };
 widtests.ettestag1.category = "daily";
 widtests.ettestag1.subcategory = "push";
