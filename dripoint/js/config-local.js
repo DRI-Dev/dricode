@@ -120,6 +120,8 @@ function config123() {
     configuration.d.defaultkeycollection = configuration.defaultkeycollection;
     configuration.d.defaultdatabasetable = configuration.defaultdatabasetable;
     configuration.d.platform = configuration.environment;
+    configuration.d.global = {};
+    configuration.d.var = {};
     configuration.d.syncrule = configuration.defaultsyncrule;
 
     // configuration.d.environment = {};
@@ -142,10 +144,12 @@ exports.eventappinstall = eventappinstall = function eventappinstall() {
 };
 
 exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
+    clearLocal();
     setdefaultparm();
     if (!getFromLocalStorage(config.configuration.defaultkeycollection)) {
         eventappinstall();
     }
+    proxyprinttodiv('eventdeviceready', localStore, 99, true);
 
     // start eventonemin, eventtenmin and save the interval value so 
     // you can use "clearInterval" in the future if desired to stop things
@@ -341,7 +345,7 @@ exports.addToLocalStorage = window.addToLocalStorage = addToLocalStorage = funct
 exports.clearLocalStorage = window.clearLocalStorage = clearLocalStorage = function clearLocalStorage() {
     proxyprinttodiv('clear clearLocalStorage', 'hi', 38);
     localStorage.clear();
-    localStore.clear();
+    //localStore.clear();
     // items below can probably be cleared now
     addToLocalStorage(config.configuration.defaultdatabasetable + config.configuration.defaultcollection, [{
         "wid": "initialwid",

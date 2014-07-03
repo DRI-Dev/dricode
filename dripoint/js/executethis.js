@@ -34,6 +34,7 @@
         // first save and get from environment
         inboundparams.command.environment = checkenviornment(inboundparams.command.environment);
         // then bring items deeply nested in environmnet to "this" level
+        proxyprinttodiv("enhanceparameters inside enhanceparameters inboundparams", inboundparams, 99, true);
         extend(true, inboundparams,
                     inboundparams.command.environment.global || {},
                     inboundparams.command.environment.var ? inboundparams.command.environment.var[inboundparams.executethis] || {} : {});
@@ -70,14 +71,15 @@
             {
                 environment.accesstoken = createNewGuid();
             }
-            if (!environment.var)
-            {
-                environment.var = {};
-            }
-            if (!environment.global)
-            {
-                environment.global = {};
-            }
+            // added to defaults in config--code below can be taken out
+            // if (!environment.var)
+            // {
+            //     environment.var = {};
+            // }
+            // if (!environment.global)
+            // {
+            //     environment.global = {};
+            // }
 
             // store it back to wid
             environmentwid[config.configuration.defaultdb] = environment;

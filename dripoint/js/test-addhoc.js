@@ -1057,9 +1057,10 @@ exports.printglobal1 =
 printglobal1 = 
 function printglobal1(params, callback) 
 {
-	var global1 = global1 || "fail";
+	var global1 = global1 || {"value":"fail"};
 	proxyprinttodiv('params --',params,99);
-	callback (null, {'value':global1});
+	proxyprinttodiv('params.command.environment',params.command.environment,99);
+	callback (null, global1);
 	
 };
 
@@ -1076,7 +1077,7 @@ function testenvglobal1(executeobject, callback)
       executeobject.command.environment.run.type="series";
       executeobject.command.environment.run.executelevel=0;
       executeobject.command.environment.platform='local';
-	  executeobject.command.environment.global = {"global1":"pass"};
+	  executeobject.command.environment.global = {"global1":{"value":"pass"}};
   
       executeobject.command.environment.processfn="execute_function";
       executeobject.command.xrun=[
@@ -1098,3 +1099,41 @@ widtests.testenvglobal1.category = "daily";
 widtests.testenvglobal1.subcategory = "addhoc";
 widtests.testenvglobal1.js = exports.pu1;
 widtests.testenvglobal1.description = "this does a test";
+
+
+exports.testenvfunctionvar1 = 
+testenvfunctionvar1 = 
+widtests.testenvfunctionvar1 = 
+function testenvfunctionvar1(executeobject, callback) 
+{
+      if (!executeobject.command) {
+          executeobject.command={};
+          executeobject.command.environment={};
+          executeobject.command.environment.run={};
+		  executeobject.command["var"] = {};
+      }
+      executeobject.command.environment.run.type="series";
+      executeobject.command.environment.run.executelevel=0;
+      executeobject.command.environment.platform='local';
+	  executeobject.command.environment["var"].printglobal1 = {"global1":{"value":"pass"}};
+  
+      executeobject.command.environment.processfn="execute_function";
+      executeobject.command.xrun=[
+                                  {"executethis": 'printglobal1'},
+                                  ];  
+      var etEnvironment = new drienvironment(executeobject.command.environment);
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {
+			var expectedresult = {'value':"pass"};
+            proxyprinttodiv('actual result', result_obj, 99, true);                         
+            proxyprinttodiv('expected result', expectedresult, 99);
+            
+            var composite_obj=logverify("testenvfunctionvar1", result_obj,expectedresult);
+            callback(null, composite_obj);
+      } 
+    );
+};
+widtests.testenvfunctionvar1.category = "daily";
+widtests.testenvfunctionvar1.subcategory = "addhoc";
+widtests.testenvfunctionvar1.js = exports.pu1;
+widtests.testenvfunctionvar1.description = "this does a test";

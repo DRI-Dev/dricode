@@ -2324,21 +2324,20 @@ exports.ettest_executelist2 = ettest_executelist2 = function ettest_executelist2
 		  executeobject.command.environment.platform='local';          
 	  
 		  executeobject.command.environment.processfn="execute_function";
-			executeobject.command.xrun=[
+			
+		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  etEnvironment.execute({"command.xrun":[
 				{"executethis":"test_return_noerror_result"},
 				{"executethis":"test_return_noerror_result2"},
 				"test_return_noerror_result3"
-			];
-			
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
-		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+			]}, function (err, res) 
 		  {
 				var expected_result = {"a":"b","env":"local"};                               
 				proxyprinttodiv('expected error', null, 99);
-				proxyprinttodiv('actual error', error_obj, 99);
+				proxyprinttodiv('actual error', err, 99);
 				proxyprinttodiv('expected result', expected_result, 99);
-				proxyprinttodiv('actual result', result_obj, 99);
-				composite_obj=logverifycomplex("ettest_executewithattributes1", result_obj,expected_result, error_obj, null);
+				proxyprinttodiv('actual result', res, 99);
+				composite_obj=logverifycomplex("ettest_executelist2", res,expected_result, err, null);
 				callback(null, composite_obj);
 		  } 
 		);
@@ -2428,6 +2427,8 @@ function ettest_usernamespace1(executeobject, callback)
       executeobject.command.environment.platform='local';          
   
       executeobject.command.environment.processfn="execute_function";
+	  
+	  // create a wid and then 
       executeobject.command.xrun=[
 								{"executethis":"updatewid",
 									"wid":"color1",
