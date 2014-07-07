@@ -2257,7 +2257,7 @@ if (!executeobject.command) {
             proxyprinttodiv('actual error', error_obj, 99);
             proxyprinttodiv('expected result', expected_result, 99);
             proxyprinttodiv('actual result', result_obj, 99);
-            composite_obj=logverifycomplex("ettest_executewithattributes1", result_obj,expected_result, error_obj, null);
+            composite_obj=logverifycomplex("ettest_executestring1", result_obj,expected_result, error_obj, null);
             callback(null, composite_obj);
       } 
     );
@@ -3248,4 +3248,635 @@ exports.testnested2 = widtests.testnested2 = testnested2 = function testnested2(
 widtests.testnested2.category = "execute";
 widtests.testnested2.subcategory = "daily";
 widtests.testnested2.js = exports.testnested2;
-widtests.testnested2.description = "this does a test";	  
+widtests.testnested2.description = "this does a test";
+
+// tests command.environment.global.metadata... adds {"creator":"cody"} in metadata and updatewid should add the wid with this metadata
+exports.ettest_globalmetadata1 = 
+ettest_globalmetadata1 = 
+widtests.ettest_globalmetadata1 = 
+function ettest_globalmetadata1(executeobject, callback) 
+{
+      if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+	  if (!executeobject.command.global) {
+		executeobject.command.global={};
+		};
+		
+	  executeobject.command.global.metadata={"creator":"cody"};
+      executeobject.command.xrun=[{
+								"executethis": "updatewid",
+								"wid":"wid1",
+								"color":"red"}];
+		
+		var expectedresult = {
+								"wid":"wid1",
+								"data": {
+											"color":"red"
+										},
+								"metadata": {
+												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
+												"date":{"exception":["created","changed","unchanged","updated"]},												
+												"creator":"cody"
+											}
+							}
+		
+      var etEnvironment = new drienvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', result_obj, 99);
+            composite_obj=logverify("ettest_globalmetadata1", result_obj,expectedresult);
+            callback(null, composite_obj)
+      } 
+    );
+}
+widtests.ettest_globalmetadata1.category = "execute";
+widtests.ettest_globalmetadata1.subcategory = "daily";
+widtests.ettest_globalmetadata1.js = exports.testnested2;
+widtests.ettest_globalmetadata1.description = "this does a test";
+
+
+// tests command.environment.global.command.useridnamespace... useridnamespace is set to 1122 which should set the userid in the wid to
+// 1122
+exports.ettest_globaluseridnamespace1 = 
+ettest_globaluseridnamespace1 = 
+widtests.ettest_globaluseridnamespace1 = 
+function ettest_globaluseridnamespace1(executeobject, callback) 
+{
+      if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+	  if (!executeobject.command.global) {
+		executeobject.command.global={};
+		executeobject.command.global.command={};
+		};
+		
+	  executeobject.command.global.command.useridnamespace="1122";
+      executeobject.command.xrun=[{
+								"executethis": "updatewid",
+								"wid":"wid2",
+								"color":"blue"}];
+		
+		var expectedresult = {
+								"wid":"wid2",
+								"data": {
+											"color":"blue"
+										},
+								"metadata": {
+												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
+												"date":{"exception":["created","changed","unchanged","updated"]}												
+											},
+								"userid":"1122"
+							}
+		
+      var etEnvironment = new drienvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', result_obj, 99);
+            composite_obj=logverify("ettest_globaluseridnamespace1", result_obj,expectedresult);
+            callback(null, composite_obj)
+      } 
+    );
+}
+widtests.ettest_globaluseridnamespace1.category = "execute";
+widtests.ettest_globaluseridnamespace1.subcategory = "daily";
+widtests.ettest_globaluseridnamespace1.js = exports.testnested2;
+widtests.ettest_globaluseridnamespace1.description = "this does a test";
+
+
+
+// tests command.useridnamespace... useridnamespace is set to 3344 which should set the userid in the wid to 3344
+exports.ettest_useridnamespaceadd1 = 
+ettest_useridnamespaceadd1 = 
+widtests.ettest_useridnamespaceadd1 = 
+function ettest_useridnamespaceadd1(executeobject, callback) 
+{
+      if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+		
+	  executeobject.command.useridnamespace="3344";
+      executeobject.command.xrun=[{
+								"executethis": "updatewid",
+								"wid":"wid3",
+								"color":"green"}];
+		
+		var expectedresult = {
+								"wid":"wid3",
+								"data": {
+											"color":"green"
+										},
+								"metadata": {
+												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
+												"date":{"exception":["created","changed","unchanged","updated"]}												
+											},
+								"userid":"3344"
+							}
+		
+      var etEnvironment = new drienvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', result_obj, 99);
+            composite_obj=logverify("ettest_useridnamespaceadd1", result_obj,expectedresult);
+            callback(null, composite_obj)
+      } 
+    );
+}
+widtests.ettest_useridnamespaceadd1.category = "execute";
+widtests.ettest_useridnamespaceadd1.subcategory = "daily";
+widtests.ettest_useridnamespaceadd1.js = exports.testnested2;
+widtests.ettest_useridnamespaceadd1.description = "this does a test";
+
+
+// tests getting with command.useridnamespace... useridnamespace is set to 3344 which should set the userid in the wid to 3344
+exports.ettest_useridnamespaceget1 = 
+ettest_useridnamespaceget1 = 
+widtests.ettest_useridnamespaceget1 = 
+function ettest_useridnamespaceget1(executeobject, callback) 
+{
+      if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+
+	  executeobject.command.useridnamespace="3344";
+      executeobject.command.xrun=[{
+								"executethis": "updatewid",
+								"wid":"wid3",
+								"color":"green"
+								}, {
+								"executethis": "getwid",
+								"wid":"wid3"
+								}
+								];
+
+		var expectedresult = {
+								"wid":"wid3",
+								"data": {
+											"color":"green"
+										},
+								"metadata": {
+												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
+												"date":{"exception":["created","changed","unchanged","updated"]}												
+											},
+								"userid":"3344"
+							}
+		
+      var etEnvironment = new drienvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', result_obj[1], 99);
+            composite_obj=logverify("ettest_useridnamespaceget1", result_obj,expectedresult);
+            callback(null, composite_obj)
+      } 
+    );
+}
+widtests.ettest_useridnamespaceget1.category = "execute";
+widtests.ettest_useridnamespaceget1.subcategory = "daily";
+widtests.ettest_useridnamespaceget1.js = exports.testnested2;
+widtests.ettest_useridnamespaceget1.description = "this does a test";		  
+
+
+// tests command.useridnamespace... useridnamespace is set to false which means no userid should show up in the wid
+exports.ettest_useridnamespacefalse1 = 
+ettest_useridnamespacefalse1 = 
+widtests.ettest_useridnamespacefalse1 = 
+function ettest_useridnamespacefalse1(executeobject, callback) 
+{
+      if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+		
+	  executeobject.command.useridnamespace="false";
+      executeobject.command.xrun=[{
+								"executethis": "updatewid",
+								"wid":"wid3",
+								"color":"green"}];
+		
+		var expectedresult = {
+								"wid":"wid3",
+								"data": {
+											"color":"green"
+										},
+								"metadata": {
+												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
+												"date":{"exception":["created","changed","unchanged","updated"]}												
+											}
+							}
+		
+      var etEnvironment = new drienvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', result_obj, 99);
+            composite_obj=logverify("ettest_useridnamespaceadd1", result_obj,expectedresult);
+            callback(null, composite_obj)
+      } 
+    );
+}
+widtests.ettest_useridnamespacefalse1.category = "execute";
+widtests.ettest_useridnamespacefalse1.subcategory = "daily";
+widtests.ettest_useridnamespacefalse1.js = exports.testnested2;
+widtests.ettest_useridnamespacefalse1.description = "this does a test";
+
+
+// tests command.useridnamespace... useridnamespace is set to false which means no userid should show up in the wid
+exports.ettest_useridnamespacedefault1 = 
+ettest_useridnamespacedefault1 = 
+widtests.ettest_useridnamespacedefault1 = 
+function ettest_useridnamespacedefault1(executeobject, callback) 
+{
+      if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+		
+	  executeobject.command.useridnamespace="default";
+      executeobject.command.xrun=[{
+								"executethis": "updatewid",
+								"wid":"wid3",
+								"color":"green"}];
+		
+		var expectedresult = {
+								"wid":"wid3",
+								"data": {
+											"color":"green"
+										},
+								"metadata": {
+												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
+												"date":{"exception":["created","changed","unchanged","updated"]}												
+											},
+								"userid": "default"
+							}
+		
+      var etEnvironment = new drienvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', result_obj, 99);
+            composite_obj=logverify("ettest_useridnamespaceadd1", result_obj,expectedresult);
+            callback(null, composite_obj)
+      } 
+    );
+}
+widtests.ettest_useridnamespacedefault1.category = "execute";
+widtests.ettest_useridnamespacedefault1.subcategory = "daily";
+widtests.ettest_useridnamespacedefault1.js = exports.testnested2;
+widtests.ettest_useridnamespacedefault1.description = "this does a test";
+
+
+
+// tests adding with command.accountnamespace... accountnamespace is set to 5555 which should set the accountid in the wid to 5555
+exports.ettest_accountnamespaceadd1 = 
+ettest_accountnamespaceadd1 = 
+widtests.ettest_accountnamespaceadd1 = 
+function ettest_accountnamespaceadd1(executeobject, callback) 
+{
+      if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+	  
+	  executeobject.command.accountnamespace="5555";
+	  
+      executeobject.command.xrun=[{
+								"executethis": "updatewid",
+								"wid":"wid4",
+								"color":"magenta"
+								}
+								];
+
+		var expectedresult = {
+								"wid":"wid4",
+								"data": {
+											"color":"magenta"
+										},
+								"metadata": {
+												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
+												"date":{"exception":["created","changed","unchanged","updated"]}												
+											},
+								"accountid":"5555"
+							}
+		
+      var etEnvironment = new drienvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', result_obj, 99);
+            composite_obj=logverify("ettest_accountnamespaceadd1", result_obj,expectedresult);
+            callback(null, composite_obj)
+      } 
+    );
+}
+widtests.ettest_accountnamespaceadd1.category = "execute";
+widtests.ettest_accountnamespaceadd1.subcategory = "daily";
+widtests.ettest_accountnamespaceadd1.js = exports.testnested2;
+widtests.ettest_accountnamespaceadd1.description = "this does a test";
+
+
+// tests getting with command.accountnamespace... accountnamespace is set to 5555 which should set the accountid in the wid to 5555
+exports.ettest_accountnamespaceget1 = 
+ettest_accountnamespaceget1 = 
+widtests.ettest_accountnamespaceget1 = 
+function ettest_accountnamespaceget1(executeobject, callback) 
+{
+      if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+		
+	  executeobject.command.accountnamespace="5555";
+      executeobject.command.xrun=[{
+								"executethis": "updatewid",
+								"wid":"wid4",
+								"color":"magenta"
+								}, {
+								"executethis": "getwid",
+								"wid":"wid4"
+								}
+								];
+
+		var expectedresult = {
+								"wid":"wid4",
+								"data": {
+											"color":"magenta"
+										},
+								"metadata": {
+												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
+												"date":{"exception":["created","changed","unchanged","updated"]}												
+											},
+								"accountid":"5555"
+							}
+		
+      var etEnvironment = new drienvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', result_obj[1], 99);
+            composite_obj=logverify("ettest_accountnamespaceget1", result_obj,expectedresult);
+            callback(null, composite_obj)
+      } 
+    );
+}
+widtests.ettest_accountnamespaceget1.category = "execute";
+widtests.ettest_accountnamespaceget1.subcategory = "daily";
+widtests.ettest_accountnamespaceget1.js = exports.testnested2;
+widtests.ettest_accountnamespaceget1.description = "this does a test";
+
+
+// tests adding attributes via command.attributenamespace. attributes should show up in metadata.
+exports.ettest_attributenamespaceadd1 = 
+ettest_attributenamespaceadd1 = 
+widtests.ettest_attributenamespaceadd1 = 
+function ettest_attributenamespaceadd1(executeobject, callback) 
+{
+      if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+		
+	  executeobject.command.attributenamespace={"a":"b","creator":"cody"};
+      executeobject.command.xrun=[{
+								"executethis": "updatewid",
+								"wid":"wid5",
+								"color":"maroon"
+								}
+								];
+
+		var expectedresult = {
+								"wid":"wid5",
+								"data": {
+											"color":"maroon"
+										},
+								"metadata": {
+												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
+												"date":{"exception":["created","changed","unchanged","updated"]},
+												"a":"b",
+												"creator":"cody"
+											}
+							}
+		
+      var etEnvironment = new drienvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', result_obj, 99);
+            composite_obj=logverify("ettest_attributenamespaceadd1", result_obj,expectedresult);
+            callback(null, composite_obj)
+      } 
+    );
+}
+widtests.ettest_attributenamespaceadd1.category = "execute";
+widtests.ettest_attributenamespaceadd1.subcategory = "daily";
+widtests.ettest_attributenamespaceadd1.js = exports.testnested2;
+widtests.ettest_attributenamespaceadd1.description = "this does a test";
+
+
+// tests getting a wid that's had attributes added to it via command.attributenamespace
+exports.ettest_attributenamespaceget1 = 
+ettest_attributenamespaceget1 = 
+widtests.ettest_attributenamespaceget1 = 
+function ettest_attributenamespaceget1(executeobject, callback) 
+{
+      if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+		
+	  executeobject.command.attributenamespace={"a":"b","creator":"cody"};
+      executeobject.command.xrun=[{
+								"executethis": "updatewid",
+								"wid":"wid6",
+								"color":"yellow"
+								}, {
+								"executethis": "getwid",
+								"wid": "wid6"
+								}
+								];
+
+		var expectedresult = {
+								"wid":"wid6",
+								"data": {
+											"color":"yellow"
+										},
+								"metadata": {
+												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
+												"date":{"exception":["created","changed","unchanged","updated"]},
+												"a":"b",
+												"creator":"cody"
+											}
+							}
+		
+      var etEnvironment = new drienvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', result_obj[1], 99);
+            composite_obj=logverify("ettest_attributenamespaceget1", result_obj,expectedresult);
+            callback(null, composite_obj)
+      } 
+    );
+}
+widtests.ettest_attributenamespaceget1.category = "execute";
+widtests.ettest_attributenamespaceget1.subcategory = "daily";
+widtests.ettest_attributenamespaceget1.js = exports.testnested2;
+widtests.ettest_attributenamespaceget1.description = "this does a test";
+
+
+// tests command.appnamewid. On add, a wid specified in command.appnamewid should be loaded into command.appnamespace as an object.
+exports.ettest_appnamewidadd1 = 
+ettest_appnamewidadd1 = 
+widtests.ettest_appnamewidadd1 = 
+function ettest_appnamewidadd1(executeobject, callback) 
+{
+	var execute1 = [{
+					"executethis":"updatewid",
+					"wid":"testappnamewid1",
+					"appname":"codyapp",
+					"startpage":"page1",
+					"lastpage":"page10"
+					}];
+	execute(execute1,function (err, res) {
+		proxyprinttodiv('testappnamewid1 res --', res, 99);
+      if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+		
+	  executeobject.command.appnamewid="testappnamewid1";
+      executeobject.command.xrun=[{
+								"executethis": "updatewid",
+								"wid":"wid7",
+								"color":"cyan"
+								}
+								];
+
+		var expectedresult = {
+								"appname": "codyapp",
+								"startpage": "page1",
+								"lastpage": "page10"
+							}
+		
+      var etEnvironment = new drienvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', executeobject.command.appnamespace, 99);
+            composite_obj=logverify("ettest_appnamewidadd1", result_obj,expectedresult);
+            callback(null, composite_obj)
+      } 
+    );		
+	});
+			
+
+}
+widtests.ettest_appnamewidadd1.category = "execute";
+widtests.ettest_appnamewidadd1.subcategory = "daily";
+widtests.ettest_appnamewidadd1.js = exports.testnested2;
+widtests.ettest_appnamewidadd1.description = "this does a test";
+
+
+// tests command.appnamewid. On add, a wid specified in command.appnamewid should be loaded into command.appnamespace as an object.
+exports.ettest_appnamewidget1 = 
+ettest_appnamewidget1 = 
+widtests.ettest_appnamewidget1 = 
+function ettest_appnamewidget1(executeobject, callback) 
+{
+	var execute1 = [{
+					"executethis":"updatewid",
+					"wid":"testappnamewid1",
+					"appname":"codyapp",
+					"startpage":"page1",
+					"lastpage":"page10"
+					}];
+	execute(execute1,function (err, res) {
+		proxyprinttodiv('testappnamewid1 res --', res, 99);
+      if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+		
+	  executeobject.command.appnamewid="testappnamewid1";
+      executeobject.command.xrun=[{
+								"executethis": "getwid",
+								"wid":"testappnamewid1"
+								}
+								];
+
+		var expectedresult = {
+								"appname": "codyapp",
+								"startpage": "page1",
+								"lastpage": "page10"
+							}
+		
+      var etEnvironment = new drienvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', executeobject.command.appnamespace, 99);
+            composite_obj=logverify("ettest_appnamewidadd1", result_obj,expectedresult);
+            callback(null, composite_obj)
+      } 
+    );		
+	});
+}
+widtests.ettest_appnamewidget1.category = "execute";
+widtests.ettest_appnamewidget1.subcategory = "daily";
+widtests.ettest_appnamewidget1.js = exports.testnested2;
+widtests.ettest_appnamewidget1.description = "this does a test";		

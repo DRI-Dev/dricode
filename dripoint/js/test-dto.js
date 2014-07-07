@@ -3400,7 +3400,7 @@ exports.ettestag3 = widtests.ettestag3 = ettestag3 = function ettestag3(params, 
             }
         }],
         function (err, res1) {
-            proxyprinttodiv("Ag1  result ", res1, 99);
+            proxyprinttodiv("Ag3  result ", res1, 99);
             var res = res1[6];
 
             proxyprinttodiv('Function ag1 expected res ', {
@@ -3581,7 +3581,7 @@ exports.ettestag3s = widtests.ettestag3s = ettestag3s = function ettestag3s(para
             }
         }],
         function (err, res1) {
-            proxyprinttodiv("Ag1  result ", res1, 99);
+            proxyprinttodiv("Ag3  result ", res1, 99);
             var res = res1[6];
 
             proxyprinttodiv('Function ag1 expected res ', {
