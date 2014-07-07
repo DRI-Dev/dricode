@@ -9075,9 +9075,8 @@ if (!executeobject.command) {
 									"wid":"codywid1",
 									"number":"12"
 									}];
-
-	   var etEnvironment = new drienvironment(executeobject.command.environment);				
-	   etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+				
+	   execute(executeobject, function (error_obj, result_obj) 
 		{
 			proxyprinttodiv('res --', result_obj, 99);
 		});
