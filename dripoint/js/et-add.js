@@ -7,38 +7,38 @@
         object = ConvertFromDOTdri(object);
         proxyprinttodiv("addwidmaster before", object, 17);
 
-        var filter_data = getcommand(object, {
-            "command": {
-                "datastore": config.configuration.defaultdatastore,
-                "collection":config.configuration.defaultcollection,
-                "keycollection": config.configuration.defaultcollection + "key",
-                "db":config.configuration.defaultdb,
-                "databasetable":config.configuration.defaultdatabasetable,
-                "convertmethod":"toobject",
-                "datamethod":"upsert",
-                "environment":{
-                    "run":{"type":"series"}
-                }
-            }
-        }, {
-            "command": {
-                "datastore": "",
-                "collection":"",
-                "keycollection":"",
-                "db":"",
-                "databasetable":"",
-                "convertmethod":"",
-                "datamethod":"",
-                "environment":{}
-            }
-        },
-        true);
-        
+        // this is now being done in the enhanceparameters function
+//        var filter_data = getcommand(object, {
+//            "command": {
+//                "datastore": config.configuration.defaultdatastore,
+//                "collection":config.configuration.defaultcollection,
+//                "keycollection": config.configuration.defaultcollection + "key",
+//                "db":config.configuration.defaultdb,
+//                "databasetable":config.configuration.defaultdatabasetable,
+//                "convertmethod":"toobject",
+//                "datamethod":"upsert",
+//                "environment":{
+//                    "run":{"type":"series"}
+//                }
+//            }
+//        }, {
+//            "command": {
+//                "datastore": "",
+//                "collection":"",
+//                "keycollection":"",
+//                "db":"",
+//                "databasetable":"",
+//                "convertmethod":"",
+//                "datamethod":"",
+//                "environment":{}
+//            }
+//        },
+//        true);
 
+//        proxyprinttodiv("addwidmaster filter_data", filter_data, 17);
 
-        proxyprinttodiv("addwidmaster filter_data", filter_data, 17);
-        var _object = filter_data.output;
-        var command = filter_data.filteredobject.command;
+        var _object = object;
+        var command = object.command;
         var _dto_object;
 
         // early in addwidmaster ...if mm=wid then add to command object data method:insert

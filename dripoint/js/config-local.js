@@ -146,7 +146,7 @@ exports.eventappinstall = eventappinstall = function eventappinstall() {
 exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
     clearLocal();
     setdefaultparm();
-    if (!getFromLocalStorage(config.configuration.defaultkeycollection)) {
+    if (!getFromLocalStorage(config.configuration.keycollection)) {
         eventappinstall();
     }
     proxyprinttodiv('eventdeviceready', localStore, 99, true);
@@ -347,7 +347,7 @@ exports.clearLocalStorage = window.clearLocalStorage = clearLocalStorage = funct
     localStorage.clear();
     //localStore.clear();
     // items below can probably be cleared now
-    addToLocalStorage(config.configuration.defaultdatabasetable + config.configuration.defaultcollection, [{
+    addToLocalStorage(config.configuration.databasetable + config.configuration.collection, [{
         "wid": "initialwid",
         "metadata": {
             "date": new Date()
@@ -356,7 +356,7 @@ exports.clearLocalStorage = window.clearLocalStorage = clearLocalStorage = funct
             "system generated": "clearLocalStorage10"
         }
     }]);
-    addToLocalStorage(config.configuration.defaultdatabasetable + config.configuration.defaultkeycollection, {
+    addToLocalStorage(config.configuration.databasetable + config.configuration.keycollection, {
         "initialwid": {
             "wid": "initialwid",
             "metadata": {
@@ -444,12 +444,12 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
         var resultlist = [];
         //var collection = "DRI";
         //var keycollection = "DRIKEY";
-        //var collection = config.configuration.defaultcollection;
+        //var collection = config.configuration.collection;
         var collection = command.collection;
         //proxyprinttodiv("collection = ",collection,30);
-        //var keycollection = config.configuration.defaultkeycollection;
+        //var keycollection = config.configuration.keycollection;
         var keycollection = command.collection + "key";
-        //var databasetable = config.configuration.defaultdatabasetable;
+        //var databasetable = config.configuration.databasetable;
         var databasetable = command.databasetable;
         //proxyprinttodiv("db table = ",databasetable,30);
         var database = {};

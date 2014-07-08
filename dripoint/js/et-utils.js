@@ -846,7 +846,7 @@ exports.convertfromdriformatenhanced = convertfromdriformatenhanced = function c
 exports.convertfromdriformat = convertfromdriformat = function convertfromdriformat(widobject, command) {
     var outobject = {};
     //var outobject = null;
-    var db = config.configuration.defaultdb;
+    var db = config.configuration.db;
     if (!command) {
         command = {}
     }
@@ -903,7 +903,7 @@ exports.converttodriformat = converttodriformat = function converttodriformat(in
     delete inputWidgetObject['executethis'];
     proxyprinttodiv('Function updatewid in : inputWidgetObject', inputWidgetObject, 12);
     var saveobject = {};
-    var db = config.configuration.defaultdb;
+    var db = config.configuration.db;
     var wid;
     var metadata;
     var date;
@@ -4280,8 +4280,8 @@ function totalStorageSize(){
             }
 
             if (params.command.environment) {
-                params.command.environment = extend(true, config.configuration.d, this.environment, params.command.environment);
-            } else { params.command.environment = extend(true, config.configuration.d, this.environment); }
+                params.command.environment = extend(true, config.configuration.default, this.environment, params.command.environment);
+            } else { params.command.environment = extend(true, config.configuration.default, this.environment); }
 
             execute(params, function (err, results) { callback(err, results); });
         };
