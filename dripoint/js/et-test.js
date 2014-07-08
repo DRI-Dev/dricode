@@ -9049,3 +9049,54 @@ exports.testquerywid = testquerywid = function testquerywid(params, callback) {
         callback(err, res);
     });
 }
+
+
+// this sets up 1 wid and 
+exports.simpledeepfiltertest1 =  
+simpledeepfiltertest1 = 
+function simpledeepfiltertest1 (executeobject, callback) {
+
+if (!executeobject.command) {
+           executeobject.command={};
+       }
+  
+	   executeobject.command.deepfilter={
+										"convert":true,
+										"totype":true
+										};
+	   executeobject.command.xrun=[{
+									"executethis":"addwidmaster",
+									"metadata.method":"codydto",
+									"wid":"codydto",
+									"number":"integer"
+									}, {
+									"executethis":"addwidmaster",
+									"metadata.method":"codydto",
+									"wid":"codywid1",
+									"number":"12"
+									}];
+				
+	   execute(executeobject, function (error_obj, result_obj) 
+		{
+			proxyprinttodiv('res --', result_obj, 99);
+		});
+}
+
+
+// this sets up 1 wid and 
+exports.addwidtomongo11 =  
+addwidtomongo11 = 
+function addwidtomongo11 (params, callback) {
+
+var executeobj = [
+					{"executethis":"addwidmaster",
+					"wid":"codywid1",
+					"number":"12",
+					"creator":"cody"
+					}
+				];
+
+	execute(executeobj,function (err, res) {
+		proxyprinttodiv('full result --', res, 99);
+	});
+}
