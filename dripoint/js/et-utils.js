@@ -254,9 +254,9 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
     var datamethod = command.datamethod;
     var databasetable = command.databasetable;
 
-    delete filter_data.output.command;
+//    delete filter_data.output.command;
 
-    var addedobject = converttodriformat(filter_data.output, command);
+    var addedobject = converttodriformat(inputWidgetObject, command);
     proxyprinttodiv('Function datastore command -- add inputWidgetObject addedobject', addedobject, 12);
 
     if (widName) {
