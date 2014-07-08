@@ -243,7 +243,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
 
     proxyprinttodiv('Function updatewid command  -- get', command, 12);
     proxyprinttodiv('Function datastore inputWidgetObject', inputWidgetObject, 12);
-    proxyprinttodiv('Function datastore filter_data', filter_data, 12);
+//    proxyprinttodiv('Function datastore filter_data', filter_data, 12);
     proxyprinttodiv('Function datastore command', command, 12);
     var datastore = command.datastore;
     var collection = command.collection;
