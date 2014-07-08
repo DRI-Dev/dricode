@@ -103,26 +103,26 @@ function config123() {
     var configuration = {};   
     // what envrioment and what defaults should be used
     configuration.environment = 'local';
-    configuration.defaultsyncrule = 'sync_local_server';
-    configuration.defaultcollection = 'dricollection';
-    configuration.defaultdb = 'data';
-    configuration.defaultdatastore = 'localstorage';
-    configuration.defaultkeycollection = 'dricollectionkey';
-    configuration.defaultdatabasetable = 'wikiwallettesting';
+    configuration.syncrule = 'sync_local_server';
+    configuration.collection = 'dricollection';
+    configuration.db = 'data';
+    configuration.datastore = 'localstorage';
+    configuration.keycollection = 'dricollectionkey';
+    configuration.databasetable = 'wikiwallettesting';
     // configuration.e is the wid name for "environment"
-    configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment";
+    configuration.e = configuration.databasetable+"_"+configuration.collection+"_"+ "environment";
 
     // configuration.d are the defaults that should be copied into command.environment during each execute
-    configuration.d = {};
-    configuration.d.defaultcollection = configuration.defaultcollection;
-    configuration.d.defaultdb = configuration.defaultdb;
-    configuration.d.defaultdatastore =  configuration.defaultdatastore;
-    configuration.d.defaultkeycollection = configuration.defaultkeycollection;
-    configuration.d.defaultdatabasetable = configuration.defaultdatabasetable;
-    configuration.d.platform = configuration.environment;
-    configuration.d.global = {};
-    configuration.d.var = {};
-    configuration.d.syncrule = configuration.defaultsyncrule;
+    configuration.default = {};
+    configuration.default.collection = configuration.collection;
+    configuration.default.db = configuration.db;
+    configuration.default.datastore =  configuration.datastore;
+    configuration.default.keycollection = configuration.keycollection;
+    configuration.default.databasetable = configuration.databasetable;
+    configuration.default.platform = configuration.environment;
+    configuration.default.global = {};
+    configuration.default.var = {};
+    configuration.default.syncrule = configuration.syncrule;
 
     // configuration.d.environment = {};
     // configuration.d.environment.platform = configuration.environment;

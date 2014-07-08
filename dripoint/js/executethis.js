@@ -41,13 +41,16 @@
 
         inboundparams.command.environment.var = {}; // clear it out so it does not grow forever
 
+        // extend config defaults into inboundparams.command to default anything missing
+        extend(true, config.configuration.default, inboundparams.command);
+
         return inboundparams;
     }
 
     // function reads & updates wid environment when running locally
     function checkenvironment(environment) {
         // merge incoming environment wiht default environment with incomming winning
-        environment = extend(true, {}, config.configuration.d, environment);
+        environment = extend(true, {}, config.configuration.default, environment);
         if (config.configuration.environment === "local") 
         {
             // read environment wid
@@ -60,9 +63,9 @@
 
             // get the data for environment from right section of wid (i.e. command.db)
             var environmentdata = {};
-            if (environmentwid[config.configuration.defaultdb]) 
+            if (environmentwid[config.configuration.db])
             {
-                environmentdata = environmentwid[config.configuration.defaultdb];
+                environmentdata = environmentwid[config.configuration.db];
             }
 
             // merge current environment data with sent in environment data
@@ -82,7 +85,7 @@
             // }
 
             // store it back to wid
-            environmentwid[config.configuration.defaultdb] = environment;
+            environmentwid[config.configuration.db] = environment;
             addtolocal(config.configuration.e, environmentwid);
         }
 
@@ -91,7 +94,7 @@
     }
 
     function resetenvironment() {
-        addtolocal(config.configuration.e, config.configuration.d);
+        addtolocal(config.configuration.e, config.configuration.default);
     }
 
     // create blank command.result or if one was existing then 
@@ -1003,8 +1006,8 @@
                                             "datastore": "localstorage",
                                             "collection": "cache",
                                             "keycollection": "cachekey",
-                                            "db": config.configuration.defaultdb,
-                                            "databasetable": config.configuration.defaultdatabasetable
+                                            "db": config.configuration.db,
+                                            "databasetable": config.configuration.databasetable
                                         }
                                     };
                                     recorddef = extend(true, {}, resultparameters, recorddef);
@@ -1027,11 +1030,11 @@
                 "wid": objkey,
                 "command": {
                     "cache": false,
-                    "datastore": config.configuration.defaultdatastore,
+                    "datastore": config.configuration.datastore,
                     "collection": "cache",
                     "keycollection": "cachekey",
-                    "db": config.configuration.defaultdb,
-                    "databasetable": config.configuration.defaultdatabasetable
+                    "db": config.configuration.db,
+                    "databasetable": config.configuration.databasetable
                 }
             };
             executeobject["executethis"] = "getwid";
