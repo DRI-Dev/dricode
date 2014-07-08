@@ -69,82 +69,64 @@ function getdatabaseinfo(command, datastore, collection, keycollection, db, data
  3. call updatewid with blank record, fromwid, fromdb, fromcollection, fromdatastore if command.delete
  */
 exports.copywid = copywid = copywid = function copywid(inputWidgetObject, callback) {
-    var keydatabase = {};
-    var collection = "";
-    var keycollection = "";
     var datastore = "";
-    var db = "";
-    var defaultdatastore;
 
     proxyprinttodiv('Function datastore inputWidgetObject 0', inputWidgetObject, 11);
-    // if (inputWidgetObject.command && Object.keys(inputWidgetObject.command.environment).length > 0) {
-    //     inputWidgetObject.command = extend(false, inputWidgetObject.command.environment, inputWidgetObject.command)
-    // }
+    
+    // this is now happeing in the enhanceparameters function
+//    if (inputWidgetObject.command && inputWidgetObject.command.environment && Object.keys(inputWidgetObject.command.environment).length > 0) {
+//        copyEnvironmentCommands(inputWidgetObject);
+//    }
 
-    // // if(!inputWidgetObject.command){inputWidgetObject.command={}}
-    // // if(!inputWidgetObject.command.environment){inputWidgetObject.command.environment={}}
-    // // proxyprinttodiv('Function datastore inputWidgetObject 0', inputWidgetObject, 11);
+    // these properties are now being defaulted in the enhaceparameters function
+//    var filter_data = getcommand(inputWidgetObject, {
+//            "command": {
+//                "fromdatastore": config.configuration.defaultdatastore,
+//                "fromcollection": config.configuration.defaultcollection,
+//                "fromkeycollection": config.configuration.defaultkeycollection,
+//                "fromdb": config.configuration.defaultdb,
+//                "fromdatabasetable": config.configuration.defaultdatabasetable,
+//                "todatastore": config.configuration.defaultdatastore,
+//                "tocollection": config.configuration.defaultcollection,
+//                "tokeycollection": config.configuration.defaultkeycollection,
+//                "todb": config.configuration.defaultdb,
+//                "todatabasetable": config.configuration.defaultdatabasetable,
+//                "towid": "",
+//                "delete": false
+//            }
+//        }, {
+//            "command": {
+//                "fromdatastore": "",
+//                "fromcollection": "",
+//                "fromkeycollection": "",
+//                "fromdb": "",
+//                "fromdatabasetable": "",
+//                "todatastore": "",
+//                "tocollection": "",
+//                "tokeycollection": "",
+//                "todb": "",
+//                "todatabasetable": "",
+//                "towid": "",
+//                "delete": "",
+//                "environment": ""
+//            }
+//        },
+//        true);
 
-    // // var tempobj={};
-    // // if (inputWidgetObject.command && inputWidgetObject.command.environment) {
-    // //     tempobj=inputWidgetObject.command.environment;
-    // //     delete inputWidgetObject.command.environment
-    // // }
-    // // proxyprinttodiv('Function datastore inputWidgetObject 1', inputWidgetObject, 11);
-    // // inputWidgetObject.command = extend(true, inputWidgetObject.command, tempobj);
-    // delete inputWidgetObject['command']['environment'];
-    if (inputWidgetObject.command && inputWidgetObject.command.environment && Object.keys(inputWidgetObject.command.environment).length > 0) {
-        copyEnvironmentCommands(inputWidgetObject);
-    }
-
-
-    var filter_data = getcommand(inputWidgetObject, {
-            "command": {
-                "fromdatastore": config.configuration.defaultdatastore,
-                "fromcollection": config.configuration.defaultcollection,
-                "fromkeycollection": config.configuration.defaultkeycollection,
-                "fromdb": config.configuration.defaultdb,
-                "fromdatabasetable": config.configuration.defaultdatabasetable,
-                "todatastore": config.configuration.defaultdatastore,
-                "tocollection": config.configuration.defaultcollection,
-                "tokeycollection": config.configuration.defaultkeycollection,
-                "todb": config.configuration.defaultdb,
-                "todatabasetable": config.configuration.defaultdatabasetable,
-                "towid": "",
-                "delete": false
-            }
-        }, {
-            "command": {
-                "fromdatastore": "",
-                "fromcollection": "",
-                "fromkeycollection": "",
-                "fromdb": "",
-                "fromdatabasetable": "",
-                "todatastore": "",
-                "tocollection": "",
-                "tokeycollection": "",
-                "todb": "",
-                "todatabasetable": "",
-                "towid": "",
-                "delete": "",
-                "environment": ""
-            }
-        },
-        true);
-
-    var filteredcommandobject = filter_data.filteredobject.command;
-
-    proxyprinttodiv('Function copywid filteredcommandobject', filteredcommandobject, 17);
+//    var filteredcommandobject = filter_data.filteredobject.command;
+    var command = inputWidgetObject.command;
+    
+    proxyprinttodiv('Function copywid filteredcommandobject', command, 17);
 
     //fromwid, fromdb, fromcollection, fromdatastore, towid, todb, tocollection, todatastore, command,
     //1. call getwid fn with fromwid, fromdb, fromcollection, fromdatastore
     var getwidinput = {
         "wid": inputWidgetObject.wid,
         "command": {
-            "db": filteredcommandobject.fromdb,
-            "collection": filteredcommandobject.fromcollection,
-            "datastore": filteredcommandobject.fromdatastore,
-            "databasetable": filteredcommandobject.fromdatabasetable
+            "db": command.fromdb,
+            "collection": command.fromcollection,
+            "datastore": command.fromdatastore,
+            "databasetable": command.fromdatabasetable
         }
     };
     proxyprinttodiv('Function copywid getwidinput', getwidinput, 18);
@@ -155,10 +137,10 @@ exports.copywid = copywid = copywid = function copywid(inputWidgetObject, callba
         var updatewidinput = {
             "wid": inputWidgetObject.towid,
             "command": {
-                "db": filteredcommandobject.todb,
-                "collection": filteredcommandobject.tocollection,
-                "datastore": filteredcommandobject.todatastore,
-                "databasetable": filteredcommandobject.todatabasetable
+                "db": command.todb,
+                "collection": command.tocollection,
+                "datastore": command.todatastore,
+                "databasetable": command.todatabasetable
             }
         };
         extend(true, updatewidinput, getwidresult);
@@ -168,15 +150,15 @@ exports.copywid = copywid = copywid = function copywid(inputWidgetObject, callba
 
             //3. call updatewid with blank record, fromwid, fromdb, fromcollection, fromdatastore if command.delete
             //if(inputWidgetObject["command"] && inputWidgetObject["command"]["delete"]===true){
-            if (filteredcommandobject["delete"]) {
+            if (command["delete"]) {
                 proxyprinttodiv('Function copywid updatewidblankinput', updatewidblankinput, 18);
                 var updatewidblankinput = {
                     "wid": inputWidgetObject.wid,
                     "command": {
-                        "db": filteredcommandobject.fromdb,
-                        "collection": filteredcommandobject.fromcollection,
-                        "datastore": filteredcommandobject.fromdatastore,
-                        "databasetable": filteredcommandobject.fromdatabasetable,
+                        "db": command.fromdb,
+                        "collection": command.fromcollection,
+                        "datastore": command.fromdatastore,
+                        "databasetable": command.fromdatabasetable,
                         "datamethod": "insert"
                     }
                 };
@@ -191,17 +173,9 @@ exports.copywid = copywid = copywid = function copywid(inputWidgetObject, callba
     });
 };
 
-
-// exports.updatewid = updatewid = updatewid = function updatewid(inputWidgetObject, callback) {
-//     var originalarguments = {};
-//     extend(true, originalarguments, inputWidgetObject);
 exports.updatewid = updatewid = updatewid = function updatewid(originalarguments, callback) {
     var inputWidgetObject = {};
     extend(true, inputWidgetObject, originalarguments);
-
-
-
-
 
     var err = null;
     var widName = inputWidgetObject['wid'];
@@ -225,50 +199,48 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
         if(inputWidgetObject.command.usernamespace){
             inputWidgetObject['metadata']['accountid']=inputWidgetObject.command.usernamespace;
         }
-
-        // // add attributes from environment to metadata
-        // if(inputWidgetObject.command.environment && (typeof inputWidgetObject.command.environment === object)){
-        //     for(var key in inputWidgetObject.command.environment){
-        //         inputWidgetObject[key]=inputWidgetObject.command.environment[key];
-        //     }
-        // }
     }
 
-    if (inputWidgetObject.command && inputWidgetObject.command.environment && Object.keys(inputWidgetObject.command.environment).length > 0) {
-        copyEnvironmentCommands(inputWidgetObject);
-    }
+    // not needed now as the environment variables are already defaulted into the command property in the enhanceparameters function
+//    if (inputWidgetObject.command && inputWidgetObject.command.environment && Object.keys(inputWidgetObject.command.environment).length > 0) {
+//        copyEnvironmentCommands(inputWidgetObject);
+//    }
+
     if (inputWidgetObject && inputWidgetObject.command && inputWidgetObject.command.userid) {inputWidgetObject.metadata.userid=inputWidgetObject.command.userid}
     proxyprinttodiv('Function  inputWidgetObject.command', inputWidgetObject.command, 11);
 
     proxyprinttodiv('Function datastore inputWidgetObject 1', inputWidgetObject, 11);
 
-    var filter_data = getcommand(inputWidgetObject, {
-            "command": {
-                "datastore": config.configuration.defaultdatastore,
-                "collection": config.configuration.defaultcollection,
-                //"keycollection":config.configuration.defaultcollection + "key",
-                "db": config.configuration.defaultdb,
-                "databasetable": config.configuration.defaultdatabasetable,
-                "convertmethod": "toobject",
-                "datamethod": "upsert"
-                // "deepfilter" : {"keepaddthis":false}
-            }
-        }, {
-            "command": {
-                "datastore": "",
-                "collection": "",
-                //"keycollection":"",
-                "db": "",
-                "databasetable": "",
-                "convertmethod": "",
-                "datamethod": "",
-                "environment": ""
-                // "deepfilter" : {"keepaddthis":""}
-            }
-        },
-        true);
+    // again this is happening now in the enhanceparameters function
+//    var filter_data = getcommand(inputWidgetObject, {
+//            "command": {
+////                "datastore": config.configuration.datastore,
+////                "collection": config.configuration.tcollection,
+////                //"keycollection":config.configuration.collection + "key",
+////                "db": config.configuration.defaultdb,
+////                "databasetable": config.configuration.databasetable,
+//                "convertmethod": "toobject",
+//                "datamethod": "upsert"
+//                // "deepfilter" : {"keepaddthis":false}
+//            }
+//        }, {
+//            "command": {
+//                "datastore": "",
+//                "collection": "",
+//                //"keycollection":"",
+//                "db": "",
+//                "databasetable": "",
+//                "convertmethod": "",
+//                "datamethod": "",
+//                "environment": ""
+//                // "deepfilter" : {"keepaddthis":""}
+//            }
+//        },
+//        true);
 
-    var command = filter_data.filteredobject.command;
+//    var command = filter_data.filteredobject.command;
+    var command = inputWidgetObject.command;
+
     proxyprinttodiv('Function updatewid command  -- get', command, 12);
     proxyprinttodiv('Function datastore inputWidgetObject', inputWidgetObject, 12);
     proxyprinttodiv('Function datastore filter_data', filter_data, 12);
@@ -385,41 +357,42 @@ exports.deletewid = deletewid = deletewid = function deletewid(inputWidgetObject
     var err = null;
     var widName = inputWidgetObject['wid'];
 
-    var filter_data = getcommand(inputWidgetObject, {
-            "command": {
-                "fromdatastore": config.configuration.defaultdatastore,
-                "fromcollection": config.configuration.defaultcollection,
-                "fromkeycollection": config.configuration.defaultkeycollection,
-                "fromdb": config.configuration.defaultdb,
-                "fromdatabasetable": config.configuration.defaultdatabasetable,
-                "todatastore": config.configuration.defaultdeletedatastore,
-                "tocollection": config.configuration.defaultdeletecollection,
-                "tokeycollection": config.configuration.defaultdeletekeycollection,
-                "todb": config.configuration.defaultdeletedb,
-                "todatabasetable": config.configuration.defaultdeletedatabasetable,
-                "towid": "",
-                "delete": true
-            }
-        }, {
-            "command": {
-                "fromdatastore": "",
-                "fromcollection": "",
-                "fromkeycollection": "",
-                "fromdb": "",
-                "fromdatabasetable": "",
-                "todatastore": "",
-                "tocollection": "",
-                "tokeycollection": "",
-                "todb": "",
-                "todatabasetable": "",
-                "towid": "",
-                "delete": "",
-                "environment": ""
-            }
-        },
-        false);
+    // command defaulting is now being done in the enhaceparameters function
+//    var filter_data = getcommand(inputWidgetObject, {
+//            "command": {
+//                "fromdatastore": config.configuration.defaultdatastore,
+//                "fromcollection": config.configuration.defaultcollection,
+//                "fromkeycollection": config.configuration.defaultkeycollection,
+//                "fromdb": config.configuration.defaultdb,
+//                "fromdatabasetable": config.configuration.defaultdatabasetable,
+//                "todatastore": config.configuration.defaultdeletedatastore,
+//                "tocollection": config.configuration.defaultdeletecollection,
+//                "tokeycollection": config.configuration.defaultdeletekeycollection,
+//                "todb": config.configuration.defaultdeletedb,
+//                "todatabasetable": config.configuration.defaultdeletedatabasetable,
+//                "towid": "",
+//                "delete": true
+//            }
+//        }, {
+//            "command": {
+//                "fromdatastore": "",
+//                "fromcollection": "",
+//                "fromkeycollection": "",
+//                "fromdb": "",
+//                "fromdatabasetable": "",
+//                "todatastore": "",
+//                "tocollection": "",
+//                "tokeycollection": "",
+//                "todb": "",
+//                "todatabasetable": "",
+//                "towid": "",
+//                "delete": "",
+//                "environment": ""
+//            }
+//        },
+//        false);
 
-    inputWidgetObject = filter_data.output;
+//    inputWidgetObject = filter_data.output;
 
     if (widName) {
         proxyprinttodiv('Function deletewid inputWidgetObject before copywid', inputWidgetObject, 17);
@@ -479,6 +452,8 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
     //if (config.configuration.environment==="local") {defaultdatastore='localstorage';} else {defaultdatastore='mongo';}
 
     proxyprinttodiv('Function datastore inputWidgetObject 0', inputWidgetObject, 11);
+    
+    // command defaulting logic is now being handled by the enhanceparameters function
     // if (inputWidgetObject.command && Object.keys(inputWidgetObject.command.environment).length > 0) {
     //     inputWidgetObject.command = extend(false, inputWidgetObject.command.environment, inputWidgetObject.command)
     // }
@@ -497,39 +472,40 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
 
     // delete inputWidgetObject['command']['environment'];
 
-    if (inputWidgetObject.command && Object.keys(inputWidgetObject.command.environment).length > 0) {
-        copyEnvironmentCommands(inputWidgetObject);
-    }
+//    if (inputWidgetObject.command && Object.keys(inputWidgetObject.command.environment).length > 0) {
+//        copyEnvironmentCommands(inputWidgetObject);
+//    }
 
-
-    var filter_data = getcommand(inputWidgetObject, {
-            "command": {
-                "datastore": config.configuration.defaultdatastore,
-                "collection": config.configuration.defaultcollection,
-                //"keycollection":config.configuration.defaultcollection + "key",
-                "db": config.configuration.defaultdb,
-                "databasetable": config.configuration.defaultdatabasetable,
-                "convertmethod": "toobject",
-                // "deepfilter" : {"keepaddthis":false}
-                "keepaddthis": true
-            }
-        }, {
-            "command": {
-                "datastore": "",
-                "collection": "",
-                //"keycollection":"",
-                "db": "",
-                "databasetable": "",
-                "convertmethod": "",
-                // "deepfilter" : {"keepaddthis":""}
-                "keepaddthis": "",
-                "environment": ""
-            }
-        },
-        true);
-    var command = filter_data.filteredobject.command;
+//    var filter_data = getcommand(inputWidgetObject, {
+//            "command": {
+//                "datastore": config.configuration.defaultdatastore,
+//                "collection": config.configuration.defaultcollection,
+//                //"keycollection":config.configuration.defaultcollection + "key",
+//                "db": config.configuration.defaultdb,
+//                "databasetable": config.configuration.defaultdatabasetable,
+//                "convertmethod": "toobject",
+//                // "deepfilter" : {"keepaddthis":false}
+//                "keepaddthis": true
+//            }
+//        }, {
+//            "command": {
+//                "datastore": "",
+//                "collection": "",
+//                //"keycollection":"",
+//                "db": "",
+//                "databasetable": "",
+//                "convertmethod": "",
+//                // "deepfilter" : {"keepaddthis":""}
+//                "keepaddthis": "",
+//                "environment": ""
+//            }
+//        },
+//        true);
+//    var command = filter_data.filteredobject.command;
+    var command = inputWidgetObject.command;
+    
     proxyprinttodiv('Function getwid command  -- get', command, 12);
-    proxyprinttodiv('Function datastore command -- get', filter_data, 12);
+//    proxyprinttodiv('Function datastore command -- get', filter_data, 12);
     proxyprinttodiv('Function datastore command -- get inputWidgetObject', inputWidgetObject, 12);
     var datastore = command.datastore;
     var collection = command.collection;
@@ -566,7 +542,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                             "currentparameters": originalarguments[0]
                         }
                     }
-                }
+                };
             }
 
             //proxyprinttodiv('Function getwid output', output, 99);
@@ -598,7 +574,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                         if (output) { // resultobject && output
                             output = extend(true, resultobject, output);
                         } else { // resultobject && !output
-                            output = resultobject
+                            output = resultobject;
                         }
                     }
 
@@ -642,8 +618,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                                     "currentparameters": originalarguments[0]
                                 }
                             }
-                        }
-
+                        };
                     }
                     proxyprinttodiv('Function datastore command -- get output 1', output, 12);
                     //callback(null, output);
@@ -745,20 +720,22 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
                     "$and": [{
                         "data.secondarywid": widName
                     }]
-                }
+                };
             } else {
                 executeobject["mongorawquery"] = {
                     "$and": [{
                         "data.primarywid": widName
                     }]
-                }
+                };
             }
             proxyprinttodiv('Function getrelatedrecords query', executeobject, 17);
-            executeobject["command"]={"environment": {
-                            "run": {
-                                "type": "series"
-                            }
-                        }}
+            executeobject["command"]= {
+                "environment": {
+                    "run": {
+                        "type": "series"
+                    }
+                }
+            };
 
             var env = new drienvironment(command.environment);
             env.execute(executeobject, function (err, res) {
@@ -789,7 +766,7 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
 
                                     proxyprinttodiv('Function getrelatedrecords eachwid **', eachwid, 17);
                                     recurselist.push(eachwid);
-                                    widlist.push(eachwid)
+                                    widlist.push(eachwid);
                                     callback1();
                                 }
                             }, function (err) {
@@ -799,18 +776,21 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
                             });
                         } else {
                             var res = {};
-                            res[command.result] = widlist
+                            res[command.result] = widlist;
                             proxyprinttodiv('Function getrelatedrecords callback1 with res', res, 17);
                             callback(null, res);
                         }
 
                         if (recurselist && recurselist.length > 0 && (recurse === true)) {
-                            executeobject = {}
-                            executeobject.widlist = recurselist
-                            executeobject.command = {}
-                            executeobject.command.reltype = reltype
-                            executeobject.command.recurse = recurse
-                            executeobject.command.result = command.result
+                            executeobject = {
+                                widlist: recurselist,
+                                command: {
+                                    reltype: reltype,
+                                    recurse: recurse,
+                                    result: command.result
+                                }
+                            };
+
                             proxyprinttodiv('Function getrelatedrecords recurse object', executeobject, 17);
                             getrelatedrecords(executeobject, function (err, returnlist) {
                                 if (err && (Object.keys(err).length) > 0) {
@@ -818,16 +798,16 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
                                 } else {
                                     if (res && (Object.keys(res).length) > 0) {
                                         for (var eachitem in returnlist[command.result]) {
-                                            widlist.push(returnlist[command.result][eachitem])
+                                            widlist.push(returnlist[command.result][eachitem]);
                                         }
                                         proxyprinttodiv('Function getrelatedrecords callback2 with returnlist', returnlist, 17);
                                         var res = {};
-                                        res[command.result] = widlist
+                                        res[command.result] = widlist;
                                         proxyprinttodiv('Function getrelatedrecords callback2 with res', res, 17);
                                         callback(null, res);
                                     } else {
                                         var res = {};
-                                        res[command.result] = widlist
+                                        res[command.result] = widlist;
                                         proxyprinttodiv('Function getrelatedrecords callback2 with res', res, 17);
                                         callback(null, res);
                                     }
@@ -835,13 +815,13 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
                             });
                         } else {
                             var res = {};
-                            res[command.result] = widlist
+                            res[command.result] = widlist;
                             proxyprinttodiv('Function getrelatedrecords callback4 with res', res, 17);
                             callback(null, res);
                         }
                     } else {
                         var res = {};
-                        res[command.result] = widlist
+                        res[command.result] = widlist;
                         proxyprinttodiv('Function getrelatedrecords callback5 with res', res, 17);
                         callback(null, res);
                     }
@@ -849,7 +829,7 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
             })
         }
     }
-} //End of getrelatedwids
+}; //End of getrelatedwids
 
 
 exports.convertfromdriformatenhanced = convertfromdriformatenhanced = function convertfromdriformatenhanced(output, command, originalarguments) {
@@ -861,7 +841,7 @@ exports.convertfromdriformatenhanced = convertfromdriformatenhanced = function c
         output = ConvertFromDOTdri(output);
     }
     return output
-}
+};
 
 exports.convertfromdriformat = convertfromdriformat = function convertfromdriformat(widobject, command) {
     var outobject = {};
@@ -973,7 +953,6 @@ exports.printToDiv = printToDiv = function printToDiv(text, outobject, debugone,
             "MediumBlue"
         ];
     exports.cnt = exports.cnt + 1;
-    var inbound_parameters = arguments;
     
     if (getglobal('expanddefault')) {expanddefault=true}
     
@@ -989,11 +968,12 @@ exports.printToDiv = printToDiv = function printToDiv(text, outobject, debugone,
                 displaycolor = "brown";
             }
 
+            var jsonPretty;
+
             if (pretty) {
-            var jsonPretty = JSON.stringify(outobject, "-", 4);
-            }
-            else {
-            var jsonPretty = JSON.stringify(outobject);
+                jsonPretty = JSON.stringify(outobject, "-", 4);
+            } else {
+                jsonPretty = JSON.stringify(outobject);
             }
             // debuglinenum++;
 
@@ -1032,7 +1012,7 @@ exports.printToDiv = printToDiv = function printToDiv(text, outobject, debugone,
 
     }
 
-}
+};
 
 
 // exports.printToDiv = printToDiv = function printToDiv(text, outobject, debugone, pretty) {
@@ -1580,18 +1560,19 @@ function recurseModObj(inputObject, dtoObject, convert, totype, command, callbac
                         } else { 
                                // to read wid obj via getwidmaster
                                 if (dataType !== 'string') {
-                                    var executeobject = {};
-                                    executeobject["command"]={"environment": {
-                                        "run": {
-                                            "type": "series"
+                                    var executeobject = {
+                                        "command": {
+                                            "environment": {
+                                                "run": {
+                                                    "type": "series"
+                                                }
+                                            }
                                         }
-                                    }}
+                                    };
+
                                     executeobject.executethis=dataType;
                                     var env = new drienvironment(command.environment);
                                     env.execute(executeobject, function (err, res) {
-                                    // execute({
-                                    //     "executethis": dataType
-                                    // }, function (err, result) {
                                         // If error, bounce out
                                         if (err && Object.keys(err).length > 0) {
                                             cbMap(err, result);
@@ -2530,7 +2511,7 @@ function getRandomNumberByLength(length) {
 
         // Step 4 - return it all
         return return_object;
-    }
+    };
  
 
     function generatepropertylist(objin, objlist)
@@ -2568,44 +2549,43 @@ function getRandomNumberByLength(length) {
 
     function logverifyresulttable(test_name, data_object, assertion_object)
         {
-        var data_object_resulttable={}
-        var assertion_object_resulttable={}
-        var resulttable_result={}
+        var data_object_resulttable={};
+        var assertion_object_resulttable={};
+        var resulttable_result={};
         if (assertion_object && assertion_object.command && assertion_object.command.resulttable &&
             data_object.command && data_object.command.resulttable)
         {
-            
             for (var eachresulttable in data_object.command.resulttable) 
             {
                 if (assertion_object.command.resulttable[eachresulttable]) 
                 {
-                    assertion_object_resulttable=assertion_object.command.resulttable[eachresulttable]
+                    assertion_object_resulttable=assertion_object.command.resulttable[eachresulttable];
                 }
                 else
                 {
-                     assertion_object_resulttable=assertion_object.command.resulttable
+                     assertion_object_resulttable=assertion_object.command.resulttable;
                 }
-                data_object_resulttable=data_object.command.resulttable[eachresulttable]
+                data_object_resulttable=data_object.command.resulttable[eachresulttable];
                 extend(true, 
                     resulttable_result, 
-                    logverify(test_name+'_RT'+eachresulttable, data_object_resulttable, assertion_object_resulttable))
+                    logverify(test_name+'_RT'+eachresulttable, data_object_resulttable, assertion_object_resulttable));
             }
-            delete data_object.command.resulttable
-            delete assertion_object.command.resulttable  
+            delete data_object.command.resulttable;
+            delete assertion_object.command.resulttable;
         }
-        return ;
+        return;
         //return resulttable_result
     }
 
     exports.logverify = logverify = function logverify(test_name, data_objectin, assertion_objectin) {
         if (test_name === undefined) test_name = "defaulttest";
 
-        var data_object={}
-        var assertion_object={}
-        extend(true, data_object, data_objectin)
-        extend(true, assertion_object, assertion_objectin)
+        var data_object={};
+        var assertion_object={};
+        extend(true, data_object, data_objectin);
+        extend(true, assertion_object, assertion_objectin);
         // check both objects...get a deep comparison
-        var resulttable_result=logverifyresulttable(test_name, data_object, assertion_object)
+        var resulttable_result=logverifyresulttable(test_name, data_object, assertion_object);
 
         var result0 = deepDiffMapper.map(assertion_object, data_object);
         proxyprinttodiv('logverify  result0', result0, 91);
@@ -2613,7 +2593,7 @@ function getRandomNumberByLength(length) {
         // collapse the results so they are easy to check -- same level
         var result = {};
         //collapsediffobj(result0, result)
-        generatepropertylist(result0, result)
+        generatepropertylist(result0, result);
         proxyprinttodiv('logverify result', result, 91);
         var xresults = distillresults(test_name, result);
         proxyprinttodiv('logverify x I', xresults, 91, true);
@@ -2621,7 +2601,7 @@ function getRandomNumberByLength(length) {
         {
             return xresults;
         } else {
-            var exception_pass = 'PASS'
+            var exception_pass = 'PASS';
             var diff_obj = xresults[test_name + '_diff'];
             var match = undefined; 
 
@@ -2645,17 +2625,21 @@ function getRandomNumberByLength(length) {
                         proxyprinttodiv('logverify exception_types', exception_types, 91);
                         proxyprinttodiv('logverify exception_types.indexOf(diff_type)', exception_types.indexOf(diff_type), 91);
                         // see if actual type found matches the execption list
-                        if (exception_types.indexOf(diff_type) === -1) // not found = -1
-                        {
-                            match=false;
-                        }
-                        else
-                        {
-                            match=true;
-                        }
+//                        if (exception_types.indexOf(diff_type) === -1) // not found = -1
+//                        {
+//                            match=false;
+//                        }
+//                        else
+//                        {
+//                            match=true;
+//                        }
+
+                        // simplified conditional statement
+                        // see if actual type found matches the execption list
+                        match = !exception_types.indexOf(diff_type) == -1;
                     }
                 }
-                if (match===false){break}; // if one bad then we can stop
+                if (match===false){break;} // if one bad then we can stop
             }        
 
             if (match)
@@ -2665,7 +2649,7 @@ function getRandomNumberByLength(length) {
         }
         proxyprinttodiv('logverify x', xresults, 91);
 
-        extend(true, xresults, resulttable_result)
+        extend(true, xresults, resulttable_result);
 
         return xresults;
     };

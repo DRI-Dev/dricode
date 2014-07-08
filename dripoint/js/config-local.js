@@ -119,10 +119,10 @@ function config123() {
     configuration.default.datastore =  configuration.datastore;
     configuration.default.keycollection = configuration.keycollection;
     configuration.default.databasetable = configuration.databasetable;
-    configuration.default.platform = configuration.environment;
-    configuration.default.global = {};
-    configuration.default.var = {};
-    configuration.default.syncrule = configuration.syncrule;
+//    configuration.default.platform = configuration.environment;
+//    configuration.default.global = {};
+//    configuration.default.var = {};
+//    configuration.default.syncrule = configuration.syncrule;
 
     // configuration.d.environment = {};
     // configuration.d.environment.platform = configuration.environment;
