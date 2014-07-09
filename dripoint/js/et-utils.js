@@ -240,6 +240,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
 
 //    var command = filter_data.filteredobject.command;
     var command = inputWidgetObject.command;
+    delete inputWidgetObject.command;
 
     proxyprinttodiv('Function updatewid command  -- get', command, 12);
     proxyprinttodiv('Function datastore inputWidgetObject', inputWidgetObject, 12);
