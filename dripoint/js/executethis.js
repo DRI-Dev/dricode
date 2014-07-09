@@ -210,7 +210,7 @@
         if (!inparams.command.environment.run) {inparams.command.environment.run={};}
 
         // make parameters better by dealing with command.environmnet
-//        inparams = enhanceparameters(inparams);
+        inparams = enhanceparameters(inparams);
 
         extend(true, executionpreferences.command.environment, inparams.command.environment);
         delete inparams.command.environment;
