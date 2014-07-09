@@ -42,7 +42,7 @@
         inboundparams.command.environment.var = {}; // clear it out so it does not grow forever
 
         // extend config defaults into inboundparams.command to default anything missing
-        extend(true, config.configuration.default, inboundparams.command);
+        inboundparams.command = extend(true, config.configuration.default, inboundparams.command);
 
         return inboundparams;
     }
