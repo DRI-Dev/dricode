@@ -1065,7 +1065,7 @@
                 if (err && Object.keys(err).length > 0) {
                     callback(err, results);
                 } else {
-                    if (Object.keys(parameterobject.command).length === 0) {
+                    if (parameterobject.command && Object.keys(parameterobject.command).length === 0) {
                         delete parameterobject.command
                     }
                     callback(null, parameterobject);
