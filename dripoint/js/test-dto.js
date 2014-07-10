@@ -3053,16 +3053,14 @@ exports.ettestag1 = widtests.ettestag1 = ettestag1 = function ettestag1(params, 
     var executeobject = 
         [
             {
-                "executethis": "addwidmaster",
-                "wid": "sounddto",
-                "metadata.method": "sounddto",
-                "note": "string"
+                "executethis": "updatewid",
+                "a":"b"
             }
-            ,
-            {
-                 "executethis": "getwidmaster",
-                 "wid": "sounddto"
-            }
+            // ,
+            // {
+            //      "executethis": "getwidmaster",
+            //      "wid": "sounddto"
+            // }
         ];
 
     if (!params.command.environment) { params.command.environment = {run:{}}; }
