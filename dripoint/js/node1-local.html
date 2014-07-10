@@ -405,11 +405,11 @@ function execute_stuff(isTest, isServer, servername) {
         var my_execute_object = {
             "executethis": function_to_execute,
             "command": {
+                "executetype": "series",
                 "processparameterfn":"execute_nothing",
                 "processfn":"execute_function",
                 "environment": {
                     "run": {
-                        "type": "series",
                         "executelevel": 0
                     }
                 }

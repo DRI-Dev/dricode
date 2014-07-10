@@ -113,20 +113,23 @@ function config123() {
     configuration.e = configuration.databasetable+"_"+configuration.collection+"_"+ "environment";
 
     // configuration.d are the defaults that should be copied into command.environment during each execute
-    configuration.default = {};
-    configuration.default.collection = configuration.collection;
-    configuration.default.db = configuration.db;
-    configuration.default.datastore =  configuration.datastore;
-    configuration.default.keycollection = configuration.keycollection;
-    configuration.default.databasetable = configuration.databasetable;
+
+    configuration.d = {};
+    configuration.d.default = {};
+    configuration.d.default.collection = configuration.collection;
+    configuration.d.default.db = configuration.db;
+    configuration.d.default.datastore =  configuration.datastore;
+    configuration.d.default.keycollection = configuration.keycollection;
+    configuration.d.default.databasetable = configuration.databasetable;
+
+    configuration.d.default.executetype = "series";
 //    configuration.default.platform = configuration.environment;
-//    configuration.default.global = {};
-//    configuration.default.var = {};
+    configuration.d.global = {};
+    configuration.d.var = {};
 //    configuration.default.syncrule = configuration.syncrule;
 
-    // configuration.d.environment = {};
-    // configuration.d.environment.platform = configuration.environment;
-    // configuration.d.environment.syncrule = "sync_local_server";
+    configuration.d.platform = configuration.environment;
+    configuration.d.syncrule = configuration.syncrule;
     // configuration.widmasterkey = 'widmasterkey';
 
     return {

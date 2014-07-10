@@ -23,6 +23,7 @@
 //if error = fnnotfound then runfirstone should stop?
 //    "executethis": "getwid""wid": "getwidmaster"
 // split command.xrun early for split local server
+// when to delete global
 
 (function (window) {
     // 'use strict';
@@ -34,23 +35,28 @@
         // first save and get from environment
         inboundparams.command.environment = checkenvironment(inboundparams.command.environment);
         // then bring items deeply nested in environmnet to "this" level
-        proxyprinttodiv("enhanceparameters inside enhanceparameters inboundparams", inboundparams, 99, true);
-        extend(true, inboundparams,
-                    inboundparams.command.environment.global || {},
-                    inboundparams.command.environment.var ? inboundparams.command.environment.var[inboundparams.executethis] || {} : {});
+        proxyprinttodiv("enhanceparameters inside enhanceparameters inboundparams after checkenvironment", inboundparams, 99, true);
 
-        inboundparams.command.environment.var = {}; // clear it out so it does not grow forever
-
+        if (inboundparams.command.environment.global || inboundparams.command.environment.var[inboundparams.executethis])
+        {
+            extend(true, inboundparams,
+                        inboundparams.command.environment.global || {},
+                        inboundparams.command.environment.var ? inboundparams.command.environment.var[inboundparams.executethis] || {} : {});
+            if (inboundparams.command.environment.var[inboundparams.executethis]) 
+            {
+                delete inboundparams.command.environment.var; 
+            }
+        } 
         // extend config defaults into inboundparams.command to default anything missing
-        inboundparams.command = extend(true, config.configuration.default, inboundparams.command);
-
+        //inboundparams.command = extend(true, config.configuration.default, inboundparams.command);
+        extend(true, inboundparams.command, inboundparams.command.environment.default);
         return inboundparams;
     }
 
     // function reads & updates wid environment when running locally
     function checkenvironment(environment) {
-        // merge incoming environment wiht default environment with incomming winning
-        environment = extend(true, {}, config.configuration.default, environment);
+        // merge incoming environment with default config environment with incomming winning
+        environment = extend(true, {}, config.configuration.d, environment);
         if (config.configuration.environment === "local") 
         {
             // read environment wid
@@ -74,15 +80,6 @@
             {
                 environment.accesstoken = createNewGuid();
             }
-            // added to defaults in config--code below can be taken out
-            // if (!environment.var)
-            // {
-            //     environment.var = {};
-            // }
-            // if (!environment.global)
-            // {
-            //     environment.global = {};
-            // }
 
             // store it back to wid
             environmentwid[config.configuration.db] = environment;
@@ -120,7 +117,9 @@
                 }
                 else
                 {
-                    var type = command.resulttable.executionpreferences.command.environment.run.type;
+                    var type = command.resulttable.executionpreferences.command.executetype;
+                    //**
+                    //var type = command.resulttable.executionpreferences.command.environment.run.type;
                     // proxyprinttodiv("processresulttable command after clearing tryset", command, 11, true);
                     // fish out from commmand.result table only the ones with errors in case of group, all of them otherwise
                     for (var eachitem in command.resulttable[eachexecuteid].detail)
@@ -160,11 +159,12 @@
             {
                 // if no type then make default type series
                 // I think this code can be taken out since executeion preferences wil have this default
-                 proxyprinttodiv("inparams executionparameters[eachitem]", executionparameters[eachitem],11);
+                proxyprinttodiv("inparams executionparameters[eachitem]", executionparameters[eachitem],11);
                 if (!executionparameters[eachitem].command) {executionparameters[eachitem].command={};}
                 if (!executionparameters[eachitem].command.environment) {executionparameters[eachitem].command.environment={};}
                 if (!executionparameters[eachitem].command.environment.run) {executionparameters[eachitem].command.environment.run={};}
-                if (!executionparameters[eachitem].command.environment.run.type) {executionparameters[eachitem].command.environment.run.type="series";}
+                //if (!executionparameters[eachitem].command.environment.run.type) {executionparameters[eachitem].command.environment.run.type="series";}
+                if (!executionparameters[eachitem].command.executetype) {executionparameters[eachitem].command.executetype="series";}
 
                 var eachexecute = {};
                 eachexecute.executeseq = currentexecutecount;
@@ -209,17 +209,25 @@
         if (!inparams.command.environment) {inparams.command.environment={};}
         if (!inparams.command.environment.run) {inparams.command.environment.run={};}
 
+        // moved to here
+        if (!inparams.command.environment.run.executelevel) {inparams.command.environment.run.executelevel=0;}
+        if (!inparams.command.environment.run.executeid) {inparams.command.environment.run.executeid=createNewGuid();}
+        //if (!inparams.command.environment.run.type) {inparams.command.environment.run.type="series";}
+        //if (!inparams.command.environment.syncrule) {inparams.command.environment.syncrule=config.environment.syncrule}
+
+        proxyprinttodiv("fishoutexecutionpreferences inparams before", inparams, 99, true);
         // make parameters better by dealing with command.environmnet
         inparams = enhanceparameters(inparams);
+        proxyprinttodiv("fishoutexecutionpreferences inparams after", inparams, 99, true);
 
         extend(true, executionpreferences.command.environment, inparams.command.environment);
         delete inparams.command.environment;
 
         // should executelevel be increased here?
-        if (!executionpreferences.command.environment.run.executelevel) {executionpreferences.command.environment.run.executelevel=0;}
-        if (!executionpreferences.command.environment.run.executeid) {executionpreferences.command.environment.run.executeid=createNewGuid();}
-        if (!executionpreferences.command.environment.run.type) {executionpreferences.command.environment.run.type="series";}
-        //if (!executionpreferences.command.environment.syncrule) {executionpreferences.command.environment.syncrule=config.environment.syncrule}
+        // if (!executionpreferences.command.environment.run.executelevel) {executionpreferences.command.environment.run.executelevel=0;}
+        // if (!executionpreferences.command.environment.run.executeid) {executionpreferences.command.environment.run.executeid=createNewGuid();}
+        // if (!executionpreferences.command.environment.run.type) {executionpreferences.command.environment.run.type="series";}
+        // //if (!executionpreferences.command.environment.syncrule) {executionpreferences.command.environment.syncrule=config.environment.syncrule}
 
         if (inparams.executethis)
         {
@@ -412,12 +420,14 @@
         var executionpreferences = command.resulttable.executionpreferences;
         var currentexecuteid = executionpreferences.command.environment.run.executeid;
         var level =  executionpreferences.command.environment.run.executelevel;
-        var type = executionpreferences.command.environment.run.type;
+        var type = executionpreferences.command.executetype;
+        // **
+        //var type = executionpreferences.command.environment.run.type;
         var tryset=command.resulttable[currentexecuteid].tryset;
         var trylength = tryset.length;
 
         // read and save environment parameters
-        executionpreferences.command.environment = checkenvironment(executionpreferences.command.environment);
+        //executionpreferences.command.environment = checkenvironment(executionpreferences.command.environment);
 
         // maybe delete command object if empty
         if (executionpreferences.command && 
@@ -842,7 +852,9 @@
         if (incomingparams.command.xrun || 
                 (
                     incomingparams.command.resulttable &&
-                    incomingparams.command.environment.run.type==="runfirstonewaterfall"
+                    //**
+                    incomingparams.command.executetype==="runfirstonewaterfall"
+                    //incomingparams.command.environment.run.type==="runfirstonewaterfall"
                 )
             )
         {
@@ -883,12 +895,13 @@
                 // keep command.environment/command.run.executeid as part of parameter
                 //proxyprinttodiv('>>>> execute filter_data', filter_data, 11, true);
                 var command = filter_data.filteredobject.command;
-                inboundparms = filter_data.output;
+                var inboundparams = filter_data.output;
                 proxyprinttodiv('>>>> execute command', command, 11, true);
-                proxyprinttodiv('>>>> execute inboundparms', inboundparms, 11, true);
+                proxyprinttodiv('>>>> execute inboundparams', inboundparams, 11, true);
 
-                var objkey = hashobj(inboundparms, command);
-                delete inboundparms.executethis; // delete parameter executethis...we know the targetfn
+                var objkey = hashobj(inboundparams, command);
+                proxyprinttodiv('execute objkey', objkey, 99, true);
+                delete inboundparams.executethis; // delete parameter executethis...we know the targetfn
 
                 checkcache(objkey, function (err, res) {
                     if (res) 
@@ -897,9 +910,9 @@
                     }
                     else 
                     {
-                        targetfn(inboundparms, function (err, resultparameters) 
+                        targetfn(inboundparams, function (err, resultparameters) 
                         { 
-                            proxyprinttodiv("execute after do this inboundparms", inboundparms, 11);
+                            proxyprinttodiv("execute after do this inboundparams", inboundparams, 11);
                             proxyprinttodiv("execute after do this resultparameters", resultparameters, 11);
                             proxyprinttodiv("execute after do this err", err, 11);
                             proxyprinttodiv('execute after do this command', command, 11, true);
@@ -939,7 +952,7 @@
                                     proxyprinttodiv("execute - command ****", command.resultparameters, 11);
                                     proxyprinttodiv("execute - command.adopt ****", command.adopt, 11);
                                     proxyprinttodiv("execute - command.overallresult ****", resultparameters, 11);
-                                    proxyprinttodiv("execute - inboundparms ****", inboundparms, 11);
+                                    proxyprinttodiv("execute - inboundparams ****", inboundparams, 11);
 
                                     //delete incomingparams.command; 
                                     //we might want to save command.environment and then readd
@@ -1023,6 +1036,23 @@
         } // executethis exists
     };
 
+    exports.hashobj = hashobj = function hashobj(inobj, command) {
+        if (command && command.skipcache) {
+            return null;
+        } else {
+            var obj = {};
+            extend(true, obj, inobj);
+            //delete obj.executethis;
+            delete obj.command.environment; // 
+
+            var result = sortObj(obj, function (a, b) {
+                return a.key < b.key;
+            });
+            return JSON.stringify(result);
+        }
+    };
+
+
     function checkcache(objkey, callback) {
         if (objkey) {
             proxyprinttodiv("checkcache objkey **************", objkey, 99);
@@ -1057,21 +1087,6 @@
         }
     }
 
-exports.hashobj = hashobj = function hashobj(inobj, command) {
-        if (command && command.skipcache) {
-            return null;
-        } else {
-            var obj = {};
-            extend(true, obj, inobj);
-            delete obj.executethis;
-            delete obj.command.environment; // 
-
-            var result = sortObj(obj, function (a, b) {
-                return a.key < b.key;
-            });
-            return JSON.stringify(result);
-        }
-    };
 
     // this function expands inparams to be two calls, usually one to local and one to server
     // they are set to "runfirstone", it will not go to server unless first call fails
@@ -1083,7 +1098,9 @@ exports.hashobj = hashobj = function hashobj(inobj, command) {
         var outparams={};
         outparams.command={};
         extend(true, outparams.command, inparams.command);
-        outparams.command.environment.run.type = "runfirstonewaterfall";
+        //**
+        outparams.command.executetype = "runfirstonewaterfall";
+        //outparams.command.environment.run.type = "runfirstonewaterfall";
 //        outparams.command.processfn = "execute_function";
         outparams.command.xrun = [];
 
@@ -1111,7 +1128,9 @@ exports.hashobj = hashobj = function hashobj(inobj, command) {
         var outparams={};
         outparams.command={};
         extend(true, outparams.command, inparams.command);
-        outparams.command.environment.run.type = "runfirstonewaterfall";
+        //**
+        outparams.command.executetype = "runfirstonewaterfall";
+        //outparams.command.environment.run.type = "runfirstonewaterfall";
 //        outparams.command.processfn = "execute_function";
         outparams.command.xrun = [];
 
@@ -1162,7 +1181,9 @@ exports.hashobj = hashobj = function hashobj(inobj, command) {
         var outparams={};
         outparams.command = {};
         extend(true, outparams.command, inparams.command);
-        outparams.command.environment.run.type = "runfirstone";
+        //**
+        outparams.command.executetype = "runfirstone";
+        //outparams.command.environment.run.type = "runfirstone";
 //        outparams.command.processfn = "execute_function";
         outparams.command.xrun = [];
 
@@ -1359,7 +1380,7 @@ exports.hashobj = hashobj = function hashobj(inobj, command) {
 
     // function dothisprocessor(params, target, objkey, callback) {
     //     // note we should make a copy of params
-    //     var inboundparms_114 = arguments;
+    //     var inboundparams_114 = arguments;
     //     //var err = {};
     //     var err = null;
     //     // if command.status=fail, check between dothis, do not execute
@@ -1373,7 +1394,7 @@ exports.hashobj = hashobj = function hashobj(inobj, command) {
 
     //         // throw ({'Sample error': 'dothisprocessor'});
 
-    //         proxyprinttodiv("dothis - inboundparms", params, 11);
+    //         proxyprinttodiv("dothis - inboundparams", params, 11);
     //         //proxyprinttodiv("dothis - target ", target, 11);
     //         //proxyprinttodiv("dothis - callback ", String(callback), 11);
 
@@ -1455,7 +1476,7 @@ exports.hashobj = hashobj = function hashobj(inobj, command) {
     // // based on a target fn and params this fn will create a sorted list of what to do -- params will be in list
 
     // function CreateDoList(inparams, configtarget, configfn) {
-    //     var inboundparms_115 = arguments;
+    //     var inboundparams_115 = arguments;
     //     var params = {};
     //     extend(true, params, inparams);
 
