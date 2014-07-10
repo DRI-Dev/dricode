@@ -37,11 +37,14 @@
         // then bring items deeply nested in environmnet to "this" level
         proxyprinttodiv("enhanceparameters inside enhanceparameters inboundparams after checkenvironment", inboundparams, 99, true);
 
-        if (inboundparams.command.environment.global || inboundparams.command.environment.var[inboundparams.executethis])
+        if (inboundparams.command.environment.global
+            || (inboundparams.command.environment.var
+            && inboundparams.command.environment.var[inboundparams.executethis]))
         {
             extend(true, inboundparams,
                         inboundparams.command.environment.global || {},
                         inboundparams.command.environment.var ? inboundparams.command.environment.var[inboundparams.executethis] || {} : {});
+
             if (inboundparams.command.environment.var[inboundparams.executethis]) 
             {
                 delete inboundparams.command.environment.var[inboundparams.executethis];
