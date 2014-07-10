@@ -1150,6 +1150,9 @@
                                 }
                             };
 
+                        // get environment defaults from config;
+                        executeobject.command.environment = config.configuration.d;
+
                         etEnvironment.execute(executeobject, function(err, res) {
 
                             if (err && Object.keys(err).length > 0) {
