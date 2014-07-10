@@ -44,12 +44,12 @@
                         inboundparams.command.environment.var ? inboundparams.command.environment.var[inboundparams.executethis] || {} : {});
             if (inboundparams.command.environment.var[inboundparams.executethis]) 
             {
-                delete inboundparams.command.environment.var; 
+                delete inboundparams.command.environment.var[inboundparams.executethis];
             }
         } 
         // extend config defaults into inboundparams.command to default anything missing
         //inboundparams.command = extend(true, config.configuration.default, inboundparams.command);
-        extend(true, inboundparams.command, inboundparams.command.environment.default);
+        inboundparams.command = extend(true, inboundparams.command.environment.default, inboundparams.command);
         return inboundparams;
     }
 

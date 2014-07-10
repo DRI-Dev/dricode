@@ -210,36 +210,39 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
     proxyprinttodiv('Function  inputWidgetObject.command', inputWidgetObject.command, 11);
     proxyprinttodiv('Function datastore inputWidgetObject 1', inputWidgetObject, 11);
 
-    var filter_data = getcommand(inputWidgetObject, {
-            "command": {
-                "datastore": config.configuration.defaultdatastore,
-                "collection":config.configuration.defaultcollection,
-                //"keycollection":config.configuration.defaultcollection + "key",
-                "db":config.configuration.defaultdb,
-                "databasetable":config.configuration.defaultdatabasetable,
-                "convertmethod":"toobject",
-                "datamethod":"upsert"
-                // "deepfilter" : {"keepaddthis":false}
-            }
-        }, {
-            "command": {
-                "datastore": "",
-                "collection":"",
-                //"keycollection":"",
-                "db":"",
-                "databasetable":"",
-                "convertmethod":"",
-                "datamethod":"",
-                "environment":""
-                // "deepfilter" : {"keepaddthis":""}
-            }
-        },
-        true);
+//    var filter_data = getcommand(inputWidgetObject, {
+//            "command": {
+//                "datastore": config.configuration.datastore,
+//                "collection":config.configuration.collection,
+//                //"keycollection":config.configuration.collection + "key",
+//                "db":config.configuration.db,
+//                "databasetable":config.configuration.databasetable,
+//                "convertmethod":"toobject",
+//                "datamethod":"upsert"
+//                // "deepfilter" : {"keepaddthis":false}
+//            }
+//        }, {
+//            "command": {
+//                "datastore": "",
+//                "collection":"",
+//                //"keycollection":"",
+//                "db":"",
+//                "databasetable":"",
+//                "convertmethod":"",
+//                "datamethod":"",
+//                "environment":""
+//                // "deepfilter" : {"keepaddthis":""}
+//            }
+//        },
+//        true);
 
-    var command = filter_data.filteredobject.command;
+//    var command = filter_data.filteredobject.command;
+    var command = inputWidgetObject.command;
+    delete inputWidgetObject.command;
+
     proxyprinttodiv('Function updatewid command  -- get', command, 12);
     proxyprinttodiv('Function datastore inputWidgetObject', inputWidgetObject, 12);
-    proxyprinttodiv('Function datastore filter_data', filter_data, 12);
+//    proxyprinttodiv('Function datastore filter_data', filter_data, 12);
     proxyprinttodiv('Function datastore command', command, 12);
     var datastore= command.datastore;
     var collection = command.collection;
@@ -250,8 +253,8 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
     var datamethod = command.datamethod;
     var databasetable = command.databasetable;
 
-    delete filter_data.output.command;
-    var addedobject=converttodriformat(filter_data.output, command);
+//    delete filter_data.output.command;
+//    var addedobject=converttodriformat(filter_data.output, command);
     proxyprinttodiv('Function datastore command -- add inputWidgetObject addedobject', addedobject, 12);
 
     if (widName) {
@@ -4261,11 +4264,11 @@ function totalStorageSize(){
     // DriEnvironment class
     exports.drienvironment = drienvironment = function drienvironment(environment) {
 
-        if (environment.run.type)
-            {
-                environment.default.executetype = environment.run.type;
-                delete environment.run.type;
-            }
+        if (environment.run.type) {
+            environment.default.executetype = environment.run.type;
+            delete environment.run.type;
+        }
+
         this.environment = environment;
 
         this.execute = function(params, callback) {
@@ -4281,9 +4284,6 @@ function totalStorageSize(){
                 params = executeobject;
             }
 
-            // if (params.command.environment) {
-            //     params.command.environment = extend(true, config.configuration.default, this.environment, params.command.environment);
-            // } else { params.command.environment = extend(true, config.configuration.default, this.environment); }
             if (params.command.environment) {
                 params.command.environment = extend(true, this.environment, params.command.environment);
             } else { params.command.environment = this.environment; }
