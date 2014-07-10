@@ -734,9 +734,6 @@
                                         }
                                     };
 
-                                    // get environment defaults
-                                    executeobject.command.environment = config.configuration.d;
-
                                     etEnvironment.execute(executeobject, function(err, res) {
                                         // If error, bounce out
                                         proxyprinttodiv('Function getwidmongo results res', res, 99);
@@ -1149,9 +1146,6 @@
                                     }
                                 }
                             };
-
-                        // get environment defaults from config;
-                        executeobject.command.environment = config.configuration.d;
 
                         etEnvironment.execute(executeobject, function(err, res) {
 
