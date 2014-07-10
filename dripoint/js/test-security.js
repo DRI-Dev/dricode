@@ -121,8 +121,6 @@ widtests.ttsa6.subcategory = "daily";
 widtests.ttsa6.js = exports.ttsa6;
 widtests.ttsa6.description = "this does a test";
 
-
-
 // Address dto
 // {"executethis":"updatewid","metadata.method":"addressdto","wid":"addressdto", "companyname":"string", "street":"string", "city":"string","state":"string","zip":"string", "metadata.inherit":"defaultaddressproperties"},
 // {"executethis":"updatewid","metadata.method":"addressdto","wid":"defaultaddressproperties", "companyname":"No Name Company"},
@@ -130,3 +128,59 @@ widtests.ttsa6.description = "this does a test";
 // {"executethis":"updatewid","metadata.method":"addressdto","wid":"elizabeth_heart_address", "street":"1234 First street", "city":"Something City","state":"ZZ","zip":"12345"},
 // {"executethis":"getwidmaster","wid":"elizabeth_heart_address"}
 
+
+// Creates a wid and adds that wid to a group
+// logverify needs to verify that the wid was added to the group... not correct right now
+exports.setests_metadataaddtogroup1 = 
+setests_metadataaddtogroup1 = 
+widtests.setests_metadataaddtogroup1 = 
+function setests_metadataaddtogroup1 (executeobject, callback) {
+
+      if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+		
+      executeobject.command.xrun=[{
+									"executethis": "updatewid",
+									"wid":"mycolorwid1",
+									"color":"green",
+									"metadata": {
+										"security": {
+											"group": {
+												"colorwids":"colorwids"
+													}
+												}
+											}
+									}
+							];
+		
+		var expectedresult = {
+								"wid":"mycolorwid1",
+								"data": {
+											"color":"green"
+										},
+								"metadata": {
+												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
+												"date":{"exception":["created","changed","unchanged","updated"]}
+											}
+							}
+		
+      var etEnvironment = new drienvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', result_obj, 99);
+            composite_obj=logverify("setests_metadataaddtogroup1", result_obj,expectedresult);
+            callback(null, composite_obj)
+      } 
+    );
+};
+widtests.setests_metadataaddtogroup1.category = "daily";
+widtests.setests_metadataaddtogroup1.subcategory = "push";
+widtests.setests_metadataaddtogroup1.js = exports.setests_metadataaddtogroup1;
+widtests.setests_metadataaddtogroup1.description = "this does a test";
