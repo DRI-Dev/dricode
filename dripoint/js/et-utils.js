@@ -4265,12 +4265,6 @@ function totalStorageSize(){
 
     // DriEnvironment class
     exports.drienvironment = drienvironment = function drienvironment(environment) {
-
-        if (environment.run.type) {
-            environment.default.executetype = environment.run.type;
-            delete environment.run.type;
-        }
-
         this.environment = environment;
 
         this.execute = function(params, callback) {
@@ -4289,6 +4283,11 @@ function totalStorageSize(){
             if (params.command.environment) {
                 params.command.environment = extend(true, this.environment, params.command.environment);
             } else { params.command.environment = this.environment; }
+
+            if (params.command.environment.run.type) {
+                params.command.environment.default.executetype = params.command.environment.run.type;
+                delete params.command.environment.run.type;
+            }
 
             execute(params, function (err, results) { callback(err, results); });
         };
