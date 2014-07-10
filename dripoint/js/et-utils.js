@@ -4284,6 +4284,8 @@ function totalStorageSize(){
                 params.command.environment = extend(true, this.environment, params.command.environment);
             } else { params.command.environment = this.environment; }
 
+            if (!params.command.environment.default) { params.command.environment.default = {}; }
+
             if (params.command.environment.run.type) {
                 params.command.environment.default.executetype = params.command.environment.run.type;
                 delete params.command.environment.run.type;
