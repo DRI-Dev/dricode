@@ -732,7 +732,10 @@
                                             //     }
                                             // }
                                         }
-                                    }
+                                    };
+
+                                    // get environment defaults
+                                    executeobject.command.environment = config.configuration.d;
 
                                     etEnvironment.execute(executeobject, function(err, res) {
                                         // If error, bounce out
