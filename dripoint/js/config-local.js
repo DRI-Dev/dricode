@@ -274,8 +274,10 @@ exports.execute_server = window.execute_server = execute_server = function execu
         //extend(true, inbound_parameters, params);
         //params =
     delete params.command.processfn;
-    var temp = params.command.environment.syncrule
+    var temp = params.command.environment.syncrule;
     params.command.environment.syncrule = "create_what_to_do_list";
+
+    delete params.command.environment;
 
     if (params.serverfn) // note the first par of if should be deleted...only for testing server locally
     {
