@@ -13,6 +13,8 @@ var express = require('express'),
     convert = require('./routes/convert.js');
     // exports.jsdom = require("jsdom");
 
+eventdeviceready({}, function (err, res) { });
+
 
 //// *********************** Express Application Configuration follows   *********************** 
 app.configure(function() {

@@ -12,19 +12,67 @@ var localStorage = exports.localStorage = {};
 exports.environment = 'server';
 exports.server = 'server1';
 
+var startTime = new Date();
+
+exports.getuptime = getuptime = function getuptime(params, callback) {
+    console.log(">>>>>>>-----------=======-----==-=-=-=-=-=-=---=-=-------======----------");
+    var execObj = [{
+        "executethis" : "getwid",
+        "wid": "russwid"
+    }];
+    execute(execObj, function (err, res) {
+            /**
+            console.log("-----------=======-----==-=-=-=-=-=-=---=-=-------======----------");
+            console.log("The result is " + res.toString() );
+            console.log("Up time is " + howLong );
+            console.log("Err is " + err);
+            console.log("Startup Time is : " + res[0][0].starttime );
+            console.log("RESULT is " + JSON.stringify(res));
+            // res = {'uptime': howLong };
+            **/
+            res = res[0][0];
+            var startTime = res.starttime;
+            var now = new Date().getTime();
+            var howLong = Math.floor((now - startTime)/1000) ;
+            var currentUser = params.currentuser;
+
+            console.log("How Long is " + howLong);
+            var tooLong = 30;
+            var upStatus = (howLong < tooLong);
+            console.log("RESULT is " + JSON.stringify(res));
+            res.status = upStatus;
+            res.uptime = howLong;
+            res.currentuser = currentUser; 
+            res.sms = '+12313133930';
+            callback(err, res)
+        }
+    );
+}
 // *********** EVENTS **************************************************
 exports.eventappinstall = eventappinstall = function eventappinstall() {
     setdefaultparm();
     if (exports.environment === 'server') {
-        clearLocalStorage()
+        clearLocalStorage();
     }
 };
 exports.eventdeviceready = eventdeviceready = function eventdeviceready() {
     if (Object.keys(config).length === 0) {
         eventappinstall()
     }
+    console.log("deviceready ---");
     // start eventonemin, etc
+    var startTime = new Date().getTime().toString();
+    execute({
+        "executethis":"addwidmaster", 
+        "wid":"russwid", 
+        "starttime": startTime
+        , "a": "ee"
+        }, function (err, res) {
+        // cb1(null);
+        console.log("Res is " + res.toString() );
+    })
 
+    console.log("At startup, the start time is : " + startTime);
 
     // create needed dtos
     // createalldtos({}, function (err, res) {
@@ -697,11 +745,8 @@ exports.server2 = server2 = function server2(params, callback) {
 // };
 
 
-eventdeviceready({}, function(err, res) {
-
-
-
-});
+// This should be called at the end of load
+// eventdeviceready({}, function (err, res) { });
 
 sendsms({
     'tonumber': '+12313133930',
