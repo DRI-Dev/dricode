@@ -652,7 +652,7 @@ exports.dtott = dtott = function dtott(params, callback) { //widviewer
     saveglobal("debugname", "");
     saveglobal("debugsubcat", "");
     saveglobal("debugcat", "");
-    saveglobal("debugfilter" = "");
+    saveglobal("debugfilter", "");
     saveglobal("debugdestination", 1);
     //debuglevel=15;
 
