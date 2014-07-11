@@ -47,7 +47,16 @@ function runExecuteThis(parameters, resp) {
         delete parameters.Debug
     }
 
-//    global['execute'](parameters, function (err, results) {
+    if (parameters.command) {
+        // grab server defaults
+        parameters.command = extend(true, parameters.command, config.configuration.default);
+
+        if (parameters.command.environment && parameters.command.environment.default) {
+            // overwrite current environment defaults with server defaults
+            parameters.command.environment.default = config.configuration.default;
+        }
+    }
+
     execute(parameters, function (err, results) {
         if (Debug === 'true') {
             var tempoutput = {};
