@@ -9088,8 +9088,7 @@ exports.addwidtomongo11 =
 addwidtomongo11 = 
 function addwidtomongo11 (params, callback) {
 
-var executeobj = [
-					{"executethis":"addwidmaster",
+var executeobj = [{"executethis":"addwidmaster",
 					"wid":"codywid1",
 					"number":"12",
 					"creator":"cody"
@@ -9100,3 +9099,57 @@ var executeobj = [
 		proxyprinttodiv('full result --', res, 99);
 	});
 }
+
+
+/*
+--To test createhtmltest1 -- JSON to HTML conversion on server side
+*/
+exports.createhtmltest1 = createhtmltest1 = function createhtmltest1(params, callback) {
+    createhtml({ //query to get cookdri wid
+        "widname": "cookdri"
+    },
+    function (err, res) {
+        proxyprinttodiv('createhtmltest1 res', res, 99);
+        callback(err,res);
+    });
+}
+
+// 3)
+// -confirm that updatewid({wid:wid1, x:y, metadata.a:b, metadata.c:d} will save
+// -then change querywid so 
+// execute({executethis: querywid, mongorawquery: “query to find x = y”, command.namespace.a:b, 
+//    command.namespaceflag.a:true, command.namespace.c:d, command.namespaceflag.c:true) will 
+//  search for wids where x=y AND a=b and c:d
+
+/*
+--To test updatewid -- confirm that updatewid({wid:wid1, x:y, metadata.a:b, metadata.c:d} will save
+*/
+exports.testupdate43 = testupdate43 = function testupdate43(params, callback) {
+    execute({"executethis":"addwidmaster","wid":"wid43",  "x":"y", "command.usernamespace.a":"b",
+        "command.usernamespaceflag.a":"true", "command.usernamespace.c":"d",
+        "command.usernamespaceflag.c":"false"}, function (err, res) {
+        proxyprinttodiv('testupdate43 res :: after updatewid', res, 99);
+
+        // 
+        var gotbackobject = undefined;
+        execute({"executethis":"querywid","mongorawquery":{"wid":"wid43"}},function(err,res){
+            proxyprinttodiv('testupdate43 res :: after getwid', res, 99);
+
+            gotbackobject = res;
+
+            console.log(" ********** testupdate43 ******** " );
+            console.log(gotbackobject);
+
+            var req = {"executethis":"querywid","mongorawquery":{"wid":"securityhome"}};
+            execute(req,function(err,res){
+                proxyprinttodiv('testupdate43 res :: after getwid', res, 99);
+                console.log(" ********** req ******** " );
+                console.log(req);
+                console.log(" ********** testupdate43 ******** " );
+                console.log(res);
+                callback(err,res);
+            });
+        });
+    });
+}
+

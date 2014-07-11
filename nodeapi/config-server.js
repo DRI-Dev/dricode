@@ -3,7 +3,7 @@ var twilio = require('twilio')('AC909f1981261f4461abbc7985bd202897', '7bb26fabe1
 var spawn = require('child_process').spawn;
 var url = require('url');
 
-exports.consolere = require('console-remote-client').connect('console.re','80','dev-dri');
+exports.consolere = require('console-remote-client').connect('console.re', '80', 'dev-dri');
 exports.console = exports.consolere;
 
 
@@ -105,53 +105,53 @@ exports.debuglinenum = debuglinenum = 1;
 // function setappinstallparm() {}
 
 function setdefaultparm() {
-    localStore.clear();
-    Debug = 'false'; // **** Saurabh ::  changed to make node compatible ****
-    debuglevel = 0;
-    widMasterKey = "widmaster_";
-    test_results = {};
-    potentialwid = 0;
-    debugon = false;
-    debugname = "";
-    debugsubcat = "";
-    debugcat = "";
-    debugfilter = "";
-    debugdestination = 1;
-    debugcolor = 0;
-    debugindent = 0;
-    debuglinenum = 1;
-    environment = "server";
-    exports.environment = environment;
-    test_results = {}; // can take out
-    debuglog = {};
-    exports.debuglog = debuglog;
-    exports.Debug = Debug;
-    exports.debuglevel = debuglevel;
-    exports.widMasterKey = widMasterKey;
-    exports.test_results = test_results;
-    exports.potentialwid = potentialwid;
-    exports.debugon = debugon;
-    exports.debugname = debugname;
-    exports.debugsubcat = debugsubcat;
-    exports.debugcat = debugcat =
-        exports.debugfilter = debugfilter;
-    exports.debugdestination = debugdestination;
-    exports.debugcolor = debugcolor;
-    exports.debugindent = debugindent;
-    exports.debuglinenum = debuglinenum;
-}
-// exports.bootprocess = bootprocess = function bootprocess() {
-//     setdefaultparm();
-//     test_results = {};
-//     //testAddWids();
-//     //displayAllWids();
-// }
+        localStore.clear();
+        Debug = 'false'; // **** Saurabh ::  changed to make node compatible ****
+        debuglevel = 0;
+        widMasterKey = "widmaster_";
+        test_results = {};
+        potentialwid = 0;
+        debugon = false;
+        debugname = "";
+        debugsubcat = "";
+        debugcat = "";
+        debugfilter = "";
+        debugdestination = 1;
+        debugcolor = 0;
+        debugindent = 0;
+        debuglinenum = 1;
+        environment = "server";
+        exports.environment = environment;
+        test_results = {}; // can take out
+        debuglog = {};
+        exports.debuglog = debuglog;
+        exports.Debug = Debug;
+        exports.debuglevel = debuglevel;
+        exports.widMasterKey = widMasterKey;
+        exports.test_results = test_results;
+        exports.potentialwid = potentialwid;
+        exports.debugon = debugon;
+        exports.debugname = debugname;
+        exports.debugsubcat = debugsubcat;
+        exports.debugcat = debugcat =
+            exports.debugfilter = debugfilter;
+        exports.debugdestination = debugdestination;
+        exports.debugcolor = debugcolor;
+        exports.debugindent = debugindent;
+        exports.debuglinenum = debuglinenum;
+    }
+    // exports.bootprocess = bootprocess = function bootprocess() {
+    //     setdefaultparm();
+    //     test_results = {};
+    //     //testAddWids();
+    //     //displayAllWids();
+    // }
 
 
 
 
 
-var config123 = function () {
+var config123 = function() {
     var configuration = {};
 
     configuration.environment = 'server';
@@ -163,11 +163,11 @@ var config123 = function () {
     configuration.defaultmongodb = 'wikiwallettesting'
     configuration.defaultdatabasetable = 'wikiwallettesting'
 
-    configuration.e = configuration.defaultdatabasetable+"_"+configuration.defaultcollection+"_"+ "environment"
+    configuration.e = configuration.defaultdatabasetable + "_" + configuration.defaultcollection + "_" + "environment"
     configuration.d = {}
     configuration.d.defaultcollection = configuration.defaultcollection
     configuration.d.defaultdb = configuration.defaultdb
-    configuration.d.defaultdatastore =  configuration.defaultdatastore
+    configuration.d.defaultdatastore = configuration.defaultdatastore
     configuration.d.defaultkeycollection = configuration.defaultkeycollection
     configuration.d.defaultdatabasetable = configuration.defaultdatabasetable
 
@@ -275,7 +275,7 @@ var config123 = function () {
     //     'auto_reconnect': true,
     //     'pool': 5
     // };
-   
+
 
     return {
         "configuration": configuration
@@ -338,7 +338,7 @@ exports.test2 = test2 = function test2(name, callback) {
     );
 }
 
-exports.sayHello = sayHello = function (params, callback) {
+exports.sayHello = sayHello = function(params, callback) {
 
 }
 
@@ -359,7 +359,7 @@ var querystring = require('querystring');
 var https = require('https');
 var fs = require('fs');
 
-exports.twilioPassThrough = function (params, callback) {
+exports.twilioPassThrough = function(params, callback) {
     //    proxyprinttodiv('twilioPassThrough started', 99);
 
     // Twilio Credentials 
@@ -434,9 +434,9 @@ exports.twilioPassThrough = function (params, callback) {
     };
 
     // Setup the request
-    var post_request = https.request(post_options, function (res) {
+    var post_request = https.request(post_options, function(res) {
         res.setEncoding('utf8');
-        res.on('data', function (chunk) {
+        res.on('data', function(chunk) {
             //            proxyprinttodiv('Response: ' + chunk);
 
             // assumes response is 1 chunk
@@ -467,11 +467,11 @@ exports.gitPullEtCore = gitPullEtCore = function gitPullEtCore(params, cb) {
 
     var git = spawn(cmd, args, options);
 
-    git.stdout.on('data', function (data) {
+    git.stdout.on('data', function(data) {
         console.log('git output: ' + data);
     });
 
-    git.on('close', function (return_code) {
+    git.on('close', function(return_code) {
         console.log('gitPullEtCore has completed');
         cb(return_code, return_code);
     });
@@ -484,7 +484,7 @@ exports.gitPullEtCore = gitPullEtCore = function gitPullEtCore(params, cb) {
 // - parameters -
 //  To: phone number of who to send message to in +12315551212 format
 //  Body: text of the message to send, max 1600 characters
-exports.sendsms = sendsms = function (params, cb) {
+exports.sendsms = sendsms = function(params, cb) {
     var twilioFunction = 'Messages.json';
     var twilioParameters = {
         'To': params['to'],
@@ -494,7 +494,7 @@ exports.sendsms = sendsms = function (params, cb) {
             'twilioFunction': twilioFunction,
             'twilioParameters': twilioParameters
         },
-        function (err, result) {
+        function(err, result) {
             cb(err, result);
         }
     );
@@ -546,7 +546,7 @@ exports.server = server = function server(params, callback) {
         }
     };
 
-    needle.put(serverUrl, JSON.stringify(driExecuteObj), options, function (err, response, body) {
+    needle.put(serverUrl, JSON.stringify(driExecuteObj), options, function(err, response, body) {
         // convert returned list of DataModelDTOs to an object
         var resultsObj = {};
         for (var i = 0; i < body.length; i++) {
@@ -574,7 +574,7 @@ exports.server2 = server2 = function server2(params, callback) {
     delete params['command.debug'];
     delete params['configuration'];
 
-    needle.put(serverUrl, JSON.stringify(params), options, function (err, response, body) {
+    needle.put(serverUrl, JSON.stringify(params), options, function(err, response, body) {
         callback(err, body);
     });
 };
@@ -697,7 +697,7 @@ exports.server2 = server2 = function server2(params, callback) {
 // };
 
 
-eventdeviceready({}, function (err, res) {
+eventdeviceready({}, function(err, res) {
 
 
 
@@ -706,7 +706,7 @@ eventdeviceready({}, function (err, res) {
 sendsms({
     'tonumber': '+12313133930',
     'msgbody': 'This the server- I just restarted '
-}, function (err, result) {
+}, function(err, result) {
     //console.log('running');
 });
 
@@ -721,7 +721,7 @@ exports.zapier_passthrough = zapier_passthrough = function(params, cb) {
     //var zapURL = 'https://zapier.com/hooks/catch/gurm8/';
     //jQuery.getJSON(zapURL, onZapSent);
     var zapURL = getPropertyOrDefault(params, 'zapURL', '');
-    var zapParams = getPropertyOrDefault(params, 'zapParams', {} );
+    var zapParams = getPropertyOrDefault(params, 'zapParams', {});
 
     var urlObj = url.parse(zapURL);
     var zapHost = urlObj.host;
@@ -740,11 +740,11 @@ exports.zapier_passthrough = zapier_passthrough = function(params, cb) {
             'Content-length': post_data.length
         }
     };
-    
+
     // Setup the request
-    var post_request = https.request(post_options, function (res) {
+    var post_request = https.request(post_options, function(res) {
         res.setEncoding('utf8');
-        res.on('data', function (chunk) {
+        res.on('data', function(chunk) {
             //            proxyprinttodiv('Response: ' + chunk);
 
             // assumes response is 1 chunk
@@ -760,12 +760,65 @@ exports.zapier_passthrough = zapier_passthrough = function(params, cb) {
 
 };
 
-zapier_passthrough(
-    {'zapURL':'https://zapier.com/hooks/catch/gurm8/','zapParams':{'87': __dirname}}, 
+zapier_passthrough({
+        'zapURL': 'https://zapier.com/hooks/catch/gurm8/',
+        'zapParams': {
+            '87': __dirname
+        }
+    },
     function(err, res) {
         console.log('The pass through function has ended.');
         console.log('God save the queen');
     }
-); 
+);
 
 
+
+// function to return back cooked html 
+exports.createhtml = createhtml = function createhtml(params, callback) {
+    var screenname = params['widname'];
+
+
+    execute([{ //query to get cookdri wid
+            "executethis": "getwidmaster",
+            "wid": screenname
+        }],
+        function(err, res) {
+            var dataofwid = res[0][0];
+            var html = dataofwid['html'];
+
+            if (!jsdom) {
+                jsdom = require('jsdom');
+            }
+
+            // // var jsdom = require("jsdom");
+            // var window = jsdom.jsdom().createWindow();
+
+            // jsdom.jQueryify(window, "", function () {
+            //     window.$("body").append(html);
+
+            //     // console.log(window.$("body").text());
+            //     callback(err,{'html':window.document.body.innerHTML});
+            // });
+
+            var jsdom = require("jsdom").jsdom;
+            var document = jsdom(html);
+            var window = document.parentWindow;
+
+            // get an object if coming in
+            window.__myObject = {
+                "fname": "Anish",
+                "lname":"Sharma",
+                "age":"32"
+            };
+
+            var scriptEl = window.document.createElement("script");
+            scriptEl.src = "anotherScript.js";
+            window.document.appendChild(scriptEl);
+
+            callback(err, {
+                'html': window.document.innerHTML
+            });
+
+        });
+}

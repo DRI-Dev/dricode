@@ -1,7 +1,7 @@
 // Server specific Routes here
 
+exports.jsdom = jsdom = require("jsdom");
 require('../config.js');
-
 var async = require('async');
 
 

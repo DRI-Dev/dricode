@@ -44,33 +44,17 @@ exports.querywidmaster = querywidmaster = function querywidmaster(params, callba
 };
 
 //Starting of querywid function...formerly MongoDataQuery
-//exports.querywid = querywid = function (parameters,target,callback) {
-exports.querywid = querywid = function querywid(parameters, callback) { // can change to call back
+
+exports.querywid = querywid = function querywid(parameters, callback) { 
     // Fish out params
     proxyprinttodiv('querywid parameters', parameters, 99);
     //try {
     var inbound_parameters_107 = arguments;
 
-    delete parameters['executethis']; //** added 11/2
-
-    // var x = window['mongoquery'];
-    // if (exports.environment === "local") {
-    //         offlinemongoquery(parameters, callback);
-    //     } else {
-    //          return offlinemongoquery(err, parameters);
-    //     } // TODO :: check if this is fine
-    // } else {
-
-    // if (parameters['mongorawquery']) {
-    //      return mongoquery(parameters);
-    //  } else {
-    //      return querywidlocal(parameters);
-    //  };
+    delete parameters['executethis']; 
 
     var output = [];
     var mQueryString = "";
-
-    //var p = fishOut(parameters);
 
     var filter_data = getcommand(parameters, {
             "command":{
@@ -156,101 +140,48 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
         },
         true);
 
-    //proxyprinttodiv('querywid filter_data', filter_data, 99, true);
-    //proxyprinttodiv('querywid filter_data.filteredobject', filter_data.filteredobject, 99);
-    //proxyprinttodiv('querywid filter_data.output', filter_data.output, 99);
-    //proxyprinttodiv('querywid filter_data.filteredobject.command', filter_data.filteredobject.command, 17);
-
     var qparms = filter_data.filteredobject;
     var xparms = filter_data.output;
+
+    console.log(" ********** COMMAND ******** " );
+    console.log(command );
+
+    /// adding usernamespace 
+    if(command && command.usernamespace && command.usernamespaceflag){
+        var userns = command.usernamespace;
+        var usernsflag = command.usernamespaceflag;
+
+        var critiriajsonarray = [];
+
+        for(var key in userns){
+            // is the flag set, is it true
+            var isallowed = (usernsflag[key] && usernsflag[key] == "true");
+
+            // add the keys after checking if the flags are true
+            if(isallowed && userns){
+                critiriajsonarray.push(key,userns['key']);
+            }
+        }
+
+        //
+        var queryjson = {};
+        queryjson['$and']=critiriajsonarray;
+        // qparms.push(queryjson);
+    }
+
 
     proxyprinttodiv('querywid command', command, 99);
     proxyprinttodiv('querywid qparms', qparms, 99);
     proxyprinttodiv('querywid xparms', xparms, 99);
 
-    // check for err on the 'return' of an object
-    //if (p.err) {
-    //    throw (p.err.error);
-    //}
-
-    //console.log('object that came back from fishOut => ' + JSON.stringify(p));
-    //proxyprinttodiv('querywid parameters', parameters, 17);
-    //proxyprinttodiv('querywid p ', p, 17);
-
-    //var queParams = p[0];
-    //var relParams = p[1];
-    //var addParams = p[2];
-    //var aggParams = p[3];
-    //proxyprinttodiv('querywid p aggParams', aggParams, 17);
-
-    //var xtrParams = p[4];
-    //var relafterParams = p[5];
-    //var commandParams = p[6];
 
     var ListOfLists = [];
     var database = {};
     var queryresults = {};
     var wid;
     var environmentdb = command["db"];
-    //var convertmethod = commandParams['command.convertmethod'];
     var extraparameters = {};
-    //proxyprinttodiv('querywid convertmethod', convertmethod, 38);
-    //proxyprinttodiv('querywid commandParams', commandParams, 38);
-    // if (commandParams["db"]) {
-    //if (false) {
-    // 	  environmentdb = qparms["db"];
-    //} else {
-    //    environmentdb = config.configuration.defaultdb;
-    //}
-    // if (config.configuration.environment==="local") {commandParams.datastore='localstorage';}
-    //                                             else {commandParams.datastore='mongo';}
 
-    //function debugvars(varlist) {
-    //    var allvars = {
-    //        1: {
-    // "queParams": queParams,
-    // "relParams": relParams,
-    // "aggParams": aggParams,
-    // "addParams": addParams,
-    // "xtrParams": xtrParams,
-    // "relafterParams": relafterParams,
-    // "ListOfLists": ListOfLists,
-    // "queryresults": queryresults,
-    // "wid": wid
-    // },
-    // 2: {
-    // "queParams": queParams,
-    // "relParams": relParams,
-    // "aggParams": aggParams
-    // },
-    // 3: {
-    // "parameters": parameters
-    // },
-    // 4: {
-    // "res": output
-    // },
-    // 5: {
-    // "mQueryString": mQueryString
-    // },
-    // 6: {
-    // "output": output
-    // }
-    // };
-    // var resultObj = {};
-    // var vargroup;
-    // if (!varlist) {
-    // for (var eachvar in allvars) {
-    // varlist.push(eachvar);
-    // }
-    // }
-
-    // for (var eachgroup in varlist) {
-    // vargroup = varlist[eachgroup];
-    // resultObj = jsonConcat(resultObj, allvars[vargroup]);
-    // }
-
-    // return resultObj;
-    // }
     proxyprinttodiv('querywid command[mongorawquery]', qparms['mongorawquery'], 99);
     proxyprinttodiv('querywid command[mongowid]', qparms['mongowid'], 99);
 
@@ -262,9 +193,6 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
     } else {
         async.series([
             function step01(cb) {
-                // throw ({'Sample_error': 'querywid_async_step01'});
-
-                //debugfn("querywid start", "querywid", "query", "begin", getglobal("debugcolor"), getglobal("debugindent"), //debugvars([3]));
 
                 // Use single to set up a query with the params of 1 wid
                 if (qparms['mongosinglequery'] !== "") {
@@ -284,8 +212,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                                 delete widObject['metadata.method'];
                                 mQueryString = BuildSingleQuery(widObject, "or", environmentdb);
                                 proxyprinttodiv('Function MongoDataQuery singlemongoquery : ', mQueryString, 17);
-                                //mQueryString = output.substring(0, output.length - 1);
-                                // if (validParams(mQueryString)) {
+
                                 mquery(mQueryString, {}, command, function (err, res) {
                                     // If error, bounce out
                                     if (err && Object.keys(err).length > 0) {
@@ -297,11 +224,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                                         cb(null, "step01");
                                     }
                                 });
-                                // } else {
-                                //     if(!output)
-                                //         output = {};
-                                //     cb(null, "step01");
-                                // }
+
                             } catch (err) {
                                 var finalobject = createfinalobject({
                                     "result": "getwid_executethis"
@@ -368,34 +291,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                                                 }
                                             });
                                         });
-                                        // }, function (err, res) {
-                                        //     var listOfWids = res;
-                                        //     delete listOfWids["wid"];
-                                        //     delete listOfWids["metadata.method"];
-                                        //     proxyprinttodiv('Function MongoDataQuery listOfWids : ', listOfWids, 17);
 
-                                        //     var i = 0;
-                                        //     ListOfLists = [];
-                                        //     var todolist = [];
-                                        //     for (var w in listOfWids) {
-                                        //         todolist.push(w);
-                                        //     }
-
-                                        //     async.mapSeries(todolist, function (w, cbMap) {
-                                        //         getwid({
-                                        //             'wid': w
-                                        //         }, function (err, res) {
-                                        //             var tempwid = res;
-                                        //             delete tempwid["wid"];
-                                        //             delete tempwid["metadata.method"];
-                                        //             // for (var t in tempwid) {
-                                        //             //     paramList[t] = tempwid[t];
-                                        //             // }
-                                        //             ListOfLists.push(tempwid);
-                                        //             paramList = {};
-
-                                        //             cbMap(null, "map");
-                                        //         });
                                     },
 
                                     function (err, res) {
@@ -422,11 +318,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                                                         cb(null, 'step01');
                                                     }
                                                 });
-                                                // } else {
-                                                //     if(!output)
-                                                //         output = {};
-                                                //     cb(null, "step01");
-                                                // }
+
                                             } catch (err) {
                                                 var finalobject = createfinalobject({
                                                     "result": "getwid_executethis_async"
@@ -449,7 +341,17 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                     // throw ({'Sample_error': 'querywid_async_step01_else if'});
 
                     console.log('mongorawquery => ' + JSON.stringify(qparms['mongorawquery']));
-                    mQueryString = qparms['mongorawquery'];
+                    // mQueryString = qparms['mongorawquery'];
+
+                    var xparams = queryjson;
+                    // check if and stuc conditions in metadata need to be added to the
+                    if(xparams){
+                        // BuildSingleQuery(parameters, innerquerytype, preamble);
+                        mQueryString = BuildSingleQuery([xparams,qparms['mongorawquery']], "and", environmentdb); 
+                    }else {
+                        mQueryString = qparms['mongorawquery'];
+                    }
+
                     console.log('mQueryString at step01 => ' + JSON.stringify(mQueryString));
                     //debugfn("querywid before mQueryString1", "querywid", "query", "mid", getglobal("debugcolor"), getglobal("debugindent"), debugvars([5]));
                     proxyprinttodiv('querywid mQueryString second', mQueryString, 17);
@@ -478,11 +380,6 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                         }
                     });
 
-                    // } else {
-                    //     if(!output)
-                    //     output = {};
-                    //     cb(null, "step01");
-                    // }
                 } else {
                     if (!output)
                         output = {};
@@ -658,13 +555,6 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                             //
                             proxyprinttodiv('querywid after output', output, 17);
 
-                            // ToDot -- should remove "data"
-                            // -- V1 --
-
-                            //debugfn("querywid code generator", "querywid", "get", "code", 2, 1, {
-                            //    0: inbound_parameters_107,
-                            //    1: output
-                            //}, 6);
 
                             callback(null, output);
                         }
@@ -672,13 +562,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                 }
             });
     }
-    //} // end try
-    // catch (err) {
-    //     var finalobject = createfinalobject({
-    //         "result": "querywid"
-    //     }, {}, "querywid", err, inbound_parameters_107);
-    //     callback(finalobject.err, finalobject.res);
-    // }
+
 
 
     function formatlist(inlist, parmnamein, parmnameout, environmentdb) {
@@ -738,10 +622,6 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
             }
             proxyprinttodiv('querywid formatlist output ', output, 17);
 
-            //debugfn("formatlist code generator", "formatlist", "get", "code", 2, 1, {
-            //    0: inbound_parameters,
-            //    1: output
-            //}, 6);
 
             return output;
         }
@@ -836,11 +716,7 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                                 }
                                 cb1(null);
                             }
-                            //     } else {
-                            //         record[wid] = database[wid];
-                            //         cb1(null);
-                            //     }
-                            // },
+
 
                             ,
                             function (cb1) {
@@ -858,59 +734,6 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                                 cbMap(null);
                             });
 
-                        // step1
-                        // if (!database[wid]) {
-                        //     execute({
-                        //         'executethis': 'getwid',
-                        //         'wid': wid
-                        //     }, function (err, widrecord) {
-                        //         // If error, bounce out
-                        //         if (err && Object.keys(err).length > 0) {
-                        //             cbMap(err, widrecord);
-
-                        //         } else {
-                        //             try {
-
-
-                        //                 proxyprinttodiv('querywid finalformatlist widrecord ', widrecord, 17);
-                        //                 var widrecordFixed = {};
-                        //                 widrecordFixed['data'] = widrecord[0];
-                        //                 widrecordFixed['metadata'] = widrecord[0]['metadata'];
-                        //                 widrecordFixed['wid'] = widrecord[0]['wid'];
-                        //                 extrarecord[environmentdb] = extraparameters[wid];
-                        //                 delete widrecord[0]['wid'];
-                        //                 delete widrecord[0]['metadata'];
-                        //                 widrecord = widrecordFixed;
-
-                        //                 proxyprinttodiv('querywid finalformatlist widrecord', convertfromdriformat(widrecord), 17);
-                        //                 proxyprinttodiv('querywid finalformatlist extraparameters[wid]', extrarecord, 17);
-                        //                 widrecord = extend(true, widrecord, extrarecord);
-                        //                 proxyprinttodiv('querywid finalformatlist widrecord after ', widrecord, 17);
-
-                        //                 if (convertmethod === "toobject") {
-                        //                     record[wid] = widrecord;
-                        //                 } else {
-                        //                     record[wid] = convertfromdriformat(widrecord);
-                        //                 }
-                        //                 step2
-                        //                 proxyprinttodiv('querywid finalformatlist excludeset ', excludeset, 17);
-                        //                 if (!excludeset[wid]) {
-                        //                     output.push(record);
-                        //                 }
-
-                        //                 cbMap(null);
-                        //             } // end try
-                        //             catch (err) {
-                        //                 var finalobject = createfinalobject({
-                        //                     "result": "getwid"
-                        //                 }, {}, "getwid", err, inbound_parameters_120);
-                        //                 cbMap(finalobject.err, finalobject.res);
-                        //             }
-                        //         }
-                        //     })
-                        // } //dbwid
-
-
                     }); // next tick
                 },
 
@@ -925,85 +748,12 @@ exports.querywid = querywid = function querywid(parameters, callback) { // can c
                     }
                 }); // mapseries
         } // if
-        // } // end try
-        // catch (err) {
-        //     var finalobject = createfinalobject({
-        //         "result": "formatListFinal"
-        //     }, {}, "formatListFinal", err, inbound_parameters_120);
-        //     callback(finalobject.err, finalobject.res);
-        // }
+
     }
 
 };
 
-//
-//    // Aggregation Section **********
-//    // Skip if there are no aggParams
-//    if (getObjectSize(aggParams) != 0) {
-//        if (mQueryString != "") {
-//            aggParams['mongoaggquery '] = mQueryString;
-//        }
-//        output = aggregationQuery(aggParams);
-//    }
-//
-//    // Hard coding addons Section **********
-//    // Skip if there are no aggParams
-//    if (getObjectSize(addParams) != 0) {
-//        if (mQueryString != ""){
-//            // Since addonQuery will execute a query, it needs the mQueryString to work with
-//            addParams['query '] = mQueryString;
-//            var data_From_Mongo = addonQuery(addParams);
-//            output = data_From_Mongo;
-//        }
-//    }
-//    proxyprinttodiv('
-// Function MongoDataQuery output: ', output);
-//    targetfunction = mongoquery;
-//    queryresults = executethis(output, mongoquery);
-//    //queryresults=mongoquery(output,target,callback);
-//    return queryresults; // whatever happens, return the output
 
-// End of MongoDataQuery
-
-// Use the mQueryString to call on mongo with it
-
-
-// function queryafterrelationship(parameters, output) {
-//     mQueryString = '{"$and": [';
-
-//     if (isParameterLower(parameters, "mongowidmethod")) {
-//         var dtotype = parameters["mongowidmethod"];
-//         remove(parameters, "mongowidmethod");
-
-//         // This section addes the dtoType to the string
-//         if (dtotype) {
-//             var q3 = "{metadata.method:" + dtotype + "},";
-//             if (q3) {
-//                 mQueryString += q3;
-//             }
-//         }
-//     }
-
-//     return mQueryString;
-// }
-// function queryafterrelationship(parameters, output) {
-//     console.log('output is--'+output);
-//     console.log('1--'+BuildMultipleQuery(output));
-//     console.log('2--'+BuildMultipleQuery(BuildSingleQuery(output)));
-//     var query = BuildMultipleQuery(BuildSingleQuery(output));
-//     return query;
-// }
-
-// will go through list, look for a specific parameter, create a new list based on that parameter
-
-
-
-// formatlist (inlist, parmnamein, parmnameout, environment)
-//     inlist must be a list in standard mongo output: [{}, {}, {}]
-//     this funcitin converts this list to [x:{}, x:{}, x:{}] or [{x:{}}, {x:{}}, {x:{}}]
-//     it looks for parmnamein/out in {} ... based on what it finds produces a result
-//     execpetions...if parmaneout="wid" then x will be "wid"
-//     if parmnamein = "" then entire envrionendb (entire record will be sent)
 
 function copylist(inlist, parmnamein, parmnameout, environmentdb) {
     var inbound_parameters = JSON.parse(JSON.stringify(arguments));
@@ -1066,10 +816,7 @@ function BuildSimpleQuery(key, value, preamble) {
 
     result = "{\"" + key + "\":\"" + value + "\"}";
 
-    //debugfn("formatListFinal code generator", "formatListFinal", "get", "code", 2, 1, {
-    //    0: inbound_parameters,
-    //    1: result
-    //}, 6);
+
 
     return result;
 }
@@ -1095,24 +842,14 @@ function BuildSingleQuery(parameters, outerquerytype, preamble) {
     if (!outerquerytype) {
         outerquerytype = "or";
     } // default if not sent in
-    // parameters can be [{a:b, c:d, e:f}] or {a:b, c:d, e:f}
-    // if [] then remove []
 
-    // jan 22
-    // if (parameters instanceof Array) {
-    //     parameters = parameters[0]
-    // }
 
     if (!parameters) {
         return
     }
 
     var parametersCount = parameters.length;
-    // if (parameters instanceof Array) {
-    //     parametersCount = parameters.length
-    // } else {
-    //     parametersCount = Object.keys(parameters).length
-    // }
+
 
     if (parametersCount > 1) {
         //returnString = ' {"$or": [';
@@ -1151,10 +888,7 @@ function BuildSingleQuery(parameters, outerquerytype, preamble) {
     }
     proxyprinttodiv('querywid buildsinglequery end', returnString, 17);
 
-    //debugfn("BuildSingleQuery code generator", "BuildSingleQuery", "get", "code", 2, 1, {
-    //    0: inbound_parameters,
-    //    1: returnString
-    //}, 6);
+
 
     return returnString;
 }
@@ -1216,49 +950,11 @@ function BuildMultipleQuery(listofparameters, outerquerytype, innerquerytype, pr
     }
     proxyprinttodiv('querywid buildmultiplequery end', returnString, 17);
 
-    //debugfn("BuildMultipleQuery code generator", "BuildMultipleQuery", "get", "code", 2, 1, {
-    //    0: inbound_parameters,
-    //    1: returnString
-    //}, 6);
+
 
     return returnString;
 }
 
-// Similar to BuildSingleQuery, but different...let it be please.
-// function RelationshipBuildSingleQuery(parameters) {
-//     var result;
-
-//     // seed result with the beginning of a mongo or query
-//     var parametersCount = countKeys(parameters);
-//     if (parametersCount > 1) {
-//         result = '{"$or":[';
-//     } else {
-//         result = "";
-//     }
-//     // build a {key,"value"} for each parameter
-//     //foreach (var p in parameters)
-//     for (var key in parameters) {
-//         var miniobject = parameters[key];
-//         for (var item in miniobject) {
-//             result += '{"' + item + '":"' + miniobject[item] + '"}';
-//         }
-
-
-
-//         //result +=  parameters[key];
-//         //result +=  '{"' + parameters[key].key + '":' + parameters[key].value + "}";
-//         result += ",";
-//     }
-
-//     // strip off the last comma and add the closing of OR
-//     result = result.substring(0, result.length - 1);
-//     if (parametersCount > 1) {
-//         result += "]},";
-//     } else {
-//         result += ",";
-//     }
-//     return result;
-// }
 
 function queryafterrelationship(parameters, set2) {
     var inbound_parameters = JSON.parse(JSON.stringify(arguments));
@@ -1269,17 +965,11 @@ function queryafterrelationship(parameters, set2) {
     set1.push({
         "metadata.method": mongowidmethod
     });
-    // set2 = formatlist(set2, "wid", "wid");
     set3.push(set1);
     set3.push(set2);
     proxyprinttodiv('querywid queryafterrelationship set3', set3, 17);
 
     var result = BuildMultipleQuery(set3, 'and', 'or', null);
-
-    //debugfn("queryafterrelationship code generator", "queryafterrelationship", "get", "code", 2, 1, {
-    //    0: inbound_parameters,
-    //    1: result
-    //}, 6);
 
     return result;
 }
@@ -1365,542 +1055,5 @@ function relationShipQuery(inputParameters, input, environmentdb) {
     }
     querystring = BuildMultipleQuery(queryset, "and", "or", null);
 
-    //debugfn("relationShipQuery code generator", "relationShipQuery", "get", "code", 2, 1, {
-    //    0: inbound_parameters,
-    //    1: querystring
-    //}, 6);
-
     return querystring;
-}
-
-//     var parametersCount = countKeys(input);
-//     // Maybe there was no match...
-//     if (parametersCount == 0) {
-//         return 'No records to find relationships of.'
-//     }
-//     // There are always multiple sections to a relationship query
-//     // So the string must start with $and
-//     mQueryString = '';
-//     console.log('>>>' + input);
-//     if (input) {
-//         mQueryString = '{"$and":[';
-//     }
-
-//     var returnvalues = input;
-//     var queryParameters = [];
-
-//     for (var i = 0; i < returnvalues.length; i++) {
-//         var obj = {};
-
-//         if (returnvalues[i]['wid']) {
-//             if (direction === 'forward') {
-//                 obj = {
-//                     'primarywid': returnvalues[i]['wid']
-//                     // 'data.primarywid': returnvalues[i]['wid']
-//                 };
-//             } else {
-//                 obj = {
-//                     'secondarywid': returnvalues[i]['wid']
-//                 };
-//             }
-//             queryParameters.push(obj);
-
-//         }
-//     }
-
-
-//     // Section 1 is using the widnames as the first $or group
-//     var q1 = BuildSingleQuery(queryParameters, "or", "data") {
-//     //var q1 = RelationshipBuildSingleQuery(queryParameters);
-//     if (q1) {
-//         q1 = q1.substring(0, q1.length - 1);
-//         mQueryString += q1 + ",";
-//     }
-
-
-
-//
-//         var q2 = querywid(parameters);
-//         if(q2){
-//             mQueryString+= "[" + q2 + "],";
-//         }
-//
-
-
-//     // This section addes the dtoType to the string
-//     if (dtotype) {
-//         var q3 = '{"data.metadata.method":"' + dtotype + '"},';
-//         if (q3) {
-//             mQueryString += q3;
-//         }
-//     }
-
-//     // This section is typically 'attribute', but could really be anything.
-//     if (type) {
-//         // var q4 = '{"data.relationshiptype":"' + type + '"},';
-//         var q4 = '{"relationshiptype":"' + type + '"},';
-//         if (q4) {
-//             mQueryString += q4;
-//         }
-//     }
-
-//     mQueryString = mQueryString.substring(0, mQueryString.length - 1) + "]}";
-//     // The string is now built and ready to return.
-//     proxyprinttodiv('Relationship mQueryString : ', mQueryString);
-//     console.log(">>> mQueryString" + mQueryString);
-//     return mQueryString;
-// } //End of relationShipQuery function
-
-
-
-
-function aggregationQuery(parameters) {
-    var inbound_parameters = JSON.parse(JSON.stringify(arguments));
-
-    var mongoAggregation = ""; // String
-    var query;
-
-    // Fish out the parameters
-    if (isParameterLower(parameters, "mongoaggregation")) {
-        mongoAggregation = parameters["mongoaggregation"];
-        remove(parameters, "mongoaggregation");
-    }
-    if (isParameterLower(parameters, "mongoaggquery")) {
-        mongoaggquery = parameters["mongoaggquery"];
-        remove(parameters, "mongoaggquery");
-    }
-    proxyprinttodiv('THE QUERY AGGREGATION WOULD RUN IS : ', mongoaggquery);
-
-    // Here is where you would execute the mongoaggquery
-    // Instead, the dummy call to mongo will return a few wids to work with
-    parameters = mongo('set1');
-
-    // Pull out widnames anb build aggregate string
-    var originalQuery = "{\"$match\":{\"wid\":{\"$in\":[";
-    // Build the array to match records in.
-    for (var p in parameters) {
-        originalQuery += " 'wid':'" + p + "',";
-    }
-    // Strip off the last comma and close the string
-    originalQuery = originalQuery.substring(0, originalQuery.length - 1);
-    originalQuery += "]}}";
-
-    // An array is the variable that gets set to the aggregation call.
-    var pipelineQuery = [originalQuery, mongoAggregation];
-    proxyprinttodiv('pipelineQuery : ', pipelineQuery);
-
-    //debugfn("aggregationQuery code generator", "aggregationQuery", "get", "code", 2, 1, {
-    //    0: inbound_parameters,
-    //    1: pipelineQuery
-    //}, 6);
-
-    return pipelineQuery;
-}
-
-// Addon Section **********
-// The main use of this seciton is to find the first or last of a result set.
-// There are many other functions possible, but this is probably the most used.
-// NOTE: The mongorelationshipmethod is actually an addParam, not a relationship param.
-// It gets called a relationship param, but is in actuality and addParam. Really this
-// is a result of implenting DRI type functions in stages to apply to mongo.
-
-function addonQuery(parameters) {
-    var inbound_parameters = JSON.parse(JSON.stringify(arguments));
-
-    var returnValues = {};
-
-    // #region Query Addon defaults
-    var mongoSetLimit = ""; // String
-    var mongoSetSkip = ""; // String
-    var mongoSetSortBy = ""; // String
-    var mongoSetSortOrder = ""; // String
-    var mongoSetMax = ""; // String
-    var mongoSetHint = ""; // String
-    var mongoReturnCount = ""; // String
-    var mongoExplain = ""; // String
-    var mongoSize = ""; // String
-    var mongoRelationshipMethod = "all";
-
-    if (isParameterLower(parameters, "mongosetlimit")) {
-        mongoSetLimit = parameters["mongosetlimit"];
-    }
-    if (isParameterLower(parameters, "mongosetskip")) {
-        mongoSetSkip = parameters["mongosetskip"];
-    }
-    if (isParameterLower(parameters, "mongosetsortby")) {
-        mongoSetSortBy = parameters["mongosetsortby"];
-    }
-    if (isParameterLower(parameters, "mongosetsortorder")) {
-        mongoSetSortOrder = parameters["mongosetsortorder"];
-    }
-    if (isParameterLower(parameters, "mongosetmax")) {
-        mongoSetMax = parameters["mongosetmax"];
-    }
-    if (isParameterLower(parameters, "mongosethint")) {
-        mongoSetHint = parameters["mongosethint"];
-    }
-    if (isParameterLower(parameters, "mongoreturncount")) {
-        mongoReturnCount = parameters["mongoreturncount"];
-    }
-    if (isParameterLower(parameters, "mongoexplain")) {
-        mongoExplain = parameters["mongoexplain"];
-    }
-    if (isParameterLower(parameters, "mongosize")) {
-        mongoSize = parameters["mongosize"];
-    }
-    if (isParameterLower(parameters, "mongorelationshipmethod")) {
-        mongoRelationshipMethod = parameters["mongorelationshipmethod"];
-    }
-
-    // Set up default values to set with query....change if data for them is present.
-    var defaultLimit = (mongoSetLimit == "") ? 282828289 : parseInt(mongoSetLimit);
-    var defaultSkip = (mongoSetSkip == "") ? 0 : parseInt(mongoSetSkip);
-    var defaultSortBy = (mongoSetSortBy == "") ? "_id" : mongoSetSortBy;
-    var defaultSortOrder = (mongoSetSortOrder == "") ? "ascending" : mongoSetSortOrder;
-    var defaultSetMax = (mongoSetMax == "") ? 282828289 : parseInt(mongoSetMax);
-    var defaultHint = (mongoSetHint == "") ? "_id" : mongoSetHint;
-    var defaultCount = (mongoReturnCount != "");
-    var defaultExplain = (mongoExplain != "");
-    var defaultSize = (mongoSize != "");
-
-    var defaultFieldsInclude = "";
-    if (isParameterLower(parameters, "mongosetfieldsinclude")) {
-        defaultFieldsInclude = parameters["mongosetfieldsinclude"];
-        // LM: This does not make sense
-        // defaultFieldsInclude = getFromMongo({'wid':mongoSetFieldsInclude});
-    }
-    var defaultFieldsExclude = "";
-    if (isParameterLower(parameters, "mongosetfieldsexclude")) {
-        defaultFieldsExclude = parameters["mongosetfieldsexclude"];
-        // LM: This does not make sense
-        // defaultFieldsExclude = getFromMongo({'wid':mongoSetFieldsExclude});
-    }
-
-    // LM: This is a mistake...TODO: Figure out what it was supposed to be
-    // the method is taken care of following so??..I think it was left by accident
-    //
-    // var mongoRelationshipMethod="";
-    // if (isParameterLower(parameters, "mongorelationshipmethod")) {
-    //  var mongoSetFieldsExclude = parameters["mongorelationshipmethod"];
-    // }
-    // Dealing with method is setting the defaults accordingly
-
-    // Applies the logic from the method
-    if (mongoRelationshipMethod == "first") {
-        defaultLimit = 1;
-    }
-    if (mongoRelationshipMethod == "last") {
-        defaultLimit = 1;
-        defaultSortOrder = "descending";
-    }
-
-    // #region Executing Addons -- This is simply organizing
-    // parameters at this point. All of the addOns still
-    // need to be implemented.
-
-    // Need different functions for ascending and descending
-    // Ascending Section
-    var mycursor = "";
-    if (defaultSortOrder != "descending") {
-        var key, value;
-        // Count ignores the limit or skip, so it will return all the matching records.count regardless of limit or skip.
-        if (defaultCount) {
-            // LM: ?
-            //returnValues.length = 0;
-            key = "Number of documents found is";
-            value = "";
-            value += "defaultFieldsInclude: '" + defaultFieldsInclude + "' , ";
-            value += "defaultFieldsExclude: '" + defaultFieldsExclude + "' , ";
-            value += "defaultHint: '" + defaultHint + "' , ";
-            value += "defaultLimit: '" + defaultLimit + "' , ";
-            value += "defaultSkip: '" + defaultSkip + "' , ";
-            value += "defaultSortBy: '" + defaultSortBy + "' , ";
-            returnValues[key] = value;
-        }
-        // mongoExplain returns the statistics of the query, not the query itself.
-        if (defaultExplain) {
-            // LM: ?
-            //returnValues.length = 0;
-            key = "The query statistics are as follows";
-            value = "";
-            value += "defaultFieldsInclude: '" + defaultFieldsInclude + "' , ";
-            value += "defaultFieldsExclude: '" + defaultFieldsExclude + "' , ";
-            value += "defaultHint: '" + defaultHint + "' , ";
-            value += "defaultLimit: '" + defaultLimit + "' , ";
-            value += "defaultSkip: '" + defaultSkip + "' , ";
-            value += "defaultSortBy: '" + defaultSortBy + "' , ";
-            returnValues[key] = value;
-        }
-        // mongoSize will return an int of the number of records, but unlike count, it takes into account the limit and skip
-        if (defaultSize) {
-            // LM: ?
-            //returnValues.length = 0;
-            key = "Number of documents found is";
-            value = "";
-            value += "defaultFieldsInclude: '" + defaultFieldsInclude + "' , ";
-            value += "defaultFieldsExclude: '" + defaultFieldsExclude + "' , ";
-            value += "defaultHint: '" + defaultHint + "' , ";
-            value += "defaultLimit: '" + defaultLimit + "' , ";
-            value += "defaultSkip: '" + defaultSkip + "' , ";
-            value += "defaultSortBy: '" + defaultSortBy + "' , ";
-            value += "defaultSize: '" + defaultSize + "' , ";
-            returnValues[key] = value;
-        }
-
-        if (!defaultCount && !defaultExplain && !defaultSize) {
-            value = "";
-            value += "defaultFieldsInclude: '" + defaultFieldsInclude + "' , ";
-            value += "defaultFieldsExclude: '" + defaultFieldsExclude + "' , ";
-            value += "defaultHint: '" + defaultHint + "' , ";
-            value += "defaultLimit: '" + defaultLimit + "' , ";
-            value += "defaultSkip: '" + defaultSkip + "' , ";
-            value += "defaultSortBy: '" + defaultSortBy + "' , ";
-            mycursor = value;
-        }
-    } else {
-        // Count ignores the limit or skip, so it will return all the matching records.count regardless of limit or skip.
-        if (defaultCount) {
-            // LM: ?
-            //returnValues.length = 0;
-            key = "Number of documents found is";
-            value = "";
-            value += "defaultFieldsInclude: '" + defaultFieldsInclude + "' , ";
-            value += "defaultFieldsExclude: '" + defaultFieldsExclude + "' , ";
-            value += "defaultHint: '" + defaultHint + "' , ";
-            value += "defaultLimit: '" + defaultLimit + "' , ";
-            value += "defaultSkip: '" + defaultSkip + "' , ";
-            value += "defaultSortBy: '" + defaultSortBy + "' , ";
-            returnValues[key] = value;
-        }
-        // mongoExplain returns the statistics of the query, not the query itself.
-        if (defaultExplain) {
-            // LM: ?
-            //returnValues.length = 0;
-            key = "The query statistics are as follows";
-            value = "";
-            value += "defaultFieldsInclude: '" + defaultFieldsInclude + "' , ";
-            value += "defaultFieldsExclude: '" + defaultFieldsExclude + "' , ";
-            value += "defaultHint: '" + defaultHint + "' , ";
-            value += "defaultLimit: '" + defaultLimit + "' , ";
-            value += "defaultSkip: '" + defaultSkip + "' , ";
-            value += "defaultSortBy: '" + defaultSortBy + "' , ";
-            returnValues[key] = value;
-        }
-        // mongoSize will return an int of the number of records, but unlike count, it takes into account the limit and skip
-        if (defaultSize) {
-            // LM: ?
-            //returnValues.length = 0;
-            key = "Number of documents found is";
-            value = "";
-            value += "defaultFieldsInclude: '" + defaultFieldsInclude + "' , ";
-            value += "defaultFieldsExclude: '" + defaultFieldsExclude + "' , ";
-            value += "defaultHint: '" + defaultHint + "' , ";
-            value += "defaultLimit: '" + defaultLimit + "' , ";
-            value += "defaultSkip: '" + defaultSkip + "' , ";
-            value += "defaultSortBy: '" + defaultSortBy + "' , ";
-            value += "defaultSize: '" + defaultSize + "' , ";
-            returnValues[key] = value;
-        }
-        // The count, explain, and size are all calls that don't return records...
-        // So don't use mycursor to get the records if you don't want them
-        if (!defaultCount && !defaultExplain && !defaultSize) {
-            value = parameters["query"] + ",";
-            value += "defaultFieldsInclude: '" + defaultFieldsInclude + "' , ";
-            value += "defaultFieldsExclude: '" + defaultFieldsExclude + "' , ";
-            value += "defaultHint: '" + defaultHint + "' , ";
-            value += "defaultLimit: '" + defaultLimit + "' , ";
-            value += "defaultSkip: '" + defaultSkip + "' , ";
-            value += "defaultSortBy: '" + defaultSortBy + "' , ";
-            mycursor = value;
-        }
-    }
-
-    if (!defaultCount && !defaultExplain && !defaultSize) {
-        returnValues = mycursor;
-    }
-    proxyprinttodiv('Function Add On Query() output : ', returnValues);
-    return returnValues;
-} //End of addOnQuery function
-
-function fishOut(parameters) {
-    try {
-        var inbound_parameters_121 = arguments;
-
-        var p = [];
-        var filter_data = {};
-        var left_overs = {};
-        // throw ({'Sample_error': 'fishout'});
-
-
-        // filter_data = tolowerparameters(parameters, {}, { // queParams
-        filter_data = getcommand(parameters, {}, { // queParams
-            "mongowid": "",
-            "mongorawquery": "",
-            "mongoquerywid": "",
-            "mongosinglequery": "",
-            "mongomultiplequery": ""
-        }, false);
-        p[0] = filter_data.filteredobject;
-
-        // filter_data = tolowerparameters(parameters, {}, { // relParams
-        filter_data = getcommand(parameters, {}, { // relParams
-            "mongorelationshipdirection": "",
-            "mongorelationshiptype": "",
-            "mongorelationshipmethod": "",
-            "mongorelationshiprawquery": "",
-            "mongorelationshiplink": "",
-            "mongorelationshipquery": "",
-            "mongodtotype": "",
-            "mongorelquery": ""
-        }, false);
-        p[1] = filter_data.filteredobject;
-
-        // filter_data = tolowerparameters(parameters, {}, { // aggParams
-        filter_data = getcommand(parameters, {}, { // aggParams
-            "mongoaggregation": "",
-            "mongoaggquery": ""
-        }, false);
-        p[2] = filter_data.filteredobject;
-
-        // filter_data = tolowerparameters(parameters, {}, { // addParams
-        filter_data = getcommand(parameters, {}, { // addParams
-            "mongosetfieldsinclude": "",
-            "mongosetfieldsexclude": "",
-            "mongosetlimit": "",
-            "mongosetskip": "",
-            "mongosethint": "",
-            "mongosetmax": "",
-            "mongosetsortby": "",
-            "mongoreturncount": "",
-            "mongoexplain": "",
-            "mongosize": "",
-            "mongosetsortorder": ""
-        }, false);
-        p[3] = filter_data.filteredobject;
-
-        // filter_data = tolowerparameters(parameters, {}, { // xtrParams
-        filter_data = getcommand(parameters, {}, { // xtrParams
-            "mongowid": "",
-            "mongorawquery": "",
-            "mongoquerywid": "",
-            "mongosinglequery": "",
-            "mongomultiplequery": "",
-            "mongorelationshipdirection": "",
-            "mongorelationshiptype": "",
-            "mongorelationshipmethod": "",
-            "mongorelationshiprawquery": "",
-            "mongorelationshipquery": "",
-            "mongorelationshiplink": "",
-            "mongodtotype": "",
-            "mongorelquery": "",
-            "mongoaggregation": "",
-            "mongoaggquery": "",
-            "mongosetfieldsinclude": "",
-            "mongosetfieldsexclude": "",
-            "mongosetlimit": "",
-            "mongosetskip": "",
-            "mongosethint": "",
-            "mongosetmax": "",
-            "mongosetsortby": "",
-            "mongoreturncount": "",
-            "mongoexplain": "",
-            "mongosize": "",
-            "mongosetsortorder": "",
-            "mongowidmethod": ""
-            //"command.db": "",
-            //"command.convertmethod": ""
-        }, true);
-        p[4] = filter_data.output;
-
-        // filter_data = tolowerparameters(parameters, {}, { // relafterParams;
-        filter_data = getcommand(parameters, {}, { // relafterParams;
-            "mongowidmethod": ""
-        }, false);
-        p[5] = filter_data.filteredobject;
-
-        // filter_data = tolowerparameters(parameters, {}, { // commandParams
-        //     "command.db": "",
-        //     "command.convertmethod": ""
-        // }, false);
-
-        // filter_data = getcommand(parameters, // commandParams
-        // {
-        //     "command":{"db": config.configuration.defaultdb},
-        //     "command":{"collection":config.configuration.defaultcollection},
-        //     "command":{"keycollection":config.configuration.defaultkeycollection},
-        //     "command":{"datastore" : config.configuration.defaultdatastore},
-        //     "command":{"databasetable":config.configuration.defaultdatabasetable},
-        //     "command":{"convertmethod": "toobject"}
-        // },
-        // { // commandParams
-        //     "command":{"db": ""},
-        //     "command":{"collection":""},
-        //     "command":{"keycollection":""},
-        //     "command":{"datastore" : ""},
-        //     "command":{"databasetable":""},
-        //     "command":{"convertmethod": ""}
-        // }, false);
-
-        // if (parameters.command && Object.keys(parameters.command.environment).length > 0) {
-        //     parameters.command = extend(false, parameters.command.environment, parameters.command)
-        //     }  
-
-        // // if(!parameters.command){parameters.command={}};
-        // // if(!parameters.command.environment){parameters.command.environment={}};
-
-        // // parameters = getcommand(parameters, {
-        // //         "command": {
-        // //             "datastore": parameters.command.environment.datastore,
-        // //             "collection":parameters.command.environment.collection,
-        // //             //"keycollection":parameters.command.environment.collection + "key",
-        // //             "db":parameters.command.environment.db,
-        // //             "databasetable":parameters.command.environment.databasetable
-        // //         }
-        // //     }, {},
-        // //     false).output;
-        // if(parameters)
-        //     delete parameters['command']['environment'];
-
-        if (parameters.command && Object.keys(parameters.command.environment).length > 0) {
-            copyEnvironmentCommands(parameters);
-        }
-
-
-        filter_data = getcommand(parameters, {
-                "command": {
-                    "datastore": config.configuration.defaultdatastore,
-                    "collection":config.configuration.defaultcollection,
-                    //"keycollection":config.configuration.defaultcollection + "key",
-                    "db":config.configuration.defaultdb,
-                    "databasetable":config.configuration.defaultdatabasetable,
-                    "convertmethod":"toobject",
-                    // "deepfilter" : {"keepaddthis":false}
-                    "keepaddthis":true
-                }
-            }, {
-                "command": {
-                    "datastore": "",
-                    "collection":"",
-                    //"keycollection":"",
-                    "db":"",
-                    "databasetable":"",
-                    "convertmethod":"",
-                    // "deepfilter" : {"keepaddthis":""}
-                    "keepaddthis":"",
-                    "environment":""
-                }
-            },
-            true);
-
-        p[6] = filter_data.filteredobject.command; // Joe - removed command.command in mquery
-
-        return p;
-
-    } // end try
-    catch (err) {
-        var finalobject = createfinalobject({
-            "result": "fishout"
-        }, {}, "fishout", err, inbound_parameters_107);
-        return finalobject;
-    }
 }

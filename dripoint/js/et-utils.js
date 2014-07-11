@@ -1509,7 +1509,8 @@ function recurseModObj(inputObject, dtoObject, convert, totype, callback) {
                                             cbMap(err, result);
                                         } else {
                                             proxyprinttodiv("getwidmaster result for wid  " + JSON.stringify(dataType), result, 41);
-                                            var widObj = result[0][0];
+                                            var widObj = result[0];
+                                            // var widObj = result[0][0];
                                             if (widObj) {
                                                 if (widObj.hasOwnProperty(inpVal)) {
                                                     modifiedObj[inpKey] = inpVal;
@@ -3877,6 +3878,10 @@ function getRandomNumberByLength(length) {
         if (inputWidgetObject){}
             delete inputWidgetObject['command']['environment'];
     }
+
+
+
+
 
 
 

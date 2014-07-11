@@ -25,6 +25,8 @@ exports.sc = sc = function sc(accessconfig, callback) {
     var _datastore = accessconfig["_datastore"];
     var _loginlevel = accessconfig["_loginlevel"];
 
+    var groupsfrommetadata = [];
+
     proxyprinttodiv('Function securitytest accesstoken-- ', _accesstoken, 39);
     proxyprinttodiv('Function securitytest mygroup-- ', _mygroup, 39);
     proxyprinttodiv('Function securitytest actiongroup-- ', _action, 39);
@@ -71,11 +73,11 @@ exports.sc = sc = function sc(accessconfig, callback) {
                     proxyprinttodiv('Function sc getting user for ac -- ', _accesstoken, 39);
                     getuserbyac(_accesstoken, function(err, userDto) {
                         actor = userDto;
-                        if(userDto){
+                        if (userDto) {
                             actorGroup = userDto.wid; // consider user is usergroup
                             proxyprinttodiv('Function sc got actor Group for ac -- ', actorGroup, 39);
                             cb1(null);
-                        }else{
+                        } else {
                             cb1(null);
                         }
                     });
@@ -119,11 +121,11 @@ exports.sc = sc = function sc(accessconfig, callback) {
 
                 execute(query, function(err, res) {
                     var res1 = res[0][Object.keys(res[0])[0]];
-                    if(res1 && res1['metadata'] && res1['metadata']['system']){
+                    if (res1 && res1['metadata'] && res1['metadata']['system']) {
                         actionCreator = res1['metadata']['system']['creator'];
                         proxyprinttodiv('Function securitycheck Action creator is -- ', actionCreator, 39);
                         cb1(null, "identified action owner");
-                    }else{
+                    } else {
                         cb1(null);
                     }
                 });
@@ -134,18 +136,26 @@ exports.sc = sc = function sc(accessconfig, callback) {
                 // get all the groups for the actioncreator
                 getrelatedwids("", "groupdto", actionCreator, "userdto", "", function(err, res) {
                     actioncreatorgroups = [];
-                    addGroupWids(actioncreatorgroups, res);
 
-                    // iterate over all groups and get the related groups
-                    for (var i in actioncreatorgroups) {
-                        var groupWid = actioncreatorgroups[i];
-                        // get all related groups recursively and concat to groups set
-                        getrelatedwids("", "groupdto", groupWid, "groupdto", "", function(err, res) {
-                            addGroupWids(actioncreatorgroups, res);
-                        });
-                    }
+                    addSavedGroupsDataIfNeeded(actionCreator, actioncreatorgroups, function(e, actioncreatorgroups) {
 
-                    cb1(err, actioncreatorgroups);
+
+
+                        addGroupWids(actioncreatorgroups, res);
+
+                        // iterate over all groups and get the related groups
+                        for (var i in actioncreatorgroups) {
+                            var groupWid = actioncreatorgroups[i];
+                            // get all related groups recursively and concat to groups set
+                            getrelatedwids("", "groupdto", groupWid, "groupdto", "", function(err, res) {
+                                addSavedGroupsDataIfNeeded(groupWid, actioncreatorgroups, function(e, actioncreatorgroups) {
+                                    addGroupWids(actioncreatorgroups, res);
+                                });
+                            });
+                        }
+
+                        cb1(err, actioncreatorgroups);
+                    });
                 });
             },
 
@@ -173,28 +183,33 @@ exports.sc = sc = function sc(accessconfig, callback) {
                     getrelatedwids(actorGroup, "groupdto", "", "userdto", {}, function(err, res) {
                         actorgroups = [];
 
-                        for (var idx in res) {
-                            var json = res[idx];
-                            var objkey = Object.keys(json)[0];
-                            var groupWid = json[objkey]['primarywid'];
-                            actorgroups.push(groupWid);
-                            // addactorGroups(res[idx], actorgroups);
-                            // TODO :: get more groups applicable recursively
-                            getrelatedwids(groupWid, "groupdto", "", "groupdto", "", function(err, res1) {
-                                for (var idx1 in res1) {
-                                    var json = res1[idx1];
-                                    var objkey = Object.keys(json)[0];
-                                    var groupWid = json[objkey]['primarywid'];
-                                    actorgroups.push(groupWid);
-                                }
-                                // addactorGroups(res, actorgroups);
-                                cb1(err, actorgroups);
-                            });
-                        }
+                        addSavedGroupsDataIfNeeded(actorGroup, actorgroups, function(e, actorgroups) {
 
+
+                            for (var idx in res) {
+                                var json = res[idx];
+                                var objkey = Object.keys(json)[0];
+                                var groupWid = json[objkey]['primarywid'];
+                                actorgroups.push(groupWid);
+                                // addactorGroups(res[idx], actorgroups);
+                                getrelatedwids(groupWid, "groupdto", "", "groupdto", "", function(err, res1) {
+                                    addSavedGroupsDataIfNeeded(groupWid, actorgroups, function(e, actorgroups) {
+                                        for (var idx1 in res1) {
+                                            var json = res1[idx1];
+                                            var objkey = Object.keys(json)[0];
+                                            var groupWid = json[objkey]['primarywid'];
+
+                                            actorgroups.push(groupWid);
+                                        }
+                                        // addactorGroups(res, actorgroups);
+                                        cb1(err, actorgroups);
+                                    });
+                                });
+                            }
+                        });
                     });
                 } else {
-                    // TODO :: no need progressing, security check is false
+                    //  no need progressing, security check is false
                     cb1(null, "No action creation permissions");
                 }
             },
@@ -214,10 +229,29 @@ exports.sc = sc = function sc(accessconfig, callback) {
         function(err, res) {
             // final callback
             proxyprinttodiv('Function Final callback returns -- ', securityCheckOutput, 39);
-            callback(err, {"authstatus":securityCheckOutput});
+            callback(err, {
+                "authstatus": securityCheckOutput
+            });
         });
 
 };
+
+
+function addSavedGroupsDataIfNeeded(wid, list, callback) {
+    execute({
+        "executethis":"getwidmaster","wid": wid
+    }, function(e, responsewid) {
+        // add data from metadata (saved earlier)
+         console.log(" ********** addSavedGroupsDataIfNeeded ******** " );
+        console.log(responsewid);
+        if (responsewid.metadata && responsewid.metadata.security && responsewid.metadata.security.group) {
+            for (var key in responsewid.metadata.security.group) {
+                list.push(key);
+            }
+        }
+        callback(null, list);
+    });
+}
 
 // get the 2 wids lists and check the security check output
 
@@ -276,14 +310,14 @@ exports.getuserbyac = getuserbyac = function getuserbyac(userac, callback) {
             };
 
             execute(query1, function(err, res1) {
-                if(res1 && res1[0]){
+                if (res1 && res1[0]) {
                     var res = res1[0];
                     proxyprinttodiv('Function getuserbyac query1 -- res', res1, 39);
                     var jsonKey = Object.keys(res)[0];
                     var jsonVal = res[jsonKey];
                     userWid = jsonVal;
                     cb(null);
-                }else{
+                } else {
                     cb(null);
                 }
             });
@@ -307,9 +341,6 @@ exports.getuserbyac = getuserbyac = function getuserbyac(userac, callback) {
 //****************************************************************************
 
 
-
-
-
 // ** GENERIC FUNCTION TO CREATE A USER WID ON THE BASIS OF RECEIVED DATA **
 // create createuserdata wid data and associated relationships
 exports.createuserdata = createuserdata = function createuserdata(userobj, callback) {
@@ -330,14 +361,34 @@ exports.createuserdata = createuserdata = function createuserdata(userobj, callb
         "country": userobj.country,
         "command": {
             "result": commandresult
+        },
+        'metadata.security': {
+            "group": {
+                "employees": "employees",
+                "managers": "managers"
+            },
+            "permissions": [{
+                "usergroup": "usergroups", /// TODO :: SEE IF HARDCODING THIS IS OKAY
+                "actiongroup": "actiongroups", /// TODO :: SEE IF HARDCODING THIS IS OKAY
+                "level": "99"
+            }]
+
+            // save metadata.security : {group: {employees: employees, managers:managers}, permissions: [{usergroup:, actiongroup:, level:}]}
+            // save metadata.security just like update wid above : {group: {employees: employees, managers:managers}, permissions: [{usergroup:, actiongroup:, level:}]}
+            // confirm security can use the data from here also
         }
-    }
+    };
 
     // create userdto data
     execute(userJson, function(err, res) {
         // create securitydto data
         proxyprinttodiv('Function createuserdata -- added getwidmaster on user  -- ' + userobj.wid, res, 39);
         callback(err, res);
+        // getwidmaster({
+        //     "wid": userobj.wid
+        // }, function(err, res) {
+        //     callback(err, res);
+        // });
     });
 }
 
@@ -350,19 +401,33 @@ exports.creategroup = creategroup = function creategroup(config, callback) {
     var grouptype = config['grouptype'];
     var commandresult = config["command.result"];
 
+
     execute([{
-        "executethis": "addwidmaster",
-        "metadata.method": "groupdto",
-        "metadata.system.creator": "user1", // TODO :: this shall come from inherit
-        "groupname": grouptype,
-        "type": grouptype,
-        "command": {
-            "result": commandresult
-        }
-    }], function(err, res) {
-        proxyprinttodiv('Function creategroup -- added group -- ', res, 39);
-        callback(err, res);
-    });
+            "executethis": "addwidmaster",
+            "metadata.method": "groupdto",
+            "metadata.system.creator": "user1", // TODO :: this shall come from inherit
+            "groupname": grouptype,
+            "type": grouptype,
+            "command": {
+                "result": commandresult
+            },
+            'metadata.security': {
+                "group": {
+                    "employees": "employees",
+                    "managers": "managers"
+                },
+                "permissions": [{
+                    "usergroup": "usergroups", /// TODO :: SEE IF HARDCODING THIS IS OKAY
+                    "actiongroup": "actiongroups", /// TODO :: SEE IF HARDCODING THIS IS OKAY
+                    "level": "99"
+                }]
+
+            }
+        }],
+        function(err, res) {
+            proxyprinttodiv('Function creategroup -- added group -- ', res, 39);
+            callback(err, res);
+        });
 };
 
 
@@ -373,17 +438,29 @@ exports.createaction = createaction = function createaction(config, callback) {
     var actiontype = config['actiontype'];
     var commandresult = config["command.result"];
     execute([{
-        "executethis": "addwidmaster",
-        "type": actiontype,
-        "metadata.system.creator": "user1", // TODO :: this shall come from inherit
-        "metadata.method": "actiondto",
-        "command": {
-            "result": commandresult
-        }
-    }], function(err, res) {
-        proxyprinttodiv('Function createaction -- added group of type "' + actiontype + '"  -- ', res, 39);
-        callback(err, res[0]);
-    });
+            "executethis": "addwidmaster",
+            "type": actiontype,
+            "metadata.system.creator": "user1", // TODO :: this shall come from inherit
+            "metadata.method": "actiondto",
+            "command": {
+                "result": commandresult
+            },
+            'metadata.security': {
+                "group": {
+                    "employees": "employees",
+                    "managers": "managers"
+                },
+                "permissions": [{
+                    "usergroup": "usergroups", /// TODO :: SEE IF HARDCODING THIS IS OKAY
+                    "actiongroup": "actiongroups", /// TODO :: SEE IF HARDCODING THIS IS OKAY
+                    "level": "99"
+                }]
+            }
+        }],
+        function(err, res) {
+            proxyprinttodiv('Function createaction -- added group of type "' + actiontype + '"  -- ', res, 39);
+            callback(err, res[0]);
+        });
 };
 
 // ** GENERIC FUNCTION TO ADD A RELATIONSHIP BETWEEN TWO WID TYPES ON THE BASIS OF RECEIVED DATA **
@@ -415,17 +492,29 @@ exports.addpermission = addpermission = function addpermission(config, callback)
     // add each permission to the user
     var commandresult = config["command.result"];
     execute([{
-        // add permissions as per given information
-        "executethis": "addwidmaster",
-        "metadata.method": "permissiondto",
-        "level": config['permission.level'],
-        "command": {
-            "result": commandresult
-        }
-    }], function(err, res) {
-        proxyprinttodiv('Function addpermission done --  >>>>>> added permission >>>>>  for  -- ', res, 39);
-        callback(err, res);
-    });
+            // add permissions as per given information
+            "executethis": "addwidmaster",
+            "metadata.method": "permissiondto",
+            "level": config['permission.level'],
+            "command": {
+                "result": commandresult
+            },
+            'metadata.security': {
+                "group": {
+                    "employees": "employees",
+                    "managers": "managers"
+                },
+                "permissions": [{
+                    "usergroup": "usergroups", /// TODO :: SEE IF HARDCODING THIS IS OKAY
+                    "actiongroup": "actiongroups", /// TODO :: SEE IF HARDCODING THIS IS OKAY
+                    "level": "99"
+                }]
+            }
+        }],
+        function(err, res) {
+            proxyprinttodiv('Function addpermission done --  >>>>>> added permission >>>>>  for  -- ', res, 39);
+            callback(err, res);
+        });
 }
 
 // ** GENERIC FUNCTION TO ADD A SECURITY DATA FOR A USER WID ON THE BASIS OF RECEIVED DATA **
@@ -528,8 +617,10 @@ exports.datax = datax = function datax(groupname, callback) {
         "city": "Marlborrough",
         "state": "MA",
         "zip": "01752",
-        "country": "US"
+        "country": "US",
     };
+
+
 
     // create user user1
     var organizationuser1 = {
@@ -609,6 +700,7 @@ exports.datax = datax = function datax(groupname, callback) {
 
 
     async.series([
+
         function(cb) {
             // create admin user
             dtox({}, function(err, resp) {
@@ -892,7 +984,7 @@ exports.testscreens = testscreens = function testscreens(config, callback) {
             // }
 
             // execute(q,function(e,r){
-                // callback(err, r);
+            // callback(err, r);
             // });
 
 
