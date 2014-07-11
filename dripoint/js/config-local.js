@@ -277,6 +277,8 @@ exports.execute_server = window.execute_server = execute_server = function execu
     var temp = params.command.environment.syncrule;
     params.command.environment.syncrule = "create_what_to_do_list";
 
+    delete params.command.environment;
+
     if (params.serverfn) // note the first par of if should be deleted...only for testing server locally
     {
         params.command.xrun = params.serverfn;
@@ -294,7 +296,7 @@ exports.execute_server = window.execute_server = execute_server = function execu
     }
     else
     {
-        delete params.command;
+        // server will override some command properties with the servers config defaults
 
         proxyprinttodiv('server calling ajax params', params, 99, true);
         executeAjax("", params, function (data) {
