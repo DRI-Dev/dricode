@@ -49,11 +49,11 @@ function runExecuteThis(parameters, resp) {
 
     if (parameters.command) {
         // grab server defaults
-        parameters.command = extend(true, parameters.command, config.configuration.default);
+        parameters.command = extend(true, parameters.command, config.configuration.d.default);
 
         if (parameters.command.environment && parameters.command.environment.default) {
             // overwrite current environment defaults with server defaults
-            parameters.command.environment.default = config.configuration.default;
+            parameters.command.environment.default = config.configuration.d.default;
         }
     }
 
