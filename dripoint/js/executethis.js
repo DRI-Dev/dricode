@@ -32,10 +32,11 @@
 
     // get other parameters that might be for this function
     function enhanceparameters(inboundparams) {
+        proxyprinttodiv("enhanceparameters before checkenvironment", inboundparams, 99, true);
         // first save and get from environment
         inboundparams.command.environment = checkenvironment(inboundparams.command.environment);
         // then bring items deeply nested in environmnet to "this" level
-        proxyprinttodiv("enhanceparameters inside enhanceparameters inboundparams after checkenvironment", inboundparams, 99, true);
+        proxyprinttodiv("enhanceparameters after checkenvironment", inboundparams, 99, true);
 
         if (inboundparams.command.environment.global
             || (inboundparams.command.environment.var
@@ -52,7 +53,7 @@
         } 
         // extend config defaults into inboundparams.command to default anything missing
         //inboundparams.command = extend(true, config.configuration.default, inboundparams.command);
-        inboundparams.command = extend(true, inboundparams.command.environment.default, inboundparams.command);
+        inboundparams.command = extend(true, {}, inboundparams.command.environment.default, inboundparams.command);
         return inboundparams;
     }
 

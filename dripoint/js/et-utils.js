@@ -2534,7 +2534,8 @@ function getRandomNumberByLength(length) {
 
                         // simplified conditional statement
                         // see if actual type found matches the execption list
-                        match = !exception_types.indexOf(diff_type) == -1;
+                        match = !(exception_types.indexOf(diff_type) == -1);
+                        proxyprinttodiv('logverify match', match, 91);
                     }
                 }
                 if (match===false){break;} // if one bad then we can stop
