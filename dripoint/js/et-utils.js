@@ -173,42 +173,6 @@ exports.copywid = copywid = copywid = function copywid(inputWidgetObject, callba
     });
 };
 
-exports.updatewid = updatewid = updatewid = function updatewid(originalarguments, callback) {
-    var inputWidgetObject = {};
-    extend(true, inputWidgetObject, originalarguments);
-
-    var err = null;
-    var widName = inputWidgetObject['wid'];
-    var found = false;
-    var getdatabaseinforesult;
-    var database = {};
-    var keydatabase = {};
-    //var defaultdatastore;
-    //if (config.configuration.environment==="local") {defaultdatastore='localstorage';} else {defaultdatastore='mongo';}
-
-    proxyprinttodiv('Function datastore inputWidgetObject 0', inputWidgetObject, 11);
-    // console.log('>>>inputWidgetObject.command.environment' +inputWidgetObject.command.environment)
-
-    if(!inputWidgetObject['metadata']){
-        inputWidgetObject['metadata']={};
-    }
-
-    // copy environment stuff
-    if(inputWidgetObject && inputWidgetObject.command && inputWidgetObject.command.usernamespace){
-        // add usernamespace from environment to metadata
-        if(inputWidgetObject.command.usernamespace){
-            inputWidgetObject['metadata']['accountid']=inputWidgetObject.command.usernamespace;
-        }
-    }
-
-    // not needed now as the environment variables are already defaulted into the command property in the enhanceparameters function
-//    if (inputWidgetObject.command && inputWidgetObject.command.environment && Object.keys(inputWidgetObject.command.environment).length > 0) {
-//        copyEnvironmentCommands(inputWidgetObject);
-//    }
-
-    if (inputWidgetObject && inputWidgetObject.command && inputWidgetObject.command.userid) {inputWidgetObject.metadata.userid=inputWidgetObject.command.userid}
-    proxyprinttodiv('Function  inputWidgetObject.command', inputWidgetObject.command, 11);
-    proxyprinttodiv('Function datastore inputWidgetObject 1', inputWidgetObject, 11);
 
 //    var filter_data = getcommand(inputWidgetObject, {
 //            "command": {
@@ -237,26 +201,66 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
 //        true);
 
 //    var command = filter_data.filteredobject.command;
+    // console.log('>>>inputWidgetObject.command.environment' +inputWidgetObject.command.environment)
+
+
+
+    // not needed now as the environment variables are already defaulted into the command property in the enhanceparameters function
+//    if (inputWidgetObject.command && inputWidgetObject.command.environment && Object.keys(inputWidgetObject.command.environment).length > 0) {
+//        copyEnvironmentCommands(inputWidgetObject);
+//    }
+
+    //var defaultdatastore;
+    //if (config.configuration.environment==="local") {defaultdatastore='localstorage';} else {defaultdatastore='mongo';}
+
+
+
+exports.updatewid = updatewid = updatewid = function updatewid(originalarguments, callback) {
+    var inputWidgetObject = {};
+        extend(true, inputWidgetObject, originalarguments);
+        proxyprinttodiv('Function datastore inputWidgetObject 1', inputWidgetObject, 99);
+    var err = null;
+    var widName = inputWidgetObject.wid;
+    var found = false;
+    var getdatabaseinforesult;
+    var database = {};
+    var keydatabase = {};
     var command = inputWidgetObject.command;
-    delete inputWidgetObject.command;
+    var datastore= command.datastore;
+    var collection = command.collection;
+    var keycollection = collection + "key";
+    var db = command.db;
+    var datamethod = command.datamethod;
+    var databasetable = command.databasetable;
+        delete inputWidgetObject.command;
+    var addedobject = converttodriformat(inputWidgetObject, command);
+    command.keycollection = keycollection;
+        proxyprinttodiv('Function datastore command -- add inputWidgetObject addedobject', addedobject, 99);
+
+
+    if(!inputWidgetObject['metadata']){
+        inputWidgetObject['metadata']={};
+    }
+
+    // copy environment stuff
+    if(inputWidgetObject && inputWidgetObject.command && inputWidgetObject.command.usernamespace){
+        // add usernamespace from environment to metadata
+        if(inputWidgetObject.command.usernamespace){
+            inputWidgetObject['metadata']['accountid']=inputWidgetObject.command.usernamespace;
+        }
+    }
+
+    if (inputWidgetObject && inputWidgetObject.command && inputWidgetObject.command.userid) {inputWidgetObject.metadata.userid=inputWidgetObject.command.userid}
+    proxyprinttodiv('Function  inputWidgetObject.command', inputWidgetObject.command, 11);
+    proxyprinttodiv('Function datastore inputWidgetObject 1', inputWidgetObject, 11);
+//    delete filter_data.output.command;
+//    var addedobject=converttodriformat(filter_data.output, command);
 
     proxyprinttodiv('Function updatewid command  -- get', command, 12);
     proxyprinttodiv('Function datastore inputWidgetObject', inputWidgetObject, 12);
 //    proxyprinttodiv('Function datastore filter_data', filter_data, 12);
     proxyprinttodiv('Function datastore command', command, 12);
-    var datastore= command.datastore;
-    var collection = command.collection;
-    var keycollection = collection + "key";
-    command["keycollection"] = keycollection;
     proxyprinttodiv('Function datastore command -- add', command, 12);
-    var db = command.db;
-    var datamethod = command.datamethod;
-    var databasetable = command.databasetable;
-
-//    delete filter_data.output.command;
-//    var addedobject=converttodriformat(filter_data.output, command);
-    var addedobject = converttodriformat(inputWidgetObject, command);
-
     proxyprinttodiv('Function datastore command -- add inputWidgetObject addedobject', addedobject, 12);
 
     if (widName) {
@@ -303,7 +307,6 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
                     break;
                 }
             }
-
 
             if (!found) {
                 database.push(addedobject);
@@ -405,53 +408,6 @@ exports.deletewid = deletewid = deletewid = function deletewid(inputWidgetObject
     }
 };
 
-//function getfrommongo(inputWidgetObject) {
-exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
-    // function find_and_replace_addthis(obj) {
-    //     proxyprinttodiv('<<< Get_Clean find_and_replace_addthis obj >>>', obj, 38);
-    //     //version below recurses
-    //     var _in_obj;
-    //     if (obj instanceof Array) {
-    //         _in_obj = [];
-    //         extend(true, _in_obj, obj);
-    //     } else {
-    //         _in_obj = {};
-    //         extend(true, _in_obj, obj);
-    //     }
-
-    //     proxyprinttodiv('<<< Get_Clean find_and_replace_addthis _in_obj >>>', _in_obj, 38);
-
-    //     if (_in_obj.hasOwnProperty("addthis")) {
-    //         var _add_this = _in_obj["addthis"];
-    //         delete _in_obj["addthis"];
-    //         for (var i in _add_this) {
-    //             if (_add_this.hasOwnProperty(i)) {
-    //                 _in_obj[i] = _add_this[i];
-    //             }
-    //         }
-    //     }
-
-    //     for (var each_param in _in_obj) {
-    //         if (_in_obj.hasOwnProperty(each_param)) {
-    //             if (isObject(_in_obj[each_param])) {
-    //                 _in_obj[each_param] = find_and_replace_addthis(_in_obj[each_param]);
-    //             }
-    //         }
-    //     } // for each_param
-
-    //     return _in_obj;
-    // }
-
-    var originalarguments = {};
-    extend(true, originalarguments, inputWidgetObject);
-    var err = null;
-    var output = {};
-    var getdatabaseinforesult;
-    var widName = inputWidgetObject['wid'];
-    //var defaultdatastore;
-    //if (config.configuration.environment==="local") {defaultdatastore='localstorage';} else {defaultdatastore='mongo';}
-
-    proxyprinttodiv('Function datastore inputWidgetObject 0', inputWidgetObject, 11);
     
     // command defaulting logic is now being handled by the enhanceparameters function
     // if (inputWidgetObject.command && Object.keys(inputWidgetObject.command.environment).length > 0) {
@@ -502,31 +458,34 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
 //        },
 //        true);
 //    var command = filter_data.filteredobject.command;
+
+exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
+    var originalarguments = {};
+    var err = null;
+    var output = {};
+    var getdatabaseinforesult;
+    var widName = inputWidgetObject.wid;
     var command = inputWidgetObject.command;
-    
-    proxyprinttodiv('Function getwid command  -- get', command, 12);
-//    proxyprinttodiv('Function datastore command -- get', filter_data, 12);
-    proxyprinttodiv('Function datastore command -- get inputWidgetObject', inputWidgetObject, 12);
     var datastore = command.datastore;
     var collection = command.collection;
-    // var keycollection = command.command.keycollection;
-    var keycollection = collection + "key";
-    command["keycollection"] = keycollection;
-    proxyprinttodiv('Function datastore command -- get', command, 12);
     var db = command.db;
     var databasetable = command.databasetable;
-    //var keepaddthis = command.keepaddthis;
+    var keycollection = collection + "key";
+
+    // below unneeded?
+    //command.keycollection = keycollection;
+
+    extend(true, originalarguments, inputWidgetObject);
+
+    proxyprinttodiv('Function getwid command  -- get', command, 12);
+    proxyprinttodiv('Function datastore command -- get inputWidgetObject', inputWidgetObject, 12);
+    proxyprinttodiv('Function datastore command -- get', command, 12);
     if (widName) {
         getdatabaseinforesult = getdatabaseinfo(command, datastore, collection, keycollection, db, databasetable);
         proxyprinttodiv('Function getwid getdatabaseinforesult', getdatabaseinforesult, 12);
-        //var datastore = getdatabaseinforesult.datastore;
-        //var db = getdatabaseinforesult.db;
-        //proxyprinttodiv('Function getwid command  -- get', command, 99);
-        //proxyprinttodiv('Function datastore command -- get inputWidgetObject', inputWidgetObject, 99);
         if ((datastore === 'localstorage') || (datastore === 'localstore')) {
             var keydatabase = getdatabaseinforesult.keydatabase;
             proxyprinttodiv('Function getwid keydatabase', keydatabase, 12);
-
             output = keydatabase[widName];
             if (!output) {
                 output = {};
@@ -544,31 +503,10 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                     }
                 };
             }
-
-            //proxyprinttodiv('Function getwid output', output, 99);
-            //proxyprinttodiv('Function getwid keepaddthis', keepaddthis, 99);
-            //if (!keepaddthis) { // i.e. remove add this
-
-            //     if (output.hasOwnProperty("addthis")) {
-            //         var _add_this = output["addthis"];
-            //         delete output["addthis"];
-            //         output = extend(true, output, _add_this)
-            //     }
-            //     //output = find_and_replace_addthis(output) ;
-            // }
-
-
-            // if (!keydatabase.hasOwnProperty(widName)) {
-            //     err=createfinalobject(outobject, command, nameoffn, errorobject, initialparameters)
-            //     }
-            // result": "executelist_getexecuteobject(jsonConcat"
-            //                                             }, {}, "executelist_getexecuteobject(jsonConcat", err, executeobject);
-            //                                             cbMapW(finalobject.err, finalobject.res);
-            //                                         }}
-
-
-
             if (config.configuration.environment === "local") {
+                // this code shoudl be rewritten:
+                // convertfromdriformat first
+                // then do angular, and just extend
                 getfromangular(inputWidgetObject, function (angularerr, resultobject) {
                     if (resultobject) {
                         if (output) { // resultobject && output
@@ -578,14 +516,13 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                         }
                     }
 
-                    // ***
                     if (Object.keys(output).length ) {
                         err = null;
                         // make sure data is bundled properly for convertfromdriformat()
                         for (var prop in output) {
                             if (output.hasOwnProperty(prop)) {
                                 if (prop !== 'wid' && prop !== 'metadata' && prop !== 'converttodriformat' && prop !== db) {
-                                    //if (prop !== 'wid' && prop !== 'metadata' && prop !== 'converttodriformat' && prop !== 'data') {
+
                                     if (!output[db]) {
                                         output[db] = {};
                                     }
@@ -595,80 +532,39 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                             }
                         }
                         output = convertfromdriformatenhanced(output, command, originalarguments);
-                        // output=convertfromdriformat(output, command);
-                        // if (output && Object.keys(output) > 0) {
-                        //     output = extend(true, originalarguments, output);
-                        // }
-                        // proxyprinttodiv('Function getwid command.convertmethod >> 1', command.convertmethod,12);
-                        // if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
-                        //     output =  ConvertFromDOTdri(output);
-                        // }
+
                     } // if output
                     else { // if no output
                         output = {};
-                        err = {};
-                        err = {
-                            "errorname": "notfound",
-                            "errorparameters": {
-                                "command": {
-                                    "queueparameters": originalarguments[0],
-                                    "overallresultparameters": [],
-                                    "currenterror": null,
-                                    "currentresult": null,
-                                    "currentparameters": originalarguments[0]
-                                }
-                            }
-                        };
+                        // err = {};
+                        // err = {
+                        //     "errorname": "notfound",
+                        //     "errorparameters": {
+                        //         "command": {
+                        //             "queueparameters": originalarguments[0],
+                        //             "overallresultparameters": [],
+                        //             "currenterror": null,
+                        //             "currentresult": null,
+                        //             "currentparameters": originalarguments[0]
+                        //         }
+                        //     }
+                        // };
                     }
                     proxyprinttodiv('Function datastore command -- get output 1', output, 12);
-                    //callback(null, output);
                     callback(err, output);
                 });
             } else { // if not local...this case makes no sense
                 output = convertfromdriformatenhanced(output, command, originalarguments);
-
-                // output=convertfromdriformat(output, command);
-                // if (output && Object.keys(output) > 0) {
-                //     output = extend(true, originalarguments, output);
-                // }
-                // proxyprinttodiv('Function datastore command -- get output 2', output, 99);
-
-                // if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
-                //     output =  ConvertFromDOTdri(output);
-                // }
-                //callback(null, output);
                 callback(err, output);
             }
         } else if (datastore === 'mongo') {
             mget(inputWidgetObject, command, function (err, output) {
-//                if (!keepaddthis && output) { // i.e. remove add this
-                if (output) {  // remove add this
-                    if (output.hasOwnProperty("addthis")) {
-                        var _add_this = output["addthis"];
-                        delete output["addthis"];
-                        output = extend(true, output, _add_this)
-                    }
-                    //output = find_and_replace_addthis(output) ;
-                }
                 output = convertfromdriformatenhanced(output, command, originalarguments);
-                // output=convertfromdriformat(output, command);
-                // output = extend(true, originalarguments, output);
-                // if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
-                //     output =  ConvertFromDOTdri(output);
-                // }
-                // proxyprinttodiv('Function datastore command -- get output 3', output, 12);
-                //callback(err, output);
                 callback(err, output);
             });
         } else { // if not mongo
             output = convertfromdriformatenhanced(output, command, originalarguments);
-            // output=convertfromdriformat(output, command);
-            // output = extend(true, originalarguments, output);
-            // if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
-            //     output =  ConvertFromDOTdri(output);
-            // }
             proxyprinttodiv('Function datastore command -- get output 4', output, 12);
-            //callback(null, output);
             callback(err, output);
         }
     } else { // if no widname
@@ -730,14 +626,15 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
             }
             proxyprinttodiv('Function getrelatedrecords query', executeobject, 17);
             executeobject["command"]= {
-                "environment": {
-                    "run": {
-                        "type": "series"
-                    }
-                }
+                "executetype":"series"
+                // "environment": {
+                //     "run": {
+                //         "type": "series"
+                //     }
+                // }
             };
 
-            var env = new drienvironment(command.environment);
+            var env = new drienvironment(command.environment); 
             env.execute(executeobject, function (err, res) {
             //execute(executeobject, function (err, res) {
                 proxyprinttodiv('Function getrelatedrecords query res', res, 17);
@@ -1562,16 +1459,17 @@ function recurseModObj(inputObject, dtoObject, convert, totype, command, callbac
                                 if (dataType !== 'string') {
                                     var executeobject = {
                                         "command": {
-                                            "environment": {
-                                                "run": {
-                                                    "type": "series"
-                                                }
-                                            }
+                                            "executetype":"series"
+                                            // "environment": {
+                                            //     "run": {
+                                            //         "type": "series"
+                                            //     }
+                                            // }
                                         }
                                     };
 
                                     executeobject.executethis=dataType;
-                                    var env = new drienvironment(command.environment);
+                                    var env = new driexecute(command.environment);
                                     env.execute(executeobject, function (err, res) {
                                         // If error, bounce out
                                         if (err && Object.keys(err).length > 0) {
@@ -4263,7 +4161,7 @@ function totalStorageSize(){
             delete inputWidgetObject['command']['environment'];
     };
 
-    // DriEnvironment class
+    // drienvironment class
     exports.drienvironment = drienvironment = function drienvironment(environment) {
         this.environment = environment;
 
@@ -4295,6 +4193,36 @@ function totalStorageSize(){
         };
     };
 
+    // drienvironment class
+    // accepts parameters at root level not root.command.environment
+    exports.driexecute = driexecute = function drienvironment(driexecute) {
+        this.driexecute = driexecute;
+
+        this.execute = function(params, callback) {
+            var executeobject = {};
+
+            if (!params.command) { params.command = {}; }
+
+            if (isString(params)) 
+            {
+                executeobject = {executethis:params};
+                params = executeobject;
+            } 
+            else if (Array.isArray(params)) 
+            {
+                executeobject = {command:{xrun:params}};
+                params = executeobject;
+            }
+
+            params = extend(true, {}, this.driexecute, params);
+
+            //
+            // we could set a lot more defaults here
+            if (!params.command.environment.default) { params.command.environment.default = {}; }
+
+            execute(params, function (err, results) { callback(err, results); });
+        };
+    };
 
    
 })();

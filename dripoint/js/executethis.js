@@ -465,7 +465,7 @@
 
         //proxyprinttodiv('execute level type ', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
 
-        if (executionpreferences.command.environment.run.executelevel > 100 || color > 120) {
+        if (executionpreferences.command.environment.run.executelevel > 4 || color > 120) {
             callback({"errorname":"level too high"}, null);
         } 
         else 
@@ -880,7 +880,8 @@
                             "resultparameters": null,
                             "result": "",
                             "skipcache": true,
-                            "internalcall": true // use action processor
+                            "internalcall": true, // use action processor
+                            "notfoundok": false // should return an error if not found
                             //"environment": {},
                         }
                     }, {
@@ -890,7 +891,8 @@
                             "resultparameters": "x",
                             "result": "x",
                             "skipcache": "x",
-                            "internalcall": "x"
+                            "internalcall": "x",
+                            "notfound" : "x"
                         }
                     },
                     true);
@@ -915,15 +917,17 @@
                     {
                         targetfn(inboundparams, function (err, resultparameters) 
                         { 
-                            proxyprinttodiv("execute after do this inboundparams", inboundparams, 11);
-                            proxyprinttodiv("execute after do this resultparameters", resultparameters, 11);
+                            proxyprinttodiv("execute after do this inboundparams", inboundparams, 99);
+                            proxyprinttodiv("execute after do this resultparameters", resultparameters, 99);
                             proxyprinttodiv("execute after do this err", err, 11);
-                            proxyprinttodiv('execute after do this command', command, 11, true);
+                            proxyprinttodiv('execute after do this command', command, 99, true);
                             if (!resultparameters) {resultparameters={};}
+                            // should we remove the 3 statements below?
                             if (!resultparameters.command) {resultparameters.command={};}
                             if (!resultparameters.command.environment) {resultparameters.command.environment={};}
                             if (!resultparameters.command.environment.run) {resultparameters.command.environment.run={};}
                             resultparameters.command.environment.run.executeid = incomingparams.command.environment.run.executeid;
+                            if (command.notfoundok && err.errorname==="notfound") {err=null; resultparameters={};};
                             if (err && Object.keys(err).length > 0) 
                             {
                                 callback(err, resultparameters);
@@ -1074,9 +1078,13 @@
             proxyprinttodiv("checkcache executeobject", executeobject, 17);
 
             execute(executeobject, function (err, res) {
-                //if (Object.keys(res).length > 0) {
-                if (res) {
-                    res = res[0];
+                if (err) 
+                {
+                    callback(err,res)
+                }
+                else 
+                {
+                    if (!res) {res=null;} else {res = res[0];}
                     proxyprinttodiv("checkcache getwid res", res, 17);
                     if (res && res.metadata && res.metadata.expirationdate && res.metadata.expirationdate < new Date()) {
                         callback(null, res);
@@ -1333,18 +1341,22 @@
         
         execute(executeobject, function (err, res) {
             proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
-            if (res.length === 0) {
-                executetodolist = [];
-            }
-            else if(res[0] && res[0]["queryresult"]){
-                for (var everyaction in res[0]["queryresult"]){
-                    proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
-                    //if (res[0]["queryresult"][everyaction]
-                    executetodolist.push(res[0]["queryresult"][everyaction]);
+            if (err) {callback(err,res)}
+            else 
+            {
+                if (res.length === 0) {
+                    executetodolist = [];
                 }
+                else if(res[0] && res[0]["queryresult"]){
+                    for (var everyaction in res[0]["queryresult"]){
+                        proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
+                        //if (res[0]["queryresult"][everyaction]
+                        executetodolist.push(res[0]["queryresult"][everyaction]);
+                    }
 
+                }
+                callback(null, executetodolist);
             }
-            callback(null, executetodolist);
         })
     };
 

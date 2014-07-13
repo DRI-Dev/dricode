@@ -169,13 +169,14 @@
                         "executethis": "getwidmaster",
                         "wid": dto_to_get,
                         "command.getwidmaster.execute": "ConvertFromDOTdri",
-                        "command.getwidmaster.convertmethod": "dto"
+                        "command.getwidmaster.convertmethod": "dto",
+                        "command.executetype":"series"
                     };
-                    executeobject["command"]={"environment": {
-                            "run": {
-                                "type": "series"
-                            }
-                        }}
+                    // executeobject["command"]={"environment": {
+                    //         "run": {
+                    //             "type": "series"
+                    //         }
+                    //     }}
 
                     var env = new drienvironment(command.environment);
                     //var env = new drienvironment(object.command.environment);
@@ -495,11 +496,12 @@
                             executeobject["command"] =
                             {
                                 "result":"queryresult",
-                                "environment": {
-                                    "run": {
-                                        "type": "series"
-                                    }
-                                }
+                                "executetype":"series"
+                                // "environment": {
+                                //     "run": {
+                                //         "type": "series"
+                                //     }
+                                // }
                             };
 
                             executeobject["mongorawquery"] = {
@@ -878,18 +880,19 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                             "executethis": "getwidmaster",
                             "wid": object['wid'],
                             "command.getwidmaster.execute": "ConvertFromDOTdri",
-                            "command.getwidmaster.convertmethod": "nowid"
+                            "command.getwidmaster.convertmethod": "nowid",
+                            "command.executetype":"series"
                         };
 
                         var env = new drienvironment(command.environment);
                         //var env = new drienvironment(object.command.environment);
-                        executeobject["command"]={
-                            "environment": {
-                                "run": {
-                                    "type": "series"
-                                }
-                            }
-                        };
+                        // executeobject["command"]={
+                        //     "environment": {
+                        //         "run": {
+                        //             "type": "series"
+                        //         }
+                        //     }
+                        // };
 
                         env.execute(executeobject, function (err, res) {
                         if (err && err.errorname === "failnotfound") {err=null; res={}}
@@ -1007,6 +1010,7 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
             function step4(step4_callback) {
                 delete command.deepfilter.convert;
                 object["executethis"] = "updatewid";
+                object.command.executetype = "series";
                 // readd command params back in
                 var tempcmd={};
                 // getcommmand(inputobj, defaultobj, filterable, shouldremovefilterfrominputflag)
@@ -1017,11 +1021,11 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                 //not needed in this case
                 //var env = new drienvironment(object.command.environment);
                 var env = new drienvironment(command.environment);
-                object["command"]={"environment": {
-                            "run": {
-                                "type": "series"
-                            }
-                        }}
+                // object["command"]={"environment": {
+                //             "run": {
+                //                 "type": "series"
+                //             }
+                //         }}
                 env.execute(object, function (err, res) {
 
                 // execute(object, function (err, res) {

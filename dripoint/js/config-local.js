@@ -152,7 +152,7 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
     if (!getFromLocalStorage(config.configuration.keycollection)) {
         eventappinstall();
     }
-    proxyprinttodiv('eventdeviceready', localStore, 99, true);
+    proxyprinttodiv('eventdeviceready *******************************************', localStore, 99, true);
 
     // start eventonemin, eventtenmin and save the interval value so 
     // you can use "clearInterval" in the future if desired to stop things
@@ -273,8 +273,10 @@ exports.execute_server = window.execute_server = execute_server = function execu
         //var inbound_parameters = {};
         //extend(true, inbound_parameters, params);
         //params =
+    var tempenvironment = params.command.environment
     delete params.command.processfn;
-    var temp = params.command.environment.syncrule;
+    //var temp = params.command.environment.syncrule;
+    params.command.environment.run.executelevel=0;
     params.command.environment.syncrule = "create_what_to_do_list";
 
     delete params.command.environment;
@@ -288,8 +290,11 @@ exports.execute_server = window.execute_server = execute_server = function execu
         execute(params, function (err, res) {
             proxyprinttodiv('server results res',res, 99, true, true);
             // reset back to local
-            params.command.environment.platform = "local";
-            params.command.environment.syncrule = temp;
+            params.command.environment=tempenvironment;
+            // params.command.environment.platform = "local";
+            // params.command.environment.syncrule = temp;
+            // params.command.environment.run.executelevel = templevel;
+            // params.command.environment.run.executeid = tempexecuteid;            
             checkenviornment(params.command.environment);
             callback(err, res);
         });
@@ -541,10 +546,11 @@ exports.test_return_noerror_result_local = test_return_noerror_result_local = fu
               executeobject.command.environment.run={};
           }
 		  
-		  executeobject.command.environment.run.type="series"
+		  //executeobject.command.environment.run.type="series"
+          executeobject.command.executetype="series"
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';          // used for server testing
-		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
+		  executeobject.command.processfn="execute_function";          // what function handles functions
 
 		  executeobject.command.xrun={"executethis": 'test_return_noerror_result_local'};
 
@@ -575,10 +581,11 @@ exports.test_return_noerror_result_local = test_return_noerror_result_local = fu
               executeobject.command.environment.run={};
           }
 		  
-		  executeobject.command.environment.run.type="series"
+          //executeobject.command.environment.run.type="series"
+          executeobject.command.executetype="series"
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';          // used for server testing
-		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
+		  executeobject.command.processfn="execute_function";          // what function handles functions
 
 		  executeobject.command.xrun={"executethis": 'test_return_noerror_result_server'};
 

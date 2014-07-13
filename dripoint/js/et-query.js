@@ -306,7 +306,8 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
 
     if (!command.environment) { command.environment = {run:{}}; }
 
-    command.environment.run.type = "series";
+    //command.environment.run.type = "series";
+    command.executetype = "series";
 
     var etEnvironment = new drienvironment(command.environment);
 

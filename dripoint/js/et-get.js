@@ -454,18 +454,23 @@
 
                 if (!command.environment) { command.environment = {run:{}}; }
 
-                var etEnvironment = new drienvironment({
-                    "run": {
-                        "executeid": command.environment.run.executeid,
-                        "executelevel": command.environment.run.executelevel,
-                        "type": "series"
-                    }
-                });
+                var etEnvironment = new drienvironment(command.environment)
+
+                //     "command": {
+                //         "run": {
+                //             "executeid": command.environment.run.executeid,
+                //             "executelevel": command.environment.run.executelevel
+                //             //,"type": "series"
+                //         }
+                //     }
+                // });
 
                 var executeobject = {
                     "executethis": "getwidmaster",
                     "wid": dtotype,
                     "command":{
+                        "executetype":"series",
+                        "notfoundok":true, // if results back are blank then that is ok
                         "getwidmaster": {
                             "convertmethod": "dto",
                             "execute": "ConvertFromDOTdri"
@@ -473,7 +478,7 @@
                         }
                     };
 
-                etEnvironment.execute(executeobject, function(err, res) {
+                etEnvironment.execute(executeobject, function (err, res) {
 
                     if (err && Object.keys(err).length > 0) { // If error, bounce out
                         callback(err, res);
@@ -540,20 +545,21 @@
                     targetwid = widInput;
                     executeobject = parameters;
                     executeobject.executethis = "getwid";
+                    executeobject.executetype = "series";
                     //executeobject["wid"] = widInput;
                     //executeobject["command.convertmethod"]="toobject";
 
                     if (!command.environment) { command.environment = {}; }
                     if (!command.environment.run) { command.environment.run = {}; }
 
-                    var etEnvironment = new drienvironment(
-                        {
-                        "run": {
-                            "executeid": command.environment.run.executeid,
-                            "executelevel": command.environment.run.executelevel,
-                            "type":"series"
-                        }
-                    });
+                    var etEnvironment = new drienvironment(command.environment);
+                    //     {
+                    //     "run": {
+                    //         "executeid": command.environment.run.executeid,
+                    //         "executelevel": command.environment.run.executelevel
+                    //         //,"type":"series"
+                    //     }
+                    // });
 
                     etEnvironment.execute(executeobject, function (err, res) {
                         // execute(executeobject, function (err, res) { // getwid
@@ -609,21 +615,22 @@
                                         eachresult.command.getwidmaster = {};
                                     }
 
-                                    var etEnvironment = new drienvironment(
-                                        {
-                                        // "getwidmaster":{
-                                        //     "inheritflag": "false",
-                                        //     "execute": "ConvertFromDOTdri"
-                                        // },
-                                        "run":{
-                                            "executeid": command.environment.run.executeid,
-//                                            "type": parameters.command.environment.run.group,
-                                            "type": "series",
-                                            "executelevel": command.environment.run.executelevel
-                                        }
-                                    });
+                                    var etEnvironment = new drienvironment(command.environment);
+//                                         {
+//                                         // "getwidmaster":{
+//                                         //     "inheritflag": "false",
+//                                         //     "execute": "ConvertFromDOTdri"
+//                                         // },
+//                                         "run":{
+//                                             "executeid": command.environment.run.executeid,
+// //                                            "type": parameters.command.environment.run.group,
+//                                             "type": "series",
+//                                             "executelevel": command.environment.run.executelevel
+//                                         }
+//                                     });
 
                                     eachresult.executethis = "getwidmaster";
+                                    eachresult.command.executetype="series"
                                     // eachresult.command.getwidmaster.convertmethod="nowid";
                                     eachresult.command.getwidmaster.inheritflag = "false";
                                     eachresult.command.getwidmaster.execute = "ConvertFromDOTdri";
@@ -701,18 +708,18 @@
                                     // proxyprinttodiv('Function getwidmongo executeobject', executeobject, 38);
                                     // execute(executeobject, function (err, res) {
 
-                                    var etEnvironment = new drienvironment(
-                                        {
-                                        // "getwidmaster":{
-                                        //     "convertmethod": "dto",
-                                        //     "execute": "ConvertFromDOTdri"
-                                        // },
-                                        "run": {
-                                            "executeid": command.environment.run.executeid,
-                                            "executelevel": command.environment.run.executelevel,
-                                            "type": "series"
-                                        }
-                                    });
+                                    var etEnvironment = new drienvironment(command.environment);
+                                    //     {
+                                    //     // "getwidmaster":{
+                                    //     //     "convertmethod": "dto",
+                                    //     //     "execute": "ConvertFromDOTdri"
+                                    //     // },
+                                    //     "run": {
+                                    //         "executeid": command.environment.run.executeid,
+                                    //         "executelevel": command.environment.run.executelevel,
+                                    //         "type": "series"
+                                    //     }
+                                    // });
 
                                     var executeobject = {
                                         "executethis": "querywid",
@@ -724,6 +731,7 @@
                                         "mongowidmethod": "",
                                         "command": 
                                             {
+                                            "executetype":"series",
                                             "result": "queryresult"
                                             // "getwidmaster":
                                             //     {
@@ -993,25 +1001,26 @@
                         // if (command.getwidmaster.inheritflag === "true") {
                         if (widName !== "systemdto") {
 
-                            var etEnvironment = new drienvironment(
-                            {
-                            //     "getwidmaster":{
-                            //         "convertmethod": "dto",
-                            //         "execute": "ConvertFromDOTdri",
-                            //         "inheritflag": "true"
-                            //     },
-                                "run" : {
-                                    "executeid": command.environment.run.executeid,
-                                    "executelevel": command.environment.run.executelevel,
-                                    "type": "series"
-                                }
-                            });
+                            var etEnvironment = new drienvironment(command.environment);
+                            // {
+                            // //     "getwidmaster":{
+                            // //         "convertmethod": "dto",
+                            // //         "execute": "ConvertFromDOTdri",
+                            // //         "inheritflag": "true"
+                            // //     },
+                            //     "run" : {
+                            //         "executeid": command.environment.run.executeid,
+                            //         "executelevel": command.environment.run.executelevel,
+                            //         "type": "series"
+                            //     }
+                            // });
 
                             var executeobject = {
                                 "executethis": "getwidmaster",
                                 "wid": "systemdto",
                                 "command":
                                     {
+                                    "executetype":"series",
                                     "result": "systemdto",
                                     "getwidmaster": {
                                         "convertmethod": "dto",
@@ -1024,6 +1033,7 @@
                             etEnvironment.execute(executeobject, function(err, res) {
 
                                 if (err && Object.keys(err).length > 0) {
+                                    //cb(err, 'four');
                                     cb(null, 'four');
                                 } else {
                                     systemdto = res;
@@ -1118,25 +1128,26 @@
                         // add logic to look for dtotype
                         dtoToGet = resultObj.metadata.method;
 
-                        var etEnvironment = new drienvironment(
-                            {
-                            // "getwidmaster":{
-                            //     "convertmethod": "dto",
-                            //     "execute": "ConvertFromDOTdri",
-                            //     "inheritflag": "false"
-                            // },
-                            "run": {
-                                "executeid": command.environment.run.executeid,
-                                "executelevel": command.environment.run.executelevel,
-                                "type": command.environment.run.type || "series"
-                            }
-                        });
+                        var etEnvironment = new drienvironment(command.environment);
+                        //     {
+                        //     // "getwidmaster":{
+                        //     //     "convertmethod": "dto",
+                        //     //     "execute": "ConvertFromDOTdri",
+                        //     //     "inheritflag": "false"
+                        //     // },
+                        //     "run": {
+                        //         "executeid": command.environment.run.executeid,
+                        //         "executelevel": command.environment.run.executelevel,
+                        //         "type": command.environment.run.type || "series"
+                        //     }
+                        // });
 
                         var executeobject = {
                             "executethis": "getwidmaster",
                             "wid": dtoToGet,
                             "command":
                                 {
+                                "executetype":"series",
                                 "result": "systemdto",
                                 "getwidmaster":
                                     {
@@ -1241,6 +1252,7 @@
                                     //eachresult.command.getwidmaster.convertmethod="nowid";
                                     eachresult.command.getwidmaster.inheritflag = "false";
                                     eachresult.command.getwidmaster.execute = "ConvertFromDOTdri";
+                                    eachresult.command.executetype = "series";
 
                                     if (!eachresult.command) { eachresult.command = {}; }
                                     if (!eachresult.command.resultparameters) { eachresult.command.resultparameters = {}; }
@@ -1249,19 +1261,19 @@
                                     eachresult.command.resultparameters = resultObj;
                                     proxyprinttodiv('call being done for inherit', eachresult, 38);
 
-                                    var etEnvironment = new drienvironment(
-                                        {
-                                        // "getwidmaster":{
-                                        //     "convertmethod": "dto",
-                                        //     "execute": "ConvertFromDOTdri",
-                                        //     "inheritflag": "false"
-                                        // },
-                                        "executeid": command.environment.run.executeid,
-                                        "executelevel": command.environment.run.executelevel,
-                                        "run":{
-                                            "type": "series"
-                                        }
-                                    });
+                                    var etEnvironment = new drienvironment(command.environment);
+                                    //     {
+                                    //     // "getwidmaster":{
+                                    //     //     "convertmethod": "dto",
+                                    //     //     "execute": "ConvertFromDOTdri",
+                                    //     //     "inheritflag": "false"
+                                    //     // },
+                                    //     "executeid": command.environment.run.executeid,
+                                    //     "executelevel": command.environment.run.executelevel,
+                                    //     "run":{
+                                    //         "type": "series"
+                                    //     }
+                                    // });
 
                                     etEnvironment.execute(eachresult, function(err, res) {
                                         proxyprinttodiv('clean inherit 1', err, 38);
@@ -1320,58 +1332,57 @@
             function(err, res) {
                 proxyprinttodiv('<<< step3 eachresult 12', resultObj, 38);
                 proxyprinttodiv('resultObj after special getwidmaster 5', resultObj, 38);
-
-                // // band-aid
-                // dtoobject = bigdto;
-
-
-
                 proxyprinttodiv('<<< Get_Clean before call back beforedeepfilter resultObj >>>', resultObj, 38);
                 proxyprinttodiv('<<< Get_Clean before call back beforedeepfilter bigdto >>>', bigdto, 38);
                 proxyprinttodiv('<<< Get_Clean before call back beforedeepfilter dtoobject >>>', dtoobject, 38);
                 proxyprinttodiv('<<< Get_Clean before call back beforedeepfilter command >>>', command, 38);
 
-                if (!command) {
-                    command = {};
-                }
-                if (!command.deepfilter) {
-                    command.deepfilter = {};
-                }
-                if (!command.deepfilter.convert) {
-                    command.deepfilter.convert = true;
-                }
+                if (err) {callback(err, resultObj);}
+                else
+                {
 
-                // if (!command.deepfilter.keepaddthis) {
-                //     command.deepfilter.keepaddthis = false;
-                // }
-
-                deepfilter(resultObj, dtoobject, command, function(err, resultObj) { // changed by joe
-                    // If error, bounce out
-
-                    proxyprinttodiv('resultObj after special getwidmaster after deepfilter 7', resultObj, 38);
-
-                    if (err && Object.keys(err).length > 0) {
-                        callback(err, resultObj);
-                    } else {
-                        //deepfilter(resultObj, bigdto, command, function (err, resultObj){
-                        delete command.deepfilter;
-                        proxyprinttodiv('<<< Get_Clean before call back afterdeepfilter resultObj >>>', resultObj, 38);
-                        debugfn("getclean code generator", "getclean", "get", "code", 2, 1, {
-                            0: inbound_parameters,
-                            1: resultObj
-                        }, 6);
-                        // if (command && command.getwidmaster &&
-                        //     (command.getwidmaster.execute === false || command.getwidmaster.execute === "false")) {
-                        //     // empty by design
-                        // } else { // if = true or !=false -- remove addthis.
-                        //     proxyprinttodiv('<<< Get_Clean before find and replace resultObj >>>', resultObj, 38);
-                        //     resultObj = find_and_replace_addthis(resultObj);
-                        //     proxyprinttodiv('<<< Get_Clean after find and replace resultObj >>>', resultObj, 38);
-                        // }
-                        proxyprinttodiv('<<< Get_Clean after find and replace resultObj >>> II', resultObj, 38);
-                        callback(null, resultObj);
+                    if (!command) {
+                        command = {};
                     }
-                });
+                    if (!command.deepfilter) {
+                        command.deepfilter = {};
+                    }
+                    if (!command.deepfilter.convert) {
+                        command.deepfilter.convert = true;
+                    }
+
+                    // if (!command.deepfilter.keepaddthis) {
+                    //     command.deepfilter.keepaddthis = false;
+                    // }
+
+                    deepfilter(resultObj, dtoobject, command, function(err, resultObj) { // changed by joe
+                        // If error, bounce out
+
+                        proxyprinttodiv('resultObj after special getwidmaster after deepfilter 7', resultObj, 38);
+
+                        if (err && Object.keys(err).length > 0) {
+                            callback(err, resultObj);
+                        } else {
+                            //deepfilter(resultObj, bigdto, command, function (err, resultObj){
+                            delete command.deepfilter;
+                            proxyprinttodiv('<<< Get_Clean before call back afterdeepfilter resultObj >>>', resultObj, 38);
+                            debugfn("getclean code generator", "getclean", "get", "code", 2, 1, {
+                                0: inbound_parameters,
+                                1: resultObj
+                            }, 6);
+                            // if (command && command.getwidmaster &&
+                            //     (command.getwidmaster.execute === false || command.getwidmaster.execute === "false")) {
+                            //     // empty by design
+                            // } else { // if = true or !=false -- remove addthis.
+                            //     proxyprinttodiv('<<< Get_Clean before find and replace resultObj >>>', resultObj, 38);
+                            //     resultObj = find_and_replace_addthis(resultObj);
+                            //     proxyprinttodiv('<<< Get_Clean after find and replace resultObj >>>', resultObj, 38);
+                            // }
+                            proxyprinttodiv('<<< Get_Clean after find and replace resultObj >>> II', resultObj, 38);
+                            callback(null, resultObj);
+                        }
+                    });
+                }
             }
         ); // end series
     }
