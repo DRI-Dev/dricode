@@ -3860,7 +3860,7 @@ function getRandomNumberByLength(length) {
             for (var eachelement in obj1) {
                 proxyprinttodiv("objectrelationships array eachelement obj1[eachelement] ", obj1[eachelement], 66);
                 var recurse = {};
-                if (obj2[eachelement]) {
+                if (obj2.hasOwnProperty(eachelement)) {
                     recurse = objectrelationships(obj1[eachelement], obj2[eachelement], type);
                     resultarray.push(recurse);
                     proxyprinttodiv("objectrelationships array recurse ", recurse, 66);
@@ -3873,7 +3873,7 @@ function getRandomNumberByLength(length) {
 
                 if ( // if array or object then recurse
                     (isObject(obj1[eachelement] || isArray(obj1[eachelement]))) &&
-                    (obj2[eachelement] && (isObject(obj2[eachelement]) || isArray(obj2[eachelement])))
+                    (obj2.hasOwnProperty(eachelement) && (isObject(obj2[eachelement]) || isArray(obj2[eachelement])))
                 ) {
                     var recurse = {};
                     recurse = objectrelationships(obj1[eachelement], obj2[eachelement], type);
