@@ -154,7 +154,7 @@
                 dto_to_get = dtoobject['metadata']['method'];
 
                if (dto_to_get !== "string") {
-                    proxyprinttodiv("cleanadd dto_to_get", dto_to_get, 17);
+                    proxyprinttodiv("cleanadd dto_to_get", dto_to_get, 99);
 
                     // old code
                     // execute({
@@ -168,6 +168,7 @@
                     {
                         "executethis": "getwidmaster",
                         "wid": dto_to_get,
+                        "command.notfoundok":"true", 
                         "command.getwidmaster.execute": "ConvertFromDOTdri",
                         "command.getwidmaster.convertmethod": "dto",
                         "command.executetype":"series"
@@ -177,7 +178,7 @@
                     //             "type": "series"
                     //         }
                     //     }}
-
+            proxyprinttodiv("cleanadd executeobject", executeobject, 99, true);
                     var env = new drienvironment(command.environment);
                     //var env = new drienvironment(object.command.environment);
                     env.execute(executeobject, function (err, res) {
@@ -873,12 +874,13 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
         // make sure getwidmaster does not return wids
         async.series([
             function step1(step1_callback) { // getwidmaster
-                 proxyprinttodiv("addwid step1 getwidmaster output", output, 18);
+                 proxyprinttodiv("addwid step1 getwidmaster output", output, 99);
                  if (object['wid']) {
 
                         var executeobject={
                             "executethis": "getwidmaster",
                             "wid": object['wid'],
+                            "command.notfoundok":"true", 
                             "command.getwidmaster.execute": "ConvertFromDOTdri",
                             "command.getwidmaster.convertmethod": "nowid",
                             "command.executetype":"series"
@@ -893,7 +895,8 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                         //         }
                         //     }
                         // };
-
+   proxyprinttodiv("addwid step1 executeobject", executeobject, 99, true);
+   proxyprinttodiv("addwid step1 env", env, 99, true);
                         env.execute(executeobject, function (err, res) {
                         if (err && err.errorname === "failnotfound") {err=null; res={}}
 

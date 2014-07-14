@@ -32,11 +32,11 @@
 
     // get other parameters that might be for this function
     function enhanceparameters(inboundparams) {
-        proxyprinttodiv("enhanceparameters before checkenvironment", inboundparams, 99, true);
+        proxyprinttodiv("enhanceparameters before checkenvironment", inboundparams, 11, true);
         // first save and get from environment
         inboundparams.command.environment = checkenvironment(inboundparams.command.environment);
         // then bring items deeply nested in environmnet to "this" level
-        proxyprinttodiv("enhanceparameters after checkenvironment", inboundparams, 99, true);
+        proxyprinttodiv("enhanceparameters after checkenvironment", inboundparams, 11, true);
 
         if (inboundparams.command.environment.global
             || (inboundparams.command.environment.var
@@ -219,10 +219,10 @@
         //if (!inparams.command.environment.run.type) {inparams.command.environment.run.type="series";}
         //if (!inparams.command.environment.syncrule) {inparams.command.environment.syncrule=config.environment.syncrule}
 
-        proxyprinttodiv("fishoutexecutionpreferences inparams before", inparams, 99, true);
+        proxyprinttodiv("fishoutexecutionpreferences inparams before", inparams, 11, true);
         // make parameters better by dealing with command.environmnet
         inparams = enhanceparameters(inparams);
-        proxyprinttodiv("fishoutexecutionpreferences inparams after", inparams, 99, true);
+        proxyprinttodiv("fishoutexecutionpreferences inparams after", inparams, 11, true);
 
         extend(true, executionpreferences.command.environment, inparams.command.environment);
         delete inparams.command.environment;
@@ -415,10 +415,13 @@
         var incomingparams = {};
 
         extend(true, incomingparams, input);              // make copy of input 
-        incomingparams=ConvertFromDOTdri(incomingparams); // convert from dot notation -- not necessary if dot notation not sent in
+        proxyprinttodiv('before -- remove -- incomingparams', incomingparams, 99, true, true);
+        //incomingparams=ConvertFromDOTdri(incomingparams); // convert from dot notation -- not necessary if dot notation not sent in
+        incomingparams=converttojson(incomingparams); 
         proxyprinttodiv('>>>>>>>>>>>>>>>>>>>>>>>>execute begin', incomingparams, 99, true, true);
 
         var command = converttocommand(incomingparams);    // call main conversion
+
         //proxyprinttodiv('execute right after converttocommand ',command, 11, true);
         // fish out from converted results
         var executionpreferences = command.resulttable.executionpreferences;
@@ -851,7 +854,7 @@
     // main execute function
     window.execute_function = function execute_function(incomingparams, callback) {
         if (!incomingparams.command) { incomingparams.command = {}; }
-        proxyprinttodiv('>>>> execute incomingparams ', incomingparams, 99, true);
+        proxyprinttodiv('>>>> execute incomingparams ', incomingparams, 11, true);
         // see if we need to recurse ... i.e. xrun or resulttable
         if (incomingparams.command.xrun || 
                 (
@@ -920,7 +923,7 @@
                         { 
                             proxyprinttodiv("execute after do this inboundparams", inboundparams, 99);
                             proxyprinttodiv("execute after do this resultparameters", resultparameters, 99);
-                            proxyprinttodiv("execute after do this err", err, 11);
+                            proxyprinttodiv("execute after do this err", err, 99);
                             proxyprinttodiv('execute after do this command', command, 99, true);
                             if (!resultparameters) {resultparameters={};}
                             // should we remove the 3 statements below?
@@ -929,6 +932,7 @@
                             if (!resultparameters.command.environment.run) {resultparameters.command.environment.run={};}
                             resultparameters.command.environment.run.executeid = incomingparams.command.environment.run.executeid;
                             if (command.notfoundok && err.errorname==="notfound") {err=null; resultparameters={};};
+                            proxyprinttodiv("execute after do this resultparameters after", resultparameters, 99);
                             if (err && Object.keys(err).length > 0) 
                             {
                                 callback(err, resultparameters);

@@ -1667,23 +1667,23 @@ function getRandomNumberByLength(length) {
         return result;
     };
 
-    // exports.converttojson = converttojson = function converttojson(data) {
-    //     var output = {};
+    exports.converttojson = converttojson = function converttojson(data) {
+        var output = {};
 
-    //     // Take data as an object with dot notation key
-    //     if (isObject(data) && !isArray(data)) {
-    //         for (var item in data) {
-    //             if (data.hasOwnProperty(item)) {
-    //                 var iArray = item.split(".");
-    //                 var value = data[item];
-    //                 // Copy all of the properties in the source objects over to the destination object, and return the destination object. 
-    //                 // It's in-order, so the last source will override properties of the same name in previous arguments.
-    //                 extend(true, output, recurFunc(iArray, value));
-    //             }
-    //         }
-    //     }
-    //     return output;
-    // }
+        // Take data as an object with dot notation key
+        if (isObject(data) && !isArray(data)) {
+            for (var item in data) {
+                if (data.hasOwnProperty(item)) {
+                    var iArray = item.split(".");
+                    var value = data[item];
+                    // Copy all of the properties in the source objects over to the destination object, and return the destination object. 
+                    // It's in-order, so the last source will override properties of the same name in previous arguments.
+                    extend(true, output, recurFunc(iArray, value));
+                }
+            }
+        }
+        return output;
+    }
 
 
     // https://github.com/justmoon/node-extend
@@ -2352,9 +2352,9 @@ function getRandomNumberByLength(length) {
     };
 
 
-    // exports.isUndefined = isUndefined = function isUndefined(obj) {
-    //     return obj === void 0;
-    // }
+    exports.isUndefined = isUndefined = function isUndefined(obj) {
+        return obj === void 0;
+    }
 
     exports.isArray = isArray = function isArray(obj) { //nativeIsArray
         return toString.call(obj) == '[object Array]';

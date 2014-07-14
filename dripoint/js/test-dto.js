@@ -3303,7 +3303,7 @@ exports.ettestag2 = widtests.ettestag2 = ettestag2 = function ettestag2(params, 
             "wid": "color1"
         }],
         function (err, res1) {
-            proxyprinttodiv("Ag1  result ", res1, 99);
+            proxyprinttodiv("Ag2  result ", res1, 99);
             var res = res1[2];
 
             proxyprinttodiv('Function ag2 expected res ', {
