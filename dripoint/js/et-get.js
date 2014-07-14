@@ -537,6 +537,8 @@
                     targetwid = widInput;
                     executeobject = parameters;
                     executeobject.executethis = "getwid";
+
+                    if (!executeobject.command) { executeobject.command = {}; }
                     executeobject.command.notfoundok = true;
                     executeobject.command.executetype = "series";
                     //executeobject["wid"] = widInput;
