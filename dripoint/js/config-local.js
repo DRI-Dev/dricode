@@ -416,10 +416,10 @@ function executeAjax(allConfig, executeItem, callback, returnCallback) {
             }
             callback(data, allConfig, 'html', returnCallback);
         },
-        error: function (data) {
-            alert(JSON.stringify(data));
-            result = "FAILED TO CALL EXECUTETHIS " + JSON.stringify(data);
-            callback(data, allConfig, 'html', returnCallback);
+        error: function (XHR, textStatus, errorThrown) {
+            alert(JSON.stringify(textStatus + errorThrown));
+            result = "FAILED TO CALL EXECUTETHIS " + JSON.stringify(errorThrown);
+            callback(errorThrown, allConfig, 'html', returnCallback);
         }
     });
 }
