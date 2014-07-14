@@ -13,6 +13,9 @@ if (!debuglevel) { // printdiv
 if (!debugon) { // debugfn
     var debugon = false;
 }
+if (!exports) {
+    var exports = {};
+}
 
 function getdatabaseinfo(command, datastore, collection, keycollection, db, databasetable) {
     proxyprinttodiv('Function getdatabaseinfo collection', collection, 12);
