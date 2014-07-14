@@ -94,7 +94,10 @@ exports.getuptime = getuptime = function getuptime(params, callback) {
 
 
 //// *********************** Route Mapping for Application follows   ***********************
-app.put('/executethis', server.putrunExecutethis);
+app.put('/executethis', server.putpostgetrunExecutethis);
+app.post('/executethis', server.putpostgetrunExecutethis);
+app.get('/executethis', server.putpostgetrunExecutethis);
+
 app.put('/filetowid', convert.convertFileToWid);
 
 console.log('server config is ' + serverconfig.SERVER_PORT);

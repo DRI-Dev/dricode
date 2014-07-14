@@ -28,6 +28,27 @@ exports.putrunExecutethis = function (req, resp) {
     runExecuteThis(parameters, resp);
 };
 
+exports.postputgetrunExecutethis = function (req, resp) {
+    var parameters = req.body;
+    console.log(" JSON " + JSON.stringify(parameters));
+    var url_parts = url.parse(req.url, true);
+    var query = url_parts.query;
+
+    extend(true, parameters, query);
+    runExecuteThis(parameters, resp);
+};
+
+
+exports.getrunExecutethis = function (req, resp) {
+    var url_parts = url.parse(req.url, true);
+    var query = url_parts.query;
+
+    console.log(query); //{Object}
+    console.log(" JSON " + JSON.stringify(query));
+    runExecuteThis(query, resp);
+
+};
+
 
 exports.getrunExecutethis = function (req, resp) {
     var url_parts = url.parse(req.url, true);
