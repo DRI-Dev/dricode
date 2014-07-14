@@ -927,10 +927,10 @@
                             proxyprinttodiv('execute after do this command', command, 99, true);
                             if (!resultparameters) {resultparameters={};}
                             // should we remove the 3 statements below?
-                            if (!resultparameters.command) {resultparameters.command={};}
-                            if (!resultparameters.command.environment) {resultparameters.command.environment={};}
-                            if (!resultparameters.command.environment.run) {resultparameters.command.environment.run={};}
-                            resultparameters.command.environment.run.executeid = incomingparams.command.environment.run.executeid;
+//                            if (!resultparameters.command) {resultparameters.command={};}
+//                            if (!resultparameters.command.environment) {resultparameters.command.environment={};}
+//                            if (!resultparameters.command.environment.run) {resultparameters.command.environment.run={};}
+//                            resultparameters.command.environment.run.executeid = incomingparams.command.environment.run.executeid;
                             if (command.notfoundok && err && err.errorname==="notfound") {err=null; resultparameters={};}
                             proxyprinttodiv("execute after do this resultparameters after", resultparameters, 99);
                             if (err && Object.keys(err).length > 0) 
