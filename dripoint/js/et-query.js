@@ -306,9 +306,6 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
 
     if (!command.environment) { command.environment = {run:{}}; }
 
-    //command.environment.run.type = "series";
-    command.executetype = "series";
-
     var etEnvironment = new drienvironment(command.environment);
 
     if (!((qparms['mongosinglequery'] !== undefined && qparms['mongosinglequery'] !== "") ||
@@ -329,7 +326,8 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     var wid = qparms['mongosinglequery'];
                     etEnvironment.execute({
                         'executethis': 'getwid',
-                        'wid': wid
+                        'wid': wid,
+                        'command.executetype':'series'
                     }, function (err, res) {
                         // If error, bounce out
                         if (err && Object.keys(err).length > 0) {
@@ -374,7 +372,8 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
 
                     etEnvironment.execute({
                         'executethis': 'getwid',
-                        'wid': wid
+                        'wid': wid,
+                        'command.executetype':'series'
                     }, function (err, res) {
                         // If error, bounce out
                         if (err && Object.keys(err).length > 0) {
@@ -397,7 +396,8 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                                         async.nextTick(function () {
                                             etEnvironment.execute({
                                                 'executethis': 'getwid',
-                                                'wid': w
+                                                'wid': w,                                                
+                                                'command.executetype':'series'
                                                 //getwid({
                                                 //    'wid': w
                                             }, function (err, res) {
@@ -859,7 +859,8 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                                 if (!database[wid]) {
                                     etEnvironment.execute({
                                         'executethis': 'getwid',
-                                        'wid': wid
+                                        'wid': wid,
+                                        'command.executetype':'series'
                                     }, function (err, res) {
                                         widrecord = res;
                                         cb1(null);
