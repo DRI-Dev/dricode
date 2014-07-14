@@ -2770,7 +2770,7 @@ if (!executeobject.command) {
 									"number":"12"
 									}];
 
-	   var etEnvironment = new drienvironment(executeobject.command.environment);				
+	   var etEnvironment = new DriEnvironment(executeobject.command.environment);
 	   etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		{
 			proxyprinttodiv('res --', result_obj, 99);

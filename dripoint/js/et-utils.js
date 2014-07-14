@@ -630,7 +630,7 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
                 "executetype":"series"
             };
 
-            var env = new drienvironment(command.environment); 
+            var env = new DriEnvironment(command.environment);
             env.execute(executeobject, function (err, res) {
             //execute(executeobject, function (err, res) {
                 proxyprinttodiv('Function getrelatedrecords query res', res, 17);
@@ -1465,7 +1465,7 @@ function recurseModObj(inputObject, dtoObject, convert, totype, command, callbac
                                     };
 
                                     executeobject.executethis=dataType;
-                                    var env = new driexecute(command.environment);
+                                    var env = new DriExecute(command.environment);
                                     env.execute(executeobject, function (err, res) {
                                         // If error, bounce out
                                         if (err && Object.keys(err).length > 0) {
@@ -4158,8 +4158,8 @@ function totalStorageSize(){
             delete inputWidgetObject['command']['environment'];
     };
 
-    // drienvironment class
-    exports.drienvironment = drienvironment = function drienvironment(environment) {
+    // DriEnvironment class
+    exports.DriEnvironment = DriEnvironment = function DriEnvironment(environment) {
         this.environment = environment;
 
         this.execute = function(params, callback) {
@@ -4190,9 +4190,9 @@ function totalStorageSize(){
         };
     };
 
-    // drienvironment class
+    // DriEnvironment class
     // accepts parameters at root level not root.command.environment
-    exports.driexecute = driexecute = function drienvironment(driexecute) {
+    exports.DriExecute = DriExecute = function DriExecute(driexecute) {
         this.driexecute = driexecute;
 
         this.execute = function(params, callback) {
@@ -4200,13 +4200,10 @@ function totalStorageSize(){
 
             if (!params.command) { params.command = {}; }
 
-            if (isString(params)) 
-            {
+            if (isString(params)) {
                 executeobject = {executethis:params};
                 params = executeobject;
-            } 
-            else if (Array.isArray(params)) 
-            {
+            } else if (Array.isArray(params)) {
                 executeobject = {command:{xrun:params}};
                 params = executeobject;
             }

@@ -26,7 +26,6 @@ if (typeof angular !== 'undefined') {
             for (var prop in obj) {
                 if (obj.hasOwnProperty(prop)) {
                     if (obj[prop] instanceof Object) {
-
                         storeAllData(obj[prop], scope, prop);
                     } else {
                         if (phase !== '$apply' && phase !== '$digest') {
@@ -135,7 +134,9 @@ if (typeof angular !== 'undefined') {
                     delete parameters['wid'];
                 }
 
-                execute(parameters, function (err, resultArray) {
+                var env = new DriEnvironment(parameters.command.environment);
+
+                env.execute(parameters, function (err, resultArray) {
                     for (var x = 0; x < resultArray.length; x++) {
                         if (Array.isArray(resultArray[x])) {
                             for (var y = 0; y < resultArray[x].length; y++) {
@@ -211,8 +212,9 @@ if (typeof angular !== 'undefined') {
 
             // general use submit function which propegates data model changes to localStorage and mongoDB
             $scope.etsubmit = function(widName) {
-                var etObj = extend(true, $scope[widName], {executethis:"addwidmaster"});
-                execute(etObj, function (err, results) { });
+                var etObj = extend(true, $scope[widName], {executethis:"addwidmaster"}),
+                    env = new DriEnvironment({});
+                env.execute(etObj, function (err, results) { });
             };
 
             // general use back button function

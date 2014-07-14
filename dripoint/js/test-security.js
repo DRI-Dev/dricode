@@ -167,7 +167,7 @@ function setests_metadataaddtogroup1 (executeobject, callback) {
 											}
 							}
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
@@ -230,7 +230,7 @@ function setests_metadataaddgrouppermissions1 (executeobject, callback) {
 											}
 							}
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
@@ -304,7 +304,7 @@ function setests_metadataaddgrouppermissions2 (executeobject, callback) {
 											}
 							}
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
                                 

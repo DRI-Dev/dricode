@@ -3073,7 +3073,7 @@ exports.ettestag1 = widtests.ettestag1 = ettestag1 = function ettestag1(params, 
 
     proxyprinttodiv("Ag1  params ", params, 99);
 
-    var env = new drienvironment(params.command.environment);
+    var env = new DriEnvironment(params.command.environment);
     proxyprinttodiv("Ag1  env ", env, 99);
     env.execute(executeobject,
         function (err, res1) {
@@ -3119,7 +3119,7 @@ exports.ettestag1s = widtests.ettestag1s = ettestag1s = function ettestag1s(para
         executeobject.command.environment.run.executelevel=0;
         executeobject.command.environment.syncrule = "sync_server"
     proxyprinttodiv("Ag1  params ", params, 99);
-    var env = new drienvironment(params.command.environment);
+    var env = new DriEnvironment(params.command.environment);
     proxyprinttodiv("Ag1  env ", env, 99);
     env.execute([executeobject, {
             "executethis": "getwidmaster",
@@ -3285,7 +3285,7 @@ exports.ettestag2 = widtests.ettestag2 = ettestag2 = function ettestag2(params, 
         executeobject.command.environment.run.executelevel=0;
         executeobject.command.environment.syncrule = "sync_local"
     proxyprinttodiv("Ag2  params ", params, 99);
-    var env = new drienvironment(params.command.environment);
+    var env = new DriEnvironment(params.command.environment);
     proxyprinttodiv("Ag2  env ", env, 99);
     env.execute([executeobject, 
             {
@@ -3350,7 +3350,7 @@ exports.ettestag3 = widtests.ettestag3 = ettestag3 = function ettestag3(params, 
         executeobject.command.environment.run.executelevel=0;
         executeobject.command.environment.syncrule = "sync_local"
     proxyprinttodiv("Ag3  params ", params, 99);
-    var env = new drienvironment(params.command.environment);
+    var env = new DriEnvironment(params.command.environment);
     proxyprinttodiv("Ag3  env ", env, 99);
     env.execute([executeobject, 
         {
@@ -3466,7 +3466,7 @@ exports.ettestag2s = widtests.ettestag2s = ettestag2s = function ettestag2s(para
         executeobject.command.environment.run.executelevel=0;
         executeobject.command.environment.syncrule = "sync_server"
     proxyprinttodiv("Ag2  params ", params, 99);
-    var env = new drienvironment(params.command.environment);
+    var env = new DriEnvironment(params.command.environment);
     proxyprinttodiv("Ag2  env ", env, 99);
     env.execute([executeobject, 
             {
@@ -3531,7 +3531,7 @@ exports.ettestag3s = widtests.ettestag3s = ettestag3s = function ettestag3s(para
         executeobject.command.environment.run.executelevel=0;
         executeobject.command.environment.syncrule = "sync_server"
     proxyprinttodiv("Ag3  params ", params, 99);
-    var env = new drienvironment(params.command.environment);
+    var env = new DriEnvironment(params.command.environment);
     proxyprinttodiv("Ag3  env ", env, 99);
     env.execute([executeobject, 
         {

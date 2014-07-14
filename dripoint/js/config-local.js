@@ -554,7 +554,7 @@ exports.test_return_noerror_result_local = test_return_noerror_result_local = fu
 
 		  executeobject.command.xrun={"executethis": 'test_return_noerror_result_local'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -589,7 +589,7 @@ exports.test_return_noerror_result_local = test_return_noerror_result_local = fu
 
 		  executeobject.command.xrun={"executethis": 'test_return_noerror_result_server'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				//var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               

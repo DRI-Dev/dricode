@@ -3265,7 +3265,7 @@ exports.ettestag1 = widtests.ettestag1 = ettestag1 = function ettestag1(params, 
     // eventappinstall();
 
     proxyprinttodiv("Ag1  params ", params, 99);
-    var env = new drienvironment(params.command.environment);
+    var env = new DriEnvironment(params.command.environment);
     proxyprinttodiv("Ag1  env ", env, 99);
     env.execute([{
             //execute([{

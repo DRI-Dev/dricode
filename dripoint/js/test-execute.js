@@ -104,7 +104,7 @@ function ettest_serieslevel0(executeobject, callback)
 		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -142,7 +142,7 @@ function ettest_serieslevel0(executeobject, callback)
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {          
 				var result={"a":"b", "env":executeobject.command.environment.platform};   
@@ -184,7 +184,7 @@ function ettest_serieslevel0(executeobject, callback)
 		  //var expectedresult2 = {"a":"b","env":executeobject.command.environment.platform}      
 		  //var expectedresult3 = {"a":"b","env":executeobject.command.environment.platform}	  
 			//var result_assertion = [expectedresult1, expectedresult2, expectedresult3]
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
@@ -225,7 +225,7 @@ function ettest_serieslevel0(executeobject, callback)
 		  //var expectedresult2 = {"a":"b","env":executeobject.command.environment.platform}      
 		  //var expectedresult3 = {"a":"b","env":executeobject.command.environment.platform}	  
 			//var result_assertion = [expectedresult1, expectedresult2, expectedresult3]
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
@@ -262,7 +262,7 @@ function ettest_serieslevel0(executeobject, callback)
 									  {"executethis": 'test_return_failnotfound_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 		   
@@ -320,7 +320,7 @@ function ettest_serieslevel1(executeobject, callback)
 		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -356,7 +356,7 @@ function ettest_serieslevel1(executeobject, callback)
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {          
 				var result={"a":"b", "env":executeobject.command.environment.platform};   
@@ -393,7 +393,7 @@ function ettest_serieslevel1(executeobject, callback)
 									  {"executethis": 'test_return_noerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 		   
@@ -430,7 +430,7 @@ function ettest_serieslevel1(executeobject, callback)
 									  {"executethis": 'test_return_realerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 		   
@@ -486,7 +486,7 @@ function ettest_grouplevel0(executeobject, callback)
 		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -529,7 +529,7 @@ function ettest_grouplevel0(executeobject, callback)
 								result_assertion,
 								result_assertion];
 										
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 									
@@ -569,7 +569,7 @@ function ettest_grouplevel0(executeobject, callback)
 		  //var expectedresult2 = {"a":"b","env":executeobject.command.environment.platform}      
 		  //var expectedresult3 = {"a":"b","env":executeobject.command.environment.platform}	  
 			//var result_assertion = [expectedresult1, expectedresult2, expectedresult3]
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
@@ -605,7 +605,7 @@ function ettest_grouplevel0(executeobject, callback)
 									  {"executethis": 'test_return_failnotfound_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 		   
@@ -661,7 +661,7 @@ function ettest_grouplevel1(executeobject, callback)
 		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -697,7 +697,7 @@ function ettest_grouplevel1(executeobject, callback)
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {          
 				var result={"a":"b", "env":executeobject.command.environment.platform};
@@ -734,7 +734,7 @@ function ettest_grouplevel1(executeobject, callback)
 									  {"executethis": 'test_return_noerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
@@ -770,7 +770,7 @@ function ettest_grouplevel1(executeobject, callback)
 									  {"executethis": 'test_return_realerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
@@ -825,7 +825,7 @@ function ettest_waterfalllevel1(executeobject, callback)
 		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -861,7 +861,7 @@ function ettest_waterfalllevel1(executeobject, callback)
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {          
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};
@@ -897,7 +897,7 @@ function ettest_waterfalllevel1(executeobject, callback)
 									  {"executethis": 'test_return_noerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
@@ -933,7 +933,7 @@ function ettest_waterfalllevel1(executeobject, callback)
 									  {"executethis": 'test_return_realerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
@@ -988,7 +988,7 @@ function ettest_runfirstonelevel1(executeobject, callback)
 		  executeobject.serverfn="test_return_notfound_result";        // so we can test fail local, pass server on same machine
 		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -1024,7 +1024,7 @@ function ettest_runfirstonelevel1(executeobject, callback)
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {          
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};
@@ -1060,7 +1060,7 @@ function ettest_runfirstonelevel1(executeobject, callback)
 									  {"executethis": 'test_return_noerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};
@@ -1097,7 +1097,7 @@ function ettest_runfirstonelevel1(executeobject, callback)
 									  {"executethis": 'test_return_realerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
@@ -1151,7 +1151,7 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 		  executeobject.command.environment.processfn="execute_function";
 		  executeobject.serverfn="test_return_noerror_result";
 		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'};
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				var result={"a":"b","env":"local"};
@@ -1187,7 +1187,7 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 									  {"executethis": 'test_return_noerror_result'},
 									  {"executethis": 'test_return_noerror_result'}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {          
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};
@@ -1224,7 +1224,7 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 									  {"executethis": 'test_return_noerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};
@@ -1261,7 +1261,7 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 									  {"executethis": 'test_return_realerror_result'}
 									  ]; 
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				proxyprinttodiv('actual result', result_obj, 99, true);                         
@@ -1316,7 +1316,7 @@ function ettest_whattodo(executeobject, callback)
 		  executeobject.serverfn="test_return_noerror_result2";
 		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -1351,7 +1351,7 @@ function ettest_whattodo(executeobject, callback)
 		  executeobject.serverfn="test_return_noerror_result2";
 		  executeobject.command.xrun={"executethis": 'a', "a": "test_return_noerror_result"};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -1385,7 +1385,7 @@ function ettest_whattodo(executeobject, callback)
 	   executeobject.command.xrun={"executethis": 'test_return_realerror_result'};
 
 	   var expectedresult = {"a":"b","env":executeobject.command.environment.platform};
-	   var etEnvironment = new drienvironment(executeobject.command.environment);
+	   var etEnvironment = new DriEnvironment(executeobject.command.environment);
 	   etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 	   {
 			 proxyprinttodiv('expected error', null, 99);
@@ -1435,7 +1435,7 @@ function ettest_howtodo(executeobject, callback)
 		  executeobject.command.environment.platform='local';
 		  executeobject.serverfn={"executethis": "test_return_noerror_result"};
 		  executeobject.command.xrun=[{"executethis": "test_return_realerror_result"}];
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 			    var result_assertion={"a":"b", "env":"server"};
@@ -1472,7 +1472,7 @@ function ettest_howtodo(executeobject, callback)
 									"serverfn": "test_return_noerror_result2"
 									}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				//var result_assertion=[result, result, result]           
@@ -1518,7 +1518,7 @@ function ettest_howtodo(executeobject, callback)
 									"serverfn": "test_return_noerror_result4"
 									}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				//var result_assertion=[result, result, result]           
@@ -1563,7 +1563,7 @@ function ettest_howtodo(executeobject, callback)
 									"serverfn": "test_return_noerror_result5"
 									}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				//var result_assertion=[result, result, result]           
@@ -1608,7 +1608,7 @@ function ettest_howtodo(executeobject, callback)
 									"serverfn": "test_return_noerror_result6"
 									}];
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
 				//var result_assertion=[result, result, result]           
@@ -1656,7 +1656,7 @@ function ettest_howtodo(executeobject, callback)
 			  //executeobject.serverfn="test_return_noerror_result2";
 			  executeobject.command.xrun={"executethis": 'callpassfunction'};
 
-			  var etEnvironment = new drienvironment(executeobject.command.environment);
+			  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 			  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 			  {        
 					var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -1713,7 +1713,7 @@ function ettest_executemisc(executeobject, callback)
 		  executeobject.serverfn="test_return_noerror_result2";
 		  executeobject.command.xrun={"executethis": 'test_return_noerror_result'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -1749,7 +1749,7 @@ function ettest_executemisc(executeobject, callback)
 		  executeobject.serverfn="test_return_noerror_result2";
 		  executeobject.command.xrun={"executethis": 'a', "a": "test_return_noerror_result"};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -1792,7 +1792,7 @@ function ettest_executemisc(executeobject, callback)
 		  executeobject.serverfn="test_return_noerror_result2";
 		  executeobject.command.xrun={"executethis": 'callpassfunction'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -1837,7 +1837,7 @@ function ettest_executemisc(executeobject, callback)
 		  executeobject.serverfn="test_return_noerror_result2";
 		  executeobject.command.xrun={"executethis": 'callpassfunction'};
 
-		  var etEnvironment = new drienvironment(executeobject.command.environment);
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {        
 				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -1881,7 +1881,7 @@ function ettest_series1update1(executeobject, callback)
         executeobject.serverfn={"executethis": 'callpassfunction'};        // so we can test fail local, pass server on same machine
         executeobject.command.xrun={"executethis": 'test_return_failnotfound_result'};
 
-        var etEnvironment = new drienvironment(executeobject.command.environment);
+        var etEnvironment = new DriEnvironment(executeobject.command.environment);
         etEnvironment.execute(executeobject, 
           function (error_obj, result_obj) 
           {        
@@ -1926,7 +1926,7 @@ function ettest_group3failpassserver(executeobject, callback)
                       {"executethis": 'test_return_noerror_result2', 'serverfn':'test test_return_failnotfound_result2'}
                       ]; 
 
-    var etEnvironment = new drienvironment(executeobject.command.environment);
+    var etEnvironment = new DriEnvironment(executeobject.command.environment);
     etEnvironment.execute(executeobject, function (error_obj, result_obj) 
     {        
         var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
@@ -1995,7 +1995,7 @@ function ettest_nestedtestslevel1(executeobject, callback)
 									}
 								]; 
 
-	 	  var etEnvironment = new drienvironment(executeobject.command.environment);
+	 	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 	 	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 	 	  {
 				var result_assertion = {"a":"b","env":"local"};
@@ -2039,7 +2039,7 @@ function ettest_nestedtestslevel1(executeobject, callback)
 									}
 	 							]; 
 
-	 	  var etEnvironment = new drienvironment(executeobject.command.environment);
+	 	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 	 	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 	 	  {
 				var result = {"a":"b","env":"local"};
@@ -2084,7 +2084,7 @@ function ettest_nestedtestslevel1(executeobject, callback)
 									}
 	 							]; 
 
-	 	  var etEnvironment = new drienvironment(executeobject.command.environment);
+	 	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 	 	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 	 	  {
 	 			proxyprinttodiv('actual result', result_obj, 99, true);                         
@@ -2127,7 +2127,7 @@ function ettest_nestedtestslevel1(executeobject, callback)
 									}
 	 							]; 
 
-	 	  var etEnvironment = new drienvironment(executeobject.command.environment);
+	 	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 	 	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 	 	  {
 	 			proxyprinttodiv('actual result', result_obj, 99, true);                         
@@ -2166,7 +2166,7 @@ function ettest_runfirst3real(executeobject, callback)
                                   {"executethis": 'test_return_notfound_result'},
                                   {"executethis": 'test_return_failnotfound_result'}
                                   ];  
-      var etEnvironment = new drienvironment(executeobject.command.environment);
+      var etEnvironment = new DriEnvironment(executeobject.command.environment);
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
             proxyprinttodiv('actual result', result_obj, 99, true);                         
@@ -2200,7 +2200,7 @@ exports.ettest_runfirst3pass_lvl1 = ettest_runfirst3pass_lvl1 = function ettest_
                                   {"executethis": 'test_return_noerror_result2'}
                                   ];
   var expectedresult = {"a":"b","env":executeobject.command.environment.platform};
-      var etEnvironment = new drienvironment(executeobject.command.environment);
+      var etEnvironment = new DriEnvironment(executeobject.command.environment);
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
             proxyprinttodiv('expected error', null, 99);
@@ -2249,7 +2249,7 @@ if (!executeobject.command) {
   
       executeobject.command.environment.processfn="execute_function";
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute("test_return_noerror_result", function (error_obj, result_obj) 
       {
  			var expected_result = {"a":"b","env":"local"};                               
@@ -2325,7 +2325,7 @@ exports.ettest_executelist2 = ettest_executelist2 = function ettest_executelist2
 	  
 		  executeobject.command.environment.processfn="execute_function";
 			
-		  var etEnvironment = new drienvironment(executeobject.command.environment)
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment)
 		  etEnvironment.execute({"command.xrun":[
 				{"executethis":"test_return_noerror_result"},
 				{"executethis":"test_return_noerror_result2"},
@@ -2392,7 +2392,7 @@ function ettest_executewithattributes1(executeobject, callback)
 			"creator":"cody"
 		};
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
@@ -2451,7 +2451,7 @@ function ettest_usernamespace1(executeobject, callback)
 							"color":"red"
                                 }];
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
@@ -2501,7 +2501,7 @@ function ettest_appnamespace1(executeobject, callback)
 							"color":"red"
                                 };
 		
-      var etEnvironment1 = new drienvironment(executeobject.command.environment)
+      var etEnvironment1 = new DriEnvironment(executeobject.command.environment)
       etEnvironment1.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
@@ -2527,7 +2527,7 @@ function ettest_appnamespace1(executeobject, callback)
 							"color":"blue"
                                 };
 		
-      var etEnvironment2 = new drienvironment(executeobject.command.environment)
+      var etEnvironment2 = new DriEnvironment(executeobject.command.environment)
       etEnvironment2.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
@@ -2556,7 +2556,7 @@ function ettest_appnamespace1(executeobject, callback)
 							"color":"red"
                                 };
 		
-      var etEnvironment3 = new drienvironment(executeobject.command.environment)
+      var etEnvironment3 = new DriEnvironment(executeobject.command.environment)
       etEnvironment3.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
@@ -2582,7 +2582,7 @@ function ettest_appnamespace1(executeobject, callback)
 							"color":"blue"
                                 };
 		
-      var etEnvironment4 = new drienvironment(executeobject.command.environment)
+      var etEnvironment4 = new DriEnvironment(executeobject.command.environment)
       etEnvironment4.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
@@ -3278,7 +3278,7 @@ function ettest_testenvglobal1(executeobject, callback)
                                   {"executethis": 'printglobal1'},
                                   ];
 								  
-      var etEnvironment = new drienvironment(executeobject.command.environment);
+      var etEnvironment = new DriEnvironment(executeobject.command.environment);
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
 			var expectedresult = {'value':"pass"};
@@ -3312,7 +3312,7 @@ function ettest_testenvfunctionvar1(executeobject, callback)
       executeobject.command.xrun=[
                                   {"executethis": 'printglobal1'},
                                   ];  
-      var etEnvironment = new drienvironment(executeobject.command.environment);
+      var etEnvironment = new DriEnvironment(executeobject.command.environment);
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
 			var expectedresult = {'value':"pass"};
@@ -3363,7 +3363,7 @@ function ettest_globalmetadata1(executeobject, callback)
 											}
 							}
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
@@ -3414,7 +3414,7 @@ function ettest_metadatauserid1(executeobject, callback)
 											}
 							}
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
@@ -3465,7 +3465,7 @@ function ettest_metadatamerchantid1(executeobject, callback)
 											}
 							}
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
@@ -3517,7 +3517,7 @@ function ettest_metadataattributes1(executeobject, callback)
 											}
 							}
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
                                 

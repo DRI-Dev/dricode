@@ -36,7 +36,7 @@ function nstest_namespaceadd1(executeobject, callback)
 											}
 							}
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
@@ -84,7 +84,7 @@ function nstest_genericadd1(executeobject, callback)
 											}
 							}
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
@@ -146,7 +146,7 @@ function nstest_namespacequery1(executeobject, callback)
 						}
 					];							
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
 
@@ -159,7 +159,7 @@ function nstest_namespacequery1(executeobject, callback)
 			executeobject2.command.namespace.creator="cody";
 			executeobject2.command.namespaceflag.creator="true";
 			executeobject2.command.xrun=queryobj;
-            var etEnvironment2 = new drienvironment(executeobject2.command.environment)
+            var etEnvironment2 = new DriEnvironment(executeobject2.command.environment)
 			
 			etEnvironment2.execute(executeobject2, function (error_obj, result_obj)
 			{
@@ -214,7 +214,7 @@ function nstest_appnamespaceadd1(executeobject, callback)
 											}
 							}
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
@@ -267,7 +267,7 @@ function nstest_appnamespaceget1(executeobject, callback)
 											}
 							};
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
@@ -312,7 +312,7 @@ function nstest_appnamespaceget1fail(executeobject, callback)
 		
 		var expectedresult = {};
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
@@ -374,7 +374,7 @@ function nstest_appnamewidadd1(executeobject, callback)
 											}											
 							}];
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
@@ -424,7 +424,7 @@ function nstest_appnamewidget1(executeobject, callback)
 											}
 							};
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
 			  var executeobject2 = {};			  
@@ -437,7 +437,7 @@ function nstest_appnamewidget1(executeobject, callback)
 								"wid":"nswid3"
 								}];
 								
-              var etEnvironment2 = new drienvironment(executeobject2.command.environment);
+              var etEnvironment2 = new DriEnvironment(executeobject2.command.environment);
 			
 			  etEnvironment2.execute(executeobject2, function (error_obj, result_obj)
 			  {
@@ -480,7 +480,7 @@ function nstest_appnamewidget1fail(executeobject, callback)
 		
 		var expectedresult = {};
 		
-      var etEnvironment = new drienvironment(executeobject.command.environment)
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
 			  var executeobject2 = {};			  
@@ -493,7 +493,7 @@ function nstest_appnamewidget1fail(executeobject, callback)
 								"wid":"nswid3"
 								}];
 								
-              var etEnvironment2 = new drienvironment(executeobject2.command.environment);			
+              var etEnvironment2 = new DriEnvironment(executeobject2.command.environment);
 			  etEnvironment2.execute(executeobject2, function (error_obj, result_obj)
 			  {
 					proxyprinttodiv('expected error', null, 99);

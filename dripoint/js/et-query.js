@@ -306,7 +306,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
 
     if (!command.environment) { command.environment = {run:{}}; }
 
-    var etEnvironment = new drienvironment(command.environment);
+    var etEnvironment = new DriEnvironment(command.environment);
 
     if (!((qparms['mongosinglequery'] !== undefined && qparms['mongosinglequery'] !== "") ||
         (qparms['mongowid'] !== undefined && qparms['mongowid'] !== "") ||
@@ -822,7 +822,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
             proxyprinttodiv('querywid finalformatlist excludeset ', excludeset, 17);
         }
 
-/*        var etEnvironment = new drienvironment({
+/*        var etEnvironment = new DriEnvironment({
             run:{
                 "executeid":command.environment.run.executeid,
                 "executelevel":command.environment.run.executelevel,
@@ -830,7 +830,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
             }
         });*/
         command.environment.run.type = "series";
-        var etEnvironment = new drienvironment(command.environment);
+        var etEnvironment = new DriEnvironment(command.environment);
 
         if (inlist === undefined || inlist.length === 0) {
             callback(null, []);

@@ -454,7 +454,7 @@
 
                 if (!command.environment) { command.environment = {run:{}}; }
 
-                var etEnvironment = new drienvironment(command.environment);
+                var etEnvironment = new DriEnvironment(command.environment);
 
                 var executeobject = {
                     "executethis": "getwidmaster",
@@ -547,7 +547,7 @@
                     if (!command.environment) { command.environment = {}; }
                     if (!command.environment.run) { command.environment.run = {}; }
 
-                    var etEnvironment = new drienvironment(command.environment);
+                    var etEnvironment = new DriEnvironment(command.environment);
 
                     etEnvironment.execute(executeobject, function (err, res) {
                         // execute(executeobject, function (err, res) { // getwid
@@ -603,7 +603,7 @@
                                         eachresult.command.getwidmaster = {};
                                     }
 
-                                    var etEnvironment = new drienvironment(command.environment);
+                                    var etEnvironment = new DriEnvironment(command.environment);
 
                                     eachresult.command.notfoundok = true;
 
@@ -686,7 +686,7 @@
                                     // proxyprinttodiv('Function getwidmongo executeobject', executeobject, 38);
                                     // execute(executeobject, function (err, res) {
 
-                                    var etEnvironment = new drienvironment(command.environment);
+                                    var etEnvironment = new DriEnvironment(command.environment);
 
                                     var executeobject = {
                                         "executethis": "querywid",
@@ -968,7 +968,7 @@
                         // if (command.getwidmaster.inheritflag === "true") {
                         if (widName !== "systemdto") {
 
-                            var etEnvironment = new drienvironment(command.environment);
+                            var etEnvironment = new DriEnvironment(command.environment);
 
                             var executeobject = {
                                 "executethis": "getwidmaster",
@@ -1083,7 +1083,7 @@
                         // add logic to look for dtotype
                         dtoToGet = resultObj.metadata.method;
 
-                        var etEnvironment = new drienvironment(command.environment);
+                        var etEnvironment = new DriEnvironment(command.environment);
 
                         var executeobject = {
                             "executethis": "getwidmaster",
@@ -1204,7 +1204,7 @@
                                     eachresult.command.resultparameters = resultObj;
                                     proxyprinttodiv('call being done for inherit', eachresult, 38);
 
-                                    var etEnvironment = new drienvironment(command.environment);
+                                    var etEnvironment = new DriEnvironment(command.environment);
 
                                     etEnvironment.execute(eachresult, function(err, res) {
                                         proxyprinttodiv('clean inherit 1', err, 38);

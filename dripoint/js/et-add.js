@@ -157,8 +157,8 @@
                     };
 
                     proxyprinttodiv("cleanadd executeobject", executeobject, 99, true);
-                    var env = new drienvironment(command.environment);
-                    //var env = new drienvironment(object.command.environment);
+                    var env = new DriEnvironment(command.environment);
+                    //var env = new DriEnvironment(object.command.environment);
                     env.execute(executeobject, function (err, res) {
                         if (err && err.errorname === "failnotfound") {err=null; res={}}
 
@@ -494,8 +494,8 @@
                             };
                         }
 
-                        //var env = new drienvironment(inputrecord.command.environment);
-                        var env = new drienvironment(command.environment);
+                        //var env = new DriEnvironment(inputrecord.command.environment);
+                        var env = new DriEnvironment(command.environment);
                         env.execute(executeobject, function (err, widset1) {
                         if (err && err.errorname === "failnotfound") {err=null; widset1={"queryresult":[]}}
 
@@ -865,7 +865,7 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                             "command.executetype":"series"
                         };
 
-                        var env = new drienvironment(command.environment);
+                        var env = new DriEnvironment(command.environment);
                         proxyprinttodiv("addwid step1 executeobject", executeobject, 99, true);
                         proxyprinttodiv("addwid step1 env", env, 99, true);
                         env.execute(executeobject, function (err, res) {
@@ -987,8 +987,8 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                 proxyprinttodiv("addwid before updatewid ", object, 18);
 
                 //not needed in this case
-                //var env = new drienvironment(object.command.environment);
-                var env = new drienvironment(command.environment);
+                //var env = new DriEnvironment(object.command.environment);
+                var env = new DriEnvironment(command.environment);
                 // object["command"]={"environment": {
                 //             "run": {
                 //                 "type": "series"
