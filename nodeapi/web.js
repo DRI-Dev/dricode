@@ -55,6 +55,44 @@ app.configure('development', function() {
     app.use(express.errorHandler());
 });
 
+var startTime = new Date();
+exports.getuptime = getuptime = function getuptime(params, callback) {
+    console.log(">>>>>>>-----------=======-----==-=-=-=-=-=-=---=-=-------======----------");
+    var execObj = [{
+        "executethis" : "getwid",
+        "wid": "russwid"
+    }];
+    execute(execObj, function (err, res) {
+            res = res[0][0];
+            var startTime = res.starttime;
+            var now = new Date().getTime();
+            var howLong = Math.floor((now - startTime)/1000) ;
+            var currentUser = params.currentuser;
+
+            console.log("How Long is " + howLong);
+            var tooLong = 30;
+            var upStatus = (howLong < tooLong);
+            console.log("RESULT is " + JSON.stringify(res));
+            res.status = upStatus;
+            res.uptime = howLong;
+            res.currentuser = currentUser; 
+            res.sms = '+12313133930';
+            callback(err, res)
+        }
+    );
+}
+    var startTime = new Date().getTime().toString();
+    execute({
+        "executethis":"addwidmaster", 
+        "wid":"russwid", 
+        "starttime": startTime
+        , "a": "ee"
+        }, function (err, res) {
+            console.log("Res is " + res.toString() );
+        }
+    );
+
+
 //// *********************** Route Mapping for Application follows   ***********************
 app.put('/executethis', server.putrunExecutethis);
 app.put('/filetowid', convert.convertFileToWid);
