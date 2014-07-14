@@ -456,15 +456,6 @@
 
                 var etEnvironment = new drienvironment(command.environment);
 
-                //     "command": {
-                //         "run": {
-                //             "executeid": command.environment.run.executeid,
-                //             "executelevel": command.environment.run.executelevel
-                //             //,"type": "series"
-                //         }
-                //     }
-                // });
-
                 var executeobject = {
                     "executethis": "getwidmaster",
                     "wid": dtotype,
@@ -546,6 +537,7 @@
                     targetwid = widInput;
                     executeobject = parameters;
                     executeobject.executethis = "getwid";
+                    executeobject.command.notfoundok = true;
                     executeobject.command.executetype = "series";
                     //executeobject["wid"] = widInput;
                     //executeobject["command.convertmethod"]="toobject";
@@ -554,13 +546,6 @@
                     if (!command.environment.run) { command.environment.run = {}; }
 
                     var etEnvironment = new drienvironment(command.environment);
-                    //     {
-                    //     "run": {
-                    //         "executeid": command.environment.run.executeid,
-                    //         "executelevel": command.environment.run.executelevel
-                    //         //,"type":"series"
-                    //     }
-                    // });
 
                     etEnvironment.execute(executeobject, function (err, res) {
                         // execute(executeobject, function (err, res) { // getwid
@@ -617,21 +602,11 @@
                                     }
 
                                     var etEnvironment = new drienvironment(command.environment);
-//                                         {
-//                                         // "getwidmaster":{
-//                                         //     "inheritflag": "false",
-//                                         //     "execute": "ConvertFromDOTdri"
-//                                         // },
-//                                         "run":{
-//                                             "executeid": command.environment.run.executeid,
-// //                                            "type": parameters.command.environment.run.group,
-//                                             "type": "series",
-//                                             "executelevel": command.environment.run.executelevel
-//                                         }
-//                                     });
+
+                                    eachresult.command.notfoundok = true;
 
                                     eachresult.executethis = "getwidmaster";
-                                    eachresult.command.executetype="series"
+                                    eachresult.command.executetype="series";
                                     // eachresult.command.getwidmaster.convertmethod="nowid";
                                     eachresult.command.getwidmaster.inheritflag = "false";
                                     eachresult.command.getwidmaster.execute = "ConvertFromDOTdri";
@@ -710,17 +685,6 @@
                                     // execute(executeobject, function (err, res) {
 
                                     var etEnvironment = new drienvironment(command.environment);
-                                    //     {
-                                    //     // "getwidmaster":{
-                                    //     //     "convertmethod": "dto",
-                                    //     //     "execute": "ConvertFromDOTdri"
-                                    //     // },
-                                    //     "run": {
-                                    //         "executeid": command.environment.run.executeid,
-                                    //         "executelevel": command.environment.run.executelevel,
-                                    //         "type": "series"
-                                    //     }
-                                    // });
 
                                     var executeobject = {
                                         "executethis": "querywid",
@@ -730,8 +694,8 @@
                                         "mongorelationshipmethod": "all",
                                         "mongorelationshipdirection": "forward",
                                         "mongowidmethod": "",
-                                        "command": 
-                                            {
+                                        "command": {
+                                            "notfoundok": true,
                                             "executetype":"series",
                                             "result": "queryresult"
                                             // "getwidmaster":
@@ -1003,24 +967,12 @@
                         if (widName !== "systemdto") {
 
                             var etEnvironment = new drienvironment(command.environment);
-                            // {
-                            // //     "getwidmaster":{
-                            // //         "convertmethod": "dto",
-                            // //         "execute": "ConvertFromDOTdri",
-                            // //         "inheritflag": "true"
-                            // //     },
-                            //     "run" : {
-                            //         "executeid": command.environment.run.executeid,
-                            //         "executelevel": command.environment.run.executelevel,
-                            //         "type": "series"
-                            //     }
-                            // });
 
                             var executeobject = {
                                 "executethis": "getwidmaster",
                                 "wid": "systemdto",
-                                "command":
-                                    {
+                                "command": {
+                                    "notfoundok": true,
                                     "executetype":"series",
                                     "result": "systemdto",
                                     "getwidmaster": {
@@ -1130,34 +1082,21 @@
                         dtoToGet = resultObj.metadata.method;
 
                         var etEnvironment = new drienvironment(command.environment);
-                        //     {
-                        //     // "getwidmaster":{
-                        //     //     "convertmethod": "dto",
-                        //     //     "execute": "ConvertFromDOTdri",
-                        //     //     "inheritflag": "false"
-                        //     // },
-                        //     "run": {
-                        //         "executeid": command.environment.run.executeid,
-                        //         "executelevel": command.environment.run.executelevel,
-                        //         "type": command.environment.run.type || "series"
-                        //     }
-                        // });
 
                         var executeobject = {
                             "executethis": "getwidmaster",
                             "wid": dtoToGet,
-                            "command":
-                                {
+                            "command": {
+                                "notfoundok": true,
                                 "executetype":"series",
                                 "result": "systemdto",
-                                "getwidmaster":
-                                    {
+                                "getwidmaster": {
                                     "convertmethod": "dto",
                                     "execute": "ConvertFromDOTdri",
                                     "inheritflag": "false"
-                                    }
                                 }
-                            };
+                            }
+                        };
 
                         etEnvironment.execute(executeobject, function(err, res) {
 
@@ -1254,6 +1193,7 @@
                                     eachresult.command.getwidmaster.inheritflag = "false";
                                     eachresult.command.getwidmaster.execute = "ConvertFromDOTdri";
                                     eachresult.command.executetype = "series";
+                                    eachresult.command.notfoundok = true;
 
                                     if (!eachresult.command) { eachresult.command = {}; }
                                     if (!eachresult.command.resultparameters) { eachresult.command.resultparameters = {}; }
@@ -1263,18 +1203,6 @@
                                     proxyprinttodiv('call being done for inherit', eachresult, 38);
 
                                     var etEnvironment = new drienvironment(command.environment);
-                                    //     {
-                                    //     // "getwidmaster":{
-                                    //     //     "convertmethod": "dto",
-                                    //     //     "execute": "ConvertFromDOTdri",
-                                    //     //     "inheritflag": "false"
-                                    //     // },
-                                    //     "executeid": command.environment.run.executeid,
-                                    //     "executelevel": command.environment.run.executelevel,
-                                    //     "run":{
-                                    //         "type": "series"
-                                    //     }
-                                    // });
 
                                     etEnvironment.execute(eachresult, function(err, res) {
                                         proxyprinttodiv('clean inherit 1', err, 38);

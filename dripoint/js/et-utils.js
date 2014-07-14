@@ -609,6 +609,7 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
             var executeobject = {};
             executeobject["executethis"] = "querywid";
             executeobject["command"] = {
+                "notfoundok": true,
                 "result": "queryresult"
             };
             if (reltype === 'parent') {
@@ -627,11 +628,6 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
             proxyprinttodiv('Function getrelatedrecords query', executeobject, 17);
             executeobject["command"]= {
                 "executetype":"series"
-                // "environment": {
-                //     "run": {
-                //         "type": "series"
-                //     }
-                // }
             };
 
             var env = new drienvironment(command.environment); 

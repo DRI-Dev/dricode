@@ -1071,6 +1071,7 @@
             var executeobject = {
                 "wid": objkey,
                 "command": {
+                    "notfoundok": true,
                     "cache": false,
                     "datastore": config.configuration.datastore,
                     "collection": "cache",
@@ -1339,9 +1340,10 @@
         executeobject.command.collection = eventname;
         executeobject.command.db = "queuedata";
         //executeobject.command.result = "queueresult";
+        executeobject.command.notfoundok = true;
         executeobject["executethis"] = "querywid";
         //executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
-        executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]}   
+        executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]};
         proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
         
         execute(executeobject, function (err, res) {

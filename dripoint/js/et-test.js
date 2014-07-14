@@ -9014,7 +9014,12 @@ exports.ettestdeletewid = ettestdeletewid = function ettestdeletewid(params, cal
 
 exports.ettestaddwidmaster = ettestaddwidmaster = function ettestaddwidmaster(params, callback) {
     var etEnvironment = new drienvironment(params.command.environment);
-    etEnvironment.execute({executethis:'addwidmaster',wid:'mastertestdata123',key1:'value1',key2:'value2'}, function (err, result) {
+    etEnvironment.execute({
+        executethis:'addwidmaster',
+        wid:'mastertestdata123',
+        key1:'value1',
+        key2:'value2'
+    }, function (err, result) {
         proxyprinttodiv('addwidmaster results', result, 99);
         callback(err, result);
     });
@@ -9022,7 +9027,15 @@ exports.ettestaddwidmaster = ettestaddwidmaster = function ettestaddwidmaster(pa
 
 exports.ettestaddwidmasterserver = ettestaddwidmasterserver = function ettestaddwidmasterserver(params, callback) {
     var etEnvironment = new drienvironment(params.command.environment);
-    etEnvironment.execute({command:{processparameterfn:'sync_server'},executethis:'addwidmaster',wid:'mastertestdata123',key1:'value1',key2:'value2'}, function (err, result) {
+    etEnvironment.execute({
+        command:{
+            processparameterfn:'sync_server'
+        },
+        executethis:'addwidmaster',
+        wid:'mastertestdata123',
+        key1:'value1',
+        key2:'value2'
+    }, function (err, result) {
         proxyprinttodiv('addwidmaster results', result, 99);
         callback(err, result);
     });
@@ -9038,7 +9051,13 @@ exports.ettestgetwidmaster = ettestgetwidmaster = function ettestgetwidmaster(pa
 
 exports.ettestgetwidmasterserver = ettestgetwidmasterserver = function ettestgetwidmasterserver(params, callback) {
     var etEnvironment = new drienvironment(params.command.environment);
-    etEnvironment.execute({command:{processparameterfn:'sync_server'},executethis:'getwidmaster',wid:'mastertestdata123'}, function (err, result) {
+    etEnvironment.execute({
+        command:{
+            processparameterfn:'sync_server'
+        },
+        executethis:'getwidmaster',
+        wid:'mastertestdata123'
+    }, function (err, result) {
         proxyprinttodiv('getwid results', result, 99);
         callback(err, result);
     });
@@ -9046,7 +9065,12 @@ exports.ettestgetwidmasterserver = ettestgetwidmasterserver = function ettestget
 
 exports.ettestquerywid = ettestquerywid = function ettestquerywid(params, callback) {
     var etEnvironment = new drienvironment(params.command.environment);
-    etEnvironment.execute({executethis:'querywid',mongorawquery:{"wid":"testdata123"}}, function (err, result) {
+    etEnvironment.execute({
+        executethis:'querywid',
+        mongorawquery:{
+            "wid":"testdata123"
+        }
+    }, function (err, result) {
         proxyprinttodiv('querywid results', result, 99);
         callback(err, result);
     });
@@ -9054,7 +9078,15 @@ exports.ettestquerywid = ettestquerywid = function ettestquerywid(params, callba
 
 exports.ettestquerywidserver = ettestquerywidserver = function ettestquerywidserver(params, callback) {
     var etEnvironment = new drienvironment(params.command.environment);
-    etEnvironment.execute({command:{processparameterfn:'sync_server'},executethis:'querywid',mongorawquery:{"wid":"testdata123"}}, function (err, result) {
+    etEnvironment.execute({
+        command:{
+            processparameterfn:'sync_server'
+        },
+        executethis:'querywid',
+        mongorawquery:{
+            "wid":"testdata123"
+        }
+    }, function (err, result) {
         proxyprinttodiv('querywid results', result, 99);
         callback(err, result);
     });
@@ -9062,7 +9094,12 @@ exports.ettestquerywidserver = ettestquerywidserver = function ettestquerywidser
 
 exports.ettestquerywidmaster = ettestquerywidmaster = function ettestquerywidmaster(params, callback) {
     var etEnvironment = new drienvironment(params.command.environment);
-    etEnvironment.execute({executethis:'querywidmaster',mongorawquery:{"wid":"testdata123"}}, function (err, result) {
+    etEnvironment.execute({
+        executethis:'querywidmaster',
+        mongorawquery:{
+            "wid":"testdata123"
+        }
+    }, function (err, result) {
         proxyprinttodiv('querywid results', result, 99);
         callback(err, result);
     });
@@ -9070,8 +9107,71 @@ exports.ettestquerywidmaster = ettestquerywidmaster = function ettestquerywidmas
 
 exports.ettestquerywidmasterserver = ettestquerywidmasterserver = function ettestquerywidmasterserver(params, callback) {
     var etEnvironment = new drienvironment(params.command.environment);
-    etEnvironment.execute({command:{processparameterfn:'sync_server'},executethis:'querywidmaster',mongorawquery:{"wid":"testdata123"}}, function (err, result) {
+    etEnvironment.execute({
+        command:{
+            processparameterfn:'sync_server'
+        },
+        executethis:'querywidmaster',
+        mongorawquery:{
+            "wid":"testdata123"
+        }
+    }, function (err, result) {
         proxyprinttodiv('querywid results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestag2step1 = ettestag2step1 = function ettestag2step1(params, callback) {
+    var etEnvironment = new drienvironment(params.command.environment);
+    etEnvironment.execute({
+        "executethis": "addwidmaster",
+        "wid": "colordto",
+        "metadata": {
+            "method": "colordto"
+        },
+        "hue": "string",
+        "command": {
+            "environment": {
+                "syncrule": "sync_local"
+            }
+        }
+    }, function (err, result) {
+        proxyprinttodiv('ettestag2step1 results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestag2step2 = ettestag2step2 = function ettestag2step2(params, callback) {
+    var etEnvironment = new drienvironment(params.command.environment);
+    etEnvironment.execute({
+        "executethis": "addwidmaster",
+        "wid": "color1",
+        "hue": "red"
+    }, function (err, result) {
+        proxyprinttodiv('ettestag2step1 results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestag2step3 = ettestag2step3 = function ettestag2step3(params, callback) {
+    var etEnvironment = new drienvironment(params.command.environment);
+    etEnvironment.execute({
+        "executethis": "addwidmaster",
+        "wid": "color2",
+        "hue": "blue"
+    }, function (err, result) {
+        proxyprinttodiv('ettestag2step1 results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestag2step4 = ettestag2step4 = function ettestag2step4(params, callback) {
+    var etEnvironment = new drienvironment(params.command.environment);
+    etEnvironment.execute({
+        "executethis": "getwidmaster",
+        "wid": "color1"
+    }, function (err, result) {
+        proxyprinttodiv('ettestag2step1 results', result, 99);
         callback(err, result);
     });
 };

@@ -273,7 +273,7 @@ exports.execute_server = window.execute_server = execute_server = function execu
         //var inbound_parameters = {};
         //extend(true, inbound_parameters, params);
         //params =
-    var tempenvironment = params.command.environment
+    var tempenvironment = params.command.environment;
     delete params.command.processfn;
     //var temp = params.command.environment.syncrule;
     params.command.environment.run.executelevel=0;

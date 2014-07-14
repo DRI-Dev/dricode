@@ -129,16 +129,6 @@
                 var result_obj = {};
                 var output = {};
 
-                // if (!command) {
-                //     command = {};
-                // }
-                // if (!command.deepfilter) {
-                //     command.deepfilter = {};
-                // }
-                // if (!command.deepfilter.convert) {
-                //     command.deepfilter.convert = false;
-                // }
-
                 if (!command) {
                     command = {};
                 }
@@ -156,14 +146,6 @@
                if (dto_to_get !== "string") {
                     proxyprinttodiv("cleanadd dto_to_get", dto_to_get, 99);
 
-                    // old code
-                    // execute({
-                    //     "executethis": "getwidmaster",
-                    //     "wid": dto_to_get,
-                    //     "command.getwidmaster.execute": "ConvertFromDOTdri",
-                    //     "command.getwidmaster.convertmethod": "dto"
-                    // }, function (err, res) {
-
                     var executeobject = 
                     {
                         "executethis": "getwidmaster",
@@ -173,12 +155,8 @@
                         "command.getwidmaster.convertmethod": "dto",
                         "command.executetype":"series"
                     };
-                    // executeobject["command"]={"environment": {
-                    //         "run": {
-                    //             "type": "series"
-                    //         }
-                    //     }}
-            proxyprinttodiv("cleanadd executeobject", executeobject, 99, true);
+
+                    proxyprinttodiv("cleanadd executeobject", executeobject, 99, true);
                     var env = new drienvironment(command.environment);
                     //var env = new drienvironment(object.command.environment);
                     env.execute(executeobject, function (err, res) {
@@ -463,7 +441,7 @@
                         if (parentwid && inputrecord.wid) {
                            {//|| (relationshiptype === "manytomany")
                             executeobject["executethis"] = "querywid";
-                            executeobject["command"] = {"result":"queryresult"};
+                            executeobject["command"] = {"result":"queryresult","notfoundok":true};
                             executeobject["mongorawquery"] = {
                                 "$and": [{
                                     "data.primarywid": parentwid,
@@ -480,7 +458,7 @@
                             ))
                         {//|| (relationshiptype === "manytomany")
                             executeobject["executethis"] = "querywid";
-                            executeobject["command"] = {"result":"queryresult"};
+                            executeobject["command"] = {"result":"queryresult","notfoundok":true};
                             executeobject["mongorawquery"] = {
                                 "$and": [{
                                     "data.primarywid": parentwid,
@@ -496,6 +474,7 @@
                             executeobject["executethis"] = "querywid";
                             executeobject["command"] =
                             {
+                                "notfoundok": true,
                                 "result":"queryresult",
                                 "executetype":"series"
                                 // "environment": {
@@ -887,16 +866,8 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                         };
 
                         var env = new drienvironment(command.environment);
-                        //var env = new drienvironment(object.command.environment);
-                        // executeobject["command"]={
-                        //     "environment": {
-                        //         "run": {
-                        //             "type": "series"
-                        //         }
-                        //     }
-                        // };
-   proxyprinttodiv("addwid step1 executeobject", executeobject, 99, true);
-   proxyprinttodiv("addwid step1 env", env, 99, true);
+                        proxyprinttodiv("addwid step1 executeobject", executeobject, 99, true);
+                        proxyprinttodiv("addwid step1 env", env, 99, true);
                         env.execute(executeobject, function (err, res) {
                         if (err && err.errorname === "failnotfound") {err=null; res={}}
 
@@ -935,19 +906,13 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                     }); // end execute
                 
                 } else { // if no object['wid']
-                            step1_callback(null);
-                        }
+                    step1_callback(null);
+                }
             },
             function step2(step2_callback) { // deepfilter step...should create a guid for an empty wid
-                if (!command) {
-                    command = {};
-                }
-                if (!command) {
-                    command = {};
-                }
-                if (!command.deepfilter) {
-                    command.deepfilter = {};
-                }
+                if (!command) { command = {}; }
+                if (!command.deepfilter) { command.deepfilter = {}; }
+
                 command.deepfilter.convert = true;
 
                 // if (!command.deepfilter.keepaddthis) { command.deepfilter.keepaddthis = true; }
