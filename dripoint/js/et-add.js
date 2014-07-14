@@ -747,7 +747,8 @@
     //         callback(finalobject.err, finalobject.res);
     //     }
     // }; // end of addwid
-exports.addwid = addwid = function addwid(object, dtoobject, command, callback) {
+
+    exports.addwid = addwid = function addwid(object, dtoobject, command, callback) {
         // if (!object["wid"]){
         //     debuglevel = 18;
         // }
