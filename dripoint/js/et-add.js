@@ -168,7 +168,7 @@
                     {
                         "executethis": "getwidmaster",
                         "wid": dto_to_get,
-                        "command.notfoundok":"true", 
+                        "command.notfoundok": true,
                         "command.getwidmaster.execute": "ConvertFromDOTdri",
                         "command.getwidmaster.convertmethod": "dto",
                         "command.executetype":"series"
@@ -880,7 +880,7 @@ exports.addwid = addwid = function addwid(object, dtoobject, command, callback) 
                         var executeobject={
                             "executethis": "getwidmaster",
                             "wid": object['wid'],
-                            "command.notfoundok":"true", 
+                            "command.notfoundok": true,
                             "command.getwidmaster.execute": "ConvertFromDOTdri",
                             "command.getwidmaster.convertmethod": "nowid",
                             "command.executetype":"series"

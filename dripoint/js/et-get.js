@@ -454,7 +454,7 @@
 
                 if (!command.environment) { command.environment = {run:{}}; }
 
-                var etEnvironment = new drienvironment(command.environment)
+                var etEnvironment = new drienvironment(command.environment);
 
                 //     "command": {
                 //         "run": {
@@ -470,7 +470,7 @@
                     "wid": dtotype,
                     "command":{
                         "executetype":"series",
-                        "notfoundok":true, // if results back are blank then that is ok
+                        "notfoundok": true, // if results back are blank then that is ok
                         "getwidmaster": {
                             "convertmethod": "dto",
                             "execute": "ConvertFromDOTdri"

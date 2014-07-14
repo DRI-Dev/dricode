@@ -931,7 +931,7 @@
                             if (!resultparameters.command.environment) {resultparameters.command.environment={};}
                             if (!resultparameters.command.environment.run) {resultparameters.command.environment.run={};}
                             resultparameters.command.environment.run.executeid = incomingparams.command.environment.run.executeid;
-                            if (command.notfoundok && err.errorname==="notfound") {err=null; resultparameters={};};
+                            if (command.notfoundok && err.errorname==="notfound") {err=null; resultparameters={};}
                             proxyprinttodiv("execute after do this resultparameters after", resultparameters, 99);
                             if (err && Object.keys(err).length > 0) 
                             {
