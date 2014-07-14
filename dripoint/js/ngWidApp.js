@@ -134,7 +134,7 @@ if (typeof angular !== 'undefined') {
                     delete parameters['wid'];
                 }
 
-                var env = new DriEnvironment(parameters.command.environment);
+                var env = new DriEnvironment(parameters.command ? parameters.command.environment : {});
 
                 env.execute(parameters, function (err, resultArray) {
                     for (var x = 0; x < resultArray.length; x++) {
