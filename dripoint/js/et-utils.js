@@ -3934,8 +3934,8 @@ function getRandomNumberByLength(length) {
         xorobj1 = result1.xorobj;
 
         result2 = objectrelationships(obj2, obj1, type);
-        andobj = extend(true, result2.andobj, andobj);
-        orobj = extend(true, result2.orobj, orobj);
+        andobj = extend(true, {}, result2.andobj, andobj);
+        orobj = extend(true, {}, result2.orobj, orobj);
         xorobj2 = result2.xorobj;
 
         proxyprinttodiv("compareobjects after objectrelationships result1 ", result1, 65, true);
