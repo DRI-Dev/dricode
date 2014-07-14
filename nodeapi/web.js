@@ -14,6 +14,8 @@ var express = require('express'),
 
 
 
+eventdeviceready({}, function (err, res) { });
+
 //// *********************** Express Application Configuration follows   *********************** 
 app.configure(function() {
     app.enable('trust proxy');
