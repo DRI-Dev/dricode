@@ -3304,7 +3304,7 @@ exports.ettestag2 = widtests.ettestag2 = ettestag2 = function ettestag2(params, 
         }],
         function (err, res1) {
             proxyprinttodiv("Ag2  result ", res1, 99);
-            var res = res1[2];
+            var res = res1[3];
 
             proxyprinttodiv('Function ag2 expected res ', {
                 "hue": "red",
@@ -3313,7 +3313,7 @@ exports.ettestag2 = widtests.ettestag2 = ettestag2 = function ettestag2(params, 
                     "method": "defaultdto"
                 }
             }, 99);
-            proxyprinttodiv('Function ag1 actual result ', res, 99);
+            proxyprinttodiv('Function ag2 actual result ', res, 99);
             res = logverify("ettestag1_result", res, {
                 "hue": "red",
                 "wid": "color1",
