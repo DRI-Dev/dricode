@@ -180,7 +180,7 @@ app.listen(process.env.PORT || serverconfig.SERVER_PORT);
     };
 
 
-var startTime = new Date();
+//var startTime = new Date();
 exports.getuptime = getuptime = function getuptime(params, callback) {
     console.log(">>>>>>>-----------=======-----==-=-=-=-=-=-=---=-=-------======----------");
     var execObj = [{
@@ -206,14 +206,14 @@ exports.getuptime = getuptime = function getuptime(params, callback) {
         }
     );
 }
-    var startTime = new Date().getTime().toString();
-    execute({
-        "executethis":"addwidmaster", 
-        "wid":"russwid", 
-        "starttime": startTime
-        , "a": "ee"
-        }, function (err, res) {
-            console.log("Res is " + res.toString() );
-        }
-    );
+//    var startTime = new Date().getTime().toString();
+//    execute({
+//        "executethis":"addwidmaster",
+//        "wid":"russwid",
+//        "starttime": startTime
+//        , "a": "ee"
+//        }, function (err, res) {
+//            console.log("Res is " + res.toString() );
+//        }
+//    );
 
