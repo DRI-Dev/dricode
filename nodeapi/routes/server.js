@@ -29,6 +29,17 @@ exports.putrunExecutethis = function (req, resp) {
 };
 
 
+exports.postputgetrunExecutethis = function (req, resp) {
+    var parameters = req.body;
+    console.log(" JSON " + JSON.stringify(parameters));
+    var url_parts = url.parse(req.url, true);
+    var query = url_parts.query;
+
+    extend(true, parameters, query);
+    runExecuteThis(parameters, resp);
+};
+
+
 exports.getrunExecutethis = function (req, resp) {
     var url_parts = url.parse(req.url, true);
     var query = url_parts.query;
