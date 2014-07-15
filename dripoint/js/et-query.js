@@ -213,6 +213,35 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     var command= filter_data.filteredobject.command;
     var qparms = filter_data.output;
 
+    
+    console.log(" ********** COMMAND ******** " );
+    console.log(command );
+
+    /// adding usernamespace 
+    if(command && command.namespace && command.namespaceflag){
+        var userns = command.namespace;
+        var usernsflag = command.namespaceflag;
+
+        var critiriajsonarray = [];
+
+        for(var key in userns){
+            // is the flag set, is it true
+            var isallowed = (usernsflag[key] && usernsflag[key] == "true");
+
+            // add the keys after checking if the flags are true
+            if(isallowed && userns){
+                critiriajsonarray.push(key,userns['key']);
+            }
+        }
+
+        //
+        var queryjson = {};
+        queryjson['$and']=critiriajsonarray;
+        // qparms.push(queryjson);
+    }
+
+	
+
     proxyprinttodiv('querywid filteredobject', filter_data, 38);
     proxyprinttodiv('querywid command', command, 38);
     proxyprinttodiv('querywid qparms', qparms, 38);
@@ -506,7 +535,16 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     // throw ({'Sample_error': 'querywid_async_step01_else if'});
 
                     console.log('mongorawquery => ' + JSON.stringify(qparms['mongorawquery']));
-                    mQueryString = qparms['mongorawquery'];
+                    // mQueryString = qparms['mongorawquery'];
+
+                    var xparams = queryjson;
+                    // check if and stuc conditions in metadata need to be added to the
+                    if(xparams){
+                        // BuildSingleQuery(parameters, innerquerytype, preamble);
+                        mQueryString = BuildSingleQuery([xparams,qparms['mongorawquery']], "and", environmentdb); 
+                    }else {
+                        mQueryString = qparms['mongorawquery'];
+                    }
                     console.log('mQueryString at step01 => ' + JSON.stringify(mQueryString));
                     //debugfn("querywid before mQueryString1", "querywid", "query", "mid", getglobal("debugcolor"), getglobal("debugindent"), debugvars([5]));
                     proxyprinttodiv('querywid mQueryString second', mQueryString, 17);

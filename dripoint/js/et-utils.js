@@ -246,13 +246,23 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
     }
 
     // copy environment stuff
-    if(inputWidgetObject && inputWidgetObject.command && inputWidgetObject.command.usernamespace){
-        // add usernamespace from environment to metadata
-        if(inputWidgetObject.command.usernamespace){
-            inputWidgetObject['metadata']['accountid']=inputWidgetObject.command.usernamespace;
+    if(inputWidgetObject && inputWidgetObject.command && inputWidgetObject.command.namespace){
+        // add namespace from environment to metadata
+        if(inputWidgetObject.command.namespace){
+            inputWidgetObject['metadata']['accountid']=inputWidgetObject.command.namespace;
         }
+
+        // // add attributes from environment to metadata
+        // if(inputWidgetObject.command.environment && (typeof inputWidgetObject.command.environment === object)){
+        //     for(var key in inputWidgetObject.command.environment){
+        //         inputWidgetObject[key]=inputWidgetObject.command.environment[key];
+        //     }
+        // }
     }
 
+    if (inputWidgetObject.command && inputWidgetObject.command.environment && Object.keys(inputWidgetObject.command.environment).length > 0) {
+        copyEnvironmentCommands(inputWidgetObject);
+    }
     if (inputWidgetObject && inputWidgetObject.command && inputWidgetObject.command.userid) {inputWidgetObject.metadata.userid=inputWidgetObject.command.userid}
     proxyprinttodiv('Function  inputWidgetObject.command', inputWidgetObject.command, 12);
     proxyprinttodiv('Function datastore inputWidgetObject 1', inputWidgetObject, 12);
@@ -819,9 +829,9 @@ exports.converttodriformat = converttodriformat = function converttodriformat(in
         delete inputWidgetObject['metadata'];
     }
 
-    if (!metadata['expirationdate']) {
-        metadata['expirationdate'] = new Date();
-    }
+    // if (!metadata['expirationdate']) {
+    //     metadata['expirationdate'] = new Date();
+    // }
 
     saveobject[db] = inputWidgetObject;
     saveobject['wid'] = wid;
