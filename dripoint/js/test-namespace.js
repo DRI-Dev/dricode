@@ -1,29 +1,20 @@
 var widtests = widtests || {};
 
-// tests updatewid with command.namespace.creator="cody"; This should show up in the metadata as {"creator":"cody"}. If we do a query later
+// tests addwidmaster with command.namespace.creator="cody"; This should show up in the metadata as {"creator":"cody"}. If we do a query later
 // on and specify namespace.creator = cody AND namespaceflag.creator = true later on then this record should be returned.
 exports.nstest_namespaceadd1 = 
 nstest_namespaceadd1 = 
 widtests.nstest_namespaceadd1 = 
 function nstest_namespaceadd1(executeobject, callback) 
 {
-      if (!executeobject.command) {
-      executeobject.command={};
-      executeobject.command.environment={};
-      executeobject.command.environment.run={};
-	  };
-	  executeobject.command.namespace = {};
-	  executeobject.command.namespaceflag = {};
-	  
-	  executeobject.command.namespace.creator="cody";
-	  executeobject.command.namespaceflag.creator="true";
-      executeobject.command.xrun=[{
-								"executethis": "updatewid",
-								"wid":"nswid1",
-								"color":"red"
-								}
-							];
-		
+		var executeobject = [{
+							"executethis": "addwidmaster",
+							"wid": "nswid1",
+							"command.usernamespace.creator": "cody",
+							"command.usernamespaceflag.creator": "true",
+							"color": "red"
+							}];
+							
 		var expectedresult = {
 								"wid":"nswid1",
 								"data": {
@@ -36,8 +27,7 @@ function nstest_namespaceadd1(executeobject, callback)
 											}
 							}
 		
-      var etEnvironment = new DriEnvironment(executeobject.command.environment)
-      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      execute(executeobject, function (error_obj, result_obj) 
       {
                                 
             proxyprinttodiv('expected error', null, 99);
@@ -55,23 +45,17 @@ widtests.nstest_namespaceadd1.js = exports.nstest_namespaceadd1;
 widtests.nstest_namespaceadd1.description = "this does a test";
 
 
-// tests updatewid with command.namespace.creator="cody"; This should show up in the metadata as {"creator":"cody"}
+// tests addwidmaster with command.namespace.creator="cody"; This should show up in the metadata as {"creator":"cody"}
 exports.nstest_genericadd1 = 
 nstest_genericadd1 = 
 widtests.nstest_genericadd1 = 
 function nstest_genericadd1(executeobject, callback) 
 {
-      if (!executeobject.command) {
-      executeobject.command={};
-      executeobject.command.environment={};
-      executeobject.command.environment.run={};
-	  };
-      executeobject.command.xrun=[{
-								"executethis": "updatewid",
-								"wid":"nswid2",
-								"color":"red"
-								}
-							];
+		var executeobject = [{
+							"executethis": "addwidmaster",
+							"wid": "nswid2",
+							"color": "red"
+							}];
 		
 		var expectedresult = {
 								"wid":"nswid2",
@@ -84,8 +68,9 @@ function nstest_genericadd1(executeobject, callback)
 											}
 							}
 		
-      var etEnvironment = new DriEnvironment(executeobject.command.environment)
-      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      //var etEnvironment = new drienvironment(executeobject.command.environment)
+      //etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      execute(executeobject, function (error_obj, result_obj) 
       {
                                 
             proxyprinttodiv('expected error', null, 99);
@@ -113,26 +98,17 @@ nstest_namespacequery1 =
 widtests.nstest_namespacequery1 = 
 function nstest_namespacequery1(executeobject, callback) 
 {
-      if (!executeobject.command) {
-      executeobject.command={};
-      executeobject.command.environment={};
-      executeobject.command.environment.run={};
-	  };
-	  
-	  executeobject.command.namespace.creator="cody";
 
-      executeobject.command.xrun=[{
-								"executethis": "ettest_genericadd1"
+      var executeobject = [{
+								"executethis": "nstest_genericadd1"
 								}, {
-								"executethis": "ettest_namespaceadd1"
+								"executethis": "nstest_namespaceadd1"
 								}
 							];
 		
 		var expectedresult = {
 								"wid":"nswid1",
-								"data": {
-											"color":"red"
-										},
+								"color":"red",
 								"metadata": {
 												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
 												"date":{"exception":["created","changed","unchanged","updated"]},
@@ -140,7 +116,16 @@ function nstest_namespacequery1(executeobject, callback)
 											}
 							}
 		var queryobj = [
-					{"executethis":"querywid",
+					{"executethis":"querywidmaster",
+							"command": {
+								"namespace": {
+									"creator": "cody"
+									},
+								"namespaceflag": {
+									"creator": "true"
+									},
+								"queryresult": "each"
+								},
 							"mongorawquery": {
 								"$and": [{
 									"data.color":"red"
@@ -149,22 +134,11 @@ function nstest_namespacequery1(executeobject, callback)
 						}
 					];							
 		
-      var etEnvironment = new DriEnvironment(executeobject.command.environment)
-      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      //var etEnvironment = new drienvironment(executeobject.command.environment)
+      //etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      execute(executeobject, function (error_obj, result_obj) 
       {
-
-			executeobject2 = {};
-			executeobject2.command = {};
-			executeobject2.command.environment = {};
-			executeobject2.command.namespace = {};
-			executeobject2.command.namespaceflag = {};
-			
-			executeobject2.command.namespace.creator="cody";
-			executeobject2.command.namespaceflag.creator="true";
-			executeobject2.command.xrun=queryobj;
-            var etEnvironment2 = new DriEnvironment(executeobject2.command.environment)
-			
-			etEnvironment2.execute(executeobject2, function (error_obj, result_obj)
+			execute(queryobj, function (error_obj, result_obj)
 			{
 				proxyprinttodiv('expected error', null, 99);
 				proxyprinttodiv('actual error', error_obj, 99);
@@ -182,7 +156,7 @@ widtests.nstest_namespacequery1.js = exports.ettest_namespaceadd1;
 widtests.nstest_namespacequery1.description = "this does a test";
 
 
-// tests updatewid with command.appnamespace.namespace="cody123". Effectively, nswid3 should be stored in the cody123 db. When
+// tests addwidmaster with command.appnamespace.namespace="cody123". Effectively, nswid3 should be stored in the cody123 db. When
 // retrieving this wid with get, command.appnamespace.namespace="cody123" will be needed. Allows multiple wids of the same name
 // to be stored in different dbs.
 exports.nstest_appnamespaceadd1 = 
@@ -190,18 +164,10 @@ nstest_appnamespaceadd1 =
 widtests.nstest_appnamespaceadd1 = 
 function nstest_appnamespaceadd1(executeobject, callback) 
 {
-      if (!executeobject.command) {
-      executeobject.command={};
-      executeobject.command.environment={};
-      executeobject.command.environment.run={};
-	  };
-	  executeobject.command.namespace = {};
-	  executeobject.command.namespaceflag = {};
-	  
-	  executeobject.command.appnamespace.namespace="cody123";
-      executeobject.command.xrun=[{
-								"executethis": "updatewid",
+      var executeobject = [{
+								"executethis": "addwidmaster",
 								"wid":"nswid3",
+								"command.appnamespace.namespace": "cody123",
 								"color":"red"
 								}
 							];
@@ -217,8 +183,9 @@ function nstest_appnamespaceadd1(executeobject, callback)
 											}
 							}
 		
-      var etEnvironment = new DriEnvironment(executeobject.command.environment)
-      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      //var etEnvironment = new drienvironment(executeobject.command.environment)
+      //etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      execute(executeobject, function (error_obj, result_obj) 
       {
                                 
             proxyprinttodiv('expected error', null, 99);
@@ -242,20 +209,12 @@ nstest_appnamespaceget1 =
 widtests.nstest_appnamespaceget1 = 
 function nstest_appnamespaceget1(executeobject, callback) 
 {
-      if (!executeobject.command) {
-      executeobject.command={};
-      executeobject.command.environment={};
-      executeobject.command.environment.run={};
-	  };
-	  executeobject.command.namespace = {};
-	  executeobject.command.namespaceflag = {};
-	  
-	  executeobject.command.appnamespace.namespace="cody123";
-      executeobject.command.xrun=[{
+      var executeobject = [{
 								"executethis": "nstest_appnamespaceadd1"
 								}, {
 								"executethis": "getwid",
-								"wid":"nswid3"
+								"wid":"nswid3",
+								"command.appnamespace.namespace": "cody123"
 								}
 							];
 		
@@ -270,8 +229,9 @@ function nstest_appnamespaceget1(executeobject, callback)
 											}
 							};
 		
-      var etEnvironment = new DriEnvironment(executeobject.command.environment)
-      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      //var etEnvironment = new drienvironment(executeobject.command.environment)
+      //etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      execute(executeobject, function (error_obj, result_obj) 
       {
                                 
             proxyprinttodiv('expected error', null, 99);
@@ -296,27 +256,20 @@ nstest_appnamespaceget1fail =
 widtests.nstest_appnamespaceget1fail = 
 function nstest_appnamespaceget1fail(executeobject, callback) 
 {
-      if (!executeobject.command) {
-      executeobject.command={};
-      executeobject.command.environment={};
-      executeobject.command.environment.run={};
-	  };
-	  executeobject.command.namespace = {};
-	  executeobject.command.namespaceflag = {};
-	  
-	  executeobject.command.appnamespace.namespace="cody122";
-      executeobject.command.xrun=[{
+      var executeobject = [{
 								"executethis": "nstest_appnamespaceadd1"
 								}, {
 								"executethis": "getwid",
-								"wid":"nswid3"
+								"wid":"nswid3",
+								"command.appnamespace.namespace": "cody122"
 								}
 							];
 		
 		var expectedresult = {};
 		
-      var etEnvironment = new DriEnvironment(executeobject.command.environment)
-      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      //var etEnvironment = new drienvironment(executeobject.command.environment)
+      //etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      execute(executeobject, function (error_obj, result_obj) 
       {
                                 
             proxyprinttodiv('expected error', null, 99);
@@ -339,19 +292,13 @@ exports.nstest_appnamewidadd1 =
 nstest_appnamewidadd1 = 
 widtests.nstest_appnamewidadd1 = 
 function nstest_appnamewidadd1(executeobject, callback) 
-{
-      if (!executeobject.command) {
-      executeobject.command={};
-      executeobject.command.environment={};
-      executeobject.command.environment.run={};
-	  };
-	  
-      executeobject.command.xrun=[{
-								"executethis": "updatewid",
+{  
+      var executeobject = [{
+								"executethis": "addwidmaster",
 								"wid":"nsnamewid1",
 								"namespace":"cody123"
 								}, {
-								"executethis": "updatewid",
+								"executethis": "addwidmaster",
 								"wid": "nsnamewid2",
 								"namespace": "cody122"
 								}
@@ -377,8 +324,9 @@ function nstest_appnamewidadd1(executeobject, callback)
 											}											
 							}];
 		
-      var etEnvironment = new DriEnvironment(executeobject.command.environment)
-      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      //var etEnvironment = new drienvironment(executeobject.command.environment)
+      //etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      execute(executeobject, function (error_obj, result_obj) 
       {
                                 
             proxyprinttodiv('expected error', null, 99);
@@ -403,16 +351,15 @@ nstest_appnamewidget1 =
 widtests.nstest_appnamewidget1 = 
 function nstest_appnamewidget1(executeobject, callback) 
 {
-      if (!executeobject.command) {
-      executeobject.command={};
-      executeobject.command.environment={};
-      executeobject.command.environment.run={};
-	  };
-	  
-      executeobject.command.xrun=[{
+
+      var executeobject = [{
 								"executethis": "nstest_appnamewidadd1"
 								}, {
 								"executethis": "nstest_appnamespaceadd1",
+								}, {
+								"executethis": "getwid",
+								"wid": "nswid3",
+								"command.appnamespace.appnamewid": "nsnamewid1"
 								}
 							];
 		
@@ -427,30 +374,18 @@ function nstest_appnamewidget1(executeobject, callback)
 											}
 							};
 		
-      var etEnvironment = new DriEnvironment(executeobject.command.environment)
-      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      //var etEnvironment = new drienvironment(executeobject.command.environment)
+      //etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      execute(executeobject, function (error_obj, result_obj) 
       {
-			  var executeobject2 = {};			  
-			  executeobject2.command = {};
-			  executeobject2.command.environment = {};
-			  executeobject2.command.appnamespace = {};
-			  executeobject2.command.appnamespace.appnamewid="nsnamewid1";
-			  executeobject2.command.xrun = [{
-								"executethis": "getwid",
-								"wid":"nswid3"
-								}];
-								
-              var etEnvironment2 = new DriEnvironment(executeobject2.command.environment);
-			
-			  etEnvironment2.execute(executeobject2, function (error_obj, result_obj)
-			  {
-					proxyprinttodiv('expected error', null, 99);
-					proxyprinttodiv('actual error', error_obj, 99);
-					proxyprinttodiv('expected result', expectedresult, 99);
-					proxyprinttodiv('actual result', result_obj, 99);
-					composite_obj=logverify("nstest_appnamewidget1", result_obj,expectedresult);
-					callback(null, composite_obj)
-			  });
+			  
+		proxyprinttodiv('expected error', null, 99);
+		proxyprinttodiv('actual error', error_obj, 99);
+		proxyprinttodiv('expected result', expectedresult, 99);
+		proxyprinttodiv('actual result', result_obj[2], 99);
+		composite_obj=logverify("nstest_appnamewidget1", result_obj,expectedresult);
+		callback(null, composite_obj)
+
       } 
     );
 }
@@ -468,48 +403,35 @@ nstest_appnamewidget1fail =
 widtests.nstest_appnamewidget1fail = 
 function nstest_appnamewidget1fail(executeobject, callback) 
 {
-      if (!executeobject.command) {
-      executeobject.command={};
-      executeobject.command.environment={};
-      executeobject.command.environment.run={};
-	  };
-	  
-      executeobject.command.xrun=[{
+      var executeobject = [{
 								"executethis": "nstest_appnamewidadd1"
 								}, {
 								"executethis": "nstest_appnamespaceadd1",
+								}, {
+								"executethis": "getwid",
+								"wid": "nswid3",
+								"command.appnamespace.appnamewid": "nsnamewid2"
 								}
 							];
 		
 		var expectedresult = {};
 		
-      var etEnvironment = new DriEnvironment(executeobject.command.environment)
-      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      //var etEnvironment = new drienvironment(executeobject.command.environment)
+      //etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      execute(executeobject, function (error_obj, result_obj) 
       {
-			  var executeobject2 = {};			  
-			  executeobject2.command = {};
-			  executeobject2.command.environment = {};
-			  executeobject2.command.appnamespace = {};
-			  executeobject2.command.appnamespace.appnamewid="nsnamewid2";
-			  executeobject2.command.xrun = [{
-								"executethis": "getwid",
-								"wid":"nswid3"
-								}];
-								
-              var etEnvironment2 = new DriEnvironment(executeobject2.command.environment);
-			  etEnvironment2.execute(executeobject2, function (error_obj, result_obj)
-			  {
-					proxyprinttodiv('expected error', null, 99);
-					proxyprinttodiv('actual error', error_obj, 99);
-					proxyprinttodiv('expected result', expectedresult, 99);
-					proxyprinttodiv('actual result', result_obj, 99);
-					composite_obj=logverify("nstest_appnamewidget1fail", result_obj,expectedresult);
-					callback(null, composite_obj)
-			  });
+			  
+		proxyprinttodiv('expected error', null, 99);
+		proxyprinttodiv('actual error', error_obj, 99);
+		proxyprinttodiv('expected result', expectedresult, 99);
+		proxyprinttodiv('actual result', result_obj[2], 99);
+		composite_obj=logverify("nstest_appnamewidget1", result_obj,expectedresult);
+		callback(null, composite_obj)
+
       } 
     );
 }
 widtests.nstest_appnamewidget1fail.category = "daily";
 widtests.nstest_appnamewidget1fail.subcategory = "push";
 widtests.nstest_appnamewidget1fail.js = exports.nstest_appnamewidget1fail;
-widtests.nstest_appnamewidget1fail.description = "this does a test";				
+widtests.nstest_appnamewidget1fail.description = "this does a test";	
