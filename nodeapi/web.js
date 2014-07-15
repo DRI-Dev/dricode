@@ -63,3 +63,115 @@ console.log('server config is ' + serverconfig.SERVER_PORT);
 
 console.log('port is ' + serverconfig.SERVER_PORT);
 app.listen(process.env.PORT || serverconfig.SERVER_PORT);
+
+
+
+
+    exports.saveexecuteevent = saveexecuteevent = function saveexecuteevent(eventname, callback) {
+        callback(null,null)
+
+        };
+
+    exports.processevent = processevent = function processevent(eventname, callback) {
+        callback(null,null);
+        proxyprinttodiv("processeventqueue eventname----", eventname, 11);
+//        getexecutelist(eventname, "queuecollection", function (err, executetodolist) {
+//            proxyprinttodiv("processeventqueue executelist", executetodolist, 17);
+//            executelistfn(executetodolist, execute, function (err, res) {
+//                deletelist(executetodolist, eventname, function (err, res) {
+//                    callback(err, res);
+//                    });
+//                });
+//            });
+        };
+
+    exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, callback) {
+        async.mapSeries(listToDo, function (eachresult, cbMap) {
+            async.nextTick(function () {
+                fn(eachresult, function (err, res){
+                    cbMap(err, res);
+                });
+            });
+        }, function (err, res) {
+            callback(err, res);
+        });
+    };
+
+
+    exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eventtype, callback) {
+        proxyprinttodiv("getexecutelist eventname(collection)", eventname, 17);
+        proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
+        var executeobject = {"command": {"result": "queryresult"}};
+        var executetodolist=[];
+        executeobject.command.databasetable = eventtype;
+        executeobject.command.collection = eventname;
+        executeobject.command.db = "queuedata";
+        //executeobject.command.result = "queueresult";
+        executeobject.command.notfoundok = true;
+        executeobject["executethis"] = "querywid";
+        //executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
+        executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]};
+        proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
+        
+        execute(executeobject, function (err, res) {
+            proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
+            if (err) {callback(err,res)}
+            else 
+            {
+                if (res.length === 0) {
+                    executetodolist = [];
+                }
+                else if(res[0] && res[0]["queryresult"]){
+                    for (var everyaction in res[0]["queryresult"]){
+                        proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
+                        //if (res[0]["queryresult"][everyaction]
+                        executetodolist.push(res[0]["queryresult"][everyaction]);
+                    }
+
+                }
+                callback(null, executetodolist);
+            }
+        })
+    };
+
+
+    exports.deletelist = deletelist = function deletelist(listToDo, eventname, callback) {
+        proxyprinttodiv("deletelist listToDo", listToDo, 17);
+        var eachcmd={};
+        eachcmd["command"] = {
+                "fromdatabasetable":"queuecollection",
+                "fromdatastore": "",
+                "fromcollection":eventname,
+                "fromkeycollection":eventname+"key",
+                "fromdb":"queuedata",
+                "todatabasetable":"completedqueuecollection",
+                "todatastore": "",
+                "tocollection":eventname,
+                "tokeycollection":eventname+"key",
+                "todb":"queuedata",
+                "towid":"",
+                "delete":true
+            };
+
+        async.mapSeries(listToDo, function (eachresult, cbMap) {
+            async.nextTick(function () {
+                var eachaction=eachresult;
+                eachaction = extend(true, eachaction, eachcmd);
+                copywid(eachaction, function (err, res){
+                    cbMap(err, res);
+                });
+            });
+        }, function (err, res) {
+            callback(err, res);
+        });
+    };
+
+    exports.publishtestdelay = publishtestdelay = function publishtestdelay(listToDo, eventname, callback) {
+            callback(err, res);
+
+    };
+
+    exports.publishtest = publishtest = function publishtest(listToDo, eventname, callback) {
+            callback(err, res);
+
+    };
