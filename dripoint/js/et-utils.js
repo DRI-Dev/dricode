@@ -506,6 +506,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                     }
                 };
             }
+            proxyprinttodiv('Function datastore  output 1', output, 12);
             if (config.configuration.environment === "local") {
                 // this code shoudl be rewritten:
                 // convertfromdriformat first
@@ -534,6 +535,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                                 }
                             }
                         }
+                        proxyprinttodiv('Function datastore  output 2', output, 12);
                         output = convertfromdriformatenhanced(output, command, originalarguments);
 
                     } // if output
@@ -553,7 +555,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
                         //     }
                         // };
                     }
-                    proxyprinttodiv('Function datastore command -- get output 1', output, 12);
+                    proxyprinttodiv('Function datastore  output 3', output, 12);
                     callback(err, output);
                 });
             } else { // if not local...this case makes no sense
