@@ -46,8 +46,8 @@
         command = filter_data.filteredobject.command;
 
         proxyprinttodiv('GetWidMaster parameters.wid right before getwidmongo', parameters.wid, 38);
-        proxyprinttodiv('GetWidMaster parameters right before getwidmongo', parameters, 99);
-        proxyprinttodiv('getwidmaster command right before getwidmongo', command, 99);
+        proxyprinttodiv('GetWidMaster parameters right before getwidmongo', parameters, 38);
+        proxyprinttodiv('getwidmaster command right before getwidmongo', command, 38);
 
         // if string then return null, {}
         if (!parameters.wid) {
@@ -468,7 +468,7 @@
                             }
                         }
                     };
-                proxyprinttodiv("getdtoobject executeobject ", executeobject, 99, true); //93
+                proxyprinttodiv("getdtoobject executeobject ", executeobject, 38, true); //93
 
                 etEnvironment.execute(executeobject, function (err, res) {
 
@@ -502,8 +502,8 @@
     // Notes: returns a made up dto base on maximum number of relationships, etc
     //exports.getWidMongo = getWidMongo = function getWidMongo(widInput, command, preamble, level, excludeset, callback) {
     exports.getWidMongo = getWidMongo = function getWidMongo(parameters, command, preamble, level, excludeset, callback) {
-        proxyprinttodiv('Function getwidmongo parameters:', parameters, 99);
-        proxyprinttodiv('Function getwidmongo command:', command, 99);
+        proxyprinttodiv('Function getwidmongo parameters:', parameters, 38);
+        proxyprinttodiv('Function getwidmongo command:', command, 38);
         var widInput = parameters.wid;
         // local vars
         var moreDTOParameters = [];
@@ -697,7 +697,8 @@
                                         "mongorelationshipdirection": "forward",
                                         "mongowidmethod": "",
                                         "command": {
-                                            "notfoundok": true,
+                                            "skipcache": false,
+                                            //"notfoundok": true,
                                             "executetype":"series",
                                             "result": "queryresult"
                                             // "getwidmaster":
@@ -711,7 +712,7 @@
 
                                     etEnvironment.execute(executeobject, function(err, res) {
                                         // If error, bounce out
-                                        proxyprinttodiv('Function getwidmongo results res', res, 99);
+                                        proxyprinttodiv('Function getwidmongo results res', res, 38);
                                         res = res["queryresult"];
                                         if (!res) {
                                             res = []
@@ -719,7 +720,7 @@
                                         if (err && Object.keys(err).length > 0) {
                                             cb1(err, 'step2n1');
                                         } else {
-                                            proxyprinttodiv('Function getwidmongo query res', res, 99);
+                                            proxyprinttodiv('Function getwidmongo query res', res, 38);
                                             if (Object.keys(res).length !== 0) {
                                                 moreDTOParameters = res;
                                             }

@@ -3533,4 +3533,64 @@ function ettest_metadataattributes1(executeobject, callback)
 widtests.ettest_metadataattributes1.category = "daily";
 widtests.ettest_metadataattributes1.subcategory = "push";
 widtests.ettest_metadataattributes1.js = exports.ettest_metadataattributes1;
-widtests.ettest_metadataattributes1.description = "this does a test";		
+widtests.ettest_metadataattributes1.description = "this does a test";	
+
+
+
+
+
+
+// test cache
+exports.ettest_testcache1 = 
+ettest_testcache1 = 
+widtests.ettest_testcache1 = 
+function ettest_testcache1(executeobject, callback) 
+{
+      if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+		
+	  executeobject.command.skipcache=false;
+      executeobject.command.xrun=[
+								{"executethis": "updatewid",
+								"wid":"wid1",
+								"color":"red",
+								"command.updatecache":true},
+								{"executethis": "getwid",
+								"wid":"wid1",
+								"command.skipcache":false},
+								];
+		
+		var expectedresult = {
+								"wid":"wid1",
+								"data": {
+											"color":"red"
+										},
+								"metadata": {
+												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
+												"date":{"exception":["created","changed","unchanged","updated"]},												
+												"creator":"cody"
+											}
+							}
+		
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', result_obj, 99);
+            composite_obj=logverify("ettest_testcache1", result_obj,expectedresult);
+            callback(null, composite_obj)
+      } 
+    );
+}
+widtests.ettest_testcache1.category = "daily";
+widtests.ettest_testcache1.subcategory = "push";
+widtests.ettest_testcache1.js = exports.ettest_globalmetadata1;
+widtests.ettest_testcache1.description = "this does a test";
+
+

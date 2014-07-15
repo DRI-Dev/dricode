@@ -118,6 +118,9 @@ function nstest_namespacequery1(executeobject, callback)
       executeobject.command.environment={};
       executeobject.command.environment.run={};
 	  };
+	  
+	  executeobject.command.namespace.creator="cody";
+
       executeobject.command.xrun=[{
 								"executethis": "ettest_genericadd1"
 								}, {

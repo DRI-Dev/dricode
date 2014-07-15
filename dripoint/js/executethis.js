@@ -1,12 +1,5 @@
 // copyright (c) 2014 DRI
 //
-// 10) hash remove all command except environment
-// 11) environment look at appdto
-// - environment.global
-// - envrionment.var[fn]
-// - environment.attributes
-// - environment.run / type-level-executeid
-// 12) support for eval sending parameters into it
 //
 // command.processparameterfn
 // command.processfn
@@ -20,10 +13,10 @@
 //
 // search for configuration.environment 
 // future we may need to support multiple executeids
-//if error = fnnotfound then runfirstone should stop?
-//    "executethis": "getwid""wid": "getwidmaster"
 // split command.xrun early for split local server
 // when to delete global
+// eval
+// do some getwid calls directly
 
 (function (window) {
     // 'use strict';
@@ -415,10 +408,10 @@
         var incomingparams = {};
 
         extend(true, incomingparams, input);              // make copy of input 
-        proxyprinttodiv('before -- remove -- incomingparams', incomingparams, 99, true, true);
+        //proxyprinttodiv('before -- remove -- incomingparams', incomingparams, 11, true, true);
         //incomingparams=ConvertFromDOTdri(incomingparams); // convert from dot notation -- not necessary if dot notation not sent in
         incomingparams=converttojson(incomingparams); 
-        proxyprinttodiv('>>>>>>>>>>>>>>>>>>>>>>>>execute begin', incomingparams, 99, true, true);
+        proxyprinttodiv('>>>>>>>>>>>>>>>>>>>>>>>>execute begin', incomingparams, 14, true, true);
 
         var command = converttocommand(incomingparams);    // call main conversion
 
@@ -876,6 +869,7 @@
             }
             else // continue with normal execution
             {
+                incomingparams=converttojson(incomingparams); 
                 proxyprinttodiv('>>>> execute incomingparams ', incomingparams, 11);
                 var filter_data = getcommand(incomingparams, {
                         "command": {
@@ -884,9 +878,9 @@
                             "resultparameters": null,
                             "result": "",
                             "skipcache": true,
+                            "updatecache" : false,
                             "internalcall": true, // use action processor
                             "notfoundok": false // should return an error if not found
-                            //"environment": {},
                         }
                     }, {
                         "command": {
@@ -895,6 +889,7 @@
                             "resultparameters": "x",
                             "result": "x",
                             "skipcache": "x",
+                            "updatecache": "x",
                             "internalcall": "x",
                             "notfoundok" : "x"
                         }
@@ -906,10 +901,10 @@
                 var command = filter_data.filteredobject.command;
                 var inboundparams = filter_data.output;
                 proxyprinttodiv('>>>> execute command', command, 11, true);
-                proxyprinttodiv('>>>> execute inboundparams', inboundparams, 11, true);
+                proxyprinttodiv('>>>> execute inboundparams', inboundparams, 14, true);
 
                 var objkey = hashobj(inboundparams, command);
-                proxyprinttodiv('execute objkey', objkey, 99, true);
+                proxyprinttodiv('execute returned objkey', objkey, 14, true);
                 delete inboundparams.executethis; // delete parameter executethis...we know the targetfn
 
                 checkcache(objkey, function (err, res) {
@@ -921,10 +916,10 @@
                     {
                         targetfn(inboundparams, function (err, resultparameters) 
                         { 
-                            proxyprinttodiv("execute after do this inboundparams", inboundparams, 99);
-                            proxyprinttodiv("execute after do this resultparameters", resultparameters, 99);
-                            proxyprinttodiv("execute after do this err", err, 99);
-                            proxyprinttodiv('execute after do this command', command, 99, true);
+                            proxyprinttodiv("execute after do this inboundparams", inboundparams, 11);
+                            proxyprinttodiv("execute after do this resultparameters", resultparameters, 11);
+                            proxyprinttodiv("execute after do this err", err, 11);
+                            proxyprinttodiv('execute after do this command', command, 11, true);
                             if (!resultparameters) {resultparameters={};}
                             // should we remove the 3 statements below?
 //                            if (!resultparameters.command) {resultparameters.command={};}
@@ -932,7 +927,7 @@
 //                            if (!resultparameters.command.environment.run) {resultparameters.command.environment.run={};}
 //                            resultparameters.command.environment.run.executeid = incomingparams.command.environment.run.executeid;
                             if (command.notfoundok && err && err.errorname==="notfound") {err=null; resultparameters={};}
-                            proxyprinttodiv("execute after do this resultparameters after", resultparameters, 99);
+                            proxyprinttodiv("execute after do this resultparameters after", resultparameters, 11);
                             if (err && Object.keys(err).length > 0) 
                             {
                                 callback(err, resultparameters);
@@ -1011,14 +1006,14 @@
 
                                 proxyprinttodiv("execute - command **** II", resultparameters, 11);
 
-                                if (command.skipcache) 
+                                if (!command.updatecache) 
                                 {
                                     callback(null, resultparameters);
                                 } 
                                 else 
                                 {
                                     var expirationdate = new Date();
-                                    expirationdate = new Date(expirationdate.getTime() + 1 * 60000);
+                                    expirationdate = new Date(expirationdate.getTime() + .3 * 60000); // .3 of min
 
                                     var recorddef = {
                                         "wid": objkey,
@@ -1028,7 +1023,8 @@
                                             }
                                         },
                                         "command": {
-                                            "datastore": "localstorage",
+                                            "skipcache": true,
+                                            "datastore": config.configuration.datastore,
                                             "collection": "cache",
                                             "keycollection": "cachekey",
                                             "db": config.configuration.db,
@@ -1036,6 +1032,7 @@
                                         }
                                     };
                                     recorddef = extend(true, {}, resultparameters, recorddef);
+                                    proxyprinttodiv("update cache **************", recorddef, 14);
                                     updatewid(recorddef, function (err, res) {
                                         callback(null, resultparameters);
                                     });
@@ -1065,14 +1062,15 @@
     };
 
 
+    // check directly....notfound ok false
     function checkcache(objkey, callback) {
         if (objkey) {
-            proxyprinttodiv("checkcache objkey **************", objkey, 99);
+            proxyprinttodiv("checkcache objkey **************", objkey, 14);
             var executeobject = {
                 "wid": objkey,
                 "command": {
                     "notfoundok": true,
-                    "cache": false,
+                    "skipcache": true,
                     "datastore": config.configuration.datastore,
                     "collection": "cache",
                     "keycollection": "cachekey",
@@ -1080,8 +1078,8 @@
                     "databasetable": config.configuration.databasetable
                 }
             };
-            executeobject["executethis"] = "getwid";
-            proxyprinttodiv("checkcache executeobject", executeobject, 17);
+            executeobject.executethis = "getwid";
+            proxyprinttodiv("checkcache executeobject  *********", executeobject, 14);
 
             execute(executeobject, function (err, res) {
                 if (err) 
@@ -1090,8 +1088,8 @@
                 }
                 else 
                 {
-                    if (!res) {res=null;} else {res = res[0];}
-                    proxyprinttodiv("checkcache getwid res", res, 17);
+                    if (!res || (res && Object.keys(res).length === 0)) {res=null;} //else {res = res[0];}
+                    proxyprinttodiv("checkcache getwid res", res, 11);
                     if (res && res.metadata && res.metadata.expirationdate && res.metadata.expirationdate < new Date()) {
                         callback(null, res);
                     } else {
@@ -1195,40 +1193,45 @@
         proxyprinttodiv("create_what_to_do_list inparams", inparams, 11);
         // create outside wrapper--copy command, set "runfirstone"
 
-        var outparams={};
-        outparams.command = {};
-        extend(true, outparams.command, inparams.command);
-        //**
-        outparams.command.executetype = "runfirstone";
-        //outparams.command.environment.run.type = "runfirstone";
-//        outparams.command.processfn = "execute_function";
-        outparams.command.xrun = [];
+        if (window[inparams.executethis]) 
+        {
+            callback(null, inparams);
+        }
+        else
+        {
+            var outparams={};
+            outparams.command = {};
+            extend(true, outparams.command, inparams.command);
+            //**
+            outparams.command.executetype = "runfirstone";
+            outparams.command.xrun = [];
 
-        //nest all of below into one xrun
-        // create step1 of inside--set execute_function
-        var firstcopy={};
-        extend(true, firstcopy, inparams);
-        firstcopy.command.processparameterfn = "execute_nothing"; // so create_what is not called again
-        firstcopy.command.processfn = "execute_function";
-        outparams.command.xrun.push(firstcopy);
+            //nest all of below into one xrun
+            // create step1 of inside--set execute_function
+            var firstcopy={};
+            extend(true, firstcopy, inparams);
+            firstcopy.command.processparameterfn = "execute_nothing"; // so create_what is not called again
+            firstcopy.command.processfn = "execute_function";
+            outparams.command.xrun.push(firstcopy);
 
-        // create step2 of inside--set execute_parameter
-        var secondcopy={};
-        extend(true, secondcopy, inparams);
-        secondcopy.command.processparameterfn = "execute_parameter"; // so create_what is not called again
-        secondcopy.command.processfn = "execute_function";
-        outparams.command.xrun.push(secondcopy);
+            // create step2 of inside--set execute_parameter
+            var secondcopy={};
+            extend(true, secondcopy, inparams);
+            secondcopy.command.processparameterfn = "execute_parameter"; // so create_what is not called again
+            secondcopy.command.processfn = "execute_function";
+            outparams.command.xrun.push(secondcopy);
 
-        // create third copy for execute get wid
-        var thirdcopy={};
-        extend(true, thirdcopy, inparams);
-        thirdcopy.command.processparameterfn = "execute_get_wid"; // so create_what is not called again
-        thirdcopy.command.processfn = "execute_function";
-        outparams.command.xrun.push(thirdcopy);
+            // create third copy for execute get wid
+            var thirdcopy={};
+            extend(true, thirdcopy, inparams);
+            thirdcopy.command.processparameterfn = "execute_get_wid"; // so create_what is not called again
+            thirdcopy.command.processfn = "execute_function";
+            outparams.command.xrun.push(thirdcopy);
 
-        proxyprinttodiv("create_what_to_do_list outparams", outparams, 11, true);
-        callback(null, outparams);
-      };
+            proxyprinttodiv("create_what_to_do_list outparams", outparams, 11, true);
+            callback(null, outparams);
+        }
+    };
 
 
     // executes the function stored in parameter
@@ -1251,6 +1254,7 @@
 
     // if parms are {et: x} then to a getwid to x ... then excucte the results of x
     // to this by doing the getwid in step01 (processparameterfn) and the execute of resutls in step02
+    // need to add if "js" here execute eval
     window.execute_get_wid =  function execute_get_wid(inparams, cb) { 
         if (!inparams.executethis) 
         {
@@ -1300,6 +1304,9 @@
         callback({"errorname":"fnnotfound"}, null);
     };
 
+})(typeof window == "undefined" ? global : window);
+
+
     exports.saveexecuteevent = saveexecuteevent = function saveexecuteevent(eventname, callback) {
         callback(null,null)
 
@@ -1307,7 +1314,7 @@
 
     exports.processevent = processevent = function processevent(eventname, callback) {
         callback(null,null);
-        proxyprinttodiv("processeventqueue eventname----", eventname, 99);
+        proxyprinttodiv("processeventqueue eventname----", eventname, 11);
 //        getexecutelist(eventname, "queuecollection", function (err, executetodolist) {
 //            proxyprinttodiv("processeventqueue executelist", executetodolist, 17);
 //            executelistfn(executetodolist, execute, function (err, res) {
@@ -2191,4 +2198,4 @@
             //     thirdcopy.command.xrun.push(thirdcopy1);
 
         
-})(typeof window == "undefined" ? global : window);
+

@@ -221,7 +221,7 @@ exports.copywid = copywid = copywid = function copywid(inputWidgetObject, callba
 exports.updatewid = updatewid = updatewid = function updatewid(originalarguments, callback) {
     var inputWidgetObject = {};
         extend(true, inputWidgetObject, originalarguments);
-        proxyprinttodiv('Function datastore inputWidgetObject 1', inputWidgetObject, 99);
+        proxyprinttodiv('Function datastore inputWidgetObject 1', inputWidgetObject, 12);
     var err = null;
     var widName = inputWidgetObject.wid;
     var found = false;
@@ -238,7 +238,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
         delete inputWidgetObject.command;
     var addedobject = converttodriformat(inputWidgetObject, command);
     command.keycollection = keycollection;
-        proxyprinttodiv('Function datastore command -- add inputWidgetObject addedobject', addedobject, 99);
+        proxyprinttodiv('Function datastore command -- add inputWidgetObject addedobject', addedobject, 12);
 
 
     if(!inputWidgetObject['metadata']){
@@ -254,8 +254,8 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
     }
 
     if (inputWidgetObject && inputWidgetObject.command && inputWidgetObject.command.userid) {inputWidgetObject.metadata.userid=inputWidgetObject.command.userid}
-    proxyprinttodiv('Function  inputWidgetObject.command', inputWidgetObject.command, 11);
-    proxyprinttodiv('Function datastore inputWidgetObject 1', inputWidgetObject, 11);
+    proxyprinttodiv('Function  inputWidgetObject.command', inputWidgetObject.command, 12);
+    proxyprinttodiv('Function datastore inputWidgetObject 1', inputWidgetObject, 12);
 //    delete filter_data.output.command;
 //    var addedobject=converttodriformat(filter_data.output, command);
 

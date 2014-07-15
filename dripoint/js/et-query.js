@@ -91,9 +91,9 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     //         }
     //     },
     //     true);
-    //proxyprinttodiv('querywid filter_data', filter_data, 99, true);
-    //proxyprinttodiv('querywid filter_data.filteredobject', filter_data.filteredobject, 99);
-    //proxyprinttodiv('querywid filter_data.output', filter_data.output, 99);
+    //proxyprinttodiv('querywid filter_data', filter_data, 38, true);
+    //proxyprinttodiv('querywid filter_data.filteredobject', filter_data.filteredobject, 38);
+    //proxyprinttodiv('querywid filter_data.output', filter_data.output, 38);
     //proxyprinttodiv('querywid filter_data.filteredobject.command', filter_data.filteredobject.command, 17);
 
     var parameters={}
@@ -101,7 +101,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     delete parameters['executethis']; //** added 11/2
     var output = [];
     var mQueryString = "";
-    proxyprinttodiv('querywid parameters', parameters, 99);
+    proxyprinttodiv('querywid parameters', parameters, 38);
 
     var filter_data = getcommand(parameters, 
             {"command":
@@ -183,7 +183,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
             },
         true);
 
-    proxyprinttodiv('querywid filteredobject', filter_data, 99);
+    proxyprinttodiv('querywid filteredobject', filter_data, 38);
     parameters = filter_data.filteredobject;
     var xparms = filter_data.output;
     var filter_data = getcommand(
@@ -213,10 +213,10 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     var command= filter_data.filteredobject.command;
     var qparms = filter_data.output;
 
-    proxyprinttodiv('querywid filteredobject', filter_data, 99);
-    proxyprinttodiv('querywid command', command, 99);
-    proxyprinttodiv('querywid qparms', qparms, 99);
-    proxyprinttodiv('querywid xparms', xparms, 99);
+    proxyprinttodiv('querywid filteredobject', filter_data, 38);
+    proxyprinttodiv('querywid command', command, 38);
+    proxyprinttodiv('querywid qparms', qparms, 38);
+    proxyprinttodiv('querywid xparms', xparms, 38);
 
     // check for err on the 'return' of an object
     //if (p.err) {
@@ -301,8 +301,8 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
 
     // return resultObj;
     // }
-    proxyprinttodiv('querywid command[mongorawquery]', qparms['mongorawquery'], 99);
-    proxyprinttodiv('querywid command[mongowid]', qparms['mongowid'], 99);
+    proxyprinttodiv('querywid command[mongorawquery]', qparms['mongorawquery'], 38);
+    proxyprinttodiv('querywid command[mongowid]', qparms['mongowid'], 38);
 
     if (!command.environment) { command.environment = {run:{}}; }
 
@@ -596,11 +596,11 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     }
                     //debugfn("querywid step03", "querywid", "query", "mid", getglobal("debugcolor"), getglobal("debugindent"), debugvars([5]));
 
-                    proxyprinttodiv('querywid output before rel', output, 99);
+                    proxyprinttodiv('querywid output before rel', output, 38);
 
                     mQueryString = relationShipQuery(parameters, output, "data");
 
-                    proxyprinttodiv('mQueryString at step03 =>', mQueryString, 99);
+                    proxyprinttodiv('mQueryString at step03 =>', mQueryString, 38);
                     if (mQueryString !== "" && Object.keys(JSON.parse(mQueryString)).length > 0) {
                         mquery(mQueryString, {}, command, function (err, res) {
                             // If error, bounce out

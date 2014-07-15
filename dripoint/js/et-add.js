@@ -105,7 +105,7 @@
                 dto_to_get = dtoobject['metadata']['method'];
 
                if (dto_to_get !== "string") {
-                    proxyprinttodiv("cleanadd dto_to_get", dto_to_get, 99);
+                    proxyprinttodiv("cleanadd dto_to_get", dto_to_get, 17);
 
                     var executeobject = {
                         "executethis": "getwidmaster",
@@ -116,7 +116,7 @@
                         "command.executetype":"series"
                     };
 
-                    proxyprinttodiv("cleanadd executeobject", executeobject, 99, true);
+                    proxyprinttodiv("cleanadd executeobject", executeobject, 17, true);
                    
                     var env = new DriEnvironment(command.environment);                   
                     env.execute(executeobject, function (err, res) {
@@ -767,7 +767,7 @@
         // make sure getwidmaster does not return wids
         async.series([
             function step1(step1_callback) { // getwidmaster
-                 proxyprinttodiv("addwid step1 getwidmaster output", output, 99);
+                 proxyprinttodiv("addwid step1 getwidmaster output", output, 17);
                  if (object['wid']) {
                         var executeobject={
                             "executethis": "getwidmaster",
@@ -784,8 +784,8 @@
 
                         var env = new DriEnvironment(command.environment);
 
-                        proxyprinttodiv("addwid step1 executeobject", executeobject, 99, true);
-                        proxyprinttodiv("addwid step1 env", env, 99, true);
+                        proxyprinttodiv("addwid step1 executeobject", executeobject, 17, true);
+                        proxyprinttodiv("addwid step1 env", env, 17, true);
 
                         env.execute(executeobject, function (err, res) {
                             if (err && err.errorname === "failnotfound") { err=null; res={}; }
