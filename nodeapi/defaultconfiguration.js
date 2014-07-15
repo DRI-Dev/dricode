@@ -22,7 +22,6 @@ require(DIR_TO_CORE_JS + 'test-query.js');
 require(DIR_TO_CORE_JS + 'test-security.js');
 require(DIR_TO_CORE_JS + 'tests-up-for-review.js');
 require(DIR_TO_CORE_JS + 'et-query.js');
-require(DIR_TO_CORE_JS + 'et-unit_tests.js');
 exports.executethis = require(DIR_TO_CORE_JS + 'executethis.js');
 
 exports.config = require('./config-server.js');
