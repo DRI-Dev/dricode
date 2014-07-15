@@ -902,6 +902,7 @@ exports.printToDiv = printToDiv = function printToDiv(text, outobject, debugone,
             printText += syntaxHighlight(jsonPretty) +'</div></pre>';
                 
 
+
         // console.log(text);
         // console.log(obj);
         if (document.getElementById('divprint')) {
@@ -989,6 +990,7 @@ exports.proxyprinttodiv = proxyprinttodiv = function proxyprinttodiv(text, obj, 
 
 
             console.re.log(text);
+            console.re.log(obj);
 
 
             // debuglinenum++;
