@@ -9060,7 +9060,7 @@ exports.ettestupdatewid = ettestupdatewid = function ettestupdatewid(params, cal
 
 exports.ettestupdatewidserver = ettestupdatewidserver = function ettestupdatewidserver(params, callback) {
     var etEnvironment = new DriEnvironment(params.command.environment);
-    var executeobject = {command:{processparameterfn:'sync_server'},executethis:'updatewid',wid:'testdata123',key1:'value1',key2:'value2'};
+    var executeobject = {command:{environment:{syncrule:'sync_server'}},executethis:'updatewid',wid:'testdata123',key1:'value1',key2:'value2'};
     etEnvironment.execute(executeobject, function (err, result) {
         proxyprinttodiv('updatewid results', result, 99);
         callback(err, result);
@@ -9077,7 +9077,7 @@ exports.ettestgetwid = ettestgetwid = function ettestgetwid(params, callback) {
 
 exports.ettestgetwidserver = ettestgetwidserver = function ettestgetwidserver(params, callback) {
     var etEnvironment = new DriEnvironment(params.command.environment);
-    etEnvironment.execute({command:{processparameterfn:'sync_server'},executethis:'getwid',wid:'testdata123'}, function (err, result) {
+    etEnvironment.execute({command:{environment:{syncrule:'sync_server'}},executethis:'getwid',wid:'testdata123'}, function (err, result) {
         proxyprinttodiv('getwid results', result, 99);
         callback(err, result);
     });
@@ -9108,7 +9108,9 @@ exports.ettestaddwidmasterserver = ettestaddwidmasterserver = function ettestadd
     var etEnvironment = new DriEnvironment(params.command.environment);
     etEnvironment.execute({
         command:{
-            processparameterfn:'sync_server'
+            environment:{
+                syncrule:'sync_server'
+            }
         },
         executethis:'addwidmaster',
         wid:'mastertestdata123',
@@ -9132,7 +9134,9 @@ exports.ettestgetwidmasterserver = ettestgetwidmasterserver = function ettestget
     var etEnvironment = new DriEnvironment(params.command.environment);
     etEnvironment.execute({
         command:{
-            processparameterfn:'sync_server'
+            environment:{
+                syncrule:'sync_server'
+            }
         },
         executethis:'getwidmaster',
         wid:'mastertestdata123'
@@ -9159,7 +9163,9 @@ exports.ettestquerywidserver = ettestquerywidserver = function ettestquerywidser
     var etEnvironment = new DriEnvironment(params.command.environment);
     etEnvironment.execute({
         command:{
-            processparameterfn:'sync_server'
+            environment:{
+                syncrule:'sync_server'
+            }
         },
         executethis:'querywid',
         mongorawquery:{
@@ -9188,7 +9194,9 @@ exports.ettestquerywidmasterserver = ettestquerywidmasterserver = function ettes
     var etEnvironment = new DriEnvironment(params.command.environment);
     etEnvironment.execute({
         command:{
-            processparameterfn:'sync_server'
+            environment:{
+                syncrule:'sync_server'
+            }
         },
         executethis:'querywidmaster',
         mongorawquery:{

@@ -130,29 +130,16 @@ widtests.ttsa6.description = "this does a test";
 
 
 // Creates a wid and adds that wid to a group
-// logverify needs to verify that the wid was added to the group... not correct right now
 exports.setests_metadataaddtogroup1 = 
 setests_metadataaddtogroup1 = 
 widtests.setests_metadataaddtogroup1 = 
 function setests_metadataaddtogroup1 (executeobject, callback) {
 
-      if (!executeobject.command) {
-      executeobject.command={};
-      executeobject.command.environment={};
-      executeobject.command.environment.run={};
-	  };
-		
-      executeobject.command.xrun=[{
-									"executethis": "updatewid",
+      var executeobject = [{
+									"executethis": "addwidmaster",
 									"wid":"mycolorwid1",
 									"color":"green",
-									"metadata": {
-										"security": {
-											"group": {
-												"colorwids":"colorwids"
-													}
-												}
-											}
+									"metadata.security.group.colorwids": "colorwids"
 									}
 							];
 		
@@ -167,15 +154,16 @@ function setests_metadataaddtogroup1 (executeobject, callback) {
 											}
 							}
 		
-      var etEnvironment = new DriEnvironment(executeobject.command.environment)
-      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      //var etEnvironment = new drienvironment(executeobject.command.environment)
+      //etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      execute(executeobject, function (error_obj, result_obj) 
       {
                                 
             proxyprinttodiv('expected error', null, 99);
             proxyprinttodiv('actual error', error_obj, 99);
             proxyprinttodiv('expected result', expectedresult, 99);
             proxyprinttodiv('actual result', result_obj, 99);
-            composite_obj=logverify("setests_metadataaddtogroup1", result_obj,expectedresult);
+            var composite_obj=logverify("setests_metadataaddtogroup1", result_obj,expectedresult);
             callback(null, composite_obj)
       } 
     );
@@ -185,6 +173,560 @@ widtests.setests_metadataaddtogroup1.subcategory = "push";
 widtests.setests_metadataaddtogroup1.js = exports.setests_metadataaddtogroup1;
 widtests.setests_metadataaddtogroup1.description = "this does a test";
 
+
+// Creates a wid and adds that wid to a group
+exports.setests_metadataaddtogroup2 = 
+setests_metadataaddtogroup2 = 
+widtests.setests_metadataaddtogroup2 = 
+function setests_metadataaddtogroup2 (executeobject, callback) {
+
+		var expectedresult = [{
+								"wid":"mycolorwid1"
+							}, {
+								"wid":"mycolorwid1",
+								"data": {
+											"color":"green"
+										},
+								"metadata": {
+												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
+												"date":{"exception":["created","changed","unchanged","updated"]}
+											}
+							}, {
+								"groupname":"colorwids",
+								"type":"colorwids",
+								"wid":{
+									"exception":["changed","unchanged","updated"]
+									},
+								"metadata":{
+									"method":"groupdto"
+									}
+							}];
+							
+		
+      //var etEnvironment = new drienvironment(executeobject.command.environment)
+      //etEnvironment.execute(executeobject, function (error_obj, result_obj)
+	creategroup({
+			"grouptype": "colorwids"
+		}, function(err, res) {
+			proxyprinttodiv('Function creategroup done --    for  -- ', res[0][0].wid, 99);
+			var executeobject = [{
+								"executethis": "addwidmaster",
+								"wid":"mycolorwid1",
+								"color":"green",
+								"metadata.security.group.colorwids": "colorwids"
+								}, {
+								"executethis": "getwid",
+								"wid": "mycolorwid1"
+								}, {
+								"executethis":"getwid",
+								"wid": res[0][0].wid
+					}];
+					
+			execute(executeobject,function (err, res) {
+				var result = logverify('setests_metadataaddtogroup2_result',res,expectedresult);
+				proxyprinttodiv('mycolorwid1 result  -- ', res[1], 99);				
+				proxyprinttodiv('colorwids group result  -- ', res[2], 99);				
+				callback(err,result);
+			});
+	});
+};
+widtests.setests_metadataaddtogroup2.category = "daily";
+widtests.setests_metadataaddtogroup2.subcategory = "push";
+widtests.setests_metadataaddtogroup2.js = exports.setests_metadataaddtogroup2;
+widtests.setests_metadataaddtogroup2.description = "this does a test";
+
+
+/*
+// Creates a wid and adds that wid to a group. Assigns the "edit" actiongroup (permission) to the "creator" usergroup.
+// logverify needs to verify that the wid was added to the group... not correct right now
+exports.setests_metadataaddgrouppermissions1 = 
+setests_metadataaddgrouppermissions1 = 
+widtests.setests_metadataaddgrouppermissions1 = 
+function setests_metadataaddgrouppermissions1 (executeobject, callback) {
+
+      if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+		
+      executeobject.command.xrun=[{
+									"executethis": "addwidmaster",
+									"wid":"mycolorwid1",
+									"color":"green",
+									"metadata": {
+										"security": {
+											"group": {
+												"colorwids":"colorwids"
+													},
+											"permissions": [{
+												"usergroup": "creator",
+												"actiongroup": "edit",
+												"level": 99
+													}]
+												}
+										}
+									}
+								];
+		
+		var expectedresult = {
+								"wid":"mycolorwid1",
+								"data": {
+											"color":"green"
+										},
+								"metadata": {
+												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
+												"date":{"exception":["created","changed","unchanged","updated"]}
+											}
+							}
+		
+      var etEnvironment = new drienvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', result_obj, 99);
+            composite_obj=logverify("setests_metadataaddgrouppermissions1", result_obj,expectedresult);
+            callback(null, composite_obj)
+      } 
+    );
+};
+widtests.setests_metadataaddgrouppermissions1.category = "daily";
+widtests.setests_metadataaddgrouppermissions1.subcategory = "push";
+widtests.setests_metadataaddgrouppermissions1.js = exports.setests_metadataaddgrouppermissions1;
+widtests.setests_metadataaddgrouppermissions1.description = "this does a test";
+*/
+
+
+// Creates a group called "employees" using the creategroup() fn in et-security 
+exports.setests_addusergroup1 = 
+setests_addusergroup1 = 
+widtests.setests_addusergroup1 = 
+function setests_addusergroup1 (executeobject, callback) {
+					
+	var expectedresult = {
+							"data":{
+									"groupname":"employees",
+									"type":"employees"
+									},
+							"wid":{
+									"exception":["changed","unchanged","updated"]
+								},
+							"metadata":{
+										"method":"groupdto",
+										"system":{
+											"creator":"user1"
+											},
+										"date":{
+											"exception":["changed","unchanged","updated"]
+											},
+										"expirationdate":{
+											"exception":["changed","unchanged","updated"]
+											}
+							}
+						};
+							
+	creategroup({
+			"grouptype": "employees"
+		}, function(err, res) {
+			proxyprinttodiv('Function creategroup done --    for  -- ', res[0][0].wid, 99);
+			var executeobject = {
+						"executethis":"getwid",
+						"wid": res[0][0].wid
+					};
+			execute(executeobject,function (err, res) {
+				var result = logverify('logverify_setests_addusergroup1',res,expectedresult);
+				proxyprinttodiv('group wid result  -- ', res, 99);				
+				callback(err,result);
+			});
+	});
+};
+widtests.setests_addusergroup1.category = "daily";
+widtests.setests_addusergroup1.subcategory = "push";
+widtests.setests_addusergroup1.js = exports.setests_addusergroup1;
+widtests.setests_addusergroup1.description = "this does a test";
+
+
+// Creates a group called "employees" using the creategroup() fn in et-security 
+exports.setests_addactiongroup1 = 
+setests_addactiongroup1 = 
+widtests.setests_addactiongroup1 = 
+function setests_addactiongroup1 (executeobject, callback) {
+					
+	var expectedresult = [{
+							"type":"getaction",
+							"wid":"0cf5e1e7-ad23-8e3f-8f25-a7aef2d7d337",
+							"metadata":{
+										"system":{
+													"creator":"user1"
+												},
+										"method":"actiondto",
+									}
+						}];
+							
+	createaction({
+			"actiontype": "getaction"
+		}, function(err, res) {
+			proxyprinttodiv('Function createaction done --    for  -- ', res[0].wid, 99);
+			var executeobject = {
+						"executethis":"getwid",
+						"wid": res[0].wid
+					};
+			execute(executeobject,function (err, res) {
+				var result = logverify('logverify result',res,expectedresult);
+				proxyprinttodiv('actiongroup wid result  -- ', res, 99);				
+				callback(err,result);
+			});
+	});
+};
+widtests.setests_addactiongroup1.category = "daily";
+widtests.setests_addactiongroup1.subcategory = "push";
+widtests.setests_addactiongroup1.js = exports.setests_addactiongroup1;
+widtests.setests_addactiongroup1.description = "this does a test";
+
+
+
+// Create user using the standard createuser() fn in et-security, and then adds an access token to the user via the addsecurity() fn
+exports.setests_adduser1 = 
+setests_adduser1 = 
+widtests.setests_adduser1 = 
+function setests_adduser1 (executeobject, callback) {
+	var output = [];
+	var user1 = {
+        "wid": "user1",
+        "fname": "Jacob",
+        "lname": "Happel",
+        "phone": "555-555-5555",
+        "email": "jhappel@cool.com",
+        "address": "156 River St.",
+        "address2": "",
+        "city": "Leeland",
+        "state": "MI",
+        "zip": "49654",
+        "country": "US"
+    };				
+	var expectedresult = [{
+							"fname":"Jacob",
+							"lname":"Happel",
+							"phone":"555-555-5555",
+							"email":"jhappel@cool.com",
+							"address":"156 River St.",
+							"address2":"",
+							"city":"Leeland",
+							"state":"MI",
+							"zip":"49654",
+							"country":"US",
+							"wid":"user1",
+							"ac": "user1ac",
+							"metadata":{
+										"method":"userdto"
+									}
+						}];
+							
+	createuserdata(user1, function(err, res) {
+			proxyprinttodiv('Function createuserdata done --    for  -- ', res[0].wid, 99);
+			var userwid = res[0].wid;
+			var executeobject = {
+						"executethis":"getwid",
+						"wid": userwid
+					};
+			
+			addsecurity({
+                "userwid": userwid,
+                "securityac": "user1ac"
+            }, function(err, res) {
+                proxyprinttodiv('Function addsecurity done --  for user1 -- ', userwid, 99);
+				
+				execute(executeobject,function (err, res) {
+					proxyprinttodiv('user wid result  -- ', res, 99, true);
+					var result = logverify('logverify_setests_adduser1', res, expectedresult);
+					callback(err,result);
+				});
+            });
+						
+	});
+};
+widtests.setests_adduser1.category = "daily";
+widtests.setests_adduser1.subcategory = "push";
+widtests.setests_adduser1.js = exports.setests_adduser1;
+widtests.setests_adduser1.description = "this does a test";
+
+
+// Creates an action called getaction using the createaction() fn in et-security
+exports.setests_addactiongroup1 = 
+setests_addactiongroup1 = 
+widtests.setests_addactiongroup1 = 
+function setests_addactiongroup1 (executeobject, callback) {
+					
+	var expectedresult = [{
+							"type":"getaction",
+							"wid":"0cf5e1e7-ad23-8e3f-8f25-a7aef2d7d337",
+							"metadata":{
+										"system":{
+													"creator":"user1"
+												},
+										"method":"actiondto",
+									}
+						}];
+							
+	createaction({
+			"actiontype": "getaction"
+		}, function(err, res) {
+			proxyprinttodiv('Function createaction done --    for  -- ', res[0].wid, 99);
+			var executeobject = {
+						"executethis":"getwid",
+						"wid": res[0].wid
+					};
+			execute(executeobject,function (err, res) {
+				var result = logverify('logverify_setests_addactiongroup1',res,expectedresult);
+				proxyprinttodiv('actiongroup wid result  -- ', res, 99);				
+				callback(err,result);
+			});
+	});
+};
+widtests.setests_addactiongroup1.category = "daily";
+widtests.setests_addactiongroup1.subcategory = "push";
+widtests.setests_addactiongroup1.js = exports.setests_addactiongroup1;
+widtests.setests_addactiongroup1.description = "this does a test";
+
+
+// The big one. Creates a user w/ access token, a group called employees, and an action called getaction. Then, this fn calls
+// addpermission() to create a tie between the user and the employees group. Finally, addtargetwidtocurrentwid() relates:
+// userwid --> permissionwid, actionwid --> permissionwid, groupwid --> permissionwid. 
+exports.setests_addpermission1 = 
+setests_addpermission1 = 
+widtests.setests_addpermission1 = 
+function setests_addpermission1 (executeobject, callback) {
+
+	var userwid, groupwid, actionwid, permissionwid, config;
+	
+	async.series([
+		function (cb) {
+			setests_adduser1({},function (err, res) {
+				//proxyprinttodiv('adduser1 result --', res, 99, true);
+				userwid = res.logverify_setests_adduser1_diff[0].wid.data;
+				proxyprinttodiv('adduser1 result --', userwid, 99);
+				cb(err);
+			});
+		},
+		function (cb) {
+			setests_addusergroup1({}, function (err, res) {
+				groupwid = res.logverify_setests_addusergroup1_diff[0].data.wid;
+				proxyprinttodiv('addusergroup1 result --', groupwid, 99);
+				cb(err);
+			});
+		},
+		function (cb) {	
+			setests_addactiongroup1({}, function (err, res) {
+				actionwid = res.logverify_setests_addactiongroup1_diff[0].wid.data;
+				proxyprinttodiv('addusergroup1 result --', actionwid, 99);
+				cb(err);
+			});
+		},
+		function (cb) {							
+			addpermission({
+				"permission.userwid": userwid,
+				"permission.level": 99,
+				"permission.groupwid": groupwid
+			}, function(err, res) {
+				proxyprinttodiv('Function addpermission done --    for  -- ', res, 99);
+				permissionwid = res[0][0].wid;
+				cb(err);
+			});
+		},
+		function (cb) {
+			addtargetwidtocurrentwid({
+				"currentwid": userwid,
+				"currentwidmethod": "userdto",
+				"targetwid": permissionwid,
+				"targetwidmethod": "permissiondto",
+				"linktype": "onetomany"
+				}, function(err, res) {
+				proxyprinttodiv('related userwid to permission wid with result --', res, 99);
+				cb(err);
+			});
+		},
+		function (cb) {
+			addtargetwidtocurrentwid({
+				"currentwid": permissionwid,
+				"currentwidmethod": "permissiondto",
+				"targetwid": groupwid,
+				"targetwidmethod": "groupdto",
+				"linktype": "manytomany"
+				}, function(err, res) {
+				proxyprinttodiv('related groupwid to permission wid with result --', res, 99);
+				cb(err);
+			});
+		},
+		function (cb) {
+			addtargetwidtocurrentwid({
+				"currentwid": groupwid,
+				"currentwidmethod": "groupdto",
+				"targetwid": actionwid,
+				"targetwidmethod": "actiondto",
+				"linktype": "manytomany"}, function(err, res) {
+				proxyprinttodiv('related actionwid to groupwid with result --', res, 99);
+				cb(err);
+			});
+		}], function (err, res) {
+			proxyprinttodiv('setests_addpermission1 async completed -- ',res,99);
+			callback(res);
+		});
+			
+			/*					
+	var expectedresult = [{
+							"type":"getaction",
+							"wid":"0cf5e1e7-ad23-8e3f-8f25-a7aef2d7d337",
+							"metadata":{
+										"system":{
+													"creator":"user1"
+												},
+										"method":"actiondto",
+									}
+						}];
+*/
+
+};
+widtests.setests_addpermission1.category = "daily";
+widtests.setests_addpermission1.subcategory = "push";
+widtests.setests_addpermission1.js = exports.setests_addpermission1;
+widtests.setests_addpermission1.description = "this does a test";
+
+
+
+exports.setests_checksecurity1 = 
+setests_checksecurity1 = 
+widtests.setests_checksecurity1 = 
+function setests_checksecurity1 (executeobject, callback) {
+
+	var accessconfig1 = {
+        "_accesstoken": 'user1ac',
+        "_mygroup": '',
+        "_myphone": '9873838958',
+        "_action": 'getaction',
+        "_dbgroup": 'data',
+        "_collection": 'wikiwallettesting',
+        "_server": 'server1',
+        "_datastore": 'main',
+        "organizationaction": "getaction"
+    };
+	
+	setests_addpermission1({},function (err, res) {
+			//proxyprinttodiv('adduser1 result --', res, 99, true);
+			//proxyprinttodiv('adduser1 result --', userwid, 99);
+		sc(accessconfig1, function(err, res) {
+			proxyprinttodiv('Security check done --    response  -- ', res, 99);
+			var result = logverify('setests_checksecurity1_result',res,{"authstatus":true});
+			callback(err, result);
+        });
+	});
+
+
+
+
+
+			
+			/*					
+	var expectedresult = [{
+							"type":"getaction",
+							"wid":"0cf5e1e7-ad23-8e3f-8f25-a7aef2d7d337",
+							"metadata":{
+										"system":{
+													"creator":"user1"
+												},
+										"method":"actiondto",
+									}
+						}];
+*/
+
+};
+widtests.setests_checksecurity1.category = "daily";
+widtests.setests_checksecurity1.subcategory = "push";
+widtests.setests_checksecurity1.js = exports.setests_checksecurity1;
+widtests.setests_checksecurity1.description = "this does a test";
+
+/*
+// Creates a wid and adds that wid to a group. Assigns the "edit" actiongroup (permission) to the "creator" usergroup.
+// logverify needs to verify that the wid was added to the group... not correct right now
+exports.setests_metadataaddgrouppermissions1 = 
+setests_metadataaddgrouppermissions1 = 
+widtests.setests_metadataaddgrouppermissions1 = 
+function setests_metadataaddgrouppermissions1 (executeobject, callback) {
+
+      if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+		
+	  async.series([
+		function (cb) {
+			setests_addusergroup1({}, function (err, res) {
+				proxyprinttodiv('completed setests_addusergroup1 --', res, 99);
+				cb(err);
+			}
+		},
+		function (cb) {
+			execute({"executethis":"addwidmaster",
+					"wid": "rob1",
+					"name": "Rob",
+					"metadata.security.group.employees": "employees"
+					}, function (err, res) {
+						proxyprinttodiv('added mycolorwid1 --', res, 99, true);
+						cb(err);
+					});
+		},
+		function (cb) {
+			execute({"executethis":"addwidmaster",
+					"wid": "failwid1",
+					"a": "b"
+					}, function (err, res) {
+						proxyprinttodiv('added failwid1 --', res, 99, true);
+						cb(err);
+					});
+		},
+		function (cb) {
+			
+		
+		var expectedresult = {
+								"wid":"mycolorwid1",
+								"data": {
+											"color":"green"
+										},
+								"metadata": {
+												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
+												"date":{"exception":["created","changed","unchanged","updated"]}
+											}
+							}
+		
+      //var etEnvironment = new drienvironment(executeobject.command.environment)
+      execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', result_obj, 99);
+			addpermission({
+			"permission.usergroup": "creator",
+			"permission.actiongroup": "edit",
+			"permission.level": 99,
+			"permission.onfailwid": "failwid1"
+			}, function (err, res) {
+				proxyprinttodiv('addpermission res --', res, 99);
+			});
+            composite_obj=logverify("setests_metadataaddgrouppermissions2", result_obj,expectedresult);
+            callback(null, composite_obj)
+      } 
+    );
+};
+widtests.setests_metadataaddgrouppermissions1.category = "daily";
+widtests.setests_metadataaddgrouppermissions1.subcategory = "push";
+widtests.setests_metadataaddgrouppermissions1.js = exports.setests_metadataaddgrouppermissions1;
+widtests.setests_metadataaddgrouppermissions1.description = "this does a test";
+*/
 
 
 // Creates a wid and adds that wid to a group. Assigns the "edit" actiongroup (permission) to the "creator" usergroup.
@@ -321,3 +863,124 @@ widtests.setests_metadataaddgrouppermissions2.category = "daily";
 widtests.setests_metadataaddgrouppermissions2.subcategory = "push";
 widtests.setests_metadataaddgrouppermissions2.js = exports.setests_metadataaddgrouppermissions2;
 widtests.setests_metadataaddgrouppermissions2.description = "this does a test";
+
+
+// Creates a wid and adds that wid to a group. Assigns the edit actiongroup to creator usergroup. Sets permission.level to 99 
+//and onfailwid to failwid1. 
+exports.setests_metadataaddgrouppermissions3 = 
+setests_metadataaddgrouppermissions3 = 
+widtests.setests_metadataaddgrouppermissions3 = 
+function setests_metadataaddgrouppermissions3 (executeobject, callback) {
+
+      if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+		
+      executeobject.command.xrun=[{
+									"executethis": "updatewid",
+									"wid":"mycolorwid1",
+									"color":"green",
+									"metadata.security.group.colorwids": "colorwids"
+									}
+								];
+		
+		var expectedresult = {
+								"wid":"mycolorwid1",
+								"data": {
+											"color":"green"
+										},
+								"metadata": {
+												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
+												"date":{"exception":["created","changed","unchanged","updated"]}
+											}
+							}
+		
+      //var etEnvironment = new drienvironment(executeobject.command.environment)
+      execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', result_obj, 99);
+			addpermission({
+			"permission.usergroup": "creator",
+			"permission.actiongroup": "edit",
+			"command.environment.level": 99
+			}, function (err, res) {
+				proxyprinttodiv('addpermission res --', res, 99);
+			});
+            composite_obj=logverify("setests_metadataaddgrouppermissions3", result_obj,expectedresult);
+            callback(null, composite_obj)
+      } 
+    );
+};
+widtests.setests_metadataaddgrouppermissions3.category = "daily";
+widtests.setests_metadataaddgrouppermissions3.subcategory = "push";
+widtests.setests_metadataaddgrouppermissions3.js = exports.setests_metadataaddgrouppermissions3;
+widtests.setests_metadataaddgrouppermissions3.description = "this does a test";
+
+
+// Creates a wid and adds that wid to a group. Assigns the edit actiongroup to creator usergroup. Sets permission.level to 99 
+//and onfailwid to failwid1. 
+exports.setests_metadataaddgrouppermissions4 = 
+setests_metadataaddgrouppermissions4 = 
+widtests.setests_metadataaddgrouppermissions4 = 
+function setests_metadataaddgrouppermissions4 (executeobject, callback) {
+
+      if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+		
+      executeobject.command.xrun=[{
+									"executethis": "updatewid",
+									"wid":"mycolorwid1",
+									"color":"green",
+									"metadata.security.group.colorwids": "colorwids",
+									}, {
+									"executethis": "addwidmaster",
+									"wid": "failwid1",
+									"a": "b"
+									}
+								];
+		
+		var expectedresult = {
+								"wid":"mycolorwid1",
+								"data": {
+											"color":"green"
+										},
+								"metadata": {
+												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
+												"date":{"exception":["created","changed","unchanged","updated"]}
+											}
+							}
+		
+      //var etEnvironment = new drienvironment(executeobject.command.environment)
+      execute(executeobject, function (error_obj, result_obj) 
+      {
+                                
+            proxyprinttodiv('expected error', null, 99);
+            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('expected result', expectedresult, 99);
+            proxyprinttodiv('actual result', result_obj, 99);
+			addpermission({
+			"permission.usergroup": "creator",
+			"permission.actiongroup": "edit",
+			"permission.level": 99,
+			"permission.onfailwid": "failwid1"
+			}, function (err, res) {
+				proxyprinttodiv('addpermission res --', res, 99);
+			});
+            composite_obj=logverify("setests_metadataaddgrouppermissions4", result_obj,expectedresult);
+            callback(null, composite_obj)
+      } 
+    );
+};
+widtests.setests_metadataaddgrouppermissions4.category = "daily";
+widtests.setests_metadataaddgrouppermissions4.subcategory = "push";
+widtests.setests_metadataaddgrouppermissions4.js = exports.setests_metadataaddgrouppermissions4;
+widtests.setests_metadataaddgrouppermissions4.description = "this does a test";

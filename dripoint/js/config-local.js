@@ -265,7 +265,9 @@ exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters,
     });
 };
 
-
+exports.processevent = processevent = function processevent(params, callback) {
+    callback(null, null);
+};
 
 exports.execute_server = window.execute_server = execute_server = function execute_server(params, callback) {
     proxyprinttodiv('Function server TO ------', params, 99, true);

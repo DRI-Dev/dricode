@@ -2094,6 +2094,96 @@ widtests.etadd01.subcategory = "push";
 widtests.etadd01.js = exports.etadd01;
 widtests.etadd01.description = "this does a test";
 
+
+exports.etadd01 = widtests.etadd01 = etadd01 = function etadd01(parameters, callback) {
+    debuglevel = 17;
+    var executeList = [{
+        "executethis": "updatewid",
+        "metadata.method": "authordto",
+        "wid": "authordto",
+        "name": "string",
+        "age": "string",
+        "a": "string",
+        "b": "string",
+        "metdata.bookdto.type": "onetomany"
+    }, {
+        "executethis": "updatewid",
+        "metadata.method": "bookdto",
+        "wid": "bookdto",
+        "title": "string",
+        "pages": "string",
+        "c": "string",
+        "d": "string"
+    }, {
+        "executethis": "updatewid",
+        "metadata.method": "relationshipdto",
+        "wid": "relbooktoauthor",
+        "primarywid": "authordto",
+        "secondarywid": "bookdto",
+        "relationshiptype": "attributes"
+    }, {
+        "executethis": "updatewid",
+        "metadata.method": "authordto",
+        "wid": "elizabeth_heart",
+        "name": "Elizabeth Heart",
+        "age": "50"
+    }]
+
+    execute(executeList, function(err, res) {
+        proxyprinttodiv('__--__', res, 17);
+
+        var object = {
+            "metadata": {
+                "method": "bookdto"
+            },
+            "wid": "222",
+            "title": "The X Factor",
+            "pages": "300"
+        };
+        var dtoobject = {
+            "metadata": {
+                "method": "bookdto"
+            },
+            "wid": "bookdto",
+            "title": "string",
+            "pages": "string",
+            "c": "string",
+            "d": "string"
+        };
+        var parentwid = "elizabeth_heart";
+        var relationshiptype = "onetomany";
+        var command = {};
+
+        addwidobject(object, dtoobject, null, null, null, command, function(err, res) {
+            proxyprinttodiv("res --", res, 17);
+            var actual_result = [res];
+            proxyprinttodiv("actual_result --", actual_result, 17);
+
+            var expected_result = [{
+                "data": {
+                    "title": "The X Factor",
+                    "pages": "300"
+                },
+                "wid": "1",
+                "metadata": {
+                    "method": "bookdto",
+                    "date": "2014-03-19T07:41:35.196Z"
+                }
+            }];
+            proxyprinttodiv("expected_result --", expected_result, 17);
+
+            res = logverify("logverify", actual_result, expected_result);
+            callback(err, res);
+        });
+    });
+
+}
+widtests.etadd01.category = "daily";
+widtests.etadd01.subcategory = "push";
+widtests.etadd01.js = exports.etadd01;
+widtests.etadd01.description = "this does a test";
+
+
 exports.etadd0 = widtests.etadd0 = etadd0 = function etadd0(parameters, callback) {
     debuglevel = 17;
     var executeList = [{

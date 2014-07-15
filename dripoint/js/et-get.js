@@ -539,7 +539,7 @@
                     executeobject.executethis = "getwid";
 
                     if (!executeobject.command) { executeobject.command = {}; }
-                    executeobject.command.notfoundok = true;
+                    executeobject.command.notfoundok = false;
                     executeobject.command.executetype = "series";
                     //executeobject["wid"] = widInput;
                     //executeobject["command.convertmethod"]="toobject";
