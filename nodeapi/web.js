@@ -55,10 +55,10 @@ app.configure('development', function() {
 });
 
 //// *********************** Route Mapping for Application follows   ***********************
-//app.put('/executethis', server.putpostgetrunExecutethis);
-//app.post('/executethis', server.putpostgetrunExecutethis);
-app.get('/executethis', server.putpostgetrunExecutethis);
-app.put('/executethis', server.putrunExecutethis);
+app.put('/executethis', server.postputgetrunExecutethis);
+app.post('/executethis', server.postputgetrunExecutethis);
+app.get('/executethis', server.postputgetrunExecutethis);
+// app.put('/executethis', server.putrunExecutethis);
 app.put('/filetowid', convert.convertFileToWid);
 app.put('/base64toserver', imageService.saveBase64ToServer);
 
