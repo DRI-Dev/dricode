@@ -10,8 +10,8 @@ function nstest_namespaceadd1(executeobject, callback)
 		var executeobject = [{
 							"executethis": "addwidmaster",
 							"wid": "nswid1",
-							"command.usernamespace.creator": "cody",
-							"command.usernamespaceflag.creator": "true",
+							"command.namespace.creator": "cody",
+							"command.namespaceflag.creator": "true",
 							"color": "red"
 							}];
 							
