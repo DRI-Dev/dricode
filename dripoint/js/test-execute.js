@@ -97,7 +97,7 @@ function ettest_serieslevel0(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  //executeobject.command.environment.run.type="series"
+		  //executeobject.command.executetype="series"
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';          // used for server testing
 		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
@@ -131,7 +131,7 @@ function ettest_serieslevel0(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  //executeobject.command.environment.run.type="series"
+		  //executeobject.command.executetype="series"
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';        // used for server testing
 
@@ -167,7 +167,7 @@ function ettest_serieslevel0(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="series";
+		  executeobject.command.executetype="series";
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';
   
@@ -208,7 +208,7 @@ function ettest_serieslevel0(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="series";
+		  executeobject.command.executetype="series";
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';
   
@@ -250,7 +250,7 @@ function ettest_serieslevel0(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="series";
+		  executeobject.command.executetype="series";
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';
   
@@ -312,7 +312,7 @@ function ettest_serieslevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="series";
+		  executeobject.command.executetype="series";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';          // used for server testing
 
@@ -346,7 +346,7 @@ function ettest_serieslevel1(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  //executeobject.command.environment.run.type="series"
+		  //executeobject.command.executetype="series"
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';          // used for server testing
 
@@ -381,7 +381,7 @@ function ettest_serieslevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="series";
+		  executeobject.command.executetype="series";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';
   
@@ -418,7 +418,7 @@ function ettest_serieslevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="series";
+		  executeobject.command.executetype="series";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';
   
@@ -478,7 +478,7 @@ function ettest_grouplevel0(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="group";
+		  executeobject.command.executetype="group";
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';         // used for server testing
 
@@ -511,7 +511,7 @@ function ettest_grouplevel0(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  executeobject.command.environment.run.type="group";
+		  executeobject.command.executetype="group";
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';          // used for server testing
 
@@ -553,7 +553,7 @@ function ettest_grouplevel0(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="group";
+		  executeobject.command.executetype="group";
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';
   
@@ -593,7 +593,7 @@ function ettest_grouplevel0(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="group";
+		  executeobject.command.executetype="group";
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';
   
@@ -653,7 +653,7 @@ function ettest_grouplevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="group";
+		  executeobject.command.executetype="group";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';          // used for server testing
 
@@ -687,7 +687,7 @@ function ettest_grouplevel1(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  executeobject.command.environment.run.type="group";
+		  executeobject.command.executetype="group";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';          // used for server testing
 
@@ -722,7 +722,7 @@ function ettest_grouplevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="group";
+		  executeobject.command.executetype="group";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';
   
@@ -758,7 +758,7 @@ function ettest_grouplevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="group";
+		  executeobject.command.executetype="group";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';
   
@@ -817,7 +817,7 @@ function ettest_waterfalllevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="waterfall";
+		  executeobject.command.executetype="waterfall";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';          // used for server testing
 
@@ -851,7 +851,7 @@ function ettest_waterfalllevel1(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  executeobject.command.environment.run.type="waterfall";
+		  executeobject.command.executetype="waterfall";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';          // used for server testing
 
@@ -885,7 +885,7 @@ function ettest_waterfalllevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="waterfall";
+		  executeobject.command.executetype="waterfall";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';
   
@@ -921,7 +921,7 @@ function ettest_waterfalllevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="waterfall";
+		  executeobject.command.executetype="waterfall";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';
   
@@ -980,7 +980,7 @@ function ettest_runfirstonelevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="runfirstone";
+		  executeobject.command.executetype="runfirstone";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';          // used for server testing
 
@@ -1014,7 +1014,7 @@ function ettest_runfirstonelevel1(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  executeobject.command.environment.run.type="runfirstone";
+		  executeobject.command.executetype="runfirstone";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';          // used for server testing
 
@@ -1048,7 +1048,7 @@ function ettest_runfirstonelevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="runfirstone";
+		  executeobject.command.executetype="runfirstone";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';
   
@@ -1085,7 +1085,7 @@ function ettest_runfirstonelevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="runfirstone";
+		  executeobject.command.executetype="runfirstone";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';
   
@@ -1144,7 +1144,7 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="runfirstonewaterfall";
+		  executeobject.command.executetype="runfirstonewaterfall";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';
   
@@ -1177,7 +1177,7 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  executeobject.command.environment.run.type="runfirstonewaterfall";
+		  executeobject.command.executetype="runfirstonewaterfall";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';          // used for server testing
 
@@ -1211,7 +1211,7 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="runfirstonewaterfall";
+		  executeobject.command.executetype="runfirstonewaterfall";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';
   
@@ -1249,7 +1249,7 @@ function ettest_runfirstwaterfalllevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="runfirstonewaterfall";
+		  executeobject.command.executetype="runfirstonewaterfall";
 		  executeobject.command.environment.run.executelevel=1;
 		  executeobject.command.environment.platform='local';
   
@@ -1307,7 +1307,7 @@ function ettest_whattodo(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="series";
+		  executeobject.command.executetype="series";
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';
     
@@ -1341,7 +1341,7 @@ function ettest_whattodo(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="series";
+		  executeobject.command.executetype="series";
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';
  
@@ -1376,7 +1376,7 @@ function ettest_whattodo(executeobject, callback)
            executeobject.command.environment={};
            executeobject.command.environment.run={};
        }
-	   executeobject.command.environment.run.type="series";
+	   executeobject.command.executetype="series";
 	   executeobject.command.environment.run.executelevel=0;
 	   executeobject.command.environment.platform='server';   // within test this will redirect to second function
   
@@ -1461,7 +1461,7 @@ function ettest_howtodo(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  executeobject.command.environment.run.type="series";
+		  executeobject.command.executetype="series";
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';
 
@@ -1499,7 +1499,7 @@ function ettest_howtodo(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  executeobject.command.environment.run.type="series";
+		  executeobject.command.executetype="series";
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';
 
@@ -1544,7 +1544,7 @@ function ettest_howtodo(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  executeobject.command.environment.run.type="group";
+		  executeobject.command.executetype="group";
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';
 
@@ -1589,7 +1589,7 @@ function ettest_howtodo(executeobject, callback)
 			executeobject.command.environment={};
 			executeobject.command.environment.run={};
 		  }
-		  executeobject.command.environment.run.type="group";
+		  executeobject.command.executetype="group";
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';
 
@@ -1647,7 +1647,7 @@ function ettest_howtodo(executeobject, callback)
                   executeobject.command.environment={};
                   executeobject.command.environment.run={};
             }
-			  executeobject.command.environment.run.type="series";
+			  executeobject.command.executetype="series";
 			  executeobject.command.environment.run.executelevel=0;
 			  executeobject.command.environment.platform='local';
    
@@ -1704,7 +1704,7 @@ function ettest_executemisc(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="series";
+		  executeobject.command.executetype="series";
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';
     
@@ -1739,7 +1739,7 @@ function ettest_executemisc(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="series";
+		  executeobject.command.executetype="series";
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';
  
@@ -1783,7 +1783,7 @@ function ettest_executemisc(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="series";
+		  executeobject.command.executetype="series";
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';
 	  
@@ -1828,7 +1828,7 @@ function ettest_executemisc(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  executeobject.command.environment.run.type="series";
+		  executeobject.command.executetype="series";
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';
 	  
@@ -1873,7 +1873,7 @@ function ettest_series1update1(executeobject, callback)
             executeobject.command.environment={};
             executeobject.command.environment.run={};
         }
-        executeobject.command.environment.run.type="series";
+        executeobject.command.executetype="series";
         executeobject.command.environment.run.executelevel=0;
         executeobject.command.environment.platform='local';          // used for server testing
 
@@ -1914,7 +1914,7 @@ function ettest_group3failpassserver(executeobject, callback)
         executeobject.command.environment={};
         executeobject.command.environment.run={};
     }
-    executeobject.command.environment.run.type="group";     // should default to group
+    executeobject.command.executetype="group";     // should default to group
     executeobject.command.environment.run.executelevel=0;
     executeobject.command.environment.platform='local';          // used for server testing
 
@@ -1974,7 +1974,7 @@ function ettest_nestedtestslevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-	 	  executeobject.command.environment.run.type="series";
+	 	  executeobject.command.executetype="series";
 	 	  executeobject.command.environment.run.executelevel=1;
 	 	  executeobject.command.environment.platform='local';
   
@@ -2020,7 +2020,7 @@ function ettest_nestedtestslevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-	 	  executeobject.command.environment.run.type="series";
+	 	  executeobject.command.executetype="series";
 	 	  executeobject.command.environment.run.executelevel=1;
 	 	  executeobject.command.environment.platform='local';
   
@@ -2065,7 +2065,7 @@ function ettest_nestedtestslevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-	 	  executeobject.command.environment.run.type="series";
+	 	  executeobject.command.executetype="series";
 	 	  executeobject.command.environment.run.executelevel=1;
 	 	  executeobject.command.environment.platform='local';
   
@@ -2108,7 +2108,7 @@ function ettest_nestedtestslevel1(executeobject, callback)
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-	 	  executeobject.command.environment.run.type="series";
+	 	  executeobject.command.executetype="series";
 	 	  executeobject.command.environment.run.executelevel=1;
 	 	  executeobject.command.environment.platform='local';
   
@@ -2155,7 +2155,7 @@ function ettest_runfirst3real(executeobject, callback)
           executeobject.command.environment={};
           executeobject.command.environment.run={};
       }
-      executeobject.command.environment.run.type="runfirstonewaterfall";
+      executeobject.command.executetype="runfirstonewaterfall";
       executeobject.command.environment.run.executelevel=0;
       executeobject.command.environment.platform='local';
   
@@ -2188,7 +2188,7 @@ exports.ettest_runfirst3pass_lvl1 = ettest_runfirst3pass_lvl1 = function ettest_
           executeobject.command.environment={};
           executeobject.command.environment.run={};
       }
-      executeobject.command.environment.run.type="runfirstone";
+      executeobject.command.executetype="runfirstone";
       executeobject.command.environment.run.executelevel=0;
       executeobject.command.environment.platform='local';
   
@@ -2243,7 +2243,7 @@ if (!executeobject.command) {
       executeobject.command={};
       executeobject.command.environment={};
       executeobject.command.environment.run={}};
-      executeobject.command.environment.run.type="group";
+      executeobject.command.executetype="group";
       executeobject.command.environment.run.executelevel=0;
       executeobject.command.environment.platform='local';          
   
@@ -2319,7 +2319,7 @@ exports.ettest_executelist2 = ettest_executelist2 = function ettest_executelist2
 		  executeobject.command={};
 		  executeobject.command.environment={};
 		  executeobject.command.environment.run={}};
-		  executeobject.command.environment.run.type="group";
+		  executeobject.command.executetype="group";
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';          
 	  
@@ -2370,7 +2370,7 @@ function ettest_executewithattributes1(executeobject, callback)
 	  executeobject.command.usernamespace = "cody123";
       executeobject.command.environment={};
       executeobject.command.environment.run={}};
-      executeobject.command.environment.run.type="series";
+      executeobject.command.executetype="series";
       executeobject.command.environment.run.executelevel=0;
       executeobject.command.environment.platform='local';          
   
@@ -2422,7 +2422,7 @@ function ettest_usernamespace1(executeobject, callback)
       executeobject.command.environment={};
 	  executeobject.command.accountid = "cody123"; // shouldn't be necessary
       executeobject.command.environment.run={}};
-      executeobject.command.environment.run.type="series";
+      executeobject.command.executetype="series";
       executeobject.command.environment.run.executelevel=0;
       executeobject.command.environment.platform='local';          
   
@@ -2486,7 +2486,7 @@ function ettest_appnamespace1(executeobject, callback)
 	  executeobject.command.environment.userid = "1111"; // shouldn't be necessary
 	  executeobject.command.environment.accountid = "2222";
       executeobject.command.environment.run={}};
-      executeobject.command.environment.run.type="series";
+      executeobject.command.executetype="series";
       executeobject.command.environment.run.executelevel=0;
       executeobject.command.environment.platform='local';          
   
