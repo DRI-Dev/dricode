@@ -80,6 +80,9 @@ function runExecuteThis(parameters, resp) {
             localStore.clear();
         }
         debuglinenum = 0;
+
+        if (!results) { results = {}; }
+
         resp.send(results);
         resp.end();
     });
