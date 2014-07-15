@@ -56,7 +56,7 @@ app.configure('development', function() {
 
 //// *********************** Route Mapping for Application follows   ***********************
 //app.put('/executethis', server.putpostgetrunExecutethis);
-app.post('/executethis', server.putpostgetrunExecutethis);
+//app.post('/executethis', server.putpostgetrunExecutethis);
 app.get('/executethis', server.putpostgetrunExecutethis);
 // app.put('/executethis', server.putrunExecutethis);
 app.put('/filetowid', convert.convertFileToWid);
