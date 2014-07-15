@@ -8981,7 +8981,7 @@ exports.ettestupdatewid = ettestupdatewid = function ettestupdatewid(params, cal
 
 exports.ettestupdatewidserver = ettestupdatewidserver = function ettestupdatewidserver(params, callback) {
     var etEnvironment = new DriEnvironment(params.command.environment);
-    var executeobject = {command:{processparameterfn:'sync_server'},executethis:'updatewid',wid:'testdata123',key1:'value1',key2:'value2'};
+    var executeobject = {command:{environment:{syncrule:'sync_server'}},executethis:'updatewid',wid:'testdata123',key1:'value1',key2:'value2'};
     etEnvironment.execute(executeobject, function (err, result) {
         proxyprinttodiv('updatewid results', result, 99);
         callback(err, result);
