@@ -9208,6 +9208,14 @@ exports.ettestquerywidmasterserver = ettestquerywidmasterserver = function ettes
     });
 };
 
+exports.ettestexecutegetwid = ettestexecutegetwid = function ettestexecutegetwid(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    etEnvironment.execute({executethis:'testdata123'}, function (err, result) {
+        proxyprinttodiv('executegetwid results', result, 99);
+        callback(err, result);
+    });
+};
+
 exports.ettestag2step1 = ettestag2step1 = function ettestag2step1(params, callback) {
     var etEnvironment = new DriEnvironment(params.command.environment);
     etEnvironment.execute({
