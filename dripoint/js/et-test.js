@@ -9210,7 +9210,7 @@ exports.ettestquerywidmasterserver = ettestquerywidmasterserver = function ettes
 
 exports.ettestexecutegetwid = ettestexecutegetwid = function ettestexecutegetwid(params, callback) {
     var etEnvironment = new DriEnvironment(params.command.environment);
-    etEnvironment.execute({executethis:'testdata123'}, function (err, result) {
+    etEnvironment.execute({command:{environment:{executelevel:0}},executethis:'testdata123'}, function (err, result) {
         proxyprinttodiv('executegetwid results', result, 99);
         callback(err, result);
     });
