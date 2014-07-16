@@ -8,9 +8,11 @@ exports.window = {"configuration":config.configuration};
 
 var express = require('express'),
     app = express(),
+    http = require('http'),
     request = require('request'),
     server = require('./routes/server'),
     convert = require('./routes/convert.js'),
+    querystring = require('querystring'),
     imageService = require('./routes/images.js');
 
 
@@ -169,13 +171,57 @@ app.listen(process.env.PORT || serverconfig.SERVER_PORT);
         });
     };
 
-    exports.publishtestdelay = publishtestdelay = function publishtestdelay(listToDo, eventname, callback) {
-            callback(err, res);
+    exports.publishtestdelay = publishtestdelay = function publishtestdelay(parameters, callback) {
+        // callback(err, res);
+        // publishtest(parameters, callback);
+        var post_data = querystring.stringify(parameters);
+        var post_host = 'test3.dripoint.com';
+        var post_port = 80;
+        var post_uri = '/executethis';
+        var post_options = {
+            host: post_data,
+            port: post_port,
+            path: post_uri,
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/x-www-form-urlencoded',
+                'Content-length': post_data.length
+            }
+        }
+
+        // Setup the request
+        var post_request = http.request(post_options, function (res) {
+            res.setEncoding('utf8');
+            res.on('data', function (chunk) {
+                //            proxyprinttodiv('Response: ' + chunk);
+
+                // assumes response is 1 chunk
+                callback(null, {
+                    "test": "success"
+                });
+            });
+        });
+
+        //post the data
+        post_request.write(post_data);
+        post_request.end();
 
     };
 
-    exports.publishtest = publishtest = function publishtest(listToDo, eventname, callback) {
-            callback(err, res);
+    // Get parameters from github, pass it on to publish test
+
+    exports.publishtest = publishtest = function publishtest(parameters, callback) { 
+        // listToDo, eventname, callback) {
+        console.log('---- publishtest??-');
+        console.log(JSON.stringify(parameters));
+        console.log('>-->>>');
+        sendsms({
+            'to': '+12313133930',
+            'body': 'This is the publishtest ' 
+            }, 
+            callback
+        );
+        console.log('---- publishtest!!---');
 
     };
 
