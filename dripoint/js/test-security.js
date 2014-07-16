@@ -305,7 +305,8 @@ exports.setests_addusergroup1 =
 setests_addusergroup1 = 
 widtests.setests_addusergroup1 = 
 function setests_addusergroup1 (executeobject, callback) {
-					
+	
+	var groupwid;
 	var expectedresult = {
 							"data":{
 									"groupname":"employees",
@@ -331,14 +332,16 @@ function setests_addusergroup1 (executeobject, callback) {
 	creategroup({
 			"grouptype": "employees"
 		}, function(err, res) {
-			proxyprinttodiv('Function creategroup done --    for  -- ', res[0][0].wid, 99);
+			groupwid = res.wid;
+			proxyprinttodiv('Function creategroup done --    for  -- ', groupwid, 99);
 			var executeobject = {
 						"executethis":"getwid",
-						"wid": res[0][0].wid
+						"wid": groupwid
 					};
 			execute(executeobject,function (err, res) {
 				var result = logverify('logverify_setests_addusergroup1',res,expectedresult);
-				proxyprinttodiv('group wid result  -- ', res, 99);				
+				proxyprinttodiv('group wid result  -- ', res, 99);
+				result.wid = groupwid;
 				callback(err,result);
 			});
 	});
@@ -426,8 +429,8 @@ function setests_adduser1 (executeobject, callback) {
 						}];
 							
 	createuserdata(user1, function(err, res) {
-			proxyprinttodiv('Function createuserdata done --    for  -- ', res[0].wid, 99);
-			var userwid = res[0].wid;
+			proxyprinttodiv('Function createuserdata done --    for  -- ', res.wid, 99);
+			var userwid = res.wid;
 			var executeobject = {
 						"executethis":"getwid",
 						"wid": userwid
@@ -984,3 +987,45 @@ widtests.setests_metadataaddgrouppermissions4.category = "daily";
 widtests.setests_metadataaddgrouppermissions4.subcategory = "push";
 widtests.setests_metadataaddgrouppermissions4.js = exports.setests_metadataaddgrouppermissions4;
 widtests.setests_metadataaddgrouppermissions4.description = "this does a test";
+
+exports.codyfn1 = 
+widtests.codyfn1 = 
+codyfn1 = 
+function codyfn1 (params, callback) {
+
+	var userwid, groupwid;
+
+	async.series([
+		function (cb) {
+			setests_adduser1({},function (err, res) {
+				//proxyprinttodiv('adduser1 result --', res, 99, true);
+				userwid = res.logverify_setests_adduser1_diff[0].data.wid;
+				proxyprinttodiv('adduser1 result --', userwid, 99);
+				cb(err);
+			});
+		},
+		function (cb) {
+			setests_addusergroup1({}, function (err, res) {
+				groupwid = res.wid;
+				proxyprinttodiv('addusergroup1 result --', groupwid, 99);
+				cb(err);
+			});
+		},
+		function (cb) {
+			var config = {
+					"group":{
+								"type":"usergroup",
+								"wid":groupwid,
+								"targetwid":userwid
+							}
+				};
+			addwidtogroup(config, function (err, res) {
+				proxyprinttodiv('addwidtogroup res --', res, 99);
+				cb(err);
+			});
+		}], function (err, res) {
+			proxyprinttodiv('async completed with result --', res, 99);
+			callback(err, res);
+		});
+		
+};
