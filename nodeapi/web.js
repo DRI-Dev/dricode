@@ -177,7 +177,7 @@ app.listen(process.env.PORT || serverconfig.SERVER_PORT);
         var post_data = querystring.stringify(parameters);
         var post_host = 'test3.dripoint.com';
         var post_port = 80;
-        var post_uri = '/executethis';
+        var post_uri = '/executethis?executethis=publishtest';
         var post_options = {
             host: post_data,
             port: post_port,
