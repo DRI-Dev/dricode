@@ -173,7 +173,8 @@ app.listen(process.env.PORT || serverconfig.SERVER_PORT);
 
     exports.publishtestdelay = publishtestdelay = function publishtestdelay(parameters, callback) {
         // callback(err, res);
-        // publishtest(parameters, callback);
+        publishtest(parameters, callback);
+        /***
         var post_data = querystring.stringify(parameters);
         var post_host = 'test3.dripoint.com';
         var post_port = 80;
@@ -205,7 +206,7 @@ app.listen(process.env.PORT || serverconfig.SERVER_PORT);
         //post the data
         post_request.write(post_data);
         post_request.end();
-
+        **/
     };
 
     // Get parameters from github, pass it on to publish test
