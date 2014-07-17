@@ -881,10 +881,11 @@
         } 
         else // now check if targetfn exists
         {
+            if (!incomingparams.executethis) { callback(null, incomingparams); }
+
             var targetfn = window[incomingparams.executethis];
-            if (!targetfn) 
+            if (!targetfn)
             {   // if does not exist then error
-//                callback(null, incomingparams);  // this is wrong.. this causes certain processes to simply return the parameters instead of any kind of proper result
                 callback({"errorname":"fnnotfound"}, null);
             }
             else // continue with normal execution
@@ -1225,9 +1226,10 @@
         //--proxyprinttodiv("create_what_to_do_list inparams", inparams, 11);
         // create outside wrapper--copy command, set "runfirstone"
 
-        if (window[inparams.executethis]) 
+        if (window[inparams.executethis])
         {
-            callback(null, inparams);
+            if (callback instanceof Function) { callback(null, inparams); }
+            else { return inparams; }
         }
         else
         {
@@ -1261,7 +1263,9 @@
             outparams.command.xrun.push(thirdcopy);
 
             //--proxyprinttodiv("create_what_to_do_list outparams", outparams, 11, true);
-            callback(null, outparams);
+//            callback(null, outparams);
+            if (callback instanceof Function) { callback(null, outparams); }
+            else { return outparams; }
         }
     };
 
