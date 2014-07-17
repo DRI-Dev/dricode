@@ -121,16 +121,23 @@ function config123() {
     configuration.d.default.datastore =  configuration.datastore;
     configuration.d.default.keycollection = configuration.keycollection;
     configuration.d.default.databasetable = configuration.databasetable;
-
     configuration.d.default.executetype = "series";
-//    configuration.default.platform = configuration.environment;
+
     configuration.d.global = {};
     configuration.d.var = {};
-//    configuration.default.syncrule = configuration.syncrule;
-
     configuration.d.platform = configuration.environment;
     configuration.d.syncrule = configuration.syncrule;
-    // configuration.widmasterkey = 'widmasterkey';
+
+    configuration.d.run = {};
+    configuration.d.run.executelevel=0;
+
+    // items at default level get copied at run time to command level
+    // items at d level get copied to command.environment at run time
+    // run time parameters win
+
+    configuration.defaultenvironment = {};
+    configuration.defaultenvironment[configuration.db] = configuration.d;
+    //configuration.defaultenvironment[configuration.db].wid = configuration.e;
 
     return {
         "configuration": configuration

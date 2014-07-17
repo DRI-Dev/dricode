@@ -427,6 +427,10 @@ function execute_stuff(isTest, isServer, servername) {
         	my_execute_object.command.environment.syncrule = "sync_server";
 //            my_execute_object.command.processparameterfn='sync_server';
         }
+        else 
+        {
+            my_execute_object.command.environment.syncrule = "sync_local";
+        }
         // if ($('#server_caller').prop('checked')) {
         // if (isServer) {
         //     my_execute_object['configuration'] = {
