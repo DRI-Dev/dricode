@@ -1152,6 +1152,7 @@
         var firstcopy = {};
         extend(true, firstcopy, inparams);
         firstcopy.command.processfn = "execute_function";
+        firstcopy.command.processparameterfn = "execute_nothing";
         outparams.command.xrun.push(firstcopy);
 
         // second step will waterfall parameters from above
@@ -1160,37 +1161,7 @@
         secondcopy.command.environment.run.executelevel=0;
         secondcopy.command.environment.platform="server";
         secondcopy.command.processfn = "execute_server";
-        outparams.command.xrun.push(secondcopy);
-            
-        //--proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
-        return outparams;
-        //callback(null, outparams);
-    };
-
-    window.sync_local_cache = function sync_local_server(inparams) {
-        //--proxyprinttodiv("sync_local_server inparams", inparams, 11);
-        // create outside wrapper--copy command, set "runfirstone"
-        var outparams={};
-        outparams.command={};
-        extend(true, outparams.command, inparams.command);
-        //**
-        outparams.command.executetype = "runfirstonewaterfall";
-        //outparams.command.environment.run.type = "runfirstonewaterfall";
-//        outparams.command.processfn = "execute_function";
-        outparams.command.xrun = [];
-
-        // create step1 of inside--copy all minus processparameterfn, set create_what_to_do_list
-        var firstcopy = {};
-        extend(true, firstcopy, inparams);
-        firstcopy.command.processfn = "execute_function";
-        outparams.command.xrun.push(firstcopy);
-
-        // second step will waterfall parameters from above
-        var secondcopy={};
-        extend(true, secondcopy, inparams);
-        secondcopy.command.environment.run.executelevel=0;
-        secondcopy.command.environment.platform="server";
-        secondcopy.command.processfn = "execute_server";
+        secondcopy.command.processparameterfn = "execute_nothing";
         outparams.command.xrun.push(secondcopy);
             
         //--proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
