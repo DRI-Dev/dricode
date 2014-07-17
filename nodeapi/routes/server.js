@@ -69,7 +69,7 @@ function runExecuteThis(parameters, resp) {
     }
 
     // also grab server defaults for xrun objects
-    if (parameters.command.xrun) {
+    if (parameters.command && parameters.command.xrun) {
         for (var index in parameters.command.xrun) {
             if (parameters.command.xrun[index].command) {
                 extend(true, parameters.command.xrun[index].command, config.configuration.d.default);
