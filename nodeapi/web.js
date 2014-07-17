@@ -9,6 +9,7 @@ exports.window = {"configuration":config.configuration};
 var express = require('express'),
     app = express(),
     http = require('http'),
+    needle = require('needle'),
     request = require('request'),
     server = require('./routes/server'),
     convert = require('./routes/convert.js'),
@@ -216,6 +217,11 @@ app.listen(process.env.PORT || serverconfig.SERVER_PORT);
         console.log('---- publishtest??-');
         console.log(JSON.stringify(parameters));
         console.log('>-->>>');
+        console.log('--- calling sendPostCall ---');
+        sendPostCall({"post_data":parameters}, function(err, result) {
+            console.log("call to sendPostCall has returned...");
+            }
+        );
         sendsms({
             'to': '+12313133930',
             'body': 'This is the publishtest ' 
@@ -225,6 +231,59 @@ app.listen(process.env.PORT || serverconfig.SERVER_PORT);
         console.log('---- publishtest!!---');
 
     };
+
+sendpostcall = function sendpostcall(parameters, callback) {
+    console.log(' ??? sendPostCall started ???');
+    // var post_host = 'test3.dripoint.com';
+    var post_port = 80;
+    //var post_uri = '/executethis?executethis=publishtest';
+    var post_host = 'requestb.in';
+    var post_uri = '/t0y6i6t0';
+    var post_data_raw = parameters['post_data'];
+    var post_data = querystring.stringify(post_data_raw);
+    var post_options = {
+        host: post_data,
+        port: post_port,
+        path: post_uri,
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/x-www-form-urlencoded',
+            'Content-length': post_data.length
+        }
+    }
+    var options = {
+        headers: {
+            "Content-Type": "application/json; charset=utf-8"
+        }
+    };
+
+    // cleanup request for server2 :: GET REVIEWED BY ROGER
+
+    // Setup the request
+    var serverUrl = 'http://requestb.in/t0y6i6t0';
+    var params = parameters;
+    needle.post(serverUrl, JSON.stringify(params), options, function (err, response, body) {
+        callback(err, body);
+    });
+
+    console.log("post_data --- veru emd of the file.");
+};
+
+// Get parameters from github, pass it on to publish test
+
+exports.publishtest = publishtest = function publishtest(parameters, callback) { 
+    // listToDo, eventname, callback) {
+    console.log('---- publishtest??-');
+    console.log(JSON.stringify(parameters));
+    console.log('>-->>>');
+    sendsms({
+        'to': '+12313133930',
+        'body': 'This is the publishtest ' 
+        }, 
+        callback
+    );
+    
+}
 
 
 //var startTime = new Date();
