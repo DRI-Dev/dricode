@@ -137,21 +137,11 @@ if (typeof angular !== 'undefined') {
                 var env = new DriEnvironment(parameters.command ? parameters.command.environment : {});
 
                 env.execute(parameters, function (err, resultArray) {
-                    for (var x = 0; x < resultArray.length; x++) {
-                        if (Array.isArray(resultArray[x])) {
-                            for (var y = 0; y < resultArray[x].length; y++) {
-                                if (Array.isArray(resultArray[x][y])) {
-                                    for (var z = 0; z < resultArray[x][y].length; z++) {
-                                        if (Array.isArray(resultArray[x][y][z])) {
-                                            for (var i = 0; i < resultArray[x][y][z].length; i++) {
-                                                processExecuteResult(resultArray[x][y][z][i], scope);
-                                            }
-                                        } else { processExecuteResult(resultArray[x][y][z], scope); }
-                                    }
-                                } else { processExecuteResult(resultArray[x][y], scope); }
-                            }
-                        } else { processExecuteResult(resultArray[x], scope); }
-                    }
+                    if (Array.isArray(resultArray[x])) {
+                        for (var y = 0; y < resultArray[x].length; y++) {
+                            processExecuteResult(resultArray[x][y][z][i], scope);
+                        }
+                    } else { processExecuteResult(resultArray[x], scope); }
 
                     // send array to callback
                     if (callback instanceof Function) { callback(err, resultArray); }
