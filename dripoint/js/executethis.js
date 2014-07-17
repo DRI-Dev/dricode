@@ -883,7 +883,8 @@
             var targetfn = window[incomingparams.executethis];
             if (!targetfn) 
             {   // if does not exist then error
-                callback(null, incomingparams);
+//                callback(null, incomingparams);  // this is wrong.. this causes certain processes to simply return the parameters instead of any kind of proper result
+                callback({"errorname":"fnnotfound"}, null);
             }
             else // continue with normal execution
             {
