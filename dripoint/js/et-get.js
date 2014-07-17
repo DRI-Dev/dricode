@@ -767,7 +767,7 @@
                         }
                     }
                     proxyprinttodiv('Function getwidmongo parameterobject reset', parameterobject, 38);
-
+                    proxyprinttodiv('Function getwidmongo moreDTOParameters', moreDTOParameters, 38);
                     if (moreDTOParameters && moreDTOParameters.length > 0) {
                         var listToDo = [];
                         var rightparameters = {};
@@ -1031,6 +1031,7 @@
                     if (parameterobject.command && Object.keys(parameterobject.command).length === 0) {
                         delete parameterobject.command
                     }
+                    proxyprinttodiv("end of getWidMongo parameterobject", parameterobject, 38);
                     callback(null, parameterobject);
                 }
             });
