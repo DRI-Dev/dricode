@@ -299,7 +299,7 @@
             delete inparams.command.parameters; // delete after unbundle
         }
 
-        if (inparams.command.environment.run.executelevel===0 && !inparams.command.processfn)
+        if (inparams.command.environment.run.executelevel===0)
         {
             inparams = window[inparams.command.environment.syncrule](inparams);
         }
