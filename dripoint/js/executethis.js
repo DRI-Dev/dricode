@@ -17,6 +17,7 @@
 // when to delete global
 // eval
 // do some getwid calls directly
+// getclean step2 do not call if "string"
 
 (function (window) {
     // 'use strict';
