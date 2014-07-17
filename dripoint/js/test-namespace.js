@@ -7,11 +7,18 @@ nstest_namespaceadd1 =
 widtests.nstest_namespaceadd1 = 
 function nstest_namespaceadd1(executeobject, callback) 
 {
-		var executeobject = [{
+	  if (!executeobject.command) {
+		  executeobject.command={};
+		  executeobject.command.environment={};
+		  executeobject.command.environment.run={};
+	  }
+	  
+		executeobject.command.xrun = [{
 							"executethis": "addwidmaster",
 							"wid": "nswid1",
 							"command.namespace.creator": "cody",
 							"command.namespaceflag.creator": "true",
+							"metadata.namespace.a":"b",
 							"color": "red"
 							}];
 							
@@ -27,14 +34,15 @@ function nstest_namespaceadd1(executeobject, callback)
 											}
 							}
 		
-      execute(executeobject, function (error_obj, result_obj) 
+	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
+	  etEnvironment.execute(executeobject, function (err, res) 
       {
                                 
             proxyprinttodiv('expected error', null, 99);
-            proxyprinttodiv('actual error', error_obj, 99);
+            proxyprinttodiv('actual error', err, 99);
             proxyprinttodiv('expected result', expectedresult, 99);
-            proxyprinttodiv('actual result', result_obj, 99);
-            composite_obj=logverify("nstest_namespaceadd1", result_obj,expectedresult);
+            proxyprinttodiv('actual result', res, 99);
+            composite_obj=logverify("nstest_namespaceadd1", res,expectedresult);
             callback(null, composite_obj)
       } 
     );
@@ -51,12 +59,17 @@ nstest_genericadd1 =
 widtests.nstest_genericadd1 = 
 function nstest_genericadd1(executeobject, callback) 
 {
-		var executeobject = [{
+	  if (!executeobject.command) {
+		  executeobject.command={};
+		  executeobject.command.environment={};
+		  executeobject.command.environment.run={};
+	  }
+	  executeobject.command.xrun = [{
 							"executethis": "addwidmaster",
 							"wid": "nswid2",
 							"color": "red"
 							}];
-		
+	
 		var expectedresult = {
 								"wid":"nswid2",
 								"data": {
@@ -68,9 +81,8 @@ function nstest_genericadd1(executeobject, callback)
 											}
 							}
 		
-      //var etEnvironment = new drienvironment(executeobject.command.environment)
-      //etEnvironment.execute(executeobject, function (error_obj, result_obj) 
-      execute(executeobject, function (error_obj, result_obj) 
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
                                 
             proxyprinttodiv('expected error', null, 99);
@@ -98,8 +110,13 @@ nstest_namespacequery1 =
 widtests.nstest_namespacequery1 = 
 function nstest_namespacequery1(executeobject, callback) 
 {
-
-      var executeobject = [{
+	  if (!executeobject.command) {
+		  executeobject.command={};
+		  executeobject.command.environment={};
+		  executeobject.command.environment.run={};
+	  }
+	  
+      executeobject.command.xrun = [{
 								"executethis": "nstest_genericadd1"
 								}, {
 								"executethis": "nstest_namespaceadd1"
@@ -134,11 +151,11 @@ function nstest_namespacequery1(executeobject, callback)
 						}
 					];							
 		
-      //var etEnvironment = new drienvironment(executeobject.command.environment)
-      //etEnvironment.execute(executeobject, function (error_obj, result_obj) 
-      execute(executeobject, function (error_obj, result_obj) 
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj)  
       {
-			execute(queryobj, function (error_obj, result_obj)
+			executeobject.command.xrun = queryobj;
+			etEnvironment.execute(executeobject, function (error_obj, result_obj)
 			{
 				proxyprinttodiv('expected error', null, 99);
 				proxyprinttodiv('actual error', error_obj, 99);

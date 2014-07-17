@@ -29,7 +29,7 @@
         // first save and get from environment
         inboundparams.command.environment = checkenvironment(inboundparams.command.environment);
         // then bring items deeply nested in environmnet to "this" level
-        proxyprinttodiv("enhanceparameters after checkenvironment", inboundparams, 11, true);
+        // proxyprinttodiv("enhanceparameters after checkenvironment", inboundparams, 11, true);
 
         if (inboundparams.command.environment.global
             || (inboundparams.command.environment.var
@@ -156,7 +156,7 @@
             {
                 // if no type then make default type series
                 // I think this code can be taken out since executeion preferences wil have this default
-                proxyprinttodiv("inparams executionparameters[eachitem]", executionparameters[eachitem],11);
+                //proxyprinttodiv("inparams executionparameters[eachitem]", executionparameters[eachitem],11);
                 if (!executionparameters[eachitem].command) {executionparameters[eachitem].command={};}
                 if (!executionparameters[eachitem].command.environment) {executionparameters[eachitem].command.environment={};}
                 if (!executionparameters[eachitem].command.environment.run) {executionparameters[eachitem].command.environment.run={};}
@@ -215,7 +215,7 @@
         proxyprinttodiv("fishoutexecutionpreferences inparams before", inparams, 11, true);
         // make parameters better by dealing with command.environmnet
         inparams = enhanceparameters(inparams);
-        proxyprinttodiv("fishoutexecutionpreferences inparams after", inparams, 11, true);
+        //proxyprinttodiv("fishoutexecutionpreferences inparams after", inparams, 11, true);
 
         extend(true, executionpreferences.command.environment, inparams.command.environment);
         delete inparams.command.environment;
@@ -232,7 +232,7 @@
             delete inparams.executethis;
         }
 
-        proxyprinttodiv("converttocommand - outside iteration - executionpreferences II", executionpreferences, 11);
+        //proxyprinttodiv("converttocommand - outside iteration - executionpreferences II", executionpreferences, 11);
     }
 
     // This function converts incoming execute parameters into a standard execute object (ie command.resulttable)
@@ -275,7 +275,7 @@
                 strtemp.command.xrun = inparams;
             inparams = strtemp;
         }
-        proxyprinttodiv("converttocommand after string inparams", inparams, 11);
+        //proxyprinttodiv("converttocommand after string inparams", inparams, 11);
 
         // if array then load array into parameter command.xrun...not it is an object again
         if (isArray(inparams)) 
@@ -286,10 +286,10 @@
             inparams = arrtemp;
             proxyprinttodiv("inparams after array to object conversion ", inparams, 11);
         } 
-        proxyprinttodiv("converttocommand - inparams I", inparams, 11);
+        //proxyprinttodiv("converttocommand - inparams I", inparams, 11);
         // *** now it is converted to an object ***
 
-        proxyprinttodiv("converttocommand - inparams II", inparams, 11);
+        //proxyprinttodiv("converttocommand - inparams II", inparams, 11);
 
         // command.parameters may have additional parameters for this call...unbundle them
         // adopt command.parameters into inparams
@@ -318,7 +318,7 @@
             processresulttable(command); 
             //delete inparams.command.resulttable;
             //extend(true, executionpreferences, inparams);
-            proxyprinttodiv("converttocommand - command--", command, 11);
+            //proxyprinttodiv("converttocommand - command--", command, 11);
         }
         else // command.resulttable overrides all else
         {        
@@ -339,12 +339,12 @@
                 if (isObject(inparams.command.xrun)) 
                 {   // if object > convert to array...let next case take care of next process
                     // maybe combine at this level
-                    proxyprinttodiv("converttocommand - inparams", inparams, 11);
+                    //proxyprinttodiv("converttocommand - inparams", inparams, 11);
                     executionparameters={};
                     extend(true, executionparameters, inparams.command.xrun);
                     delete inparams.command.xrun;
                     extend(true, executionparameters, inparams);
-                    proxyprinttodiv("converttocommand - executionparameters", executionparameters, 11);
+                    //proxyprinttodiv("converttocommand - executionparameters", executionparameters, 11);
 
                     var tempArray=[];
                     tempArray.push(executionparameters);
@@ -376,7 +376,7 @@
             // add executionpreferences & executionparameters to resulttable             
             addexecutionparameters(command, executionparameters, currentexecuteid);
             // executionpreferences & command should now be object, executionparameters should be array
-            proxyprinttodiv("converttocommand - outside iteration - executionparameters III", executionparameters, 11, true);
+            //proxyprinttodiv("converttocommand - outside iteration - executionparameters III", executionparameters, 11, true);
         } // if not resulttable
 
         extend(true, command.resulttable.executionpreferences, executionpreferences);  
@@ -411,7 +411,7 @@
         //proxyprinttodiv('before -- remove -- incomingparams', incomingparams, 11, true, true);
         //incomingparams=ConvertFromDOTdri(incomingparams); // convert from dot notation -- not necessary if dot notation not sent in
         incomingparams=converttojson(incomingparams); 
-        proxyprinttodiv('>>>>>>>>>>>>>>>>>>>>>>>>execute begin', incomingparams, 14, true, true);
+        proxyprinttodiv('>>>>>>>>>>>>>>>>>>>>>>>>execute begin', incomingparams, 11, true, true);
 
         var command = converttocommand(incomingparams);    // call main conversion
 
@@ -443,15 +443,15 @@
             delete executionpreferences.command;
         }
 
-        proxyprinttodiv('execute before try series incomingparams ',incomingparams, 11);
-        proxyprinttodiv('execute before try series command ',command, 11);
-        proxyprinttodiv('execute before try series executionpreferences', executionpreferences, 11, true);
-        proxyprinttodiv('execute before try series tryset', tryset, 11, true);
+        //proxyprinttodiv('execute before try series incomingparams ',incomingparams, 11);
+        //proxyprinttodiv('execute before try series command ',command, 11);
+        //proxyprinttodiv('execute before try series executionpreferences', executionpreferences, 11, true);
+        //proxyprinttodiv('execute before try series tryset', tryset, 11, true);
         saveglobal('debuglevel', executionpreferences.command.environment.run.executelevel);
 
         // increase executelevel...this way any nested executes will be at higher level
         executionpreferences.command.environment.run.executelevel++; 
-        proxyprinttodiv('execute executionpreferences.command.environment.run.executelevel', executionpreferences.command.environment.run.executelevel, 11);
+        //proxyprinttodiv('execute executionpreferences.command.environment.run.executelevel', executionpreferences.command.environment.run.executelevel, 11);
 
         if (type==="waterfall" || type==="runfirstonewaterfall") // first time around create previous results
         {
@@ -492,10 +492,10 @@
                             var currentseq = currenttry.executeseq;
                             var outgoingparam = {};
 
-                            proxyprinttodiv("before execute - currenttry ", currenttry, 11);
-                            proxyprinttodiv("before execute currentexecute", currentexecute, 11);
-                            proxyprinttodiv("before execute currentseq", currentseq, 11);
-                            proxyprinttodiv("skipexecute is", skipexecute, 11);
+                            //proxyprinttodiv("before execute - currenttry ", currenttry, 11);
+                            //proxyprinttodiv("before execute currentexecute", currentexecute, 11);
+                            //proxyprinttodiv("before execute currentseq", currentseq, 11);
+                            //proxyprinttodiv("skipexecute is", skipexecute, 11);
                             proxyprinttodiv("before execute outgoingparam", outgoingparam, 11);
 
                             if (isArray(currentexecute)) 

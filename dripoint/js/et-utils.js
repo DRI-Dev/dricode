@@ -236,7 +236,6 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
     var datamethod = command.datamethod;
     var databasetable = command.databasetable;
         delete inputWidgetObject.command;
-    var addedobject = converttodriformat(inputWidgetObject, command);
     command.keycollection = keycollection;
         proxyprinttodiv('Function datastore command -- add inputWidgetObject addedobject', addedobject, 12);
 
@@ -246,11 +245,16 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
     }
 
     // copy environment stuff
-    if(inputWidgetObject && inputWidgetObject.command && inputWidgetObject.command.namespace){
-        // add namespace from environment to metadata
-        if(inputWidgetObject.command.namespace){
-            inputWidgetObject['metadata']['accountid']=inputWidgetObject.command.namespace;
-        }
+    if(inputWidgetObject && command && command.namespace){
+        // add namespace key:value pairs from command.namespace to metadata.namespace
+		if (!inputWidgetObject.metadata.namespace) {
+			inputWidgetObject.metadata.namespace = {};
+		}
+		for (key in command.namespace) {
+			inputWidgetObject.metadata.namespace[key] = command.namespace[key];
+		}
+		//inputWidgetObject['metadata']['namespace']=inputWidgetObject.command.namespace;
+  
 
         // // add attributes from environment to metadata
         // if(inputWidgetObject.command.environment && (typeof inputWidgetObject.command.environment === object)){
@@ -260,6 +264,8 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
         // }
     }
 
+	var addedobject = converttodriformat(inputWidgetObject, command);
+	
     if (inputWidgetObject.command && inputWidgetObject.command.environment && Object.keys(inputWidgetObject.command.environment).length > 0) {
         copyEnvironmentCommands(inputWidgetObject);
     }

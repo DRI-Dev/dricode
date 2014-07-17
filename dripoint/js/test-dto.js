@@ -2088,7 +2088,7 @@ exports.ettestagtt = widtests.ettestagtt = ettestagtt = function ettestagtt(para
     //     function (err, res) {
     //         callback(err, res);
     //     }
-    // );
+    // );(())
 
     var result = [];
     var err;
@@ -5482,7 +5482,7 @@ exports.ettestag2 = widtests.ettestag2 = ettestag2 = function ettestag2(params, 
                 "wid": "color1",
                 "metadata": {
                     "method": "defaultdto",
-                    "expirationdate":{"exception":["created","changed","unchanged","updated"]}
+                    "expirationdate":{"exception":["created","changed","unchanged","updated","deleted"]}
                 }
             });
 
