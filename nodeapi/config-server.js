@@ -202,18 +202,24 @@ function config123() {
     configuration.d.default.datastore =  configuration.datastore;
     configuration.d.default.keycollection = configuration.keycollection;
     configuration.d.default.databasetable = configuration.databasetable;
-
     configuration.d.default.executetype = "series";
+
 //    configuration.default.platform = configuration.environment;
     configuration.d.global = {};
     configuration.d.var = {};
+    configuration.d.platform = configuration.environment;
+    configuration.d.syncrule = configuration.syncrule;
 //    configuration.default.syncrule = configuration.syncrule;
-
+    configuration.d.run = {};
+    configuration.d.run.executelevel=0;
     // configuration.d.environment = {};
     // configuration.d.environment.platform = configuration.environment;
     // configuration.d.environment.syncrule = "sync_local_server";
     // configuration.widmasterkey = 'widmasterkey';
-
+    configuration.defaultenvironment = {};
+    configuration.defaultenvironment[configuration.db] = configuration.d;
+    //configuration.defaultenvironment[configuration.db].wid = configuration.e;
+    
     return {
         "configuration": configuration
     };

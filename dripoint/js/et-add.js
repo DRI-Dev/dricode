@@ -32,7 +32,8 @@
                     if (err && Object.keys(err).length > 0) {
                         callback(err, res);
                     } else {
-                        callback(null, {wid: res['wid']});
+                        //callback(null, {wid: res['wid']});
+                        callback(null, res); // addwidmaster MUST return the whole object that was added
                     }
                 });
             } // end else
@@ -83,7 +84,7 @@
         proxyprinttodiv("cleanadd object", object, 17);
         //if (object.wid==="wid1") {debuglevel=38;}
         getdtoobject(object, command, function (err, res) {
-            proxyprinttodiv("cleanadd object after getdtoobject", object, 17);
+            proxyprinttodiv("cleanadd object after getdtoobject res", res, 17);
 
             if (err && Object.keys(err).length > 0) {
                 callback(err, res);
@@ -163,9 +164,9 @@
     exports.addwidobject = addwidobject = function addwidobject(input, inputdto, parentwid, parentmethod, relationshiptype, command, callback) {
         var inbound_parameters_100 = arguments;
 
-        proxyprinttodiv("addwidobject input input :- ", input, 17);
-        proxyprinttodiv("addwidobject input inputdto :- ", inputdto, 17);
-        proxyprinttodiv("addwidobject input command :- ", command, 17);
+        proxyprinttodiv("addwidobject input input :- ", input, 17, true, true);
+        proxyprinttodiv("addwidobject input inputdto :- ", inputdto, 17, true, true);
+        proxyprinttodiv("addwidobject input command :- ", command, 17, true);
 
         var _parent_object = {};
         var _parent_dto = {};

@@ -119,7 +119,7 @@ exports.copywid = copywid = copywid = function copywid(inputWidgetObject, callba
 //    var filteredcommandobject = filter_data.filteredobject.command;
     var command = inputWidgetObject.command;
     
-    proxyprinttodiv('Function copywid filteredcommandobject', command, 17);
+    proxyprinttodiv('Function copywid filteredcommandobject', command, 27);
 
     //fromwid, fromdb, fromcollection, fromdatastore, towid, todb, tocollection, todatastore, command,
     //1. call getwid fn with fromwid, fromdb, fromcollection, fromdatastore
@@ -134,7 +134,7 @@ exports.copywid = copywid = copywid = function copywid(inputWidgetObject, callba
     };
     proxyprinttodiv('Function copywid getwidinput', getwidinput, 18);
     getwid(getwidinput, function (err, getwidresult) {
-        proxyprinttodiv('Function copywid getwidresult', getwidresult, 17);
+        proxyprinttodiv('Function copywid getwidresult', getwidresult, 27);
 
         //2. call updatewid fn with get result wid, towid, todb, tocollection, todatastore
         var updatewidinput = {
@@ -149,7 +149,7 @@ exports.copywid = copywid = copywid = function copywid(inputWidgetObject, callba
         extend(true, updatewidinput, getwidresult);
         proxyprinttodiv('Function copywid updatewidinput', updatewidinput, 18);
         updatewid(updatewidinput, function (err, updatewidresult) {
-            proxyprinttodiv('Function copywid updatewidresult', updatewidresult, 17);
+            proxyprinttodiv('Function copywid updatewidresult', updatewidresult, 27);
 
             //3. call updatewid with blank record, fromwid, fromdb, fromcollection, fromdatastore if command.delete
             //if(inputWidgetObject["command"] && inputWidgetObject["command"]["delete"]===true){
@@ -166,7 +166,7 @@ exports.copywid = copywid = copywid = function copywid(inputWidgetObject, callba
                     }
                 };
                 updatewid(updatewidblankinput, function (err, updatewidblankinputresult) {
-                    proxyprinttodiv('Function copywid updatewidblankinputresult', updatewidblankinputresult, 17);
+                    proxyprinttodiv('Function copywid updatewidblankinputresult', updatewidblankinputresult, 27);
                     callback(err, updatewidblankinputresult);
                 });
             } else {
@@ -374,7 +374,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
     - To move wid from original location to datasettable=driarchive, db=new Date()
 */
 exports.deletewid = deletewid = deletewid = function deletewid(inputWidgetObject, callback) {
-    proxyprinttodiv('Function deletewid inputWidgetObject', inputWidgetObject, 17);
+    proxyprinttodiv('Function deletewid inputWidgetObject', inputWidgetObject, 27);
 
     var err = null;
     var widName = inputWidgetObject['wid'];
@@ -417,9 +417,9 @@ exports.deletewid = deletewid = deletewid = function deletewid(inputWidgetObject
 //    inputWidgetObject = filter_data.output;
 
     if (widName) {
-        proxyprinttodiv('Function deletewid inputWidgetObject before copywid', inputWidgetObject, 17);
+        proxyprinttodiv('Function deletewid inputWidgetObject before copywid', inputWidgetObject, 27);
         copywid(inputWidgetObject, function (err, copiedobject) {
-            proxyprinttodiv('Function deletewid copiedobject ', copiedobject, 17);
+            proxyprinttodiv('Function deletewid copiedobject ', copiedobject, 27);
             callback(err, copiedobject);
         });
     } else { // if no widName
@@ -597,7 +597,7 @@ exports.getwid = getwid = function getwid(inputWidgetObject, callback) {
 
 //To get parents
 exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, callback) {
-    proxyprinttodiv('Function getrelatedrecords obj', obj, 17);
+    proxyprinttodiv('Function getrelatedrecords obj', obj, 27);
 
     // we send in {widlist : [wid1, wid2, wid3], command.reltype:parent}
     var filter_data = getcommand(obj, 
@@ -617,7 +617,7 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
     obj = filter_data.output;
     var command = filter_data.filteredobject.command;
     var widlist = obj["widlist"];
-    proxyprinttodiv('Function getrelatedrecords widlist', widlist, 17);
+    proxyprinttodiv('Function getrelatedrecords widlist', widlist, 27);
     if (widlist.length === 0) {
         var res = {};
         res[command.result] = widlist;
@@ -646,7 +646,7 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
                     }]
                 };
             }
-            proxyprinttodiv('Function getrelatedrecords query', executeobject, 17);
+            proxyprinttodiv('Function getrelatedrecords query', executeobject, 27);
             executeobject["command"]= {
                 "executetype":"series"
             };
@@ -654,22 +654,22 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
             var env = new DriEnvironment(command.environment);
             env.execute(executeobject, function (err, res) {
             //execute(executeobject, function (err, res) {
-                proxyprinttodiv('Function getrelatedrecords query res', res, 17);
+                proxyprinttodiv('Function getrelatedrecords query res', res, 27);
                 if (err && (Object.keys(err).length) > 0) {
                     callback({}, widlist);
                 } else {
                     if (res && (Object.keys(res).length) > 0) {
                         var recurselist = [];
-                        proxyprinttodiv('Function getrelatedrecords res', res, 17);
+                        proxyprinttodiv('Function getrelatedrecords res', res, 27);
                         var resultlist = res[0].queryresult;
-                        proxyprinttodiv('Function getrelatedrecords resultlist', resultlist, 17);
+                        proxyprinttodiv('Function getrelatedrecords resultlist', resultlist, 27);
                         if (resultlist && resultlist.length > 0) {
                             async.each(resultlist, function (wid, callback1) {
-                                proxyprinttodiv('Function getrelatedrecords wid', wid, 17);
+                                proxyprinttodiv('Function getrelatedrecords wid', wid, 27);
                                 for (widkey in wid) {
-                                    proxyprinttodiv('Function getrelatedrecords widkey', widkey, 17);
+                                    proxyprinttodiv('Function getrelatedrecords widkey', widkey, 27);
                                     var eachrecord = wid[widkey];
-                                    proxyprinttodiv('Function getrelatedrecords eachrecord', eachrecord, 17);
+                                    proxyprinttodiv('Function getrelatedrecords eachrecord', eachrecord, 27);
 
                                     var eachwid;
                                     if (reltype === 'parent') {
@@ -678,7 +678,7 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
                                         eachwid = eachrecord.secondarywid;
                                     }
 
-                                    proxyprinttodiv('Function getrelatedrecords eachwid **', eachwid, 17);
+                                    proxyprinttodiv('Function getrelatedrecords eachwid **', eachwid, 27);
                                     recurselist.push(eachwid);
                                     widlist.push(eachwid);
                                     callback1();
@@ -691,7 +691,7 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
                         } else {
                             var res = {};
                             res[command.result] = widlist;
-                            proxyprinttodiv('Function getrelatedrecords callback1 with res', res, 17);
+                            proxyprinttodiv('Function getrelatedrecords callback1 with res', res, 27);
                             callback(null, res);
                         }
 
@@ -705,7 +705,7 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
                                 }
                             };
 
-                            proxyprinttodiv('Function getrelatedrecords recurse object', executeobject, 17);
+                            proxyprinttodiv('Function getrelatedrecords recurse object', executeobject, 27);
                             getrelatedrecords(executeobject, function (err, returnlist) {
                                 if (err && (Object.keys(err).length) > 0) {
                                     callback({}, widlist);
@@ -714,15 +714,15 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
                                         for (var eachitem in returnlist[command.result]) {
                                             widlist.push(returnlist[command.result][eachitem]);
                                         }
-                                        proxyprinttodiv('Function getrelatedrecords callback2 with returnlist', returnlist, 17);
+                                        proxyprinttodiv('Function getrelatedrecords callback2 with returnlist', returnlist, 27);
                                         var res = {};
                                         res[command.result] = widlist;
-                                        proxyprinttodiv('Function getrelatedrecords callback2 with res', res, 17);
+                                        proxyprinttodiv('Function getrelatedrecords callback2 with res', res, 27);
                                         callback(null, res);
                                     } else {
                                         var res = {};
                                         res[command.result] = widlist;
-                                        proxyprinttodiv('Function getrelatedrecords callback2 with res', res, 17);
+                                        proxyprinttodiv('Function getrelatedrecords callback2 with res', res, 27);
                                         callback(null, res);
                                     }
                                 }
@@ -730,13 +730,13 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
                         } else {
                             var res = {};
                             res[command.result] = widlist;
-                            proxyprinttodiv('Function getrelatedrecords callback4 with res', res, 17);
+                            proxyprinttodiv('Function getrelatedrecords callback4 with res', res, 27);
                             callback(null, res);
                         }
                     } else {
                         var res = {};
                         res[command.result] = widlist;
-                        proxyprinttodiv('Function getrelatedrecords callback5 with res', res, 17);
+                        proxyprinttodiv('Function getrelatedrecords callback5 with res', res, 27);
                         callback(null, res);
                     }
                 }
@@ -1211,8 +1211,8 @@ exports.deepfilter = deepfilter = function deepfilter(inputObj, dtoObjOpt, comma
 };
 
 function recurseModObj(inputObject, dtoObject, convert, totype, command, callback) {
-    proxyprinttodiv("recurseModObj - inputObject ", inputObject, 17);
-    proxyprinttodiv("recurseModObj - dtoObject ", dtoObject, 17);
+    proxyprinttodiv("recurseModObj - inputObject ", inputObject, 27);
+    proxyprinttodiv("recurseModObj - dtoObject ", dtoObject, 27);
 
     var temparray = [];
     var modifiedObj = {};
@@ -1234,16 +1234,16 @@ function recurseModObj(inputObject, dtoObject, convert, totype, command, callbac
                     if (dtoObject.hasOwnProperty(inpKey)) {
                         var dataType = dtoObject[inpKey];
 
-                        proxyprinttodiv("*** recurseModObj - inpVal ", inpVal, 17);
-                        proxyprinttodiv("*** recurseModObj - dataType ", dataType, 17);
+                        proxyprinttodiv("*** recurseModObj - inpVal ", inpVal, 27);
+                        proxyprinttodiv("*** recurseModObj - dataType ", dataType, 27);
 
                         if (dataType === "boolean" || dataType === "string" || dataType === "number" ||
                             dataType === "date" || dataType === "integer" || dataType === "shortguid" ||
                             dataType === "guid" || dataType === "hash" || dataType === "phone" ||
                             dataType === "random4" || dataType === "object" || dataType === "array") {
-                            proxyprinttodiv("recurseModObj - dataType ", dataType, 17);
-                            proxyprinttodiv("recurseModObj - inpKey ", inpKey, 17);
-                            proxyprinttodiv("recurseModObj - inpVal ", inpVal, 17);
+                            proxyprinttodiv("recurseModObj - dataType ", dataType, 27);
+                            proxyprinttodiv("recurseModObj - inpKey ", inpKey, 27);
+                            proxyprinttodiv("recurseModObj - inpVal ", inpVal, 27);
 
                             /*
                              For below cases,
@@ -1897,11 +1897,11 @@ function getRandomNumberByLength(length) {
      widvalue = parseInt(executeobject['widvalue']);
      widvalue++;
      }
-     proxyprinttodiv("deepfilter getnewwid", widvalue, 17);
+     proxyprinttodiv("deepfilter getnewwid", widvalue, 27);
      executeobject['widvalue'] = String(widvalue);
      executeobject['wid'] = "currentwid";
      executeobject['executethis'] = 'updatewid';
-     proxyprinttodiv("deepfilter getnewwid", executeobject, 17);
+     proxyprinttodiv("deepfilter getnewwid", executeobject, 27);
      execute(executeobject, function (err, result) {
      callback(null, executeobject['widvalue']);
      });
@@ -3751,9 +3751,9 @@ function getRandomNumberByLength(length) {
             type = command.filterobject.type;
         }
 
-        proxyprinttodiv("diff object map", diffMap, 17);
-        proxyprinttodiv("diff object map type", type, 17);
-        proxyprinttodiv("diff object map command", command, 17);
+        proxyprinttodiv("diff object map", diffMap, 27);
+        proxyprinttodiv("diff object map type", type, 27);
+        proxyprinttodiv("diff object map command", command, 27);
 
         switch (type) {
         case "default": // returns any difference found between two objects
@@ -3806,7 +3806,7 @@ function getRandomNumberByLength(length) {
         // VALUE_DELETED: 'deleted',
         // VALUE_UNCHANGED: 'unchanged',
 
-        proxyprinttodiv("diff object to return", diffObj, 17);
+        proxyprinttodiv("diff object to return", diffObj, 27);
         if (callback) {
             callback(null, diffObj);
         } else {
@@ -3823,9 +3823,9 @@ function getRandomNumberByLength(length) {
 
     //     if (!type) {type = "default"};
 
-    //     proxyprinttodiv("diff object map", diffMap, 17);
-    //     proxyprinttodiv("diff object map type", type, 17);
-    //     proxyprinttodiv("diff object map command", command, 17);
+    //     proxyprinttodiv("diff object map", diffMap, 27);
+    //     proxyprinttodiv("diff object map type", type, 27);
+    //     proxyprinttodiv("diff object map command", command, 27);
 
     //     if (isArray(diffMap)) {
     //         var outmap=[];
@@ -3856,7 +3856,7 @@ function getRandomNumberByLength(length) {
     //         } // else notdiffmapkey
     //     } // else not array
 
-    //     proxyprinttodiv("diff object to return", obj, 17);
+    //     proxyprinttodiv("diff object to return", obj, 27);
     //         return {
     //             obj: obj,
     //             notobj: notobj
@@ -3999,7 +3999,7 @@ function getRandomNumberByLength(length) {
     -delete
 */
 exports.objectoperations = objectoperations = function objectoperations(inputWidgetObject, callback) {
-    proxyprinttodiv('Function objectoperations inputWidgetObject', inputWidgetObject, 17);
+    proxyprinttodiv('Function objectoperations inputWidgetObject', inputWidgetObject, 27);
     var command = inputWidgetObject.command;
     
     //2). if command.collection or command.databasetable exists then return used space
@@ -4019,10 +4019,10 @@ exports.objectoperations = objectoperations = function objectoperations(inputWid
             command.object=localStorage;
         }
     }
-    proxyprinttodiv('Function objectoperations command object', command.object, 17);
+    proxyprinttodiv('Function objectoperations command object', command.object, 27);
 
     for(key in command.object) {
-        proxyprinttodiv('Function objectoperations object key ----------', key, 17);
+        proxyprinttodiv('Function objectoperations object key ----------', key, 27);
         var storedObj = command.object[key];
         var splittedKeys = key.split("_");
 
@@ -4044,15 +4044,15 @@ exports.objectoperations = objectoperations = function objectoperations(inputWid
 
         if( commandObj ) {
             var size = memorySizeOf(storedObj);
-            proxyprinttodiv('Function objectoperations size 1 ', size, 17);
+            proxyprinttodiv('Function objectoperations size 1 ', size, 27);
             objectSize+=size;
         } else {  //If no command.object
             if((collection && collection===targetcollection) || (databasetable && databasetable===targetdatabasetable)){ //To get particular collection/databasetable size
-                proxyprinttodiv('Function objectoperations targetcollection', targetcollection, 17);
-                proxyprinttodiv('Function objectoperations targetdatabasetable', targetdatabasetable, 17);
+                proxyprinttodiv('Function objectoperations targetcollection', targetcollection, 27);
+                proxyprinttodiv('Function objectoperations targetdatabasetable', targetdatabasetable, 27);
                 
                 size = memorySizeOf(storedObj);
-                proxyprinttodiv('Function objectoperations size 2', size, 17);
+                proxyprinttodiv('Function objectoperations size 2', size, 27);
                 objectSize+=size;
             }
         }       
@@ -4132,7 +4132,7 @@ function sizeofAllStorage(){
         eachObjectSize = lengthInUtf8Bytes(localStorage.getItem(key));
         size += eachObjectSize;
         eachObjectSizeInMB = Math.ceil((eachObjectSize/1024/1024)*100)/100;
-        proxyprinttodiv("calculatespace size ("+ key +")", eachObjectSizeInMB, 17);
+        proxyprinttodiv("calculatespace size ("+ key +")", eachObjectSizeInMB, 27);
     }  
     return Math.ceil((size/1024/1024)*100)/100; // get into MB
 }

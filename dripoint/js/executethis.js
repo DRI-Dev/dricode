@@ -25,15 +25,20 @@
 
     // get other parameters that might be for this function
     function enhanceparameters(inboundparams) {
-        proxyprinttodiv("enhanceparameters before checkenvironment", inboundparams, 11, true);
+        //proxyprinttodiv("enhanceparameters before checkenvironment", inboundparams, 11, true);
+        // note this could probably be moved to drienvrionment in utils
+        if (!inboundparams.command) {inboundparams.command={};}
+        if (!inboundparams.command.environment) {inboundparams.command.environment={};}
+
         // first save and get from environment
         inboundparams.command.environment = checkenvironment(inboundparams.command.environment);
-        // then bring items deeply nested in environmnet to "this" level
-        // proxyprinttodiv("enhanceparameters after checkenvironment", inboundparams, 11, true);
+        // then bring items deeply nested in environment to "this" level
+        //proxyprinttodiv("enhanceparameters after checkenvironment", inboundparams, 11, true);
 
-        if (inboundparams.command.environment.global
-            || (inboundparams.command.environment.var
-            && inboundparams.command.environment.var[inboundparams.executethis]))
+        if (inboundparams.command.environment.global && Object.keys(inboundparams.command.environment.global).length > 0
+            || (inboundparams.command.environment.var 
+                && inboundparams.command.environment.var[inboundparams.executethis] 
+                && Object.keys(inboundparams.command.var[inboundparams.executethis]).length > 0))
         {
             extend(true, inboundparams,
                         inboundparams.command.environment.global || {},
@@ -47,6 +52,7 @@
         // extend config defaults into inboundparams.command to default anything missing
         //inboundparams.command = extend(true, config.configuration.default, inboundparams.command);
         inboundparams.command = extend(true, {}, inboundparams.command.environment.default, inboundparams.command);
+        //proxyprinttodiv("enhanceparameters end enhanceparameters", inboundparams, 11, true);
         return inboundparams;
     }
 
@@ -54,41 +60,41 @@
     function checkenvironment(environment) {
         // merge incoming environment with default config environment with incomming winning
         environment = extend(true, {}, config.configuration.d, environment);
-        if (config.configuration.environment === "local") 
+        //if (config.configuration.environment === "local") 
+        //{
+        // read environment wid
+        var environmentwid = {};
+            environmentwid = getfromlocal(config.configuration.e);
+        // if (!environmentwid) 
+        // { // if none then begin creating one
+        //     environmentwid = {"wid":config.configuration.e};
+        // }
+        if (!environmentwid) {environmentwid={}}
+
+        // get the data for environment from right section of wid (i.e. command.db)
+        var environmentdata = {};
+        if (environmentwid[config.configuration.db])
         {
-            // read environment wid
-            var environmentwid = {};
-                environmentwid = getfromlocal(config.configuration.e);
-            if (!environmentwid) 
-            { // if none then begin creating one
-                environmentwid = {"wid":config.configuration.e};
-            }
-
-            // get the data for environment from right section of wid (i.e. command.db)
-            var environmentdata = {};
-            if (environmentwid[config.configuration.db])
-            {
-                environmentdata = environmentwid[config.configuration.db];
-            }
-
-            // merge current environment data with sent in environment data
-            environment = extend(true, {}, environmentdata, environment);
-            if (!environment.accesstoken) // if no ac then create one
-            {
-                environment.accesstoken = createNewGuid();
-            }
-
-            // store it back to wid
-            environmentwid[config.configuration.db] = environment;
-            addtolocal(config.configuration.e, environmentwid);
+            environmentdata = environmentwid[config.configuration.db];
         }
+
+        // merge current environment data with sent in environment data
+        environment = extend(true, {}, environmentdata, environment);
+        if (!environment.accesstoken) {environment.accesstoken = createNewGuid();}
+        if (!environment.run.executeid) {environment.run.executeid=createNewGuid();}
+
+        // store it back to wid
+        environmentwid[config.configuration.db] = environment;
+        addtolocal(config.configuration.e, environmentwid);
+        //}
 
         // return value of environment
         return environment;
     }
 
     function resetenvironment() {
-        addtolocal(config.configuration.e, config.configuration.default);
+        //addtolocal(config.configuration.e, config.configuration.default);
+        addtolocal(config.configuration.e, configuration.defaultenvironment);
     }
 
     // create blank command.result or if one was existing then 
@@ -96,10 +102,10 @@
     // for every type if overallerror then every items in detail get copied to tryset 
     // if type = group then only copy the exact records that had failed
     function processresulttable(command) {
-        proxyprinttodiv("processresulttable command-", command, 11, true);
+        //--proxyprinttodiv("processresulttable command-", command, 11, true);
         if (command.resulttable)
         {
-            // proxyprinttodiv("processresulttable command begin", command, 11, true);
+            // //--proxyprinttodiv("processresulttable command begin", command, 11, true);
             // if command.resulttable sent in then get executionparameters -- right now we only support one executeid 
             for (var eachexecuteid in command.resulttable) 
             {
@@ -117,15 +123,15 @@
                     var type = command.resulttable.executionpreferences.command.executetype;
                     //**
                     //var type = command.resulttable.executionpreferences.command.environment.run.type;
-                    // proxyprinttodiv("processresulttable command after clearing tryset", command, 11, true);
+                    // //--proxyprinttodiv("processresulttable command after clearing tryset", command, 11, true);
                     // fish out from commmand.result table only the ones with errors in case of group, all of them otherwise
                     for (var eachitem in command.resulttable[eachexecuteid].detail)
                     {
-                        //proxyprinttodiv("processresulttable command.resulttable[eachexecuteid].detail[eachitem]", command.resulttable[eachexecuteid].detail[eachitem], 11);
+                        ////--proxyprinttodiv("processresulttable command.resulttable[eachexecuteid].detail[eachitem]", command.resulttable[eachexecuteid].detail[eachitem], 11);
                         if ((type==="group" && command.resulttable[eachexecuteid].detail[eachitem].err) ||
                             (type!=="group" && command.resulttable[eachexecuteid].overallerror))
                         {
-                            //proxyprinttodiv("processresulttable eachitem", eachitem, 11);
+                            ////--proxyprinttodiv("processresulttable eachitem", eachitem, 11);
                             var eachexecute = {};
                             eachexecute.outgoingparam={};
                             eachexecute.executeseq = command.resulttable[eachexecuteid].detail[eachitem].executeseq;
@@ -141,27 +147,26 @@
             }
             command.resulttable.overallerror=null;
             command.resulttable.overallresult={};
-            proxyprinttodiv("processresulttable command end", command, 11, true);
+            //--proxyprinttodiv("processresulttable command end", command, 11, true);
         }
     }
 
     // add each item in executionparameters to tryset in resulttable
     function addexecutionparameters(command, executionparameters, currentexecuteid) {
-        proxyprinttodiv("inparams executionparameters", executionparameters,11);
+        //--proxyprinttodiv("inparams executionparameters", executionparameters,11);
 
-        if (command.resulttable[currentexecuteid].tryset) 
-        {
+        //if (command.resulttable[currentexecuteid].tryset) 
+        //{
             var currentexecutecount = command.resulttable[currentexecuteid].tryset.length; // seq based on how many are existing
             for (var eachitem in executionparameters) 
             {
                 // if no type then make default type series
                 // I think this code can be taken out since executeion preferences wil have this default
-                //proxyprinttodiv("inparams executionparameters[eachitem]", executionparameters[eachitem],11);
-                if (!executionparameters[eachitem].command) {executionparameters[eachitem].command={};}
-                if (!executionparameters[eachitem].command.environment) {executionparameters[eachitem].command.environment={};}
-                if (!executionparameters[eachitem].command.environment.run) {executionparameters[eachitem].command.environment.run={};}
-                //if (!executionparameters[eachitem].command.environment.run.type) {executionparameters[eachitem].command.environment.run.type="series";}
-                if (!executionparameters[eachitem].command.executetype) {executionparameters[eachitem].command.executetype="series";}
+                ////--proxyprinttodiv("inparams executionparameters[eachitem]", executionparameters[eachitem],11);
+                // if (!executionparameters[eachitem].command) {executionparameters[eachitem].command={};}
+                // if (!executionparameters[eachitem].command.environment) {executionparameters[eachitem].command.environment={};}
+                // if (!executionparameters[eachitem].command.environment.run) {executionparameters[eachitem].command.environment.run={};}
+                // if (!executionparameters[eachitem].command.executetype) {executionparameters[eachitem].command.executetype="series";}
 
                 var eachexecute = {};
                 eachexecute.executeseq = currentexecutecount;
@@ -177,7 +182,7 @@
                 command.resulttable[currentexecuteid].tryset.push(eachexecute);
                 currentexecutecount++;
             }
-        }
+        //}
     }
 
     function createresulttable(command, currentexecuteid) {
@@ -194,46 +199,35 @@
         command.resulttable.overallerror=null;
     }
 
-    function fishoutexecutionpreferences(inparams, executionpreferences) {
-        // copy environment& processfn, executethis from in params into executionpreferences
-        // executionpreferences are merged at execution time and do not win
-        // common parameters are merged at setup time and DO win
+    // function fishoutexecutionpreferences(inparams, executionpreferences) {
+    //     // copy environment& processfn, executethis from in params into executionpreferences
+    //     // executionpreferences are merged at execution time and do not win
+    //     // common parameters are merged at setup time and DO win
 
-        executionpreferences.command={};
-        executionpreferences.command.environment={};
+    //     executionpreferences.command={};
+    //     executionpreferences.command.environment={};
 
-        if (!inparams.command) {inparams.command={};}
-        if (!inparams.command.environment) {inparams.command.environment={};}
-        if (!inparams.command.environment.run) {inparams.command.environment.run={};}
+    //     //--proxyprinttodiv("fishoutexecutionpreferences inparams before", inparams, 11, true);
 
-        // moved to here
-        if (!inparams.command.environment.run.executelevel) {inparams.command.environment.run.executelevel=0;}
-        if (!inparams.command.environment.run.executeid) {inparams.command.environment.run.executeid=createNewGuid();}
-        //if (!inparams.command.environment.run.type) {inparams.command.environment.run.type="series";}
-        //if (!inparams.command.environment.syncrule) {inparams.command.environment.syncrule=config.environment.syncrule}
+    //     ////--proxyprinttodiv("fishoutexecutionpreferences inparams after", inparams, 11, true);
 
-        proxyprinttodiv("fishoutexecutionpreferences inparams before", inparams, 11, true);
-        // make parameters better by dealing with command.environmnet
-        inparams = enhanceparameters(inparams);
-        //proxyprinttodiv("fishoutexecutionpreferences inparams after", inparams, 11, true);
+    //     extend(true, executionpreferences.command.environment, inparams.command.environment);
+    //     delete inparams.command.environment;
 
-        extend(true, executionpreferences.command.environment, inparams.command.environment);
-        delete inparams.command.environment;
+    //     // should executelevel be increased here?
+    //     // if (!executionpreferences.command.environment.run.executelevel) {executionpreferences.command.environment.run.executelevel=0;}
+    //     // if (!executionpreferences.command.environment.run.executeid) {executionpreferences.command.environment.run.executeid=createNewGuid();}
+    //     // if (!executionpreferences.command.environment.run.type) {executionpreferences.command.environment.run.type="series";}
+    //     // //if (!executionpreferences.command.environment.syncrule) {executionpreferences.command.environment.syncrule=config.environment.syncrule}
 
-        // should executelevel be increased here?
-        // if (!executionpreferences.command.environment.run.executelevel) {executionpreferences.command.environment.run.executelevel=0;}
-        // if (!executionpreferences.command.environment.run.executeid) {executionpreferences.command.environment.run.executeid=createNewGuid();}
-        // if (!executionpreferences.command.environment.run.type) {executionpreferences.command.environment.run.type="series";}
-        // //if (!executionpreferences.command.environment.syncrule) {executionpreferences.command.environment.syncrule=config.environment.syncrule}
+    //     if (inparams.executethis)
+    //     {
+    //         executionpreferences.executethis=inparams.executethis;
+    //         delete inparams.executethis;
+    //     }
 
-        if (inparams.executethis)
-        {
-            executionpreferences.executethis=inparams.executethis;
-            delete inparams.executethis;
-        }
-
-        //proxyprinttodiv("converttocommand - outside iteration - executionpreferences II", executionpreferences, 11);
-    }
+    //     ////--proxyprinttodiv("converttocommand - outside iteration - executionpreferences II", executionpreferences, 11);
+    // }
 
     // This function converts incoming execute parameters into a standard execute object (ie command.resulttable)
     // Execute executes a list items.  It supports string, array, command.xrun (object or array), command.resulttable
@@ -265,7 +259,7 @@
     //
     //
     function converttocommand(inparams, callback) {
-        proxyprinttodiv("executefishout inparams", inparams, 11);
+        //--proxyprinttodiv("executefishout inparams", inparams, 11);
 
         // if string them move it to command.xrun..not it is an object again
         if (isString(inparams)) 
@@ -275,7 +269,7 @@
                 strtemp.command.xrun = inparams;
             inparams = strtemp;
         }
-        //proxyprinttodiv("converttocommand after string inparams", inparams, 11);
+        ////--proxyprinttodiv("converttocommand after string inparams", inparams, 11);
 
         // if array then load array into parameter command.xrun...not it is an object again
         if (isArray(inparams)) 
@@ -284,12 +278,14 @@
                 arrtemp.command = {};
                 arrtemp.command.xrun = inparams.slice(0);
             inparams = arrtemp;
-            proxyprinttodiv("inparams after array to object conversion ", inparams, 11);
+            //--proxyprinttodiv("inparams after array to object conversion ", inparams, 11);
         } 
-        //proxyprinttodiv("converttocommand - inparams I", inparams, 11);
+        ////--proxyprinttodiv("converttocommand - inparams I", inparams, 11);
         // *** now it is converted to an object ***
 
-        //proxyprinttodiv("converttocommand - inparams II", inparams, 11);
+        ////--proxyprinttodiv("converttocommand - inparams II", inparams, 11);
+                // make parameters better by dealing with command.environment
+        inparams = enhanceparameters(inparams);
 
         // command.parameters may have additional parameters for this call...unbundle them
         // adopt command.parameters into inparams
@@ -302,6 +298,11 @@
             delete inparams.command.parameters; // delete after unbundle
         }
 
+        if (inparams.command.environment.run.executelevel===0 && !inparams.command.processfn)
+        {
+            inparams = window[inparams.command.environment.syncrule](inparams);
+        }
+        //proxyprinttodiv("converttocommand after syncrule inparams", inparams, 11);
         // inparams is now better, inparamscopy is copy of original
         var command={};
         var currentexecuteid;
@@ -318,14 +319,24 @@
             processresulttable(command); 
             //delete inparams.command.resulttable;
             //extend(true, executionpreferences, inparams);
-            //proxyprinttodiv("converttocommand - command--", command, 11);
+            ////--proxyprinttodiv("converttocommand - command--", command, 11);
         }
         else // command.resulttable overrides all else
         {        
+            executionpreferences.command={};
+            executionpreferences.command.environment={};
+            extend(true, executionpreferences.command.environment, inparams.command.environment);
+            delete inparams.command.environment;
+
+            if (inparams.executethis)
+            {
+                executionpreferences.executethis=inparams.executethis;
+                delete inparams.executethis;
+            }
             // split out executionpreferences that should be common
-            fishoutexecutionpreferences(inparams, executionpreferences);
-            //proxyprinttodiv("converttocommand - executionpreferences", executionpreferences, 11);
-            //proxyprinttodiv("converttocommand - inparams III", inparams, 11);
+            //fishoutexecutionpreferences(inparams, executionpreferences);
+            ////--proxyprinttodiv("converttocommand - executionpreferences", executionpreferences, 11);
+            ////--proxyprinttodiv("converttocommand - inparams III", inparams, 11);
 
             // create right array of executionparameters
             if (inparams && inparams.command && inparams.command.xrun) 
@@ -336,53 +347,54 @@
                     inparams.command.xrun={};
                     inparams.command.xrun.executethis=temp;
                 }
-                if (isObject(inparams.command.xrun)) 
+                if (isArray(inparams.command.xrun))
+                {   // create executionparameters and executionpreferences from what we have
+                    ////--proxyprinttodiv("converttocommand - outside iteration - inparams", inparams, 11, true);
+                    executionparameters=inparams.command.xrun.slice(0); // make a copy of array
+                    ////--proxyprinttodiv("converttocommand - outside iteration - executionparameters I", executionparameters, 11, true);
+                    delete inparams.command.xrun;
+                    extend(true, executionpreferences, inparams); // extra stuff in inparams goes to extraparams
+                    //delete inparams; -- does not matter since not needed any more
+                }
+                else // is object
+                //if (isObject(inparams.command.xrun)) 
                 {   // if object > convert to array...let next case take care of next process
                     // maybe combine at this level
-                    //proxyprinttodiv("converttocommand - inparams", inparams, 11);
+                    ////--proxyprinttodiv("converttocommand - inparams", inparams, 11);
                     executionparameters={};
                     extend(true, executionparameters, inparams.command.xrun);
                     delete inparams.command.xrun;
                     extend(true, executionparameters, inparams);
-                    //proxyprinttodiv("converttocommand - executionparameters", executionparameters, 11);
+                    ////--proxyprinttodiv("converttocommand - executionparameters", executionparameters, 11);
 
                     var tempArray=[];
                     tempArray.push(executionparameters);
                     executionparameters=tempArray;
                 }
-                if (isArray(inparams.command.xrun))
-                {   // create executionparameters and executionpreferences from what we have
-                    //proxyprinttodiv("converttocommand - outside iteration - inparams", inparams, 11, true);
-                    executionparameters=inparams.command.xrun.slice(0); // make a copy of array
-                    //proxyprinttodiv("converttocommand - outside iteration - executionparameters I", executionparameters, 11, true);
-                    delete inparams.command.xrun;
-                    extend(true, executionpreferences, inparams); // extra stuff in inparams goes to extraparams
-                    //delete inparams; -- does not matter since not needed any more
-                }
-
             } 
             else // if not xrun
             {   
                 // if object all along then those are the execution parameters
+                // put them in array so we can create table
                 executionparameters=inparams;
                 var tempArray=[];
                 tempArray.push(executionparameters);
                 executionparameters=tempArray;
             }
 
-            //proxyprinttodiv("converttocommand - outside iteration - executionparameters II", executionparameters, 11, true);
+            ////--proxyprinttodiv("converttocommand - outside iteration - executionparameters II", executionparameters, 11, true);
             currentexecuteid = executionpreferences.command.environment.run.executeid;
             if (!command.resulttable) {createresulttable(command, currentexecuteid);}
             // add executionpreferences & executionparameters to resulttable             
             addexecutionparameters(command, executionparameters, currentexecuteid);
             // executionpreferences & command should now be object, executionparameters should be array
-            //proxyprinttodiv("converttocommand - outside iteration - executionparameters III", executionparameters, 11, true);
+            ////--proxyprinttodiv("converttocommand - outside iteration - executionparameters III", executionparameters, 11, true);
         } // if not resulttable
 
         extend(true, command.resulttable.executionpreferences, executionpreferences);  
 
-        proxyprinttodiv("converttocommand - outside iteration - command III", command,11,true );
-        //proxyprinttodiv("converttocommand - outside iteration - executionpreferences III ", executionpreferences, 11, true);
+        //--proxyprinttodiv("converttocommand - outside iteration - command III", command,11,true );
+        ////--proxyprinttodiv("converttocommand - outside iteration - executionpreferences III ", executionpreferences, 11, true);
 
         return command
     }
@@ -407,11 +419,11 @@
         var trycount = 0;
         var incomingparams = {};
 
-        extend(true, incomingparams, input);              // make copy of input 
-        //proxyprinttodiv('before -- remove -- incomingparams', incomingparams, 11, true, true);
+        //extend(true, incomingparams, input);              // make copy of input 
+        ////--proxyprinttodiv('before -- remove -- incomingparams', incomingparams, 11, true, true);
         //incomingparams=ConvertFromDOTdri(incomingparams); // convert from dot notation -- not necessary if dot notation not sent in
-        incomingparams=converttojson(incomingparams); 
-        proxyprinttodiv('>>>>>>>>>>>>>>>>>>>>>>>>execute begin', incomingparams, 11, true, true);
+        incomingparams=converttojson(input); // converts to object and makes copy
+        proxyprinttodiv('>>>>>>>>>>>>>>>>>>>>>>>>execute begin', incomingparams, 11, true);
 
         var command = converttocommand(incomingparams);    // call main conversion
 
@@ -443,15 +455,15 @@
             delete executionpreferences.command;
         }
 
-        //proxyprinttodiv('execute before try series incomingparams ',incomingparams, 11);
-        //proxyprinttodiv('execute before try series command ',command, 11);
-        //proxyprinttodiv('execute before try series executionpreferences', executionpreferences, 11, true);
-        //proxyprinttodiv('execute before try series tryset', tryset, 11, true);
+        ////--proxyprinttodiv('execute before try series incomingparams ',incomingparams, 11);
+        ////--proxyprinttodiv('execute before try series command ',command, 11);
+        ////--proxyprinttodiv('execute before try series executionpreferences', executionpreferences, 11, true);
+        ////--proxyprinttodiv('execute before try series tryset', tryset, 11, true);
         saveglobal('debuglevel', executionpreferences.command.environment.run.executelevel);
 
         // increase executelevel...this way any nested executes will be at higher level
         executionpreferences.command.environment.run.executelevel++; 
-        //proxyprinttodiv('execute executionpreferences.command.environment.run.executelevel', executionpreferences.command.environment.run.executelevel, 11);
+        ////--proxyprinttodiv('execute executionpreferences.command.environment.run.executelevel', executionpreferences.command.environment.run.executelevel, 11);
 
         if (type==="waterfall" || type==="runfirstonewaterfall") // first time around create previous results
         {
@@ -460,7 +472,7 @@
             //createoutgoingparam(previousresults, executionpreferences, tryset[0].outgoingparam);
         }
 
-        //proxyprinttodiv('execute level type ', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
+        ////--proxyprinttodiv('execute level type ', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
 
         if (executionpreferences.command.environment.run.executelevel > 100 || color > 120) {
             callback({"errorname":"level too high"}, null);
@@ -482,8 +494,8 @@
                         //var indent  = Number(getglobal('debugindent')); indent++; saveglobal('debugindent', indent);
                         if (skipexecute) 
                         {
-                            proxyprinttodiv('execute level type skip', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
-                            proxyprinttodiv("** skipping turn **", currenttry, 11);
+                            //--proxyprinttodiv('execute level type skip', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
+                            //--proxyprinttodiv("** skipping turn **", currenttry, 11);
                             cbMap(null);
                         } 
                         else 
@@ -492,11 +504,11 @@
                             var currentseq = currenttry.executeseq;
                             var outgoingparam = {};
 
-                            //proxyprinttodiv("before execute - currenttry ", currenttry, 11);
-                            //proxyprinttodiv("before execute currentexecute", currentexecute, 11);
-                            //proxyprinttodiv("before execute currentseq", currentseq, 11);
-                            //proxyprinttodiv("skipexecute is", skipexecute, 11);
-                            proxyprinttodiv("before execute outgoingparam", outgoingparam, 11);
+                            ////--proxyprinttodiv("before execute - currenttry ", currenttry, 11);
+                            ////--proxyprinttodiv("before execute currentexecute", currentexecute, 11);
+                            ////--proxyprinttodiv("before execute currentseq", currentseq, 11);
+                            ////--proxyprinttodiv("skipexecute is", skipexecute, 11);
+                            //--proxyprinttodiv("before execute outgoingparam", outgoingparam, 11);
 
                             if (isArray(currentexecute)) 
                             {
@@ -507,23 +519,24 @@
                                 currentexecute=temp;
                             } 
 
-                            //proxyprinttodiv('execute executionpreferences.command.environment.run.executelevel I', executionpreferences.command.environment.run.executelevel, 11);
+                            ////--proxyprinttodiv('execute executionpreferences.command.environment.run.executelevel I', executionpreferences.command.environment.run.executelevel, 11);
 
                             extend(true, outgoingparam, previousresults, executionpreferences, currentexecute);
 
                             // use the new level in outgoing params
                             outgoingparam.command.environment.run.executelevel=executionpreferences.command.environment.run.executelevel;
 
-                            //proxyprinttodiv('execute executionpreferences.command.environment.run.executelevel II', executionpreferences.command.environment.run.executelevel, 11);
-                            //proxyprinttodiv("before execute outgoingparam", outgoingparam, 11);
-                            //proxyprinttodiv("before execute executionpreferences", executionpreferences, 11);
-                            proxyprinttodiv("execute step 00 outgoingparam", outgoingparam, 11, true);
-                            proxyprinttodiv('execute step 00 type', type, 11);
+                            ////--proxyprinttodiv('execute executionpreferences.command.environment.run.executelevel II', executionpreferences.command.environment.run.executelevel, 11);
+                            ////--proxyprinttodiv("before execute outgoingparam", outgoingparam, 11);
+                            ////--proxyprinttodiv("before execute executionpreferences", executionpreferences, 11);
+                            //--proxyprinttodiv("execute step 00 outgoingparam", outgoingparam, 11, true);
+                            //--proxyprinttodiv('execute step 00 type', type, 11);
                             // step1 massage parameters based on command.processparameterfn, send results via outgoingparam
                             // step2 execute based on command.processfn, send results and error in from stestep02res/err
                             // step3 log the results based on type
                             var fromstep02res={};
                             var fromstep02err=null;
+                            var tempobj={};
 
                             async.series(
                             [   
@@ -543,15 +556,15 @@
                                         }
                                         else
                                         {   // if level 1 (really level 0 everywhere else) (and processparameterfn was not sent in) then get defaults
-                                            if (level === 0)
-                                            {   // level 0 look at syncrule (local-server)
-                                                pp = window[outgoingparam.command.environment.syncrule];
-                                                if (!pp) { pp = execute_nothing; }
-                                            }
-                                            else
-                                            {   // other levels do execute_function, execute_parameter, execute_get_wid
+                                            // if (level === 0)
+                                            // {   // level 0 look at syncrule (local-server)
+                                            //     pp = window[outgoingparam.command.environment.syncrule];
+                                            //     if (!pp) { pp = execute_nothing; }
+                                            // }
+                                            // else
+                                            //{   // other levels do execute_function, execute_parameter, execute_get_wid
                                                 pp = create_what_to_do_list;
-                                            }
+                                            //}
                                         }
 
                                         // go an "massage" the outgoing parameters to get better outgoing parameters
@@ -573,6 +586,7 @@
                                 },
                                 function step02(cbstep2) 
                                 {   // normally the execute function step
+                                    extend(true, tempobj, outgoingparam);
                                     if (fromstep02err)
                                     {
                                         cbstep2(null);
@@ -580,21 +594,21 @@
                                     else
                                     {
                                         trycount++; // increase trycount
-                                        //proxyprinttodiv('execute level type 02', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
-                                        proxyprinttodiv("execute step02 outgoingparam", outgoingparam, 11, true);
+                                        ////--proxyprinttodiv('execute level type 02', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
+                                        //--proxyprinttodiv("execute step02 outgoingparam", outgoingparam, 11, true);
                                         var processfn;
                                         
                                         if (outgoingparam && outgoingparam.command && outgoingparam.command.processfn)
                                         {
-                                            proxyprinttodiv("after processfn", outgoingparam.command.processfn, 11);
+                                            //--proxyprinttodiv("after processfn", outgoingparam.command.processfn, 11);
                                             processfn=window[outgoingparam.command.processfn];
                                             delete outgoingparam.command.processfn;
                                         }
-                                        if (processfn) proxyprinttodiv("after processfn II", processfn.name, 11);
+                                        //if (processfn) proxyprinttodiv("after processfn II", processfn.name, 11);
 
                                         if (processfn) 
                                         {
-                                            //proxyprinttodiv("execute calling processfn",processfn.name , 11);
+                                            ////--proxyprinttodiv("execute calling processfn",processfn.name , 11);
                                             processfn(outgoingparam, function (err, res) 
                                                 {
                                                     fromstep02res=res;
@@ -605,7 +619,7 @@
                                         } 
                                         else 
                                         {   // not needed defaulted in create list
-                                            //proxyprinttodiv("execute calling execute execute_function","as default" , 11);
+                                            //proxyprinttodiv("execute calling execute execute_function outgoingparam",outgoingparam , 11);
                                             execute_function(outgoingparam, function (err, res) 
                                                 {
                                                     fromstep02res=res;
@@ -618,38 +632,40 @@
                                 }, 
                                 function step03(cbstep3)
                                 {   // process results
-                                    //proxyprinttodiv('execute level type 03', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
-                                    proxyprinttodiv("execute step03 end outgoingparam", outgoingparam, 11, true);
-                                    proxyprinttodiv('execute step03 end results', fromstep02res, 11);
-                                    proxyprinttodiv('execute step03 end error', fromstep02err, 11);
+                                    ////--proxyprinttodiv('execute level type 03', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
+                                    //proxyprinttodiv("execute step03 end outgoingparam", outgoingparam, 11, true);
+                                    //proxyprinttodiv('execute step03 end results', fromstep02res, 11);
+                                    //proxyprinttodiv('execute step03 end error', fromstep02err, 11);
 
-                                    if (outgoingparam
-                                        && outgoingparam.command
-                                        && outgoingparam.command.environment
-                                        && outgoingparam.command.environment.executelevel)
-                                    {
-                                        // do not log execute level for future use... not relevant
-                                        delete outgoingparam.command.environment.executelevel;
-                                    }
+                                    // if (outgoingparam
+                                    //     && outgoingparam.command
+                                    //     && outgoingparam.command.environment
+                                    //     && outgoingparam.command.environment.executelevel)
+                                    // {
+                                    //     // do not log execute level for future use... not relevant
+                                    //     delete outgoingparam.command.environment.executelevel;
+                                    // }
 
                                     var executeresult={};
                                     executeresult.outgoingparam=outgoingparam;
                                     executeresult.err=fromstep02err;
                                     executeresult.res=fromstep02res;
                                     executeresult.executeseq = currentseq;
-                                    // we could store current execute instead of outgoing
+                                    proxyprinttodiv('execute executeresult', executeresult, 11);
+                                    proxyprinttodiv('execute tempobj', tempobj, 11);
+                                    
                                    
                                     // update results to the right detail record based on executeseq
-                                    if (!fromstep02err) 
-                                    {
-                                        for (var eachdetail in command.resulttable[currentexecuteid].detail)
+                                    //if (!fromstep02err) 
+                                    //{
+                                    for (var eachdetail in command.resulttable[currentexecuteid].detail)
+                                        {
+                                            if (command.resulttable[currentexecuteid].detail[eachdetail].executeseq===currentseq)
                                             {
-                                                if (command.resulttable[currentexecuteid].detail[eachdetail].executeseq===currentseq)
-                                                {
-                                                    command.resulttable[currentexecuteid].detail[eachdetail]=executeresult;
-                                                }
+                                                command.resulttable[currentexecuteid].detail[eachdetail]=executeresult;
                                             }
-                                    }
+                                        }
+                                    //}
 
                                     // if waterfall and last one then only save last result
                                     if (((type === "waterfall") || (type === "runfirstonewaterfall")) && trylength===trycount)
@@ -726,10 +742,10 @@
                                     //     }
                                     //     else // if results were null then send incoming parameters as input
                                     //     {
-                                    //         proxyprinttodiv('execute step03 previousresults before change', previousresults, 11, true);
-                                    //         proxyprinttodiv('execute step03 currentexecute', currentexecute, 11, true);
+                                    //         //--proxyprinttodiv('execute step03 previousresults before change', previousresults, 11, true);
+                                    //         //--proxyprinttodiv('execute step03 currentexecute', currentexecute, 11, true);
                                     //         previousresults = outgoingparam;
-                                    //         proxyprinttodiv('execute step03 previousresults after change', previousresults, 11, true);
+                                    //         //--proxyprinttodiv('execute step03 previousresults after change', previousresults, 11, true);
                                     //     }
                                     // }
 
@@ -740,28 +756,29 @@
                                     {
                                         skipexecute=false;
                                     }  
-                                    //proxyprinttodiv('execute level type II', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
+                                    ////--proxyprinttodiv('execute level type II', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
 
-                                proxyprinttodiv('execute step03 end command ', command, 11, true);
-                                proxyprinttodiv('execute step03 end overallerror ', overallerror, 11);
-                                proxyprinttodiv('execute steo03 end arrayresult ', arrayresult, 11);
-                                proxyprinttodiv('execute level type --', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
-                                proxyprinttodiv('execute steo03 -------------------------------------------', 
-                                                '----------------------------------------------------------', 11);
+                                //proxyprinttodiv('execute step03 end command ', command, 11, true);
+                                //proxyprinttodiv('execute step03 end overallerror ', overallerror, 11);
+                                //proxyprinttodiv('execute steo03 end arrayresult ', arrayresult, 11);
+                                //--proxyprinttodiv('execute level type --', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
+                                //--proxyprinttodiv('execute steo03 -------------------------------------------', 
+                                //                '----------------------------------------------------------', 11);
+
                                     cbstep3(null);
                                 } 
                             ], 
                      
                             function (err, res) 
                             {
-                                //proxyprinttodiv('execute level type III ', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
-                                proxyprinttodiv("execute step04 end outgoingparam", outgoingparam, 11, true);
-                                proxyprinttodiv('execute step04 end results', fromstep02res, 11);
-                                proxyprinttodiv('execute step04 end error', fromstep02err, 11);
-                                proxyprinttodiv('execute step04 end overallerror ', overallerror, 11);
-                                proxyprinttodiv('execute steo04 end arrayresult ', arrayresult, 11);
-                                proxyprinttodiv('execute level type --', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
-                                proxyprinttodiv('execute steo04 -------------------------------------------',                '----------------------------------------------------------', 11);
+                                ////--proxyprinttodiv('execute level type III ', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
+                                //proxyprinttodiv("execute step04 end outgoingparam", outgoingparam, 11, true);
+                                //proxyprinttodiv('execute step04 end results', fromstep02res, 11);
+                                //proxyprinttodiv('execute step04 end error', fromstep02err, 11);
+                                //proxyprinttodiv('execute step04 end overallerror ', overallerror, 11);
+                                //--proxyprinttodiv('execute steo04 end arrayresult ', arrayresult, 11);
+                                //--proxyprinttodiv('execute level type --', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
+                                //--proxyprinttodiv('execute steo04 -------------------------------------------',                '----------------------------------------------------------', 11);
                                 cbMap(null);
                             }); // finish asych 01,02,03
                         } // if skipexecute
@@ -769,15 +786,15 @@
                 },  // mapseries fn
 
                 function (err, res) {
-                    proxyprinttodiv('execute before try series executionpreferences step06', executionpreferences, 11, true);
-                    proxyprinttodiv('execute before try series tryset step06', tryset, 11, true);
-                    proxyprinttodiv('execute step05 END arrayresult step06', arrayresult, 11);
-                    proxyprinttodiv('execute step6 level type --', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
+                    //proxyprinttodiv('execute before try series executionpreferences step06', executionpreferences, 11, true);
+                    //proxyprinttodiv('execute before try series tryset step06', tryset, 11, true);
+                    //--proxyprinttodiv('execute step05 END arrayresult step06', arrayresult, 11);
+                    //--proxyprinttodiv('execute step6 level type --', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
 
                     var errorsummary=null;
                     var resultsummary;    
          
-                    proxyprinttodiv('execute step05 SUMMARY command ', command, 11, true);
+                    //--proxyprinttodiv('execute step05 SUMMARY command ', command, 11, true);
 
                     // if [] then resultsummary={} which means we return [{}]
                     // if [{a:b}] resultsummary={a:b} which means return [{a:b}]
@@ -797,7 +814,7 @@
                     if (overallerror && Object.keys(overallerror).length > 0) 
                     {
                         errorsummary=overallerror;
-                        proxyprinttodiv('execute type', type, 11);
+                        //--proxyprinttodiv('execute type', type, 11);
                         if (type ==="group")
                         {   // if group then results of interest to previous level
                             // save error and results for this executeid and overall
@@ -819,7 +836,7 @@
                             resultsummary.command.resulttable.executionpreferences={};
                             resultsummary.command.resulttable.executionpreferences.command={};
                             resultsummary.command.resulttable.executionpreferences.command.environment=environment;
-                            proxyprinttodiv('execute resultsummary', resultsummary, 11);
+                            //--proxyprinttodiv('execute resultsummary', resultsummary, 11);
                         }
                         else // if not group then the previous level can do nothing with this detail
                         {   
@@ -827,6 +844,7 @@
                         }
                     }
 
+                    proxyprinttodiv('execute END     command ', command, 11, true);
                     proxyprinttodiv('execute SUMMARY errorsummary ', errorsummary, 11);
                     proxyprinttodiv('execute SUMMARY resultsummary ', resultsummary, 11, true);
                     var color  = Number(getglobal('debugcolor')); color --; saveglobal('debugcolor', color);
@@ -846,8 +864,8 @@
 
     // main execute function
     window.execute_function = function execute_function(incomingparams, callback) {
-        if (!incomingparams.command) { incomingparams.command = {}; }
-        proxyprinttodiv('>>>> execute incomingparams ', incomingparams, 11, true);
+        //if (!incomingparams.command) { incomingparams.command = {}; }
+        //--proxyprinttodiv('>>>> execute incomingparams ', incomingparams, 11, true);
         // see if we need to recurse ... i.e. xrun or resulttable
         if (incomingparams.command.xrun || 
                 (
@@ -865,12 +883,12 @@
             var targetfn = window[incomingparams.executethis];
             if (!targetfn) 
             {   // if does not exist then error
-                callback({"errorname":"fnnotfound"}, null);
+                callback(null, incomingparams);
             }
             else // continue with normal execution
             {
                 incomingparams=converttojson(incomingparams); 
-                proxyprinttodiv('>>>> execute incomingparams ', incomingparams, 11);
+                //--proxyprinttodiv('>>>> execute incomingparams ', incomingparams, 11);
                 var filter_data = getcommand(incomingparams, {
                         "command": {
                             "convertmethod": "toobject",
@@ -897,15 +915,15 @@
                     true);
 
                 // keep command.environment/command.run.executeid as part of parameter
-                //proxyprinttodiv('>>>> execute filter_data', filter_data, 11, true);
+                ////--proxyprinttodiv('>>>> execute filter_data', filter_data, 11, true);
                 var command = filter_data.filteredobject.command;
                 var inboundparams = filter_data.output;
                 var objkey=null;
-                proxyprinttodiv('>>>> execute command', command, 11, true);
-                proxyprinttodiv('>>>> execute inboundparams', inboundparams, 14, true);
+                //--proxyprinttodiv('>>>> execute command', command, 11, true);
+                //--proxyprinttodiv('>>>> execute inboundparams', inboundparams, 14, true);
 
                 if (!command.skipcache || command.updatecache) {objkey = hashobj(inboundparams, command)};
-                proxyprinttodiv('execute returned objkey', objkey, 11, true);
+                //--proxyprinttodiv('execute returned objkey', objkey, 11, true);
                 delete inboundparams.executethis; // delete parameter executethis...we know the targetfn
 
                 checkcache(objkey, function (err, res) {
@@ -917,10 +935,10 @@
                     {
                         targetfn(inboundparams, function (err, resultparameters) 
                         { 
-                            proxyprinttodiv("execute after do this inboundparams", inboundparams, 11);
-                            proxyprinttodiv("execute after do this resultparameters", resultparameters, 11);
-                            proxyprinttodiv("execute after do this err", err, 11);
-                            proxyprinttodiv('execute after do this command', command, 11, true);
+                            //--proxyprinttodiv("execute after do this inboundparams", inboundparams, 11);
+                            //--proxyprinttodiv("execute after do this resultparameters", resultparameters, 11);
+                            //--proxyprinttodiv("execute after do this err", err, 11);
+                            //--proxyprinttodiv('execute after do this command', command, 11, true);
                             if (!resultparameters) {resultparameters={};}
                             // should we remove the 3 statements below?
 //                            if (!resultparameters.command) {resultparameters.command={};}
@@ -928,15 +946,15 @@
 //                            if (!resultparameters.command.environment.run) {resultparameters.command.environment.run={};}
 //                            resultparameters.command.environment.run.executeid = incomingparams.command.environment.run.executeid;
                             if (command.notfoundok && err && err.errorname==="notfound") {err=null; resultparameters={};}
-                            proxyprinttodiv("execute after do this resultparameters after", resultparameters, 11);
+                            //--proxyprinttodiv("execute after do this resultparameters after", resultparameters, 11);
                             if (err && Object.keys(err).length > 0) 
                             {
                                 callback(err, resultparameters);
                             } 
                             else 
                             {
-                                //proxyprinttodiv("end resultparameters II", resultparameters, 11);
-                                //proxyprinttodiv("execute - command **** I", resultparameters, 11);
+                                ////--proxyprinttodiv("end resultparameters II", resultparameters, 11);
+                                ////--proxyprinttodiv("execute - command **** I", resultparameters, 11);
                                 if (resultparameters && resultparameters.command) 
                                 {
                                     if (resultparameters.command.environment) 
@@ -949,18 +967,18 @@
                                     }
                                 }
 
-                                //proxyprinttodiv("execute - command.resultparameters ****", command.resultparameters, 11);
+                                ////--proxyprinttodiv("execute - command.resultparameters ****", command.resultparameters, 11);
                                 if (command.resultparameters) 
                                 {
                                     if (!command.adopt) {command.adopt="default";}
                                     var copyOfInheritData = {};
                                     extend(true, copyOfInheritData, command.currentresult);
 
-                                    proxyprinttodiv("execute - command ****", command, 11);
-                                    proxyprinttodiv("execute - command ****", command.resultparameters, 11);
-                                    proxyprinttodiv("execute - command.adopt ****", command.adopt, 11);
-                                    proxyprinttodiv("execute - command.overallresult ****", resultparameters, 11);
-                                    proxyprinttodiv("execute - inboundparams ****", inboundparams, 11);
+                                    //--proxyprinttodiv("execute - command ****", command, 11);
+                                    //--proxyprinttodiv("execute - command ****", command.resultparameters, 11);
+                                    //--proxyprinttodiv("execute - command.adopt ****", command.adopt, 11);
+                                    //--proxyprinttodiv("execute - command.overallresult ****", resultparameters, 11);
+                                    //--proxyprinttodiv("execute - inboundparams ****", inboundparams, 11);
 
                                     //delete incomingparams.command; 
                                     //we might want to save command.environment and then readd
@@ -1005,7 +1023,7 @@
                                     delete resultparameters.command;
                                 }
 
-                                proxyprinttodiv("execute - command **** II", resultparameters, 11);
+                                //--proxyprinttodiv("execute - command **** II", resultparameters, 11);
 
                                 if (!command.updatecache) 
                                 {
@@ -1034,7 +1052,7 @@
                                             "databasetable": config.configuration.databasetable
                                         }
                                     };
-                                    proxyprinttodiv("update cache **************", recorddef, 11);
+                                    //--proxyprinttodiv("update cache **************", recorddef, 11);
                                     updatewid(recorddef, function (err, res) {
                                         callback(null, resultparameters);
                                     });
@@ -1067,7 +1085,7 @@
     // check directly....notfound ok false
     function checkcache(objkey, callback) {
         if (objkey) {
-            proxyprinttodiv("checkcache objkey **************", objkey, 11);
+            //--proxyprinttodiv("checkcache objkey **************", objkey, 11);
             var executeobject = {
                 "wid": objkey,
                 "command": {
@@ -1081,7 +1099,7 @@
                 }
             };
             executeobject.executethis = "getwid";
-            proxyprinttodiv("checkcache executeobject  *********", executeobject, 11);
+            //--proxyprinttodiv("checkcache executeobject  *********", executeobject, 11);
 
             execute(executeobject, function (err, res) {
                 if (err) 
@@ -1091,16 +1109,16 @@
                 else 
                 {
                     if (!res || (res && Object.keys(res).length === 0)) {res=null;} //else {res = res[0];}
-                    proxyprinttodiv("checkcache getwid res", res, 11);
-                    if (res) proxyprinttodiv("checkcache getwid expirationdate", res.metadata.systemdto.expirationdate, 11);
-                    if (res) proxyprinttodiv("checkcache check ", new Date(res.metadata.systemdto.expirationdate) > new Date(), 11)
+                    //--proxyprinttodiv("checkcache getwid res", res, 11);
+                    //if (res) proxyprinttodiv("checkcache getwid expirationdate", res.metadata.systemdto.expirationdate, 11);
+                    //if (res) proxyprinttodiv("checkcache check ", new Date(res.metadata.systemdto.expirationdate) > new Date(), 11)
                     if (res && res.metadata && res.metadata.systemdto && 
                         res.metadata.systemdto.expirationdate && new Date(res.metadata.systemdto.expirationdate) > new Date()) {
-                        proxyprinttodiv("checkcache return from cache", res, 11);
+                        //proxyprinttodiv("checkcache return from cache", res, 11);
                         callback(null, res.container);
                     } else {
-                        proxyprinttodiv("checkcache date ", new Date(), 11);
-                        proxyprinttodiv("checkcache return from cache expired", null, 11);
+                        //proxyprinttodiv("checkcache date ", new Date(), 11);
+                        //proxyprinttodiv("checkcache return from cache expired", null, 11);
                         callback(null, null);
                     }
                 }
@@ -1115,8 +1133,8 @@
     // they are set to "runfirstone", it will not go to server unless first call fails
     // within each call it sets up to first call process parameters "create_what_to_do_list"
     //
-    window.sync_local_server = function sync_local_server(inparams, callback) {
-        proxyprinttodiv("sync_local_server inparams", inparams, 11);
+    window.sync_local_server = function sync_local_server(inparams) {
+        //--proxyprinttodiv("sync_local_server inparams", inparams, 11);
         // create outside wrapper--copy command, set "runfirstone"
         var outparams={};
         outparams.command={};
@@ -1141,12 +1159,13 @@
         secondcopy.command.processfn = "execute_server";
         outparams.command.xrun.push(secondcopy);
             
-        proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
-        callback(null, outparams);
+        //--proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
+        return outparams;
+        //callback(null, outparams);
     };
 
-    window.sync_local_cache = function sync_local_server(inparams, callback) {
-        proxyprinttodiv("sync_local_server inparams", inparams, 11);
+    window.sync_local_cache = function sync_local_server(inparams) {
+        //--proxyprinttodiv("sync_local_server inparams", inparams, 11);
         // create outside wrapper--copy command, set "runfirstone"
         var outparams={};
         outparams.command={};
@@ -1171,34 +1190,37 @@
         secondcopy.command.processfn = "execute_server";
         outparams.command.xrun.push(secondcopy);
             
-        proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
-        callback(null, outparams);
+        //--proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
+        return outparams;
+        //callback(null, outparams);
     };
 
-    window.sync_server = function sync_server(inparams, callback) {
-        proxyprinttodiv("sync_local_server inparams", inparams, 11);
+    window.sync_server = function sync_server(inparams) {
+        //--proxyprinttodiv("sync_local_server inparams", inparams, 11);
         var outparams = {};
         extend(true, outparams, inparams);
         outparams.command.processfn = "execute_server";
-        proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
-        callback(null, outparams);
+        //--proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
+        return outparams;
+        //callback(null, outparams);
     };
 
-    window.sync_local = function sync_local(inparams, callback) {
-        proxyprinttodiv("sync_local_server inparams", inparams, 11);
+    window.sync_local = function sync_local(inparams) {
+        //--proxyprinttodiv("sync_local_server inparams", inparams, 11);
         var outparams = {};
         extend(true, outparams, inparams);
         outparams.command.processfn = "execute_function";
 //        outparams.command.processparameterfn = "execute_nothing";
-        proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
-        callback(null, outparams);
+        //--proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
+        return outparams;
+        //callback(null, outparams);
     };
 
     // this function expands inparams to be three calls, to execute_function, execute_parameter, execute_get_wid
     // it sets these to "runfirstone" 
     // it further splits executegetwid into getwic and execute_function, its set these to "waterfall"
     window.create_what_to_do_list =  function create_what_to_do_list(inparams, callback) {
-        proxyprinttodiv("create_what_to_do_list inparams", inparams, 11);
+        //--proxyprinttodiv("create_what_to_do_list inparams", inparams, 11);
         // create outside wrapper--copy command, set "runfirstone"
 
         if (window[inparams.executethis]) 
@@ -1236,7 +1258,7 @@
             thirdcopy.command.processfn = "execute_function";
             outparams.command.xrun.push(thirdcopy);
 
-            proxyprinttodiv("create_what_to_do_list outparams", outparams, 11, true);
+            //--proxyprinttodiv("create_what_to_do_list outparams", outparams, 11, true);
             callback(null, outparams);
         }
     };
@@ -1255,7 +1277,7 @@
             params.executethis = params[params.executethis];
         //}
         params.command.processfn="execute_function";
-        proxyprinttodiv('execute end of execute_parameter', params, 11);
+        //--proxyprinttodiv('execute end of execute_parameter', params, 11);
         callback(null, params)
         }
     };
@@ -1266,7 +1288,7 @@
     window.execute_get_wid =  function execute_get_wid(inparams, cb) { 
         if (!inparams.executethis) 
         {
-            proxyprinttodiv('execute end of execute_get_wid I', inparams, 11);
+            //--proxyprinttodiv('execute end of execute_get_wid I', inparams, 11);
             execute_createerror(inparams, cb);
         } 
         else 
@@ -1301,13 +1323,13 @@
 
     // function for where there is nothing to do
     window.execute_nothing =  function execute_nothing(params, callback) {
-        proxyprinttodiv('execute end of execute_nothing', params, 11);
+        //--proxyprinttodiv('execute end of execute_nothing', params, 11);
         callback(null, params);
     };
  
      // when whattodo fn, parm, executeget wid is unable to do something in that try
     window.execute_createerror =  function execute_createerror(params, callback) {
-        proxyprinttodiv('execute end of execute_nothing', params, 11);
+        //--proxyprinttodiv('execute end of execute_nothing', params, 11);
 //        callback({"errorname":"fnnotfound"}, params);
         callback({"errorname":"fnnotfound"}, null);
     };

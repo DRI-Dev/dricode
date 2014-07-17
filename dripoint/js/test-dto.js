@@ -5256,7 +5256,7 @@ exports.ettestag1 = widtests.ettestag1 = ettestag1 = function ettestag1(params, 
                 "wid": "sounddto",
                 "metadata": {
                     "method": "sounddto",
-                    "expirationdate":{"exception":["created","changed","unchanged","updated"]}
+                    "expirationdate":{"exception":["created","changed","unchanged","updated","deleted"]}
                 },
                 "note": "string"
             });
@@ -5539,32 +5539,32 @@ exports.ettestag3 = widtests.ettestag3 = ettestag3 = function ettestag3(params, 
             "title": "Highway to Hell",
             "sounddto.wid": "ag3aflat",
             "sounddto.note": "A flat"
-        }, {
-            "executethis": "addwidmaster",
-            "wid": "song1",
-            "metadata.method": "songdto",
-            "title": "Highway to Hell",
-            "sounddto.wid": "ag3bsharp",
-            "sounddto.note": "B sharp"
-        }, {
-            "executethis": "addwidmaster",
-            "wid": "song1",
-            "metadata.method": "songdto",
-            "title": "Highway to Hell",
-            "sounddto.wid": "ag3cflat",
-            "sounddto.note": "C flat"
-        }, {
-            "executethis": "getwidmaster",
-            "wid": "song1",
-            "command": {
-                "getwidmaster": {
-                    "execute": "ConvertToDOTdri"
-                }
-            }
+        // }, {
+        //     "executethis": "addwidmaster",
+        //     "wid": "song1",
+        //     "metadata.method": "songdto",
+        //     "title": "Highway to Hell",
+        //     "sounddto.wid": "ag3bsharp",
+        //     "sounddto.note": "B sharp"
+        // }, {
+        //     "executethis": "addwidmaster",
+        //     "wid": "song1",
+        //     "metadata.method": "songdto",
+        //     "title": "Highway to Hell",
+        //     "sounddto.wid": "ag3cflat",
+        //     "sounddto.note": "C flat"
+        // }, {
+        //     "executethis": "getwidmaster",
+        //     "wid": "song1",
+        //     "command": {
+        //         "getwidmaster": {
+        //             "execute": "ConvertToDOTdri"
+        //         }
+        //     }
         }],
         function (err, res1) {
             proxyprinttodiv("Ag3  result ", res1, 99);
-            var res = res1[6];
+            var res = res1;
 
             proxyprinttodiv('Function ag1 expected res ', {
                 "title": "Highway to Hell",
