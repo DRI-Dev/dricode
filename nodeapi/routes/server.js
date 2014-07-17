@@ -74,9 +74,10 @@ function runExecuteThis(parameters, resp) {
             if (parameters.command.xrun[index].command) {
                 extend(true, parameters.command.xrun[index].command, config.configuration.d.default);
 
-                if (parameters.command.xrun[index].command.environment && parameters.command.environment.default) {
+                if (parameters.command.xrun[index].command.environment
+                    && parameters.command.xrun[index].command.environment.default) {
                     // overwrite current environment defaults with server defaults
-                    parameters.command.environment.default = config.configuration.d.default;
+                    parameters.command.xrun[index].command.environment.default = config.configuration.d.default;
                 }
             }
         }
