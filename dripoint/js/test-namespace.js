@@ -18,7 +18,6 @@ function nstest_namespaceadd1(executeobject, callback)
 							"wid": "nswid1",
 							"command.namespace.creator": "cody",
 							"command.namespaceflag.creator": "true",
-							"metadata.namespace.a":"b",
 							"color": "red"
 							}];
 							
@@ -133,7 +132,7 @@ function nstest_namespacequery1(executeobject, callback)
 											}
 							}
 		var queryobj = [
-					{"executethis":"querywidmaster",
+					{"executethis":"querywid",
 							"command": {
 								"namespace": {
 									"creator": "cody"
@@ -155,13 +154,13 @@ function nstest_namespacequery1(executeobject, callback)
       etEnvironment.execute(executeobject, function (error_obj, result_obj)  
       {
 			executeobject.command.xrun = queryobj;
-			etEnvironment.execute(executeobject, function (error_obj, result_obj)
+			etEnvironment.execute(executeobject, function (err, res)
 			{
 				proxyprinttodiv('expected error', null, 99);
-				proxyprinttodiv('actual error', error_obj, 99);
+				proxyprinttodiv('actual error', err, 99);
 				proxyprinttodiv('expected result', expectedresult, 99);
-				proxyprinttodiv('actual result', result_obj, 99);
-				composite_obj=logverify("nstest_namespacequery1", result_obj,expectedresult);
+				proxyprinttodiv('actual result', res, 99);
+				composite_obj=logverify("nstest_namespacequery1", res,expectedresult);
 				callback(null, composite_obj)
 			});
       } 
