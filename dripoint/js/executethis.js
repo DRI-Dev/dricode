@@ -1203,6 +1203,7 @@
         var outparams = {};
         extend(true, outparams, inparams);
         outparams.command.processfn = "execute_server";
+        outparams.command.processparameterfn = "execute_nothing";
         //--proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
         return outparams;
         //callback(null, outparams);
@@ -1213,7 +1214,7 @@
         var outparams = {};
         extend(true, outparams, inparams);
         outparams.command.processfn = "execute_function";
-//        outparams.command.processparameterfn = "execute_nothing";
+        outparams.command.processparameterfn = "execute_nothing";
         //--proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
         return outparams;
         //callback(null, outparams);
