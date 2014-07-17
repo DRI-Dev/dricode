@@ -70,11 +70,11 @@ function runExecuteThis(parameters, resp) {
 
     // also grab server defaults for xrun objects
     if (parameters.command.xrun) {
-        for (var run in parameters.command.xrun) {
-            if (run.command) {
-                extend(true, run.command, config.configuration.d.default);
+        for (var index in parameters.command.xrun) {
+            if (parameters.command.xrun[index].command) {
+                extend(true, parameters.command.xrun[index].command, config.configuration.d.default);
 
-                if (run.command.environment && parameters.command.environment.default) {
+                if (parameters.command.xrun[index].command.environment && parameters.command.environment.default) {
                     // overwrite current environment defaults with server defaults
                     parameters.command.environment.default = config.configuration.d.default;
                 }
