@@ -67,13 +67,11 @@ if (typeof angular !== 'undefined') {
 
                 $http.put('/base64toserver', {path:path, imagesrc:base64image}, {headers:{"content-type": "application/json"}}).
                     success(function(data, status, lheaders, config) {
-                        console.log('** Image service saved ' + filename + ' to dripoint.com **');
-                        $('#successlog').html('** Image service successfully saved ' + filename + ' to dripoint.com **');
+                        console.log('** Image service successfully saved ' + filename + ' to dripoint.com **');
                         if (callback instanceof Function) { callback(null); }
                     }).
                     error(function(data, status, headers, config) {
                         console.log('** Image service incountered an error saving ' + filename + ' **');
-                        $('#errorlog').html('** Image service incountered an error saving ' + filename + ' **');
                         if (callback instanceof Function) { callback(null); }
                     });
             }
