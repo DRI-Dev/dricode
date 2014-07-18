@@ -748,10 +748,10 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
 
 exports.convertfromdriformatenhanced = convertfromdriformatenhanced = function convertfromdriformatenhanced(output, command, originalarguments) {
     output = convertfromdriformat(output, command);
-    if (output && Object.keys(output) > 0) {
+    if (output && Object.keys(output).length > 0) {
         output = extend(true, originalarguments, output);
     }
-    if (((Object.keys(output).length) > 0) && (command.convert === 'todot')) {
+    if (Object.keys(output).length > 0 && command.convert === 'todot') {
         output = ConvertToDOTdri(output);
     }
     return output
