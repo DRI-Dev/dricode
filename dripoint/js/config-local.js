@@ -110,7 +110,7 @@ function config123() {
     configuration.keycollection = configuration.collection+'key';
     configuration.databasetable = 'wikiwallettesting';
     // configuration.e is the wid name for "environment"
-    configuration.e = configuration.databasetable+"_"+configuration.collection+"_"+ "environment";
+    configuration.e = configuration.databasetable+configuration.collection+"environment";
 
     // configuration.d are the defaults that should be copied into command.environment during each execute
 
@@ -447,8 +447,8 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
         var inbound_parameters = {};
         extend(true, inbound_parameters, inboundobj);
 
-        proxyprinttodiv('Function inboundobj', inboundobj, 30);
-        proxyprinttodiv('Function command', command, 30);
+        proxyprinttodiv('Function inboundobj', inboundobj, 28);
+        proxyprinttodiv('Function command', command, 28);
 
         function IsJsonString(str) {
             try {
@@ -483,13 +483,13 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
         proxyprinttodiv('Function databasetable + collection', databasetable + collection, 30);
         database = getFromLocalStorage(databasetable + collection);
 
-        proxyprinttodiv('Function inlist', database, 30);
+        proxyprinttodiv('Function inlist', database, 28);
         if (database) {
             proxyprinttodiv('before IsJsonString', inboundobj, 30);
             if (IsJsonString(inboundobj)) {
                 query = JSON.parse(inboundobj);
             }
-            proxyprinttodiv('Function query', query, 30);
+            proxyprinttodiv('Function query', query, 28);
             //proxyprinttodiv('Function query',  stringify(query),12);
 
             outlist = sift(query, database);

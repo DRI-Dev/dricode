@@ -16,6 +16,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     var parameters={}
     extend(true, parameters, inparameters)
     delete parameters.executethis;
+    var etEnvironment = new DriEnvironment(parameters.command.environment);
 
     proxyprinttodiv('querywid parameters', parameters, 28);
 
@@ -85,7 +86,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
             }},
             true
             )
-
+    proxyprinttodiv('querywid filteredobject II', filter_data, 28, true);
     var command= filter_data.filteredobject.command;    // commands for mquery
     var qparms = filter_data.output;                    // in essence commands for querywid
 
@@ -93,7 +94,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     var outputlistofwids = [];                          // hold distilled list from output
     var relationshipoutput = [];                        // holds output of relationship call
     var mQueryString;                                   // current query to be sent to mquery
-    var environmentdb = command.db;
+    var environmentdb = command.db; 
     var projection = qparms.monogoprojection;
 
     proxyprinttodiv('querywid command', command, 28, true);
@@ -101,8 +102,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     proxyprinttodiv('querywid xparams', xparams, 28, true);
     proxyprinttodiv('querywid extracommands', extracommands, 28, true);
 
-    if (!command.environment) { command.environment = {run:{}}; }
-    var etEnvironment = new DriEnvironment(command.environment);
+
 
     // 3 stages of query, results of one feed the next
     // raw, single, multiple
@@ -325,8 +325,10 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     proxyprinttodiv('querywid output before rel', outputlistofwids, 28, true);
                     mQueryString = relationShipQuery(qparms, outputlistofwids, environmentdb);
                     proxyprinttodiv('mQueryString at step03 =>', mQueryString, 28);
+                    proxyprinttodiv('mQueryString at step03 => command', command, 28);
                     if (mQueryString) {
                         mquery(mQueryString, projection, command, function (err, res) {
+                               proxyprinttodiv('mQueryString at step03 res',res, 28);
                             // If error, bounce out
                             if (err && Object.keys(err).length > 0) {
                                 cb(err, res);
@@ -361,13 +363,18 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     if (qparms.mongorelationshipdirection === 'backward') {
                         outputlistofwids = distilllist(relationshipoutput,"primarywid", environmentdb);
                     }
-                }
+            
+                    proxyprinttodiv('querywid output step04 relationshipoutput', relationshipoutput, 28, true);
+                    proxyprinttodiv('querywid before after rel output', outputlistofwids, 28, true);
 
-                proxyprinttodiv('querywid output step04 relationshipoutput', relationshipoutput, 28, true);
-                proxyprinttodiv('querywid before after rel output', outputlistofwids, 28, true);
-
-                if (qparms.mongowidmethod) {
-                    mQueryString = queryafterrelationship(qparms, outputlistofwids);
+                    if (qparms.mongowidmethod) 
+                    {
+                        mQueryString = queryafterrelationship(qparms, outputlistofwids);
+                    }
+                    else
+                    {
+                        mQueryString = BuildSingleQuery(outputlistofwids, "and", environmentdb);
+                    }
                     proxyprinttodiv('querywid after queryafterrelationship mQueryString', mQueryString, 28);
                     if (mQueryString) 
                     {
@@ -382,15 +389,13 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                                 cb(null, "step04");
                             }
                         });
-                    } else 
+                    } 
+                    else 
                     {
                         cb(null, "step04");
                     }
-                } else {
-                    //output = {};
-                    cb(null, "step04");
+                    proxyprinttodiv('finalformat top output--55 should never hit or hit out of order', output, 28, true); 
                 }
-
             }
 
         ],
@@ -404,7 +409,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
             } 
             else 
             {
-
+                proxyprinttodiv('querywid just before finalformat output--', output, 28, true); 
                 finalformat(output, relationshipoutput, qparms, extracommands, command, callback)
             } // else
         } // last function
@@ -417,6 +422,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
         proxyprinttodiv('querywid finalformat qparms', qparms, 28, true);
         var queryconvertmethod = extracommands.queryconvertmethod
         var excludeparameters=qparms.mongosetfieldsexclude
+        var db = command.db;
         var finaloutput = [];
         proxyprinttodiv('finalformat top output', output, 28, true); 
         proxyprinttodiv('finalformat top relationshipoutput', relationshipoutput, 28, true); 
@@ -424,7 +430,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
 
         for (var eachout in output)
         {
-            var wid = output[eachout].wid;
+            var wid = output[eachout][db].wid ||output[eachout].wid;
             // only proceed if current paramter is not in exclude parameter set
             proxyprinttodiv('querywid finalformat', output[eachout], 28);
             if (!excludeparameters[wid])
@@ -452,7 +458,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 else if (queryconvertmethod === "object") 
                 {
                     var temp = {}
-                    temp[output[eachout].wid]=enhance(output[eachout])
+                    temp[output[eachout].wid]=enhancedrecord;
                     finaloutput.push(temp)
                 }
             }
@@ -466,7 +472,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
         var temp={};
         for (var eachitem in inlist)
         {
-            temp.wid=inlist[eachitem][environmentdb][field]
+            temp.wid=inlist[eachitem][environmentdb][field] || inlist[eachitem][field];
             outlist.push(temp);
         }
         return outlist;
@@ -653,12 +659,12 @@ function relationShipQuery(parameters, input, environmentdb) {
     }
     if (parameters.mongorelationshiptype) {
         var q2 = {};
-        q2[environmentdb + "relationshiptype"] = parameters.mongorelationshiptype;
+        q2[environmentdb + ".relationshiptype"] = parameters.mongorelationshiptype;
         queryset.push(q2);
     }
     if (parameters.mongorelationshiplink) {
         var q2 = {};
-        q2[environmentdb + "linktype"] = parameters.mongorelationshiplink;  // had mongorelationshiptype before
+        q2[environmentdb + ".linktype"] = parameters.mongorelationshiplink;  // had mongorelationshiptype before
         queryset.push(q2);
     }
     querystring = BuildMultipleQuery(queryset, "and", "or", null);
