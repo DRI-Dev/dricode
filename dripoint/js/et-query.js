@@ -257,7 +257,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     }
 
                     // create a query based on xparams
-                    if (xparams)
+                    if (xparams && Object.keys(xparams).length > 0)
                     {
                         mQueryString = BuildSingleQuery([xparams,qparms.mongorawquery], "and", environmentdb); 
                     }
