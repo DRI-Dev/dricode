@@ -701,8 +701,8 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 proxyprinttodiv('querywid extraparameters', extraparameters, 28);
                 proxyprinttodiv('querywid before after rel output', outputlistofwids, 28);
 
-                var relafterParams={};
-                relafterParams["mongowidmethod"] = qparms["mongowidmethod"];
+//               var relafterParams={};
+//               relafterParams["mongowidmethod"] = qparms["mongowidmethod"];
                 proxyprinttodiv('relafterParams before after rel output', relafterParams, 28);
 /*
                 console.log('[[[[[[[[[[[[[[[[[[[[[[\n' + JSON.stringify(relafterParams, '-', 4));
@@ -804,9 +804,11 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
 								callback(err, formattedResults);								
 							}
                         }
-                    });
-                }
-            });
+                    }); // formatlistfinal
+                } // else
+            } // last function
+            ) // asynch
+        } // else
     }
     //} // end try
     // catch (err) {
@@ -898,7 +900,8 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
         var extrarecord = {};
         var todolist = [];
         var excludeset = {};
-        if (qparms["mongosetfieldsexclude"] && Object.keys(qparms["mongosetfieldsexclude"]).length !== 0) {
+        if (qparms["mongosetfieldsexclude"] && Object.keys(qparms["mongosetfieldsexclude"]).length !== 0) 
+        {
             excludeset = qparms["mongosetfieldsexclude"];
             proxyprinttodiv('querywid finalformatlist excludeset ', excludeset, 28);
         }
@@ -913,16 +916,19 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
         command.environment.run.type = "series";
         var etEnvironment = new DriEnvironment(command.environment);
 
-        if (inlist === undefined || inlist.length === 0) {
+        if (inlist === undefined || inlist.length === 0) 
+        {
             callback(null, []);
-        } else {
-
+        } 
+        else 
+        {
             proxyprinttodiv('querywid finalformatlist inlist ', inlist, 28);
             proxyprinttodiv('querywid finalformatlist extraparameters ', extraparameters, 28);
 
             proxyprinttodiv('querywid database ', database, 28);
             var obj = {};
-            for (var eachresult in inlist) {
+            for (var eachresult in inlist) 
+            {
                 obj[inlist[eachresult]['wid']] = "xxx"; //VALUE does not matter, we are concerned ony with the key
             }
 
@@ -1083,9 +1089,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
         //     }, {}, "formatListFinal", err, inbound_parameters_120);
         //     callback(finalobject.err, finalobject.res);
         // }
-    }
-
-};
+    };
 
 //
 //    // Aggregation Section **********
