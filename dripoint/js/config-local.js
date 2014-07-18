@@ -364,7 +364,7 @@ exports.addToLocalStorage = window.addToLocalStorage = addToLocalStorage = funct
 };
 
 exports.clearLocalStorage = window.clearLocalStorage = clearLocalStorage = function clearLocalStorage() {
-    proxyprinttodiv('clear clearLocalStorage', 'hi', 38);
+    proxyprinttodiv('clear clearLocalStorage', 'hi', 99);
     localStorage.clear();
     //localStore.clear();
     // items below can probably be cleared now
@@ -483,7 +483,7 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
         proxyprinttodiv('Function databasetable + collection', databasetable + collection, 30);
         database = getFromLocalStorage(databasetable + collection);
 
-        proxyprinttodiv('Function inlist', database, 28);
+        proxyprinttodiv('Function inlist', database, 99, true);
         if (database) {
             proxyprinttodiv('before IsJsonString', inboundobj, 30);
             if (IsJsonString(inboundobj)) {
