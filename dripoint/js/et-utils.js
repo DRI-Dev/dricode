@@ -349,7 +349,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(originalarguments
             //addToAngular(widName, inputWidgetObject);
 
             // the type of storage below is not needed
-            addToLocalStorage(databasetable + "_" + collection + "_" + widName, addedobject);
+            addToLocalStorage(databasetable + collection + widName, addedobject);
             //addtoangularstorage
             proxyprinttodiv('Function datastore command -- add addedobject end', addedobject, 12);
             callback(err, addedobject);
@@ -1478,7 +1478,8 @@ function recurseModObj(inputObject, dtoObject, convert, totype, command, callbac
                                 if (dataType !== 'string') {
                                     var executeobject = {
                                         "command": {
-                                            "executetype":"series"
+                                            "executetype":"series",
+                                            "notfoundok":true
                                             // "environment": {
                                             //     "run": {
                                             //         "type": "series"
@@ -1488,14 +1489,14 @@ function recurseModObj(inputObject, dtoObject, convert, totype, command, callbac
                                     };
 
                                     executeobject.executethis=dataType;
-                                    var env = new DriExecute(command.environment);
+                                    var env = new DriEnvironment(command.environment);
                                     env.execute(executeobject, function (err, res) {
                                         // If error, bounce out
-                                        if (err && Object.keys(err).length > 0) {
-                                            cbMap(err, result);
+                                        if ((err && Object.keys(err).length > 0) || Object.keys(res).length === 0) {
+                                            cbMap(err, res);
                                         } else {
-                                            proxyprinttodiv("getwidmaster result for wid  " + JSON.stringify(dataType), result, 41);
-                                            var widObj = result[0][0];
+                                            proxyprinttodiv("getwidmaster result for wid  " + JSON.stringify(dataType), res, 41);
+                                            var widObj = res[0];
                                             if (widObj) {
                                                 if (widObj.hasOwnProperty(inpVal)) {
                                                     modifiedObj[inpKey] = inpVal;

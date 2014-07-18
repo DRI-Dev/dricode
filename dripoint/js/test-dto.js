@@ -5500,23 +5500,40 @@ widtests.ettestag2.description = "this does a test";
 // failing due to a command object being sent back
 //exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
 exports.ettestag3 = widtests.ettestag3 = ettestag3 = function ettestag3(params, callback) {
-
-    var executeobject = {
-            "executethis": "addwidmaster",
-            "wid": "sounddto",
-            "metadata.method": "sounddto",
-            "note": "string"
-        }
+	//debuglevel = 28;
+	
+	var expectedresult = {
+                "title": "Highway to Hell",
+                "wid": "song1",
+                "metadata.method": "songdto",
+                "metadata.sounddto.type": "onetomany",
+                "sounddto.0.note": "A flat",
+                "sounddto.0.wid": "ag3aflat",
+                "sounddto.0.metadata.method": "sounddto",
+                "sounddto.0.metadata.parentwidtests.song1": "songdto",
+                "sounddto.1.note": "B sharp",
+                "sounddto.1.wid": "ag3bsharp",
+                "sounddto.1.metadata.method": "sounddto",
+                "sounddto.1.metadata.parentwidtests.song1": "songdto",
+                "sounddto.2.note": "C flat",
+                "sounddto.2.wid": "ag3cflat",
+                "sounddto.2.metadata.method": "sounddto",
+                "sounddto.2.metadata.parentwidtests.song1": "songdto"
+            };
+			
+    var executeobject = {}
         executeobject.command={};
         executeobject.command.environment={};
         executeobject.command.environment.run={};
         executeobject.command.environment.run.executelevel=0;
         executeobject.command.environment.syncrule = "sync_local"
-    proxyprinttodiv("Ag3  params ", params, 99);
-    var env = new DriEnvironment(params.command.environment);
-    proxyprinttodiv("Ag3  env ", env, 99);
-    env.execute([executeobject, 
-        {
+		
+		executeobject.command.xrun = [{
+            "executethis": "addwidmaster",
+            "wid": "sounddto",
+            "metadata.method": "sounddto",
+            "note": "string"
+        }, {
             "executethis": "addwidmaster",
             "wid": "songdto",
             "metadata.method": "songdto",
@@ -5539,75 +5556,45 @@ exports.ettestag3 = widtests.ettestag3 = ettestag3 = function ettestag3(params, 
             "title": "Highway to Hell",
             "sounddto.wid": "ag3aflat",
             "sounddto.note": "A flat"
-        // }, {
-        //     "executethis": "addwidmaster",
-        //     "wid": "song1",
-        //     "metadata.method": "songdto",
-        //     "title": "Highway to Hell",
-        //     "sounddto.wid": "ag3bsharp",
-        //     "sounddto.note": "B sharp"
-        // }, {
-        //     "executethis": "addwidmaster",
-        //     "wid": "song1",
-        //     "metadata.method": "songdto",
-        //     "title": "Highway to Hell",
-        //     "sounddto.wid": "ag3cflat",
-        //     "sounddto.note": "C flat"
-        // }, {
-        //     "executethis": "getwidmaster",
-        //     "wid": "song1",
-        //     "command": {
-        //         "getwidmaster": {
-        //             "execute": "ConvertToDOTdri"
-        //         }
-        //     }
-        }],
+         }, {
+             "executethis": "addwidmaster",
+             "wid": "song1",
+             "metadata.method": "songdto",
+             "title": "Highway to Hell",
+             "sounddto.wid": "ag3bsharp",
+             "sounddto.note": "B sharp"
+         }, {
+             "executethis": "addwidmaster",
+             "wid": "song1",
+             "metadata.method": "songdto",
+             "title": "Highway to Hell",
+             "sounddto.wid": "ag3cflat",
+             "sounddto.note": "C flat"
+         }, {
+             "executethis": "getwidmaster",
+             "wid": "song1",
+             "command": {
+                 "getwidmaster": {
+                     "execute": "ConvertToDOTdri"
+                 }
+             }
+        }];
+		
+    proxyprinttodiv("Ag3  params ", params, 99,true);
+    var env = new DriEnvironment(params.command.environment);
+    proxyprinttodiv("Ag3  env ", env, 99, true);
+    env.execute(executeobject, 
+        
         function (err, res1) {
-            proxyprinttodiv("Ag3  result ", res1, 99);
+            proxyprinttodiv("Ag3  result ", res1, 99,true);
             var res = res1;
 
-            proxyprinttodiv('Function ag1 expected res ', {
-                "title": "Highway to Hell",
-                "wid": "song1",
-                "metadata.method": "songdto",
-                "metadata.sounddto.type": "onetomany",
-                "sounddto.0.note": "A flat",
-                "sounddto.0.wid": "ag3aflat",
-                "sounddto.0.metadata.method": "sounddto",
-                "sounddto.0.metadata.parentwidtests.song1": "songdto",
-                "sounddto.1.note": "B sharp",
-                "sounddto.1.wid": "ag3bsharp",
-                "sounddto.1.metadata.method": "sounddto",
-                "sounddto.1.metadata.parentwidtests.song1": "songdto",
-                "sounddto.2.note": "C flat",
-                "sounddto.2.wid": "ag3cflat",
-                "sounddto.2.metadata.method": "sounddto",
-                "sounddto.2.metadata.parentwidtests.song1": "songdto"
-            }, 99);
-            proxyprinttodiv('Function ag1 actual result ', res, 99);
-            res = logverify("ettestag1_result", res, {
-                "title": "Highway to Hell",
-                "wid": "song1",
-                "metadata.method": "songdto",
-                "metadata.sounddto.type": "onetomany",
-                "sounddto.0.note": "A flat",
-                "sounddto.0.wid": "ag3aflat",
-                "sounddto.0.metadata.method": "sounddto",
-                "sounddto.0.metadata.parentwidtests.song1": "songdto",
-                "sounddto.1.note": "B sharp",
-                "sounddto.1.wid": "ag3bsharp",
-                "sounddto.1.metadata.method": "sounddto",
-                "sounddto.1.metadata.parentwidtests.song1": "songdto",
-                "sounddto.2.note": "C flat",
-                "sounddto.2.wid": "ag3cflat",
-                "sounddto.2.metadata.method": "sounddto",
-                "sounddto.2.metadata.parentwidtests.song1": "songdto",
-                "metadata.expirationdate":{"exception":["created","changed","unchanged","updated"]}
-            });
-
-            callback(err, res);
+            proxyprinttodiv('Function ag3 actual result ', res[5], 99, true);
+            proxyprinttodiv('Function ag3 expected result ', expectedresult, 99, true);
+            res = logverify("ettestag3_result", res[5], expectedresult);
+            callback(err, res1);
         });
-};
+    };
 
 widtests.ettestag3.category = "daily";
 widtests.ettestag3.subcategory = "push";
@@ -5800,7 +5787,7 @@ widtests.ettestag3s.description = "this does a test";
 exports.ettestag3b = widtests.ettestag3b = ettestag3b = function ettestag3b(params, callback) {
 
     eventappinstall();
-
+	debuglevel = 28;
     execute([{
             "executethis": "addwidmaster",
             "wid": "sonddto",
@@ -5852,7 +5839,6 @@ exports.ettestag3b = widtests.ettestag3b = ettestag3b = function ettestag3b(para
                 "sounddto.2.wid": "6",
                 "sounddto.2.metadata.method": "sounddto"
             }]);
-            debuglevel = 38;
             execute({
                 "executethis": "getwidmaster",
                 "wid": "sonddto",

@@ -441,6 +441,7 @@
                                     step1_callback(null);
                                 }
                                 else {
+                                    currentrelationshipobj=null;
                                     step1_callback(null); 
                                 }
 
@@ -514,9 +515,10 @@
                                 proxyprinttodiv("addrecord input addobject['wid'] :- ", addobject['wid'], 17);
                                 proxyprinttodiv("addrecord input relobj ", relobj, 17);
 
-                                if (currentrelationshipobj) { relobj.wid = currentrelationshipobj.wid }
+                                if (currentrelationshipobj) 
+                                    { relobj.wid = currentrelationshipobj.wid }
                                 
-                                if (hashobj(currentrelationshipobj)===hashobj(relobj)) { // if objects are the same
+                                if (currentrelationshipobj && hashobj(currentrelationshipobj)===hashobj(relobj)) { // if objects are the same
                                     step2_callback(null); // then do not save
                                 } else {
                                     addwid(relobj, reldto, command, function (err, added_relation) {
@@ -899,6 +901,8 @@
             },
             function step4(step4_callback) {
                 delete command.deepfilter.convert;
+				if (!object.command) { object.command = {} }
+					
                 object["executethis"] = "updatewid";
                 object.command.executetype = "series";
                 // readd command params back in

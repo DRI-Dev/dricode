@@ -107,7 +107,7 @@ function config123() {
     configuration.collection = 'dricollection';
     configuration.db = 'data';
     configuration.datastore = 'localstorage';
-    configuration.keycollection = 'dricollectionkey';
+    configuration.keycollection = configuration.collection+'key';
     configuration.databasetable = 'wikiwallettesting';
     // configuration.e is the wid name for "environment"
     configuration.e = configuration.databasetable+"_"+configuration.collection+"_"+ "environment";

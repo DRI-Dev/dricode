@@ -109,6 +109,7 @@ nstest_namespacequery1 =
 widtests.nstest_namespacequery1 = 
 function nstest_namespacequery1(executeobject, callback) 
 {
+	debuglevel = 28;
 	  if (!executeobject.command) {
 		  executeobject.command={};
 		  executeobject.command.environment={};
@@ -132,19 +133,15 @@ function nstest_namespacequery1(executeobject, callback)
 											}
 							}
 		var queryobj = [
-					{"executethis":"querywid",
-							"command": {
-								"namespace": {
-									"creator": "cody"
-									},
-								"namespaceflag": {
-									"creator": "true"
-									},
-								"queryresult": "each"
-								},
+					{"executethis":"querywidmaster",
+							"command.namespace.creator": "cody",
+							"command.namespaceflag.creator": "true",
+							"command.queryresult": "each",
 							"mongorawquery": {
 								"$and": [{
 									"data.color":"red"
+									}, {
+									"wid": "nswid1"
 									}]
 								}
 						}
