@@ -187,7 +187,7 @@ function config123() {
     configuration.collection = 'dricollection';
     configuration.db = 'data';
     configuration.datastore = 'mongo';
-    configuration.keycollection = 'dricollectionkey';
+    configuration.keycollection = configuration.collection+'key';
     // configuration.defaultmongodb = 'wikiwallettesting'  // *******
     configuration.databasetable = 'wikiwallettesting';
 

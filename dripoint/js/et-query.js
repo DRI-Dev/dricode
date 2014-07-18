@@ -18,7 +18,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     delete parameters.executethis;
     var etEnvironment = new DriEnvironment(parameters.command.environment);
 
-    proxyprinttodiv('querywid parameters', parameters, 28);
+    proxyprinttodiv('querywid parameters', parameters, 99);
 
     var filter_data = getcommand(parameters, 
             {"command":
@@ -431,16 +431,18 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
         for (var eachout in output)
         {
             var wid = output[eachout][db].wid ||output[eachout].wid;
+            proxyprinttodiv('querywid finalforma wid', wid, 28);
             // only proceed if current paramter is not in exclude parameter set
             proxyprinttodiv('querywid finalformat', output[eachout], 28);
+            proxyprinttodiv('querywid finalformat excludeparameters[wid]', excludeparameters[wid], 28);
             if (!excludeparameters[wid])
             {
                 // first search for wid in relationshipoutput
                 var foundrecord;
                 for (var eachrecord in relationshipoutput)
                 {
-                    if (relationshipoutput[eachrecord][environmentdb].primarywid===wid ||
-                        relationshipoutput[eachrecord][environmentdb].secondarywid===wid )
+                    if (relationshipoutput[eachrecord][db].primarywid===wid ||
+                        relationshipoutput[eachrecord][db].secondarywid===wid )
                     {
                         foundrecord = relationshipoutput[eachrecord];
                         break;
@@ -450,20 +452,23 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 // then change and enhance the strucutre of the result
                 var enhancedrecord = convertfromdriformatenhanced(output[eachout], command, foundrecord)
                 proxyprinttodiv('querywid finalformat enhancedrecord', enhancedrecord, 28, true);
+				proxyprinttodiv('querywid queryconvertmethod', queryconvertmethod, 28);
                 // now convert teach record based on query convertmethod
-                if (queryconvertmethod === "each") 
+                if (queryconvertmethod === "object") 
                 {
                     finaloutput.push(enhancedrecord);
+					proxyprinttodiv('querywid finaloutput after queryconvertmethod = ' + queryconvertmethod, finaloutput, 28);					
                 }
-                else if (queryconvertmethod === "object") 
+                else if (queryconvertmethod === "each") 
                 {
                     var temp = {}
                     temp[output[eachout].wid]=enhancedrecord;
                     finaloutput.push(temp)
+					proxyprinttodiv('querywid finaloutput after queryconvertmethod = ' + queryconvertmethod, finaloutput, 28);					
                 }
             }
         }
-        proxyprinttodiv('querywid finaloutput', finaloutput, 28, true);
+        proxyprinttodiv('querywid finaloutput', finaloutput, 99, true);
         callback(null, finaloutput)
     } // final format
 

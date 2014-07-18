@@ -489,7 +489,7 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
             if (IsJsonString(inboundobj)) {
                 query = JSON.parse(inboundobj);
             }
-            proxyprinttodiv('Function query', query, 28);
+            proxyprinttodiv('Function query', query, 99);
             //proxyprinttodiv('Function query',  stringify(query),12);
 
             outlist = sift(query, database);
@@ -501,18 +501,18 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
             });
 
             // not sure if stuff below needed
-            keydatabase = getFromLocalStorage(databasetable + keycollection);
+            //keydatabase = getFromLocalStorage(databasetable + keycollection);
 
-            for (var eachrecord in outlist) {
-                eachwid = keydatabase[outlist[eachrecord]["wid"]];
-                resultlist.push(eachwid);
-            }
+            //for (var eachrecord in outlist) {
+            //    eachwid = keydatabase[outlist[eachrecord]["wid"]];
+            //    resultlist.push(eachwid);
+            //}
             }
         else {
             resultlist = [];
         }
 
-        proxyprinttodiv('Function resultlist', resultlist, 30);
+        proxyprinttodiv('Function resultlist', resultlist, 99);
         callback(null, resultlist);
     } // end try
     catch (err) {
