@@ -1793,3 +1793,541 @@ exports.datastoreaddget2 = datastoreaddget2 = function datastoreaddget2(paramete
         callback1();
     });
 }
+
+
+/*
+        filterobjecttest1
+        filterobject returns an object of only the differences
+    */
+exports.filterobjecttest1 = filterobjecttest1 = function filterobjecttest1(parameters, callback) {
+    debuglevel = 17;
+    eventappinstall();
+
+    var inputobj = {
+        "a": "1",
+        "wid": "undefined"
+    };
+    var dtoobj = {
+        "a": "string",
+        "wid": "guid"
+    };
+
+    filterobject(inputobj, dtoobj, function (err, res) {
+        proxyprinttodiv("filterobjecttest1 filterobject res", res, 17);
+        callback(err, res);
+    });
+}
+
+
+/*
+        getcollectionlength
+    */
+exports.getcollectionlengthtest1 = getcollectionlengthtest1 = function getcollectionlengthtest1(parameters, callback) {
+    debuglevel = 17;
+    eventappinstall();
+
+    var getcollectionlengthcommand = {
+        "collection": "maincollection"
+    };
+    var executeArray = [{
+        "executethis": "addwidmaster",
+        "wid": "wid1",
+        "a": "1",
+        "b": "2",
+        "command": {
+            "db": "",
+            "collection": "maincollection1",
+            "datastore": ""
+        }
+    }, {
+        "executethis": "addwidmaster",
+        "wid": "wid2",
+        "a": "3",
+        "b": "4",
+        "command": {
+            "db": "",
+            "collection": "maincollection2",
+            "datastore": ""
+        }
+    }, {
+        "executethis": "updatewid",
+        "wid": "wid3",
+        "a": "1",
+        "b": "2",
+        "command": {
+            "db": "",
+            "collection": "maincollection1",
+            "datastore": ""
+        }
+    }, {
+        "executethis": "updatewid",
+        "wid": "wid4",
+        "a": "3",
+        "b": "4",
+        "command": {
+            "db": "",
+            "collection": "maincollection2",
+            "datastore": ""
+        }
+    }, {
+        "executethis": "getcollectionlength",
+        "command": getcollectionlengthcommand
+    }];
+    execute(executeArray, function (err, res) {
+        proxyprinttodiv(">> getcollectionlength command <<", getcollectionlengthcommand, 17);
+        proxyprinttodiv("getcollectionlengthcommand result ", res[2], 17);
+        callback(err, res);
+    });
+}
+exports.getcollectionlength = getcollectionlength = function getcollectionlength(inputobj, callback) {
+    proxyprinttodiv("getcollectionlength inputobj", inputobj, 17);
+    var collection = inputobj.command.collection;
+    var executeobject = {};
+    executeobject["executethis"] = "querywid";
+    executeobject["command"] = {
+        "result": "queryresult"
+    };
+    executeobject["mongorawquery"] = {
+        "$and": [{
+            "data.d": "1"
+        }]
+    };
+    execute(executeobject, function (err, res) {
+        proxyprinttodiv("getcollectionlength res", res, 17);
+        callback(err, res);
+    });
+}
+
+/*
+        deletecollection
+    */
+exports.deletecollectiontest1 = deletecollectiontest1 = function deletecollectiontest1(parameters, callback) {
+    debuglevel = 17;
+    eventappinstall();
+
+    var addcommand = {
+        "db": "",
+        "collection": "maincollection",
+        "datastore": ""
+    };
+    var deletecollectioncommand = {
+        "collection": "maincollection"
+    };
+    var executeArray = [{
+        "executethis": "addwidmaster",
+        "wid": "wid1",
+        "d": "44",
+        "e": "6",
+        "command": addcommand
+    }, {
+        "executethis": "deletecollection",
+        "command": deletecollectioncommand
+    }];
+    execute(executeArray, function (err, res) {
+        proxyprinttodiv(">> add command <<", addcommand, 17);
+        proxyprinttodiv("add result ", res[0], 17);
+        proxyprinttodiv(">> deletecollection command <<", deletecollectioncommand, 17);
+        proxyprinttodiv("deletecollection result ", res[1], 17);
+        callback(err, res);
+    });
+
+}
+exports.deletecollection = deletecollection = deletecollection = function deletecollection(inputobj, callback) {
+    proxyprinttodiv("deletecollection inputobj", inputobj, 17);
+    var collection = inputobj.command.collection;
+    var executeobject = {};
+    executeobject["executethis"] = "querywid";
+    executeobject["command"] = {
+        "result": "queryresult"
+    };
+    executeobject["mongorawquery"] = {
+        "$and": [{
+            "data.collection": collection
+        }]
+    };
+    execute(executeobject, function (err, res) {
+        proxyprinttodiv("deletecollection res", res, 17);
+        callback(err, res);
+    });
+}
+
+/*
+        getdatabasetablelength
+    */
+exports.getdatabasetablelength = getdatabasetablelength = function getdatabasetablelength(parameters, callback) {
+    var command = {
+        "databasetable": "",
+        "datastore": ""
+    };
+}
+
+/*
+        getdblength
+    */
+exports.getdblength = getdblength = function getdblength(parameters, callback) {
+    var command = {
+        "databasetable": "",
+        "datastore": ""
+    };
+    var wid = "";
+}
+
+/*
+        getwidlength
+    */
+exports.getwidlength = getwidlength = function getwidlength(parameters, callback) {
+    var command = {
+        "databasetable": "",
+        "datastore": "",
+        "collection": ""
+    };
+    var wid = "";
+}
+
+/*
+        deletedatabasetable
+    */
+exports.deletedatabasetable = deletedatabasetable = function deletedatabasetable(parameters, callback) {
+    var command = {
+        "databasetable": "",
+        "datastore": ""
+    };
+}
+
+/*
+        deletedeepwid
+    */
+exports.deletedeepwid = deletedeepwid = function deletedeepwid(parameters, callback) {
+    var command = {
+        "databasetable": "",
+        "datastore": "",
+        "collection": "",
+        "db": ""
+    };
+    var wid = "";
+}
+
+/*
+        processevent test
+    */
+exports.processeventtest1 = processeventtest1 = function processeventtest1(parameters, callback) {
+    debuglevel = 17;
+    //eventappinstall();
+
+    //To add events
+    var addeventcommand = {
+        "databasetable": "persitentcollection",
+        "db": "queuedata",
+        "collection": "eventonemin"
+    }
+    //"datastore":""};
+    var executeList = [{
+        "executethis": "updatewid",
+        "wid": "processevent1",
+        "metadata": "eventonemin",
+        "addthis.executethis": "dosomethingwid",
+        "command": addeventcommand
+    }, {
+        "executethis": "updatewid",
+        "wid": "processevent2",
+        "metadata": "eventonemin",
+        "command": addeventcommand
+    }, {
+        "executethis": "updatewid",
+        "wid": "processevent3",
+        "metadata": "eventonemin",
+        "command": addeventcommand
+    }, {
+        "executethis": "updatewid",
+        "wid": "processevent4",
+        "metadata": "eventonemin",
+        "command": addeventcommand
+    }, {
+        "executethis": "updatewid",
+        "wid": "processevent5",
+        "metadata": "eventonemin",
+        "command": addeventcommand
+    }];
+    execute(executeList, function (err, res) {
+        proxyprinttodiv("add events res ", res, 17);
+
+        //To process an event
+        var eventname = "processevent5";
+        processevent(eventname, function (err, res) {
+            proxyprinttodiv("processevent res", res, 17);
+            callback(err, res);
+        });
+    });
+}
+
+exports.maincollection1test = maincollection1test = function maincollection1test(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "wid1",
+            "a": "b",
+            "b": "2",
+            "command": {
+                "db": "",
+                "collection": "maincollection1",
+                "datastore": ""
+            }
+            //"command":{"db":"test"}
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "wid1"
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+            proxyprinttodiv('The wid1 record: ', res[1], 99);
+
+            var result = logverify("testinheritdefault0_result", res[1], [{
+                "wid": "author1",
+                "metadata.method": "authordto",
+                "name": "Alex",
+                "age": "42"
+            }]);
+
+            callback(err, result);
+        });
+};
+
+
+exports.ux = ux = function ux() {
+    debuglevel = 65
+
+    obj1 = {
+        "executethis": "ettestag1",
+        "command": {
+            "internalcall": true,
+            "adopt": null,
+            //     "resultparameters": {},
+            //     "result": null,
+            //     "execute": null,
+            //     "environment": {},
+            //     "inherit": null,
+            //     "executefilter": "",
+            //     "executelimit": 15,
+            //     "executemethod": "execute",
+            //     "executeorder": "series",
+            //     "beforemultiple": {
+            //         "overallresultrule": "clearresults",
+            //         "overallerrorrule": "waterfall",
+            //         "resultrule": "waterfall",
+            //         "errorrule": "nullwaterfall"
+            //     },
+            //     "duringmultiple": {
+            //         "overallresultrule": "pusharray",
+            //         "overallerrorrule": "waterfall",
+            //         "resultrule": "waterfall",
+            //         "errorrule": "nullwaterfall"
+            //     },
+            //     "beforeendmultiple": {
+            //         "overallresultrule": "waterfall",
+            //         "overallerrorrule": "waterfall",
+            //         "resultrule": "waterfall",
+            //         "errorrule": "nullwaterfall"
+            //     },
+            //     "beforepreexecute": {
+            //         "overallresultrule": "waterfall",
+            //         "overallerrorrule": "waterfall",
+            //         "resultrule": "waterfall",
+            //         "errorrule": "nullwaterfall"
+            //     },
+            //     "beforemidexecute": {
+            //         "overallresultrule": "waterfall",
+            //         "overallerrorrule": "waterfall",
+            //         "resultrule": "waterfall",
+            //         "errorrule": "nullwaterfall"
+            //     },
+            //     "beforepostexecute": {
+            //         "overallresultrule": "waterfall",
+            //         "overallerrorrule": "waterfall",
+            //         "resultrule": "waterfall",
+            //         "errorrule": "nullwaterfall"
+            //     },
+            //     "beforeendexecute": {
+            //         "overallresultrule": "objectwaterfall",
+            //         "overallerrorrule": "waterfall",
+            //         "resultrule": "waterfall",
+            //         "errorrule": "nullwaterfall"
+            //     },
+            //     "overallerror": [
+            //         {}
+            //     ],
+            //     "overallresult": [
+            //         {}
+            //     ],
+            //     "currenterror": null,
+            //     "currentresult": {},
+            //     "currentparameters": {},
+            //     "multipleexecute": [],
+            //     "parameters": {}
+        }
+    }
+
+    // {"command": {
+    //             "internalcall": "xyz",
+    //             "beforemultiple": {
+    //                     "overallresultrule": "clearresults"},
+    //             "morecmd":"cmd"
+    //             },
+    //         "c":"d",
+    //         "a":"b"
+    //     }
+    obj2 = {
+        "command": {
+            "internalcall": "x",
+            "adopt": "x",
+            "resultparameters": "x",
+            // "result": "x",
+            // "execute": "x",
+            // "environment": "x",
+            // "inherit": "x",
+            // "executefilter": "x",
+            // "executelimit": "x",
+            // "executemethod": "x",
+            // "executeorder": "x",
+            // "beforemultiple": "x",
+            // "duringmultiple": "x",
+            // "beforeendmultiple": "x",
+            // "beforepreexecute": "x",
+            // "beforemidexecute": "x",
+            // "beforepostexecute": "x",
+            // "beforeendexecute": "x",
+            // "overallerror": "x",
+            // "overallresult": "x",
+            // "currenterror": "x",
+            // "currentresult": "x",
+            // "currentparameters": "x",
+            // "multipleexecute": "x",
+            // "parameters": "x"
+        }
+    }
+
+    // {"command": {
+    //             "internalcall": "abc",
+    //             "beforemultiple": {
+    //                     "overallresultrule": "clearresults"}
+    //             },
+    //         "a":"b"
+    //     }
+    var x = compareobjects(obj1, obj2, "exists")
+    proxyprinttodiv("compareobjects x", x, 65, true);
+
+}
+
+
+
+exports.filterobjecttest1 = function filterobjecttest1(parameters, callback) {
+    debuglevel = 17;
+    eventappinstall();
+
+    var obj1 = {
+        "a": "1",
+        "b": "2"
+    };
+    var obj2 = {
+        "a": "1",
+        "b": "2"
+    };
+
+    filterobject(obj1, obj2, null, function (err, res) {
+        proxyprinttodiv("filterobjecttest1 filterobject res", res, 17);
+        var actual_result = res;
+        proxyprinttodiv("actual_result --", actual_result, 17);
+        var expected_result = {};
+        proxyprinttodiv("expected_result --", expected_result, 17);
+        var result = logverify("filterobjecttest1_result", actual_result, expected_result);
+        callback(err, result);
+    });
+}
+
+exports.filterobjecttest2 = function filterobjecttest2(parameters, callback) {
+    debuglevel = 17;
+    eventappinstall();
+
+    var obj1 = {
+        "a": "1",
+        "b": "2"
+    };
+    var obj2 = {
+        "b": "2",
+        "c": "3"
+    };
+    var command = {
+        "filterobject": {
+            "type": "match"
+        }
+    }
+
+    filterobject(obj1, obj2, command, function (err, res) {
+        proxyprinttodiv("filterobjecttest1 filterobject res", res, 17);
+        var actual_result = res;
+        proxyprinttodiv("actual_result --", actual_result, 17);
+        var expected_result = {
+            "b": "2"
+        };
+        proxyprinttodiv("expected_result --", expected_result, 17);
+        var result = logverify("filterobjecttest1_result", actual_result, expected_result);
+        callback(err, result);
+    });
+}
+
+exports.filterobjecttest3 = function filterobjecttest3(parameters, callback) {
+    debuglevel = 17;
+    eventappinstall();
+
+    var obj1 = {
+        "a": "1",
+        "b": "2"
+    };
+    var obj2 = {
+        "b": "2",
+        "c": "3"
+    };
+
+    filterobject(obj1, obj2, null, function (err, res) {
+        proxyprinttodiv("filterobjecttest1 filterobject res", res, 17);
+        var actual_result = res;
+        proxyprinttodiv("actual_result --", actual_result, 17);
+        var expected_result = {
+            "a": "1",
+            "c": "3"
+        };
+        proxyprinttodiv("expected_result --", expected_result, 17);
+        var result = logverify("filterobjecttest1_result", actual_result, expected_result);
+        callback(err, result);
+    });
+}
+
+
+exports.testhtmladd = testhtmladd = function testhtmladd(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "wid1",
+            "html": "<p>123</p>"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "wid1",
+            "addthis.command.htmlcleartargetid": "body"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "wid1"
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+            callback(err, res);
+        });
+}
+
+exports.testhtmladd2 = testhtmladd2 = function testhtmladd2(params, callback) {
+    execute([{
+            "executethis": "getwid",
+            "wid": "wid1"
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+            callback(err, res);
+        });
+}
+

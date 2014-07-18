@@ -3581,9 +3581,227 @@ widtests.ettest_metadataattributes1.subcategory = "push";
 widtests.ettest_metadataattributes1.js = exports.ettest_metadataattributes1;
 widtests.ettest_metadataattributes1.description = "this does a test";	
 
+exports.ettestupdatewid = ettestupdatewid = function ettestupdatewid(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    var executeobject = {executethis:'updatewid',wid:'testdata123',key1:'value1',key2:'value2'};
+    etEnvironment.execute(executeobject, function (err, result) {
+        proxyprinttodiv('updatewid results', result, 99);
+        callback(err, result);
+    });
+};
 
+exports.ettestupdatewidserver = ettestupdatewidserver = function ettestupdatewidserver(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    var executeobject = {command:{environment:{syncrule:'sync_server'}},executethis:'updatewid',wid:'testdata123',key1:'value1',key2:'value2'};
+    etEnvironment.execute(executeobject, function (err, result) {
+        proxyprinttodiv('updatewid results', result, 99);
+        callback(err, result);
+    });
+};
 
+exports.ettestgetwid = ettestgetwid = function ettestgetwid(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    etEnvironment.execute({executethis:'getwid',wid:'testdata123'}, function (err, result) {
+        proxyprinttodiv('getwid results', result, 99);
+        callback(err, result);
+    });
+};
 
+exports.ettestgetwidserver = ettestgetwidserver = function ettestgetwidserver(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    etEnvironment.execute({command:{environment:{syncrule:'sync_server'}},executethis:'getwid',wid:'testdata123'}, function (err, result) {
+        proxyprinttodiv('getwid results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestdeletewid = ettestdeletewid = function ettestdeletewid(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    etEnvironment.execute({executethis:'deletewid',wid:'testdata123'}, function (err, result) {
+        proxyprinttodiv('getwid results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestaddwidmaster = ettestaddwidmaster = function ettestaddwidmaster(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    etEnvironment.execute({
+        executethis:'addwidmaster',
+        wid:'mastertestdata123',
+        key1:'value1',
+        key2:'value2'
+    }, function (err, result) {
+        proxyprinttodiv('addwidmaster results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestaddwidmasterserver = ettestaddwidmasterserver = function ettestaddwidmasterserver(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    etEnvironment.execute({
+        command:{
+            environment:{
+                syncrule:'sync_server'
+            }
+        },
+        executethis:'addwidmaster',
+        wid:'mastertestdata123',
+        key1:'value1',
+        key2:'value2'
+    }, function (err, result) {
+        proxyprinttodiv('addwidmaster results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestgetwidmaster = ettestgetwidmaster = function ettestgetwidmaster(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    etEnvironment.execute({executethis:'getwidmaster',wid:'mastertestdata123'}, function (err, result) {
+        proxyprinttodiv('getwid results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestgetwidmasterserver = ettestgetwidmasterserver = function ettestgetwidmasterserver(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    etEnvironment.execute({
+        command:{
+            environment:{
+                syncrule:'sync_server'
+            }
+        },
+        executethis:'getwidmaster',
+        wid:'mastertestdata123'
+    }, function (err, result) {
+        proxyprinttodiv('getwid results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestquerywid = ettestquerywid = function ettestquerywid(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    etEnvironment.execute({
+        executethis:'querywid',
+        mongorawquery:{
+            "wid":"testdata123"
+        }
+    }, function (err, result) {
+        proxyprinttodiv('querywid results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestquerywidserver = ettestquerywidserver = function ettestquerywidserver(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    etEnvironment.execute({
+        command:{
+            environment:{
+                syncrule:'sync_server'
+            }
+        },
+        executethis:'querywid',
+        mongorawquery:{
+            "wid":"testdata123"
+        }
+    }, function (err, result) {
+        proxyprinttodiv('querywid results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestquerywidmaster = ettestquerywidmaster = function ettestquerywidmaster(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    etEnvironment.execute({
+        executethis:'querywidmaster',
+        mongorawquery:{
+            "wid":"testdata123"
+        }
+    }, function (err, result) {
+        proxyprinttodiv('querywid results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestquerywidmasterserver = ettestquerywidmasterserver = function ettestquerywidmasterserver(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    etEnvironment.execute({
+        command:{
+            environment:{
+                syncrule:'sync_server'
+            }
+        },
+        executethis:'querywidmaster',
+        mongorawquery:{
+            "wid":"testdata123"
+        }
+    }, function (err, result) {
+        proxyprinttodiv('querywid results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestexecutegetwid = ettestexecutegetwid = function ettestexecutegetwid(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    etEnvironment.execute({executethis:'testdata123'}, function (err, result) {
+        proxyprinttodiv('executegetwid results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestag2step1 = ettestag2step1 = function ettestag2step1(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    etEnvironment.execute({
+        "executethis": "addwidmaster",
+        "wid": "colordto",
+        "metadata": {
+            "method": "colordto"
+        },
+        "hue": "string",
+        "command": {
+            "environment": {
+                "syncrule": "sync_local"
+            }
+        }
+    }, function (err, result) {
+        proxyprinttodiv('ettestag2step1 results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestag2step2 = ettestag2step2 = function ettestag2step2(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    etEnvironment.execute({
+        "executethis": "addwidmaster",
+        "wid": "color1",
+        "hue": "red"
+    }, function (err, result) {
+        proxyprinttodiv('ettestag2step1 results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestag2step3 = ettestag2step3 = function ettestag2step3(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    etEnvironment.execute({
+        "executethis": "addwidmaster",
+        "wid": "color2",
+        "hue": "blue"
+    }, function (err, result) {
+        proxyprinttodiv('ettestag2step1 results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestag2step4 = ettestag2step4 = function ettestag2step4(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    etEnvironment.execute({
+        "executethis": "getwidmaster",
+        "wid": "color1"
+    }, function (err, result) {
+        proxyprinttodiv('ettestag2step1 results', result, 99);
+        callback(err, result);
+    });
+};
 
 
 // test cache
