@@ -13,8 +13,8 @@ exports.querywidmaster = querywidmaster = function querywidmaster(params, callba
 // returns list based on command.queryconvertmethod
 exports.querywid = querywid = function querywid(inparameters, callback) { // can change to call back
 
-    var parameters={}
-    extend(true, parameters, inparameters)
+    var parameters={};
+    extend(true, parameters, inparameters);
     delete parameters.executethis;
     var etEnvironment = new DriEnvironment(parameters.command.environment);
 
@@ -85,7 +85,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 "keepaddthis":""
             }},
             true
-            )
+            );
     proxyprinttodiv('querywid filteredobject II', filter_data, 28, true);
     var command= filter_data.filteredobject.command;    // commands for mquery
     var qparms = filter_data.output;                    // in essence commands for querywid
@@ -413,15 +413,15 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 finalformat(output, relationshipoutput, qparms, extracommands, command, callback)
             } // else
         } // last function
-        ) // asynch
+        ); // asynch
         } // else
     }
 
 
     function finalformat(output, relationshipoutput, qparms, extracommands, command, callback) {
         proxyprinttodiv('querywid finalformat qparms', qparms, 28, true);
-        var queryconvertmethod = extracommands.queryconvertmethod
-        var excludeparameters=qparms.mongosetfieldsexclude
+        var queryconvertmethod = extracommands.queryconvertmethod;
+        var excludeparameters=qparms.mongosetfieldsexclude;
         var db = command.db;
         var finaloutput = [];
         proxyprinttodiv('finalformat top output', output, 28, true); 
@@ -450,7 +450,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 }
 
                 // then change and enhance the strucutre of the result
-                var enhancedrecord = convertfromdriformatenhanced(output[eachout], command, foundrecord)
+                var enhancedrecord = convertfromdriformatenhanced(output[eachout], command, foundrecord);
                 proxyprinttodiv('querywid finalformat enhancedrecord', enhancedrecord, 28, true);
 				proxyprinttodiv('querywid queryconvertmethod', queryconvertmethod, 28);
                 // now convert teach record based on query convertmethod
@@ -461,9 +461,9 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 }
                 else if (queryconvertmethod === "each") 
                 {
-                    var temp = {}
+                    var temp = {};
                     temp[output[eachout].wid]=enhancedrecord;
-                    finaloutput.push(temp)
+                    finaloutput.push(temp);
 					proxyprinttodiv('querywid finaloutput after queryconvertmethod = ' + queryconvertmethod, finaloutput, 28);					
                 }
             }

@@ -500,6 +500,7 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
                 return Date.parse(aObj["metadata"]["date"]) - Date.parse(bObj["metadata"]["date"]);
             });
 
+            resultlist = outlist;
             // not sure if stuff below needed
             //keydatabase = getFromLocalStorage(databasetable + keycollection);
 
