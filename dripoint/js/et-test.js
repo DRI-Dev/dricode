@@ -4040,6 +4040,9 @@ exports.ettestxrungetwidmaster = ettestxrungetwidmaster = function ettestxrunget
     var etEnvironment = new DriEnvironment(params.command.environment);
     var executeobject = {
         command: {
+            "getwidmaster": {
+                "execute": "ConvertToDOTdri"
+            },
             xrun: [{
                 executethis:'getwidmaster',
                 wid:'testdata123'
