@@ -95,7 +95,7 @@
 
     function resetenvironment() {
         //addtolocal(config.configuration.e, config.configuration.default);
-        addtolocal(config.configuration.e, configuration.defaultenvironment);
+        addtolocal(config.configuration.e, config.configuration.defaultenvironment);
     }
 
     // create blank command.result or if one was existing then 
@@ -854,6 +854,9 @@
                     if (executionpreferences.command.environment.run.executelevel === 0) {
                         // reset environment now as we are at the end of the overall execute process
                         resetenvironment();
+
+                        // remove the command property from the overall result if it still has it
+                        if (resultsummary.command) { delete resultsummary.command; }
                     }
 
                     callback(errorsummary, resultsummary)
