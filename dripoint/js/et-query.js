@@ -399,6 +399,8 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                         cb(null, "step04");
                     }
                     proxyprinttodiv('finalformat top output--55 should never hit or hit out of order', output, 28, true); 
+                } else {
+                    cb(null, "step04");
                 }
             }
 
