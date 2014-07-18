@@ -229,9 +229,9 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     console.log(command );
 
     /// adding usernamespace 
-    if(command && command.namespace && command.namespaceflag){
-        var userns = command.namespace;
-        var usernsflag = command.namespaceflag;
+    if(xparms.command && xparms.command.namespace && xparms.command.namespaceflag){
+        var userns = xparms.command.namespace;
+        var usernsflag = xparms.command.namespaceflag;
 
         var critiriajsonarray = [];
 
@@ -241,7 +241,9 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
 
             // add the keys after checking if the flags are true
             if(isallowed && userns){
-                critiriajsonarray.push(key,userns['key']);
+				var jsonnamespaceobj = {};
+				jsonnamespaceobj["metadata.namespace." + key] = userns[key];
+                critiriajsonarray.push(jsonnamespaceobj);
             }
         }
 
@@ -422,7 +424,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                             try {
                                 var listOfWids = res;
                                 delete listOfWids["wid"];
-                                delete listOfWids["metadata.method"];
+                                delete listOfWids.metadata.method;
                                 proxyprinttodiv('Function MongoDataQuery listOfWids : ', listOfWids, 28);
 
                                 var i = 0;
@@ -448,7 +450,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                                                     try {
                                                         var tempwid = res;
                                                         delete tempwid["wid"];
-                                                        delete tempwid["metadata.method"];
+                                                        delete tempwid.metadata.method;
                                                         // for (var t in tempwid) {
                                                         //     paramList[t] = tempwid[t];
                                                         // }
@@ -641,7 +643,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     qparms["mongorelquery"] !== ""
                     )  && (Object.keys(outputlistofwids).length > 0) ) {
                     if (qparms['mongowid'] === undefined) { // convert it because it had not been converted yet
-                        outputlistofwids = formatlist(outputlistofwids, "wid", "wid", environmentdb);
+                        outputlistofwids = formatlist(output, "wid", "wid", environmentdb);
                     }
                     //debugfn("querywid step03", "querywid", "query", "mid", getglobal("debugcolor"), getglobal("debugindent"), debugvars([5]));
 
@@ -682,12 +684,12 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 // Relationship Section **********
                 // Skip if there are no relParams
 
-                proxyprinttodiv('querywid output step04', output, 28);
+                proxyprinttodiv('querywid output step04', outputlistofwids, 28);
 
                 if (qparms["mongorelationshipdirection"]) { // added 1/22
                     if (qparms["mongorelationshipdirection"] === 'forward') {
                         // get a copy of relationship records
-                        extraparameters = copylist(output, null, "secondarywid", environmentdb);
+                        extraparameters = copylist(outputlistofwids, null, "secondarywid", environmentdb);
                         outputlistofwids = formatlist(outputlistofwids, "secondarywid", "wid", environmentdb);
                     }
                     if (qparms["mongorelationshipdirection"] === 'backward') {
@@ -702,15 +704,17 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 var relafterParams={};
                 relafterParams["mongowidmethod"] = qparms["mongowidmethod"];
                 proxyprinttodiv('relafterParams before after rel output', relafterParams, 28);
-
+/*
                 console.log('[[[[[[[[[[[[[[[[[[[[[[\n' + JSON.stringify(relafterParams, '-', 4));
                 var flg = false;
                 for (var r in relafterParams) {
                     if (relafterParams[r].length > 0) flg = true;
                 }
 
-                if (flg && (outputlistofwids) && (output.length > 0)) {
-                    // console.log('>>> ' + JSON.stringify(output))
+                if (flg && (outputlistofwids) && (outputlistofwids.length > 0)) {
+*/
+                if (qparms["mongowidmethod"].length > 0) {
+                    // console.log('>>> ' + JSON.stringify(outputlistofwids))
 
                     mQueryString = queryafterrelationship(command, outputlistofwids);
                     proxyprinttodiv('querywid after queryafterrelationship mQueryString', mQueryString, 28);
@@ -726,6 +730,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                             } else {
                                 //
                                 outputlistofwids = res;
+								proxyprinttodiv('step04 res --', res, 28);
                                 //debugfn("post relationship query", "rawmongoquery", "query", "end", getglobal("debugcolor"), getglobal("debugindent"), debugvars([4]));
                                 cb(null, "step04");
                             }
@@ -754,17 +759,19 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     console.log('output is ' + JSON.stringify(output));
                     //debugfn("final", "querywid", "query", "end", getglobal("debugcolor"), getglobal("debugindent"), debugvars([6]));
 
-                    proxyprinttodiv('querywid before output', output, 28);
                     //proxyprinttodiv('querywid before output aggParams', aggParams, 28);
                     var aggParams={"mongosetfieldsexclude" : qparms["mongosetfieldsexclude"]};
-                    formatListFinal(output, environmentdb, extraparameters, command, function (err, output) {
+					var finaloutput;
+					if (outputlistofwids.length > 0) { finaloutput = outputlistofwids }
+					else if (output.length > 0) { finaloutput = output }
+                    proxyprinttodiv('querywid before output', finaloutput, 28);					
+                    formatListFinal(finaloutput, environmentdb, extraparameters, command, function (err, output) {
                         // If error, bounce out
                         if (err && Object.keys(err).length > 0) {
                             callback(err, output);
                         } else {
-							proxyprinttodiv('blah2', queryresult, 99);
 							if (queryresult === "each") {
-								proxyprinttodiv('querywid after output', output, 37);
+								proxyprinttodiv('querywid after output', output, 28);
 								callback(null, output);
 							}
 							else if (queryresult === "object") {
@@ -793,7 +800,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
 									}
 								}
 								proxyprinttodiv('querywid after output', formattedResults, 28);
-								//proxyprinttodiv('step01 output', outputlistofwids, 99);
+								//proxyprinttodiv('step01 output', outputlistofwids, 28);
 								callback(err, formattedResults);								
 							}
                         }
@@ -936,7 +943,8 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                                         'wid': wid,
                                         'command.executetype':'series'
                                     }, function (err, res) {
-                                        widrecord = res;
+										widrecord = [];
+                                        widrecord[0] = res;
                                         cb1(null);
                                     });
                                 } else {
@@ -960,9 +968,9 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                                     delete widrecord[0]['metadata'];
                                     widrecord = widrecordFixed;
                                 } else if (!widrecord[config.configuration.defaultdb]) {
-                                    widrecord = converttodriformat(widrecord);
+                                    widrecord = converttodriformat(widrecord,command);
                                 }
-
+								
                                 proxyprinttodiv('querywid finalformatlist widrecord', convertfromdriformat(widrecord), 28);
                                 proxyprinttodiv('querywid finalformatlist extraparameters[wid]', extrarecord, 28);
                                 // widrecord = extend(true, widrecord, extrarecord); // commented out by joe
