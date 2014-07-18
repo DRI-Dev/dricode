@@ -4018,6 +4018,40 @@ exports.ettestupdatewid = ettestupdatewid = function ettestupdatewid(params, cal
     });
 };
 
+exports.ettestxrunupdatewid = ettestxrunupdatewid = function ettestxrunupdatewid(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    var executeobject = {
+        command: {
+            xrun: [{
+                executethis:'updatewid',
+                wid:'testdata123',
+                key1:'value1',
+                key2:'value2'
+            }]
+        }
+    };
+    etEnvironment.execute(executeobject, function (err, result) {
+        proxyprinttodiv('xrun updatewid results', result, 99);
+        callback(err, result);
+    });
+};
+
+exports.ettestxrungetwidmaster = ettestxrungetwidmaster = function ettestxrungetwidmaster(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    var executeobject = {
+        command: {
+            xrun: [{
+                executethis:'getwidmaster',
+                wid:'testdata123'
+            }]
+        }
+    };
+    etEnvironment.execute(executeobject, function (err, result) {
+        proxyprinttodiv('xrun getwidmaster results', result, 99);
+        callback(err, result);
+    });
+};
+
 exports.ettestupdatewidserver = ettestupdatewidserver = function ettestupdatewidserver(params, callback) {
     var etEnvironment = new DriEnvironment(params.command.environment);
     var executeobject = {command:{environment:{syncrule:'sync_server'}},executethis:'updatewid',wid:'testdata123',key1:'value1',key2:'value2'};
@@ -4176,57 +4210,7 @@ exports.ettestexecutegetwid = ettestexecutegetwid = function ettestexecutegetwid
     });
 };
 
-exports.ettestag2step1 = ettestag2step1 = function ettestag2step1(params, callback) {
-    var etEnvironment = new DriEnvironment(params.command.environment);
-    etEnvironment.execute({
-        "executethis": "addwidmaster",
-        "wid": "colordto",
-        "metadata": {
-            "method": "colordto"
-        },
-        "hue": "string",
-        "command": {
-            "environment": {
-                "syncrule": "sync_local"
-            }
-        }
-    }, function (err, result) {
-        proxyprinttodiv('ettestag2step1 results', result, 99);
-        callback(err, result);
-    });
-};
-
-exports.ettestag2step2 = ettestag2step2 = function ettestag2step2(params, callback) {
-    var etEnvironment = new DriEnvironment(params.command.environment);
-    etEnvironment.execute({
-        "executethis": "addwidmaster",
-        "wid": "color1",
-        "hue": "red"
-    }, function (err, result) {
-        proxyprinttodiv('ettestag2step1 results', result, 99);
-        callback(err, result);
-    });
-};
-
-exports.ettestag2step3 = ettestag2step3 = function ettestag2step3(params, callback) {
-    var etEnvironment = new DriEnvironment(params.command.environment);
-    etEnvironment.execute({
-        "executethis": "addwidmaster",
-        "wid": "color2",
-        "hue": "blue"
-    }, function (err, result) {
-        proxyprinttodiv('ettestag2step1 results', result, 99);
-        callback(err, result);
-    });
-};
-
-exports.ettestag2step4 = ettestag2step4 = function ettestag2step4(params, callback) {
-    var etEnvironment = new DriEnvironment(params.command.environment);
-    etEnvironment.execute({
-        "executethis": "getwidmaster",
-        "wid": "color1"
-    }, function (err, result) {
-        proxyprinttodiv('ettestag2step1 results', result, 99);
-        callback(err, result);
-    });
+exports.ettestag3getwidmaster = ettestag3getwidmaster = function ettestag3getwidmaster(params, callback) {
+    var etEvironment = new DriEnvironment(params.command.environment);
+    etEvironment.execute()
 };
