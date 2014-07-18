@@ -448,7 +448,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     if (relationshipoutput[eachrecord][db].primarywid===wid ||
                         relationshipoutput[eachrecord][db].secondarywid===wid )
                     {
-                        foundrecord = relationshipoutput[eachrecord];
+                        foundrecord = relationshipoutput[eachrecord][db];
                         break;
                     }
                 }
