@@ -751,8 +751,8 @@ exports.convertfromdriformatenhanced = convertfromdriformatenhanced = function c
     if (output && Object.keys(output) > 0) {
         output = extend(true, originalarguments, output);
     }
-    if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
-        output = ConvertFromDOTdri(output);
+    if (((Object.keys(output).length) > 0) && (command.convert === 'todot')) {
+        output = ConvertToDOTdri(output);
     }
     return output
 };
