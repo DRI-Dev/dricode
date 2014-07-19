@@ -354,7 +354,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     }
                     else
                     {
-                        mQueryString = BuildSingleQuery(outputlistofwids, "and", environmentdb);
+                        mQueryString = BuildSingleQuery(outputlistofwids, "or", environmentdb);
                     }
                     proxyprinttodiv('querywid after queryafterrelationship mQueryString', mQueryString, 28);
                     if (mQueryString) 
