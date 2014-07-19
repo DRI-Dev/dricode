@@ -749,7 +749,7 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(obj, 
 exports.convertfromdriformatenhanced = convertfromdriformatenhanced = function convertfromdriformatenhanced(output, command, originalarguments) {
     output = convertfromdriformat(output, command);
     if (output && Object.keys(output).length > 0) {
-        output = extend(true, originalarguments, output);
+        output = extend(true, {}, originalarguments, output);
     }
     if (Object.keys(output).length > 0 && command.convert === 'todot') {
         output = ConvertToDOTdri(output);
@@ -775,24 +775,28 @@ exports.convertfromdriformat = convertfromdriformat = function convertfromdrifor
             outobject = widobject[db] || {};
         }
 
-        if (widobject['wid'] && !outobject['wid']) {
-            outobject['wid'] = widobject['wid'];
+        if (widobject.wid && !outobject.wid) {
+            outobject.wid = widobject.wid;
         }
 
-        if (widobject['metadata']) {
-            if (widobject['metadata']['date']) {
-                delete widobject['metadata']['date'];
-            }
-            outobject['metadata'] = widobject['metadata'];
-
-        } else {
-            outobject['metadata'] = "";
+        if (widobject.metadata && !outobject.metadata) {
+            outobject.metadata=widobject.metadata;
         }
 
-        if (command.driformat === "nowid") {
-            delete outobject.wid;
-            delete outobject.metadata;
-        }
+        // if (widobject['metadata']) {
+        //     if (widobject['metadata']['date']) {
+        //         delete widobject['metadata']['date'];
+        //     }
+        //     outobject['metadata'] = widobject['metadata'];
+
+        // } else {
+        //     outobject['metadata'] = "";
+        // }
+
+        // if (command.driformat === "nowid") {
+        //     delete outobject.wid;
+        //     delete outobject.metadata;
+        // }
         //commented by Roger
         //outobject = ConvertToDOTdri(outobject);
     }
@@ -817,17 +821,20 @@ exports.converttodriformat = converttodriformat = function converttodriformat(in
     delete inputWidgetObject['executethis'];
     proxyprinttodiv('Function updatewid in : inputWidgetObject', inputWidgetObject, 12);
     var saveobject = {};
-    var db = config.configuration.db;
+    var db = command.db || config.configuration.db;
     var wid;
     var metadata;
     var date;
-    if (command && command.db) {
-        db = command.db;
-    }
+    // if (command && command.db) {
+    //     db = command.db;
+    // }
 
-    inputWidgetObject['metadata.date'] = new Date();
+    if (!inputWidgetObject.metadata) {inputWidgetObject.metadata={}}
+    inputWidgetObject.metadata.date = new Date();
 
-    inputWidgetObject = ConvertFromDOTdri(inputWidgetObject);
+    //inputWidgetObject['metadata.date'] = new Date();
+    //inputWidgetObject = ConvertFromDOTdri(inputWidgetObject);
+    
     if (inputWidgetObject['wid']) {
         wid = inputWidgetObject['wid'];
         delete inputWidgetObject['wid'];

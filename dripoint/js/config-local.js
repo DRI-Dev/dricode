@@ -103,7 +103,7 @@ function config123() {
     var configuration = {};   
     // what envrioment and what defaults should be used
     configuration.environment = 'local';
-    configuration.syncrule = 'sync_local_server';
+    configuration.syncrule = 'sync_local';
     configuration.collection = 'dricollection';
     configuration.db = 'data';
     configuration.datastore = 'localstorage';
@@ -443,9 +443,8 @@ function test2(params, callback) {
 
 
 exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, callback) {
-    try {
-        var inbound_parameters = {};
-        extend(true, inbound_parameters, inboundobj);
+
+
 
         proxyprinttodiv('Function inboundobj', inboundobj, 28);
         proxyprinttodiv('Function command', command, 28);
@@ -480,27 +479,25 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
         // TODO :: SAURABH COMMENTED FOR MAKING SECURITY WORK, FIX THIS AND UNCOMMENT
         // if (command.db) {db=command.db} // not needed
         // if (command.collection) {collection=command.collection}
-        proxyprinttodiv('Function databasetable + collection', databasetable + collection, 30);
+        proxyprinttodiv('Function databasetable + collection', databasetable + collection, 28);
         database = getFromLocalStorage(databasetable + collection);
 
-        proxyprinttodiv('Function inlist', database, 99, true);
+        proxyprinttodiv('Function inlist', database, 28, true);
         if (database) {
-            proxyprinttodiv('before IsJsonString', inboundobj, 30);
+            proxyprinttodiv('before IsJsonString', inboundobj, 28);
             if (IsJsonString(inboundobj)) {
                 query = JSON.parse(inboundobj);
             }
-            proxyprinttodiv('Function query', query, 99);
+            proxyprinttodiv('Function query', query, 28);
             //proxyprinttodiv('Function query',  stringify(query),12);
 
             outlist = sift(query, database);
 
             // if date exists , return in date descending order
-            outlist = outlist.sort(function (aObj, bObj) {
-
+            resultlist = outlist.sort(function (aObj, bObj) {
                 return Date.parse(aObj["metadata"]["date"]) - Date.parse(bObj["metadata"]["date"]);
             });
 
-            resultlist = outlist;
             // not sure if stuff below needed
             //keydatabase = getFromLocalStorage(databasetable + keycollection);
 
@@ -513,16 +510,9 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
             resultlist = [];
         }
 
-        proxyprinttodiv('Function resultlist', resultlist, 99);
+        proxyprinttodiv('Function resultlist', resultlist, 28);
         callback(null, resultlist);
-    } // end try
-    catch (err) {
-        var finalobject =
-            createfinalobject({
-                "result": "mongoquery"
-            }, {}, "mongoquery", err, inbound_parameters);
-        callback(finalobject.err, finalobject.res);
-    }
+
 };
 
 exports.test_return_noerror_result_local = test_return_noerror_result_local = function test_return_noerror_result_local (param, callback) 

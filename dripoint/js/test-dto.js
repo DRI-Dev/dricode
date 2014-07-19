@@ -6787,6 +6787,13 @@ exports.ettestag1 = widtests.ettestag1 = ettestag1 = function ettestag1(params, 
                 "note": "string"
             });
 
+        // execute({
+        //           "executethis": "getwidmaster",
+        //           "wid": "sounddto"
+        //         }, function (err, res) { 
+        //             proxyprinttodiv('Function ag1 actual result second ', res, 99, true);
+        //         })
+
             callback(err, res);
         });
 };
@@ -7119,7 +7126,10 @@ exports.ettestag3 = widtests.ettestag3 = ettestag3 = function ettestag3(params, 
             proxyprinttodiv('Function ag3 actual result ', res[5], 99, true);
             proxyprinttodiv('Function ag3 expected result ', expectedresult, 99, true);
             res = logverify("ettestag3_result", res[5], expectedresult);
-            callback(err, res1);
+            debuglevel=11;
+            execute({"executethis": "getwidmaster","wid": "songdto", "command.getwidmaster.convertmethod":"dto"}, function (err, res1) {
+                proxyprinttodiv("Ag3  result last ", res1, 99,true);
+                callback(null, res1)})
         });
     };
 

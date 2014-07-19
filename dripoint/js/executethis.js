@@ -18,6 +18,8 @@
 // eval
 // do some getwid calls directly
 // getclean step2 do not call if "string"
+// getmongo, send more parms -- preamble can take out
+// command.lock
 
 (function (window) {
     // 'use strict';
@@ -457,7 +459,7 @@
         }
 
         ////--proxyprinttodiv('execute before try series incomingparams ',incomingparams, 11);
-        ////--proxyprinttodiv('execute before try series command ',command, 11);
+        proxyprinttodiv('execute before try series command ',command, 11, true);
         ////--proxyprinttodiv('execute before try series executionpreferences', executionpreferences, 11, true);
         ////--proxyprinttodiv('execute before try series tryset', tryset, 11, true);
         saveglobal('debuglevel', executionpreferences.command.environment.run.executelevel);
@@ -530,8 +532,8 @@
                             ////--proxyprinttodiv('execute executionpreferences.command.environment.run.executelevel II', executionpreferences.command.environment.run.executelevel, 11);
                             ////--proxyprinttodiv("before execute outgoingparam", outgoingparam, 11);
                             ////--proxyprinttodiv("before execute executionpreferences", executionpreferences, 11);
-                            //--proxyprinttodiv("execute step 00 outgoingparam", outgoingparam, 11, true);
-                            //--proxyprinttodiv('execute step 00 type', type, 11);
+                            proxyprinttodiv("execute step 00 outgoingparam", outgoingparam, 11, true);
+                            //proxyprinttodiv('execute step 00 type', type, 11);
                             // step1 massage parameters based on command.processparameterfn, send results via outgoingparam
                             // step2 execute based on command.processfn, send results and error in from stestep02res/err
                             // step3 log the results based on type
@@ -652,8 +654,8 @@
                                     executeresult.err=fromstep02err;
                                     executeresult.res=fromstep02res;
                                     executeresult.executeseq = currentseq;
-                                    proxyprinttodiv('execute executeresult', executeresult, 11);
-                                    proxyprinttodiv('execute tempobj', tempobj, 11);
+                                    proxyprinttodiv('execute executeresult.outgoingparam', executeresult.outgoingparam, 11, true);
+                                    proxyprinttodiv('execute tempobj', tempobj, 11, true);
                                     
                                    
                                     // update results to the right detail record based on executeseq
@@ -773,10 +775,10 @@
                             function (err, res) 
                             {
                                 ////--proxyprinttodiv('execute level type III ', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
-                                //proxyprinttodiv("execute step04 end outgoingparam", outgoingparam, 11, true);
-                                //proxyprinttodiv('execute step04 end results', fromstep02res, 11);
-                                //proxyprinttodiv('execute step04 end error', fromstep02err, 11);
-                                //proxyprinttodiv('execute step04 end overallerror ', overallerror, 11);
+                                proxyprinttodiv("execute step04 end outgoingparam", outgoingparam, 11, true);
+                                proxyprinttodiv('execute step04 end results', fromstep02res, 11);
+                                proxyprinttodiv('execute step04 end error', fromstep02err, 11);
+                                proxyprinttodiv('execute step04 end overallerror ', overallerror, 11);
                                 //--proxyprinttodiv('execute steo04 end arrayresult ', arrayresult, 11);
                                 //--proxyprinttodiv('execute level type --', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
                                 //--proxyprinttodiv('execute steo04 -------------------------------------------',                '----------------------------------------------------------', 11);
@@ -787,8 +789,8 @@
                 },  // mapseries fn
 
                 function (err, res) {
-                    //proxyprinttodiv('execute before try series executionpreferences step06', executionpreferences, 11, true);
-                    //proxyprinttodiv('execute before try series tryset step06', tryset, 11, true);
+                    proxyprinttodiv('execute before try series executionpreferences step06', executionpreferences, 11, true);
+                    proxyprinttodiv('execute before try series tryset step06', tryset, 11, true);
                     //--proxyprinttodiv('execute step05 END arrayresult step06', arrayresult, 11);
                     //--proxyprinttodiv('execute step6 level type --', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
 
@@ -884,16 +886,14 @@
         } 
         else // now check if targetfn exists
         {
-            if (!incomingparams.executethis) { callback(null, incomingparams); }
-
+            incomingparams=converttojson(incomingparams); 
             var targetfn = window[incomingparams.executethis];
             if (!targetfn)
-            {   // if does not exist then error
-                callback({"errorname":"fnnotfound"}, null);
+            {   
+                callback(null, incomingparams); 
             }
             else // continue with normal execution
             {
-                incomingparams=converttojson(incomingparams); 
                 //--proxyprinttodiv('>>>> execute incomingparams ', incomingparams, 11);
                 var filter_data = getcommand(incomingparams, {
                         "command": {
@@ -941,8 +941,8 @@
                     {
                         targetfn(inboundparams, function (err, resultparameters) 
                         { 
-                            //--proxyprinttodiv("execute after do this inboundparams", inboundparams, 11);
-                            //--proxyprinttodiv("execute after do this resultparameters", resultparameters, 11);
+                            proxyprinttodiv("execute after do this inboundparams", inboundparams, 11);
+                            proxyprinttodiv("execute after do this resultparameters", resultparameters, 11);
                             //--proxyprinttodiv("execute after do this err", err, 11);
                             //--proxyprinttodiv('execute after do this command', command, 11, true);
                             if (!resultparameters) {resultparameters={};}
@@ -1110,6 +1110,7 @@
             execute(executeobject, function (err, res) {
                 if (err) 
                 {
+                    alert(res);
                     callback(err,res)
                 }
                 else 
@@ -1120,7 +1121,8 @@
                     //if (res) proxyprinttodiv("checkcache check ", new Date(res.metadata.systemdto.expirationdate) > new Date(), 11)
                     if (res && res.metadata && res.metadata.systemdto && 
                         res.metadata.systemdto.expirationdate && new Date(res.metadata.systemdto.expirationdate) > new Date()) {
-                        //proxyprinttodiv("checkcache return from cache", res, 11);
+                        proxyprinttodiv("checkcache return from cache", res, 11);
+                        alert(res);
                         callback(null, res.container);
                     } else {
                         //proxyprinttodiv("checkcache date ", new Date(), 11);
