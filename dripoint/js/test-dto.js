@@ -7137,6 +7137,42 @@ widtests.ettestag3.category = "daily";
 widtests.ettestag3.subcategory = "push";
 widtests.ettestag3.js = exports.ettestag1;
 widtests.ettestag3.description = "this does a test";
+
+
+exports.ettestag3x = widtests.ettestag3x = ettestag3x = function ettestag3x(params, callback) {
+    var expectedresult = {};
+    var executeobject = {}
+        executeobject.command={};
+        executeobject.command.environment={};
+        executeobject.command.environment.run={};
+        executeobject.command.environment.run.executelevel=0;
+        executeobject.command.environment.syncrule = "sync_local"
+        executeobject.command.xrun = {"executethis": "getwidmaster","wid": "song1"};
+        
+    proxyprinttodiv("Ag3  params ", params, 99,true);
+    var env = new DriEnvironment(params.command.environment);
+    proxyprinttodiv("Ag3  env ", env, 99, true);
+    env.execute(executeobject, 
+        
+        function (err, res1) {
+            proxyprinttodiv("Ag3  result ", res1, 99,true);
+            var res = res1;
+
+            proxyprinttodiv('Function ag3 actual result ', res[5], 99, true);
+            proxyprinttodiv('Function ag3 expected result ', expectedresult, 99, true);
+            res = logverify("ettestag3_result", res[5], expectedresult);
+            debuglevel=11;
+            callback(null, res1)
+        })
+    };
+
+widtests.ettestag3x.category = "daily";
+widtests.ettestag3x.subcategory = "push";
+widtests.ettestag3x.js = exports.ettestag1;
+widtests.ettestag3x.description = "this does a test";
+
+
+
 // This will test the ability to write a dto to the db, use that dto to write
 // a wid with that dto, and get the results of getting that widtests.
 //exports.ettestag2 = ettestag2 = function ettestag2(params, callback) {
