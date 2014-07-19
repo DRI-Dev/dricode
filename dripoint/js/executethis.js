@@ -886,11 +886,14 @@
         } 
         else // now check if targetfn exists
         {
-            incomingparams=converttojson(incomingparams); 
+            incomingparams=converttojson(incomingparams);
+
+            if (!incomingparams.executethis) { callback(null, incomingparams); }
+
             var targetfn = window[incomingparams.executethis];
             if (!targetfn)
-            {   
-                callback(null, incomingparams); 
+            {
+                callback({"errorname":"fnnotfound"}, null);
             }
             else // continue with normal execution
             {
