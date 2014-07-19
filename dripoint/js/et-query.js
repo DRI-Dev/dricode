@@ -126,88 +126,85 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 // Use single to set up a query with the params of 1 wid
                 if (qparms.mongosinglequery) 
                 {
-                    alert();
                     var wid = qparms['mongosinglequery'];
-                    etEnvironment.execute({'executethis': 'getwid','wid': wid,'command.executetype':'series'}, function (err, res) {
+                    etEnvironment.execute({'executethis': 'getwid','wid': wid,'command.executetype':'series'}, function (err, widObject) {
                         // If error, bounce out
-                        if (err && Object.keys(err).length > 0) {cb1(err, res);} 
+                        if (err && Object.keys(err).length > 0) {cb1(err, widObject);}
                         else 
                         {
-                            var widObject = res;
                             delete widObject.wid;
                             delete widObject.metadata;
                             // build a quyer based on the widObject
                             mQueryString = BuildSingleQuery(widObject, "or", environmentdb);
                             proxyprinttodiv('Function MongoDataQuery singlemongoquery : ', mQueryString, 28, true);
                             mquery(mQueryString, projection, command, function (err, res) {
-                                if (err && Object.keys(err).length > 0) {cb1(err, res);      } 
-                                                     else {output = res; cb1(null, "step01");}
+                                if (err && Object.keys(err).length > 0) { cb1(err, res); }
+                                else { output = res; cb1(null, "step01"); }
                             }); // mquery
                         }
-                    }) // execute getwid
+                    }); // execute getwid
                 } 
                 else if (qparms.mongomultiplequery) 
                 {
-                    alert();
                     etEnvironment.execute(
                         {'executethis': 'getwid','wid': qparms['mongomultiplequery'],'command.executetype':'series'},
-                        function (err, res) {
-                        if (err && Object.keys(err).length > 0) 
-                            {cb1(err, res);} 
-                        else 
-                        {
-                            var listOfWids = res;
-                            delete listOfWids["wid"];
-                            delete listOfWids.metadata;
-                            proxyprinttodiv('Function MongoDataQuery listOfWids : ', listOfWids, 28, true);
+                        function (err, listOfWids) {
+                            if (err && Object.keys(err).length > 0)
+                            { cb1(err, listOfWids); }
+                            else
+                            {
+                                delete listOfWids["wid"];
+                                delete listOfWids.metadata;
+                                proxyprinttodiv('Function MongoDataQuery listOfWids : ', listOfWids, 28, true);
 
-                            var ListOfLists=[];
-                            var todolist = [];
-                            for (var w in listOfWids) {
-                                todolist.push(w);
-                            }
+                                var ListOfLists=[];
+                                var todolist = [];
+                                for (var w in listOfWids) {
+                                    todolist.push(w);
+                                }
 
-                            async.mapSeries(todolist, function (w, cbMap) {
-                                async.nextTick(function () {
-                                    etEnvironment.execute(
-                                        {'executethis': 'getwid','wid': w,'command.executetype':'series'}, 
-                                        function (err, res) 
-                                        {
+                                async.mapSeries(todolist, function (w, cbMap) {
+                                    async.nextTick(function () {
+                                        etEnvironment.execute(
+                                            {'executethis': 'getwid','wid': w,'command.executetype':'series'},
+                                            function (err, res)
+                                            {
+                                                if (err && Object.keys(err).length > 0)
+                                                    {cbMap(err, res);}
+                                                else
+                                                {
+                                                    var tempwid = res;
+                                                    delete tempwid["wid"];
+                                                    delete tempwid.method;
+                                                    ListOfLists.push(tempwid);
+                                                    cbMap(null, "map");
+                                                }
+                                            }); // execute
+                                        }); // nextTick
+                                }, // mapseries
+                                function (err, res) {
+                                    if (err && Object.keys(err).length > 0)
+                                    { cb1(err, res); }
+                                    else
+                                    {
+                                        mQueryString = BuildMultipleQuery(ListOfLists, "and", "or", environmentdb);
+                                        proxyprinttodiv('querywid mQueryString multiple', mQueryString, 28);
+                                        mquery(mQueryString, projection, command, function (err, res) {
                                             if (err && Object.keys(err).length > 0)
-                                                {cbMap(err, res);}
+                                            {
+                                                cb1(err, res);
+                                            }
                                             else
                                             {
-                                                var tempwid = res;
-                                                delete tempwid["wid"];
-                                                delete tempwid.method;
-                                                ListOfLists.push(tempwid);
-                                                cbMap(null, "map");
+                                                output = res;
+                                                cb1(null, 'step01');
                                             }
-                                        }); // execute
-                                    }); // nextTick 
-                            }, // mapseries
-                            function (err, res) {
-                                if (err && Object.keys(err).length > 0)
-                                    {cb1(err, res);}
-                                else
-                                {
-                                    mQueryString = BuildMultipleQuery(ListOfLists, "and", "or", environmentdb);
-                                    proxyprinttodiv('querywid mQueryString multiple', mQueryString, 28);
-                                    mquery(mQueryString, projection, command, function (err, res) {
-                                        if (err && Object.keys(err).length > 0) 
-                                        {
-                                            cb1(err, res);
-                                        } 
-                                        else 
-                                        {
-                                            output = res;
-                                            cb1(null, 'step01');
-                                        }
-                                    });
-                                } // if no error
-                            }); // end of mapseries
-                        } // end if not error of first execute
-                    }); // end of first execute
+                                        });
+                                    } // if no error
+                                }); // end of mapseries
+                            } // end if not error of first execute
+                        }
+                    ); // end of first execute
                 } 
                 else if (qparms.mongorawquery || (extracommands.namespace && extracommands.namespaceflag))
                 {
@@ -217,17 +214,16 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                         var criteriajsonarray = [];
 
                         for(var key in userns){
-                 
                             var isallowed = (usernsflag[key] && usernsflag[key] == "true");
-                            if(isallowed && userns){
+                            if(isallowed && userns) {
                                 var jsonnamespaceobj = {};
                                 jsonnamespaceobj["metadata.namespace." + key] = userns[key];
                                 criteriajsonarray.push(jsonnamespaceobj);
                             }
                         }
 
-                        var queryjson = {};
-                        queryjson['$and']=criteriajsonarray;
+                        var queryjson = {"$and":criteriajsonarray};
+
                         // create a query based on criteriajsonarray, load as xtra parms for next step
                         xparams['$and'] = BuildSingleQuery([criteriajsonarray,qparms.mongorawquery], "and", environmentdb); 
 
@@ -300,15 +296,15 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 // Relationship Section **********
                 // Skip if there are no relParams
 
-                if (  ( qparms.mongorelationshipdirection  ||
-                        qparms.mongorelationshiptype  ||
-                        qparms.mongorelationshipmethod  ||
-                        qparms.mongorelationshiprawquery  ||
-                        qparms.mongorelationshiplink  ||
-                        qparms.mongorelationshipquery  ||
-                        qparms.mongodtotype  ||
-                        qparms.mongorelquery )  && 
-                        (outputlistofwids.length > 0) ) 
+                if ((qparms.mongorelationshipdirection
+                     || qparms.mongorelationshiptype
+                     || qparms.mongorelationshipmethod
+                     || qparms.mongorelationshiprawquery
+                     || qparms.mongorelationshiplink
+                     || qparms.mongorelationshipquery
+                     || qparms.mongodtotype
+                     || qparms.mongorelquery )
+                     && (outputlistofwids.length > 0))
                 {
                     proxyprinttodiv('querywid output before rel', outputlistofwids, 28, true);
                     mQueryString = relationShipQuery(qparms, outputlistofwids, environmentdb);
@@ -324,11 +320,10 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                                 cb3(null, "step03");
                             }
                         });
-
                     } 
                     else 
                     {
-                        output=[];
+                        output = [];
                         cb3(null, "step03");
                     }
                 } 
@@ -336,7 +331,6 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 {
                     cb3(null, "step03");
                 }
-
             },
 
             function step04(cb4) {
@@ -404,74 +398,74 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
             } // else
         } // last function
         ); // asynch
-        } // else
-    }
+    } // else
+};
 
 
-    function finalformat(output, relationshipoutput, qparms, extracommands, command, callback) {
-        proxyprinttodiv('querywid finalformat qparms', qparms, 28, true);
-        var queryconvertmethod = extracommands.queryconvertmethod;
-        var excludeparameters=qparms.mongosetfieldsexclude;
-        var db = command.db;
-        var finaloutput = [];
-        proxyprinttodiv('finalformat top output', output, 28, true); 
-        proxyprinttodiv('finalformat top relationshipoutput', relationshipoutput, 28, true); 
-        proxyprinttodiv('querywid finalformat excludeparameters', excludeparameters, 28);
+function finalformat(output, relationshipoutput, qparms, extracommands, command, callback) {
+    proxyprinttodiv('querywid finalformat qparms', qparms, 28, true);
+    var queryconvertmethod = extracommands.queryconvertmethod;
+    var excludeparameters = qparms.mongosetfieldsexclude;
+    var db = command.db;
+    var finaloutput = [];
+    proxyprinttodiv('finalformat top output', output, 28, true);
+    proxyprinttodiv('finalformat top relationshipoutput', relationshipoutput, 28, true);
+    proxyprinttodiv('querywid finalformat excludeparameters', excludeparameters, 28);
 
-        for (var eachout in output)
+    for (var eachout in output)
+    {
+        var wid = output[eachout][db].wid ||output[eachout].wid;
+        proxyprinttodiv('querywid finalforma wid', wid, 28);
+        // only proceed if current paramter is not in exclude parameter set
+        proxyprinttodiv('querywid finalformat', output[eachout], 28);
+        proxyprinttodiv('querywid finalformat excludeparameters[wid]', excludeparameters[wid], 28);
+        if (!excludeparameters[wid])
         {
-            var wid = output[eachout][db].wid ||output[eachout].wid;
-            proxyprinttodiv('querywid finalforma wid', wid, 28);
-            // only proceed if current paramter is not in exclude parameter set
-            proxyprinttodiv('querywid finalformat', output[eachout], 28);
-            proxyprinttodiv('querywid finalformat excludeparameters[wid]', excludeparameters[wid], 28);
-            if (!excludeparameters[wid])
+            // first search for wid in relationshipoutput
+            var foundrecord;
+            for (var eachrecord in relationshipoutput)
             {
-                // first search for wid in relationshipoutput
-                var foundrecord;
-                for (var eachrecord in relationshipoutput)
+                if (relationshipoutput[eachrecord][db].primarywid===wid ||
+                    relationshipoutput[eachrecord][db].secondarywid===wid )
                 {
-                    if (relationshipoutput[eachrecord][db].primarywid===wid ||
-                        relationshipoutput[eachrecord][db].secondarywid===wid )
-                    {
-                        foundrecord = relationshipoutput[eachrecord][db];
-                        break;
-                    }
-                }
-
-                // then change and enhance the strucutre of the result
-                var enhancedrecord = convertfromdriformatenhanced(output[eachout], command, foundrecord);
-                proxyprinttodiv('querywid finalformat enhancedrecord', enhancedrecord, 28, true);
-				proxyprinttodiv('querywid queryconvertmethod', queryconvertmethod, 28);
-                // now convert teach record based on query convertmethod
-                if (queryconvertmethod === "object") 
-                {
-                    finaloutput.push(enhancedrecord);
-					proxyprinttodiv('querywid finaloutput after queryconvertmethod = ' + queryconvertmethod, finaloutput, 28);					
-                }
-                else if (queryconvertmethod === "each") 
-                {
-                    var temp = {};
-                    temp[output[eachout].wid]=enhancedrecord;
-                    finaloutput.push(temp);
-					proxyprinttodiv('querywid finaloutput after queryconvertmethod = ' + queryconvertmethod, finaloutput, 28);					
+                    foundrecord = relationshipoutput[eachrecord][db];
+                    break;
                 }
             }
-        }
-        proxyprinttodiv('querywid finaloutput', finaloutput, 28, true);
-        callback(null, finaloutput)
-    } // final format
 
-    function distilllist(inlist, field, environmentdb) {
-        var outlist = [];
-        var temp={};
-        for (var eachitem in inlist)
-        {
-            temp.wid=inlist[eachitem][environmentdb][field] || inlist[eachitem][field];
-            outlist.push(temp);
+            // then change and enhance the strucutre of the result
+            var enhancedrecord = convertfromdriformatenhanced(output[eachout], command, foundrecord);
+            proxyprinttodiv('querywid finalformat enhancedrecord', enhancedrecord, 28, true);
+            proxyprinttodiv('querywid queryconvertmethod', queryconvertmethod, 28);
+            // now convert teach record based on query convertmethod
+            if (queryconvertmethod === "object")
+            {
+                finaloutput.push(enhancedrecord);
+                proxyprinttodiv('querywid finaloutput after queryconvertmethod = ' + queryconvertmethod, finaloutput, 28);
+            }
+            else if (queryconvertmethod === "each")
+            {
+                var temp = {};
+                temp[output[eachout].wid]=enhancedrecord;
+                finaloutput.push(temp);
+                proxyprinttodiv('querywid finaloutput after queryconvertmethod = ' + queryconvertmethod, finaloutput, 28);
+            }
         }
-        return outlist;
     }
+    proxyprinttodiv('querywid finaloutput', finaloutput, 28, true);
+    callback(null, finaloutput);
+} // final format
+
+function distilllist(inlist, field, environmentdb) {
+    var outlist = [];
+    var temp = {};
+    for (var eachitem in inlist)
+    {
+        temp.wid = inlist[eachitem][environmentdb][field] || inlist[eachitem][field];
+        outlist.push(temp);
+    }
+    return outlist;
+}
 
 
 //in: key, value, preamble
@@ -509,7 +503,7 @@ function BuildSingleQuery(parameters, outerquerytype, preamble) {
     // if [] then remove []
 
     if (!parameters) {
-        return 
+        return null;
     }
 
     var parametersCount = parameters.length;
@@ -624,7 +618,7 @@ function queryafterrelationship(parameters, set2) {
 function relationShipQuery(parameters, input, environmentdb) {
     proxyprinttodiv('Function relationShipQuery() Constant input parameters: ', parameters, 28);
     var output = {};
-    var querystring
+    var querystring;
 
     if (!parameters.mongorelationshipdirection)  // Simply checking to make sure all the data is here
     {
