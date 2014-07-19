@@ -458,9 +458,9 @@ function finalformat(output, relationshipoutput, qparms, extracommands, command,
 
 function distilllist(inlist, field, environmentdb) {
     var outlist = [];
-    var temp = {};
     for (var eachitem in inlist)
     {
+        var temp = {};
         temp.wid = inlist[eachitem][environmentdb][field] || inlist[eachitem][field];
         outlist.push(temp);
     }
