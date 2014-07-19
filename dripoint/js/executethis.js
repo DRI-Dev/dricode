@@ -890,190 +890,188 @@
 
             if (!incomingparams.executethis) { 
                 callback(null, incomingparams); 
-            }
-            else
-            {
-            var targetfn = window[incomingparams.executethis];
-            if (!targetfn)
-            {
-                callback({"errorname":"fnnotfound"}, null);
-            }
-            else // continue with normal execution
-            {
-                //--proxyprinttodiv('>>>> execute incomingparams ', incomingparams, 11);
-                var filter_data = getcommand(incomingparams, {
-                        "command": {
-                            "convertmethod": "toobject",
-                            "adopt": null,
-                            "resultparameters": null,
-                            "result": "",
-                            "skipcache": true,
-                            "updatecache" : false,
-                            "internalcall": true, // use action processor
-                            "notfoundok": false // should return an error if not found
+            } else {
+                var targetfn = window[incomingparams.executethis];
+                if (!targetfn)
+                {
+                    callback({"errorname":"fnnotfound"}, null);
+                }
+                else // continue with normal execution
+                {
+                    //--proxyprinttodiv('>>>> execute incomingparams ', incomingparams, 11);
+                    var filter_data = getcommand(incomingparams, {
+                            "command": {
+                                "convertmethod": "toobject",
+                                "adopt": null,
+                                "resultparameters": null,
+                                "result": "",
+                                "skipcache": true,
+                                "updatecache" : false,
+                                "internalcall": true, // use action processor
+                                "notfoundok": false // should return an error if not found
+                            }
+                        }, {
+                            "command": {
+                                "convertmethod": "x",
+                                "adopt": "x",
+                                "resultparameters": "x",
+                                "result": "x",
+                                "skipcache": "x",
+                                "updatecache": "x",
+                                "internalcall": "x",
+                                "notfoundok" : "x"
+                            }
+                        },
+                        true);
+
+                    // keep command.environment/command.run.executeid as part of parameter
+                    ////--proxyprinttodiv('>>>> execute filter_data', filter_data, 11, true);
+                    var command = filter_data.filteredobject.command;
+                    var inboundparams = filter_data.output;
+                    var objkey=null;
+                    //--proxyprinttodiv('>>>> execute command', command, 11, true);
+                    //--proxyprinttodiv('>>>> execute inboundparams', inboundparams, 14, true);
+
+                    if (!command.skipcache || command.updatecache) {objkey = hashobj(inboundparams, command)};
+                    //--proxyprinttodiv('execute returned objkey', objkey, 11, true);
+                    delete inboundparams.executethis; // delete parameter executethis...we know the targetfn
+
+                    checkcache(objkey, function (err, res) {
+                        if (res)
+                        {
+                            callback(err, res);
                         }
-                    }, {
-                        "command": {
-                            "convertmethod": "x",
-                            "adopt": "x",
-                            "resultparameters": "x",
-                            "result": "x",
-                            "skipcache": "x",
-                            "updatecache": "x",
-                            "internalcall": "x",
-                            "notfoundok" : "x"
-                        }
-                    },
-                    true);
-
-                // keep command.environment/command.run.executeid as part of parameter
-                ////--proxyprinttodiv('>>>> execute filter_data', filter_data, 11, true);
-                var command = filter_data.filteredobject.command;
-                var inboundparams = filter_data.output;
-                var objkey=null;
-                //--proxyprinttodiv('>>>> execute command', command, 11, true);
-                //--proxyprinttodiv('>>>> execute inboundparams', inboundparams, 14, true);
-
-                if (!command.skipcache || command.updatecache) {objkey = hashobj(inboundparams, command)};
-                //--proxyprinttodiv('execute returned objkey', objkey, 11, true);
-                delete inboundparams.executethis; // delete parameter executethis...we know the targetfn
-
-                checkcache(objkey, function (err, res) {
-                    if (res) 
-                    {
-                        callback(err, res);
-                    }
-                    else 
-                    {
-                        targetfn(inboundparams, function (err, resultparameters) 
-                        { 
-                            proxyprinttodiv("execute after do this inboundparams", inboundparams, 11);
-                            proxyprinttodiv("execute after do this resultparameters", resultparameters, 11);
-                            //--proxyprinttodiv("execute after do this err", err, 11);
-                            //--proxyprinttodiv('execute after do this command', command, 11, true);
-                            if (!resultparameters) {resultparameters={};}
-                            // should we remove the 3 statements below?
-//                            if (!resultparameters.command) {resultparameters.command={};}
-//                            if (!resultparameters.command.environment) {resultparameters.command.environment={};}
-//                            if (!resultparameters.command.environment.run) {resultparameters.command.environment.run={};}
-//                            resultparameters.command.environment.run.executeid = incomingparams.command.environment.run.executeid;
-                            if (command.notfoundok && err && err.errorname==="notfound") {err=null; resultparameters={};}
-                            //--proxyprinttodiv("execute after do this resultparameters after", resultparameters, 11);
-                            if (err && Object.keys(err).length > 0) 
+                        else
+                        {
+                            targetfn(inboundparams, function (err, resultparameters)
                             {
-                                callback(err, resultparameters);
-                            } 
-                            else 
-                            {
-                                ////--proxyprinttodiv("end resultparameters II", resultparameters, 11);
-                                ////--proxyprinttodiv("execute - command **** I", resultparameters, 11);
-                                if (resultparameters && resultparameters.command) 
+                                proxyprinttodiv("execute after do this inboundparams", inboundparams, 11);
+                                proxyprinttodiv("execute after do this resultparameters", resultparameters, 11);
+                                //--proxyprinttodiv("execute after do this err", err, 11);
+                                //--proxyprinttodiv('execute after do this command', command, 11, true);
+                                if (!resultparameters) {resultparameters={};}
+                                // should we remove the 3 statements below?
+    //                            if (!resultparameters.command) {resultparameters.command={};}
+    //                            if (!resultparameters.command.environment) {resultparameters.command.environment={};}
+    //                            if (!resultparameters.command.environment.run) {resultparameters.command.environment.run={};}
+    //                            resultparameters.command.environment.run.executeid = incomingparams.command.environment.run.executeid;
+                                if (command.notfoundok && err && err.errorname==="notfound") {err=null; resultparameters={};}
+                                //--proxyprinttodiv("execute after do this resultparameters after", resultparameters, 11);
+                                if (err && Object.keys(err).length > 0)
                                 {
-                                    if (resultparameters.command.environment) 
+                                    callback(err, resultparameters);
+                                }
+                                else
+                                {
+                                    ////--proxyprinttodiv("end resultparameters II", resultparameters, 11);
+                                    ////--proxyprinttodiv("execute - command **** I", resultparameters, 11);
+                                    if (resultparameters && resultparameters.command)
                                     {
-                                        delete resultparameters.command.environment;
+                                        if (resultparameters.command.environment)
+                                        {
+                                            delete resultparameters.command.environment;
+                                        }
+                                        if (Object.keys(resultparameters.command).length === 0)
+                                        {
+                                            delete resultparameters.command;
+                                        }
                                     }
-                                    if (Object.keys(resultparameters.command).length === 0) 
+
+                                    ////--proxyprinttodiv("execute - command.resultparameters ****", command.resultparameters, 11);
+                                    if (command.resultparameters)
+                                    {
+                                        if (!command.adopt) {command.adopt="default";}
+                                        var copyOfInheritData = {};
+                                        extend(true, copyOfInheritData, command.currentresult);
+
+                                        //--proxyprinttodiv("execute - command ****", command, 11);
+                                        //--proxyprinttodiv("execute - command ****", command.resultparameters, 11);
+                                        //--proxyprinttodiv("execute - command.adopt ****", command.adopt, 11);
+                                        //--proxyprinttodiv("execute - command.overallresult ****", resultparameters, 11);
+                                        //--proxyprinttodiv("execute - inboundparams ****", inboundparams, 11);
+
+                                        //delete incomingparams.command;
+                                        //we might want to save command.environment and then readd
+                                        if (command.adopt === "override")
+                                        {
+                                            resultparameters = extend(true, {}, command.resultparameters, command.currentresult); //[0]
+                                        }
+                                        if (command.adopt === "default")
+                                        {
+                                            resultparameters = extend(true, {}, command.currentresult, command.resultparameters); //[0]
+                                        }
+
+                                        if (!resultparameters.command)
+                                        {
+                                            resultparameters.command = {};
+                                        }
+                                        if (!resultparameters.command.inherit)
+                                        {
+                                            resultparameters.command.inherit = {};
+                                        }
+                                        if (!resultparameters.command.inherit.data)
+                                        {
+                                            resultparameters.command.inherit.data = {};
+                                        }
+                                        // load a copy of the what was inherited
+                                        resultparameters.command.inherit.data = copyOfInheritData;
+                                    }
+
+                                    if (command.result)
+                                    {
+                                        var json = {};
+                                        json[command.result] = resultparameters;
+                                        resultparameters = json;
+                                    }
+
+                                    if (command.convertmethod === "todot")
+                                    {
+                                        resultparameters = ConvertToDOTdri(resultparameters);
+                                    }
+                                    if (command.convertmethod === "nocommand")
                                     {
                                         delete resultparameters.command;
                                     }
-                                }
 
-                                ////--proxyprinttodiv("execute - command.resultparameters ****", command.resultparameters, 11);
-                                if (command.resultparameters) 
-                                {
-                                    if (!command.adopt) {command.adopt="default";}
-                                    var copyOfInheritData = {};
-                                    extend(true, copyOfInheritData, command.currentresult);
+                                    //--proxyprinttodiv("execute - command **** II", resultparameters, 11);
 
-                                    //--proxyprinttodiv("execute - command ****", command, 11);
-                                    //--proxyprinttodiv("execute - command ****", command.resultparameters, 11);
-                                    //--proxyprinttodiv("execute - command.adopt ****", command.adopt, 11);
-                                    //--proxyprinttodiv("execute - command.overallresult ****", resultparameters, 11);
-                                    //--proxyprinttodiv("execute - inboundparams ****", inboundparams, 11);
-
-                                    //delete incomingparams.command; 
-                                    //we might want to save command.environment and then readd
-                                    if (command.adopt === "override") 
+                                    if (!command.updatecache)
                                     {
-                                        resultparameters = extend(true, {}, command.resultparameters, command.currentresult); //[0]
-                                    }
-                                    if (command.adopt === "default") 
-                                    {
-                                        resultparameters = extend(true, {}, command.currentresult, command.resultparameters); //[0]
-                                    }
-
-                                    if (!resultparameters.command) 
-                                    {
-                                        resultparameters.command = {};
-                                    }
-                                    if (!resultparameters.command.inherit) 
-                                    {
-                                        resultparameters.command.inherit = {};
-                                    }
-                                    if (!resultparameters.command.inherit.data) 
-                                    {
-                                        resultparameters.command.inherit.data = {};
-                                    }
-                                    // load a copy of the what was inherited
-                                    resultparameters.command.inherit.data = copyOfInheritData;
-                                }
-
-                                if (command.result) 
-                                {
-                                    var json = {};
-                                    json[command.result] = resultparameters;
-                                    resultparameters = json;
-                                }
-
-                                if (command.convertmethod === "todot") 
-                                {
-                                    resultparameters = ConvertToDOTdri(resultparameters);
-                                }
-                                if (command.convertmethod === "nocommand") 
-                                {
-                                    delete resultparameters.command;
-                                }
-
-                                //--proxyprinttodiv("execute - command **** II", resultparameters, 11);
-
-                                if (!command.updatecache) 
-                                {
-                                    callback(null, resultparameters);
-                                } 
-                                else 
-                                {
-                                    var expirationdate = new Date();
-                                    expirationdate = new Date(expirationdate.getTime() + .3 * 60000); // .3 of min
-                                    resultparameters.metadata.cache = "true";
-
-                                    var recorddef = {
-                                        "container":resultparameters,
-                                        "wid": objkey,
-                                        "metadata": {
-                                            "systemdto": {
-                                                "expirationdate": expirationdate
-                                            }
-                                        },
-                                        "command": {
-                                            "skipcache": true,
-                                            "datastore": config.configuration.datastore,
-                                            "collection": "cache",
-                                            "keycollection": "cachekey",
-                                            "db": config.configuration.db,
-                                            "databasetable": config.configuration.databasetable
-                                        }
-                                    };
-                                    //--proxyprinttodiv("update cache **************", recorddef, 11);
-                                    updatewid(recorddef, function (err, res) {
                                         callback(null, resultparameters);
-                                    });
-                                } // end else skip cache
-                            } // end else no error
-                        }); // targetfn
-                    } // else no cache
-                }); // check cache
-            } // targetfn
+                                    }
+                                    else
+                                    {
+                                        var expirationdate = new Date();
+                                        expirationdate = new Date(expirationdate.getTime() + .3 * 60000); // .3 of min
+                                        resultparameters.metadata.cache = "true";
+
+                                        var recorddef = {
+                                            "container":resultparameters,
+                                            "wid": objkey,
+                                            "metadata": {
+                                                "systemdto": {
+                                                    "expirationdate": expirationdate
+                                                }
+                                            },
+                                            "command": {
+                                                "skipcache": true,
+                                                "datastore": config.configuration.datastore,
+                                                "collection": "cache",
+                                                "keycollection": "cachekey",
+                                                "db": config.configuration.db,
+                                                "databasetable": config.configuration.databasetable
+                                            }
+                                        };
+                                        //--proxyprinttodiv("update cache **************", recorddef, 11);
+                                        updatewid(recorddef, function (err, res) {
+                                            callback(null, resultparameters);
+                                        });
+                                    } // end else skip cache
+                                } // end else no error
+                            }); // targetfn
+                        } // else no cache
+                    }); // check cache
+                } // targetfn
             } // if no et
         } // executethis exists
     };
