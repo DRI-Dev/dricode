@@ -888,8 +888,11 @@
         {
             incomingparams=converttojson(incomingparams);
 
-            if (!incomingparams.executethis) { callback(null, incomingparams); }
-
+            if (!incomingparams.executethis) { 
+                callback(null, incomingparams); 
+            }
+            else
+            {
             var targetfn = window[incomingparams.executethis];
             if (!targetfn)
             {
@@ -1071,6 +1074,7 @@
                     } // else no cache
                 }); // check cache
             } // targetfn
+            } // if no et
         } // executethis exists
     };
 
