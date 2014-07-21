@@ -1070,25 +1070,25 @@
  //if (debuglevel==111) {debuglevel=93}
 
         async.series([
-                function step1(cb) { // getdto
+                function step1(cb1) { // getdto
                     proxyprinttodiv('In __getclean__ resultObj: ', resultObj, 38);
                     proxyprinttodiv('In __getclean__ just before getdtoobject', command, 38);
 
                     getdtoobject(resultObj, command, function(err, res) {
                         // If error, bounce out
                         if (err && Object.keys(err).length > 0) {
-                            cb(err, res);
+                            cb1(err, res);
                         } else {
                             proxyprinttodiv('In __getclean__ resultObj: II ', resultObj, 38);
                             proxyprinttodiv('In __getclean__ step1 with res: ', res, 38);
                             proxyprinttodiv('In __getclean__ step1 command: ', command, 38);
                             dtoobject = res;
                             proxyprinttodiv('In __getclean__ step1 with dtoobject: ', dtoobject, 38);
-                            cb(null);
+                            cb1(null);
                         }
                     });
                 },
-                function step2(cb) { // getaggressivedto
+                function step2(cb2) { // getaggressivedto
 
                     //                        throw ({'Saphires': 'blue errors'});
 
@@ -1122,21 +1122,21 @@
                         etEnvironment.execute(executeobject, function(err, res) {
 
                             if (err && Object.keys(err).length > 0) {
-                                cb(err, res);
+                                cb2(err, res);
                             } else {
                                 bigdto = res;
                                 proxyprinttodiv('In __getclean__ bigdto ', bigdto, 38);
-                                cb(null);
+                                cb2(null);
                             }
                         });
                     } else {
                         proxyprinttodiv('In __getclean__ step2 else bigdto: ', bigdto, 38);
                         // in the case of having a root dto
                         bigdto = dtoobject;
-                        cb(null);
+                        cb2(null);
                     }
                 },
-                function step3(cb) {
+                function step3(cb3) {
 
 
 
@@ -1262,18 +1262,18 @@
                                 proxyprinttodiv('resultObj after special res', res, 38);
 
                                 if (err && Object.keys(err).length > 0) {
-                                    cb(err, res);
+                                    cb3(err, res);
                                 } else {
-                                    cb(null);
+                                    cb3(null);
                                 }
                             }); //end mapseries
                         } // if listdto length
                         else {
-                            cb(null);
+                            cb3(null);
                         }
                     } // end if bigdto
                     else { // if no bigdto
-                        cb(null);
+                        cb3(null);
                     }
                 } // end step 3
             ], // series list
