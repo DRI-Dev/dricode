@@ -528,7 +528,7 @@ if (typeof angular !== 'undefined') {
 
 // pulls object from scope (model) by wid name
 exports.getfromangular = getfromangular = function getfromangular(parameters, callback) {
-    if ($ && $('body').scope) { callback(null, $('body').scope()[parameters.wid]); }
+    if ($ && $('body').scope()) { callback(null, $('body').scope()[parameters.wid]); }
     else { callback(null); }
 };
 
