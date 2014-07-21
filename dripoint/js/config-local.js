@@ -3,7 +3,9 @@
 if (!exports) {
     var exports = {};
 }
-
+if (!config) { 
+    var config = {};
+}
 
 exports.localStore = localStore = function () {
     var json = {};
@@ -137,7 +139,13 @@ function config123() {
 
     configuration.defaultenvironment = {};
     configuration.defaultenvironment[configuration.db] = configuration.d;
-    //configuration.defaultenvironment[configuration.db].wid = configuration.e;
+
+    configuration.delete = {};
+    configuration.delete.collection = 'dricollection';
+    configuration.delete.db = 'data';
+    configuration.delete.datastore = 'localstorage';
+    configuration.delete.keycollection = configuration.collection+'key';
+    configuration.delete.databasetable = 'deletedatabasetable';
 
     return {
         "configuration": configuration
@@ -368,26 +376,29 @@ exports.clearLocalStorage = window.clearLocalStorage = clearLocalStorage = funct
     localStorage.clear();
     //localStore.clear();
     // items below can probably be cleared now
-    addToLocalStorage(config.configuration.databasetable + config.configuration.collection, [{
-        "wid": "initialwid",
-        "metadata": {
-            "date": new Date()
-        },
-        "data": {
-            "system generated": "clearLocalStorage10"
-        }
-    }]);
-    addToLocalStorage(config.configuration.databasetable + config.configuration.keycollection, {
-        "initialwid": {
-            "wid": "initialwid",
-            "metadata": {
-                "date": new Date()
-            },
-            "data": {
-                "system generated": "clearLocalStorage12"
-            }
-        }
-    });
+    updatewid({"wid":"misc", "a":"b"}, function (err, res) {
+           proxyprinttodiv('clear from clearLocalStorage', res, 99);
+    })
+    // addToLocalStorage(config.configuration.databasetable + config.configuration.collection, [{
+    //     "wid": "initialwid",
+    //     "metadata": {
+    //         "date": new Date()
+    //     },
+    //     "data": {
+    //         "system generated": "clearLocalStorage10"
+    //     }
+    // }]);
+    // addToLocalStorage(config.configuration.databasetable + config.configuration.keycollection, {
+    //     "initialwid": {
+    //         "wid": "initialwid",
+    //         "metadata": {
+    //             "date": new Date()
+    //         },
+    //         "data": {
+    //             "system generated": "clearLocalStorage12"
+    //         }
+    //     }
+    // });
 };
 
 exports.removeFromLocalStorage = window.removeFromLocalStorage = removeFromLocalStorage = function removeFromLocalStorage(key) {

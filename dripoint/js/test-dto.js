@@ -7034,24 +7034,28 @@ widtests.ettestag2.description = "this does a test";
 //exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
 exports.ettestag3 = widtests.ettestag3 = ettestag3 = function ettestag3(params, callback) {
 	//debuglevel = 28;
-	
+
 	var expectedresult = {
                 "title": "Highway to Hell",
                 "wid": "song1",
                 "metadata.method": "songdto",
                 "metadata.sounddto.type": "onetomany",
+                "metadata.date": {"exception":["updated"]},
                 "sounddto.0.note": "A flat",
                 "sounddto.0.wid": "ag3aflat",
                 "sounddto.0.metadata.method": "sounddto",
-                "sounddto.0.metadata.parentwidtests.song1": "songdto",
+                "sounddto.0.metadata.parentwid.song1": "songdto",
+                "sounddto.0.metadata.date": {"exception":["updated"]},
                 "sounddto.1.note": "B sharp",
                 "sounddto.1.wid": "ag3bsharp",
                 "sounddto.1.metadata.method": "sounddto",
-                "sounddto.1.metadata.parentwidtests.song1": "songdto",
+                "sounddto.1.metadata.parentwid.song1": "songdto",
+                "sounddto.1.metadata.date": {"exception":["updated"]},
                 "sounddto.2.note": "C flat",
                 "sounddto.2.wid": "ag3cflat",
                 "sounddto.2.metadata.method": "sounddto",
-                "sounddto.2.metadata.parentwidtests.song1": "songdto"
+                "sounddto.2.metadata.parentwid.song1": "songdto",
+                "sounddto.2.metadata.date": {"exception":["updated"]}
             };
 			
     var executeobject = {}
@@ -7121,16 +7125,18 @@ exports.ettestag3 = widtests.ettestag3 = ettestag3 = function ettestag3(params, 
         
         function (err, res1) {
             proxyprinttodiv("Ag3  result ", res1, 99,true);
-            var res = res1;
+            var res = res1[6];
 
-            proxyprinttodiv('Function ag3 actual result ', res[5], 99, true);
+            proxyprinttodiv('Function ag3 actual result ', res, 99, true);
             proxyprinttodiv('Function ag3 expected result ', expectedresult, 99, true);
-            res = logverify("ettestag3_result", res[5], expectedresult);
-            debuglevel=11;
-            execute({"executethis": "getwidmaster","wid": "songdto", "command.getwidmaster.convertmethod":"dto"}, function (err, res1) {
-                proxyprinttodiv("Ag3  result last ", res1, 99,true);
-                callback(null, res1)})
-        });
+            res = logverify("ettestag3_result", res, expectedresult);
+            // debuglevel=111;
+            // proxyprinttodiv('Function ag3 starting song1 ', expectedresult, 99, true);
+            // execute({"executethis": "getwidmaster", "wid": "song1"}, function (err, res1) {
+            //     proxyprinttodiv("Ag3  result last of song1 ", res1, 99,true);
+                callback(null, res)
+            })
+        //});
     };
 
 widtests.ettestag3.category = "daily";
@@ -7138,7 +7144,7 @@ widtests.ettestag3.subcategory = "push";
 widtests.ettestag3.js = exports.ettestag1;
 widtests.ettestag3.description = "this does a test";
 
-
+// can be ran after ag3 to just get the value of song1
 exports.ettestag3x = widtests.ettestag3x = ettestag3x = function ettestag3x(params, callback) {
     var expectedresult = {};
     var executeobject = {}
@@ -7158,7 +7164,7 @@ exports.ettestag3x = widtests.ettestag3x = ettestag3x = function ettestag3x(para
             proxyprinttodiv("Ag3  result ", res1, 99,true);
             var res = res1;
 
-            proxyprinttodiv('Function ag3 actual result ', res[5], 99, true);
+            proxyprinttodiv('Function ag3 actual result ', res1, 99, true);
             proxyprinttodiv('Function ag3 expected result ', expectedresult, 99, true);
             res = logverify("ettestag3_result", res[5], expectedresult);
             debuglevel=11;

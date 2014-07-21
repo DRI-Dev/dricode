@@ -20,6 +20,11 @@
 // getclean step2 do not call if "string"
 // getmongo, send more parms -- preamble can take out
 // command.lock
+// isobject errors
+// extend
+// how to save in cache command.recursive for example
+// deepfilter
+// userid shoudl be copied in envirometn copy
 
 (function (window) {
     // 'use strict';
@@ -1072,8 +1077,10 @@
         } else {
             var obj = {};
             extend(true, obj, inobj);
-            //delete obj.executethis;
-            delete obj.command.environment; // 
+            if (obj.command) 
+            {
+                delete obj.command.environment; // only save what is unique to this call
+            }
 
             var result = sortObj(obj, function (a, b) {
                 return a.key < b.key;
