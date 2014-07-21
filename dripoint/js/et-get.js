@@ -259,7 +259,7 @@
             if (inobj['metadata']) 
             {
                 inobj.metadata.systemdto = {};
-                inobj.metadata.systemdto.type = "onetoone"
+                inobj.metadata.systemdto.type = "onetoone";
                 var dtolist = {};
                 var metadata = inobj['metadata'];
                 //proxyprinttodiv("In getdtoobject createdto metadata", metadata, 93);
@@ -283,7 +283,7 @@
 
                 // for dtolist return this one, for deepdtolist, extend, for inherit push to what was there
                 inobj.command.dtolist = dtolist;
-                extend(true, inobj.command.deepdtolist, dtolist)
+                extend(true, inobj.command.deepdtolist, dtolist);
 
                 if (metadata.inherit) {
                     for (var eachinherit in metadata.inherit) {
@@ -341,8 +341,8 @@
             {
                 if (createcommand_and_dtotable_flag) // if recursive then create command object for this dto
                 {
-                    createcommand_and_dtotable(inobj, dtotable)
-                };
+                    createcommand_and_dtotable(inobj, dtotable);
+                }
 
                 // section below goes through each property and recurses as necessary
                 proxyprinttodiv("getdtoobject createdto -- inobj II", inobj, 93);
@@ -354,7 +354,7 @@
                     {
                         if (eachparam === "command") // if commmand then do not process, just adopt
                         {
-                            dtoobj[eachparam] = inobj[eachparam]
+                            dtoobj[eachparam] = inobj[eachparam];
                         } 
                         else // not command
                         {

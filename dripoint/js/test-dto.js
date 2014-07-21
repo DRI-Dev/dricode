@@ -7058,65 +7058,65 @@ exports.ettestag3 = widtests.ettestag3 = ettestag3 = function ettestag3(params, 
                 "sounddto.2.metadata.date": {"exception":["updated"]}
             };
 			
-    var executeobject = {}
+    var executeobject = {};
         executeobject.command={};
         executeobject.command.environment={};
         executeobject.command.environment.run={};
         executeobject.command.environment.run.executelevel=0;
-        executeobject.command.environment.syncrule = "sync_local"
+        executeobject.command.environment.syncrule = "sync_local";
 		
-		executeobject.command.xrun = [{
-            "executethis": "addwidmaster",
-            "wid": "sounddto",
-            "metadata.method": "sounddto",
-            "note": "string"
-        }, {
-            "executethis": "addwidmaster",
-            "wid": "songdto",
-            "metadata.method": "songdto",
-            "title": "string",
-            "metadata.sounddto.type": "onetomany"
-        }, {
-            "executethis": "addwidmaster",
-            "wid": "rel_sound_to_song",
-            "metadata.method": "relationshipdto",
-            "primarywid": "songdto",
-            "secondarywid": "sounddto",
-            "primarymethod": "songdto",
-            "secondarymethod": "sounddto",
-            "linktype": "onetomany",
-            "relationshiptype": "attributes"
-        }, {
-            "executethis": "addwidmaster",
-            "wid": "song1",
-            "metadata.method": "songdto",
-            "title": "Highway to Hell",
-            "sounddto.wid": "ag3aflat",
-            "sounddto.note": "A flat"
-         }, {
-             "executethis": "addwidmaster",
-             "wid": "song1",
-             "metadata.method": "songdto",
-             "title": "Highway to Hell",
-             "sounddto.wid": "ag3bsharp",
-             "sounddto.note": "B sharp"
-         }, {
-             "executethis": "addwidmaster",
-             "wid": "song1",
-             "metadata.method": "songdto",
-             "title": "Highway to Hell",
-             "sounddto.wid": "ag3cflat",
-             "sounddto.note": "C flat"
-         }, {
-             "executethis": "getwidmaster",
-             "wid": "song1",
-			 "metadata.method": "songdto",
-             "command": {
-                 "getwidmaster": {
-                     "execute": "ConvertToDOTdri"
-                 }
+    executeobject.command.xrun = [{
+        "executethis": "addwidmaster",
+        "wid": "sounddto",
+        "metadata.method": "sounddto",
+        "note": "string"
+    }, {
+        "executethis": "addwidmaster",
+        "wid": "songdto",
+        "metadata.method": "songdto",
+        "title": "string",
+        "metadata.sounddto.type": "onetomany"
+    }, {
+        "executethis": "addwidmaster",
+        "wid": "rel_sound_to_song",
+        "metadata.method": "relationshipdto",
+        "primarywid": "songdto",
+        "secondarywid": "sounddto",
+        "primarymethod": "songdto",
+        "secondarymethod": "sounddto",
+        "linktype": "onetomany",
+        "relationshiptype": "attributes"
+    }, {
+        "executethis": "addwidmaster",
+        "wid": "song1",
+        "metadata.method": "songdto",
+        "title": "Highway to Hell",
+        "sounddto.wid": "ag3aflat",
+        "sounddto.note": "A flat"
+     }, {
+         "executethis": "addwidmaster",
+         "wid": "song1",
+         "metadata.method": "songdto",
+         "title": "Highway to Hell",
+         "sounddto.wid": "ag3bsharp",
+         "sounddto.note": "B sharp"
+     }, {
+         "executethis": "addwidmaster",
+         "wid": "song1",
+         "metadata.method": "songdto",
+         "title": "Highway to Hell",
+         "sounddto.wid": "ag3cflat",
+         "sounddto.note": "C flat"
+     }, {
+         "executethis": "getwidmaster",
+         "wid": "song1",
+         "metadata.method": "songdto",
+         "command": {
+             "getwidmaster": {
+                 "execute": "ConvertToDOTdri"
              }
-        }];
+         }
+    }];
 		
     proxyprinttodiv("Ag3  params ", params, 99,true);
     var env = new DriEnvironment(params.command.environment);
@@ -7147,12 +7147,12 @@ widtests.ettestag3.description = "this does a test";
 // can be ran after ag3 to just get the value of song1
 exports.ettestag3x = widtests.ettestag3x = ettestag3x = function ettestag3x(params, callback) {
     var expectedresult = {};
-    var executeobject = {}
+    var executeobject = {};
         executeobject.command={};
         executeobject.command.environment={};
         executeobject.command.environment.run={};
         executeobject.command.environment.run.executelevel=0;
-        executeobject.command.environment.syncrule = "sync_local"
+        executeobject.command.environment.syncrule = "sync_local";
         executeobject.command.xrun = {"executethis": "getwidmaster","wid": "song1"};
         
     proxyprinttodiv("Ag3  params ", params, 99,true);
