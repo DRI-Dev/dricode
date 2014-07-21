@@ -20,7 +20,7 @@ if (!exports) {
 // used to create the inital record for a database
 exports.setinitialwid = setinitialwid = function setinitialwid(params, command) {
     var initialwid = {};
-    extend(true, initialwid, params)
+    extend(true, initialwid, params);
     var db = config.configuration.db;
     if (params.command && params.command.db) {db=params.command.db}
     initialwid.wid = "initialwid";
@@ -30,7 +30,7 @@ exports.setinitialwid = setinitialwid = function setinitialwid(params, command) 
     initialwid[db]=params;
     proxyprinttodiv('Function initialwid', initialwid, 12);
     return initialwid
-}
+};
 
 exports.updatewid = updatewid = updatewid = function updatewid(inobject, callback) {
     proxyprinttodiv('Function updatewid inobject', inobject,12 , true, true);
@@ -110,18 +110,18 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                     // flatten out record -- normal : {wid:wid1 a:b c:d}, driformat: {wid:wid1 data:{a:b c:d}}
                     found = true;       // mark that the record was found                          
                     // mark that current record exists
-                        if (command.datamethod === "insert") 
-                        {
-                            recordtoadd=incopy; // current record does not matter
-                        } 
-                        else (command.datamethod === "upsert") // default
-                        {
-                            recordtoadd = extend(true, recordtoadd, incopy);
-                        }
-                        if (command.hasOwnProperty("lock")) // set the right property to save
-                        {
-                            recordtoadd.metadata.lock=command.lock;
-                        }
+                    if (command.datamethod === "insert")
+                    {
+                        recordtoadd=incopy; // current record does not matter
+                    }
+                    else // (command.datamethod === "upsert") // default
+                    {
+                        recordtoadd = extend(true, recordtoadd, incopy);
+                    }
+                    if (command.hasOwnProperty("lock")) // set the right property to save
+                    {
+                        recordtoadd.metadata.lock = command.lock;
+                    }
                 }
                 else 
                 {
@@ -144,12 +144,12 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                 var currentlock = false;
                 if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock)
                 {
-                    currentlock=true
+                    currentlock = true;
                 }
 
-                if (command.lock===false || !currentlock)
+                if (command.lock === false || !currentlock)
                 {   
-                    if (!currentrecord) {currentrecord={}}
+                    if (!currentrecord) {currentrecord={};}
                     var convertedrecord = converttodriformat(recordtoadd, command); // get it ready to store
                     proxyprinttodiv('Function updatewid convertedrecord', convertedrecord, 12);
                     extend(true, currentrecord, convertedrecord); // merge with existing record
@@ -192,11 +192,11 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                 }
                 else // if not okaytoupdate
                 {
-                    err={"errorname":"locked"}
+                    err = {"errorname":"locked"};
                 }
 
                 // if this was actually a getwid call and nothing found then err
-                if (command.getwidflag===true && !found) {err = {"errorname": "notfound"};}
+                if (command.getwidflag === true && !found) {err = {"errorname": "notfound"};}
 
                 proxyprinttodiv('Function updatewid err', err, 12);
                 proxyprinttodiv('Function updatewid recordtoadd', recordtoadd, 12);
@@ -205,7 +205,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
         }
         else if (command.datastore === 'mongo') 
         { // if datastore == mongo
-            madd(addedobject, command, function (err, res) {
+            madd(incopy, command, function (err, res) {
                 callback(err, res);
             });
         } 
@@ -229,26 +229,26 @@ exports.getwid = getwid = function getwid(inobject, callback) {
     var command = incopy.command;
     proxyprinttodiv('Function datastore command -- get incopy', incopy, 12);
 
-        if (command.datastore === "localstorage" || command.datastore === "localstore")
-        { 
-            updatewid(incopy, function (err, output) {
-                // regardless of return we can be done since update will return read wid
-                proxyprinttodiv('Function getwid output', output, 12);
-                callback(err, output);
-            })
-        } 
-        else if (command.datastore === 'mongo') 
-        {
-            mget(inobject, command, function (err, output) {
-                output = convertfromdriformatenhanced(output, command, incopy);
-                callback(err, output);
-            });
-        } 
-        else 
-        { // if not mongo
-            proxyprinttodiv('Function datastore command -- get output 4', output, 12);
-            callback(err, incopy);
-        }
+    if (command.datastore === "localstorage" || command.datastore === "localstore")
+    {
+        updatewid(incopy, function (err, output) {
+            // regardless of return we can be done since update will return read wid
+            proxyprinttodiv('Function getwid output', output, 12);
+            callback(err, output);
+        })
+    }
+    else if (command.datastore === 'mongo')
+    {
+        mget(inobject, command, function (err, output) {
+            output = convertfromdriformatenhanced(output, command, incopy);
+            callback(err, output);
+        });
+    }
+    else
+    { // if not mongo
+        proxyprinttodiv('Function datastore command -- get incopy 4', incopy, 12);
+        callback(null, incopy);
+    }
 }; //End of getwid
 
 //To get parents
