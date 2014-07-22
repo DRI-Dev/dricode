@@ -81,8 +81,8 @@
         var inbound_parameters = {};
 
         var tempflag
-        if (object.sounddto.note==="A flat") {tempflag=true}
-        if (tempflag) {debuglevel=17}
+        if (object && object.sounddto && object.sounddto.note==="A flat") {tempflag=true;}
+        if (tempflag) {debuglevel=17;}
 
         proxyprinttodiv("cleanadd object", object, 17);
         //if (object.wid==="wid1") {debuglevel=38;}
