@@ -859,7 +859,7 @@
                         resetenvironment();
 
                         // remove the command property from the overall result if it still has it
-                        if (resultsummary.command) { delete resultsummary.command; }
+                        if (resultsummary && resultsummary.command) { delete resultsummary.command; }
                     }
 
                     callback(errorsummary, resultsummary)
