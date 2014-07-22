@@ -454,13 +454,11 @@
             proxyprinttodiv("getdtoobject createdtofromresults obj", obj, 93);
             proxyprinttodiv("getdtoobject createdtofromresults dtoobject", dtoobject, 93);
 
-            if (dtoobject.command.dtorecursive) 
+            if (dtoobject.command && dtoobject.command.dtorecursive)
             {
                 proxyprinttodiv("getdtoobject after createdtotable, dtotable recurse", dtotable, 93);
-                if (!obj.command) 
-                {
-                    obj.command = {};
-                }
+                
+                if (!obj.command) { obj.command = {}; }
                 obj.command.recursive = true; // this is set when getwidmaster creates object
                 dtoobject = createdto(obj, dtotable, true); // dtotable is basically representation of dto now
             } 
