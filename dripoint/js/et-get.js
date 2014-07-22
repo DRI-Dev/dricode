@@ -498,7 +498,7 @@
             dtotype = obj['metadata']['method'];
         }
 
-        if (obj.metadata.method === "string" || obj.wid === "guid") 
+        if (obj.metadata.method === "string" || obj.wid === "guid" || obj.wid==="string") 
         {
             proxyprinttodiv("getdtoobject *****string ", obj, 93);
             callback(null, obj);
@@ -644,7 +644,7 @@
 
                         if (listToDo.length > 0 && command && command.getwidmaster && command.getwidmaster.inheritflag === "true") {
                             proxyprinttodiv('<<< Get_Clean step3 resultObj after >>xx', parameterobject, 38);
-                            async.mapSeries(listToDo, function(eachresult, cbMap) {
+                            async.mapSeries(listToDo, function(eachresult, cbMap2) {
                                 async.nextTick(function() {
                                     proxyprinttodiv('getClean inherit getwidmaster eachresult I ', eachresult, 38);
                                     if (!eachresult.command) {eachresult.command = {};}
@@ -664,7 +664,7 @@
                                         proxyprinttodiv('clean inherit 4', res, 38);
                                         proxyprinttodiv('resultObj after special getwidmaster A ', parameterobject, 38);
                                         if (err && Object.keys(err).length > 0) {
-                                            cbMap(err, res);
+                                            cbMap2(err, res);
                                         } else {
                                             if ((res.length > 0) && (Object.keys(res).length > 0)) {
                                                 parameterobject = res;
@@ -674,10 +674,10 @@
                                                 parameterobject.metadata = {};
                                                 parameterobject.metadata = mm;
                                                 proxyprinttodiv('resultObj after special getwidmaster B', parameterobject, 38);
-                                                cbMap(null);
+                                                cbMap2(null);
                                             } // end if
                                             else { // if no result
-                                                cbMap(null);
+                                                cbMap2(null);
                                             }
                                         }
                                     }); // end execute
@@ -1096,7 +1096,7 @@
                     // if we have the root dto do not go off and get it again
 
                     // ### this check is wrong...we should return from getdtoobject command.wid and compare to it
-                    if (resultObj.wid !== resultObj.metadata.method) {
+                    if (resultObj.wid !== resultObj.metadata.method && resultObj.metadata.method!=="string") {
                         proxyprinttodiv('In __getclean__ step2 with before getWidMongo: ', resultObj, 38);
 
                         // add logic to look for dtotype
