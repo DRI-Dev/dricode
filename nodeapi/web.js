@@ -312,6 +312,90 @@ exports.getuptime = getuptime = function getuptime(params, callback) {
         }
     );
 }
+
+function savetoqueue(p, callback) {
+    // Parameters if this is a normal function
+    // queuename - string - the name of the queue to save to
+    // 
+    var queuename = p.command.queuename;
+    delete p.command.queuename;
+    var itemtobesaved=p;
+    var recorddef = {
+        "wid": "fredi888",
+        "container":itemtobesaved,   // no wid ... let system make it for you
+        "metadata" : {
+            "queueflag" : "true"
+        },
+        "command": {
+            "datastore": config.configuration.datastore,
+            "collection": queuename,
+            "keycollection": queuename+"key",
+            "queuename": queuename,
+            "db": config.configuration.db,
+            "databasetable": config.configuration.databasetable
+        }
+    };
+    //--proxyprinttodiv("update cache **************", recorddef, 11);
+    updatewid(recorddef, function (err, res) {
+        callback(null, resultparameters);
+    });
+}
+
+function getfromqueue(p, callback) {
+    var queuename = p.command.queuename;
+    delete p.command.queuename;
+    var executeobject = {
+        "command": {
+            "result": "queryresult",
+            "datastore": config.configuration.datastore,
+            "collection": queuename,
+            "keycollection": queuename+"key",
+            "queuename": queuename,
+            "db": config.configuration.db,
+            "databasetable": config.configuration.databasetable,
+            "nofoundok": true,
+            "executethis": "querywid"
+        },
+        "mongorawquery": {"$and": [ {"keycollection": queuename + "key" }] }
+    };
+    // executeobject["mongo/awquery"] = {"$and": [{"wid": "doesnotmatter"}]};
+    // executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
+    // executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]};
+        
+    execute(executeobject, function (err, res) {
+        proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
+        if (err) {
+            callback(err,res)
+        } else {
+            if (res.length === 0) {
+                executetodolist = [];
+            }
+        }
+        callback(err ,res);
+    });
+}
+
+function getoneitemfromqueue(paramters, callback) {
+    var objkey = parameters['queuename'];
+    var executeobject = {
+        "wid": objkey,
+        "command": {
+            "notfoundok": true,
+            "skipcache": true,
+            "datastore": config.configuration.datastore,
+            "collection": "cache",
+            "keycollection": "cachekey",
+            "db": config.configuration.db,
+            "databasetable": config.configuration.databasetable
+        }
+    };
+    executeobject.executethis = "getwid";
+    proxyprinttodiv("checkcache executeobject  *********", executeobject, 99);
+
+    // execute(executeobject, function (err, res) 
+
+}
+
 //    var startTime = new Date().getTime().toString();
 //    execute({
 //        "executethis":"addwidmaster",

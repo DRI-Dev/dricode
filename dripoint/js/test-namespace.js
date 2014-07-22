@@ -448,3 +448,64 @@ widtests.nstest_appnamewidget1fail.category = "daily";
 widtests.nstest_appnamewidget1fail.subcategory = "push";
 widtests.nstest_appnamewidget1fail.js = exports.nstest_appnamewidget1fail;
 widtests.nstest_appnamewidget1fail.description = "this does a test";	
+
+
+
+exports.savetoqueue = savetoqueue = function savetoqueue(p, callback) {
+    // Parameters if this is a normal function
+    // queuename - string - the name of the queue to save to
+    // 
+    proxyprinttodiv("savetoqueue **************", 7, 99);
+    var queuename = p.command.queuename;
+    proxyprinttodiv(" qname is ... ",  queuename, 99 );
+    delete p.command.queuename;
+    queuename = "dricollection";
+    var itemtobesaved=p;
+    var recorddef = {
+        "wid":"russ112",
+        "container":itemtobesaved,   // no wid ... let system make it for you
+        "metadata" : {
+            "queueflag" : "true"
+        },
+        "command": {
+            "datastore": config.configuration.datastore,
+            "collection": queuename,
+            "keycollection": queuename+"key",
+            "queuename": queuename,
+            "db": config.configuration.db,
+            "databasetable": config.configuration.databasetable
+        }
+    };
+    proxyprinttodiv("update cache **************", recorddef, 99);
+    // var recorddef = { "wid": "russ1", "key": "value1"};
+    updatewid(recorddef, function (err, res) {
+        callback(null, res);
+    });
+}
+
+exports.getfromqueue = getfromqueue = function getfromqueue(inputobj, callback) {
+    proxyprinttodiv("findparent inputobj", inputobj, 99);
+    // var wid = inputobj["wid"];
+    var executeobject = {};
+    executeobject["executethis"] = "querywid";
+    executeobject["command"] = {
+        "result": "queryresult"
+    };
+    executeobject["mongorawquery"] = {
+        "$and": [{
+            "metadata.queueflag": "true" 
+        }]
+    };
+    var env = new DriEnvironment(inputobj.command.environment);
+    proxyprinttodiv("after environment", env, 99);
+
+    env.execute(executeobject, function (err, res) {
+        proxyprinttodiv("findparent res", res, 99);
+        findwidbyqueryresult(res, "primarywid", function (err, res) {
+            callback(err, res);
+        });
+    });
+}
+
+
+
