@@ -7153,7 +7153,7 @@ exports.ettestag3x = widtests.ettestag3x = ettestag3x = function ettestag3x(para
         executeobject.command.environment.run={};
         executeobject.command.environment.run.executelevel=0;
         executeobject.command.environment.syncrule = "sync_local";
-        executeobject.command.xrun = {"executethis": "getwidmaster","wid": "song1"};
+        executeobject.command.xrun = {"executethis": "getwidmaster","wid": "songdto", "command.convertmethod":"dto"};
         
     proxyprinttodiv("Ag3  params ", params, 99,true);
     var env = new DriEnvironment(params.command.environment);

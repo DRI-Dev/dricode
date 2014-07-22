@@ -428,7 +428,7 @@
         ////--proxyprinttodiv('before -- remove -- incomingparams', incomingparams, 11, true, true);
         //incomingparams=ConvertFromDOTdri(incomingparams); // convert from dot notation -- not necessary if dot notation not sent in
         incomingparams = converttojson(input); // converts to object and makes copy
-        proxyprinttodiv('>>>>>>>>>>>>>>>>>>>>>>>>execute begin', incomingparams, 11, true);
+        proxyprinttodiv('>>>>>>>>>>>>>>>>>>>>>>>>execute begin', incomingparams, 99, true, true);
 
         var command = converttocommand(incomingparams);    // call main conversion
 

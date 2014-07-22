@@ -422,15 +422,24 @@
                             } 
                             else 
                             { // if no dtotable entry then make up value for this filed
-                                if (eachparam === "metadata") {
+                                if (eachparam === "metadata") 
+                                {
                                     dtoobj[eachparam] = recursestring(inobj[eachparam])
-                                } else if (eachparam === "wid") {
-                                    dtoobj[eachparam] = "guid"
-                                } else if (isObject(inobj[eachparam])) {
+                                } 
+                                // else if (eachparam === "wid") 
+                                // {
+                                //     dtoobj[eachparam] = "guid"
+                                // } 
+                                else if (isObject(inobj[eachparam])) 
+                                {
                                     dtoobj[eachparam] = "object"
-                                } else if (isArray(inobj[eachparam])) {
+                                } 
+                                else if (isArray(inobj[eachparam])) 
+                                {
                                     dtoobj[eachparam] = "array"
-                                } else {
+                                } 
+                                else 
+                                {
                                     dtoobj[eachparam] = "string"
                                 }
                                 proxyprinttodiv("getdtoobject createdto AFTER SPECIAL dtoobj[eachparam]", dtoobj[eachparam], 93, true);
@@ -476,15 +485,17 @@
         // this function looks up the matching dto to an object or sent in command.dtotype, if one is not found then one is made
         // based on object that came in or found dto we create a dtotable
         // based on traversing that dtotable we create a dto
-        proxyprinttodiv("getdtoobject input obj: ", obj, 93);
+        proxyprinttodiv("getdtoobject input obj: ", obj, 99, true, true);
         var dtotype;
         var dtoobject = {};
 
-        if (!obj["metadata"]) {
-            obj["metadata"] = {};
+        if (!obj.metadata) 
+        {
+            obj.metadata = {};
         }
-        if (!obj["metadata"]["method"]) {
-            obj["metadata"]["method"] = "defaultdto";
+        if (!obj.metadata.method) 
+        {
+            obj.metadata.method = "defaultdto";
         }
 
         if (command && command.dtotype) 
@@ -493,12 +504,14 @@
         } 
         else 
         {
-            dtotype = obj['metadata']['method'];
+            dtotype = obj.metadata.method;
         }
 
+proxyprinttodiv("getdtoobject input obj: ", obj, 99, true, true);
         if (obj.metadata.method === "string" || obj.wid === "guid" || obj.wid==="string") 
         {
-            proxyprinttodiv("getdtoobject *****string ", obj, 93);
+            proxyprinttodiv("getdtoobject *****string THIS SHOULD NOT HAPPEN ", obj, 99,true);
+            debuglevel=38;
             callback(null, obj);
         } 
         else 
@@ -975,14 +988,14 @@
                         }
 
                         var widName = "undefined";
-                        if (parameterobject["wid"]) {
-                            widName = parameterobject["wid"];
+                        if (parameterobject.wid) {
+                            widName = parameterobject.wid;
                         }
 
-                        parameterobject["wid"] = "guid";
-                        parameterobject["metadata"]["method"] = "string";
-                        // parameterobject.command.inherit.push({"wid" : "systemdefault", "command":{"dtotype":"", "adopt":"default"}})
-                        // if (command.getwidmaster.inheritflag === "true") {
+                        
+                        //parameterobject.wid = "guid";
+                        parameterobject.metadata.method = "string";
+
                         if (widName !== "systemdto") {
 
                             var etEnvironment = new DriEnvironment(command.environment);
@@ -1003,9 +1016,12 @@
                             };
 
                             etEnvironment.execute(executeobject, function(err, res) {
-                                if (err && Object.keys(err).length > 0) {
-                                    cb5(null, 'four');
-                                } else 
+                                if (!(res && res.systemdto && Object.keys(res.systemdto).length > 0) ||
+                                    (err && Object.keys(err).length > 0)) 
+                                {
+                                    cb5(err, 'four');
+                                } 
+                                else 
                                 {
                                     systemdto = res;
                                     // make sure it not an empty command object
@@ -1094,7 +1110,8 @@
                     // if we have the root dto do not go off and get it again
 
                     // ### this check is wrong...we should return from getdtoobject command.wid and compare to it
-                    if (resultObj.wid !== resultObj.metadata.method && resultObj.metadata.method!=="string") {
+                    if (resultObj.wid !== resultObj.metadata.method && resultObj.metadata.method!=="string" && 
+                        resultObj.wid!=="guid") {
                         proxyprinttodiv('In __getclean__ step2 with before getWidMongo: ', resultObj, 38);
 
                         // add logic to look for dtotype
