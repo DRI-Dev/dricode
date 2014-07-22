@@ -868,14 +868,15 @@ function recurseModObj(inputObject, dtoObject, convert, totype, command, callbac
         Object.keys(dtoObject).forEach(function (inpKey) {
             todolist.push(inpKey);
         });
-    }
+    } 
     proxyprinttodiv("recurseModObj - todolist ", todolist, 41);
     async.mapSeries(todolist, function (inpKey, cbMap) {
         // proxyprinttodiv("recurseModObj - modifiedObj ", modifiedObj, 41);
         // proxyprinttodiv("recurseModObj - top each inpKey", inpKey, 27);
         async.nextTick(function () { 
-            var inpVal = inputObject[inpKey];   // inputVal is the value of each inputObject
+            var inpVal = inputObject[inpKey];   // inputval is the value of each inputObject
             var dataType = dtoObject[inpKey]; 
+            if (inpKey==="wid" && (dataType!=="guid" || dataType!=="shortguid")) {dataType="guid"}
             proxyprinttodiv("*** recurseModObj - inpKey ", inpKey, 41);
             proxyprinttodiv("*** recurseModObj - inpVal ", inpVal, 41);
             proxyprinttodiv("*** recurseModObj - dataType ", dataType, 41);
@@ -886,8 +887,8 @@ function recurseModObj(inputObject, dtoObject, convert, totype, command, callbac
                 modifiedObj[inpKey] = inpVal; 
                 cbMap(null);
             } 
-            else
-            {                     
+            else 
+            {                    
                 // if (dtoObject.hasOwnProperty(inpKey)) 
                 // {
                 proxyprinttodiv("inside metadata / command dataType", dataType, 41);
@@ -1118,7 +1119,7 @@ function recurseModObj(inputObject, dtoObject, convert, totype, command, callbac
                     //proxyprinttodiv("recurseModObj - modifiedObj[inpKey] I ", modifiedObj[inpKey], 41);
                     cbMap(null);
                 } // end of big if statment
-                // step through the right side of inputVal
+                // step through the right side of inputval
                 else if (isArray(dataType)) 
                 {
                     proxyprinttodiv("recurseModObj inside isArray ", dataType, 41);
