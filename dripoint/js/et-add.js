@@ -5,7 +5,7 @@
     exports.addwidmaster = addwidmaster = function addwidmaster(object, callback) {
         var inbound_parameters_102 = JSON.parse(JSON.stringify(arguments));
         object = ConvertFromDOTdri(object);
-        proxyprinttodiv("addwidmaster before", object, 17);
+        proxyprinttodiv("addwidmaster before", object, 99);
 
         var _object = object;
         var command = object.command;
@@ -24,8 +24,8 @@
             } else {
                 _object = res.obj;
                 _dto_object = res.dtoobj;
-                proxyprinttodiv("addwidmaster after clean obj", _object, 17);
-                proxyprinttodiv("addwidmaster after clean dto", _dto_object, 17);
+                proxyprinttodiv("addwidmaster after clean obj", _object, 99, true,true);
+                proxyprinttodiv("addwidmaster after clean dto", _dto_object, 99,true, true);
                 addwidobject(_object, _dto_object, null, null, null, command, function (err, res) {
                     // If error, bounce out
                     proxyprinttodiv("addwidmaster after addwidobject res", res, 17);
@@ -79,6 +79,10 @@
 
     exports.cleanadd = cleanadd = function cleanadd(object, dtoobject, command, callback) {
         var inbound_parameters = {};
+
+        var tempflag
+        if (object.sounddto.note==="A flat") {tempflag=true}
+        if (tempflag) {debuglevel=17}
 
         proxyprinttodiv("cleanadd object", object, 17);
         //if (object.wid==="wid1") {debuglevel=38;}
@@ -140,6 +144,10 @@
                                     output.obj = result_obj;
                                     output.dtoobj = dtoobject;
                                     proxyprinttodiv("cleanadd getdtoobject res------- if ", dtoobject, 17);
+
+                                    if (tempflag) {tempflag=false; debuglevel=0}
+
+
                                     callback(null, output);
                                 }
                             });
@@ -153,6 +161,9 @@
                         proxyprinttodiv("cleanadd getdtoobject result_obj------- else", result_obj, 17);
                         output.obj = result_obj;
                         output.dtoobj = dtoobject;
+
+                        if (tempflag) {tempflag=false; debuglevel=0}
+
                         callback(null, output);
                     });
                 } //  end if (dto_to_get !== "string")

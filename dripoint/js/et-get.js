@@ -485,7 +485,7 @@
         // this function looks up the matching dto to an object or sent in command.dtotype, if one is not found then one is made
         // based on object that came in or found dto we create a dtotable
         // based on traversing that dtotable we create a dto
-        proxyprinttodiv("getdtoobject input obj: ", obj, 99, true, true);
+        proxyprinttodiv("getdtoobject input obj: ", obj, 93, true, true);
         var dtotype;
         var dtoobject = {};
 
@@ -507,10 +507,10 @@
             dtotype = obj.metadata.method;
         }
 
-proxyprinttodiv("getdtoobject input obj: ", obj, 99, true, true);
+proxyprinttodiv("getdtoobject input obj: ", obj, 93, true, true);
         if (obj.metadata.method === "string" || obj.wid === "guid" || obj.wid==="string") 
         {
-            proxyprinttodiv("getdtoobject *****string THIS SHOULD NOT HAPPEN ", obj, 99,true);
+            proxyprinttodiv("getdtoobject *****string THIS SHOULD NOT HAPPEN ", obj, 93,true);
             debuglevel=38;
             callback(null, obj);
         } 
