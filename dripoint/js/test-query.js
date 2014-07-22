@@ -32,14 +32,14 @@ exports.etmttest2 = widtests.etmttest2 = etmttest2 = function etmttest2(params, 
     var queryobj = {};
 
     queryobj["executethis"] = "querywid";
-    queryobj["rawmongoquery"] = {
+    queryobj["mongorawquery"] = {
         "$or": [{
             "data.a": "string"
         }]
     };
     executeList.push(queryobj);
 
-    queryobj["rawmongoquery"] = {
+    queryobj["mongorawquery"] = {
         "$or": [{
             "data.a": "1"
         }, {
@@ -48,7 +48,7 @@ exports.etmttest2 = widtests.etmttest2 = etmttest2 = function etmttest2(params, 
     };
     executeList.push(queryobj);
 
-    queryobj["rawmongoquery"] = {
+    queryobj["mongorawquery"] = {
         "$or": [{
             "data.a": "1"
         }, {
@@ -222,7 +222,7 @@ exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(
     var querylist = [{
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$or": [{
                 "hue": "string"
             }]
@@ -230,7 +230,7 @@ exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$or": [{
                 "hue": "green"
             }, {
@@ -240,7 +240,7 @@ exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$and": [{
                 "hue": "blue"
             }]
@@ -248,7 +248,7 @@ exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$and": [{
                 "hue": "yellow"
             }, {
@@ -258,7 +258,7 @@ exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$and": [{
                 "sat": "cyan-sat"
             }, {
@@ -270,7 +270,7 @@ exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$or": [{
                 "hue": "red"
             }, {
@@ -288,7 +288,7 @@ exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$or": [{
                 "hue": "magenta"
             }, {
@@ -308,7 +308,7 @@ exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$or": [{
                 "hue": "magenta"
             }, {
@@ -320,7 +320,7 @@ exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$and": [{
                 "hue": "magenta"
             }, {
@@ -332,7 +332,7 @@ exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$and": [{
                 "hue": "magenta"
             }, {
@@ -348,7 +348,7 @@ exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$or": [{
                 "hue": "red"
             }, {
@@ -360,7 +360,7 @@ exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$or": [{
                 "hue": "magenta"
             }, {
@@ -376,7 +376,7 @@ exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$or": [{
                 "hue": "blue"
             }, {
@@ -394,7 +394,7 @@ exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$or": [{
                 "hue": "yellow"
             }, {
@@ -412,7 +412,7 @@ exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$or": [{
                 "hue": "green"
             }, {
@@ -436,7 +436,7 @@ exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$and": [{
                 "hue": "magenta"
             }, {
@@ -460,7 +460,7 @@ exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$and": [{
                 "hue": "cyan"
             }, {
@@ -859,7 +859,7 @@ exports.etmttest3 = widtests.etmttest3 = etmttest3 = function etmttest3(params, 
     var executeList = [{
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$or": [{
                 "hue": "red"
             }]
@@ -867,7 +867,7 @@ exports.etmttest3 = widtests.etmttest3 = etmttest3 = function etmttest3(params, 
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$or": [{
                 "hue": "green"
             }]
@@ -875,7 +875,7 @@ exports.etmttest3 = widtests.etmttest3 = etmttest3 = function etmttest3(params, 
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$and": [{
                 "hue": "blue"
             }]
@@ -883,7 +883,7 @@ exports.etmttest3 = widtests.etmttest3 = etmttest3 = function etmttest3(params, 
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$or": [{
                 "hue": "cyan"
             }]
@@ -891,7 +891,7 @@ exports.etmttest3 = widtests.etmttest3 = etmttest3 = function etmttest3(params, 
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$and": [{
                 "hue": "magenta"
             }]
@@ -899,7 +899,7 @@ exports.etmttest3 = widtests.etmttest3 = etmttest3 = function etmttest3(params, 
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$and": [{
                 "hue": "yellow"
             }]
@@ -907,7 +907,7 @@ exports.etmttest3 = widtests.etmttest3 = etmttest3 = function etmttest3(params, 
     }, {
         "executethis": "querywid",
         "command.results": "queryresult",
-        "rawmongoquery": {
+        "mongorawquery": {
             "$and": [{
                 "hue": "black"
             }]
