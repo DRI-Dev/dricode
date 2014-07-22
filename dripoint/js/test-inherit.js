@@ -512,3 +512,1213 @@ widtests.etaddwidtest7.category = "execute";
 widtests.etaddwidtest7.subcategory = "daily";
 widtests.etaddwidtest7.js = exports.etaddwidtest7;
 widtests.etaddwidtest7.description = "this does a test";
+
+
+/*************                         ***************/
+/*************   INHERIT DEFAULT TESTS ***************/
+/*************       Single Level      ***************/
+
+// This tests inherit.default at the dto level. authordto inherits from authordefault 
+// and so author1 should be returned with name=Alex & age=42
+// works.
+exports.testinheritdefault0 = testinheritdefault0 = function testinheritdefault0(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "authordefault",
+            "metadata": {
+                "method": "authordto"
+            },
+            "name": "Alex",
+            "age": "42"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string",
+            "metadata.inherit.0": {
+                "wid": "authordefault",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "default"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "age": "10",
+            "metadata.method": "authordto"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "author1"
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+            proxyprinttodiv('The author1 record: ', res[3], 99);
+
+            var result = logverify("testinheritdefault0_result", res[3], [{
+                "wid": "author1",
+                "metadata": {
+                    "method": "authordto",
+                },
+                "name": "Alex",
+                "age": "10"
+            }]);
+
+            callback(err, result);
+        });
+};
+
+// This tests inherit.default at the wid level. author1 inherits from authordefault and 
+// should be returned with name=Alex & age=42
+// works.
+exports.testinheritdefault1 = testinheritdefault1 = function testinheritdefault1(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "authordefault",
+            "metadata.method": "authordto",
+            "name": "Alex",
+            "age": "42"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto",
+            "metadata.inherit.0": {
+                "wid": "authordefault",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "default"
+                }
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "author1"
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+            proxyprinttodiv('The author1 record: ', res[3], 99);
+            var result = logverify("testinheritdefault0_result", res[3], [{
+                "wid": "author1",
+                "metadata": {
+                    "method": "authordto",
+                    "inherit": [{
+                        "wid": "authordefault",
+                        "command": {
+                            "dtotype": "",
+                            "adopt": "default"
+                        }
+                    }]
+                },
+                "name": "Alex",
+                "age": "42"
+            }]);
+
+            callback(err, result);
+        });
+};
+
+// This tests inherit.default at the wid level with 1 field already existing. Only age=42 should be accepted from authordefault as name=Tom is already
+// present in the wid. author1 should return name=Tom & age=42.
+// NOTE: This is not working. The age field is not being returned from the default, only the pre-existing name=Tom. It seems like there is a conflict
+// if inherit.default sees that ANY field already exists in the wid.
+exports.testinheritdefault2 = testinheritdefault2 = function testinheritdefault2(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "authordefault",
+            "metadata.method": "authordto",
+            "name": "Alex",
+            "age": "42"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto",
+            "name": "Tom",
+            "metadata.inherit.0": {
+                "wid": "authordefault",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "default"
+                }
+            }
+            //"metadata.inherit.default":[{"widname" : "authordefault"}]
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+
+            proxyprinttodiv('The author1 record: ', res[2], 99);
+
+            debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "author1"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+exports.testcommanddtotype = testcommanddtotype = function testcommanddtotype(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "bookdto",
+            "metadata.method": "bookdto",
+            "title": "string",
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string",
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_author_book",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "bookdto",
+            "secondarymethod": "bookdto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto",
+            "name": "Alex",
+            "age": "42",
+            "bookdto.title": "Haunted Houses"
+            // },{
+            //  "executethis":"getwidmaster",
+            //  "wid":"author1",
+            //  "command.dtotype":""
+            //  },{
+            //  "executethis":"getwidmaster",
+            //  "wid":"author1", 
+            //  "command.dtotype":"authordto"
+            // },{
+            // "executethis":"getwidmaster",
+            // "wid":"author1",
+            // "command.dtotype":"bookdto"
+            // },{
+            // "executethis":"getwidmaster",
+            // "wid":"1",
+            // "command.dtotype":""
+            // },{
+            // "executethis":"getwidmaster",
+            // "wid":"1",
+            // "command.dtotype":"bookdto"
+            // },{
+            // "executethis":"getwidmaster",
+            // "wid":"1",
+            // "command.dtotype":"authordto"
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+
+
+            debuglevel = 38;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "1",
+                "command.dtotype": "authordto"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
+                callback(err, res);
+            });
+            // execute({"executethis": "getwidmaster","wid": "book1", "command":{"dtotype":"authordto"}}, function (err, res1) {
+            //     proxyprinttodiv("getwidmaster book1 result: ", res1, 99); 
+            //     callback(err, res); 
+            // });
+        });
+};
+
+/*************                         ***************/
+/*************   INHERIT DEFAULT TESTS ***************/
+/*************        Multi Level      ***************/
+
+// inherit default set at the dto level. authordto has a default wid to inherit from and bookdto has a default wid to inherit from. 
+exports.testinheritdefault3 = testinheritdefault3 = function testinheritdefault3(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "bookdefault",
+            "metadata.method": "bookdto",
+            "title": "Haunted Houses"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordefault",
+            "metadata.method": "authordto",
+            "name": "Alex",
+            "age": "42"
+        }, {
+            "wid": "bookdto",
+            "metadata.method": "bookdto",
+            "title": "string",
+            "metadata.inherit.0": {
+                "wid": "bookdefault",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "default"
+                }
+            }
+            //"metadata.inherit.default":[{"widname" : "bookdefault"}]
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string",
+            "metadata.inherit.0": {
+                "wid": "authordefault",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "default"
+                }
+            }
+            //"metadata.inherit.default":[{"widname" : "authordefault"}]
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_author_book",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "bookdto",
+            "secondarymethod": "bookdto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "author1"
+        }],
+        function (err, res) {
+            proxyprinttodiv('The author1 record: ', res[6], 99);
+        });
+}
+
+
+// inherit default set at the dto level. authordto has a default wid to inherit from as well as a bookdto inherit
+// *** DOES NOT WORK -- BOOKVALUE DOES NOT COME BACK
+exports.testinheritdefault4 = testinheritdefault4 = function testinheritdefault4(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "bookdefault",
+            "metadata.method": "bookdto",
+            "title": "Haunted Houses"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordefault",
+            "metadata.method": "authordto",
+            "name": "Alex",
+            "age": "42"
+        }, {
+            "wid": "bookdto",
+            "metadata.method": "bookdto",
+            "title": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string",
+            "metadata.bookdto.type": "onetomany",
+            "metadata.inherit": [{
+                "wid": "authordefault",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "default"
+                }
+            }, {
+                "wid": "bookdefault",
+                "command": {
+                    "dtotype": "bookdto",
+                    "adopt": "default"
+                }
+            }]
+            //  "metadata.inherit.default":[{"widname" : "authordefault"}],
+            // "bookdto.0.inherit.default":[{"widname" : "bookdefault"}]                    
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_author_book",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "bookdto",
+            "secondarymethod": "bookdto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto"
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+
+            proxyprinttodiv('The author1 record: ', res[2], 99);
+
+            debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "author1"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+// inherit default set at the dto level. authordto has a default wid to inherit from and that default wid inherits a bookdefault
+// *** DOES NOT WORK -- BOOKVALUE DOES NOT COME BACK
+exports.testinheritdefault41 = testinheritdefault41 = function testinheritdefault41(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "bookdefault",
+            "metadata.method": "bookdto",
+            "title": "Haunted Houses"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordefault",
+            "metadata.method": "authordto",
+            "name": "Alex",
+            "age": "42",
+            "metadata.inherit.0": {
+                "wid": "bookdefault",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "default"
+                }
+            }
+            //"bookdto.0.inherit.default":[{"widname" : "bookdefault"}]
+        }, {
+            "wid": "bookdto",
+            "metadata.method": "bookdto",
+            "title": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string",
+            "metadata.bookdto.type": "onetomany",
+            "metadata.inherit.0": {
+                "wid": "authordefault",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "default"
+                }
+            }
+            //"metadata.inherit.default":[{"widname" : "authordefault"}]
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_author_book",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "bookdto",
+            "secondarymethod": "bookdto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto"
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+
+            proxyprinttodiv('The author1 record: ', res[2], 99);
+
+            debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "author1"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+
+// Inherit Default set at the wid level. author1 inherits from authordefault and authordefault inherits from bookdefault
+// *** DOES NOT WORK -- BOOKVALUE DOES NOT COME BACK
+exports.testinheritdefault5 = testinheritdefault5 = function testinheritdefault5(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "bookdefault",
+            "metadata.method": "bookdto",
+            "title": "Haunted Houses"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordefault",
+            "metadata.method": "authordto",
+            "name": "Alex",
+            "age": "42",
+            "metadata.inherit.0": {
+                "wid": "bookdefault",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "default"
+                }
+            }
+            // "bookdto.0.inherit.default":[{"widname" : "bookdefault"}]
+        }, {
+            "wid": "bookdto",
+            "metadata.method": "bookdto",
+            "title": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_author_book",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "bookdto",
+            "secondarymethod": "bookdto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto",
+            "metadata.inherit.0": {
+                "wid": "authordefault",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "default"
+                }
+            }
+            // "metadata.inherit.default":[{"widname" : "authordefault"}]
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+
+            proxyprinttodiv('The author1 record: ', res[2], 99);
+
+            debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "author1"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+
+/*************                          ***************/
+/*************   INHERIT Override TESTS ***************/
+/*************       Single Level       ***************/
+
+
+// tests if inherit override works in the dto (authordto). author1 inherits authoroverride and should be returned with name=Alex & age=42.
+// NOTE: this is not working right now. Execution is doing some funky stuff, repeatedly returning results.
+exports.testinheritoverride0 = testinheritoverride0 = function testinheritoverride0(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "authoroverride",
+            "metadata.method": "authordto",
+            "name": "Alex",
+            "age": "42"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string",
+            "metadata.inherit.0": {
+                "wid": "authoroverride",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "override"
+                }
+            }
+            // "metadata.inherit.override":[{"widname" : "authoroverride"}]
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto"
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+
+            proxyprinttodiv('The author1 record: ', res[2], 99);
+
+            debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "author1"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+// This tests inherit.override at the wid level. author1 inherits authoroverride and should return with name=Alex & age=42.
+// works.
+exports.testinheritoverride1 = testinheritoverride1 = function testinheritoverride1(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "authoroverride",
+            "metadata.method": "authordto",
+            "name": "Alex",
+            "age": "42"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto",
+            "metadata.inherit.0": {
+                "wid": "authoroverride",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "override"
+                }
+            }
+            // "metadata.inherit.override":[{"widname" : "authoroverride"}]
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+
+            proxyprinttodiv('The author1 record: ', res[2], 99);
+
+            debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "author1"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+// Tests inherit.override at the wid level with fields already existing in the wid. The fields in author1 should be overriden by the fields in
+// authoroverride, returning the result name=Alex & age=42.
+// works.
+exports.testinheritoverride2 = testinheritoverride2 = function testinheritoverride2(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "authoroverride",
+            "metadata.method": "authordto",
+            "name": "Alex",
+            "age": "42"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto",
+            "name": "Tom",
+            "age": "58",
+            "metadata.inherit.0": {
+                "wid": "authoroverride",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "override"
+                }
+            }
+            // "metadata.inherit.override":[{"widname" : "authoroverride"}]
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+
+            proxyprinttodiv('The author1 record: ', res[2], 99);
+
+            debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "author1"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+// This tests inherit.override at the dto level with inherit.default set as well. authordto has inherit.override set & default set, but only the
+// fields from the override should show up.
+// NOTE: This does not work, same problem as testinheritoverride0. inherit.override in a dto is causing bad results.
+exports.testinheritoverride3 = testinheritoverride3 = function testinheritoverride3(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "authordefault",
+            "metadata.method": "authordto",
+            "name": "Tom",
+            "age": "58"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authoroverride",
+            "metadata.method": "authordto",
+            "name": "Alex",
+            "age": "42"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string",
+            "metadata.inherit": [{
+                "wid": "authordefault",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "default"
+                }
+            }, {
+                "wid": "authoroverride",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "override"
+                }
+            }]
+            //    "metadata.inherit.default":[{"widname" : "authordefault"}],
+            // "metadata.inherit.override":[{"widname" : "authoroverride"}]
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto"
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+
+            proxyprinttodiv('The author1 record: ', res[2], 99);
+
+            debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "author1"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+// This tests inherit.override at the wid level with inherit.default set as well. author1 has inherit.override set & default set, but only the
+// fields from the override should show up.
+// works.
+exports.testinheritoverride4 = testinheritoverride4 = function testinheritoverride4(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "authordefault",
+            "metadata.method": "authordto",
+            "name": "Tom",
+            "age": "58"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authoroverride",
+            "metadata.method": "authordto",
+            "name": "Alex",
+            "age": "42"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto",
+            "metadata.inherit": [{
+                "wid": "authordefault",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "default"
+                }
+            }, {
+                "wid": "authoroverride",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "override"
+                }
+            }]
+            // "metadata.inherit.default.0":{"authordefault" : "authordto"},
+            // "metadata.inherit.override.0":{"authoroverride" : "authordto"}
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+
+            proxyprinttodiv('The author1 record: ', res[2], 99);
+
+            debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "author1"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+
+/*************                          ***************/
+/*************   INHERIT Override TESTS ***************/
+/*************        Multi Level       ***************/
+
+// Inherit Override set at the dto level. authordto inherits from authoroverride and authoroverride inherits from bookoverride
+// *** DOES NOT WORK
+exports.multiinheritoverride0 = multiinheritoverride0 = function multiinheritoverride0(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "bookoverride",
+            "metadata.method": "bookdto",
+            "title": "Haunted Houses"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authoroverride",
+            "metadata.method": "authordto",
+            "name": "Alex",
+            "age": "42",
+            //"metadata.inherit.0": [{"wid" : "bookoverride", "command" : { "dtotype":"", "adopt":"override"}}] //double [[]]
+            "metadata.inherit": [{
+                "wid": "bookoverride",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "override"
+                }
+            }]
+            //"bookdto.0.inherit.override":[{"widname" : "bookoverride"}]
+        }, {
+            "wid": "bookdto",
+            "metadata.method": "bookdto",
+            "title": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string",
+            //"metadata.inherit.0": [{"wid" : "authoroverride", "command" : { "dtotype":"", "adopt":"override"}}] //double [[]]
+            "metadata.inherit": [{
+                "wid": "authoroverride",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "override"
+                }
+            }]
+            //"metadata.inherit.default":[{"widname" : "authoroverride"}]
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_author_book",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "bookdto",
+            "secondarymethod": "bookdto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto"
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+
+            proxyprinttodiv('The author1 record: ', res[2], 99);
+
+            debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "author1"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+
+// Inherit Override set at the dto level. authordto inherits from authoroverride and bookdto inherits from bookoverride
+exports.multiinheritoverride1 = multiinheritoverride1 = function multiinheritoverride1(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "bookoverride",
+            "metadata.method": "bookdto",
+            "title": "Haunted Houses"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authoroverride",
+            "metadata.method": "authordto",
+            "name": "Alex",
+            "age": "42"
+        }, {
+            "wid": "bookdto",
+            "metadata.method": "bookdto",
+            "title": "string",
+            "metadata.inherit": [{
+                "wid": "bookoverride",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "override"
+                }
+            }]
+            //"metadata.inherit.override":[{"widname" : "bookoverride"}]
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string",
+            "metadata.inherit": [{
+                "wid": "authoroverride",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "override"
+                }
+            }]
+            //"metadata.inherit.default":[{"widname" : "authoroverride"}]
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_author_book",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "bookdto",
+            "secondarymethod": "bookdto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto"
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+
+            proxyprinttodiv('The author1 record: ', res[2], 99);
+
+            debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "author1"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+
+// Inherit Override set at the wid level. author1 inherits from authoroverride and authoroverride inherits from bookoverride
+exports.multiinheritoverride2 = multiinheritoverride2 = function multiinheritoverride2(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "bookoverride",
+            "metadata.method": "bookdto",
+            "title": "Haunted Houses"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authoroverride",
+            "metadata.method": "authordto",
+            "name": "Alex",
+            "age": "42",
+            "metadata.inherit": [{
+                "wid": "bookoverride",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "override"
+                }
+            }]
+        }, {
+            "wid": "bookdto",
+            "metadata.method": "bookdto",
+            "title": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_author_book",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "bookdto",
+            "secondarymethod": "bookdto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto",
+            "metadata.inherit": [{
+                "wid": "authoroverride",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "override"
+                }
+            }]
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+
+            proxyprinttodiv('The author1 record: ', res[2], 99);
+
+            debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "author1"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+
+// Inherit Override set at the wid level. author1 inherits from authoroverride and authoroverride inherits from bookoverride. values already present in author1 should be overriden
+exports.multiinheritoverride3 = multiinheritoverride3 = function multiinheritoverride3(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "bookoverride",
+            "metadata.method": "bookdto",
+            "title": "Haunted Houses"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authoroverride",
+            "metadata.method": "authordto",
+            "name": "Alex",
+            "age": "42",
+            "metadata.inherit": [{
+                "wid": "bookoverride",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "override"
+                }
+            }]
+            // "bookdto.0.inherit.override":[{"widname" : "bookoverride"}]
+        }, {
+            "wid": "bookdto",
+            "metadata.method": "bookdto",
+            "title": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string",
+            "metadata.inherit": [{
+                "wid": "authoroverride",
+                "command": {
+                    "dtotype": "",
+                    "adopt": "override"
+                }
+            }]
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_author_book",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "bookdto",
+            "secondarymethod": "bookdto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto",
+            "name": "Tom",
+            "age": "50",
+            "bookdto.0.title": "My Little Pony"
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+
+            proxyprinttodiv('The author1 record: ', res[2], 99);
+
+            debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "author1"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+
+exports.testaddauthor1 = testaddauthor1 = function testaddauthor1() {
+    debuglevel = 11;
+
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "name": "string",
+            "metadata.method": "authordto",
+            "metadata.bookdto.type": "onetomany"
+        }, {
+            "wid": "bookdto",
+            "title": "string",
+            "metadata.method": "bookdto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_author_book",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "bookdto",
+            "secondarymethod": "bookdto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "marysue",
+            "metadata.method": "authordto",
+            "name": "Mary Sue",
+            "bookdto.0.title": "Haunted Mansions"
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+        }
+    );
+}
+
+exports.testjsononetoone0 = testjsononetoone0 = function testjsononetoone0(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string",
+            "metadata.spousedto.type": "onetoone"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "spousedto",
+            "metadata.method": "spousedto",
+            "name": "string",
+            "age": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_author_to_spouse",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetoone",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "spousedto",
+            "secondarymethod": "spousedto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "spouse1",
+            "metadata.method": "spousedto",
+            "name": "Sarah Jones",
+            "age": "28"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto",
+            "name": "Jim Jones",
+            "age": "30",
+            "spousedto.0.name": "Sarah",
+            "spousedto.0.age": "28",
+            "spousedto.0.hair": "blonde"
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+
+            proxyprinttodiv('The author1 record: ', res[3], 99);
+
+            debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "author1"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+
+// we will create dtos with wid2 as default - the name of the top wid will be wid2override
+// then we get wid1 to see if defaults there
+exports.etcreateinheritdefault1 = etcreateinheritdefault1 = function etcreateinheritdefault1(params, callback) {
+    var c = "override";
+    var d = "d";
+
+    var inheritparams = {
+        "authordtodefault": [],
+        "spousedto": [{
+            "wid2override": ""
+        }],
+        "housedto": [],
+        "bookdto": [],
+        "pubhousedto": [],
+        "addressdto": [],
+        "statedto": [],
+        "ownerdto": [],
+        "authordtooverride": [],
+        "spousedtooverride": [],
+        "housedtooverride": [],
+        "bookdtooverride": [],
+        "pubhousedtooverride": [],
+        "addressdtooverride": [],
+        "statedtooverride": [],
+        "ownerdtooverride": []
+    }
+
+    manytoonesetupdto(inheritparams, 0, function (err, res) {
+
+        //parent,   c,   child, d, preamble, dto, getlist
+        addauthorrecord(2, c, 8, d, -1, -1, 4, function (err, res) {
+            //addauthorrecord(0,      c,      9,  d,   0,      -1,     0, function (err, res){
+            addauthorrecord(2, c, 10, d, 1, -1, 4, function (err, res) {
+                //addauthorrecord(0,      c,      11, d,   2,      -1,     0, function (err, res){
+                addauthorrecord(2, c, 12, d, 3, -1, 4, function (err, res) {
+                    //addauthorrecord(0,      c,      13, d,   4,      -1,     0, function (err, res){
+                    addauthorrecord(2, c, 14, d, 5, -1, 4, function (err, res) {
+                        //addauthorrecord(0,      c,      15, d,   6,      -1,     0, function (err, res){
+                        printlistmany([{
+                            "wid": "wid1" + c,
+                            "command.dtotype": ""
+                        }], function (err, res) {
+                            callback(err, res);
+                        });
+                        //});
+                    });
+                    //});
+                });
+                //}); 
+            });
+            //});
+        });
+    });
+}

@@ -333,25 +333,6 @@ function manytoonesetupdto(inherit, dtotype, callback) {
     });
 }
 
-function printlistmany(printlist, callback) {
-    var executeobj = {};
-    async.mapSeries(printlist, function (eachprint, cbMap) {
-        executeobj = {};
-        executeobj["executethis"] = "getwidmaster";
-        executeobj["wid"] = eachprint["wid"];
-        executeobj["command.dtotype"] = eachprint["command.dtotype"];
-        proxyprinttodiv("Function printlistmany input executeobj for getwidmaster", executeobj, 99, true);
-        execute(executeobj, function (err, res) {
-            proxyprinttodiv("Function printlistmany output for getwidmaster " + eachprint["wid"] + " with command.dtotype=" + eachprint["command.dtotype"], executeobj, 99, true);
-            proxyprinttodiv("Function printlistmany output = ", res, 99, true);
-            cbMap(null);
-            //callback(err, res);
-        });
-    }, function (err, res) {
-        callback(null, null)
-    });
-}
-
 function addauthorrecord(parentparmkey, c, childparmkey, d, relativepreamble, relativedtotype, relgetlist, callback) {
     var parent = [{
         "metadata.method": "authordto",
@@ -2072,6 +2053,1551 @@ exports.rrr6 = rrr6 = function rrr6(params, callback) {
 
     recurseobjcontainer(obj, dtotable, callback);
 }
+
+
+exports.manytomanytest = manytomanytest = function manytomanytest(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "age": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "bookdto",
+            "metadata.method": "bookdto",
+            "title": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_author_book",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "manytomany",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "bookdto",
+            "secondarymethod": "bookdto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto",
+            "name": "Author1",
+            "bookdto.0.title": "Author1 Book1"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author2",
+            "metadata.method": "authordto",
+            "name": "Author2",
+            "bookdto.0.title": "Author2 Book1",
+            "bookdto.1.title": "Author2 Book2"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author3",
+            "metadata.method": "authordto",
+            "name": "Author3",
+            "bookdto.0.title": "Author3 Book1",
+            "bookdto.1.title": "Author3 Book2",
+            "bookdto.2.title": "Author3 Book3"
+        }],
+        function (err, res) {
+            proxyprinttodiv("manytomanytest addwidmaster result: ", res, 99);
+            debuglevel = 38;
+            execute([{
+                "executethis": "getwidmaster",
+                "wid": "author1"
+            }, {
+                "executethis": "getwidmaster",
+                "wid": "author2"
+            }, {
+                "executethis": "getwidmaster",
+                "wid": "author3"
+            }], function (err, res1) {
+                proxyprinttodiv("manytomanytest getwidmaster result: ", res1, 99);
+                callback(err, res1);
+            });
+        });
+}
+
+/*
+        authortoauthor test
+    */
+exports.authortoauthortest = authortoauthortest = function authortoauthortest(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "metadata.authordto.type": "onetoone"
+        }, { //authordto - authordto
+            "executethis": "addwidmaster",
+            "wid": "rel_author_author",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetoone",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "authordto",
+            "secondarymethod": "authordto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "wid1",
+            "metadata.method": "authordto",
+            "name": "author1",
+            "authordto.authordto.authordto.name": "authortoauthor1"
+        }],
+        function(err, res) {
+            proxyprinttodiv('authortoauthortest addwidmaster result: ', res, 99);
+
+            //debuglevel = 38;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "wid1"
+            }, function(err, res1) {
+                proxyprinttodiv("authortoauthortest getwidmaster result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+exports.authortoauthortesto = authortoauthortesto = function authortoauthortesto(params, callback) {
+    //debuglevel=38
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "metadata.authordto.type": "onetomany"
+        }, { //authordto - authordto
+            "executethis": "addwidmaster",
+            "wid": "rel_author_author",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "authordto",
+            "secondarymethod": "authordto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "wid1",
+            "metadata.method": "authordto",
+            "name": "author1",
+            "authordto.authordto.authordto.name": "authortoauthor1"
+        }],
+        function(err, res) {
+            proxyprinttodiv('authortoauthortest addwidmaster result: ', res, 99);
+
+            debuglevel = 93;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "wid1"
+            }, function(err, res1) {
+                proxyprinttodiv("authortoauthortest getwidmaster result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+
+
+exports.authortoauthortestm = authortoauthortestm = function authortoauthortestm(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "metadata.authordto.type": "manytomany"
+        }, { //authordto - authordto
+            "executethis": "addwidmaster",
+            "wid": "rel_author_author",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "manytomany",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "authordto",
+            "secondarymethod": "authordto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "wid1",
+            "metadata.method": "authordto",
+            "name": "author1",
+            "authordto.authordto.authordto.name": "authortoauthor1"
+        }],
+        function(err, res) {
+            proxyprinttodiv('authortoauthortest addwidmaster result: ', res, 99);
+
+            debuglevel = 38;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "wid1"
+            }, function(err, res1) {
+                proxyprinttodiv("authortoauthortest getwidmaster result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+/*
+        addwidmaster ex-17-data
+    */
+exports.addwidmasterex17data = addwidmasterex17data = function addwidmasterex17data(params, callback) {
+    execute([{
+        "executethis": "addwidmaster",
+        "wid": "ex-17-data",
+        "html": "Wow...here is some HTML from a button click on ex-17-html",
+        "addthis.command.htmltargetid": "putithere"
+    }, {
+        "executethis": "addwidmaster",
+        "wid": "ex-17-data",
+        "html": "Wow...here is some HTML from a button click on ex-17-html",
+        "addthis.command.htmltargetid": "putithere"
+    }, {
+        "executethis": "addwidmaster",
+        "wid": "ex-17-data",
+        "html": "Wow...here is some HTML from a button click on ex-17-html",
+        "addthis.command.htmltargetid": "putithere"
+    }, {
+        "executethis": "getwidmaster",
+        "wid": "ex-17-data"
+    }], function (err, res1) {
+        proxyprinttodiv("addwidmasterex17data result: ", res1, 99);
+        callback(err, res1);
+    });
+}
+
+
+/*
+        addwidmaster blank guid
+    */
+exports.addwidmasterblankguid = addwidmasterblankguid = function addwidmasterblankguid(params, callback) {
+    execute([{
+        "executethis": "addwidmaster",
+        "wid": "authordto",
+        "metadata.method": "authordto",
+        "name": "string",
+        "g1": "guid"
+    }, {
+        "executethis": "addwidmaster",
+        "wid": "addwidmasterblankguid",
+        "name": "Author1"
+    }, {
+        "executethis": "getwidmaster",
+        "wid": "addwidmasterblankguid"
+    }], function (err, res1) {
+        proxyprinttodiv("addwidmasterblankguid result: ", res1, 99);
+        callback(err, res1);
+    });
+}
+
+/*
+        addwid with no data,, no command.inherit.data
+    */
+exports.etaddwidtest8 = etaddwidtest8 = function etaddwidtest8(parameters, callback) {
+    debuglevel = 17;
+    eventappinstall();
+
+    execute([{
+        "executethis": "updatewid",
+        "wid": "wid1",
+        "addthis.command": {
+            "inherit": {}
+        }
+    }], function (err, res1) {
+        var inputdto = {
+            "wid": "string",
+            "a": "string",
+            "b": "string",
+            "c": "string",
+            "d": "string",
+            "e": "string",
+            "metadata": {
+                "method": "string"
+            }
+        };
+
+        var inputobject = {
+            "wid": "wid1",
+            "a": "1",
+            "b": "2",
+            "c": "3",
+            "d": "4",
+            "e": "5",
+            "metadata": {
+                "method": "authordto"
+            }
+        };
+
+        var command = {};
+
+        addwid(inputobject, inputdto, command, function (err, res) {
+            proxyprinttodiv("res --", res, 17);
+            var actual_result = res;
+            proxyprinttodiv("actual_result --", actual_result, 17);
+
+            var expected_result = [{
+                "data": {
+                    "a": "1",
+                    "b": "2",
+                    "c": "3",
+                    "d": "4",
+                    "e": "5"
+                },
+                "wid": "wid1",
+                "metadata": {
+                    "method": "authordto",
+                    "date": "2014-04-05T10:43:31.375Z"
+                }
+            }];
+            proxyprinttodiv("expected_result --", expected_result, 17);
+
+            res = logverify("logverify", actual_result, expected_result);
+            callback(err, res);
+        });
+    });
+}
+
+/*
+        addwid with data,, no command.inherit.data
+    */
+exports.etaddwidtest9 = etaddwidtest9 = function etaddwidtest9(parameters, callback) {
+    debuglevel = 17;
+    eventappinstall();
+
+    execute([{
+        "executethis": "updatewid",
+        "wid": "wid1",
+        "d": "44",
+        "f": "6",
+        "addthis.command": {
+            "inherit": {}
+        }
+    }], function (err, res1) {
+        var inputdto = {
+            "wid": "string",
+            "a": "string",
+            "b": "string",
+            "c": "string",
+            "d": "string",
+            "e": "string",
+            "metadata": {
+                "method": "string"
+            }
+        };
+
+        var inputobject = {
+            "wid": "wid1",
+            "a": "1",
+            "b": "2",
+            "c": "3",
+            "d": "4",
+            "e": "5",
+            "metadata": {
+                "method": "authordto"
+            }
+        };
+
+        var command = {};
+
+        addwid(inputobject, inputdto, command, function (err, res) {
+            proxyprinttodiv("res --", res, 17);
+            var actual_result = res;
+            proxyprinttodiv("actual_result --", actual_result, 17);
+
+            var expected_result = [{
+                "data": {
+                    "a": "1",
+                    "b": "2",
+                    "c": "3",
+                    "d": "4",
+                    "e": "5"
+                },
+                "wid": "wid1",
+                "metadata": {
+                    "method": "authordto",
+                    "date": "2014-04-05T10:43:31.375Z"
+                }
+            }];
+            proxyprinttodiv("expected_result --", expected_result, 17);
+
+            res = logverify("logverify", actual_result, expected_result);
+            callback(err, res);
+        });
+    });
+}
+
+/*
+        addwid with no data,, with command.inherit.data
+    */
+exports.etaddwidtest10 = etaddwidtest10 = function etaddwidtest10(parameters, callback) {
+    debuglevel = 17;
+    eventappinstall();
+
+    execute([{
+        "executethis": "updatewid",
+        "wid": "wid1",
+        "addthis.command": {
+            "inherit": {
+                "data": {
+                    "c": "99",
+                    "e": "98",
+                    "g": "7"
+                }
+            }
+        }
+    }], function (err, res1) {
+        var inputdto = {
+            "wid": "string",
+            "a": "string",
+            "b": "string",
+            "c": "string",
+            "d": "string",
+            "e": "string",
+            "metadata": {
+                "method": "string"
+            }
+        };
+
+        var inputobject = {
+            "wid": "wid1",
+            "a": "1",
+            "b": "2",
+            "c": "3",
+            "d": "4",
+            "e": "5",
+            "metadata": {
+                "method": "authordto"
+            }
+        };
+
+        var command = {};
+
+        addwid(inputobject, inputdto, command, function (err, res) {
+            proxyprinttodiv("res --", res, 17);
+            var actual_result = res;
+            proxyprinttodiv("actual_result --", actual_result, 17);
+
+            var expected_result = [{
+                "data": {
+                    "a": "1",
+                    "b": "2",
+                    "c": "3",
+                    "d": "4",
+                    "e": "5"
+                },
+                "wid": "wid1",
+                "metadata": {
+                    "method": "authordto",
+                    "date": "2014-04-05T10:43:31.375Z"
+                }
+            }];
+            proxyprinttodiv("expected_result --", expected_result, 17);
+
+            res = logverify("logverify", actual_result, expected_result);
+            callback(err, res);
+        });
+    });
+}
+
+/*
+        addwid with data,, with command.inherit.data
+    */
+exports.etaddwidtest11 = etaddwidtest11 = function etaddwidtest11(parameters, callback) {
+    debuglevel = 17;
+    eventappinstall();
+
+    execute([{
+        "executethis": "updatewid",
+        "wid": "wid1",
+        "d": "44",
+        "f": "6",
+        "addthis.command": {
+            "inherit": {
+                "data": {
+                    "c": "99",
+                    "e": "5",
+                    "g": "7"
+                }
+            }
+        }
+    }], function (err, res1) {
+        var inputdto = {
+            "wid": "string",
+            "a": "string",
+            "b": "string",
+            "c": "string",
+            "d": "string",
+            "e": "string",
+            "metadata": {
+                "method": "string"
+            }
+        };
+
+        var inputobject = {
+            "wid": "wid1",
+            "a": "1",
+            "b": "2",
+            "c": "3",
+            "d": "4",
+            "e": "5",
+            "metadata": {
+                "method": "authordto"
+            }
+        };
+
+        var command = {};
+
+        addwid(inputobject, inputdto, command, function (err, res) {
+            proxyprinttodiv("res --", res, 17);
+            var actual_result = res;
+            proxyprinttodiv("actual_result --", actual_result, 17);
+
+            var expected_result = [{
+                "data": {
+                    "a": "1",
+                    "b": "2",
+                    "c": "3",
+                    "d": "4",
+                    "e": "5"
+                },
+                "wid": "wid1",
+                "metadata": {
+                    "method": "authordto",
+                    "date": "2014-04-05T10:43:31.375Z"
+                }
+            }];
+            proxyprinttodiv("expected_result --", expected_result, 17);
+
+            res = logverify("logverify", actual_result, expected_result);
+            callback(err, res);
+        });
+    });
+}
+
+/*
+        To add wid to db(default "data")
+    */
+exports.etaddwidtodbdata = etaddwidtodbdata = function etaddwidtodbdata(parameters, callback) {
+    //debuglevel = 17;
+    //eventappinstall();
+
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "sounddto",
+            "metadata.method": "sounddto",
+            "note": "string"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "sounddto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "wid1",
+            "d": "44",
+            "f": "6",
+            "command": {
+                "db": "data"
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "wid2",
+            "d": "444",
+            "f": "66",
+            "command": {
+                "db": "test"
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "wid3",
+            "d": "4444",
+            "f": "666",
+            "command": {
+                "collection": "othercollection"
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "wid1",
+            "command": {
+                "db": "data"
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "wid2",
+            "command": {
+                "db": "test"
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "wid3",
+            "command": {
+                "collection": "othercollection"
+            }
+        }],
+        function (err, res) {
+            callback(err, res);
+            proxyprinttodiv("res -- add", res, 17);
+        });
+}
+
+
+exports.ettestag111 = ettestag111 = function ettestag111(params, callback) {
+    debuglevel = 12;
+    // eventappinstall();
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "sounddto",
+            "metadata.method": "sounddto",
+            "note": "string"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "sounddto"
+        }],
+        function (err, res1) {
+            proxyprinttodiv("Ag1  result ", res1, 99);
+            var res = res1[1]; //~~~ changed by SAURABH 
+            //var res = res1[0];
+
+
+            proxyprinttodiv('Function ag1 result ', res, 17);
+            res = logverify("ettestag1_result", res, [{
+                "note": "string",
+                "wid": "sounddto",
+                "metadata.method": "sounddto"
+            }]);
+            callback(err, res);
+        });
+}
+
+
+
+
+
+
+/*
+        To get wid from db(default "data")
+    */
+exports.etgetfromdbdata = etgetfromdbdata = function etgetfromdbdata(parameters, callback) {
+    debuglevel = 17;
+    eventappinstall();
+
+    execute([{
+        "executethis": "getwidmaster",
+        "wid": "sounddto"
+    }, {
+        "executethis": "getwidmaster",
+        "wid": "wid1",
+        "command": {
+            "db": "data"
+        }
+    }, {
+        "executethis": "getwidmaster",
+        "wid": "wid2",
+        "command": {
+            "db": "data"
+        }
+    }, {
+        "executethis": "getwidmaster",
+        "wid": "wid3",
+        "command": {
+            "collection": "othercollection"
+        }
+    }], function (err, res) {
+        callback(err, res);
+        proxyprinttodiv("res -- get", res, 17);
+    });
+}
+
+/*
+        Update, Get collection
+    */
+exports.etupdategetcollection1 = etupdategetcollection1 = function etupdategetcollection1(parameters, callback) {
+    var updatecommand = {
+        "command": {
+            "collection": "test"
+        }
+    };
+    var getcommand = {
+        "command": {
+            "collection": "test"
+        }
+    };
+    updategetdatastore(updatecommand, getcommand, function (err, res) {
+        callback(err, res);
+    });
+}
+
+/*
+        Update, Get collection
+    */
+exports.etupdategetkeycollection1 = etupdategetkeycollection1 = function etupdategetkeycollection1(parameters, callback) {
+    var updatecommand = {
+        "command": {
+            "keycollection": "test"
+        }
+    };
+    var getcommand = {
+        "command": {
+            "keycollection": "test"
+        }
+    };
+    updategetdatastore(updatecommand, getcommand, function (err, res) {
+        callback(err, res);
+    });
+}
+
+
+// tests systemdto from get
+exports.testusersystem = testusersystem = function testusersystem(params, callback) {
+    debuglevel = 0;
+    execute({
+        "executethis": "getwidmaster",
+        "command.convertmethod": "dto",
+        "wid": "userdto"
+    }, function (err, res1) {
+        proxyprinttodiv("getwidmaster userdto result: ", res1, 99);
+        var found = [];
+        for (var prop in res1[0]) {
+            if (prop.indexOf("systemdto") != -1) {
+                found.push(prop + " : " + res1[0][prop]);
+            }
+        }
+        proxyprinttodiv("systemdto fields found: ", found, 99);
+        //callback(err, res1); 
+    });
+}
+
+
+// SYSTEM DTO TESTS
+
+exports.adduserdto = adduserdto = function adduserdto(params, callback) {
+
+    execute({
+            // Create the userdto
+            "executethis": "addwidmaster",
+            "metadata.method": "userdto",
+            "wid": "userdto",
+            "widname": "wid",
+            "fname": "string",
+            "lname": "string",
+            "phone": "string",
+            "email": "string",
+            "address": "string",
+            "address2": "string",
+            "city": "string",
+            "state": "string",
+            "zip": "string",
+            "country": "string",
+            "metadata.usergroupdto.type": "onetomany"
+        },
+        //"metadata.securitydto.type": "onetoone",
+        //"metadata.environmentdto.type": "onetoone",
+        //"metadata.permissiondto.type": "onetomany",
+        //"metadata.usergroupdto.type":"onetomany"},
+
+        function (err, res1) {
+            proxyprinttodiv("addwidmaster userdto result: ", res1, 99);
+            callback(err, res1);
+        }
+    );
+}
+
+
+
+
+exports.systemdinuserdto1 = systemdinuserdto1 = function systemdinuserdto1(params, callback) {
+    adduserdto(null, function (err, res) {
+        execute({
+                // Create the userdto
+                "executethis": "addwidmaster",
+                "metadata.method": "userdto",
+                "wid": "userdto",
+                "systemdto.expirationdate": "6/14/14"
+            },
+            function (err, res) {
+                //proxyprinttodiv('Full results: ', res, 99);
+
+                //proxyprinttodiv('The userdto record: ', res[2], 99);
+
+                //  debuglevel = 0;
+                execute({
+                    "executethis": "getwidmaster",
+                    "wid": "userdto"
+                }, function (err, res1) {
+                    proxyprinttodiv("getwidmaster userdto result: ", res1, 99);
+                    callback(err, res);
+                });
+            });
+    });
+}
+
+exports.systemdinuserwid1 = systemdinuserwid1 = function systemdinuserwid1(params, callback) {
+    adduserdto();
+    execute([{
+            // Create the userdto
+            "executethis": "addwidmaster",
+            "metadata.method": "userdto",
+            "wid": "user1",
+            "systemdto.expirationdate": "6/14/14",
+            "systemdto.blahblah": "blah"
+        }],
+        function (err, res) {
+            //proxyprinttodiv('Full results: ', res, 99);
+
+            //proxyprinttodiv('The userdto record: ', res[2], 99);
+
+            //      debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "user1"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster user1 result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+exports.deepsystemdto1 = deepsystemdto1 = function deepsystemdto1(params, callback) {
+    //adduserdto();
+
+    execute([{
+            // Create the userdto
+            "executethis": "addwidmaster",
+            "metadata.method": "userdto",
+            "wid": "userdto",
+            "widname": "wid",
+            "fname": "string",
+            "lname": "string",
+            "phone": "string",
+            "email": "string",
+            "address": "string",
+            "address2": "string",
+            "city": "string",
+            "state": "string",
+            "zip": "string",
+            "country": "string",
+            "metadata.usergroupdto.type": "onetomany"
+        }, {
+            "wid": "usergroupdto",
+            "metadata.method": "usergroupdto",
+            "groupname": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_user_usergroup",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "userdto",
+            "primarymethod": "userdto",
+            "secondarywid": "usergroupdto",
+            "secondarymethod": "usergroupdto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "user1",
+            "metadata.method": "userdto",
+            "fname": "Bob",
+            //"systemdto.expirationdate": "6/14/14",
+            "usergroupdto.groupname": "Everyone",
+            //"usergroupdto.systemdto.expirationdate": "7/14/14"
+        }],
+        function (err, res) {
+            //proxyprinttodiv('Full results: ', res, 99);
+
+            //proxyprinttodiv('The userdto record: ', res[2], 99);
+
+            //      debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "user1"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster user1 result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+exports.deepsystemdto2 = deepsystemdto2 = function deepsystemdto2(params, callback) {
+    //adduserdto();
+
+    execute([{
+            // Create the userdto
+            "executethis": "addwidmaster",
+            "metadata.method": "userdto",
+            "wid": "userdto",
+            "widname": "wid",
+            "fname": "string",
+            "lname": "string",
+            "phone": "string",
+            "email": "string",
+            "address": "string",
+            "address2": "string",
+            "city": "string",
+            "state": "string",
+            "zip": "string",
+            "country": "string",
+            "metadata.usergroupdto.type": "onetomany",
+            "systemdto.expirationdate": "string",
+            "usergroupdto.systemdto.expirationdate": "string"
+        }, {
+            "wid": "usergroupdto",
+            "metadata.method": "usergroupdto",
+            "groupname": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_user_usergroup",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "userdto",
+            "primarymethod": "userdto",
+            "secondarywid": "usergroupdto",
+            "secondarymethod": "usergroupdto"
+        }],
+        function (err, res) {
+            //proxyprinttodiv('Full results: ', res, 99);
+
+            //proxyprinttodiv('The userdto record: ', res[2], 99);
+
+            //      debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "command.getwidmaster.convertmethod": "dto",
+                "wid": "userdto"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster userdto result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+// Tries to introduce data not found in systemdto into userdto and its child usergroupdto
+exports.deepsystemdto3 = deepsystemdto3 = function deepsystemdto3(params, callback) {
+    //adduserdto();
+
+    execute([{
+            // Create the userdto
+            "executethis": "addwidmaster",
+            "metadata.method": "userdto",
+            "wid": "userdto",
+            "widname": "wid",
+            "fname": "string",
+            "lname": "string",
+            "phone": "string",
+            "email": "string",
+            "address": "string",
+            "address2": "string",
+            "city": "string",
+            "state": "string",
+            "zip": "string",
+            "country": "string",
+            "metadata.usergroupdto.type": "onetomany",
+            "systemdto.blahblah": "this shouldn't exist in userdto.systemdto"
+        }, {
+            "wid": "usergroupdto",
+            "metadata.method": "usergroupdto",
+            "groupname": "string",
+            "systemdto.blahblah": "this shouldn't exist in usergroupdto.systemdto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_user_usergroup",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "userdto",
+            "primarymethod": "userdto",
+            "secondarywid": "usergroupdto",
+            "secondarymethod": "usergroupdto"
+        }],
+        function (err, res) {
+            //proxyprinttodiv('Full results: ', res, 99);
+
+            //proxyprinttodiv('The userdto record: ', res[2], 99);
+
+            //      debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "command.getwidmaster.convertmethod": "dto",
+                "wid": "userdto"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster userdto result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+
+// Tries to introduce data not found in systemdto into user1 and user1's usergroup
+exports.deepsystemdto4 = deepsystemdto4 = function deepsystemdto4(params, callback) {
+    //adduserdto();
+
+    execute([{
+            // Create the userdto
+            "executethis": "addwidmaster",
+            "metadata.method": "userdto",
+            "wid": "userdto",
+            "widname": "wid",
+            "fname": "string",
+            "lname": "string",
+            "phone": "string",
+            "email": "string",
+            "address": "string",
+            "address2": "string",
+            "city": "string",
+            "state": "string",
+            "zip": "string",
+            "country": "string",
+            "metadata.usergroupdto.type": "onetomany"
+        }, {
+            "wid": "usergroupdto",
+            "metadata.method": "usergroupdto",
+            "groupname": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_user_usergroup",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "userdto",
+            "primarymethod": "userdto",
+            "secondarywid": "usergroupdto",
+            "secondarymethod": "usergroupdto"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "user1",
+            "metadata.method": "userdto",
+            "fname": "Bob",
+            "systemdto.blahblah": "this should not show up in user1.systemdto",
+            "usergroupdto.groupname": "Everyone",
+            "usergroupdto.systemdto.expirationdate": "this should not show up in user1.usergroupdto.systemdto"
+        }],
+        function (err, res) {
+            //proxyprinttodiv('Full results: ', res, 99);
+
+            //proxyprinttodiv('The userdto record: ', res[2], 99);
+
+            //      debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "user1"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster user1 result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+}
+
+exports.testsysteminuserdto = testsysteminuserdto = function testsysteminuserdto(params, callback) {
+    adduserdto(null, function () {
+
+        execute([{
+                "executethis": "getwidmaster",
+                "command.getwidmaster.convertmethod": "dto",
+                "wid": "userdto"
+            }],
+            function (err, res1) {
+                proxyprinttodiv("getwidmaster awesome userdto results: ", res1, 99);
+                callback(err, res1);
+            });
+    });
+}
+
+exports.testdeepsystem1 = testdeepsystem1 = function testdeepsystem1(params, callback) {
+    createalldtos();
+
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "user1",
+            "metadata.method": "userdto",
+            "fname": "Cody",
+            "systemdto.expirationdate": "hi from user",
+            "securitydto.ac": "codyac",
+            "securitydto.systemdto.expirationdate": "hi from security",
+            "permissiondto.level": "2",
+            "permissiondto.systemdto.expirationdate": "hi from permissions",
+            "permissiondto.0.usergroupdto.0.usergroupname": "employees",
+            "permissiondto.0.usergroupdto.0.systemdto.expirationdate": "hi from permissions.usergroup",
+            "environmentdto.priority": "1",
+            "environmentdto.systemdto.expirationdate": "hi from environment",
+            "usergroupdto.usergroupname": "everyone",
+            "usergroupdto.systemdto.expirationdate": "hi from usergroup"
+        }],
+        function (err, res) {
+            // proxyprinttodiv('Full results: ', res, 99);
+            // proxyprinttodiv('The userdto record: ', res[2], 99);
+            // debuglevel = 0;
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "user1"
+            }, function (err, res1) {
+                proxyprinttodiv("getwidmaster user1 result: ", res1, 99);
+                callback(err, res);
+            });
+        });
+
+
+}
+
+/*
+        movewid1
+    */
+exports.movewid1 = movewid1 = function movewid1(parameters, callback) {
+    debuglevel = 17;
+    eventappinstall();
+
+    var addcommand = {
+        "db": "test",
+        "collection": "",
+        "datastore": ""
+    };
+    var executeArray = [];
+    executeArray.push({
+        "executethis": "updatewid",
+        "wid": "wid1",
+        "d": "44",
+        "f": "6",
+        "command": addcommand
+    });
+    var movecommand = {
+        "db": "data",
+        "collection": "",
+        "datastore": ""
+    };
+    executeArray.push({
+        "executethis": "movewid",
+        "wid": "wid1",
+        "command": movecommand
+    });
+    execute(executeArray, function (err, res) {
+        proxyprinttodiv(">> add command <<", addcommand, 17);
+        proxyprinttodiv("add result ", res[0], 17);
+        proxyprinttodiv(">> move command <<", movecommand, 17);
+        proxyprinttodiv("move result ", res[1], 17);
+    });
+}
+
+/*
+        copywid1
+    */
+exports.copywid1 = copywid1 = function copywid1(parameters, callback) {
+    debuglevel = 17;
+    eventappinstall();
+
+    var addcommand = {
+        "db": "test",
+        "collection": "",
+        "datastore": ""
+    };
+    var executeArray = [];
+    executeArray.push({
+        "executethis": "updatewid",
+        "wid": "wid1",
+        "d": "44",
+        "f": "6",
+        "command": addcommand
+    });
+    var copycommand = {
+        "db": "data",
+        "collection": "",
+        "datastore": "",
+        "delete": true
+    };
+    executeArray.push({
+        "executethis": "copywid",
+        "wid": "wid1",
+        "command": copycommand
+    });
+    execute(executeArray, function (err, res) {
+        proxyprinttodiv(">> add command <<", addcommand, 17);
+        proxyprinttodiv("add result ", res[0], 17);
+        proxyprinttodiv(">> copy command <<", copycommand, 17);
+        proxyprinttodiv("copy result ", res[1], 17);
+        callback(err, res);
+    });
+}
+
+
+/*
+        addwidtest12
+        To addwid without wid property
+    */
+exports.addwidtest12 = addwidtest12 = function addwidtest12(parameters, callback) {
+    eventappinstall();
+
+    var inputdto = {
+        "a": "string"
+    };
+
+    var inputobject = {
+        "a": "1"
+    };
+
+    var command = {};
+
+    addwid(inputobject, inputdto, command, function (err, res) {
+        debuglevel = 17;
+        proxyprinttodiv("res --", res, 17);
+        var actual_result = res;
+        proxyprinttodiv("actual_result --", actual_result, 17);
+
+        var expected_result = [];
+        proxyprinttodiv("expected_result --", expected_result, 17);
+
+        res = logverify("logverify", actual_result, expected_result);
+        callback(err, res);
+    });
+}
+
+/*  
+        etd21
+        To test guid for empty wid
+    */
+exports.etd21 = etd21 = function etd21(parameters, callback) {
+    eventappinstall();
+    debuglevel = 41;
+    var dtoObjOpt = {
+        "a": "string",
+        "wid": "guid"
+    };
+    var inputObj = {
+        "a": "1",
+        "wid": "undefined"
+    };
+    var command = {
+        "deepfilter": {
+            "convert": true,
+            "keepaddthis": true
+        }
+    };
+
+    deepfilter(inputObj, dtoObjOpt, command, function (err, res) {
+        debuglevel = 17;
+        proxyprinttodiv("res --", res, 17);
+        var actual_result = res;
+        proxyprinttodiv("actual_result --", actual_result, 17);
+
+        var expected_result = [];
+        proxyprinttodiv("expected_result --", expected_result, 17);
+
+        res = logverify("logverify", actual_result, expected_result);
+        callback(err, res);
+    });
+}
+
+/*
+        copywid2
+        If command.extend = true, then we need to extend data from fromwid and then append to towid data
+        By default, command.extend = false
+    */
+exports.copywid2 = copywid2 = function copywid2(parameters, callback) {
+    debuglevel = 17;
+    eventappinstall();
+
+    var addcommand = {
+        "db": "data",
+        "collection": "",
+        "datastore": ""
+    };
+    var executeArray = [];
+    executeArray.push({
+        "executethis": "updatewid",
+        "wid": "wid1",
+        "d": "44",
+        "e": "6",
+        "command": addcommand
+    });
+    var copycommand = {
+        "db": "data",
+        "collection": "",
+        "datastore": "",
+        "delete": true,
+        "extend": true
+    };
+    executeArray.push({
+        "executethis": "copywid",
+        "wid": "wid1",
+        "f": "7",
+        "command": copycommand
+    });
+    execute(executeArray, function (err, res) {
+        proxyprinttodiv(">> add command <<", addcommand, 17);
+        proxyprinttodiv("add result ", res[0], 17);
+        proxyprinttodiv(">> copy command <<", copycommand, 17);
+        proxyprinttodiv("copy result ", res[1], 17);
+        callback(err, res);
+    });
+}
+
+/*
+        getwidparents
+    */
+exports.getwidparents = getwidparents = function getwidparents(parameters, callback) {
+    debuglevel = 17;
+    eventappinstall();
+
+    var executeList = [{ //authordto
+        "executethis": "addwidmaster",
+        "metadata.method": "authordto",
+        "wid": "authordto",
+        "name": "string",
+        "age": "string"
+    }, { //bookdto
+        "executethis": "addwidmaster",
+        "metadata.method": "bookdto",
+        "wid": "bookdto",
+        "title": "string"
+    }, { //authordto - bookdto
+        "executethis": "addwidmaster",
+        "wid": "rel_author_book",
+        "metadata.method": "relationshipdto",
+        "relationshiptype": "attributes",
+        "linktype": "onetomany",
+        "primarywid": "authordto",
+        "primarymethod": "authordto",
+        "secondarywid": "bookdto",
+        "secondarymethod": "bookdto"
+    }, { //author1
+        "executethis": "addwidmaster",
+        "metadata.method": "authordto",
+        "wid": "author1",
+        "name": "Author 1",
+        "age": "1"
+    }, { //book1
+        "executethis": "addwidmaster",
+        "metadata.method": "bookdto",
+        "wid": "book1",
+        "title": "Book 1"
+    }, { //author1 - book1
+        "executethis": "addwidmaster",
+        "wid": "rel_author1_book1",
+        "metadata.method": "relationshipdto",
+        "relationshiptype": "attributes",
+        "linktype": "onetomany",
+        "primarywid": "author1",
+        "primarymethod": "author1",
+        "secondarywid": "book1",
+        "secondarymethod": "book1"
+    }, {
+        "executethis": "findparent",
+        "wid": "book1"
+    }];
+    execute(executeList, function (err, res) {
+        callback(err, res[6]);
+    });
+}
+
+
+exports.testeventdata1 = testeventdata1 = function testeventdata1(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "authordto",
+            "metadata.method": "authordto",
+            "name": "string",
+            "age": "string",
+            "eyecolor": "string",
+            "haircolor": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "author1",
+            "metadata.method": "authordto",
+            "name": "Alex",
+            "age": "44"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "author1"
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+            proxyprinttodiv('The author1 record: ', res[3], 99);
+
+            var result = logverify("testinheritdefault0_result", res[3], [{
+                "wid": "author1",
+                "metadata.method": "authordto",
+                "name": "Alex",
+                "age": "44"
+            }]);
+
+            callback(err, result);
+        });
+}
+
+exports.testeventonemin1 = testeventonemin1 = function testeventonemin1(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "addthis.executethis": "testeventdata1",
+            "wid": "doesnotmatter",
+            // something to do 
+            "command": {
+                "databasetable": "queuecollection",
+                "db": "queuedata",
+                "collection": "eventonemin"
+            }
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+            callback(err, res);
+        });
+}
+
+/*
+    test 1
+    add wid 1 , 2 ...et wid1  -- wid3 appears
+*/
+exports.testeventonemin2 = testeventonemin2 = function testeventonemin2(params, callback) {
+    execute([{
+            "executethis": "updatewid",
+            "wid": "wid1",
+            "addthis.executethis": "wid2"
+        }, {
+            "executethis": "updatewid",
+            "wid": "wid2",
+            "addthis.executethis": "addwidmaster",
+            "addthis.wid": "wid3",
+            "a": "b"
+        }, {
+            "executethis": "wid1"
+        }],
+        function (err, res) {
+            proxyprinttodiv('Full results: ', res, 99);
+            callback(err, res);
+        });
+}
+
+/*
+    test 2
+    add wid 1 , 2 ...add addthis.et:wid1 to  the one minute queue -- after a min wid3 appears
+    there should also be a a history of this in completedqueuecolletctin (save there)
+*/
+exports.testeventonemin3 = testeventonemin3 = function testeventonemin3(params, callback) {
+
+    execute([{
+            "executethis": "updatewid",
+            "wid": "wid1",
+            "addthis.executethis": "wid2"
+        }, {
+            "executethis": "updatewid",
+            "wid": "wid2",
+            "addthis.executethis": "addwidmaster",
+            "addthis.wid": "wid3",
+            "a": "b"
+        }, {
+            "executethis": "updatewid",
+            "addthis.executethis": "wid1",
+            "wid": "doesnotmatter",
+            // something to do 
+            "command": {
+                "databasetable": "queuecollection",
+                "db": "queuedata",
+                "collection": "eventonemin"
+            }
+        }],
+        function (err, res) {
+            debuglevel = 11;
+            eventonemin({}, function (err, res) {
+                proxyprinttodiv('Full results: ', res, 99);
+                callback(err, res);
+            });
+        });
+}
+
+exports.testfiltermerge1 = testfiltermerge1 = function testfiltermerge1(params, callback) {
+    var obj1 = {
+        "key1": "hello",
+        "key2": "world",
+        "key3": "how",
+        "key4": "are",
+        "key5": "you?"
+    };
+    var obj2 = {
+        "key1": "hi",
+        "key4": "how",
+        "key6": "are",
+        "key7": "you?"
+    };
+    var command = {
+        "filterobject": {
+            "type": "merge"
+        }
+    };
+    var tname = "test filter merge";
+
+    var res = [filterobject(obj1, obj2, command)];
+
+    //proxyprinttodiv("merge result = ",res,99);
+    var result = logverify(tname, res, [{
+        "key1": "hello",
+        "key2": "world",
+        "key3": "how",
+        "key4": "are",
+        "key5": "you?",
+        "key6": "are",
+        "key7": "you?"
+    }]);
+    proxyprinttodiv(tname + " test result: ", result[tname], 99);
+    proxyprinttodiv(tname + " result: ", res, 99);
+}
+
+exports.testfilterkeymatch1 = testfilterkeymatch1 = function testfilterkeymatch1(params, callback) {
+    var obj1 = {
+        "key1": "hello",
+        "key2": "world",
+        "key3": "how",
+        "key4": "are",
+        "key5": "you?"
+    };
+    var obj2 = {
+        "key1": "hi",
+        "key4": "how",
+        "key6": "are",
+        "key7": "you?"
+    };
+    var command = {
+        "filterobject": {
+            "type": "keymatch"
+        }
+    };
+    var tname = "test filter keymatch";
+
+    var res = [filterobject(obj1, obj2, command)];
+
+    //proxyprinttodiv("keymatch result = ",res,99);
+    var result = logverify(tname, res, [{
+        "key1": "hello",
+        "key4": "are"
+    }]);
+    proxyprinttodiv(tname + " test result: ", result[tname], 99);
+    proxyprinttodiv(tname + " result: ", res, 99);
+}
+
+exports.testfilternomatch1 = testfilternomatch1 = function testfilterkeymatch1(params, callback) {
+    var obj1 = {
+        "key1": "hello",
+        "key2": "world",
+        "key3": "how",
+        "key4": "are",
+        "key5": "you?"
+    };
+    var obj2 = {
+        "key1": "hi",
+        "key4": "how",
+        "key6": "are",
+        "key7": "you?"
+    };
+    var command = {
+        "filterobject": {
+            "type": "nomatch"
+        }
+    };
+    var tname = "test filter nomatch";
+
+    var res = [filterobject(obj1, obj2, command)];
+
+    //proxyprinttodiv("nomatch result = ",res,99);
+    var result = logverify(tname, res, [{
+        "key2": "world",
+        "key3": "how",
+        "key5": "you?"
+    }]);
+    proxyprinttodiv(tname + " test result: ", result[tname], 99);
+    proxyprinttodiv(tname + " result: ", res, 99);
+}
+
 
 
 // These are the add/get tests to stress out the dto/dot notation system
@@ -5261,6 +6787,13 @@ exports.ettestag1 = widtests.ettestag1 = ettestag1 = function ettestag1(params, 
                 "note": "string"
             });
 
+        // execute({
+        //           "executethis": "getwidmaster",
+        //           "wid": "sounddto"
+        //         }, function (err, res) { 
+        //             proxyprinttodiv('Function ag1 actual result second ', res, 99, true);
+        //         })
+
             callback(err, res);
         });
 };
@@ -5501,85 +7034,127 @@ widtests.ettestag2.description = "this does a test";
 //exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
 exports.ettestag3 = widtests.ettestag3 = ettestag3 = function ettestag3(params, callback) {
 	//debuglevel = 28;
-	
+
 	var expectedresult = {
                 "title": "Highway to Hell",
                 "wid": "song1",
                 "metadata.method": "songdto",
                 "metadata.sounddto.type": "onetomany",
+                "metadata.date": {"exception":["updated"]},
                 "sounddto.0.note": "A flat",
                 "sounddto.0.wid": "ag3aflat",
                 "sounddto.0.metadata.method": "sounddto",
-                "sounddto.0.metadata.parentwidtests.song1": "songdto",
+                "sounddto.0.metadata.parentwid.song1": "songdto",
+                "sounddto.0.metadata.date": {"exception":["updated"]},
                 "sounddto.1.note": "B sharp",
                 "sounddto.1.wid": "ag3bsharp",
                 "sounddto.1.metadata.method": "sounddto",
-                "sounddto.1.metadata.parentwidtests.song1": "songdto",
+                "sounddto.1.metadata.parentwid.song1": "songdto",
+                "sounddto.1.metadata.date": {"exception":["updated"]},
                 "sounddto.2.note": "C flat",
                 "sounddto.2.wid": "ag3cflat",
                 "sounddto.2.metadata.method": "sounddto",
-                "sounddto.2.metadata.parentwidtests.song1": "songdto"
+                "sounddto.2.metadata.parentwid.song1": "songdto",
+                "sounddto.2.metadata.date": {"exception":["updated"]}
             };
 			
-    var executeobject = {}
+    var executeobject = {};
         executeobject.command={};
         executeobject.command.environment={};
         executeobject.command.environment.run={};
         executeobject.command.environment.run.executelevel=0;
-        executeobject.command.environment.syncrule = "sync_local"
+        executeobject.command.environment.syncrule = "sync_local";
 		
-		executeobject.command.xrun = [{
-            "executethis": "addwidmaster",
-            "wid": "sounddto",
-            "metadata.method": "sounddto",
-            "note": "string"
-        }, {
-            "executethis": "addwidmaster",
-            "wid": "songdto",
-            "metadata.method": "songdto",
-            "title": "string",
-            "metadata.sounddto.type": "onetomany"
-        }, {
-            "executethis": "addwidmaster",
-            "wid": "rel_sound_to_song",
-            "metadata.method": "relationshipdto",
-            "primarywid": "songdto",
-            "secondarywid": "sounddto",
-            "primarymethod": "songdto",
-            "secondarymethod": "sounddto",
-            "linktype": "onetomany",
-            "relationshiptype": "attributes"
-        }, {
-            "executethis": "addwidmaster",
-            "wid": "song1",
-            "metadata.method": "songdto",
-            "title": "Highway to Hell",
-            "sounddto.wid": "ag3aflat",
-            "sounddto.note": "A flat"
-         }, {
-             "executethis": "addwidmaster",
-             "wid": "song1",
-             "metadata.method": "songdto",
-             "title": "Highway to Hell",
-             "sounddto.wid": "ag3bsharp",
-             "sounddto.note": "B sharp"
-         }, {
-             "executethis": "addwidmaster",
-             "wid": "song1",
-             "metadata.method": "songdto",
-             "title": "Highway to Hell",
-             "sounddto.wid": "ag3cflat",
-             "sounddto.note": "C flat"
-         }, {
-             "executethis": "getwidmaster",
-             "wid": "song1",
-             "command": {
-                 "getwidmaster": {
-                     "execute": "ConvertToDOTdri"
-                 }
+    executeobject.command.xrun = [{
+        "executethis": "addwidmaster",
+        "wid": "sounddto",
+        "metadata.method": "sounddto",
+        "note": "string"
+    }, {
+        "executethis": "addwidmaster",
+        "wid": "songdto",
+        "metadata.method": "songdto",
+        "title": "string",
+        "metadata.sounddto.type": "onetomany"
+    }, {
+        "executethis": "addwidmaster",
+        "wid": "rel_sound_to_song",
+        "metadata.method": "relationshipdto",
+        "primarywid": "songdto",
+        "secondarywid": "sounddto",
+        "primarymethod": "songdto",
+        "secondarymethod": "sounddto",
+        "linktype": "onetomany",
+        "relationshiptype": "attributes"
+    }, {
+        "executethis": "addwidmaster",
+        "wid": "song1",
+        "metadata.method": "songdto",
+        "title": "Highway to Hell",
+        "sounddto.wid": "ag3aflat",
+        "sounddto.note": "A flat"
+     }, {
+         "executethis": "addwidmaster",
+         "wid": "song1",
+         "metadata.method": "songdto",
+         "title": "Highway to Hell",
+         "sounddto.wid": "ag3bsharp",
+         "sounddto.note": "B sharp"
+     }, {
+         "executethis": "addwidmaster",
+         "wid": "song1",
+         "metadata.method": "songdto",
+         "title": "Highway to Hell",
+         "sounddto.wid": "ag3cflat",
+         "sounddto.note": "C flat"
+     }, {
+         "executethis": "getwidmaster",
+         "wid": "song1",
+         "metadata.method": "songdto",
+         "command": {
+             "getwidmaster": {
+                 "execute": "ConvertToDOTdri"
              }
-        }];
+         }
+    }];
 		
+    proxyprinttodiv("Ag3  params ", params, 99,true);
+    var env = new DriEnvironment(params.command.environment);
+    proxyprinttodiv("Ag3  env ", env, 99, true);
+    env.execute(executeobject, 
+        
+        function (err, res1) {
+            proxyprinttodiv("Ag3  result ", res1, 99,true);
+            var res = res1[6];
+
+            proxyprinttodiv('Function ag3 actual result ', res, 99, true);
+            proxyprinttodiv('Function ag3 expected result ', expectedresult, 99, true);
+            res = logverify("ettestag3_result", res, expectedresult);
+            // debuglevel=111;
+            // proxyprinttodiv('Function ag3 starting song1 ', expectedresult, 99, true);
+            // execute({"executethis": "getwidmaster", "wid": "song1"}, function (err, res1) {
+            //     proxyprinttodiv("Ag3  result last of song1 ", res1, 99,true);
+                callback(null, res)
+            })
+        //});
+    };
+
+widtests.ettestag3.category = "daily";
+widtests.ettestag3.subcategory = "push";
+widtests.ettestag3.js = exports.ettestag1;
+widtests.ettestag3.description = "this does a test";
+
+// can be ran after ag3 to just get the value of song1
+exports.ettestag3x = widtests.ettestag3x = ettestag3x = function ettestag3x(params, callback) {
+    var expectedresult = {};
+    var executeobject = {};
+        executeobject.command={};
+        executeobject.command.environment={};
+        executeobject.command.environment.run={};
+        executeobject.command.environment.run.executelevel=0;
+        executeobject.command.environment.syncrule = "sync_local";
+        executeobject.command.xrun = {"executethis": "getwidmaster","wid": "songdto", "command.convertmethod":"dto"};
+        
     proxyprinttodiv("Ag3  params ", params, 99,true);
     var env = new DriEnvironment(params.command.environment);
     proxyprinttodiv("Ag3  env ", env, 99, true);
@@ -5589,17 +7164,21 @@ exports.ettestag3 = widtests.ettestag3 = ettestag3 = function ettestag3(params, 
             proxyprinttodiv("Ag3  result ", res1, 99,true);
             var res = res1;
 
-            proxyprinttodiv('Function ag3 actual result ', res[5], 99, true);
+            proxyprinttodiv('Function ag3 actual result ', res1, 99, true);
             proxyprinttodiv('Function ag3 expected result ', expectedresult, 99, true);
             res = logverify("ettestag3_result", res[5], expectedresult);
-            callback(err, res1);
-        });
+            debuglevel=11;
+            callback(null, res1)
+        })
     };
 
-widtests.ettestag3.category = "daily";
-widtests.ettestag3.subcategory = "push";
-widtests.ettestag3.js = exports.ettestag1;
-widtests.ettestag3.description = "this does a test";
+widtests.ettestag3x.category = "daily";
+widtests.ettestag3x.subcategory = "push";
+widtests.ettestag3x.js = exports.ettestag1;
+widtests.ettestag3x.description = "this does a test";
+
+
+
 // This will test the ability to write a dto to the db, use that dto to write
 // a wid with that dto, and get the results of getting that widtests.
 //exports.ettestag2 = ettestag2 = function ettestag2(params, callback) {
@@ -6461,33 +8040,759 @@ exports.testpermissiondefault2 = testpermissiondefault2 = function testpermissio
         });
 }
 
-
-exports.testupdating1 = testupdating1 = function testupdating1(params, callback) {
+exports.ettestag9000 = ettestag9000 = function ettestag9000(params, callback) {
+    debuglevel = 0;
     execute([{
             "executethis": "addwidmaster",
+            "wid": "notedto",
+            "metadata.method": "notedto",
+            "note": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "sounddto",
+            "metadata.method": "sounddto",
+            "note": "string"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "songdto",
+            "metadata.method": "songdto",
+            "title": "string",
+            "metadata.sounddto.type": "onetomany"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_sound_to_song",
+            "metadata.method": "relationshipdto",
+            "primarywid": "songdto",
+            "secondarywid": "sounddto",
+            "primarymethod": "songdto",
+            "secondarymethod": "sounddto",
+            "linktype": "onetomany",
+            "relationshiptype": "attributes"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "rel_sound_to_note",
+            "metadata.method": "relationshipdto",
+            "primarywid": "sounddto",
+            "secondarywid": "notedto",
+            "primarymethod": "sounddto",
+            "secondarymethod": "notedto",
+            "linktype": "onetomany",
+            "relationshiptype": "attributes"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "songdto",
+            "title": "Highway to Hell",
+            "sounddto.wid": "ag3aflat",
+            "sounddto.notedto.wid": "Aflat",
+            "sounddto.notedto.note": "A flat"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "songdto",
+            "title": "Highway to Hell",
+            "sounddto.wid": "ag3bsharp",
+            "sounddto.noteddto.wid": "Bsharp",
+            "sounddto.noteddto.note": "B sharp"
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "song1",
+            "metadata.method": "songdto",
+            "title": "Highway to Hell",
+            "sounddto.wid": "ag3cflat",
+            "sounddto.notedto.wid": "Cflat",
+            "sounddto.notedto.note": "C flat"
+        }, {
+            "executethis": "getwidmaster",
+            "wid": "song1"
+        }],
+        function (err, res) {
+
+            proxyprinttodiv('Function ag3 result Full res', res, 17);
+            proxyprinttodiv('Function ag3 result ', res[6], 17);
+
+            res = logverify("ettestag3_result", res[6], [{
+                "title": "Highway to Hell",
+                "wid": "song1",
+                "metadata.method": "songdto",
+                "metadata.sounddto.type": "onetomany",
+                "sounddto.0.note": "A flat",
+                "sounddto.0.wid": "ag3aflat",
+                "sounddto.0.metadata.method": "sounddto",
+                "sounddto.0.metadata.parentwid.song1": "songdto",
+                "sounddto.1.note": "B sharp",
+                "sounddto.1.wid": "ag3bsharp",
+                "sounddto.1.metadata.method": "sounddto",
+                "sounddto.1.metadata.parentwid.song1": "songdto",
+                "sounddto.2.note": "C flat",
+                "sounddto.2.wid": "ag3cflat",
+                "sounddto.2.metadata.method": "sounddto",
+                "sounddto.2.metadata.parentwid.song1": "songdto"
+            }]);
+            debuglevel = 0;
+            // execute({"executethis": "getwidmaster","wid": "songdto",
+            //       "command":{"getwidmaster":{"convertmethod":"dto",
+            //                               "execute":"ConvertFromDOTdri",
+            //                               "inheritflag":"true","dtotype":""}}}, function (err, res1) {
+            execute({
+                "executethis": "getwidmaster",
+                "wid": "song1"
+            }, function (err, res1) {
+                proxyprinttodiv('Function ag3 result LAST ', res1, 99);
+                callback(err, res);
+
+            })
+        });
+}
+
+exports.testenv = testenv = function testenv(params, callback) {
+    execute([{
+            "executethis": "updatewid",
+            "wid": "codydto",
+            "a": "b",
+            "command": {
+                "environment": {
+                    "databasetable": "test"
+                }
+            }
+        }],
+        function (err, res) {
+            proxyprinttodiv('testenv result: ', res, 99);
+            // var result = logverify("cody1_result", res[3], [{
+            //     "wid": "cody1",
+            //     "metadata.method": "codydto",
+            //     "month": "June",
+            //     "day": "9th"
+            // }]);
+            callback(err, res);
+        });
+}
+
+// numerickeyerror
+exports.numerickeyerror = numerickeyerror = function numerickeyerror(params, callback) {
+    execute([{
+            "executethis": "updatewid",
+            "wid": "db1dto",
+            "2": {
+                "c": "d",
+                "d1": {
+                    "e1": "e2"
+                }
+            }
+        }],
+        function (err, res) {
+            proxyprinttodiv('db1dto result: ', res, 99);
+            callback(err, res);
+        });
+}
+
+
+
+// tests that db wids are updated fine -- overwrites do not happen -- using updatewid and getwid
+// command.datamethod = upsert(defaulted)
+// same database, same sub-database
+exports.stbd1a = stbd1a = function stbd1a(params, callback) {
+    execute([{
+            "executethis": "updatewid",
+            "wid": "db1dto",
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
+        }, {
+            "executethis": "updatewid",
+            "wid": "db1dto",
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
+        }, {
+            "executethis": "getwid",
+            "wid": "db1dto"
+        }],
+        function (err, res) {
+            proxyprinttodiv('stbd1a result: ', res, 99);
+            callback(err, res);
+        });
+}
+
+
+// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
+// command.datamethod = upsert(defaulted)
+// same database, same sub-database
+exports.stbd1b = stbd1b = function stbd1b(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command.collection": "data",
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command.collection": "data",
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "command.collection": "data",
+            "wid": "db2dto"
+        }],
+        function (err, res) {
+            proxyprinttodiv('stbd1b result: ', res, 99);
+
+            callback(err, res);
+        });
+}
+
+// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
+// command.datamethod = upsert
+// same database, same sub-database
+exports.stbd1c = stbd1c = function stbd1c(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command.datamethod": "upsert",
+            "command.collection": "data",
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command.datamethod": "upsert",
+            "command.collection": "data",
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "command.collection": "data",
+            "wid": "db2dto"
+        }],
+        function (err, res) {
+            proxyprinttodiv('stbd1c result: ', res, 99);
+
+            callback(err, res);
+        });
+}
+
+// tests that db wids are updated fine -- overwrites do not happen -- using updatewid and getwid
+// command.datamethod = upsert
+// same database, different sub-database
+exports.stbd1d = stbd1d = function stbd1d(params, callback) {
+    execute([{
+            "executethis": "updatewid",
+            "wid": "db2dto",
+            "command": {
+                "datamethod": "upsert",
+                "db": "data"
+            },
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
+        }, {
+            "executethis": "updatewid",
+            "wid": "db2dto",
+            "command": {
+                "datamethod": "upsert",
+                "db": "test"
+            },
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
+        }, {
+            "executethis": "getwid",
+            "command": {
+                "datamethod": "upsert",
+                "db": "data"
+            },
+            "wid": "db2dto"
+        }, {
+            "executethis": "getwid",
+            "command": {
+                "db": "test"
+            },
+            "wid": "db2dto"
+        }],
+        function (err, res) {
+            proxyprinttodiv('stbd1d result: ', res, 99);
+
+            callback(err, res);
+        });
+}
+
+
+// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
+// command.datamethod = upsert
+// same database, different sub-database
+exports.stbd1e = stbd1e = function stbd1e(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command": {
+                "environment": {
+                    "datamethod": "upsert",
+                    "db": "data"
+                }
+            },
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command": {
+                "environment": {
+                    "datamethod": "upsert",
+                    "db": "test"
+                }
+            },
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "command": {
+                "environment": {
+                    "db": "data"
+                }
+            },
+            "wid": "db2dto"
+        }, {
+            "executethis": "getwidmaster",
+            "command": {
+                "environment": {
+                    "db": "test"
+                }
+            },
+            "wid": "db2dto"
+        }],
+        function (err, res) {
+            proxyprinttodiv('stbd1e result: ', res, 99);
+
+            callback(err, res);
+        });
+}
+
+// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
+// command.datamethod = insert
+// same database, different sub-database
+exports.stbd1f = stbd1f = function stbd1f(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command": {
+                "environment": {
+                    "datamethod": "insert",
+                    "db": "data"
+                }
+            },
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command": {
+                "environment": {
+                    "datamethod": "insert",
+                    "db": "test"
+                }
+            },
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "command": {
+                "environment": {
+                    "db": "data"
+                }
+            },
+            "wid": "db2dto"
+        }, {
+            "executethis": "getwidmaster",
+            "command": {
+                "environment": {
+                    "db": "test"
+                }
+            },
+            "wid": "db2dto"
+        }],
+        function (err, res) {
+            proxyprinttodiv('stbd1f result: ', res, 99);
+
+            callback(err, res);
+        });
+}
+
+
+
+// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
+// command.datamethod = clear
+// same database, same sub-database
+exports.stbd1g = stbd1g = function stbd1g(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command": {
+                "environment": {
+                    "datamethod": "insert",
+                    "db": "data"
+                }
+            },
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command": {
+                "environment": {
+                    "datamethod": "insert",
+                    "db": "data"
+                }
+            },
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "command": {
+                "environment": {
+                    "db": "data"
+                }
+            },
+            "wid": "db2dto"
+        }],
+        function (err, res) {
+            proxyprinttodiv('stbd1g result: ', res, 99);
+
+            callback(err, res);
+        });
+}
+
+// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
+// command.datamethod = clear
+// same database, same sub-database
+exports.stbd1h = stbd1h = function stbd1h(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command": {
+                "environment": {
+                    "datamethod": "clear",
+                    "db": "data"
+                }
+            },
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command": {
+                "environment": {
+                    "datamethod": "clear",
+                    "db": "data"
+                }
+            },
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "command": {
+                "environment": {
+                    "db": "data"
+                }
+            },
+            "wid": "db2dto"
+        }],
+        function (err, res) {
+            proxyprinttodiv('stbd1h result: ', res, 99);
+
+            callback(err, res);
+        });
+}
+
+
+
+// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
+// command.datamethod = "upsert"
+// command.collection = "new"
+// command.db = "da"
+// same database, diff colection, same sub-database
+exports.stbd1i = stbd1i = function stbd1i(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command": {
+                "environment": {
+                    "datamethod": "upsert",
+                    "collection": "dri2",
+                    "db": "da"
+                }
+            },
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command": {
+                "environment": {
+                    "datamethod": "upsert",
+                    "collection": "dri2",
+                    "db": "da"
+                }
+            },
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command": {
+                "environment": {
+                    "datamethod": "upsert",
+                    "db": "da",
+                    "collection": "dri3"
+                }
+            },
+            "ac": {
+                "ac1": "ad1",
+                "ac2": {
+                    "ac21": "ad21"
+                }
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "command": {
+                "environment": {
+                    "db": "da",
+                    "collection": "dri2"
+                }
+            },
+            "wid": "db2dto"
+        }, {
+            "executethis": "getwidmaster",
+            "command": {
+                "environment": {
+                    "db": "da",
+                    "collection": "dri3"
+                }
+            },
+            "wid": "db2dto"
+        }],
+        function (err, res) {
+            proxyprinttodiv('stbd1i result: ', res, 99);
+
+            callback(err, res);
+        });
+}
+
+
+
+// tests that db wids are updated fine -- overwrites do not happen -- using addwidmaster and getwidmaster
+// command.datamethod = "upsert"
+// command.collection = "new"
+// command.db = "da"
+// diff database, same collection, same sub-database
+exports.stbd1j = stbd1j = function stbd1j(params, callback) {
+    execute([{
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command": {
+                "environment": {
+                    "datamethod": "upsert",
+                    "collection": "dri2",
+                    "db": "da",
+                    "databasetable": "wikiwallettesting2"
+                }
+            },
+            "a": {
+                "a1": "b1",
+                "a2": {
+                    "a21": "b21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command": {
+                "environment": {
+                    "datamethod": "upsert",
+                    "collection": "dri2",
+                    "db": "da",
+                    "databasetable": "dbwikiwallettesting2"
+                }
+            },
+            "c": {
+                "c1": "d1",
+                "c2": {
+                    "c21": "d21"
+                }
+            }
+        }, {
+            "executethis": "addwidmaster",
+            "wid": "db2dto",
+            "command": {
+                "environment": {
+                    "datamethod": "upsert",
+                    "db": "da",
+                    "collection": "dri2",
+                    "databasetable": "wikiwallettesting1"
+                }
+            },
+            "ac": {
+                "ac1": "ad1",
+                "ac2": {
+                    "ac21": "ad21"
+                }
+            }
+        }, {
+            "executethis": "getwidmaster",
+            "command": {
+                "environment": {
+                    "db": "da",
+                    "collection": "dri2",
+                    "databasetable": "wikiwallettesting1"
+                }
+            },
+            "wid": "db2dto"
+        }, {
+            "executethis": "getwidmaster",
+            "command": {
+                "environment": {
+                    "db": "da",
+                    "collection": "dri2",
+                    "databasetable": "wikiwallettesting2"
+                }
+            },
+            "wid": "db2dto"
+        }],
+        function (err, res) {
+            proxyprinttodiv('stbd1j result: ', res, 99);
+
+            callback(err, res);
+        });
+}
+
+// deletewid() test 
+// To test wid copied to command.datasettable="driarchive" or not
+exports.testdltwid1 = testdltwid1 = function testdltwid1(params, callback) {
+    debuglevel = 17;
+    execute([{
+            "executethis": "updatewid",
+            "wid": "testdeletewid1",
+            "a": "b"
+        }, {
+            "executethis": "deletewid",
+            "wid": "testdeletewid1"
+        }, {
+            "executethis": "getwid",
+            "wid": "testdeletewid1"
+        }],
+        function (err, res) {
+            proxyprinttodiv('testdeletewid1 result: ', res, 99);
+            callback(err, res);
+        });
+}
+// To test with copywid, command.environment debugging
+exports.testgetwid1 = testgetwid1 = function testgetwid1(params, callback) {
+    debuglevel = 17;
+    execute([{
+            "executethis": "getwid",
+            "wid": "testwid1"
+        }],
+        function (err, res) {
+            proxyprinttodiv('testgetwid1 result: ', res, 99);
+            callback(err, res);
+        });
+}
+
+//To test updatewid, getwid
+exports.testupdateget = testupdateget = function testupdateget(params, callback) {
+    execute([{ //dto add
+            "executethis": "updatewid",
             "wid": "adto",
             "metadata": {
                 "method": "adto"
             },
-            "field1": "string",
-            "field2": "string"
-        }, {
-            "executethis": "addwidmaster",
+            "a": "string",
+            "b": "string"
+        }, { //wid add
+            "executethis": "updatewid",
             "wid": "awid1",
             "metadata": {
                 "method": "adto"
             },
-            "field1": "hello",
-            "field2": "world"
-        }, {
-            "executethis": "addwidmaster",
+            "a": "hello",
+            "b": "world"
+        }, { //wid update
+            "executethis": "updatewid",
             "wid": "awid1",
             "metadata": {
                 "method": "adto"
             },
-            //"command":{"databasetable":"insert"},
-            "field1": "goodbye"
-        }, {
+            "a": "goodbye"
+        }, { //get wid
             "executethis": "getwidmaster",
             "wid": "awid1",
             "metadata": {
@@ -6499,15 +8804,429 @@ exports.testupdating1 = testupdating1 = function testupdating1(params, callback)
             proxyprinttodiv('adding awid1: ', res[1], 99);
             proxyprinttodiv('updating awid1: ', res[2], 99);
             proxyprinttodiv('awid1 get: ', res[3], 99);
-            var result = logverify("cody1_result", res[3], [{
+            var result = logverify("testupdateget_result", res[3], [{
                 "wid": "awid1",
-                "metadata.method": "adto",
-                "field1": "goodbye",
-                "field2": "world"
+                "metadata": {
+                    "method": "adto"
+                },
+                "a": "goodbye",
+                "b": "world"
             }]);
             callback(err, result);
         });
 }
+
+//To test copywid
+exports.testcopywid = testcopywid = function testcopywid(params, callback) {
+    debuglevel = 17;
+
+    var executeArray = [{ //updatewid
+        "executethis": "updatewid",
+        "wid": "wid1",
+        "a": "44",
+        "b": "6",
+        "command": {
+            "collection": "test"
+        }
+    }, { //getwid
+        "executethis": "getwid",
+        "wid": "wid1",
+        "command": {
+            "collection": "test"
+        }
+    }, { //getwid
+        "executethis": "getwid",
+        "wid": "wid1",
+        "command": {
+            "collection": "test2"
+        }
+    }, { //copywid
+        "executethis": "copywid",
+        "wid": "wid1",
+        "command": {
+            fromdb: "data",
+            fromcollection: "test",
+            fromdatastore: "localstorage",
+            fromdatabasetable: "wikiwallettesting",
+            todb: "data",
+            tocollection: "test2",
+            todatastore: "localstorage",
+            todatabasetable: "wikiwallettesting"
+        }
+    }, { //getwid
+        "executethis": "getwid",
+        "wid": "wid1",
+        "command": {
+            "collection": "test2"
+        }
+    }];
+
+    execute(executeArray, function (err, res) {
+        proxyprinttodiv("updatewid result with command.collection=test", res[0], 17);
+        proxyprinttodiv("getwid result with command.collection=test", res[1], 17);
+        proxyprinttodiv("getwid result with command.collection=test2", res[2], 17);
+        //proxyprinttodiv("copywid result with command.collection=test", res[3], 17);
+        //proxyprinttodiv("getwid result with command.collection=test2", res[4], 17);
+        callback(err, res);
+    });
+}
+
+
+// getrelatedrecords() test with one child
+exports.testgetrelatedrecords1 = testgetrelatedrecords1 = function testgetrelatedrecords1(params, callback) {
+    debuglevel = 17;
+
+    execute([{ //authordto
+            "executethis": "addwidmaster",
+            "metadata.method": "authordto",
+            "wid": "authordto",
+            "name": "string",
+            "age": "string"
+        }, { //bookdto
+            "executethis": "addwidmaster",
+            "metadata.method": "bookdto",
+            "wid": "bookdto",
+            "title": "string"
+        }, { //authordto - bookdto
+            "executethis": "addwidmaster",
+            "wid": "rel_author_book",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "authordto",
+            "primarymethod": "authordto",
+            "secondarywid": "bookdto",
+            "secondarymethod": "bookdto"
+        }, { //pagedto
+            "executethis": "addwidmaster",
+            "metadata.method": "pagedto",
+            "wid": "pagedto",
+            "pages": "string"
+        }, { //bookdto - pagedto
+            "executethis": "addwidmaster",
+            "wid": "rel_book_page",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "bookdto",
+            "primarymethod": "bookdto",
+            "secondarywid": "pagedto",
+            "secondarymethod": "pagedto"
+        }, { //author1
+            "executethis": "addwidmaster",
+            "metadata.method": "authordto",
+            "wid": "author1",
+            "name": "Author 1",
+            "age": "1",
+            //"bookdto.title":"book1"
+        }, { //book1
+            "executethis": "addwidmaster",
+            "metadata.method": "bookdto",
+            "wid": "book1",
+            "title": "Book 1"
+        }, { //page1
+            "executethis": "addwidmaster",
+            "metadata.method": "pagedto",
+            "wid": "page1",
+            "title": "Page 1"
+        }, { //rel author1-book1
+            "executethis": "addwidmaster",
+            "wid": "rel_author1_book1",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "author1",
+            "primarymethod": "author1",
+            "secondarywid": "book1",
+            "secondarymethod": "book1"
+        }, { //rel book1-page1
+            "executethis": "addwidmaster",
+            "wid": "rel_book1_page1",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "book1",
+            "primarymethod": "book1",
+            "secondarywid": "page1",
+            "secondarymethod": "page1"
+        }, { //getwid author1
+            "executethis": "getwidmaster",
+            "wid": "author1"
+        }, { //to get book1's parent author1
+            "executethis": "getrelatedrecords",
+            "widlist": ["book1"],
+            "command": {
+                "reltype": "parent",
+                "recurse": true
+            }
+        }
+        /*, {    //to get book1's parent author1
+        "executethis":"getrelatedrecords",
+        "widlist": ["page1"],
+        "command": {"reltype": "parent", "recurse":true}
+    }, {    //to get author1's children
+        "executethis":"getrelatedrecords",
+        "widlist": ["author1"],
+        "command": {"reltype": "child", "recurse":true}
+    }*/
+    ], function (err, res) {
+        callback(err, res);
+    });
+}
+
+// getrelatedrecords() test 
+// to test multiple children
+exports.testgetrelatedrecords2 = testgetrelatedrecords2 = function testgetrelatedrecords2(params, callback) {
+    debuglevel = 17;
+
+    var executeList = [{ //testdto
+            "executethis": "addwidmaster",
+            "metadata.method": "testdto",
+            "wid": "testdto",
+            "a": "string"
+        }, { //rel testdto-testdto
+            "executethis": "addwidmaster",
+            "wid": "rel_testdto_testdto",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "testdto",
+            "primarymethod": "testdto",
+            "secondarywid": "testdto",
+            "secondarymethod": "testdto"
+        }, { //to add test1
+            "executethis": "addwidmaster",
+            "metadata.method": "testdto",
+            "wid": "test1",
+            "a": "1",
+            "testdto.a": "b"
+        }, { //to get test1
+            "executethis": "getwidmaster",
+            "wid": "test1"
+            // }, {    //to get test1's children
+            //        "executethis":"getrelatedrecords",
+            //        "widlist": ["test1"],
+            //  "command": {"reltype": "child", "recurse":true}
+        }
+        /*, {    //test2
+        "executethis":"addwidmaster",
+        "metadata.method": "testdto",
+        "wid": "test2",
+        "a": "2"
+    }, {    //test3
+        "executethis":"addwidmaster",
+        "metadata.method": "testdto",
+        "wid": "test3",
+        "testdto.a": "3"
+    }, {    //test4
+        "executethis":"addwidmaster",
+        "metadata.method": "testdto",
+        "wid": "test4",
+        "testdto.a": "4"
+    }, {    //test5
+        "executethis":"addwidmaster",
+        "metadata.method": "testdto",
+        "wid": "test5",
+        "testdto.a": "5"
+    }, {    //test6
+        "executethis":"addwidmaster",
+        "metadata.method": "testdto",
+        "wid": "test6",
+        "testdto.testdto.a": "6"
+    }, {    //test7
+        "executethis":"addwidmaster",
+        "metadata.method": "testdto",
+        "wid": "test7",
+        "testdto.testdto.a": "10"
+    }, {    //test8
+        "executethis":"addwidmaster",
+        "metadata.method": "testdto",
+        "wid": "test8",
+        "testdto.testdto.testdto.a": "11"
+    }, {    //test9
+        "executethis":"addwidmaster",
+        "metadata.method": "testdto",
+        "wid": "test9",
+        "testdto.testdto.testdto.a": "12"
+    }, {    
+        "executethis":"getrelatedrecords",
+        "wid": "test3"
+    }, {    
+        "executethis":"getrelatedrecords",
+        "wid": "test6"
+    }, {    
+        "executethis":"getrelatedrecords",
+        "wid": "test9"
+    }*/
+    ];
+    execute(executeList, function (err, res) {
+        proxyprinttodiv("testgetrelatedrecords1", res, 99);
+        proxyprinttodiv("testgetrelatedrecords1 res[2]", res[2], 17);
+        proxyprinttodiv("testgetrelatedrecords1 res[5]", res[5], 17);
+        proxyprinttodiv("testgetrelatedrecords1 res[8]", res[8], 17);
+        callback(err, res);
+    });
+}
+
+
+/*
+    deepfilter should process command
+    To check dataType=object, dataType=array
+*/
+exports.etd15 = etd15 = function etd15(params, callback) {
+    debuglevel = 17;
+    async.series([
+    function step1(cb1){
+        var dtoObjOpt = {"o1":"object","a1":"array","q":{"w":{"e":"boolean"}},"b":[{"c":"string","c1":"boolean","c2":"boolean"}]};
+        var inputObj = {"o1":{"a":"b"},"a1":[{"a1":"b1"},{"a2":"b2"}],"q":{"w":{"e":"true"}},"b":[{"c":"one","c1":"true","c2":"x"}]};
+        var command = {"deepfilter":{"convert":"true"}};
+        deepfilter(inputObj, dtoObjOpt, command, function (err, res){
+            cb1(err, res);
+        });
+    }], function (err, res) {
+        proxyprinttodiv("res --", res, 17);
+        var actual_result = [res];
+        proxyprinttodiv("actual_result --", actual_result, 17);                           
+
+        var expected_result = [[{"o1":{"a":"b"},"a1":["hi","hi2"]}]];
+        proxyprinttodiv("expected_result --", expected_result, 17);
+
+//      res = logverify("etd15", actual_result, expected_result);
+        callback(err, res);
+    });
+}
+
+/*
+    guid, shortguid, random4
+*/
+exports.etdguid = etdguid = function etdguid(params, callback) {
+    debuglevel = 17;
+    async.series([
+    function step1(cb1){
+        var dtoObjOpt = {"g1":"guid","g2":"guid","sg1":"shortguid", "sg2":"shortguid","r1":"random4","r2":"random4"};
+        var inputObj = {"g2":"1111111-2222-33333-4444-5555555555","sg2":"1111-2222-3333-4444","r2":"1111"};
+        var command = {"deepfilter":{"convert":"true"}};
+        deepfilter(inputObj, dtoObjOpt, command, function (err, res){
+            cb1(err, res);
+        });
+    }], function (err, res) {
+        proxyprinttodiv("res --", res, 17);
+        var actual_result = [res];
+        proxyprinttodiv("actual_result --", actual_result, 17);
+        callback(err, res);
+    });
+}
+
+/*
+    objectoperations() test
+*/
+exports.testobjectoperations = testobjectoperations = function testobjectoperations(params, callback) {
+    debuglevel = 17;    
+    var executeList = [{    //object size
+        "executethis": "objectoperations",
+        "command": {"object":{"a":"b","b":"c"}, "result":"objectSize1"}
+    }, {    //right collection input for size
+        "executethis": "objectoperations",
+        "command": {"collection":"dricollection", "result":"objectSize2"}
+    }, {    //to add test1
+        "executethis":"updatewid",
+        "wid": "test1",
+        "a": "1"
+    }, {    //right datasettable input for size
+        "executethis": "objectoperations",
+        "command": {"databasetable":"wikiwallettesting", "result":"objectSize3"}
+    }, {    //to add test2
+        "executethis":"updatewid",
+        "wid": "test2",
+        "a": "2"
+    }, {    //to add test3
+        "executethis":"updatewid",
+        "wid": "test3",
+        "a": "3"
+    }, {    //right collection, datasettable input for size
+        "executethis": "objectoperations",
+        "command": {"collection":"dricollection", "databasetable":"wikiwallettesting", "result":"objectSize4"}
+    }, {    //wrong collection input for size
+        "executethis": "objectoperations",
+        "command": {"collection":"testcollection", "result":"objectSize5"}
+    }, {    //right collection input for delete=true
+        "executethis": "objectoperations",
+        "command": {"collection":"dricollection", "result":"objectSize6", "delete":true}
+    }, {    //right collection input for size
+        "executethis": "objectoperations",
+        "command": {"collection":"dricollection", "result":"objectSize7"}
+    }];
+    execute(executeList, function (err, res) {
+        proxyprinttodiv("testobjectoperations res", res, 17);
+        callback(err, res);
+    });
+}
+
+
+/*
+deletewid() test 
+-- To delete parent/child with recursion
+*/ 
+exports.testdltwid2 = testdltwid2 = function testdltwid2(params, callback) {
+    debuglevel = 17;
+    execute([{  //authordto
+        "executethis": "updatewid",
+        "metadata.method": "authordto",
+        "wid": "authordto",
+        "name": "string",
+        "age": "string"
+    }, {    //bookdto
+        "executethis": "updatewid",
+        "metadata.method": "bookdto",
+        "wid": "bookdto",
+        "title": "string"
+    }, {    //authordto - bookdto
+        "executethis": "updatewid",
+        "wid": "rel_author_book",
+        "metadata.method": "relationshipdto",
+        "relationshiptype": "attributes",
+        "linktype": "onetomany",
+        "primarywid": "authordto",
+        "primarymethod": "authordto",
+        "secondarywid": "bookdto",
+        "secondarymethod": "bookdto"
+    }, {    //author1
+        "executethis":"updatewid",
+        "metadata.method": "authordto",
+        "wid": "author1",
+        "name": "Author 1",
+        "age": "1",
+        //"bookdto.title":"book1"
+    }, {    //book1
+        "executethis":"updatewid",
+        "metadata.method": "bookdto",
+        "wid": "book1",
+        "title": "Book 1"
+    }, {    //rel author1-book1
+        "executethis": "updatewid",
+        "wid": "rel_author1_book1",
+        "metadata.method": "relationshipdto",
+        "relationshiptype": "attributes",
+        "linktype": "onetomany",
+        "primarywid": "author1",
+        "primarymethod": "author1",
+        "secondarywid": "book1",
+        "secondarymethod": "book1"
+    }, {    //to get book1's parent author1
+        "executethis":"getrelatedrecords",
+        "widlist": ["book1"],
+        "command": {"reltype": "parent", "recurse":true}
+    }, {    //deletewid author1 with command.reltype=parent, recurse=true
+        "executethis": "deletewid",
+        "wid": "author1",
+        "command":{"reltype":"child", "recurse":true}
+    }],
+    function(err, res) {
+        proxyprinttodiv('testdltwid2 res', res, 99);
+        callback(err, res);
+    });
+}
+
 
 exports.simpleauthorbooktest = widtests.simpleauthorbooktest = simpleauthorbooktest = function simpleauthorbooktest(executeobject, callback) {
     

@@ -306,6 +306,12 @@ setests_addusergroup1 =
 widtests.setests_addusergroup1 = 
 function setests_addusergroup1 (executeobject, callback) {
 	
+	if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+	  
 	var groupwid;
 	var expectedresult = {
 							"data":{
@@ -334,11 +340,12 @@ function setests_addusergroup1 (executeobject, callback) {
 		}, function(err, res) {
 			groupwid = res.wid;
 			proxyprinttodiv('Function creategroup done --    for  -- ', groupwid, 99);
-			var executeobject = {
+			executeobject.command.xrun = [{
 						"executethis":"getwid",
 						"wid": groupwid
-					};
-			execute(executeobject,function (err, res) {
+					}];
+			  var etEnvironment = new DriEnvironment(executeobject.command.environment)
+			  etEnvironment.execute(executeobject, function (error_obj, result_obj) { 	
 				var result = logverify('logverify_setests_addusergroup1',res,expectedresult);
 				proxyprinttodiv('group wid result  -- ', res, 99);
 				result.wid = groupwid;
@@ -357,7 +364,13 @@ exports.setests_addactiongroup1 =
 setests_addactiongroup1 = 
 widtests.setests_addactiongroup1 = 
 function setests_addactiongroup1 (executeobject, callback) {
-					
+      
+	  if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+	  
 	var expectedresult = [{
 							"type":"getaction",
 							"wid":"0cf5e1e7-ad23-8e3f-8f25-a7aef2d7d337",
@@ -372,14 +385,17 @@ function setests_addactiongroup1 (executeobject, callback) {
 	createaction({
 			"actiontype": "getaction"
 		}, function(err, res) {
-			proxyprinttodiv('Function createaction done --    for  -- ', res[0].wid, 99);
-			var executeobject = {
+			var actionwid = res.wid;
+			proxyprinttodiv('Function createaction done --    for  -- ', actionwid, 99);
+			executeobject.command.xrun = [{
 						"executethis":"getwid",
-						"wid": res[0].wid
-					};
-			execute(executeobject,function (err, res) {
+						"wid": actionwid
+					}];
+			  var etEnvironment = new DriEnvironment(executeobject.command.environment)
+			  etEnvironment.execute(executeobject, function (error_obj, result_obj) { 					
 				var result = logverify('logverify result',res,expectedresult);
-				proxyprinttodiv('actiongroup wid result  -- ', res, 99);				
+				proxyprinttodiv('actiongroup wid result  -- ', res, 99, true);
+				result.wid = actionwid;
 				callback(err,result);
 			});
 	});
@@ -396,6 +412,13 @@ exports.setests_adduser1 =
 setests_adduser1 = 
 widtests.setests_adduser1 = 
 function setests_adduser1 (executeobject, callback) {
+
+	  if (!executeobject.command) {
+      executeobject.command={};
+      executeobject.command.environment={};
+      executeobject.command.environment.run={};
+	  };
+	  
 	var output = [];
 	var user1 = {
         "wid": "user1",
@@ -431,10 +454,10 @@ function setests_adduser1 (executeobject, callback) {
 	createuserdata(user1, function(err, res) {
 			proxyprinttodiv('Function createuserdata done --    for  -- ', res.wid, 99);
 			var userwid = res.wid;
-			var executeobject = {
+			executeobject.command.xrun = [{
 						"executethis":"getwid",
 						"wid": userwid
-					};
+					}];
 			
 			addsecurity({
                 "userwid": userwid,
@@ -442,9 +465,11 @@ function setests_adduser1 (executeobject, callback) {
             }, function(err, res) {
                 proxyprinttodiv('Function addsecurity done --  for user1 -- ', userwid, 99);
 				
-				execute(executeobject,function (err, res) {
+			  var etEnvironment = new DriEnvironment(executeobject.command.environment)
+			  etEnvironment.execute(executeobject, function (error_obj, result_obj) { 
 					proxyprinttodiv('user wid result  -- ', res, 99, true);
 					var result = logverify('logverify_setests_adduser1', res, expectedresult);
+					result.wid = userwid;
 					callback(err,result);
 				});
             });
@@ -456,43 +481,6 @@ widtests.setests_adduser1.subcategory = "push";
 widtests.setests_adduser1.js = exports.setests_adduser1;
 widtests.setests_adduser1.description = "this does a test";
 
-
-// Creates an action called getaction using the createaction() fn in et-security
-exports.setests_addactiongroup1 = 
-setests_addactiongroup1 = 
-widtests.setests_addactiongroup1 = 
-function setests_addactiongroup1 (executeobject, callback) {
-					
-	var expectedresult = [{
-							"type":"getaction",
-							"wid":"0cf5e1e7-ad23-8e3f-8f25-a7aef2d7d337",
-							"metadata":{
-										"system":{
-													"creator":"user1"
-												},
-										"method":"actiondto",
-									}
-						}];
-							
-	createaction({
-			"actiontype": "getaction"
-		}, function(err, res) {
-			proxyprinttodiv('Function createaction done --    for  -- ', res[0].wid, 99);
-			var executeobject = {
-						"executethis":"getwid",
-						"wid": res[0].wid
-					};
-			execute(executeobject,function (err, res) {
-				var result = logverify('logverify_setests_addactiongroup1',res,expectedresult);
-				proxyprinttodiv('actiongroup wid result  -- ', res, 99);				
-				callback(err,result);
-			});
-	});
-};
-widtests.setests_addactiongroup1.category = "daily";
-widtests.setests_addactiongroup1.subcategory = "push";
-widtests.setests_addactiongroup1.js = exports.setests_addactiongroup1;
-widtests.setests_addactiongroup1.description = "this does a test";
 
 
 // The big one. Creates a user w/ access token, a group called employees, and an action called getaction. Then, this fn calls
@@ -509,21 +497,21 @@ function setests_addpermission1 (executeobject, callback) {
 		function (cb) {
 			setests_adduser1({},function (err, res) {
 				//proxyprinttodiv('adduser1 result --', res, 99, true);
-				userwid = res.logverify_setests_adduser1_diff[0].wid.data;
+				userwid = res.wid;
 				proxyprinttodiv('adduser1 result --', userwid, 99);
 				cb(err);
 			});
 		},
 		function (cb) {
 			setests_addusergroup1({}, function (err, res) {
-				groupwid = res.logverify_setests_addusergroup1_diff[0].data.wid;
+				groupwid = res.wid;
 				proxyprinttodiv('addusergroup1 result --', groupwid, 99);
 				cb(err);
 			});
 		},
 		function (cb) {	
 			setests_addactiongroup1({}, function (err, res) {
-				actionwid = res.logverify_setests_addactiongroup1_diff[0].wid.data;
+				actionwid = res.wid;
 				proxyprinttodiv('addusergroup1 result --', actionwid, 99);
 				cb(err);
 			});
@@ -534,8 +522,8 @@ function setests_addpermission1 (executeobject, callback) {
 				"permission.level": 99,
 				"permission.groupwid": groupwid
 			}, function(err, res) {
-				proxyprinttodiv('Function addpermission done --    for  -- ', res, 99);
-				permissionwid = res[0][0].wid;
+				proxyprinttodiv('Function addpermission done --    for  -- ', res.wid, 99);
+				permissionwid = res.wid;
 				cb(err);
 			});
 		},
@@ -1021,6 +1009,7 @@ function codyfn1 (params, callback) {
 				};
 			addwidtogroup(config, function (err, res) {
 				proxyprinttodiv('addwidtogroup res --', res, 99);
+				proxyprinttodiv('the groupwid and userwid I got were', groupwid + " && " + userwid, 99);
 				cb(err);
 			});
 		}], function (err, res) {

@@ -3,7 +3,9 @@
 if (!exports) {
     var exports = {};
 }
-
+if (!config) { 
+    var config = {};
+}
 
 exports.localStore = localStore = function () {
     var json = {};
@@ -103,7 +105,7 @@ function config123() {
     var configuration = {};   
     // what envrioment and what defaults should be used
     configuration.environment = 'local';
-    configuration.syncrule = 'sync_local_server';
+    configuration.syncrule = 'sync_local';
     configuration.collection = 'dricollection';
     configuration.db = 'data';
     configuration.datastore = 'localstorage';
@@ -137,7 +139,13 @@ function config123() {
 
     configuration.defaultenvironment = {};
     configuration.defaultenvironment[configuration.db] = configuration.d;
-    //configuration.defaultenvironment[configuration.db].wid = configuration.e;
+
+    configuration.delete = {};
+    configuration.delete.collection = 'dricollection';
+    configuration.delete.db = 'data';
+    configuration.delete.datastore = 'localstorage';
+    configuration.delete.keycollection = configuration.collection+'key';
+    configuration.delete.databasetable = 'deletedatabasetable';
 
     return {
         "configuration": configuration
@@ -364,30 +372,33 @@ exports.addToLocalStorage = window.addToLocalStorage = addToLocalStorage = funct
 };
 
 exports.clearLocalStorage = window.clearLocalStorage = clearLocalStorage = function clearLocalStorage() {
-    proxyprinttodiv('clear clearLocalStorage', 'hi', 38);
+    proxyprinttodiv('clear clearLocalStorage', 'hi', 99);
     localStorage.clear();
     //localStore.clear();
     // items below can probably be cleared now
-    addToLocalStorage(config.configuration.databasetable + config.configuration.collection, [{
-        "wid": "initialwid",
-        "metadata": {
-            "date": new Date()
-        },
-        "data": {
-            "system generated": "clearLocalStorage10"
-        }
-    }]);
-    addToLocalStorage(config.configuration.databasetable + config.configuration.keycollection, {
-        "initialwid": {
-            "wid": "initialwid",
-            "metadata": {
-                "date": new Date()
-            },
-            "data": {
-                "system generated": "clearLocalStorage12"
-            }
-        }
-    });
+    updatewid({"wid":"misc", "a":"b"}, function (err, res) {
+           proxyprinttodiv('clear from clearLocalStorage', res, 99);
+    })
+    // addToLocalStorage(config.configuration.databasetable + config.configuration.collection, [{
+    //     "wid": "initialwid",
+    //     "metadata": {
+    //         "date": new Date()
+    //     },
+    //     "data": {
+    //         "system generated": "clearLocalStorage10"
+    //     }
+    // }]);
+    // addToLocalStorage(config.configuration.databasetable + config.configuration.keycollection, {
+    //     "initialwid": {
+    //         "wid": "initialwid",
+    //         "metadata": {
+    //             "date": new Date()
+    //         },
+    //         "data": {
+    //             "system generated": "clearLocalStorage12"
+    //         }
+    //     }
+    // });
 };
 
 exports.removeFromLocalStorage = window.removeFromLocalStorage = removeFromLocalStorage = function removeFromLocalStorage(key) {
@@ -443,9 +454,8 @@ function test2(params, callback) {
 
 
 exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, callback) {
-    try {
-        var inbound_parameters = {};
-        extend(true, inbound_parameters, inboundobj);
+
+
 
         proxyprinttodiv('Function inboundobj', inboundobj, 28);
         proxyprinttodiv('Function command', command, 28);
@@ -480,12 +490,12 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
         // TODO :: SAURABH COMMENTED FOR MAKING SECURITY WORK, FIX THIS AND UNCOMMENT
         // if (command.db) {db=command.db} // not needed
         // if (command.collection) {collection=command.collection}
-        proxyprinttodiv('Function databasetable + collection', databasetable + collection, 30);
+        proxyprinttodiv('Function databasetable + collection', databasetable + collection, 28);
         database = getFromLocalStorage(databasetable + collection);
 
-        proxyprinttodiv('Function inlist', database, 28);
+        proxyprinttodiv('Function inlist', database, 28, true);
         if (database) {
-            proxyprinttodiv('before IsJsonString', inboundobj, 30);
+            proxyprinttodiv('before IsJsonString', inboundobj, 28);
             if (IsJsonString(inboundobj)) {
                 query = JSON.parse(inboundobj);
             }
@@ -495,33 +505,25 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
             outlist = sift(query, database);
 
             // if date exists , return in date descending order
-            outlist = outlist.sort(function (aObj, bObj) {
-
+            resultlist = outlist.sort(function (aObj, bObj) {
                 return Date.parse(aObj["metadata"]["date"]) - Date.parse(bObj["metadata"]["date"]);
             });
 
             // not sure if stuff below needed
-            keydatabase = getFromLocalStorage(databasetable + keycollection);
+            //keydatabase = getFromLocalStorage(databasetable + keycollection);
 
-            for (var eachrecord in outlist) {
-                eachwid = keydatabase[outlist[eachrecord]["wid"]];
-                resultlist.push(eachwid);
-            }
+            //for (var eachrecord in outlist) {
+            //    eachwid = keydatabase[outlist[eachrecord]["wid"]];
+            //    resultlist.push(eachwid);
+            //}
             }
         else {
             resultlist = [];
         }
 
-        proxyprinttodiv('Function resultlist', resultlist, 30);
+        proxyprinttodiv('Function resultlist', resultlist, 28);
         callback(null, resultlist);
-    } // end try
-    catch (err) {
-        var finalobject =
-            createfinalobject({
-                "result": "mongoquery"
-            }, {}, "mongoquery", err, inbound_parameters);
-        callback(finalobject.err, finalobject.res);
-    }
+
 };
 
 exports.test_return_noerror_result_local = test_return_noerror_result_local = function test_return_noerror_result_local (param, callback) 

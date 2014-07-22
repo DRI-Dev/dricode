@@ -79,7 +79,6 @@
 
     exports.cleanadd = cleanadd = function cleanadd(object, dtoobject, command, callback) {
         var inbound_parameters = {};
-        extend (true, inbound_parameters, object, dtoobject);
 
         proxyprinttodiv("cleanadd object", object, 17);
         //if (object.wid==="wid1") {debuglevel=38;}
@@ -771,7 +770,7 @@
         async.series([
             function step1(step1_callback) { // getwidmaster
                  proxyprinttodiv("addwid step1 getwidmaster output", output, 17);
-                 if (object['wid']) {
+                 if (object['wid'] && object['wid']!=="string") {
                         var executeobject={
                             "executethis": "getwidmaster",
                             "wid": object['wid'],
