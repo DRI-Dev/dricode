@@ -61,7 +61,7 @@ exports.mquery = mquery = function mquery(objToFind, projection, command, callba
 
     if (typeof projection === "string" && projection !== "") {
         projection = JSON.parse(projection);
-    }
+    } else if (projection === "") { projection = {}; } // default projection to an empty object
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
         db.collection(schemaToLookup).find(objToFind, projection).toArray(function(err, res) {
