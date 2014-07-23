@@ -150,6 +150,8 @@ exports.mget = mget = function mget(objToFind, command, callback) {
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
+    if (objToFind.command) { delete objToFind.command; }
+
     madd(objToFind, command, function (err, result) {
         callback(err, result);
     });
