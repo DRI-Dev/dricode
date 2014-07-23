@@ -151,13 +151,13 @@ exports.madd = madd = function madd(objToUpsert, command, callback) {
     var options = {"upsert": true},
         widVal = {"wid":(objToUpsert['wid'])};
 
-    objToUpsert = flatten(objToUpsert, {safe: true});
+//    objToUpsert = flatten(objToUpsert, {safe: true});
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
         console.log('madd upsert hit! ' + JSON.stringify(objToUpsert));
 
         // process is an upsert so it will handle inserts and updates
-        db.collection(schemaToLookup).update( widVal, objToUpsert, options, function(err, res) {
+        db.collection(schemaToLookup).update(widVal, objToUpsert, options, function(err, res) {
             if (err) {
                 console.log('DAO :: madd :: error in upsert process -- ' + err);
                 callback(err, {
