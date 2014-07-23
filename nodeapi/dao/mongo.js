@@ -152,7 +152,7 @@ exports.madd = madd = function madd(objToAdd, command, callback) {
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
         db.collection(schemaToLookup).find(widVal).toArray(function(err, widfound) {
-            if (widfound && widfound[0]) { widfound = widfound[0]; } else { widfound = undefined; }
+            if (widfound && widfound[0]) { widfound = true; } else { widfound = false; }
             if (widfound) {
                 // use $set so existing properties are not overwritten
                 db.collection(schemaToLookup).update(widVal, {$set:objToAdd}, {}, function (err, res) {
