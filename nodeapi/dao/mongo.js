@@ -154,9 +154,15 @@ exports.madd = madd = function madd(objToAdd, command, callback) {
         db.collection(schemaToLookup).find(widVal).toArray(function(err, widfound) {
             if (widfound && widfound[0]) { widfound = widfound[0]; } else { widfound = undefined; }
             if (widfound) {
-                db.collection(schemaToLookup).update(widVal, {$set:objToAdd}); // use $set so existing properties are not overwritten
-                db.collection(schemaToLookup).find(widVal).toArray(function(err, result) {
-                    callback(null, result);
+                // use $set so existing properties are not overwritten
+                db.collection(schemaToLookup).update(widVal, {$set:objToAdd}, {}, function (err, res) {
+                    if (err) {
+                        callback(err, {etstatus: {status: "updateerrror"}});
+                    } else {
+                        db.collection(schemaToLookup).find(widVal).toArray(function(err, result) {
+                            callback(null, result);
+                        });
+                    }
                 });
             } else {
                 db.collection(schemaToLookup).insert(objToAdd, function(err, insertedWid) {
