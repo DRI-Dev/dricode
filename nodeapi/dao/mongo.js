@@ -168,7 +168,7 @@ exports.madd = madd = function madd(objToAdd, command, callback) {
         wget(widVal, command, function (err, widfound) {
             if (widfound) {
                 // this is the update process for wids
-                extend(true, objToAdd.data, widfound.data);
+                extend(true, objToAdd, widfound);
             }
 
             db.collection(schemaToLookup).insert(objToAdd, function(err, insertedWid) {
