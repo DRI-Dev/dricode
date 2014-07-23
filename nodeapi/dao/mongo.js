@@ -167,25 +167,17 @@ exports.madd = madd = function madd(objToAdd, command, callback) {
     getConnection(mongoDatabaseToLookup, function(err, db) {
         wget(widVal, command, function (err, widfound) {
             if (widfound) {
-                // use $set so existing properties are not overwritten
-                db.collection(schemaToLookup).update(widVal, objToAdd, {}, function (err, res) {
-                    if (err) {
-                        callback(err, {etstatus: {status: "updateerrror"}});
-                    } else {
-                        wget(widVal, command, function(err, result) {
-                            callback(null, result);
-                        });
-                    }
-                });
-            } else {
-                db.collection(schemaToLookup).insert(objToAdd, function(err, insertedWid) {
-                    if (err) {
-                        callback(err, {etstatus: {status: "adderrror"}});
-                    } else {
-                        callback(err, insertedWid[0]);
-                    }
-                });
+                // this is the update process for wids
+                extend(true, objToAdd.data, widfound.data);
             }
+
+            db.collection(schemaToLookup).insert(objToAdd, function(err, insertedWid) {
+                if (err) {
+                    callback(err, {etstatus: {status: "adderrror"}});
+                } else {
+                    callback(err, insertedWid[0]);
+                }
+            });
         });
     });
 };
