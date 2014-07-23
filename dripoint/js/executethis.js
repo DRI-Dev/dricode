@@ -1152,7 +1152,6 @@
             execute(executeobject, function (err, res) {
                 if (err) 
                 {
-                    alert(res);
                     callback(err,res)
                 }
                 else 
@@ -1164,7 +1163,6 @@
                     if (res && res.metadata && res.metadata.systemdto && 
                         res.metadata.systemdto.expirationdate && new Date(res.metadata.systemdto.expirationdate) > new Date()) {
                         proxyprinttodiv("checkcache return from cache", res, 11);
-                        alert(res);
                         callback(null, res.container);
                     } else {
                         //proxyprinttodiv("checkcache date ", new Date(), 11);
