@@ -169,15 +169,23 @@ exports.madd = madd = function madd(objToAdd, command, callback) {
             if (widfound) {
                 // this is the update process for wids
                 extend(true, objToAdd, widfound);
-            }
 
-            db.collection(schemaToLookup).insert(objToAdd, function(err, insertedWid) {
-                if (err) {
-                    callback(err, {etstatus: {status: "adderrror"}});
-                } else {
-                    callback(err, insertedWid[0]);
-                }
-            });
+                db.collection(schemaToLookup).update(widVal, {$set:objToAdd}, {}, function (err, result) {
+                    if (err) {
+                        callback(err, {etstatus: {status: "udpateerrror"}});
+                    } else {
+                        callback(err, result);
+                    }
+                });
+            } else {
+                db.collection(schemaToLookup).insert(objToAdd, function(err, insertedWid) {
+                    if (err) {
+                        callback(err, {etstatus: {status: "adderrror"}});
+                    } else {
+                        callback(err, insertedWid[0]);
+                    }
+                });
+            }
         });
     });
 };
