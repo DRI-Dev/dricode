@@ -170,6 +170,8 @@ exports.madd = madd = function madd(objToAdd, command, callback) {
                 // this is the update process for wids
                 extend(true, objToAdd, widfound);
 
+                if (objToAdd._id) { delete objToAdd._id; }
+
                 db.collection(schemaToLookup).update(widVal, {$set:objToAdd}, {}, function (err, result) {
                     if (err) {
                         callback(err, {etstatus: {status: "udpateerrror"}});
