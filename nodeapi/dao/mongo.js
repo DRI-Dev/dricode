@@ -139,7 +139,7 @@ exports.mget = mget = function mget(objToFind, command, callback) {
     if (typeof objToFind === "string") { objToFind = JSON.parse(objToFind); }
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
-        db.collection(schemaToLookup).find(widVal).toArray(function(err, result) {
+        db.collection(schemaToLookup).find(objToFind).toArray(function(err, result) {
             callback(null, result[0]);
         });
     });
