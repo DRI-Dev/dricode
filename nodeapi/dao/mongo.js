@@ -160,7 +160,7 @@ exports.madd = madd = function madd(objToAdd, command, callback) {
                         callback(err, {etstatus: {status: "updateerrror"}});
                     } else {
                         db.collection(schemaToLookup).find(widVal).toArray(function(err, result) {
-                            callback(null, result);
+                            callback(null, result[0]);
                         });
                     }
                 });
