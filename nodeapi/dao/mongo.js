@@ -151,8 +151,6 @@ exports.madd = madd = function madd(objToUpsert, command, callback) {
     var options = {"upsert": true},
         widVal = {"wid":(objToUpsert['wid'])};
 
-//    objToUpsert = flatten(objToUpsert, {safe: true});
-
     getConnection(mongoDatabaseToLookup, function(err, db) {
         console.log('madd upsert hit! ' + JSON.stringify(objToUpsert));
 
@@ -166,8 +164,23 @@ exports.madd = madd = function madd(objToUpsert, command, callback) {
                     }
                 });
             } else {
-                console.log(res);
-                callback(err, res);
+                db.collection(schemaToLookup).find({
+                    "wid": widVal
+                }).toArray(
+                    function(err, res) {
+                        if (err) {
+                            // printLogs('mget', widName, err);
+                            callback(err, res);
+                        } else {
+                            if (res && res && res[0]) {
+                                console.log(res[0]);
+                                callback(null, res[0]);
+                            } else {
+                                // printLogs('mget', widName, null);
+                                callback(null, null);
+                            }
+                        }
+                    });
             }
         });
     });
