@@ -139,8 +139,8 @@ exports.mget = mget = function mget(objToFind, command, callback) {
     if (typeof objToFind === "string") { objToFind = JSON.parse(objToFind); }
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
-        db.collection(schemaToLookup).find(objToFind).toArray(function(err, result) {
-            callback(null, result[0]);
+        db.collection(schemaToLookup).find({wid:objToFind.wid}).toArray(function(err, result) {
+            callback(null, result[0] || null);
         });
     });
 };
@@ -171,7 +171,7 @@ exports.madd = madd = function madd(objToAdd, command, callback) {
                     if (err) {
                         callback(err, {etstatus: {status: "adderrror"}});
                     } else {
-                        callback(err, insertedWid);
+                        callback(err, insertedWid[0]);
                     }
                 });
             }
