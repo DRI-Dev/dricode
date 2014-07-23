@@ -161,7 +161,7 @@ exports.madd = madd = function madd(objToAdd, command, callback) {
                         callback(err, {etstatus: {status: "updateerrror"}});
                     } else {
                         mget(widVal, command, function(err, result) {
-                            callback(null, result[0]);
+                            callback(null, result);
                         });
                     }
                 });
