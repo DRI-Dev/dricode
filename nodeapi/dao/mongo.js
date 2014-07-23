@@ -143,35 +143,27 @@ exports.mget = mget = function mget(objToFind, command, callback) {
     });
 };
 
-exports.madd = madd = function madd(objToUpsert, command, callback) {
+exports.madd = madd = function madd(objToAdd, command, callback) {
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-    var options = {"upsert": true},
-        widVal = {"wid":(objToUpsert['wid'])};
+    var widVal = {"wid":(objToAdd['wid'])};
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
-        console.log('madd upsert hit! ' + JSON.stringify(objToUpsert));
-
-        // process is an upsert so it will handle inserts and updates
-        db.collection(schemaToLookup).update(widVal, objToUpsert, options, function(err, res) {
-            if (err) {
-                console.log('DAO :: madd :: error in upsert process -- ' + err);
-                callback(err, {etstatus: {status: "updateerrror"}});
+        db.collection(schemaToLookup).find(widVal).toArray(function(err, widfound) {
+            if (widfound && widfound[0]) { widfound = widfound[0]; } else { widfound = undefined; }
+            if (widfound) {
+                db.collection(schemaToLookup).update(widVal, {$set:objToAdd}); // use $set so existing properties are not overwritten
+                db.collection(schemaToLookup).find(widVal).toArray(function(err, result) {
+                    callback(null, result);
+                });
             } else {
-                db.collection(schemaToLookup).find(widVal).toArray(function(err, res) {
+                db.collection(schemaToLookup).insert(objToAdd, function(err, insertedWid) {
                     if (err) {
-                        // printLogs('mget', widName, err);
-                        callback(err, res);
+                        callback(err, {etstatus: {status: "adderrror"}});
                     } else {
-                        if (res && res && res[0]) {
-                            console.log(res[0]);
-                            callback(null, res[0]);
-                        } else {
-                            // printLogs('mget', widName, null);
-                            callback(null, null);
-                        }
+                        callback(err, insertedWid);
                     }
                 });
             }
