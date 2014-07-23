@@ -131,7 +131,7 @@ exports.mquery2 = mquery2 = function mquery2(objToFind, projection, command, cal
     });
 };
 
-exports.mget = mget = function mget(objToFind, command, callback) {
+exports.wget = wget = function wget(objToFind, command, callback) {
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
@@ -145,6 +145,16 @@ exports.mget = mget = function mget(objToFind, command, callback) {
     });
 };
 
+exports.mget = mget = function mget(objToFind, command, callback) {
+    (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
+    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
+    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
+
+    madd(objToFind, command, function (err, result) {
+        callback(err, result);
+    });
+};
+
 exports.madd = madd = function madd(objToAdd, command, callback) {
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
@@ -155,14 +165,14 @@ exports.madd = madd = function madd(objToAdd, command, callback) {
     objToAdd = converttodriformat(objToAdd, command);
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
-        mget(widVal, command, function (err, widfound) {
+        wget(widVal, command, function (err, widfound) {
             if (widfound) {
                 // use $set so existing properties are not overwritten
                 db.collection(schemaToLookup).update(widVal, {$set:objToAdd}, {}, function (err, res) {
                     if (err) {
                         callback(err, {etstatus: {status: "updateerrror"}});
                     } else {
-                        mget(widVal, command, function(err, result) {
+                        wget(widVal, command, function(err, result) {
                             callback(null, result);
                         });
                     }
