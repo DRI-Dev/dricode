@@ -138,8 +138,10 @@ exports.mget = mget = function mget(objToFind, command, callback) {
 
     if (typeof objToFind === "string") { objToFind = JSON.parse(objToFind); }
 
-    madd(objToFind, command, function (err, result) {
-         callback(err, result);
+    getConnection(mongoDatabaseToLookup, function(err, db) {
+        db.collection(schemaToLookup).find(widVal).toArray(function(err, result) {
+            callback(null, result[0]);
+        });
     });
 };
 
@@ -151,7 +153,7 @@ exports.madd = madd = function madd(objToAdd, command, callback) {
     var widVal = {"wid":(objToAdd['wid'])};
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
-        db.collection(schemaToLookup).find(widVal).toArray(function(err, widfound) {
+        mget(widVal, command, function (err, widfound) {
             if (widfound && widfound[0]) { widfound = true; } else { widfound = false; }
             if (widfound) {
                 // use $set so existing properties are not overwritten
@@ -159,7 +161,7 @@ exports.madd = madd = function madd(objToAdd, command, callback) {
                     if (err) {
                         callback(err, {etstatus: {status: "updateerrror"}});
                     } else {
-                        db.collection(schemaToLookup).find(widVal).toArray(function(err, result) {
+                        mget(widVal, command, function(err, result) {
                             callback(null, result[0]);
                         });
                     }
