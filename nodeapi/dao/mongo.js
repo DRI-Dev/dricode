@@ -168,7 +168,7 @@ exports.madd = madd = function madd(objToAdd, command, callback) {
         wget(widVal, command, function (err, widfound) {
             if (widfound) {
                 // use $set so existing properties are not overwritten
-                db.collection(schemaToLookup).update(widVal, {$set:objToAdd}, {}, function (err, res) {
+                db.collection(schemaToLookup).update(widVal, objToAdd, {}, function (err, res) {
                     if (err) {
                         callback(err, {etstatus: {status: "updateerrror"}});
                     } else {
