@@ -161,29 +161,33 @@ exports.mget = mget = function mget(objToFind, command, callback) {
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
-    if (typeof objToFind === "string") {
-        objToFind = JSON.parse(objToFind);
-    }
-    var widName = objToFind['wid'];
 
-    getConnection(mongoDatabaseToLookup, function(err, db) {
-        db.collection(schemaToLookup).find({
-            "wid": widName
-        }).toArray(function(err, res) {
-            if (err) {
-                // printLogs('mget', widName, err);
-                callback(err, res);
-            } else {
-                if (res && res && res[0]) {
-                    printLogs('mget', widName, res);
-                    callback(null, res[0]);
-                } else {
-                    // printLogs('mget', widName, null);
-                    callback(null, null);
-                }
-            }
-        });
+    if (typeof objToFind === "string") { objToFind = JSON.parse(objToFind); }
+
+//    var widName = objToFind['wid'];
+
+    madd(objToFind, command, function (err, result) {
+         callback(err, result);
     });
+
+//    getConnection(mongoDatabaseToLookup, function(err, db) {
+//        db.collection(schemaToLookup).find({
+//            "wid": widName
+//        }).toArray(function(err, res) {
+//                if (err) {
+//                    // printLogs('mget', widName, err);
+//                    callback(err, res);
+//                } else {
+//                    if (res && res && res[0]) {
+//                        printLogs('mget', widName, res);
+//                        callback(null, res[0]);
+//                    } else {
+//                        // printLogs('mget', widName, null);
+//                        callback(null, null);
+//                    }
+//                }
+//            });
+//    });
 };
 
 
@@ -286,13 +290,10 @@ exports.getConnection = getConnection = function getConnection(mongoDatabaseToLo
         var DB_USER_ID = settings.DB_SET[mongoDatabaseToLookup]['DB_USER_ID'];
         var DB_USER_PWD = settings.DB_SET[mongoDatabaseToLookup]['DB_USER_PWD'];
         var DB_URL;
-        if(DB_USER_ID && DB_USER_PWD){
-            DB_URL = 'mongodb://' + DB_USER_ID + ':' + DB_USER_PWD + '@' + DB_HOST_NAME + '/' + mongoDatabaseToLookup;
 
-        }else{
-            DB_URL = 'mongodb://' + DB_HOST_NAME + '/' + mongoDatabaseToLookup;
+        if(DB_USER_ID && DB_USER_PWD) { DB_URL = 'mongodb://' + DB_USER_ID + ':' + DB_USER_PWD + '@' + DB_HOST_NAME + '/' + mongoDatabaseToLookup; }
+        else { DB_URL = 'mongodb://' + DB_HOST_NAME + '/' + mongoDatabaseToLookup; }
 
-        }
         console.log('DATABSE URL is ' + DB_URL);
         databaseConnection = mongoskin.db(DB_URL, settings.MONGODB_OPTIONS);
         dbConnectionsManager[mongoDatabaseToLookup] = databaseConnection; // place in connections factory
@@ -302,7 +303,7 @@ exports.getConnection = getConnection = function getConnection(mongoDatabaseToLo
         err = "error in getting connection to " + mongoDatabaseToLookup;
     }
     callback(err, databaseConnection);
-}
+};
 
 function printLogs(fnname, input, output) {
 
