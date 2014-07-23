@@ -158,29 +158,22 @@ exports.madd = madd = function madd(objToUpsert, command, callback) {
         db.collection(schemaToLookup).update(widVal, objToUpsert, options, function(err, res) {
             if (err) {
                 console.log('DAO :: madd :: error in upsert process -- ' + err);
-                callback(err, {
-                    etstatus: {
-                        status: "updateerrror"
+                callback(err, {etstatus: {status: "updateerrror"}});
+            } else {
+                db.collection(schemaToLookup).find(widVal).toArray(function(err, res) {
+                    if (err) {
+                        // printLogs('mget', widName, err);
+                        callback(err, res);
+                    } else {
+                        if (res && res && res[0]) {
+                            console.log(res[0]);
+                            callback(null, res[0]);
+                        } else {
+                            // printLogs('mget', widName, null);
+                            callback(null, null);
+                        }
                     }
                 });
-            } else {
-                db.collection(schemaToLookup).find({
-                    "wid": widVal
-                }).toArray(
-                    function(err, res) {
-                        if (err) {
-                            // printLogs('mget', widName, err);
-                            callback(err, res);
-                        } else {
-                            if (res && res && res[0]) {
-                                console.log(res[0]);
-                                callback(null, res[0]);
-                            } else {
-                                // printLogs('mget', widName, null);
-                                callback(null, null);
-                            }
-                        }
-                    });
             }
         });
     });
