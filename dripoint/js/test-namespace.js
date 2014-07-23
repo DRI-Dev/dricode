@@ -461,6 +461,9 @@ exports.savetoqueue = savetoqueue = function savetoqueue(p, callback) {
     delete p.command.queuename;
     queuename = "dricollection";
     var itemtobesaved=p;
+    itemtobesaved = [
+        { "addthis.executethis": "sendsms", "to": "+12313133930", "body":"This is a text" }
+    ]
     var recorddef = {
         "wid":"russ112",
         "container":itemtobesaved,   // no wid ... let system make it for you
@@ -500,8 +503,13 @@ exports.getfromqueue = getfromqueue = function getfromqueue(inputobj, callback) 
     proxyprinttodiv("after environment", env, 99);
 
     env.execute(executeobject, function (err, res) {
-        proxyprinttodiv("findparent res", res, 99);
-        findwidbyqueryresult(res, "primarywid", function (err, res) {
+        proxyprinttodiv("findparent res2", res, 99);
+        // findwidbyqueryresult(res, "primarywid", function (err, res) {
+        debugger;
+        var first_object = res.queryresult[0];
+        var contained_object = first_object.russ112.container;
+        proxyprinttodiv("about to execute...", contained_object, 99);
+        env.execute(contained_object, function (err, res) {
             callback(err, res);
         });
     });
