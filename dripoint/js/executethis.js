@@ -903,6 +903,7 @@
                                 "result": "",
                                 "skipcache": true,
                                 "updatecache" : false,
+                                "cachetime" : 0,
                                 "internalcall": true, // use action processor
                                 "notfoundok": false // should return an error if not found
                             }
@@ -914,6 +915,7 @@
                                 "result": "x",
                                 "skipcache": "x",
                                 "updatecache": "x",
+                                "cachetime" : "x",
                                 "internalcall": "x",
                                 "notfoundok" : "x"
                             }
@@ -928,7 +930,8 @@
                     //--proxyprinttodiv('>>>> execute command', command, 11, true);
                     //--proxyprinttodiv('>>>> execute inboundparams', inboundparams, 14, true);
 
-                    if (!command.skipcache || command.updatecache) { objkey = hashobj(inboundparams, command); }
+                    objkey = cacheoperations(inboundparams, command);
+                    //if (!command.skipcache || command.updatecache) { objkey = hashobj(inboundparams, command); }
                     //--proxyprinttodiv('execute returned objkey', objkey, 11, true);
                     delete inboundparams.executethis; // delete parameter executethis...we know the targetfn
 
@@ -1037,7 +1040,7 @@
                                     else
                                     {
                                         var expirationdate = new Date();
-                                        expirationdate = new Date(expirationdate.getTime() + .3 * 60000); // .3 of min
+                                        expirationdate = new Date(expirationdate.getTime() + command.cachetime * 60000); // % of min
                                         resultparameters.metadata.cache = "true";
 
                                         var recorddef = {
@@ -1070,6 +1073,27 @@
             } // if no et
         } // executethis exists
     };
+
+    function cacheoperations(inboundparams, command) {
+        var table = 
+            {
+                "defaultdto": {"skipcache":true, "updatecache":false, "cachetime": 0},
+                "systemdto": {"skipcache":false, "updatecache":true, "cachetime": 999},
+                "relationshipdto": {"skipcache":false, "updatecache":true, "cachetime": 999}
+            }
+        var objkey=null;
+
+        if (inboundparams.metadata && inboundparams.metadata.method) 
+        {
+            var dtotype = inboundparams.metadata.method;
+            var cachesettings = table[dtotype]
+            extend(true, command, cachesettings)
+        }
+
+        if (!command.skipcache || command.updatecache) {objkey = hashobj(inboundparams, command); }
+
+        return objkey
+    }
 
     exports.hashobj = hashobj = function hashobj(inobj, command) {
         if (command && command.skipcache) {
