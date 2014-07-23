@@ -172,11 +172,13 @@ exports.madd = madd = function madd(objToAdd, command, callback) {
 
                 if (objToAdd._id) { delete objToAdd._id; }
 
-                db.collection(schemaToLookup).update(widVal, {$set:objToAdd}, {}, function (err, result) {
+                db.collection(schemaToLookup).update(widVal, {$set:objToAdd}, {}, function (err, boolresult) {
                     if (err) {
                         callback(err, {etstatus: {status: "udpateerrror"}});
                     } else {
-                        callback(err, result);
+                        wget(widVal, command, function (err, result) {
+                            callback(err, result);
+                        });
                     }
                 });
             } else {
