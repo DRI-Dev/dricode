@@ -55,11 +55,11 @@ exports.mquery = mquery = function mquery(objToFind, projection, command, callba
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-    if (typeof objToFind === "string") {
+    if (typeof objToFind === "string" && objToFind !== "") {
         objToFind = JSON.parse(objToFind);
     }
 
-    if (typeof projection === "string") {
+    if (typeof projection === "string" && projection !== "") {
         projection = JSON.parse(projection);
     }
 
