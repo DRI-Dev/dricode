@@ -1053,7 +1053,7 @@
                                             },
                                             "command": {
                                                 "skipcache": true,
-                                                "datastore": config.configuration.datastore,
+                                                "datastore": "localstore",
                                                 "collection": "cache",
                                                 "keycollection": "cachekey",
                                                 "db": config.configuration.db,
@@ -1075,19 +1075,19 @@
     };
 
     function cacheoperations(inboundparams, command) {
-        var table = 
-            {
-                "defaultdto": {"skipcache":true, "updatecache":false, "cachetime": 0},
-                "systemdto": {"skipcache":false, "updatecache":true, "cachetime": 999},
-                "relationshipdto": {"skipcache":false, "updatecache":true, "cachetime": 999}
-            }
+        var table = {
+            "defaultdto": {"skipcache":true, "updatecache":false, "cachetime": 0},
+            "systemdto": {"skipcache":false, "updatecache":true, "cachetime": 999},
+            "relationshipdto": {"skipcache":false, "updatecache":true, "cachetime": 999}
+        };
+
         var objkey=null;
 
         if (inboundparams.metadata && inboundparams.metadata.method) 
         {
             var dtotype = inboundparams.metadata.method;
-            var cachesettings = table[dtotype]
-            extend(true, command, cachesettings)
+            var cachesettings = table[dtotype];
+            extend(true, command, cachesettings);
         }
 
         if (!command.skipcache || command.updatecache) {objkey = hashobj(inboundparams, command); }
@@ -1109,7 +1109,23 @@
             var result = sortObj(obj, function (a, b) {
                 return a.key < b.key;
             });
-            return JSON.stringify(result);
+
+            function escapeRegExp(string) {
+                return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+            }
+
+            function replaceAll(string, find, replace) {
+                return string.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+            }
+
+            var returnstr = JSON.stringify(result);
+            returnstr = replaceAll(returnstr, '{', '');
+            returnstr = replaceAll(returnstr, '}', '');
+            returnstr = replaceAll(returnstr, ':', '');
+            returnstr = replaceAll(returnstr, ',', '');
+            returnstr = replaceAll(returnstr, '"', '');
+
+            return returnstr;
         }
     };
 
@@ -1123,7 +1139,7 @@
                 "command": {
                     "notfoundok": true,
                     "skipcache": true,
-                    "datastore": config.configuration.datastore,
+                    "datastore": "localstore",
                     "collection": "cache",
                     "keycollection": "cachekey",
                     "db": config.configuration.db,
@@ -1136,7 +1152,6 @@
             execute(executeobject, function (err, res) {
                 if (err) 
                 {
-                    alert(res);
                     callback(err,res)
                 }
                 else 
@@ -1148,7 +1163,6 @@
                     if (res && res.metadata && res.metadata.systemdto && 
                         res.metadata.systemdto.expirationdate && new Date(res.metadata.systemdto.expirationdate) > new Date()) {
                         proxyprinttodiv("checkcache return from cache", res, 11);
-                        alert(res);
                         callback(null, res.container);
                     } else {
                         //proxyprinttodiv("checkcache date ", new Date(), 11);

@@ -34,6 +34,11 @@ exports.testf = widtests.testf = testf = function testf(params, callback) {
 	console.log(' - params are - ' + JSON.stringify(params));
 	callback(null, null);
 }
+exports.testg = widtests.testg = testg = function testg(params, callback) {
+	console.log('This is testg');
+	console.log(' - params are - ' + JSON.stringify(params));
+	callback(null, null);
+}
 
 widtests.testa.category = 'cat1';
 widtests.testa.subcategory = 'cat13';
@@ -60,3 +65,6 @@ exports.testf.category = 'cat4';
 exports.testf.subcategory = 'cat41';
 exports.testf.js = exports.testf;
 
+exports.testg.category = 'test-daily';
+exports.testg.subcategory = 'cat41';
+exports.testg.js = exports.testf;

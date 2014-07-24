@@ -46,8 +46,8 @@ exports.sectest1 = widtests.sectest1 = sectest1 = function sectest1(parm, callba
 
         });
 }
-widtests.sectest1.category = "execute";
-widtests.sectest1.subcategory = "daily";
+widtests.sectest1.category = "daily";
+widtests.sectest1.subcategory = "push";
 widtests.sectest1.js = exports.sectest1;
 widtests.sectest1.description = "this does a test";
 
@@ -75,8 +75,8 @@ exports.tsa1 = widtests.tsa1 = tsa1 = function tsa1(params, callback) {
         callback(err, res);
     });
 }
-widtests.tsa1.category = "execute";
-widtests.tsa1.subcategory = "daily";
+widtests.tsa1.category = "daily";
+widtests.tsa1.subcategory = "push";
 widtests.tsa1.js = exports.tsa1;
 widtests.tsa1.description = "this does a test";
 
@@ -89,8 +89,8 @@ exports.ttsa3 = widtests.ttsa3 = ttsa3 = function(params, callback) {
 
     });
 };
-widtests.ttsa3.category = "execute";
-widtests.ttsa3.subcategory = "daily";
+widtests.ttsa3.category = "daily";
+widtests.ttsa3.subcategory = "push";
 widtests.ttsa3.js = exports.ttsa3;
 widtests.ttsa3.description = "this does a test";
 
@@ -106,8 +106,8 @@ exports.ttsa4 = widtests.ttsa4 = ttsa4 = function(params, callback) {
 
     });
 };
-widtests.ttsa4.category = "execute";
-widtests.ttsa4.subcategory = "daily";
+widtests.ttsa4.category = "daily";
+widtests.ttsa4.subcategory = "push";
 widtests.ttsa4.js = exports.ttsa4;
 widtests.ttsa4.description = "this does a test";
 
@@ -116,8 +116,8 @@ widtests.ttsa4.description = "this does a test";
 exports.ttsa6 = widtests.ttsa6 = ttsa6 = function(params, callback) {
     addgrouptowid("anything", "groupnamedto", "createcoupon", callback);
 };
-widtests.ttsa6.category = "execute";
-widtests.ttsa6.subcategory = "daily";
+widtests.ttsa6.category = "daily";
+widtests.ttsa6.subcategory = "push";
 widtests.ttsa6.js = exports.ttsa6;
 widtests.ttsa6.description = "this does a test";
 

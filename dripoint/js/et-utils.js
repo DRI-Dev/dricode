@@ -186,7 +186,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                     // future upsert data in angular data model
                     // future addToAngular(widName, incopy);
                     // the type of storage below is not needed
-                    addToLocalStorage(command.databasetable + command.collection + incopy.wid, currentrecord);
+//                    addToLocalStorage(command.databasetable + command.collection + incopy.wid, currentrecord);
 
                     proxyprinttodiv('Function updatewid currentrecord', currentrecord, 12);
                 }
