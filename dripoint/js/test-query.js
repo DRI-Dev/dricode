@@ -1837,39 +1837,51 @@ widtests.etmttest1.description = "this does a test";
 exports.simpleonewidquery1 =  
 widtests.simpleonewidquery1 = 
 simpleonewidquery1 = 
-function simpleonewidquery1 (params, callback) {
+function simpleonewidquery1 (executeobject, callback) {
 
-var executeobj = [
-					{"executethis":"updatewid",
-					"wid":"wid1",
-					"color":"red"
-					}, {"executethis":"querywid",
-						"mongorawquery": {
-							"$or": [{
-								"data.color":"red"
-								}]
-							}
-					}
-				];
+	  if (!executeobject.command) {
+		  executeobject.command={};
+		  executeobject.command.environment={};
+		  executeobject.command.environment.run={};
+	  }
+	  executeobject.command.xrun=[
+									{
+									"executethis":"updatewid",
+									"wid":"wid1",
+									"color":"red"
+									}, {
+									"executethis":"querywid",
+										"mongorawquery": {
+											"$or": [{
+												"data.color":"red"
+												}]
+											}
+									}
+								];
 
 	var expectedresult = [
 							{
 								"wid1":{
 									"color":"red",
 									"wid":"wid1",
-									"metadata":{
-										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
-										}
+									"metadata": {
+										"date":{"exception":["created","changed","unchanged","updated"]}
 									}
 								}
-							];
+							}];
 							
-	execute(executeobj,function (err, res) {
-		proxyprinttodiv('full result --', res, 99);
-		proxyprinttodiv('query result --',res[1],99);
-		result = logverify('logverify',res[1],expectedresult);
-		callback(err,result);
-	});
+	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
+	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+	  {                    
+			//proxyprinttodiv('expected error', null, 99);
+			//proxyprinttodiv('actual error', error_obj, 99);
+			proxyprinttodiv('expected result', expectedresult, 99);
+			proxyprinttodiv('actual result', result_obj[1], 99);
+
+			var composite_obj=logverify("simpleonewidquery1", result_obj[1], expectedresult);
+			//proxyprinttodiv('composite_obj', composite_obj, 99);
+			callback(null, composite_obj);
+	  });
 }
 widtests.simpleonewidquery1.category = "daily";
 widtests.simpleonewidquery1.subcategory = "push";
@@ -1881,13 +1893,20 @@ widtests.simpleonewidquery1.description = "this does a test";
 exports.simpleonewidquerymaster1 =  
 widtests.simpleonewidquerymaster1 = 
 simpleonewidquerymaster1 = 
-function simpleonewidquerymaster1 (params, callback) {
+function simpleonewidquerymaster1 (executeobject, callback) {
 
-var executeobj = [
-					{"executethis":"updatewid",
+	  if (!executeobject.command) {
+		  executeobject.command={};
+		  executeobject.command.environment={};
+		  executeobject.command.environment.run={};
+	  }
+	  executeobject.command.xrun=[
+					{
+					"executethis":"updatewid",
 					"wid":"wid1",
 					"color":"red"
-					}, {"executethis":"querywidmaster",
+					}, {
+					"executethis":"querywidmaster",
 						"mongorawquery": {
 							"$or": [{
 								"data.color":"red"
@@ -1901,17 +1920,23 @@ var executeobj = [
 								"color":"red",
 								"wid":"wid1",
 								"metadata":{
-										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
+										"date":{"exception":["created","changed","unchanged","updated"]}
 									}
 								}
 							];
 							
-	execute(executeobj,function (err, res) {
-		proxyprinttodiv('full result --', res, 99);
-		proxyprinttodiv('query result --',res[1],99);
-		result = logverify('logverify',res[1],expectedresult);
-		callback(err,result);
-	});
+	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
+	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+	  {                    
+			//proxyprinttodiv('expected error', null, 99);
+			//proxyprinttodiv('actual error', error_obj, 99);
+			proxyprinttodiv('expected result', expectedresult, 99, true);
+			proxyprinttodiv('actual result', result_obj[1], 99, true);
+
+			var composite_obj=logverify("simpleonewidquery1", result_obj[1], expectedresult);
+			//proxyprinttodiv('composite_obj', composite_obj, 99);
+			callback(null, composite_obj);
+	  });
 }
 widtests.simpleonewidquerymaster1.category = "daily";
 widtests.simpleonewidquerymaster1.subcategory = "push";
@@ -1923,9 +1948,14 @@ widtests.simpleonewidquerymaster1.description = "this does a test";
 exports.simplefivewidquery1 =  
 widtests.simplefivewidquery1 = 
 simplefivewidquery1 = 
-function simplefivewidquery1 (params, callback) {
+function simplefivewidquery1 (executeobject, callback) {
 
-var executeobj = [
+	  if (!executeobject.command) {
+		  executeobject.command={};
+		  executeobject.command.environment={};
+		  executeobject.command.environment.run={};
+	  }
+	  executeobject.command.xrun=[
 					{
 					"executethis":"updatewid",
 					"wid":"wid1",
@@ -1965,7 +1995,7 @@ var executeobj = [
 							"color":"red",
 							"wid":"wid1",
 							"metadata":{
-										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
+										"date":{"exception":["created","changed","unchanged","updated"]}
 								}
 							}
 					}, {
@@ -1973,7 +2003,7 @@ var executeobj = [
 							"color":"red",
 							"wid":"wid5",
 							"metadata":{
-										"expirationdate":{"exception":["created","changed","unchanged","updated"]}
+										"date":{"exception":["created","changed","unchanged","updated"]}
 								}
 							}
 					}
@@ -1981,17 +2011,23 @@ var executeobj = [
 				
 				
 				
-	execute(executeobj,function (err, res) {
-		proxyprinttodiv('full result --', res, 99);
-		proxyprinttodiv('err --',err,99);
-			
-		execute(queryobj, function (err, res) {
-			proxyprinttodiv('query result --', res, 99);
-			result = logverify('logverify',res,expectedresult);
-			callback(err,result);
+	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
+	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+	  {                    
+			//proxyprinttodiv('expected error', null, 99);
+			//proxyprinttodiv('actual error', error_obj, 99);
+			//proxyprinttodiv('expected result', expectedresult, 99, true);
+			//proxyprinttodiv('actual result', result_obj[1], 99, true);
+			executeobject.command.xrun = queryobj;
+		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+		  {
+		  	proxyprinttodiv('query result --', result_obj, 99);
+		  	proxyprinttodiv('query expected result --', expectedresult, 99);
+			var result = logverify('logverify',result_obj,expectedresult);
+			callback(error_obj,result);
 		});
-
-	});
+		
+	  });
 }
 widtests.simplefivewidquery1.category = "daily";
 widtests.simplefivewidquery1.subcategory = "push";
