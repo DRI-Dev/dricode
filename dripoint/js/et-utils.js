@@ -411,17 +411,22 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(inobj
  */
 exports.copywid = copywid = copywid = function copywid(inobject, callback) {
     proxyprinttodiv('Function delete inobject', inobject, 18, true);
+    if (!inobject.command.from) {inobject.command.from={}}
+    if (!inobject.command.to) {inobject.command.to={}}
     var command = inobject.command;
 
     //fromwid, fromdb, fromcollection, fromdatastore, towid, todb, tocollection, todatastore, command,
     //1. call getwid fn with fromwid, fromdb, fromcollection, fromdatastore
+
+    extend(true, command.from, config.configuration.d.default, inobject.command.from);
+    extend(true, command.to, config.configuration.d.default, inobject.command.to);
     var getwidinput = {
-        "wid": inobject.wid,
+        "wid": inobject.wid || command.from.wid,
         "command": {
-            "db": command.fromdb,
-            "collection": command.fromcollection,
-            "datastore": command.fromdatastore,
-            "databasetable": command.fromdatabasetable
+            "db": command.from.db,
+            "collection": command.from.collection,
+            "datastore": command.from.datastore,
+            "databasetable": command.from.databasetable
         }
     };
     proxyprinttodiv('Function copywid getwidinput', getwidinput, 18);
@@ -430,12 +435,12 @@ exports.copywid = copywid = copywid = function copywid(inobject, callback) {
 
         //2. call updatewid fn with get result wid, towid, todb, tocollection, todatastore
         var updatewidinput = {
-            "wid": inobject.towid,
+            "wid": command.to.wid,
             "command": {
-                "db": command.todb,
-                "collection": command.tocollection,
-                "datastore": command.todatastore,
-                "databasetable": command.todatabasetable
+                "db": command.to.db,
+                "collection": command.to.collection,
+                "datastore": command.to.datastore,
+                "databasetable": command.to.databasetable
             }
         };
         extend(true, updatewidinput, getwidresult);
