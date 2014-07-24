@@ -465,18 +465,21 @@ exports.copywid = copywid = copywid = function copywid(inobject, callback) {
 */
 exports.deletewid = deletewid = deletewid = function deletewid(inobject, callback) {
     proxyprinttodiv('Function deletewid inobject', inobject, 27);
-    var command = {};
-    var err = null;
-    var widName = inobject.wid;
 
-    extend(true, command, config.configuration.delete, inobject.command);
+    if (!inobject.command.from) {inobject.command.from={}}
+    if (!inobject.command.to) {inobject.command.to={}}
+    inobject.command.from.db = inobject.command.from.db || inobject.command.db || config.configuration.d.default.db;
+    inobject.command.from.collection = inobject.command.from.collection || inobject.command.collection || config.configuration.d.default.collection;
+    inobject.command.from.datastore = inobject.command.from.datastore || inobject.command.datastore || config.configuration.d.default.datastore;
+    inobject.command.from.databasetable = inobject.command.from.databasetable || inobject.command.databasetable || config.configuration.d.default.databasetable;
+    extend(true, inobject.command.to, config.configuration.delete, inobject.command.to);
     command.delete=true;
 
-    if (widName) {
+    if (inobject.wid) {
         proxyprinttodiv('Function deletewid inobject before copywid', inobject, 27);
         copywid(inobject, function (err, copiedobject) {
             proxyprinttodiv('Function deletewid copiedobject ', copiedobject, 27);
-            callback(err, copiedobject);
+            callback(null, copiedobject);
         });
     } else { // if no widName
         callback(null, {}); // should have better error here
