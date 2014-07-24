@@ -547,7 +547,7 @@ exports.getfromqueue = getfromqueue = function getfromqueue(params, callback) {
                             // delete has happened, call the callback
                             proxyprinttodiv("Delete has finished", 123, 99);
                             callback(err, res);
-                        }
+                        });
                     });
                 });
                 proxyprinttodiv("about to execute...", contained_object, 99);
