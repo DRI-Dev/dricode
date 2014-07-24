@@ -459,61 +459,111 @@ exports.savetoqueue = savetoqueue = function savetoqueue(p, callback) {
     var queuename = p.command.queuename;
     proxyprinttodiv(" qname is ... ",  queuename, 99 );
     delete p.command.queuename;
-    queuename = "dricollection";
+    queuename = "eventonemin";
     var itemtobesaved=p;
     itemtobesaved = [
-        { "addthis.executethis": "sendsms", "to": "+12313133930", "body":"This is a text" }
+        { "addthis.executethis": "printhello", "to": "+12313133930", "body":"This is a text" }
     ]
     var recorddef = {
-        "wid":"russ112",
+        // "wid":"russ112",
+        "executethis": "addwidmaster",
         "container":itemtobesaved,   // no wid ... let system make it for you
         "metadata" : {
+            "queuename": queuename,
             "queueflag" : "true"
         },
         "command": {
             "datastore": config.configuration.datastore,
             "collection": queuename,
             "keycollection": queuename+"key",
-            "queuename": queuename,
             "db": config.configuration.db,
             "databasetable": config.configuration.databasetable
         }
     };
     proxyprinttodiv("update cache **************", recorddef, 99);
     // var recorddef = { "wid": "russ1", "key": "value1"};
-    updatewid(recorddef, function (err, res) {
+    //addwidmaster(recorddef, function (err, res) {
+    execute(recorddef, function (err, res) {
         callback(null, res);
     });
 }
 
-exports.getfromqueue = getfromqueue = function getfromqueue(inputobj, callback) {
-    proxyprinttodiv("findparent inputobj", inputobj, 99);
+exports.getfromqueue = getfromqueue = function getfromqueue(params, callback) {
+    debugger;
+    proxyprinttodiv("findparent inputobj", params, 99);
+    var queuename = params.command.eventname;
     // var wid = inputobj["wid"];
     var executeobject = {};
-    executeobject["executethis"] = "querywid";
+    executeobject["executethis"] = "querywidmaster"; // Can be querywidmaster or querywid
     executeobject["command"] = {
-        "result": "queryresult"
+        "result": "queryresult",
+        "datastore": config.configuration.datastore,
+        "collection": queuename,
+        "keycollection": queuename+"key",
+        "db": config.configuration.db,
+        "databasetable": config.configuration.databasetable
     };
     executeobject["mongorawquery"] = {
         "$and": [{
+            "metadata.queuename": queuename,
             "metadata.queueflag": "true" 
         }]
     };
-    var env = new DriEnvironment(inputobj.command.environment);
+    var env = new DriEnvironment(params.command.environment);
     proxyprinttodiv("after environment", env, 99);
 
     env.execute(executeobject, function (err, res) {
         proxyprinttodiv("findparent res2", res, 99);
         // findwidbyqueryresult(res, "primarywid", function (err, res) {
         debugger;
-        var first_object = res.queryresult[0];
-        var contained_object = first_object.russ112.container;
-        proxyprinttodiv("about to execute...", contained_object, 99);
-        env.execute(contained_object, function (err, res) {
-            callback(err, res);
-        });
+        if (res.hasOwnProperty('queryresult'))
+        {
+            if (res.queryresult.length > 0)
+            {
+                // Step 1 - Get the wid name from the first object from the results
+                var first_object = res.queryresult[0];
+                var widname = first_object.wid;
+
+                // Step 2 - Get and LOCK the object in the storage system
+                var execobj_get1 = {
+                    "command.lock" : true, 
+                    "wid" : widname,
+                    "executethis" : "getwid"
+                };
+                env.execute(execobj_get1, function(err, res) {
+                    // Receive LOCKED object
+                    // try to execute it
+                    proxyprinttodiv("getwid / lock", widname, 99);
+
+                    // get object from res parameter
+                    // execute res
+                    execute(res, function(err, res) {
+                        // Pass or fail - Now DELETE this wid
+                        var execobj_del1 = {
+                            "executethis" : "deletewid",
+                            "wid" : widname
+                        };
+                        execute(execobj_del1, function(err, res) {
+                            // delete has happened, call the callback
+                            proxyprinttodiv("Delete has finished", 123, 99);
+                            callback(err, res);
+                        }
+                    });
+                });
+                proxyprinttodiv("about to execute...", contained_object, 99);
+                env.execute(contained_object, function (err, res) {
+                    callback(err, res);
+                });
+            } else {
+                callback(err, res);
+            }
+        }
     });
+};
+
+
+exports.printhello = printhello = function printhello(p, callback) {
+var parameter_string = JSON.stringify(p);
+    proxyprinttodiv("printhello - parameters are ", parameter_string, 99);
+    callback(null, parameter_string);
 }
-
-
-

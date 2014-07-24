@@ -7,6 +7,10 @@ if (!config) {
     var config = {};
 }
 
+var timerOneMinute = null;
+var timerOneMinuteInterval = 1000 * 60;
+
+
 exports.localStore = localStore = function () {
     var json = {};
 
@@ -171,117 +175,132 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
 
     // start eventonemin, eventtenmin and save the interval value so 
     // you can use "clearInterval" in the future if desired to stop things
-    var minutes = 60 * 1000;
-
+    
+    timerOneMinute = setInterval(eventonemin, timerOneMinuteInterval);
     callback(null,null);
 };
 
 exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processevent({"eventname":arguments.callee.name}, function (err, res) {
         cb(err, res);
     });
 
 };
 
 exports.eventonline = eventonline = function eventonline(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processevent({"eventname":arguments.callee.name}, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventoffline = eventoffline = function eventoffline(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processevent({"eventname":arguments.callee.name}, function (err, res) {
         cb(err, res);
     });
 };
 
-exports.eventonemin = eventonemin = function eventonemin() {
-    proxyprinttodiv("eventonemin", 'one sec', 30);
-    processevent(arguments.callee.name, function (err, res) {
+exports.eventonemin = eventonemin = function eventonemin(params, cb) {
+    proxyprinttodiv("eventonemin", 'one min', 30);
+    processevent({"eventname":arguments.callee.name}, function (err, res) {
         //cb(err, res);
     });
 };
 
 exports.eventtenmin = eventtenmin = function eventtenmin(params, cb) {    
-    processevent(arguments.callee.name, function (err, res) {
+    processevent({"eventname":arguments.callee.name}, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventdaily = eventdaily = function eventdaily(params, cb) {    
-    processevent(arguments.callee.name, function (err, res) {
+    processevent({"eventname":arguments.callee.name}, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventmonthly = eventmonthly = function eventmonthly(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processevent({"eventname":arguments.callee.name}, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processevent({"eventname":arguments.callee.name}, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processevent({"eventname":arguments.callee.name}, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processevent({"eventname":arguments.callee.name}, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processevent({"eventname":arguments.callee.name}, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processevent({"eventname":arguments.callee.name}, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processevent({"eventname":arguments.callee.name}, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processevent({"eventname":arguments.callee.name}, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processevent({"eventname":arguments.callee.name}, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processevent({"eventname" : arguments.callee.name}, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processevent({"eventname": arguments.callee.name}, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.processevent = processevent = function processevent(params, callback) {
-    callback(null, null);
+    var event_name = params['eventname'];
+    // goexecuteone({"eventname":event_name}, function(err, res) {
+    //    proxyprinttodiv("This is processevent", res, 99);
+    //});
+    // getfromqueue({"command":{"eventname":event_name}}, function(err, res) {
+    //    proxyprinttodiv("This is processevent", res, 99);
+    //});
+    var execute_object = {
+        "executethis" : "getfromqueue",
+        "command" : {
+            "eventname" : event_name
+        }
+    };
+    execute( execute_object, function(err, res) {
+        callback(err, res);
+    });
 };
 
 exports.execute_server = window.execute_server = execute_server = function execute_server(params, callback) {
