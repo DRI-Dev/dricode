@@ -5,7 +5,7 @@
     exports.addwidmaster = addwidmaster = function addwidmaster(object, callback) {
         var inbound_parameters_102 = JSON.parse(JSON.stringify(arguments));
         object = ConvertFromDOTdri(object);
-        proxyprinttodiv("addwidmaster before", object, 99);
+        // proxyprinttodiv("addwidmaster before", object, 99);
 
         var _object = object;
         var command = object.command;
@@ -24,8 +24,8 @@
             } else {
                 _object = res.obj;
                 _dto_object = res.dtoobj;
-                proxyprinttodiv("addwidmaster after clean obj", _object, 99, true,true);
-                proxyprinttodiv("addwidmaster after clean dto", _dto_object, 99,true, true);
+                // proxyprinttodiv("addwidmaster after clean obj", _object, 99, true,true);
+                // proxyprinttodiv("addwidmaster after clean dto", _dto_object, 99,true, true);
                 addwidobject(_object, _dto_object, null, null, null, command, function (err, res) {
                     // If error, bounce out
                     proxyprinttodiv("addwidmaster after addwidobject res", res, 17);
