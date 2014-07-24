@@ -411,17 +411,22 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(inobj
  */
 exports.copywid = copywid = copywid = function copywid(inobject, callback) {
     proxyprinttodiv('Function delete inobject', inobject, 18, true);
+    if (!inobject.command.from) {inobject.command.from={}}
+    if (!inobject.command.to) {inobject.command.to={}}
     var command = inobject.command;
 
     //fromwid, fromdb, fromcollection, fromdatastore, towid, todb, tocollection, todatastore, command,
     //1. call getwid fn with fromwid, fromdb, fromcollection, fromdatastore
+
+    extend(true, command.from, config.configuration.d.default, inobject.command.from);
+    extend(true, command.to, config.configuration.d.default, inobject.command.to);
     var getwidinput = {
-        "wid": inobject.wid,
+        "wid": inobject.wid || command.from.wid,
         "command": {
-            "db": command.fromdb,
-            "collection": command.fromcollection,
-            "datastore": command.fromdatastore,
-            "databasetable": command.fromdatabasetable
+            "db": command.from.db,
+            "collection": command.from.collection,
+            "datastore": command.from.datastore,
+            "databasetable": command.from.databasetable
         }
     };
     proxyprinttodiv('Function copywid getwidinput', getwidinput, 18);
@@ -430,12 +435,12 @@ exports.copywid = copywid = copywid = function copywid(inobject, callback) {
 
         //2. call updatewid fn with get result wid, towid, todb, tocollection, todatastore
         var updatewidinput = {
-            "wid": inobject.towid,
+            "wid": command.to.wid,
             "command": {
-                "db": command.todb,
-                "collection": command.tocollection,
-                "datastore": command.todatastore,
-                "databasetable": command.todatabasetable
+                "db": command.to.db,
+                "collection": command.to.collection,
+                "datastore": command.to.datastore,
+                "databasetable": command.to.databasetable
             }
         };
         extend(true, updatewidinput, getwidresult);
@@ -465,18 +470,21 @@ exports.copywid = copywid = copywid = function copywid(inobject, callback) {
 */
 exports.deletewid = deletewid = deletewid = function deletewid(inobject, callback) {
     proxyprinttodiv('Function deletewid inobject', inobject, 27);
-    var command = {};
-    var err = null;
-    var widName = inobject.wid;
 
-    extend(true, command, config.configuration.delete, inobject.command);
+    if (!inobject.command.from) {inobject.command.from={}}
+    if (!inobject.command.to) {inobject.command.to={}}
+    inobject.command.from.db = inobject.command.from.db || inobject.command.db || config.configuration.d.default.db;
+    inobject.command.from.collection = inobject.command.from.collection || inobject.command.collection || config.configuration.d.default.collection;
+    inobject.command.from.datastore = inobject.command.from.datastore || inobject.command.datastore || config.configuration.d.default.datastore;
+    inobject.command.from.databasetable = inobject.command.from.databasetable || inobject.command.databasetable || config.configuration.d.default.databasetable;
+    extend(true, inobject.command.to, config.configuration.delete, inobject.command.to);
     command.delete=true;
 
-    if (widName) {
+    if (inobject.wid) {
         proxyprinttodiv('Function deletewid inobject before copywid', inobject, 27);
         copywid(inobject, function (err, copiedobject) {
             proxyprinttodiv('Function deletewid copiedobject ', copiedobject, 27);
-            callback(err, copiedobject);
+            callback(null, copiedobject);
         });
     } else { // if no widName
         callback(null, {}); // should have better error here
