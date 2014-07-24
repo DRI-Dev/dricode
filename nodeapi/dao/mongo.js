@@ -157,6 +157,99 @@ exports.mget = mget = function mget(objToFind, command, callback) {
     });
 };
 
+// exports.madd = madd = function madd(incopy, command, callback) {
+//     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
+//     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
+//     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
+
+//     var widVal = {"wid":(incopy.wid)};
+
+//     getConnection(mongoDatabaseToLookup, function(err, db) {
+//         wget(widVal, command, function (err, currentrecord) {
+
+//             var recordtoadd;
+//             var found=false;
+
+//             if (currentrecord) 
+//             {
+//                 // this is the update process for wids
+//                 // set up recordtoadd ready for addition
+//                 recordtoadd = convertfromdriformatenhanced(currentrecord, command); 
+//                 // flatten out record -- normal : {wid:wid1 a:b c:d}, driformat: {wid:wid1 data:{a:b c:d}}
+//                 found = true;       // mark that the record was found                          
+//                 // mark that current record exists
+//                 if (command.datamethod === "insert")
+//                 {
+//                     recordtoadd=incopy; // current record does not matter
+//                 }
+//                 else // (command.datamethod === "upsert") // default
+//                 {
+//                     recordtoadd = extend(true, recordtoadd, incopy);
+//                 }
+//                 if (command.hasOwnProperty("lock")) // set the right property to save
+//                 {
+//                     recordtoadd.metadata.lock = command.lock;
+//                 }
+//             }
+//             else 
+//             {
+//                 recordtoadd = incopy;
+//             }
+
+//             // update rules: updatewid will unlock or lock record based on command.lock, 
+//             // it will fail if current record is already locked (and we are not unlocking)
+//             // updatewid also retreives current record in database
+//             //
+//             // do NOT update if:
+//             //    -currentrecord locked && command.lock !==false
+//             //    -OR  getwid && command.lock missing
+//             //    -current record is locked || !updatewid
+//             // update if:
+//             //    -current record is unlocked & updatewid 
+//             //    -OR command.lock=false 
+
+//             var currentlock = false;
+//             if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock)
+//             {
+//                 currentlock = true;
+//             }
+
+//             var err = null;
+//             if (command.lock === false || !currentlock)
+//             {   
+//                 if (!currentrecord) {currentrecord={};}
+//                 var convertedrecord = converttodriformat(recordtoadd, command); // get it ready to store
+//                 extend(true, currentrecord, convertedrecord); // merge with existing record
+
+//                 if (currentrecord._id) { delete currentrecord._id; }
+
+//                 if (command.getwidflag === true && !found) {err = {"errorname": "notfound"};}
+
+//                 // update list of objects database
+//                 if (!found) 
+//                 {
+//                     db.collection(schemaToLookup).insert(currentrecord, function(error, insertedWid) {
+//                         // if this was actually a getwid call and nothing found then err
+//                         callback(err || error, recordtoadd)
+//                     });
+//                 } 
+//                 else 
+//                 {
+//                     db.collection(schemaToLookup).update(widVal, {$set:currentrecord}, {}, function (error, boolresult) {
+//                         // if this was actually a getwid call and nothing found then err
+//                         callback(err || error, recordtoadd)
+//                     });
+//                 }
+//             }
+//             else // if not okaytoupdate
+//             {
+//                 err = {"errorname":"locked"};
+//             }
+//             callback(err, recordtoadd);
+//         }) 
+// };
+
+
 exports.madd = madd = function madd(objToAdd, command, callback) {
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
