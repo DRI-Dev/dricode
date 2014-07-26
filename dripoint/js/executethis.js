@@ -25,6 +25,7 @@
 // how to save in cache command.recursive for example
 // deepfilter
 // userid shoudl be copied in envirometn copy
+// committ
 
 (function (window) {
     // 'use strict';
@@ -77,10 +78,11 @@
         var environmentwid = getfromlocal(config.configuration.e),
             environmentdata = {};
 
-        // if (!environmentwid) 
-        // { // if none then begin creating one
-        //     environmentwid = {"wid":config.configuration.e};
-        // }
+        // save current environment once per execution so we can load it up again at the very end
+        if (environment.restoreenvironment === true)
+        {
+            addtolocal(config.configuration.e+environment.executelevel, environment);
+        }
 
         if (!environmentwid) { environmentwid = {}; }
 
@@ -98,7 +100,7 @@
         // store it back to wid
         environmentwid[config.configuration.db] = environment;
         addtolocal(config.configuration.e, environmentwid);
-        //}
+        // 
 
         // return value of environment
         if (typeof callback == 'function') { callback(null, environment); }
@@ -106,9 +108,13 @@
         return environment;
     }
 
-    function resetenvironment() {
-        //addtolocal(config.configuration.e, config.configuration.default);
-        addtolocal(config.configuration.e, config.configuration.defaultenvironment);
+    function resetenvironment(environment) {
+        var previousenvironment = config.configuration.defaultenvironment;
+        if (environment.restoreenvironment === true)
+        {
+            getfromlocal(config.configuration.e+environment.executelevel, previousenvironment);
+        }
+        addtolocal(config.configuration.e, previousenvironment);
     }
 
     // create blank command.result or if one was existing then 
@@ -215,35 +221,6 @@
         command.resulttable.overallerror = null;
     }
 
-    // function fishoutexecutionpreferences(inparams, executionpreferences) {
-    //     // copy environment& processfn, executethis from in params into executionpreferences
-    //     // executionpreferences are merged at execution time and do not win
-    //     // common parameters are merged at setup time and DO win
-
-    //     executionpreferences.command={};
-    //     executionpreferences.command.environment={};
-
-    //     //--proxyprinttodiv("fishoutexecutionpreferences inparams before", inparams, 11, true);
-
-    //     ////--proxyprinttodiv("fishoutexecutionpreferences inparams after", inparams, 11, true);
-
-    //     extend(true, executionpreferences.command.environment, inparams.command.environment);
-    //     delete inparams.command.environment;
-
-    //     // should executelevel be increased here?
-    //     // if (!executionpreferences.command.environment.run.executelevel) {executionpreferences.command.environment.run.executelevel=0;}
-    //     // if (!executionpreferences.command.environment.run.executeid) {executionpreferences.command.environment.run.executeid=createNewGuid();}
-    //     // if (!executionpreferences.command.environment.run.type) {executionpreferences.command.environment.run.type="series";}
-    //     // //if (!executionpreferences.command.environment.syncrule) {executionpreferences.command.environment.syncrule=config.environment.syncrule}
-
-    //     if (inparams.executethis)
-    //     {
-    //         executionpreferences.executethis=inparams.executethis;
-    //         delete inparams.executethis;
-    //     }
-
-    //     ////--proxyprinttodiv("converttocommand - outside iteration - executionpreferences II", executionpreferences, 11);
-    // }
 
     // This function converts incoming execute parameters into a standard execute object (ie command.resulttable)
     // Execute executes a list items.  It supports string, array, command.xrun (object or array), command.resulttable
@@ -278,7 +255,7 @@
         //--proxyprinttodiv("executefishout inparams", inparams, 11);
 
         // if string them move it to command.xrun..not it is an object again
-        if (isString(inparams)) { inparams = {comamnd:{xrun:inparams}}; }
+        if (isString(inparams)) { inparams = {command:{xrun:inparams}}; }
 
         ////--proxyprinttodiv("converttocommand after string inparams", inparams, 11);
 
@@ -287,7 +264,7 @@
 
         ////--proxyprinttodiv("converttocommand - inparams I", inparams, 11);
         // *** now it is converted to an object ***
-
+        incomingparams = converttojson(inparams); // converts to object and makes copy
         ////--proxyprinttodiv("converttocommand - inparams II", inparams, 11);
 
         // make parameters better by dealing with command.environment
@@ -415,8 +392,8 @@
     // 6) based on type save parameters & results
     // 7) interpret results and provide a consolidated err, res
     exports.execute = window.execute = execute = function execute(input, callback) {
-        var color = Number(getglobal('debugcolor')); color++; if (color >= 15) { color = 0; } saveglobal('debugcolor', color);
-        var indent = Number(getglobal('debugindent')); indent++; saveglobal('debugindent', indent);
+        var color = Number(getglobal('debugcolor')); if (!color || color >= 15) { color = 0; } color++; saveglobal('debugcolor', color);
+        var indent = Number(getglobal('debugindent')); if (!indent) {indent=0}; indent++; saveglobal('debugindent', indent);
         var previousresults = null,
             skipexecute = false,
             overallerror = null,
@@ -427,13 +404,15 @@
         //extend(true, incomingparams, input);              // make copy of input 
         ////--proxyprinttodiv('before -- remove -- incomingparams', incomingparams, 11, true, true);
         //incomingparams=ConvertFromDOTdri(incomingparams); // convert from dot notation -- not necessary if dot notation not sent in
-        incomingparams = converttojson(input); // converts to object and makes copy
-        // proxyprinttodiv('>>>>>>>>>>>>>>>>>>>>>>>>execute begin', incomingparams, 99, true, true);
+        //incomingparams = converttojson(input); // converts to object and makes copy
+        proxyprinttodiv('>>>>>>>>>>>>>>>>>>>>>>>>execute begin', input, 99, true, true);
 
-        var command = converttocommand(incomingparams);    // call main conversion
+        //var command = converttocommand(incomingparams);    // call main conversion
 
         //proxyprinttodiv('execute right after converttocommand ',command, 11, true);
         // fish out from converted results
+
+        var command = converttocommand(input);    // call main conversion
         var executionpreferences = command.resulttable.executionpreferences,
             currentexecuteid = executionpreferences.command.environment.run.executeid,
             level = executionpreferences.command.environment.run.executelevel,
@@ -809,11 +788,23 @@
 
                     // if fn, parm, executegetwid could not find 
                     if (overallerror && overallerror.errorname === "fnnotfound")
-                    { overallerror.errorname = "notfound"; }
+                    { 
+                        overallerror.errorname = "notfound"; 
+                    }
 
+                    proxyprinttodiv('execute end level ', level, 11);
                     // if we were top level then nothing else to do if notfound
-                    if (level === 0 && overallerror && overallerror.errorname === "notfound")
-                    { overallerror.errorname = "failnotfound"; }
+                    if (level === 0)
+                    {
+                        if (overallerror && overallerror.errorname === "notfound")
+                        { 
+                            overallerror.errorname = "failnotfound"; 
+                        }
+                        // reset environment now as we are at the end of the overall execute process
+                        resetenvironment(executionpreferences.command.environment);
+                        // remove the command property from the overall result if it still has it
+                        if (resultsummary && resultsummary.command) { delete resultsummary.command; }
+                    }
 
                     if (overallerror && Object.keys(overallerror).length > 0) 
                     {
@@ -854,13 +845,13 @@
                     var color = Number(getglobal('debugcolor')); color--; saveglobal('debugcolor', color);
                     var indent = Number(getglobal('debugindent')); indent--; saveglobal('debugindent', indent);
 
-                    if (executionpreferences.command.environment.run.executelevel === 0) {
-                        // reset environment now as we are at the end of the overall execute process
-                        resetenvironment();
+                    // if (executionpreferences.command.environment.run.executelevel === 0) {
+                    //     // reset environment now as we are at the end of the overall execute process
+                    //     resetenvironment();
 
-                        // remove the command property from the overall result if it still has it
-                        if (resultsummary && resultsummary.command) { delete resultsummary.command; }
-                    }
+                    //     // remove the command property from the overall result if it still has it
+                    //     if (resultsummary && resultsummary.command) { delete resultsummary.command; }
+                    // }
 
                     callback(errorsummary, resultsummary)
                 }); // mapseries
@@ -1026,10 +1017,10 @@
                                     {
                                         resultparameters = ConvertToDOTdri(resultparameters);
                                     }
-                                    if (command.convertmethod === "nocommand")
-                                    {
-                                        delete resultparameters.command;
-                                    }
+                                    // if (command.convertmethod === "nocommand")
+                                    // {
+                                    //     delete resultparameters.command;
+                                    // }
 
                                     //--proxyprinttodiv("execute - command **** II", resultparameters, 11);
 
@@ -1077,8 +1068,8 @@
     function cacheoperations(inboundparams, command) {
         var table = {
             "defaultdto": {"skipcache":true, "updatecache":false, "cachetime": 0},
-            "systemdto": {"skipcache":false, "updatecache":true, "cachetime": 999},
-            "relationshipdto": {"skipcache":false, "updatecache":true, "cachetime": 999}
+            "systemdto": {"skipcache":false, "updatecache":true, "cachetime": 9999},
+            "relationshipdto": {"skipcache":false, "updatecache":true, "cachetime": 9999}
         };
 
         var objkey=null;
@@ -1197,7 +1188,7 @@
         var firstcopy = {};
         extend(true, firstcopy, inparams);
         firstcopy.command.processfn = "execute_function";
-        firstcopy.command.processparameterfn = "execute_nothing";
+//        firstcopy.command.processparameterfn = "execute_nothing";
         outparams.command.xrun.push(firstcopy);
 
         // second step will waterfall parameters from above
@@ -1206,7 +1197,7 @@
         secondcopy.command.environment.run.executelevel=0;
         secondcopy.command.environment.platform="server";
         secondcopy.command.processfn = "execute_server";
-        secondcopy.command.processparameterfn = "execute_nothing";
+//        secondcopy.command.processparameterfn = "execute_nothing";
         outparams.command.xrun.push(secondcopy);
             
         //--proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
@@ -1220,7 +1211,7 @@
         var outparams = {};
         extend(true, outparams, inparams);
         outparams.command.processfn = "execute_server";
-        outparams.command.processparameterfn = "execute_nothing";
+        // outparams.command.processparameterfn = "execute_nothing";
         //--proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
 
         if (typeof callback == 'function') { callback(null, outparams); }
@@ -1233,7 +1224,7 @@
         var outparams = {};
         extend(true, outparams, inparams);
         outparams.command.processfn = "execute_function";
-        outparams.command.processparameterfn = "execute_nothing";
+        //outparams.command.processparameterfn = "execute_nothing";
         //--proxyprinttodiv("sync_local_server outparams", outparams, 11, true);
 
         if (typeof callback == 'function') { callback(null, outparams); }
@@ -1329,6 +1320,8 @@
             params.command.processfn = "execute_function";
             params.command.keepaddthis=false;
             execute(params, function (err, res) {
+                proxyprinttodiv('execute end of execute_get_wid I', inparams, 99, true);
+                proxyprinttodiv('execute end of execute_get_wid I res', res, 99, true);
                 if (!res) { res = {}; }
                 if (!res.command) { res.command = {}; }
 
@@ -1338,12 +1331,20 @@
                 }
                 else
                 {
-                    // if we got results from get wid, then execute them
-//                    inparams.command.processparameterfn = "execute_nothing";
-//                    inparams.command.processfn = "execute_function";
-//                    res = extend(true, {}, inparams, res);
-                    res.command.processparameterfn = res.command.processparameterfn || "execute_nothing";
-                    cb(null, res)
+                    // now go execute what we got
+                    execute(res, function(err, res) {
+                        if (err)
+                        {
+                            cb(err,res)
+                        }
+                        else
+                        {
+                            // send results to step2, but do not execute again
+                            if (!res.command) {res.command={}};
+                            res.command.processfn = res.command.processfn || "execute_nothing";
+                            cb(null, res)
+                        }
+                    })
                 }
             })
         }
@@ -1351,14 +1352,12 @@
 
     // function for where there is nothing to do
     window.execute_nothing =  function execute_nothing(params, callback) {
-        //--proxyprinttodiv('execute end of execute_nothing', params, 11);
+        if (params.command && Object.keys(params.command).length === 0) {delete params.command}
         callback(null, params);
     };
  
      // when whattodo fn, parm, executeget wid is unable to do something in that try
     window.execute_createerror =  function execute_createerror(params, callback) {
-        //--proxyprinttodiv('execute end of execute_nothing', params, 11);
-//        callback({"errorname":"fnnotfound"}, params);
         callback({"errorname":"fnnotfound"}, null);
     };
 

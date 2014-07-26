@@ -1774,7 +1774,7 @@ function ettest_executemisc(executeobject, callback)
 		  executeobject.command.environment.run={};
 	  }
 	  executeobject.command.executetype="series";
-	  //executeobject.command.environment.run.executelevel=0;
+	  executeobject.command.environment.run.executelevel=0;
 	  executeobject.command.environment.platform='local';
   
 
@@ -1795,9 +1795,9 @@ function ettest_executemisc(executeobject, callback)
 			proxyprinttodiv('expected error', null, 99);
 			proxyprinttodiv('actual error', error_obj, 99);
 			proxyprinttodiv('expected result', result_assertion, 99);
-			proxyprinttodiv('actual result', result_obj, 99);
+			proxyprinttodiv('actual result--', result_obj[1], 99);
 
-			var composite_obj=logverifycomplex("ettest_series1passegw", result_obj, result_assertion, error_obj, null);
+			var composite_obj=logverifycomplex("ettest_series1passegw", result_obj[1], result_assertion, error_obj, null);
 			proxyprinttodiv('composite_obj', composite_obj, 99);
 			callback(null, composite_obj);
 			console.log('series1passgw');

@@ -1059,6 +1059,13 @@
                     {
                         delete parameterobject.command
                     }
+
+                    // no wid used in the end of addwidmaster
+                    if (command.getwidmaster.convertmethod==="nowid")
+                    {
+                        delete parameterobject.wid;
+                        delete parameterobject.metadata;
+                    }
                     proxyprinttodiv("end of getWidMongo parameterobject", parameterobject, 38);
                     callback(null, parameterobject);
                 }

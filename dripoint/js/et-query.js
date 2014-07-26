@@ -209,13 +209,12 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 else if (qparms.mongorawquery || (extracommands.namespace && extracommands.namespaceflag))
                 {
                     if(extracommands.namespaceflag){
-                        var userns = extracommands.namespace;
-                        var usernsflag = extracommands.namespaceflag;
                         var criteriajsonarray = [];
 
-                        for(var key in userns){
-                            var isallowed = (usernsflag[key] && usernsflag[key] == "true");
-                            if(isallowed && userns) {
+                        for(var key in extracommands.namespaceflag)
+                        { 
+                            if(extracommands.namespace[key] && extracommands.namespaceflag[key]) 
+                            {
                                 var jsonnamespaceobj = {};
                                 jsonnamespaceobj["metadata.namespace." + key] = userns[key];
                                 criteriajsonarray.push(jsonnamespaceobj);
@@ -225,7 +224,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                         var queryjson = {"$and":criteriajsonarray};
 
                         // create a query based on criteriajsonarray, load as xtra parms for next step
-                        xparams['$and'] = BuildSingleQuery([criteriajsonarray,qparms.mongorawquery], "and", environmentdb); 
+                        xparams['$and'] = BuildSingleQuery([queryjson,qparms.mongorawquery], "and", environmentdb); 
 
                     }
 
