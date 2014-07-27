@@ -1158,15 +1158,18 @@ function checkSecurityPermissions(_actionwid, _group, actioncreatorgroups, actor
 
     getAllActions(actioncreatorgroups, function(err,res){
         allallowedactionsarr1 = res;
-
         if(allallowedactionsarr1.length > 0){
             getAllActions(actorgroups, function(err,res){
+
                 allallowedactionsarr2 = res;
 
                 if(allallowedactionsarr2.length > 0){
                     if(!isMatch){
                         async.mapSeries(allallowedactionsarr2, function(allallowedactions2, cbMap2) {
-                            if(allallowedactionsarr1.indexOf(allallowedactions2 !== -1)){
+                            // alert(JSON.stringify(allallowedactionsarr1));
+                            // alert(JSON.stringify(allallowedactions2));
+                            if(allallowedactionsarr1.indexOf(allallowedactions2) !== -1){
+                            // if(allallowedactionsarr1.indexOf(allallowedactions2 !== -1)){
                                 isMatch = true;
                                 cbMap2(null);
                             }else{

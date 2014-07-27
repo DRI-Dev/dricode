@@ -405,7 +405,7 @@
         ////--proxyprinttodiv('before -- remove -- incomingparams', incomingparams, 11, true, true);
         //incomingparams=ConvertFromDOTdri(incomingparams); // convert from dot notation -- not necessary if dot notation not sent in
         //incomingparams = converttojson(input); // converts to object and makes copy
-        proxyprinttodiv('>>>>>>>>>>>>>>>>>>>>>>>>execute begin', input, 99, true, true);
+        // proxyprinttodiv('>>>>>>>>>>>>>>>>>>>>>>>>execute begin', input, 99, true, true);
 
         //var command = converttocommand(incomingparams);    // call main conversion
 
@@ -1320,8 +1320,8 @@
             params.command.processfn = "execute_function";
             params.command.keepaddthis=false;
             execute(params, function (err, res) {
-                proxyprinttodiv('execute end of execute_get_wid I', inparams, 99, true);
-                proxyprinttodiv('execute end of execute_get_wid I res', res, 99, true);
+                // proxyprinttodiv('execute end of execute_get_wid I', inparams, 99, true);
+                // proxyprinttodiv('execute end of execute_get_wid I res', res, 99, true);
                 if (!res) { res = {}; }
                 if (!res.command) { res.command = {}; }
 
