@@ -14,7 +14,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
         // setup dtos for security - permission,security,action,user,groups etc.
         function(cb) {
             dtox({}, function(err, resp) {
-                proxyprinttodiv('Function created schema done --   for  -- ', resp, 39);
+                //proxyprinttodiv('Function created schema done --   for  -- ', resp, 39);
                 cb(err);
             });
         },
@@ -37,7 +37,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
 
             createuserdata(douguser, function(err, resp) {
                 douguserwid = resp.wid;
-                proxyprinttodiv('Function createuser done --    for  -- ', douguserwid, 39);
+                //proxyprinttodiv('Function createuser done --    for  -- ', douguserwid, 39);
                 cb(err);
             });
         },
@@ -47,7 +47,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "userwid": douguserwid,
                 "securityac": "douguserac"
             }, function(err, resp) {
-                proxyprinttodiv('Function addsecurity done --  for douguserwid -- ', douguserwid, 39);
+                //proxyprinttodiv('Function addsecurity done --  for douguserwid -- ', douguserwid, 39);
                 cb(err);
             });
         },
@@ -70,7 +70,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
 
             createuserdata(randyuser, function(err, resp) {
                 randyuserwid = resp.wid;
-                proxyprinttodiv('Function createuser done --    for  -- ', randyuserwid, 39);
+                //proxyprinttodiv('Function createuser done --    for  -- ', randyuserwid, 39);
                 cb(err);
             });
         },
@@ -80,7 +80,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "userwid": randyuserwid,
                 "securityac": "randyuserac"
             }, function(err, resp) {
-                proxyprinttodiv('Function addsecurity done --  for randyuserwid -- ', randyuserwid, 39);
+                //proxyprinttodiv('Function addsecurity done --  for randyuserwid -- ', randyuserwid, 39);
                 cb(err);
             });
         },
@@ -101,7 +101,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
             };
             createuserdata(marshauser, function(err, resp) {
                 marshauserwid = resp.wid;
-                proxyprinttodiv('Function createuser done --    for  -- ', marshauserwid, 39);
+                //proxyprinttodiv('Function createuser done --    for  -- ', marshauserwid, 39);
                 cb(err);
             });
         },
@@ -111,7 +111,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "userwid": marshauserwid,
                 "securityac": "marshauserac"
             }, function(err, resp) {
-                proxyprinttodiv('Function addsecurity done --  for marshauserwid -- ', marshauserwid, 39);
+                //proxyprinttodiv('Function addsecurity done --  for marshauserwid -- ', marshauserwid, 39);
                 cb(err);
             });
         },
@@ -125,7 +125,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "actiontype": "getcoupon"
             }, function(err, resp) {
                 getcouponwid = resp.wid;
-                proxyprinttodiv('Function createaction done --    for getcouponwid  -- ', getcouponwid, 39);
+                //proxyprinttodiv('Function createaction done --    for getcouponwid  -- ', getcouponwid, 39);
                 cb(err);
             });
         },
@@ -137,7 +137,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "actiontype": "executecoupon"
             }, function(err, resp) {
                 executecouponwid = resp.wid;
-                proxyprinttodiv('Function createaction done --    for executecouponwid  -- ', executecouponwid, 39);
+                //proxyprinttodiv('Function createaction done --    for executecouponwid  -- ', executecouponwid, 39);
                 cb(err);
             });
         },
@@ -149,7 +149,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "actiontype": "editcoupon"
             }, function(err, resp) {
                 editcouponwid = resp.wid;
-                proxyprinttodiv('Function createaction done --    for editcouponwid  -- ', editcouponwid, 39);
+                //proxyprinttodiv('Function createaction done --    for editcouponwid  -- ', editcouponwid, 39);
 
                 cb(err);
             });
@@ -162,7 +162,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "actiontype": "createcoupon"
             }, function(err, resp) {
                 createcouponwid = resp.wid;
-                proxyprinttodiv('Function createaction done --    for createcouponwid  -- ', createcouponwid, 39);
+                //proxyprinttodiv('Function createaction done --    for createcouponwid  -- ', createcouponwid, 39);
 
                 cb(err);
             });
@@ -175,7 +175,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "actiontype": "deletecoupon"
             }, function(err, resp) {
                 deletecouponwid = resp.wid;
-                proxyprinttodiv('Function createaction done --    for deletecouponwid  -- ', deletecouponwid, 39);
+                //proxyprinttodiv('Function createaction done --    for deletecouponwid  -- ', deletecouponwid, 39);
 
                 cb(err);
             });
@@ -190,7 +190,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "grouptype": "employee"
             }, function(err, resp) {
                 employeegroupwid = resp.wid;
-                proxyprinttodiv('Function creategroup done --    for employeegroupwid  -- ', employeegroupwid, 39);
+                //proxyprinttodiv('Function creategroup done --    for employeegroupwid  -- ', employeegroupwid, 39);
 
                 cb(err);
             });
@@ -202,7 +202,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "grouptype": "admin"
             }, function(err, resp) {
                 admingroupwid = resp.wid;
-                proxyprinttodiv('Function creategroup done --    for admingroupwid  -- ', admingroupwid, 39);
+                //proxyprinttodiv('Function creategroup done --    for admingroupwid  -- ', admingroupwid, 39);
 
                 cb(err);
             });
@@ -214,7 +214,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "grouptype": "manager"
             }, function(err, resp) {
                 managergroupwid = resp.wid;
-                proxyprinttodiv('Function creategroup done --    for managergroupwid  -- ', managergroupwid, 39);
+                //proxyprinttodiv('Function creategroup done --    for managergroupwid  -- ', managergroupwid, 39);
 
                 cb(err);
             });
@@ -230,7 +230,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "grouptype": "basiccpnactions"
             }, function(err, resp) {
                 basiccpnactionswid = resp.wid;
-                proxyprinttodiv('Function creategroup done --    for basiccpnactionswid  -- ', basiccpnactionswid, 39);
+                //proxyprinttodiv('Function creategroup done --    for basiccpnactionswid  -- ', basiccpnactionswid, 39);
 
                 cb(err);
             });
@@ -243,7 +243,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "grouptype": "advcpnactions"
             }, function(err, resp) {
                 advcpnactionswid = resp.wid;
-                proxyprinttodiv('Function creategroup done --    for advcpnactionswid  -- ', advcpnactionswid, 39);
+                //proxyprinttodiv('Function creategroup done --    for advcpnactionswid  -- ', advcpnactionswid, 39);
 
                 cb(err);
             });
@@ -256,7 +256,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "grouptype": "fullcpnactions"
             }, function(err, resp) {
                 fullcpnactionswid = resp.wid;
-                proxyprinttodiv('Function creategroup done --    for fullcpnactionswid  -- ', fullcpnactionswid, 39);
+                //proxyprinttodiv('Function creategroup done --    for fullcpnactionswid  -- ', fullcpnactionswid, 39);
 
                 cb(err);
             });
@@ -271,7 +271,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "grouptype": "managers"
             }, function(err, resp) {
                 managergroupwid = resp.wid;
-                proxyprinttodiv('Function creategroup done --    for managergroupwid  -- ', managergroupwid, 39);
+                //proxyprinttodiv('Function creategroup done --    for managergroupwid  -- ', managergroupwid, 39);
 
                 cb(err);
             });
@@ -283,7 +283,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "grouptype": "admin"
             }, function(err, resp) {
                 admingroupwid = resp.wid;
-                proxyprinttodiv('Function creategroup done --    for admingroupwid  -- ', admingroupwid, 39);
+                //proxyprinttodiv('Function creategroup done --    for admingroupwid  -- ', admingroupwid, 39);
 
                 cb(err);
             });
@@ -296,7 +296,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "grouptype": "employee"
             }, function(err, resp) {
                 employeegroupwid = resp.wid;
-                proxyprinttodiv('Function creategroup done --    for employeegroupwid  -- ', employeegroupwid, 39);
+                //proxyprinttodiv('Function creategroup done --    for employeegroupwid  -- ', employeegroupwid, 39);
 
                 cb(err);
             });
@@ -322,7 +322,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach userdto to groupdto, doug to manager   -- ', res, 39);
+                //proxyprinttodiv('attach userdto to groupdto, doug to manager   -- ', res, 39);
 
                 cb(err);
             })
@@ -341,7 +341,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach userdto to groupdto, randy to admin   -- ', res, 39);
+                //proxyprinttodiv('attach userdto to groupdto, randy to admin   -- ', res, 39);
 
                 cb(err);
             })
@@ -360,7 +360,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach userdto to groupdto, Marsha to employee   -- ', res, 39);
+                //proxyprinttodiv('attach userdto to groupdto, Marsha to employee   -- ', res, 39);
 
                 cb(err);
             })
@@ -386,7 +386,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach actiondto to groupdto, getcoupon to basiccpnactions   -- ', res, 39);
+                //proxyprinttodiv('attach actiondto to groupdto, getcoupon to basiccpnactions   -- ', res, 39);
 
                 cb(err);
             })
@@ -404,7 +404,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('add editcoupon action to advcpnactions group   -- ', res, 39);
+                //proxyprinttodiv('add editcoupon action to advcpnactions group   -- ', res, 39);
                 cb(err);
             })
         },
@@ -424,7 +424,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('add executecoupon action to advcpnactions group  -- ', res, 39);
+                //proxyprinttodiv('add executecoupon action to advcpnactions group  -- ', res, 39);
 
                 cb(err);
             })
@@ -442,7 +442,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('add createcoupon action to fullcpnactions group -- ', res, 39);
+                //proxyprinttodiv('add createcoupon action to fullcpnactions group -- ', res, 39);
 
                 cb(err);
             })
@@ -460,7 +460,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('add deletecoupon action to fullcpnactions group -- ', res, 39);
+                //proxyprinttodiv('add deletecoupon action to fullcpnactions group -- ', res, 39);
 
                 cb(err);
             })
@@ -478,7 +478,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('Add Groups to Groups:   -- admin to employee group -- ', res, 39);
+                //proxyprinttodiv('Add Groups to Groups:   -- admin to employee group -- ', res, 39);
 
                 cb(err);
             })
@@ -495,7 +495,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('Add Groups to Groups:   -- manager to admin group -- ', res, 39);
+                //proxyprinttodiv('Add Groups to Groups:   -- manager to admin group -- ', res, 39);
 
                 cb(err);
             })
@@ -514,7 +514,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "permission.level": 99, // TODO :: REMOVE HARDCODING
                 "description": "Doug    {  basiccpnactions, employee }"
             }, function(err, resp) {
-                proxyprinttodiv('Function addpermission done --    for  dougpermissionwid -- ', resp, 39);
+                //proxyprinttodiv('Function addpermission done --    for  dougpermissionwid -- ', resp, 39);
                 dougpermissionwid = resp.wid;
                 cb(err);
             });
@@ -557,7 +557,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "permission.level": 99, // TODO :: REMOVE HARDCODING
                 "description": "Doug    { manager, fullcpnactions }"
             }, function(err, resp) {
-                proxyprinttodiv('Function addpermission done --    for  dougpermissionwid -- ', resp, 39);
+                //proxyprinttodiv('Function addpermission done --    for  dougpermissionwid -- ', resp, 39);
                 dougpermissionwid = resp.wid;
                 cb(err);
             });
@@ -599,7 +599,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
                 "permission.level": 99, // TODO :: REMOVE HARDCODING
                 "description": "Doug    { admin, advcpnactions }"
             }, function(err, resp) {
-                proxyprinttodiv('Function addpermission done --    for  dougpermissionwid -- ', resp, 39);
+                //proxyprinttodiv('Function addpermission done --    for  dougpermissionwid -- ', resp, 39);
                 dougpermissionwid = resp.wid;
                 cb(err);
             });
@@ -632,7 +632,7 @@ exports.ex1sec = ex1sec = function ex1sec(params, callback) {
         }
     ], function(err, resp) {
         // final callback
-        proxyprinttodiv('Function ex1sec done --  response  -- ', resp, 39);
+        //proxyprinttodiv('Function ex1sec done --  response  -- ', resp, 39);
         callback(err, resp);
     });
 
@@ -717,7 +717,7 @@ exports.ex1sectest = ex1sectest = function ex1sectest(params, callback) {
         function(cb) {
             // perform the securitycheck for the getaction, with organization user user ac
             ex1sec({}, function(err, resp) {
-                proxyprinttodiv('Data entered  -   response  -- ', resp, 39);
+                //proxyprinttodiv('Data entered  -   response  -- ', resp, 39);
                 cb(err);
             });
 
@@ -725,7 +725,7 @@ exports.ex1sectest = ex1sectest = function ex1sectest(params, callback) {
         // function(cb) {
         //     // perform the securitycheck for the getaction, with organization user user ac
         //     sc(accessconfig1, function(err, resp) {
-        //         proxyprinttodiv('Security check done 1 --  accessconfig1 -   response  -- ', resp, 39);
+        //         //proxyprinttodiv('Security check done 1 --  accessconfig1 -   response  -- ', resp, 39);
         //         cb(err);
         //     });
 
@@ -733,7 +733,7 @@ exports.ex1sectest = ex1sectest = function ex1sectest(params, callback) {
         // function(cb) {
         //     // perform the securitycheck for the getaction, with organization user user ac
         //     sc(accessconfig2, function(err, resp) {
-        //         proxyprinttodiv('Security check done 1 --  accessconfig2 -  response  -- ', resp, 39);
+        //         //proxyprinttodiv('Security check done 1 --  accessconfig2 -  response  -- ', resp, 39);
         //         cb(err);
         //     });
 
@@ -741,7 +741,7 @@ exports.ex1sectest = ex1sectest = function ex1sectest(params, callback) {
         // function(cb) {
         //     // perform the securitycheck for the getaction, with organization user user ac
         //     sc(accessconfig3, function(err, resp) {
-        //         proxyprinttodiv('Security check done 1 --  accessconfig3 -   response  -- ', resp, 39);
+        //         //proxyprinttodiv('Security check done 1 --  accessconfig3 -   response  -- ', resp, 39);
         //         cb(err);
         //     });
         // }
@@ -749,13 +749,13 @@ exports.ex1sectest = ex1sectest = function ex1sectest(params, callback) {
         function(cb) {
             // perform the securitycheck for the getaction, with organization user user ac
             sc(accessconfig4, function(err, resp) {
-                proxyprinttodiv('Security check done 1 --  accessconfig4 -   response  -- ', resp, 39);
+                //proxyprinttodiv('Security check done 1 --  accessconfig4 -   response  -- ', resp, 39);
                 cb(err);
             });
         }
     ], function(err, resp) {
         // final callback
-        proxyprinttodiv('Function ex1sectest done --  response  -- ', resp, 39);
+        //proxyprinttodiv('Function ex1sectest done --  response  -- ', resp, 39);
         callback(err, resp);
     });
 }
@@ -789,13 +789,13 @@ exports.sc = sc = function sc(accessconfig, callback) {
 
     var groupsfrommetadata = [];
 
-    proxyprinttodiv('Function securitytest accesstoken-- ', _accesstoken, 39);
-    proxyprinttodiv('Function securitytest mygroup-- ', _mygroup, 39);
-    proxyprinttodiv('Function securitytest actiongroup-- ', _action, 39);
-    proxyprinttodiv('Function securitytest _myphone-- ', _myphone, 39);
-    proxyprinttodiv('Function securitytest server-- ', _server, 39);
-    proxyprinttodiv('Function securitytest dbgroup-- ', _dbgroup, 39);
-    proxyprinttodiv('Function securitytest _datastore-- ', _datastore, 39);
+    //proxyprinttodiv('Function securitytest accesstoken-- ', _accesstoken, 39);
+    //proxyprinttodiv('Function securitytest mygroup-- ', _mygroup, 39);
+    //proxyprinttodiv('Function securitytest actiongroup-- ', _action, 39);
+    //proxyprinttodiv('Function securitytest _myphone-- ', _myphone, 39);
+    //proxyprinttodiv('Function securitytest server-- ', _server, 39);
+    //proxyprinttodiv('Function securitytest dbgroup-- ', _dbgroup, 39);
+    //proxyprinttodiv('Function securitytest _datastore-- ', _datastore, 39);
 
     var securityCheckOutput = false;
     var actor;
@@ -831,10 +831,10 @@ exports.sc = sc = function sc(accessconfig, callback) {
             function(cb1) {
                 // if mygroup not sent in then convert AC to my userwid (mygroup)
                 if (!_mygroup) {
-                    proxyprinttodiv('Function sc getting user for ac -- ', _accesstoken, 39);
+                    //proxyprinttodiv('Function sc getting user for ac -- ', _accesstoken, 39);
                     getuserbyac(_accesstoken, function(err, userDto) {
                         if (userDto) {
-                            actorGroup = userDto[0].wid;
+                            actorGroup = userDto.queryresult[0].wid;
                             // get all groups from this user wid
                             getrelatedwids("", "groupdto", actorGroup, "userdto", {
                                 // "metadata.system.creator": _actorpretension
@@ -846,7 +846,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
                                         });
                                     },
                                     function(err, res) {
-                                        proxyprinttodiv('Function sc got actor groups from user for ac -- ', groupofactors, 39);
+                                        //proxyprinttodiv('Function sc got actor groups from user for ac -- ', groupofactors, 39);
                                         cb1(err, groupofactors);
                                     });
                             });
@@ -867,7 +867,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
                                 });
                             },
                             function(err, res) {
-                                proxyprinttodiv('Function sc received actor Group for ac -- ', groupofactors, 39);
+                                //proxyprinttodiv('Function sc received actor Group for ac -- ', groupofactors, 39);
                                 cb1(err, groupofactors);
                             });
                     });
@@ -897,11 +897,11 @@ exports.sc = sc = function sc(accessconfig, callback) {
                 var etEnvironment = new DriEnvironment(executeobject.command.environment);
                 etEnvironment.execute(executeobject, function(err, res) {
 
-                    var res1 = res[0];
+                    var res1 = res.queryresult[0];
                     actionwid = res1['wid'];
                     if (res1 && res1['metadata'] && res1['metadata']['system']) {
                         actionCreator = res1['metadata']['system']['creator'];
-                        proxyprinttodiv('Function securityCheckOutputeck Action creator is -- ', actionCreator, 39);
+                        //proxyprinttodiv('Function securityCheckOutputeck Action creator is -- ', actionCreator, 39);
                         cb1(null, "identified action owner");
                     } else {
                         cb1(null);
@@ -928,7 +928,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
                             });
                         });
                     }, function(err, res) {
-                        proxyprinttodiv('get user groups where user granted permissions is the action owner  -- ', actioncreatorgroups, 39);
+                        //proxyprinttodiv('get user groups where user granted permissions is the action owner  -- ', actioncreatorgroups, 39);
                         cb1(err, actioncreatorgroups);
                     });
                 });
@@ -987,7 +987,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
                                                         cbMapInner(null);
                                                     });
                                                 }, function(err, res) {
-                                                    proxyprinttodiv('Function securitycheck   -- 2.1', actorgroups, 39);
+                                                    //proxyprinttodiv('Function securitycheck   -- 2.1', actorgroups, 39);
                                                     cbMap(err, actorgroups);
                                                 });
                                             });
@@ -995,14 +995,14 @@ exports.sc = sc = function sc(accessconfig, callback) {
                                         });
                                     },
                                     function(err, res) {
-                                        proxyprinttodiv('Function securitycheck   -- 2.2', actorgroups, 39);
+                                        //proxyprinttodiv('Function securitycheck   -- 2.2', actorgroups, 39);
                                         cbm(err, actorgroups);
                                     });
                                 // });
                             });
                         });
                     }, function(err, res) {
-                        proxyprinttodiv('Function securitycheck   -- 2.2.2', actorgroups, 39);
+                        //proxyprinttodiv('Function securitycheck   -- 2.2.2', actorgroups, 39);
                         cb1(err, actorgroups);
                     });
                 } else {
@@ -1014,7 +1014,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
                 // match the 2 arrays for commonality
                 checkSecurityPermissions(actionwid, actorGroup, actioncreatorgroups, actorgroups, function(err, resp) {
                     isMatch = resp;
-                    proxyprinttodiv('Function securitycheck auth status -- ', isMatch, 39);
+                    //proxyprinttodiv('Function securitycheck auth status -- ', isMatch, 39);
                     securityCheckOutput = isMatch;
                     cb1(null, "matching permissions list");
                 });
@@ -1025,7 +1025,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
 
         function(err, res) {
             // final callback
-            proxyprinttodiv('Function Final callback returns -- ', securityCheckOutput, 39);
+            //proxyprinttodiv('Function Final callback returns -- ', securityCheckOutput, 39);
             callback(err, {
                 "authstatus": securityCheckOutput
             });
@@ -1226,8 +1226,8 @@ function checkSecurityPermissions(_actionwid, _group, actioncreatorgroups, actor
     //                 allallowedactionsarr2.push(relationship2[i].secondarywid);
     //             }
     //         }
-    //         proxyprinttodiv('Function checkSecurityPermissions allallowedactionsarr2 -- ', allallowedactionsarr2, 39);
-    //         proxyprinttodiv('Function checkSecurityPermissions allallowedactionsarr1 -- ', allallowedactionsarr1, 39);
+    //         //proxyprinttodiv('Function checkSecurityPermissions allallowedactionsarr2 -- ', allallowedactionsarr2, 39);
+    //         //proxyprinttodiv('Function checkSecurityPermissions allallowedactionsarr1 -- ', allallowedactionsarr1, 39);
 
     //         // check if the combination matches the current operation
     //         isMatch = ((allallowedactionsarr2.indexOf(_actionwid) !== -1) && (allallowedactionsarr1.indexOf(_actionwid) !== -1))
@@ -1294,7 +1294,7 @@ exports.createuserdata = createuserdata = function createuserdata(userobj, callb
     var etEnvironment = new DriEnvironment(executeobject.command.environment);
     etEnvironment.execute(executeobject, function(err, res) {
         // create securitydto data
-        proxyprinttodiv('Function createuserdata -- added getwidmaster on user  -- ' + userobj.wid, res, 39);
+        //proxyprinttodiv('Function createuserdata -- added getwidmaster on user  -- ' + userobj.wid, res, 39);
         callback(err, res);
         // getwidmaster({
         //     "wid": userobj.wid
@@ -1309,7 +1309,7 @@ exports.createuserdata = createuserdata = function createuserdata(userobj, callb
 // ** GENERIC FUNCTION TO CREATE AN ACTION ON THE BASIS OF RECEIVED DATA **
 // logic to create an action -- taking the type of action
 exports.createaction = createaction = function createaction(config, callback) {
-    // proxyprinttodiv('Function createaction -- adding action of ', config, 39);
+    // //proxyprinttodiv('Function createaction -- adding action of ', config, 39);
     var actiontype = config['actiontype'];
     var commandresult = config["command.result"];
     var creator = config["creator"];
@@ -1349,7 +1349,7 @@ exports.createaction = createaction = function createaction(config, callback) {
     };
     var etEnvironment = new DriEnvironment(executeobject.command.environment);
     etEnvironment.execute(executeobject, function(err, res) {
-        proxyprinttodiv('Function createaction -- added group of type "' + actiontype + '"  -- ', res, 39);
+        //proxyprinttodiv('Function createaction -- added group of type "' + actiontype + '"  -- ', res, 39);
         callback(err, res);
     });
 };
@@ -1359,7 +1359,7 @@ exports.createaction = createaction = function createaction(config, callback) {
 // ** GENERIC FUNCTION TO CREATE A GROUP ON THE BASIS OF RECEIVED DATA **
 // logic to create a group --
 exports.creategroup = creategroup = function creategroup(config, callback) {
-    // proxyprinttodiv('Function creategroup -- adding group of ', config, 39);
+    // //proxyprinttodiv('Function creategroup -- adding group of ', config, 39);
 
     var grouptype = config['grouptype'];
     var commandresult = config["command.result"];
@@ -1405,7 +1405,7 @@ exports.creategroup = creategroup = function creategroup(config, callback) {
     var etEnvironment = new DriEnvironment(executeobject.command.environment);
 
     etEnvironment.execute(executeobject, function(err, res) {
-        proxyprinttodiv('Function creategroup -- added group -- ', res, 39);
+        //proxyprinttodiv('Function creategroup -- added group -- ', res, 39);
         callback(err, res);
     });
 };
@@ -1454,7 +1454,7 @@ exports.addpermission = addpermission = function addpermission(config, callback)
     };
     var etEnvironment = new DriEnvironment(executeobject.command.environment);
     etEnvironment.execute(executeobject, function(err, res) {
-        proxyprinttodiv('Function addpermission done --  >>>>>> added permission >>>>>  for  -- ', res, 39);
+        //proxyprinttodiv('Function addpermission done --  >>>>>> added permission >>>>>  for  -- ', res, 39);
         callback(err, res);
     });
 }
@@ -1487,7 +1487,7 @@ exports.addtargetwidtocurrentwid = addtargetwidtocurrentwid = function addtarget
     };
     var etEnvironment = new DriEnvironment(executeobject.command.environment);
     etEnvironment.execute(executeobject, function(err, res) {
-        proxyprinttodiv('Function addtargetwidtocurrentwid done -- ' + config['currentwid'] + ' >>>>>> ' + config['linktype'] + ' >>>>> ' + config['targetwid'] + '  -- ', res, 99);
+        //proxyprinttodiv('Function addtargetwidtocurrentwid done -- ' + config['currentwid'] + ' >>>>>> ' + config['linktype'] + ' >>>>> ' + config['targetwid'] + '  -- ', res, 99);
         callback(err, res);
     });
 
@@ -1533,7 +1533,7 @@ exports.addsecurity = addsecurity = function addsecurity(config, callback) {
             "linktype": "onetoone"
         };
         addtargetwidtocurrentwid(config1, function(err, res) {
-            proxyprinttodiv('Function addsecurity --  >>>>>> added security  >>>>>  for  -- ', res, 39);
+            //proxyprinttodiv('Function addsecurity --  >>>>>> added security  >>>>>  for  -- ', res, 39);
             // console.debug('added security for wid ' + wid + " >>>> " + JSON.stringify(res));
             callback(err, res)
         })
@@ -1577,7 +1577,7 @@ exports.getuserbyac = getuserbyac = function getuserbyac(userac, callback) {
             var etEnvironment = new DriEnvironment(executeobject.command.environment);
             etEnvironment.execute(executeobject, function(err, res1) {
                 if (res1) {
-                    proxyprinttodiv('Function getuserbyac query1 -- res', res1, 39);
+                    //proxyprinttodiv('Function getuserbyac query1 -- res', res1, 39);
 
                     userWid = res1;
                     cb(null);
@@ -1589,8 +1589,8 @@ exports.getuserbyac = getuserbyac = function getuserbyac(userac, callback) {
         }
     ], function(err, res) {
         //console.debug' done securitycheck in sync manner.');
-        // proxyprinttodiv('securitycheck userDto ', userDto, 39);
-        proxyprinttodiv('Function getuserbyac --  >>>>>>  >>>>> userWid -- ', userWid, 39);
+        // //proxyprinttodiv('securitycheck userDto ', userDto, 39);
+        //proxyprinttodiv('Function getuserbyac --  >>>>>>  >>>>> userWid -- ', userWid, 39);
         callback(err, userWid);
     });
 
@@ -1652,7 +1652,7 @@ exports.getrelatedwids = getrelatedwids = function getrelatedwids(primarywidtype
     var etEnvironment = new DriEnvironment(executeobject.command.environment);
     etEnvironment.execute(executeobject, function(err, resp) { // final callback
         // var resp = res[0];
-        proxyprinttodiv('Function getrelatedwids done --  response  -- ', resp, 39);
+        //proxyprinttodiv('Function getrelatedwids done --  response  -- ', resp, 39);
         callback(err, resp);
     });
 }
@@ -1682,7 +1682,7 @@ exports.getrelatedwids = getrelatedwids = function getrelatedwids(primarywidtype
 // The security TEST scheme for the Allowances App
 exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
 
-    debuglevel = 39;
+    //debuglevel = 39;
 
     // users. sarah = parent, cindy = teacher, johnny = kid
     var sarah, cindy, johnny, driuser = "driuser";
@@ -1704,7 +1704,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
         // setup dtos for security - permission,security,action,user,groups etc.
         function(cb) {
             dtox({}, function(err, resp) {
-                proxyprinttodiv('Function created schema done --   for  -- ', resp, 39);
+                //proxyprinttodiv('Function created schema done --   for  -- ', resp, 39);
                 cb(err);
             });
         },
@@ -1725,7 +1725,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "country": "US"
             }, function(err, resp) {
                 cindy = resp.wid;
-                proxyprinttodiv('Function createuser done --  for  driuser -- ', resp, 39, true);
+                //proxyprinttodiv('Function createuser done --  for  driuser -- ', resp, 39, true);
                 cb(err);
             });
         },
@@ -1746,7 +1746,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "country": "US"
             }, function(err, resp) {
                 cindy = resp.wid;
-                proxyprinttodiv('Function createuser done --  for  cindy -- ', resp, 39, true);
+                //proxyprinttodiv('Function createuser done --  for  cindy -- ', resp, 39, true);
                 cb(err);
             });
         },
@@ -1756,7 +1756,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "userwid": cindy,
                 "securityac": "cindyac"
             }, function(err, resp) {
-                proxyprinttodiv('Function addsecurity done --  for cindy -- ', resp, 39, true);
+                //proxyprinttodiv('Function addsecurity done --  for cindy -- ', resp, 39, true);
                 cb(err);
             });
         },
@@ -1776,7 +1776,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "country": "US"
             }, function(err, resp) {
                 sarah = resp.wid;
-                proxyprinttodiv('Function createuser done --  for  sarah -- ', resp, 39, true);
+                //proxyprinttodiv('Function createuser done --  for  sarah -- ', resp, 39, true);
                 cb(err);
             });
         },
@@ -1786,7 +1786,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "userwid": sarah,
                 "securityac": "sarahac"
             }, function(err, resp) {
-                proxyprinttodiv('Function addsecurity done --  for sarah -- ', resp, 39, true);
+                //proxyprinttodiv('Function addsecurity done --  for sarah -- ', resp, 39, true);
                 cb(err);
             });
         },
@@ -1806,7 +1806,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "country": "US"
             }, function(err, resp) {
                 johnny = resp.wid;
-                proxyprinttodiv('Function createuser done --    for  johnny -- ', resp, 39, true);
+                //proxyprinttodiv('Function createuser done --    for  johnny -- ', resp, 39, true);
                 cb(err);
             });
         },
@@ -1816,7 +1816,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "userwid": johnny,
                 "securityac": "johnnyac"
             }, function(err, resp) {
-                proxyprinttodiv('Function addsecurity done --  for johnny -- ', resp, 39, true);
+                //proxyprinttodiv('Function addsecurity done --  for johnny -- ', resp, 39, true);
                 cb(err);
             });
         }, // Create Actions    
@@ -1827,7 +1827,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "actiontype": "createcurrency"
             }, function(err, resp) {
                 createcurrency = resp.wid;
-                proxyprinttodiv('Function createaction done --    for createcurrency  -- ', resp, 39, true);
+                //proxyprinttodiv('Function createaction done --    for createcurrency  -- ', resp, 39, true);
                 cb(err);
             });
         },
@@ -1838,7 +1838,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "actiontype": "editcurrency"
             }, function(err, resp) {
                 editcurrency = resp.wid;
-                proxyprinttodiv('Function createaction done --    for editcurrency  -- ', resp, 39, true);
+                //proxyprinttodiv('Function createaction done --    for editcurrency  -- ', resp, 39, true);
                 cb(err);
             });
         },
@@ -1849,7 +1849,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "actiontype": "deletecurrency"
             }, function(err, resp) {
                 deletecurrency = resp.wid;
-                proxyprinttodiv('Function createaction done --    for deletecurrency  -- ', resp, 39, true);
+                //proxyprinttodiv('Function createaction done --    for deletecurrency  -- ', resp, 39, true);
                 cb(err);
             });
         },
@@ -1860,7 +1860,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "actiontype": "createoffer"
             }, function(err, resp) {
                 createoffer = resp.wid;
-                proxyprinttodiv('Function createaction done --    for createoffer  -- ', resp, 39, true);
+                //proxyprinttodiv('Function createaction done --    for createoffer  -- ', resp, 39, true);
                 cb(err);
             });
         },
@@ -1871,7 +1871,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "actiontype": "editoffer"
             }, function(err, resp) {
                 editoffer = resp.wid;
-                proxyprinttodiv('Function createaction done --    for editoffer  -- ', resp, 39, true);
+                //proxyprinttodiv('Function createaction done --    for editoffer  -- ', resp, 39, true);
                 cb(err);
             });
         },
@@ -1882,7 +1882,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "actiontype": "deleteoffer"
             }, function(err, resp) {
                 deleteoffer = resp.wid;
-                proxyprinttodiv('Function createaction done --    for deleteoffer  -- ', resp, 39, true);
+                //proxyprinttodiv('Function createaction done --    for deleteoffer  -- ', resp, 39, true);
                 cb(err);
             });
         },
@@ -1893,7 +1893,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "actiontype": "executeoffer"
             }, function(err, resp) {
                 executeoffer = resp.wid;
-                proxyprinttodiv('Function createaction done --    for executeoffer  -- ', resp, 39, true);
+                //proxyprinttodiv('Function createaction done --    for executeoffer  -- ', resp, 39, true);
                 cb(err);
             });
         },
@@ -1904,7 +1904,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "actiontype": "getoffer"
             }, function(err, resp) {
                 getoffer = resp.wid;
-                proxyprinttodiv('Function createaction done --    for getoffer  -- ', resp, 39, true);
+                //proxyprinttodiv('Function createaction done --    for getoffer  -- ', resp, 39, true);
                 cb(err);
             });
         },
@@ -1915,7 +1915,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "actiontype": "addusertogroup"
             }, function(err, resp) {
                 addusertogroup = resp.wid;
-                proxyprinttodiv('Function createaction done --    for addusertogroup  -- ', resp, 39, true);
+                //proxyprinttodiv('Function createaction done --    for addusertogroup  -- ', resp, 39, true);
                 cb(err);
             });
         },
@@ -1926,7 +1926,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "actiontype": "addpermissions"
             }, function(err, resp) {
                 addpermissions = resp.wid;
-                proxyprinttodiv('Function createaction done --    for addpermissions  -- ', resp, 39, true);
+                //proxyprinttodiv('Function createaction done --    for addpermissions  -- ', resp, 39, true);
                 cb(err);
             });
         },
@@ -1937,7 +1937,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "actiontype": "getcurrency"
             }, function(err, resp) {
                 getcurrency = resp.wid;
-                proxyprinttodiv('Function createaction done --    for getcurrency  -- ', resp, 39, true);
+                //proxyprinttodiv('Function createaction done --    for getcurrency  -- ', resp, 39, true);
                 cb(err);
             });
         },
@@ -1950,7 +1950,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "grouptype": "parentgroup"
             }, function(err, resp) {
                 parentgroup = resp.wid;
-                proxyprinttodiv('Function creategroup done --    for parentgroup  -- ', resp, 39, true);
+                //proxyprinttodiv('Function creategroup done --    for parentgroup  -- ', resp, 39, true);
 
                 cb(err);
             });
@@ -1962,7 +1962,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "grouptype": "teachergroup"
             }, function(err, resp) {
                 teachergroup = resp.wid;
-                proxyprinttodiv('Function creategroup done --    for teachergroup  -- ', resp, 39, true);
+                //proxyprinttodiv('Function creategroup done --    for teachergroup  -- ', resp, 39, true);
 
                 cb(err);
             });
@@ -1974,7 +1974,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "grouptype": "kidgroup"
             }, function(err, resp) {
                 kidgroup = resp.wid;
-                proxyprinttodiv('Function creategroup done --    for kidgroup  -- ', resp, 39, true);
+                //proxyprinttodiv('Function creategroup done --    for kidgroup  -- ', resp, 39, true);
 
                 cb(err);
             });
@@ -1990,7 +1990,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "grouptype": "parentactions"
             }, function(err, resp) {
                 parentactions = resp.wid;
-                proxyprinttodiv('Function creategroup done --    for parentactions  -- ', resp, 39, true);
+                //proxyprinttodiv('Function creategroup done --    for parentactions  -- ', resp, 39, true);
 
                 cb(err);
             });
@@ -2002,7 +2002,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "grouptype": "teacheractions"
             }, function(err, resp) {
                 teacheractions = resp.wid;
-                proxyprinttodiv('Function creategroup done --    for teacheractions  -- ', resp, 39, true);
+                //proxyprinttodiv('Function creategroup done --    for teacheractions  -- ', resp, 39, true);
 
                 cb(err);
             });
@@ -2014,7 +2014,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "grouptype": "kidactions"
             }, function(err, resp) {
                 kidactions = resp.wid;
-                proxyprinttodiv('Function creategroup done --    for kidactions  -- ', resp, 39, true);
+                //proxyprinttodiv('Function creategroup done --    for kidactions  -- ', resp, 39, true);
 
                 cb(err);
             });
@@ -2025,21 +2025,6 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
         // Cindy    teachergroup
         // Johnny   kidgroup
         // driuser   parentgroup
-
-        function(cb) {
-            var config = {
-                "currentwid": parentgroup,
-                "currentwidmethod": "groupdto",
-                "targetwid": sarah,
-                "targetwidmethod": "userdto",
-                "linktype": "manytomany"
-            };
-            addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach userdto to groupdto, driuser to manager   -- ', res, 39);
-
-                cb(err);
-            })
-        },
 
         // Sarah    parentgroup
         function(cb) {
@@ -2052,7 +2037,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
             };
             // attach userdto to groupdto, sarah to parentgroup
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach userdto to groupdto, sarah to parentgroup   -- ', res, 39);
+                //proxyprinttodiv('attach userdto to groupdto, sarah to parentgroup   -- ', res, 39);
 
                 cb(err);
             })
@@ -2069,7 +2054,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
             };
             // attach userdto to groupdto, cindy to teachergroup            
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach userdto to groupdto, cindy to teachergroup   -- ', res, 39);
+                //proxyprinttodiv('attach userdto to groupdto, cindy to teachergroup   -- ', res, 39);
 
                 cb(err);
             })
@@ -2086,7 +2071,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
             };
             // attach userdto to groupdto, johnny to kidgroup           
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach userdto to groupdto, johnny to kidgroup   -- ', res, 39);
+                //proxyprinttodiv('attach userdto to groupdto, johnny to kidgroup   -- ', res, 39);
 
                 cb(err);
             })
@@ -2101,7 +2086,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach userdto to groupdto, driuser to manager   -- ', res, 39);
+                //proxyprinttodiv('attach userdto to groupdto, driuser to manager   -- ', res, 39);
 
                 cb(err);
             })
@@ -2120,7 +2105,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach actiondto to groupdto, createcurrency to parentactions   -- ', res, 39);
+                //proxyprinttodiv('attach actiondto to groupdto, createcurrency to parentactions   -- ', res, 39);
 
                 cb(err);
             })
@@ -2136,7 +2121,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach actiondto to groupdto, editcurrency to parentactions   -- ', res, 39);
+                //proxyprinttodiv('attach actiondto to groupdto, editcurrency to parentactions   -- ', res, 39);
 
                 cb(err);
             })
@@ -2152,7 +2137,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach actiondto to groupdto, deletecurrency to parentactions   -- ', res, 39);
+                //proxyprinttodiv('attach actiondto to groupdto, deletecurrency to parentactions   -- ', res, 39);
 
                 cb(err);
             })
@@ -2168,7 +2153,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach actiondto to groupdto, addusertogroup to parentactions   -- ', res, 39);
+                //proxyprinttodiv('attach actiondto to groupdto, addusertogroup to parentactions   -- ', res, 39);
 
                 cb(err);
             })
@@ -2184,7 +2169,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach actiondto to groupdto, addpermissions to parentactions   -- ', res, 39);
+                //proxyprinttodiv('attach actiondto to groupdto, addpermissions to parentactions   -- ', res, 39);
 
                 cb(err);
             })
@@ -2200,7 +2185,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach actiondto to groupdto, createoffer to teacheractions   -- ', res, 39);
+                //proxyprinttodiv('attach actiondto to groupdto, createoffer to teacheractions   -- ', res, 39);
 
                 cb(err);
             })
@@ -2216,7 +2201,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach actiondto to groupdto, editoffer to teacheractions   -- ', res, 39);
+                //proxyprinttodiv('attach actiondto to groupdto, editoffer to teacheractions   -- ', res, 39);
 
                 cb(err);
             })
@@ -2232,7 +2217,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach actiondto to groupdto, deleteoffer to teacheractions   -- ', res, 39);
+                //proxyprinttodiv('attach actiondto to groupdto, deleteoffer to teacheractions   -- ', res, 39);
 
                 cb(err);
             })
@@ -2248,7 +2233,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach actiondto to groupdto, executeoffer to teacheractions   -- ', res, 39);
+                //proxyprinttodiv('attach actiondto to groupdto, executeoffer to teacheractions   -- ', res, 39);
 
                 cb(err);
             })
@@ -2264,7 +2249,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach actiondto to groupdto, getcurrency to kidactions   -- ', res, 39);
+                //proxyprinttodiv('attach actiondto to groupdto, getcurrency to kidactions   -- ', res, 39);
 
                 cb(err);
             })
@@ -2281,7 +2266,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
             };
             // attach actiondto to groupdto
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('attach actiondto to groupdto, getoffer to kidactions   -- ', res, 39);
+                //proxyprinttodiv('attach actiondto to groupdto, getoffer to kidactions   -- ', res, 39);
 
                 cb(err);
             })
@@ -2295,33 +2280,33 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
 
 
 
-        // Add kidactions to teacheractions
+        // Add teachergroup to kidgroup
         function(cb) {
             var config = {
-                "currentwid": kidactions,
+                "currentwid": kidgroup,
                 "currentwidmethod": "groupdto",
-                "targetwid": teacheractions,
+                "targetwid": teachergroup,
                 "targetwidmethod": "groupdto",
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('Add Groups to Groups:   -- kidactions to teacheractions group -- ', res, 39);
+                //proxyprinttodiv('Add Groups to Groups:   -- kidgroup to teachergroup group -- ', res, 39);
 
                 cb(err);
             })
         },
 
-        // Add teacheractions to parentactions
+        // Add teachergroup to parentgroup
         function(cb) {
             var config = {
-                "currentwid": teacheractions,
+                "currentwid": teachergroup,
                 "currentwidmethod": "groupdto",
-                "targetwid": parentactions,
+                "targetwid": parentgroup,
                 "targetwidmethod": "groupdto",
                 "linktype": "manytomany"
             };
             addtargetwidtocurrentwid(config, function(err, res) {
-                proxyprinttodiv('Add Groups to Groups:   -- teacheractions to parentactions group -- ', res, 39);
+                //proxyprinttodiv('Add Groups to Groups:   -- teachergroup to parentgroup group -- ', res, 39);
 
                 cb(err);
             })
@@ -2338,7 +2323,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "permission.level": 99, // TODO :: REMOVE HARDCODING
                 "description": "DRI {  kidactions, kidgroup }"
             }, function(err, resp) {
-                proxyprinttodiv('Function addpermission done --    for  kidpermission -- ', resp, 39);
+                //proxyprinttodiv('Function addpermission done --    for  kidpermission -- ', resp, 39);
                 kidpermission = resp.wid;
                 cb(err);
             });
@@ -2379,7 +2364,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "permission.level": 99, // TODO :: REMOVE HARDCODING
                 "description": "DRI {  teacheractions, teachergroup }"
             }, function(err, resp) {
-                proxyprinttodiv('Function addpermission done --    for  teacherpermission -- ', resp, 39);
+                //proxyprinttodiv('Function addpermission done --    for  teacherpermission -- ', resp, 39);
                 teacherpermission = resp.wid;
                 cb(err);
             });
@@ -2420,7 +2405,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
                 "permission.level": 99, // TODO :: REMOVE HARDCODING
                 "description": "DRI {  parentactions, parentgroup }"
             }, function(err, resp) {
-                proxyprinttodiv('Function addpermission done --    for  parentpermission -- ', resp, 39);
+                //proxyprinttodiv('Function addpermission done --    for  parentpermission -- ', resp, 39);
                 parentpermission = resp.wid;
                 cb(err);
             });
@@ -2453,7 +2438,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
         }
     ], function(err, resp) {
         // final callback
-        proxyprinttodiv('Function ex1sec done --  response  -- ', resp, 39);
+        //proxyprinttodiv('Function ex1sec done --  response  -- ', resp, 39);
         callback(err, resp);
     });
 
@@ -2462,7 +2447,7 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
 
 // security check for the allowsec1 function. allowsec1 creates the security scheme and this tests it
 // 3 users are created, and permissions of those users are tested.
-exports.allowsec1tests = allowsec1tests = function allowsec1tests(params, callback) {
+exports.allowsectestsfull= allowsectestsfull = function allowsectestsfull(params, callback) {
 
     // Effective Permissions:   
     // Johnny   getoffer
@@ -2487,56 +2472,161 @@ exports.allowsec1tests = allowsec1tests = function allowsec1tests(params, callba
     //          addusertogroup
     //          addpermission
 
-
+	//debuglevel = 39;
 
     // Sarah
-    var sarahconfig = {
-        "_mygroup": '',
-        "_myphone": '9873838958',
-        "_action": 'createcurrency',
-        "_dbgroup": 'data',
-        "_collection": 'wikiwallettesting',
-        "_server": 'server1',
-        "_datastore": 'main',
-        "command.result": "result",
-        "command.enviromment.accesstoken": "sarahac",
-        "command.enviromment.userid": "driuser"
-    };
+var sarahconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'createcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};
+		
+var sarahconfig2={"_mygroup":'',"_myphone":'9873838958',"_action":'editcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};
 
+var sarahconfig3={"_mygroup":'',"_myphone":'9873838958',"_action":'deletecurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};	
+
+var sarahconfig4={"_mygroup":'',"_myphone":'9873838958',"_action":'addusertogroup',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};	
+
+var sarahconfig5={"_mygroup":'',"_myphone":'9873838958',"_action":'addpermissions',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};	
+
+var sarahconfig6={"_mygroup":'',"_myphone":'9873838958',"_action":'createoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};	
+
+var sarahconfig7={"_mygroup":'',"_myphone":'9873838958',"_action":'editoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};	
+
+var sarahconfig8={"_mygroup":'',"_myphone":'9873838958',"_action":'deleteoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};	
+
+var sarahconfig9={"_mygroup":'',"_myphone":'9873838958',"_action":'executeoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};	
+
+var sarahconfig10={"_mygroup":'',"_myphone":'9873838958',"_action":'getoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};	
+
+var sarahconfig11={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};			
+	
     // Cindy
-    var cindyconfig = {
-        "_mygroup": '',
-        "_myphone": '9873838958',
-        "_action": 'createoffer',
-        "_dbgroup": 'data',
-        "_collection": 'wikiwallettesting',
-        "_server": 'server1',
-        "_datastore": 'main',
-        "command.result": "result",
-        "command.enviromment.accesstoken": "cindyac",
-        "command.enviromment.userid": "driuser"
-    };
+var cindyconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'createcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};
+		
+var cindyconfig2={"_mygroup":'',"_myphone":'9873838958',"_action":'editcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};
+
+var cindyconfig3={"_mygroup":'',"_myphone":'9873838958',"_action":'deletecurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
+
+var cindyconfig4={"_mygroup":'',"_myphone":'9873838958',"_action":'addusertogroup',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
+
+var cindyconfig5={"_mygroup":'',"_myphone":'9873838958',"_action":'addpermissions',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
+
+var cindyconfig6={"_mygroup":'',"_myphone":'9873838958',"_action":'createoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
+
+var cindyconfig7={"_mygroup":'',"_myphone":'9873838958',"_action":'editoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
+
+var cindyconfig8={"_mygroup":'',"_myphone":'9873838958',"_action":'deleteoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
+
+var cindyconfig9={"_mygroup":'',"_myphone":'9873838958',"_action":'executeoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
+
+var cindyconfig10={"_mygroup":'',"_myphone":'9873838958',"_action":'getoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
+
+var cindyconfig11={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};
 
     // Johnny
-    var johnnyconfig = {
-        "_mygroup": '',
-        "_myphone": '9873838958',
-        "_action": 'createoffer',
-        "_dbgroup": 'data',
-        "_collection": 'wikiwallettesting',
-        "_server": 'server1',
-        "_datastore": 'main',
-        "command.result": "result",
-        "command.enviromment.accesstoken": "johnnyac",
-        "command.enviromment.userid": "driuser"
-    };
+var johnnyconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'createcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};
+		
+var johnnyconfig2={"_mygroup":'',"_myphone":'9873838958',"_action":'editcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};
 
-    async.series([
+var johnnyconfig3={"_mygroup":'',"_myphone":'9873838958',"_action":'deletecurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};	
+
+var johnnyconfig4={"_mygroup":'',"_myphone":'9873838958',"_action":'addusertogroup',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};	
+
+var johnnyconfig5={"_mygroup":'',"_myphone":'9873838958',"_action":'addpermissions',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};	
+
+var johnnyconfig6={"_mygroup":'',"_myphone":'9873838958',"_action":'createoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};	
+
+var johnnyconfig7={"_mygroup":'',"_myphone":'9873838958',"_action":'editoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};	
+
+var johnnyconfig8={"_mygroup":'',"_myphone":'9873838958',"_action":'deleteoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};	
+
+var johnnyconfig9={"_mygroup":'',"_myphone":'9873838958',"_action":'executeoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};	
+
+var johnnyconfig10={"_mygroup":'',"_myphone":'9873838958',"_action":'getoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};	
+
+var johnnyconfig11={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};
+	
+	var sarah_expected = {
+						"createcurrency":"true",
+						"editcurrency":"true",
+						"deletecurrency":"true",
+						"addusertogroup":"true",
+						"addpermissions":"true",
+						"createoffer":"true",
+						"editoffer":"true",
+						"deleteoffer":"true",
+						"executeoffer":"true",
+						"getoffer":"true",
+						"getcurrency":"true"
+						};
+	var cindy_expected = {
+						"createcurrency":"false",
+						"editcurrency":"false",
+						"deletecurrency":"false",
+						"addusertogroup":"false",
+						"addpermissions":"false",
+						"createoffer":"true",
+						"editoffer":"true",
+						"deleteoffer":"true",
+						"executeoffer":"true",
+						"getoffer":"true",
+						"getcurrency":"true"
+						};
+	var johnny_expected = {
+						"createcurrency":"false",
+						"editcurrency":"false",
+						"deletecurrency":"false",
+						"addusertogroup":"false",
+						"addpermissions":"false",
+						"createoffer":"false",
+						"editoffer":"false",
+						"deleteoffer":"false",
+						"executeoffer":"false",
+						"getoffer":"true",
+						"getcurrency":"true"
+						};
+
+	var sarah_result = {};
+	var cindy_result = {};
+	var johnny_result = {};
+	
+
+	    async.series([
 
         function(cb) {
             // creates the allowances security scheme data. Creates users, actions, groups, and permissions.
             allowsec1({}, function(err, resp) {
-                proxyprinttodiv('Data entered  -   response  -- ', resp, 39);
+                //proxyprinttodiv('Data entered  -   response  -- ', resp, 39);
                 cb(err);
             });
 
@@ -2545,29 +2635,314 @@ exports.allowsec1tests = allowsec1tests = function allowsec1tests(params, callba
         function(cb) {
             // perform the securitycheck for the createcurrency action, with organization user user ac
             sc(sarahconfig, function(err, resp) {
-                proxyprinttodiv('Security check done 1 --  sarahconfig -   response  -- ', resp, 39);
+                //proxyprinttodiv('Security check done 1 --  sarahconfig -   response  -- ', resp, 39);
+				sarah_result.createcurrency = resp.authstatus;				
                 cb(err);
             });
         },
-            // check that Cindy can perform the createoffer action
+		// check that Sarah can perform the editcurrency action
+        function(cb) {
+            // perform the securitycheck for the editcurrency action, with organization user user ac
+            sc(sarahconfig2, function(err, resp) {
+                //proxyprinttodiv('Security check done 2 --  sarahconfig2 -   response  -- ', resp, 39);
+				sarah_result.editcurrency = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that Sarah can perform the deletecurrency action
+        function(cb) {
+            // perform the securitycheck for the deletecurrency action, with organization user user ac
+            sc(sarahconfig3, function(err, resp) {
+                //proxyprinttodiv('Security check done 3 --  sarahconfig3 -   response  -- ', resp, 39);
+				sarah_result.deletecurrency = resp.authstatus;
+                cb(err);
+            });
+        },
+				// check that Sarah can perform the addusertogroup action
+        function(cb) {
+            // perform the securitycheck for the addusertogroup action, with organization user user ac
+            sc(sarahconfig4, function(err, resp) {
+                //proxyprinttodiv('Security check done 4 --  sarahconfig4 -   response  -- ', resp, 39);
+				sarah_result.addusertogroup = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that Sarah can perform the addpermissions action
+        function(cb) {
+            // perform the securitycheck for the addpermissions action, with organization user user ac
+            sc(sarahconfig5, function(err, resp) {
+                //proxyprinttodiv('Security check done 5 --  sarahconfig5 -   response  -- ', resp, 39);
+				sarah_result.addpermissions = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that Sarah can perform the createoffer action
         function(cb) {
             // perform the securitycheck for the createoffer action, with organization user user ac
-            sc(cindyconfig, function(err, resp) {
-                proxyprinttodiv('Security check done 1 --  cindyconfig -   response  -- ', resp, 39);
+            sc(sarahconfig6, function(err, resp) {
+                //proxyprinttodiv('Security check done 6 --  sarahconfig6 -   response  -- ', resp, 39);
+				sarah_result.createoffer = resp.authstatus;
                 cb(err);
             });
         },
-        // check that Johnny can perform the getoffer action
+		// check that Sarah can perform the editoffer action
         function(cb) {
-            // perform the securitycheck for the getoffer action, with organization user user ac
-            sc(johnnyconfig, function(err, resp) {
-                proxyprinttodiv('Security check done 1 --  johnnyconfig -   response  -- ', resp, 39);
+            // perform the securitycheck for the editoffer action, with organization user user ac
+            sc(sarahconfig7, function(err, resp) {
+                //proxyprinttodiv('Security check done 7 --  sarahconfig7 -   response  -- ', resp, 39);
+				sarah_result.editoffer = resp.authstatus;
                 cb(err);
             });
-        }
+        },
+		// check that Sarah can perform the deleteoffer action
+        function(cb) {
+            // perform the securitycheck for the deleteoffer action, with organization user user ac
+            sc(sarahconfig8, function(err, resp) {
+                //proxyprinttodiv('Security check done 8 --  sarahconfig8 -   response  -- ', resp, 39);
+				sarah_result.deleteoffer = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that Sarah can perform the executeoffer action
+        function(cb) {
+            // perform the securitycheck for the executeoffer action, with organization user user ac
+            sc(sarahconfig9, function(err, resp) {
+                //proxyprinttodiv('Security check done 9 --  sarahconfig9 -   response  -- ', resp, 39);
+				sarah_result.executeoffer = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that Sarah can perform the getoffer action
+        function(cb) {
+            // perform the securitycheck for the getoffer action, with organization user user ac
+            sc(sarahconfig10, function(err, resp) {
+                //proxyprinttodiv('Security check done 10 --  sarahconfig10 -   response  -- ', resp, 39);
+				sarah_result.getoffer = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that Sarah can perform the getcurrency action
+        function(cb) {
+            // perform the securitycheck for the getcurrency action, with organization user user ac
+            sc(sarahconfig11, function(err, resp) {
+                //proxyprinttodiv('Security check done 11 --  sarahconfig11 -   response  -- ', resp, 39);
+				sarah_result.getcurrency = resp.authstatus;
+                cb(err);
+            });
+        },
+		
+        // check that Cindy can perform the createcurrency action
+        function(cb) {
+            // perform the securitycheck for the createcurrency action, with organization user user ac
+            sc(cindyconfig, function(err, resp) {
+                //proxyprinttodiv('Security check done 1 --  cindyconfig -   response  -- ', resp, 39);
+				cindy_result.createcurrency = resp.authstatus;				
+                cb(err);
+            });
+        },
+		// check that cindy can perform the editcurrency action
+        function(cb) {
+            // perform the securitycheck for the editcurrency action, with organization user user ac
+            sc(cindyconfig2, function(err, resp) {
+                //proxyprinttodiv('Security check done 2 --  cindyconfig2 -   response  -- ', resp, 39);
+				cindy_result.editcurrency = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that cindy can perform the deletecurrency action
+        function(cb) {
+            // perform the securitycheck for the deletecurrency action, with organization user user ac
+            sc(cindyconfig3, function(err, resp) {
+                //proxyprinttodiv('Security check done 3 --  cindyconfig3 -   response  -- ', resp, 39);
+				cindy_result.deletecurrency = resp.authstatus;
+                cb(err);
+            });
+        },
+				// check that cindy can perform the addusertogroup action
+        function(cb) {
+            // perform the securitycheck for the addusertogroup action, with organization user user ac
+            sc(cindyconfig4, function(err, resp) {
+                //proxyprinttodiv('Security check done 4 --  cindyconfig4 -   response  -- ', resp, 39);
+				cindy_result.addusertogroup = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that cindy can perform the addpermissions action
+        function(cb) {
+            // perform the securitycheck for the addpermissions action, with organization user user ac
+            sc(cindyconfig5, function(err, resp) {
+                //proxyprinttodiv('Security check done 5 --  cindyconfig5 -   response  -- ', resp, 39);
+				cindy_result.addpermissions = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that cindy can perform the createoffer action
+        function(cb) {
+            // perform the securitycheck for the createoffer action, with organization user user ac
+            sc(cindyconfig6, function(err, resp) {
+                //proxyprinttodiv('Security check done 6 --  cindyconfig6 -   response  -- ', resp, 39);
+				cindy_result.createoffer = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that cindy can perform the editoffer action
+        function(cb) {
+            // perform the securitycheck for the editoffer action, with organization user user ac
+            sc(cindyconfig7, function(err, resp) {
+                //proxyprinttodiv('Security check done 7 --  cindyconfig7 -   response  -- ', resp, 39);
+				cindy_result.editoffer = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that cindy can perform the deleteoffer action
+        function(cb) {
+            // perform the securitycheck for the deleteoffer action, with organization user user ac
+            sc(cindyconfig8, function(err, resp) {
+                //proxyprinttodiv('Security check done 8 --  cindyconfig8 -   response  -- ', resp, 39);
+				cindy_result.deleteoffer = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that cindy can perform the executeoffer action
+        function(cb) {
+            // perform the securitycheck for the executeoffer action, with organization user user ac
+            sc(cindyconfig9, function(err, resp) {
+                //proxyprinttodiv('Security check done 9 --  cindyconfig9 -   response  -- ', resp, 39);
+				cindy_result.executeoffer = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that cindy can perform the getoffer action
+        function(cb) {
+            // perform the securitycheck for the getoffer action, with organization user user ac
+            sc(cindyconfig10, function(err, resp) {
+                //proxyprinttodiv('Security check done 10 --  cindyconfig10 -   response  -- ', resp, 39);
+				cindy_result.getoffer = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that cindy can perform the getcurrency action
+        function(cb) {
+            // perform the securitycheck for the getcurrency action, with organization user user ac
+            sc(cindyconfig11, function(err, resp) {
+                //proxyprinttodiv('Security check done 11 --  cindyconfig11 -   response  -- ', resp, 39);
+				cindy_result.getcurrency = resp.authstatus;
+                cb(err);
+            });
+        },
+
+
+        // check that johnny can perform the createcurrency action
+        function(cb) {
+            // perform the securitycheck for the createcurrency action, with organization user user ac
+            sc(johnnyconfig, function(err, resp) {
+                //proxyprinttodiv('Security check done 1 --  johnnyconfig -   response  -- ', resp, 39);
+				johnny_result.createcurrency = resp.authstatus;				
+                cb(err);
+            });
+        },
+		// check that johnny can perform the editcurrency action
+        function(cb) {
+            // perform the securitycheck for the editcurrency action, with organization user user ac
+            sc(johnnyconfig2, function(err, resp) {
+                //proxyprinttodiv('Security check done 2 --  johnnyconfig2 -   response  -- ', resp, 39);
+				johnny_result.editcurrency = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that johnny can perform the deletecurrency action
+        function(cb) {
+            // perform the securitycheck for the deletecurrency action, with organization user user ac
+            sc(johnnyconfig3, function(err, resp) {
+                //proxyprinttodiv('Security check done 3 --  johnnyconfig3 -   response  -- ', resp, 39);
+				johnny_result.deletecurrency = resp.authstatus;
+                cb(err);
+            });
+        },
+				// check that johnny can perform the addusertogroup action
+        function(cb) {
+            // perform the securitycheck for the addusertogroup action, with organization user user ac
+            sc(johnnyconfig4, function(err, resp) {
+                //proxyprinttodiv('Security check done 4 --  johnnyconfig4 -   response  -- ', resp, 39);
+				johnny_result.addusertogroup = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that johnny can perform the addpermissions action
+        function(cb) {
+            // perform the securitycheck for the addpermissions action, with organization user user ac
+            sc(johnnyconfig5, function(err, resp) {
+                //proxyprinttodiv('Security check done 5 --  johnnyconfig5 -   response  -- ', resp, 39);
+				johnny_result.addpermissions = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that johnny can perform the createoffer action
+        function(cb) {
+            // perform the securitycheck for the createoffer action, with organization user user ac
+            sc(johnnyconfig6, function(err, resp) {
+                //proxyprinttodiv('Security check done 6 --  johnnyconfig6 -   response  -- ', resp, 39);
+				johnny_result.createoffer = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that johnny can perform the editoffer action
+        function(cb) {
+            // perform the securitycheck for the editoffer action, with organization user user ac
+            sc(johnnyconfig7, function(err, resp) {
+                //proxyprinttodiv('Security check done 7 --  johnnyconfig7 -   response  -- ', resp, 39);
+				johnny_result.editoffer = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that johnny can perform the deleteoffer action
+        function(cb) {
+            // perform the securitycheck for the deleteoffer action, with organization user user ac
+            sc(johnnyconfig8, function(err, resp) {
+                //proxyprinttodiv('Security check done 8 --  johnnyconfig8 -   response  -- ', resp, 39);
+				johnny_result.deleteoffer = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that johnny can perform the executeoffer action
+        function(cb) {
+            // perform the securitycheck for the executeoffer action, with organization user user ac
+            sc(johnnyconfig9, function(err, resp) {
+                //proxyprinttodiv('Security check done 9 --  johnnyconfig9 -   response  -- ', resp, 39);
+				johnny_result.executeoffer = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that johnny can perform the getoffer action
+        function(cb) {
+            // perform the securitycheck for the getoffer action, with organization user user ac
+            sc(johnnyconfig10, function(err, resp) {
+                //proxyprinttodiv('Security check done 10 --  johnnyconfig10 -   response  -- ', resp, 39);
+				johnny_result.getoffer = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that johnny can perform the getcurrency action
+        function(cb) {
+            // perform the securitycheck for the getcurrency action, with organization user user ac
+            sc(johnnyconfig11, function(err, resp) {
+                //proxyprinttodiv('Security check done 11 --  johnnyconfig11 -   response  -- ', resp, 39);
+				johnny_result.getcurrency = resp.authstatus;
+                cb(err);
+            });
+        }	
+
     ], function(err, resp) {
         // final callback
-        proxyprinttodiv('Function ex1sectest done --  response  -- ', resp, 39);
-        callback(err, resp);
+        proxyprinttodiv('Function ex1sectest done --  response  -- ', resp, 99);
+		
+		var expected_result = [sarah_expected,cindy_expected,johnny_expected];
+		var result = [sarah_result,cindy_result,johnny_result];
+		
+		proxyprinttodiv('Function ex1sectest expected_result -- ', expected_result, 99, true);
+        proxyprinttodiv('Function ex1sectest result -- ', result, 99, true);
+		
+		var final_obj = logverify('allowsec1tests_result',result, expected_result);
+        callback(err, final_obj);
     });
 }

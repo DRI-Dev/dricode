@@ -31,7 +31,8 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 "convert":"toobject",
                 "keepaddthis":true,
                 "queryconvertmethod":"each",
-                "namespaceflag":false
+                "namespaceflag":false,
+                "queryresult":"queryresult"
             },
             "mongorawquery": "",
             "mongowid": "",
@@ -451,8 +452,10 @@ function finalformat(output, relationshipoutput, qparms, extracommands, command,
             }
         }
     }
-    proxyprinttodiv('querywid finaloutput', finaloutput, 28, true);
-    callback(null, finaloutput);
+    var temp = {};
+    if (extracommands.queryresult) {temp[extracommands.queryresult] = finaloutput} else {temp=finaloutput}
+    proxyprinttodiv('querywid finaloutput', temp, 28, true);
+    callback(null, temp);
 } // final format
 
 function distilllist(inlist, field, environmentdb) {

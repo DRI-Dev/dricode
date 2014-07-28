@@ -150,7 +150,7 @@ function run_filtered_functions(params, callback)
                         (   {},                     // parameters
                             function (err, result)  // callback
                             {
-                                cbMap(result)
+                                cbMap(err,result)
                             }                       
                         )    
                     } else {

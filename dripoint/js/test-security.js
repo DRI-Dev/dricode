@@ -1025,6 +1025,7 @@ exports.allowusers1 = allowusers1 = function allowusers1 (params, callback) {
 }
 */
 
+/*
 // The security TEST scheme for the Allowances App
 exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
 
@@ -2528,3 +2529,4 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
     });
 
 };
+*/
