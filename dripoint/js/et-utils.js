@@ -186,7 +186,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                     // future upsert data in angular data model
                     // future addToAngular(widName, incopy);
                     // the type of storage below is not needed
-                    addToLocalStorage(command.databasetable + command.collection + incopy.wid, currentrecord);
+//                    addToLocalStorage(command.databasetable + command.collection + incopy.wid, currentrecord);
 
                     proxyprinttodiv('Function updatewid currentrecord', currentrecord, 12);
                 }
@@ -410,7 +410,7 @@ exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(inobj
  3. call updatewid with blank record, fromwid, fromdb, fromcollection, fromdatastore if command.delete
  */
 exports.copywid = copywid = copywid = function copywid(inobject, callback) {
-    proxyprinttodiv('Function delete inobject', inobject, 18, true);
+    proxyprinttodiv('Function copywid inobject', inobject, 18, true);
     if (!inobject.command.from) {inobject.command.from={}}
     if (!inobject.command.to) {inobject.command.to={}}
     var command = inobject.command;
@@ -423,12 +423,15 @@ exports.copywid = copywid = copywid = function copywid(inobject, callback) {
     var getwidinput = {
         "wid": inobject.wid || command.from.wid,
         "command": {
-            "db": command.from.db,
-            "collection": command.from.collection,
-            "datastore": command.from.datastore,
-            "databasetable": command.from.databasetable
+            "db": command.db || command.from.db,
+            "collection": command.collection || command.from.collection,
+            "datastore": command.datastore || command.from.datastore,
+            "databasetable": command.databasetable || command.from.databasetable
         }
     };
+    if (command.hasOwnProperty('lock')) {
+        getwidinput.command.lock = command.lock;
+    }
     proxyprinttodiv('Function copywid getwidinput', getwidinput, 18);
     getwid(getwidinput, function (err, getwidresult) {
         proxyprinttodiv('Function copywid getwidresult', getwidresult, 18);
@@ -451,7 +454,7 @@ exports.copywid = copywid = copywid = function copywid(inobject, callback) {
             //3. call updatewid with blank record, fromwid, fromdb, fromcollection, fromdatastore if command.delete
             //if(inobject["command"] && inobject["command"]["delete"]===true){
             if (command.delete) {
-                proxyprinttodiv('Function copywid updatewidblankinput', updatewidblankinput, 18);
+                // proxyprinttodiv('Function copywid updatewidblankinput', updatewidblankinput, 18);
                 getwidinput.command.datamethod="insert";
                 updatewid(getwidinput, function (err, updatewidblankinputresult) {
                     proxyprinttodiv('Function copywid updatewidblankinputresult', updatewidblankinputresult, 27);
@@ -469,21 +472,25 @@ exports.copywid = copywid = copywid = function copywid(inobject, callback) {
     - To move wid from original location to datasettable=driarchive, db=new Date()
 */
 exports.deletewid = deletewid = deletewid = function deletewid(inobject, callback) {
-    proxyprinttodiv('Function deletewid inobject', inobject, 27);
+    proxyprinttodiv('Function deletewid inobject', inobject, 99);
 
     if (!inobject.command.from) {inobject.command.from={}}
     if (!inobject.command.to) {inobject.command.to={}}
     inobject.command.from.db = inobject.command.from.db || inobject.command.db || config.configuration.d.default.db;
+    proxyprinttodiv('Function deletewid inobject.command.from.db', inobject.command.from.db, 99);
     inobject.command.from.collection = inobject.command.from.collection || inobject.command.collection || config.configuration.d.default.collection;
+    proxyprinttodiv('Function deletewid inobject.command.from.collection', inobject.command.from.collection, 99);
     inobject.command.from.datastore = inobject.command.from.datastore || inobject.command.datastore || config.configuration.d.default.datastore;
+    proxyprinttodiv('Function deletewid inobject.command.from.datastore', inobject.command.from.datastore, 99);
     inobject.command.from.databasetable = inobject.command.from.databasetable || inobject.command.databasetable || config.configuration.d.default.databasetable;
+    proxyprinttodiv('Function deletewid inobject.command.from.databasetable', inobject.command.from.databasetable, 99);
     extend(true, inobject.command.to, config.configuration.delete, inobject.command.to);
-    command.delete=true;
+    inobject.command.delete=true;
 
     if (inobject.wid) {
-        proxyprinttodiv('Function deletewid inobject before copywid', inobject, 27);
+        proxyprinttodiv('Function deletewid inobject before copywid', inobject, 99);
         copywid(inobject, function (err, copiedobject) {
-            proxyprinttodiv('Function deletewid copiedobject ', copiedobject, 27);
+            proxyprinttodiv('Function deletewid copiedobject ', copiedobject, 99);
             callback(null, copiedobject);
         });
     } else { // if no widName
