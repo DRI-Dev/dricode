@@ -1345,10 +1345,7 @@ function ettest_whattodo(executeobject, callback)
 		  executeobject.command.environment.run.executelevel=0;
 		  executeobject.command.environment.platform='local';
  
-																	   // the function as if it was a name of a function
-
-		  executeobject.command.environment.processfn="create_what_to_do_list";
-		  executeobject.serverfn="test_return_noerror_result2";
+		  //executeobject.command.environment.processfn="create_what_to_do_list";
 		  executeobject.command.xrun={"executethis": 'a', "a": "test_return_noerror_result"};
 
 		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
@@ -1781,9 +1778,9 @@ function ettest_executemisc(executeobject, callback)
 	  executeobject.command.environment.platform='local';
   
 
-	  executeobject.command.environment.processfn="execute_get_wid";
+	  //executeobject.command.environment.processfn="execute_get_wid";
 	  executeobject.command.xrun=[{
-									"executethis": "updatewid",
+									"executethis": "addwidmaster",
 									"wid": "callpassfunction",
 									"metadata.method": "defaultdto",
 									"addthis.executethis": "test_return_noerror_result"
@@ -1798,7 +1795,7 @@ function ettest_executemisc(executeobject, callback)
 			proxyprinttodiv('expected error', null, 99);
 			proxyprinttodiv('actual error', error_obj, 99);
 			proxyprinttodiv('expected result', result_assertion, 99);
-			proxyprinttodiv('actual result', result_obj[1], 99);
+			proxyprinttodiv('actual result--', result_obj[1], 99);
 
 			var composite_obj=logverifycomplex("ettest_series1passegw", result_obj[1], result_assertion, error_obj, null);
 			proxyprinttodiv('composite_obj', composite_obj, 99);
@@ -3833,7 +3830,8 @@ function ettest_testcache1(executeobject, callback)
 							"metadata":
 								{"expirationdate":{"exception":["created","changed","unchanged","updated"]},
 								"cache":"true"}}
-		
+
+		console.log('This is ettest_testcache1');								
       var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
@@ -3847,9 +3845,9 @@ function ettest_testcache1(executeobject, callback)
       } 
     );
 }
-widtests.ettest_testcache1.category = "daily";
+widtests.ettest_testcache1.category = "test-daily";
 widtests.ettest_testcache1.subcategory = "push";
-widtests.ettest_testcache1.js = exports.ettest_globalmetadata1;
+widtests.ettest_testcache1.js = exports.ettest_testcache1;
 widtests.ettest_testcache1.description = "this does a test";
 
 // test cache
@@ -3878,7 +3876,8 @@ function ettest_testcache2(executeobject, callback)
 								{"cache":"true",
 								"expirationdate":{"exception":["created","changed","unchanged","updated"]}
 								}}
-		
+								
+		console.log('This is ettest_testcache2');		
       var etEnvironment = new DriEnvironment(executeobject.command.environment)
       etEnvironment.execute(executeobject, function (error_obj, result_obj) 
       {
@@ -3892,9 +3891,9 @@ function ettest_testcache2(executeobject, callback)
       } 
     );
 }
-widtests.ettest_testcache2.category = "daily";
+widtests.ettest_testcache2.category = "test-daily";
 widtests.ettest_testcache2.subcategory = "push";
-widtests.ettest_testcache2.js = exports.ettest_globalmetadata1;
+widtests.ettest_testcache2.js = exports.ettest_testcache2;
 widtests.ettest_testcache2.description = "this does a test";
 
 

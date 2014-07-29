@@ -982,3 +982,8 @@ exports.test_return_noerror_result_server = test_return_noerror_result_server = 
         callback( error_obj, result_obj );
     }
 };
+
+exports.getfromangular = getfromangular = function getfromangular(params, callback) {
+    // this is a dummy getfromangular call for server use
+    callback(null, {});
+};

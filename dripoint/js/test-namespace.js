@@ -140,8 +140,6 @@ function nstest_namespacequery1(executeobject, callback)
 							"mongorawquery": {
 								"$and": [{
 									"data.color":"red"
-									}, {
-									"wid": "nswid1"
 									}]
 								}
 						}

@@ -46,8 +46,8 @@ exports.sectest1 = widtests.sectest1 = sectest1 = function sectest1(parm, callba
 
         });
 }
-widtests.sectest1.category = "execute";
-widtests.sectest1.subcategory = "daily";
+widtests.sectest1.category = "daily";
+widtests.sectest1.subcategory = "push";
 widtests.sectest1.js = exports.sectest1;
 widtests.sectest1.description = "this does a test";
 
@@ -75,8 +75,8 @@ exports.tsa1 = widtests.tsa1 = tsa1 = function tsa1(params, callback) {
         callback(err, res);
     });
 }
-widtests.tsa1.category = "execute";
-widtests.tsa1.subcategory = "daily";
+widtests.tsa1.category = "daily";
+widtests.tsa1.subcategory = "push";
 widtests.tsa1.js = exports.tsa1;
 widtests.tsa1.description = "this does a test";
 
@@ -89,8 +89,8 @@ exports.ttsa3 = widtests.ttsa3 = ttsa3 = function(params, callback) {
 
     });
 };
-widtests.ttsa3.category = "execute";
-widtests.ttsa3.subcategory = "daily";
+widtests.ttsa3.category = "daily";
+widtests.ttsa3.subcategory = "push";
 widtests.ttsa3.js = exports.ttsa3;
 widtests.ttsa3.description = "this does a test";
 
@@ -106,8 +106,8 @@ exports.ttsa4 = widtests.ttsa4 = ttsa4 = function(params, callback) {
 
     });
 };
-widtests.ttsa4.category = "execute";
-widtests.ttsa4.subcategory = "daily";
+widtests.ttsa4.category = "daily";
+widtests.ttsa4.subcategory = "push";
 widtests.ttsa4.js = exports.ttsa4;
 widtests.ttsa4.description = "this does a test";
 
@@ -116,8 +116,8 @@ widtests.ttsa4.description = "this does a test";
 exports.ttsa6 = widtests.ttsa6 = ttsa6 = function(params, callback) {
     addgrouptowid("anything", "groupnamedto", "createcoupon", callback);
 };
-widtests.ttsa6.category = "execute";
-widtests.ttsa6.subcategory = "daily";
+widtests.ttsa6.category = "daily";
+widtests.ttsa6.subcategory = "push";
 widtests.ttsa6.js = exports.ttsa6;
 widtests.ttsa6.description = "this does a test";
 
@@ -1018,3 +1018,1515 @@ function codyfn1 (params, callback) {
 		});
 		
 };
+
+/*
+exports.allowusers1 = allowusers1 = function allowusers1 (params, callback) {
+
+}
+*/
+
+/*
+// The security TEST scheme for the Allowances App
+exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
+
+	debuglevel = 39;
+
+	// users. sarah = parent, cindy = teacher, johnny = kid
+    var sarah, cindy, johnny, driuser = "driuser";
+	
+	// actions
+    var createcurrency, editcurrency, deletecurrency, getcurrency, createoffer, editoffer, deleteoffer, executeoffer, getoffer, addusertogroup, addpermissions;
+
+	// usergroups
+    var parentgroup, teachergroup, kidgroup;
+	
+	// actiongroups
+    var parentactions, teacheractions, kidactions;
+	
+	// permissions
+    var parentpermission, teacherpermission, kidpermission;
+
+    async.series([
+
+        // setup dtos for security - permission,security,action,user,groups etc.
+        function(cb) {
+            dtox({}, function(err, resp) {
+                proxyprinttodiv('Function created schema done --   for  -- ', resp, 39);
+                cb(err);
+            });
+        },
+        // create user cindy
+        function(cb) {
+            createuserdata({
+                "wid": "cindy",
+                "fname": "Cindy",
+                "lname": "P",
+                "phone": "555-555-5515",
+                "email": "cindy@fake.com",
+                "address": "115 W. River St.",
+                "address2": "",
+                "city": "Syracuse",
+                "state": "NY",
+                "zip": "13244",
+                "country": "US"
+            }, function(err, resp) {
+                cindy = resp.wid;
+                proxyprinttodiv('Function createuser done --  for  cindy -- ', resp, 39,true);
+                cb(err);
+            });
+        },
+        function(cb) {
+            // add accesstoken for cindy
+            addsecurity({
+                "userwid": cindy,
+                "securityac": "cindyac"
+            }, function(err, resp) {
+                proxyprinttodiv('Function addsecurity done --  for cindy -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        // create user sarah
+        function(cb) {
+            createuserdata({
+                "wid": "sarah",
+                "fname": "Sarah",
+                "lname": "P",
+                "phone": "555-555-5515",
+                "email": "sarah@fake.com",
+                "address": "115 W. River St.",
+                "address2": "",
+                "city": "Syracuse",
+                "state": "NY",
+                "zip": "13244",
+                "country": "US"
+            }, function(err, resp) {
+                sarah = resp.wid;
+                proxyprinttodiv('Function createuser done --  for  sarah -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        function(cb) {
+            // add accesstoken for sarah
+            addsecurity({
+                "userwid": sarah,
+                "securityac": "sarahac"
+            }, function(err, resp) {
+                proxyprinttodiv('Function addsecurity done --  for sarah -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        // create user johnny
+        function(cb) {
+            createuserdata({
+                "wid": "johnny",
+                "fname": "Johnny",
+                "lname": "P",
+                "phone": "555-555-5515",
+                "email": "johnny@fake.com",
+                "address": "115 W. River St.",
+                "address2": "",
+                "city": "Syracuse",
+                "state": "NY",
+                "zip": "13244",
+                "country": "US"
+            }, function(err, resp) {
+                johnny = resp.wid;
+                proxyprinttodiv('Function createuser done --    for  johnny -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        function(cb) {
+            // add access token for johnny
+            addsecurity({
+                "userwid": johnny,
+                "securityac": "johnnyac"
+            }, function(err, resp) {
+                proxyprinttodiv('Function addsecurity done --  for johnny -- ', resp, 39, true);
+                cb(err);
+            });
+        },         // Create Actions	
+           // DRI creates createcurrency
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "createcurrency"
+            }, function(err, resp) {
+                createcurrency = resp.wid;
+                proxyprinttodiv('Function createaction done --    for createcurrency  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+           // DRI creates editcurrency
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "editcurrency"
+            }, function(err, resp) {
+                editcurrency = resp.wid;
+                proxyprinttodiv('Function createaction done --    for editcurrency  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+           // DRI creates deletecurrency
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "deletecurrency"
+            }, function(err, resp) {
+                deletecurrency = resp.wid;
+                proxyprinttodiv('Function createaction done --    for deletecurrency  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+           // DRI creates createoffer
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "createoffer"
+            }, function(err, resp) {
+                createoffer = resp.wid;
+                proxyprinttodiv('Function createaction done --    for createoffer  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+           // DRI creates editoffer
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "editoffer"
+            }, function(err, resp) {
+                editoffer = resp.wid;
+                proxyprinttodiv('Function createaction done --    for editoffer  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+           // DRI creates deleteoffer
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "deleteoffer"
+            }, function(err, resp) {
+                deleteoffer = resp.wid;
+                proxyprinttodiv('Function createaction done --    for deleteoffer  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+		           // DRI creates executeoffer
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "executeoffer"
+            }, function(err, resp) {
+                executeoffer = resp.wid;
+                proxyprinttodiv('Function createaction done --    for executeoffer  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+		           // DRI creates getoffer
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "getoffer"
+            }, function(err, resp) {
+                getoffer = resp.wid;
+                proxyprinttodiv('Function createaction done --    for getoffer  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+		           // DRI creates addusertogroup
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "addusertogroup"
+            }, function(err, resp) {
+                addusertogroup = resp.wid;
+                proxyprinttodiv('Function createaction done --    for addusertogroup  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+		           // DRI creates addpermissions
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "addpermissions"
+            }, function(err, resp) {
+                addpermissions = resp.wid;
+                proxyprinttodiv('Function createaction done --    for addpermissions  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+		           // DRI creates getcurrency
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "getcurrency"
+            }, function(err, resp) {
+                getcurrency = resp.wid;
+                proxyprinttodiv('Function createaction done --    for getcurrency  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+
+        // Create User Groups:	
+            // create parent group
+        function(cb) {
+
+            creategroup({
+                "grouptype": "parentgroup"
+            }, function(err, resp) {
+                parentgroup = resp.wid;
+                proxyprinttodiv('Function creategroup done --    for parentgroup  -- ', resp, 39, true);
+
+                cb(err);
+            });
+        },
+            // create teacher group
+        function(cb) {
+
+            creategroup({
+                "grouptype": "teachergroup"
+            }, function(err, resp) {
+                teachergroup = resp.wid;
+                proxyprinttodiv('Function creategroup done --    for teachergroup  -- ', resp, 39, true);
+
+                cb(err);
+            });
+        },
+            // create kid group
+        function(cb) {
+
+            creategroup({
+                "grouptype": "kidgroup"
+            }, function(err, resp) {
+                kidgroup = resp.wid;
+                proxyprinttodiv('Function creategroup done --    for kidgroup  -- ', resp, 39, true);
+
+                cb(err);
+            });
+        },
+
+
+
+        // Create Action Groups
+            // create parentactions group
+        function(cb) {
+
+            creategroup({
+                "grouptype": "parentactions"
+            }, function(err, resp) {
+                parentactions = resp.wid;
+                proxyprinttodiv('Function creategroup done --    for parentactions  -- ', resp, 39, true);
+
+                cb(err);
+            });
+        },
+            // create teacheractions group
+        function(cb) {
+
+            creategroup({
+                "grouptype": "teacheractions"
+            }, function(err, resp) {
+                teacheractions = resp.wid;
+                proxyprinttodiv('Function creategroup done --    for teacheractions  -- ', resp, 39, true);
+
+                cb(err);
+            });
+        },
+            // create kidactions group
+        function(cb) {
+
+            creategroup({
+                "grouptype": "kidactions"
+            }, function(err, resp) {
+                kidactions = resp.wid;
+                proxyprinttodiv('Function creategroup done --    for kidactions  -- ', resp, 39, true);
+
+                cb(err);
+            });
+        },
+		
+        // Add Users to Groups:	
+        // Sarah	parentgroup
+        // Cindy	teachergroup
+        // Johnny	kidgroup
+
+        // Sarah	parentgroup
+        function(cb) {
+            var config = {
+                "currentwid": parentgroup,
+                "currentwidmethod": "groupdto",
+                "targetwid": sarah,
+                "targetwidmethod": "userdto",
+                "linktype": "manytomany"
+            };
+			// attach userdto to groupdto, sarah to parentgroup
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach userdto to groupdto, sarah to parentgroup   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+		
+        // Cindy	teachergroup
+        function(cb) {
+            var config = {
+                "currentwid": teachergroup,
+                "currentwidmethod": "groupdto",
+                "targetwid": cindy,
+                "targetwidmethod": "userdto",
+                "linktype": "manytomany"
+            };
+        // attach userdto to groupdto, cindy to teachergroup			
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach userdto to groupdto, cindy to teachergroup   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // johnny	kidgroup
+        function(cb) {
+            var config = {
+                "currentwid": kidgroup,
+                "currentwidmethod": "groupdto",
+                "targetwid": johnny,
+                "targetwidmethod": "userdto",
+                "linktype": "manytomany"
+            };
+        // attach userdto to groupdto, johnny to kidgroup			
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach userdto to groupdto, johnny to kidgroup   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+		
+		
+        // Add Actions to Groups:
+		
+		// add createcurrency to parentactions
+        function(cb) {
+            var config = {
+                "currentwid": parentactions,
+                "currentwidmethod": "groupdto",
+                "targetwid": createcurrency,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, createcurrency to parentactions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+		
+		// add editcurrency to parentactions
+        function(cb) {
+            var config = {
+                "currentwid": parentactions,
+                "currentwidmethod": "groupdto",
+                "targetwid": editcurrency,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, editcurrency to parentactions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+		// add deletecurrency to parentactions
+        function(cb) {
+            var config = {
+                "currentwid": parentactions,
+                "currentwidmethod": "groupdto",
+                "targetwid": deletecurrency,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, deletecurrency to parentactions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+		// add addusertogroup to parentactions
+        function(cb) {
+            var config = {
+                "currentwid": parentactions,
+                "currentwidmethod": "groupdto",
+                "targetwid": addusertogroup,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, addusertogroup to parentactions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+		// add addpermissions to parentactions
+        function(cb) {
+            var config = {
+                "currentwid": parentactions,
+                "currentwidmethod": "groupdto",
+                "targetwid": addpermissions,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, addpermissions to parentactions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+		// add createoffer to teacheractions
+        function(cb) {
+            var config = {
+                "currentwid": teacheractions,
+                "currentwidmethod": "groupdto",
+                "targetwid": createoffer,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, createoffer to teacheractions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+		// add editoffer to teacheractions
+        function(cb) {
+            var config = {
+                "currentwid": teacheractions,
+                "currentwidmethod": "groupdto",
+                "targetwid": editoffer,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, editoffer to teacheractions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+		// add deleteoffer to teacheractions
+        function(cb) {
+            var config = {
+                "currentwid": teacheractions,
+                "currentwidmethod": "groupdto",
+                "targetwid": deleteoffer,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, deleteoffer to teacheractions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+		// add executeoffer to teacheractions
+        function(cb) {
+            var config = {
+                "currentwid": teacheractions,
+                "currentwidmethod": "groupdto",
+                "targetwid": executeoffer,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, executeoffer to teacheractions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+		// add getcurrency to kidactions
+        function(cb) {
+            var config = {
+                "currentwid": kidactions,
+                "currentwidmethod": "groupdto",
+                "targetwid": getcurrency,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, getcurrency to kidactions   -- ', res, 39);
+
+                cb(err);
+            })
+        },		
+
+		// add getoffer to kidactions
+        function(cb) {
+            var config = {
+                "currentwid": kidactions,
+                "currentwidmethod": "groupdto",
+                "targetwid": getoffer,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+			        // attach actiondto to groupdto
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, getoffer to kidactions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // Add Groups to Groups: Create Action Group Hierarchy	
+        // kidactions		teacheractions
+		// teacheractions	parentactions
+		
+		// Add kidactions to teacheractions
+        function(cb) {
+            var config = {
+                "currentwid": kidactions,
+                "currentwidmethod": "groupdto",
+                "targetwid": teacheractions,
+                "targetwidmethod": "groupdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('Add Groups to Groups:	 -- kidactions to teacheractions group -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // Add teacheractions to parentactions
+        function(cb) {
+            var config = {
+                "currentwid": teacheractions,
+                "currentwidmethod": "groupdto",
+                "targetwid": parentactions,
+                "targetwidmethod": "groupdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('Add Groups to Groups:	 -- teacheractions to parentactions group -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // Enter Permissions:
+		
+        // DRI	{  kidactions, kidgroup }
+        // add group create to actiongroup and usergroup
+        function(cb) {
+            addpermission({
+                "permission.userwid": driuser,
+                "onfailwid": "",
+                "permission.level": 99, // TODO :: REMOVE HARDCODING
+                "description": "DRI	{  kidactions, kidgroup }"
+            }, function(err, resp) {
+                proxyprinttodiv('Function addpermission done --    for  kidpermission -- ', resp, 39);
+                kidpermission = resp.wid;
+                cb(err);
+            });
+        },
+        // attach kidactions group to permissiondto
+        function(cb) {
+            var config = {
+                "currentwid": kidpermission,
+                "currentwidmethod": "permissiondto",
+                "targetwid": kidactions,
+                "targetwidmethod": "groupdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                cb(err);
+            })
+        },
+        // attach kidgroup group to permissiondto
+        function(cb) {
+            var config = {
+                "currentwid": kidpermission,
+                "currentwidmethod": "permissiondto",
+                "targetwid": kidgroup,
+                "targetwidmethod": "groupdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                cb(err);
+            })
+        },
+
+        // DRI	{  teacheractions, teachergroup }
+        // add group create to actiongroup and usergroup
+        function(cb) {
+            addpermission({
+                "permission.userwid": driuser,
+                "onfailwid": "",
+                "permission.level": 99, // TODO :: REMOVE HARDCODING
+                "description": "DRI	{  teacheractions, teachergroup }"
+            }, function(err, resp) {
+                proxyprinttodiv('Function addpermission done --    for  teacherpermission -- ', resp, 39);
+                teacherpermission = resp.wid;
+                cb(err);
+            });
+        },
+        // attach teacheractions group to permissiondto
+        function(cb) {
+            var config = {
+                "currentwid": teacherpermission,
+                "currentwidmethod": "permissiondto",
+                "targetwid": teacheractions,
+                "targetwidmethod": "groupdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                cb(err);
+            })
+        },
+        // attach teachergroup group to permissiondto
+        function(cb) {
+            var config = {
+                "currentwid": teacherpermission,
+                "currentwidmethod": "permissiondto",
+                "targetwid": teachergroup,
+                "targetwidmethod": "groupdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                cb(err);
+            })
+        },
+
+        // DRI	{  parentactions, parentgroup }
+        // add group create to actiongroup and usergroup
+        function(cb) {
+            addpermission({
+                "permission.userwid": driuser,
+                "onfailwid": "",
+                "permission.level": 99, // TODO :: REMOVE HARDCODING
+                "description": "DRI	{  parentactions, parentgroup }"
+            }, function(err, resp) {
+                proxyprinttodiv('Function addpermission done --    for  parentpermission -- ', resp, 39);
+                parentpermission = resp.wid;
+                cb(err);
+            });
+        },
+        // attach parentactions group to permissiondto
+        function(cb) {
+            var config = {
+                "currentwid": parentpermission,
+                "currentwidmethod": "permissiondto",
+                "targetwid": parentactions,
+                "targetwidmethod": "groupdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                cb(err);
+            })
+        },
+        // attach parentgroup group to permissiondto
+        function(cb) {
+            var config = {
+                "currentwid": parentpermission,
+                "currentwidmethod": "permissiondto",
+                "targetwid": parentgroup,
+                "targetwidmethod": "groupdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                cb(err);
+            })
+        }
+    ], function(err, resp) {
+        // final callback
+        proxyprinttodiv('Function ex1sec done --  response  -- ', resp, 39);
+        callback(err, resp);
+    });
+
+};
+
+
+// The security TEST scheme for the Allowances App
+exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
+
+    debuglevel = 39;
+
+    // users. sarah = parent, cindy = teacher, johnny = kid
+    var sarah, cindy, johnny, driuser;
+
+    // actions
+    var createcurrency, editcurrency, deletecurrency, getcurrency, createoffer, editoffer, deleteoffer, executeoffer, getoffer, addusertogroup, addpermissions;
+
+    // usergroups
+    var parentgroup, teachergroup, kidgroup;
+
+    // actiongroups
+    var parentactions, teacheractions, kidactions;
+
+    // permissions
+    var parentpermission, teacherpermission, kidpermission;
+
+    async.series([
+
+        // setup dtos for security - permission,security,action,user,groups etc.
+        function(cb) {
+            dtox({}, function(err, resp) {
+                proxyprinttodiv('Function created schema done --   for  -- ', resp, 39);
+                cb(err);
+            });
+        },
+
+        // create user driuser
+        function(cb) {
+            createuserdata({
+                "wid": "driuser",
+                "fname": "driuser",
+                "lname": "driuser",
+                "phone": "555-555-5515",
+                "email": "driuser@fake.com",
+                "address": "115 W. River St.",
+                "address2": "",
+                "city": "Syracuse",
+                "state": "NY",
+                "zip": "13244",
+                "country": "US"
+            }, function(err, resp) {
+                driuser = resp.wid;
+                proxyprinttodiv('Function createuser done --  for  driuser -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+
+        // create user cindy
+        function(cb) {
+            createuserdata({
+                "wid": "cindy",
+                "fname": "Cindy",
+                "lname": "P",
+                "phone": "555-555-5515",
+                "email": "cindy@fake.com",
+                "address": "115 W. River St.",
+                "address2": "",
+                "city": "Syracuse",
+                "state": "NY",
+                "zip": "13244",
+                "country": "US"
+            }, function(err, resp) {
+                cindy = resp.wid;
+                proxyprinttodiv('Function createuser done --  for  cindy -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        function(cb) {
+            // add accesstoken for cindy
+            addsecurity({
+                "userwid": cindy,
+                "securityac": "cindyac"
+            }, function(err, resp) {
+                proxyprinttodiv('Function addsecurity done --  for cindy -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        // create user sarah
+        function(cb) {
+            createuserdata({
+                "wid": "sarah",
+                "fname": "Sarah",
+                "lname": "P",
+                "phone": "555-555-5515",
+                "email": "sarah@fake.com",
+                "address": "115 W. River St.",
+                "address2": "",
+                "city": "Syracuse",
+                "state": "NY",
+                "zip": "13244",
+                "country": "US"
+            }, function(err, resp) {
+                sarah = resp.wid;
+                proxyprinttodiv('Function createuser done --  for  sarah -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        function(cb) {
+            // add accesstoken for sarah
+            addsecurity({
+                "userwid": sarah,
+                "securityac": "sarahac"
+            }, function(err, resp) {
+                proxyprinttodiv('Function addsecurity done --  for sarah -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        // create user johnny
+        function(cb) {
+            createuserdata({
+                "wid": "johnny",
+                "fname": "Johnny",
+                "lname": "P",
+                "phone": "555-555-5515",
+                "email": "johnny@fake.com",
+                "address": "115 W. River St.",
+                "address2": "",
+                "city": "Syracuse",
+                "state": "NY",
+                "zip": "13244",
+                "country": "US"
+            }, function(err, resp) {
+                johnny = resp.wid;
+                proxyprinttodiv('Function createuser done --    for  johnny -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        function(cb) {
+            // add access token for johnny
+            addsecurity({
+                "userwid": johnny,
+                "securityac": "johnnyac"
+            }, function(err, resp) {
+                proxyprinttodiv('Function addsecurity done --  for johnny -- ', resp, 39, true);
+                cb(err);
+            });
+        }, // Create Actions    
+        // DRI creates createcurrency
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "createcurrency"
+            }, function(err, resp) {
+                createcurrency = resp.wid;
+                proxyprinttodiv('Function createaction done --    for createcurrency  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        // DRI creates editcurrency
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "editcurrency"
+            }, function(err, resp) {
+                editcurrency = resp.wid;
+                proxyprinttodiv('Function createaction done --    for editcurrency  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        // DRI creates deletecurrency
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "deletecurrency"
+            }, function(err, resp) {
+                deletecurrency = resp.wid;
+                proxyprinttodiv('Function createaction done --    for deletecurrency  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        // DRI creates createoffer
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "createoffer"
+            }, function(err, resp) {
+                createoffer = resp.wid;
+                proxyprinttodiv('Function createaction done --    for createoffer  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        // DRI creates editoffer
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "editoffer"
+            }, function(err, resp) {
+                editoffer = resp.wid;
+                proxyprinttodiv('Function createaction done --    for editoffer  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        // DRI creates deleteoffer
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "deleteoffer"
+            }, function(err, resp) {
+                deleteoffer = resp.wid;
+                proxyprinttodiv('Function createaction done --    for deleteoffer  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        // DRI creates executeoffer
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "executeoffer"
+            }, function(err, resp) {
+                executeoffer = resp.wid;
+                proxyprinttodiv('Function createaction done --    for executeoffer  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        // DRI creates getoffer
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "getoffer"
+            }, function(err, resp) {
+                getoffer = resp.wid;
+                proxyprinttodiv('Function createaction done --    for getoffer  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        // DRI creates addusertogroup
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "addusertogroup"
+            }, function(err, resp) {
+                addusertogroup = resp.wid;
+                proxyprinttodiv('Function createaction done --    for addusertogroup  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        // DRI creates addpermissions
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "addpermissions"
+            }, function(err, resp) {
+                addpermissions = resp.wid;
+                proxyprinttodiv('Function createaction done --    for addpermissions  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+        // DRI creates getcurrency
+        function(cb) {
+            createaction({
+                "creator": driuser,
+                "actiontype": "getcurrency"
+            }, function(err, resp) {
+                getcurrency = resp.wid;
+                proxyprinttodiv('Function createaction done --    for getcurrency  -- ', resp, 39, true);
+                cb(err);
+            });
+        },
+
+        // Create User Groups:  
+        // create parent group
+        function(cb) {
+
+            creategroup({
+                "grouptype": "parentgroup"
+            }, function(err, resp) {
+                parentgroup = resp.wid;
+                proxyprinttodiv('Function creategroup done --    for parentgroup  -- ', resp, 39, true);
+
+                cb(err);
+            });
+        },
+        // create teacher group
+        function(cb) {
+
+            creategroup({
+                "grouptype": "teachergroup"
+            }, function(err, resp) {
+                teachergroup = resp.wid;
+                proxyprinttodiv('Function creategroup done --    for teachergroup  -- ', resp, 39, true);
+
+                cb(err);
+            });
+        },
+        // create kid group
+        function(cb) {
+
+            creategroup({
+                "grouptype": "kidgroup"
+            }, function(err, resp) {
+                kidgroup = resp.wid;
+                proxyprinttodiv('Function creategroup done --    for kidgroup  -- ', resp, 39, true);
+
+                cb(err);
+            });
+        },
+
+
+
+        // Create Action Groups
+        // create parentactions group
+        function(cb) {
+
+            creategroup({
+                "grouptype": "parentactions"
+            }, function(err, resp) {
+                parentactions = resp.wid;
+                proxyprinttodiv('Function creategroup done --    for parentactions  -- ', resp, 39, true);
+
+                cb(err);
+            });
+        },
+        // create teacheractions group
+        function(cb) {
+
+            creategroup({
+                "grouptype": "teacheractions"
+            }, function(err, resp) {
+                teacheractions = resp.wid;
+                proxyprinttodiv('Function creategroup done --    for teacheractions  -- ', resp, 39, true);
+
+                cb(err);
+            });
+        },
+        // create kidactions group
+        function(cb) {
+
+            creategroup({
+                "grouptype": "kidactions"
+            }, function(err, resp) {
+                kidactions = resp.wid;
+                proxyprinttodiv('Function creategroup done --    for kidactions  -- ', resp, 39, true);
+
+                cb(err);
+            });
+        },
+
+        // Add Users to Groups: 
+        // Sarah    parentgroup
+        // Cindy    teachergroup
+        // Johnny   kidgroup
+        // driuser   parentgroup
+
+        function(cb) {
+            var config = {
+                "currentwid": parentgroup,
+                "currentwidmethod": "groupdto",
+                "targetwid": sarah,
+                "targetwidmethod": "userdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach userdto to groupdto, driuser to manager   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // Sarah    parentgroup
+        function(cb) {
+            var config = {
+                "currentwid": parentgroup,
+                "currentwidmethod": "groupdto",
+                "targetwid": sarah,
+                "targetwidmethod": "userdto",
+                "linktype": "manytomany"
+            };
+            // attach userdto to groupdto, sarah to parentgroup
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach userdto to groupdto, sarah to parentgroup   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // Cindy    teachergroup
+        function(cb) {
+            var config = {
+                "currentwid": teachergroup,
+                "currentwidmethod": "groupdto",
+                "targetwid": cindy,
+                "targetwidmethod": "userdto",
+                "linktype": "manytomany"
+            };
+            // attach userdto to groupdto, cindy to teachergroup            
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach userdto to groupdto, cindy to teachergroup   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // johnny   kidgroup
+        function(cb) {
+            var config = {
+                "currentwid": kidgroup,
+                "currentwidmethod": "groupdto",
+                "targetwid": johnny,
+                "targetwidmethod": "userdto",
+                "linktype": "manytomany"
+            };
+            // attach userdto to groupdto, johnny to kidgroup           
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach userdto to groupdto, johnny to kidgroup   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        function(cb) {
+            var config = {
+                "currentwid": parentgroup,
+                "currentwidmethod": "groupdto",
+                "targetwid": driuser,
+                "targetwidmethod": "userdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach userdto to groupdto, driuser to manager   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+
+        // Add Actions to Groups:
+
+        // add createcurrency to parentactions
+        function(cb) {
+            var config = {
+                "currentwid": parentactions,
+                "currentwidmethod": "groupdto",
+                "targetwid": createcurrency,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, createcurrency to parentactions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // add editcurrency to parentactions
+        function(cb) {
+            var config = {
+                "currentwid": parentactions,
+                "currentwidmethod": "groupdto",
+                "targetwid": editcurrency,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, editcurrency to parentactions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // add deletecurrency to parentactions
+        function(cb) {
+            var config = {
+                "currentwid": parentactions,
+                "currentwidmethod": "groupdto",
+                "targetwid": deletecurrency,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, deletecurrency to parentactions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // add addusertogroup to parentactions
+        function(cb) {
+            var config = {
+                "currentwid": parentactions,
+                "currentwidmethod": "groupdto",
+                "targetwid": addusertogroup,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, addusertogroup to parentactions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // add addpermissions to parentactions
+        function(cb) {
+            var config = {
+                "currentwid": parentactions,
+                "currentwidmethod": "groupdto",
+                "targetwid": addpermissions,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, addpermissions to parentactions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // add createoffer to teacheractions
+        function(cb) {
+            var config = {
+                "currentwid": teacheractions,
+                "currentwidmethod": "groupdto",
+                "targetwid": createoffer,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, createoffer to teacheractions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // add editoffer to teacheractions
+        function(cb) {
+            var config = {
+                "currentwid": teacheractions,
+                "currentwidmethod": "groupdto",
+                "targetwid": editoffer,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, editoffer to teacheractions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // add deleteoffer to teacheractions
+        function(cb) {
+            var config = {
+                "currentwid": teacheractions,
+                "currentwidmethod": "groupdto",
+                "targetwid": deleteoffer,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, deleteoffer to teacheractions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // add executeoffer to teacheractions
+        function(cb) {
+            var config = {
+                "currentwid": teacheractions,
+                "currentwidmethod": "groupdto",
+                "targetwid": executeoffer,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, executeoffer to teacheractions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // add getcurrency to kidactions
+        function(cb) {
+            var config = {
+                "currentwid": kidactions,
+                "currentwidmethod": "groupdto",
+                "targetwid": getcurrency,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, getcurrency to kidactions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // add getoffer to kidactions
+        function(cb) {
+            var config = {
+                "currentwid": kidactions,
+                "currentwidmethod": "groupdto",
+                "targetwid": getoffer,
+                "targetwidmethod": "actiondto",
+                "linktype": "manytomany"
+            };
+            // attach actiondto to groupdto
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('attach actiondto to groupdto, getoffer to kidactions   -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // Add Groups to Groups: Create Action Group Hierarchy  
+        // kidactions       teacheractions
+        // teacheractions   parentactions
+
+
+
+
+
+        // Add kidactions to teacheractions
+        function(cb) {
+            var config = {
+                "currentwid": kidactions,
+                "currentwidmethod": "groupdto",
+                "targetwid": teacheractions,
+                "targetwidmethod": "groupdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('Add Groups to Groups:   -- kidactions to teacheractions group -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // Add teacheractions to parentactions
+        function(cb) {
+            var config = {
+                "currentwid": teacheractions,
+                "currentwidmethod": "groupdto",
+                "targetwid": parentactions,
+                "targetwidmethod": "groupdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                proxyprinttodiv('Add Groups to Groups:   -- teacheractions to parentactions group -- ', res, 39);
+
+                cb(err);
+            })
+        },
+
+        // Enter Permissions:
+
+        // DRI  {  kidactions, kidgroup }
+        // add group create to actiongroup and usergroup
+        function(cb) {
+            addpermission({
+                "permission.userwid": driuser,
+                "onfailwid": "",
+                "permission.level": 99, // TODO :: REMOVE HARDCODING
+                "description": "DRI {  kidactions, kidgroup }"
+            }, function(err, resp) {
+                proxyprinttodiv('Function addpermission done --    for  kidpermission -- ', resp, 39);
+                kidpermission = resp.wid;
+                cb(err);
+            });
+        },
+        // attach kidactions group to permissiondto
+        function(cb) {
+            var config = {
+                "currentwid": kidpermission,
+                "currentwidmethod": "permissiondto",
+                "targetwid": kidactions,
+                "targetwidmethod": "groupdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                cb(err);
+            })
+        },
+        // attach kidgroup group to permissiondto
+        function(cb) {
+            var config = {
+                "currentwid": kidpermission,
+                "currentwidmethod": "permissiondto",
+                "targetwid": kidgroup,
+                "targetwidmethod": "groupdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                cb(err);
+            })
+        },
+
+        // DRI  {  teacheractions, teachergroup }
+        // add group create to actiongroup and usergroup
+        function(cb) {
+            addpermission({
+                "permission.userwid": driuser,
+                "onfailwid": "",
+                "permission.level": 99, // TODO :: REMOVE HARDCODING
+                "description": "DRI {  teacheractions, teachergroup }"
+            }, function(err, resp) {
+                proxyprinttodiv('Function addpermission done --    for  teacherpermission -- ', resp, 39);
+                teacherpermission = resp.wid;
+                cb(err);
+            });
+        },
+        // attach teacheractions group to permissiondto
+        function(cb) {
+            var config = {
+                "currentwid": teacherpermission,
+                "currentwidmethod": "permissiondto",
+                "targetwid": teacheractions,
+                "targetwidmethod": "groupdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                cb(err);
+            })
+        },
+        // attach teachergroup group to permissiondto
+        function(cb) {
+            var config = {
+                "currentwid": teacherpermission,
+                "currentwidmethod": "permissiondto",
+                "targetwid": teachergroup,
+                "targetwidmethod": "groupdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                cb(err);
+            })
+        },
+
+        // DRI  {  parentactions, parentgroup }
+        // add group create to actiongroup and usergroup
+        function(cb) {
+            addpermission({
+                "permission.userwid": driuser,
+                "onfailwid": "",
+                "permission.level": 99, // TODO :: REMOVE HARDCODING
+                "description": "DRI {  parentactions, parentgroup }"
+            }, function(err, resp) {
+                proxyprinttodiv('Function addpermission done --    for  parentpermission -- ', resp, 39);
+                parentpermission = resp.wid;
+                cb(err);
+            });
+        },
+        // attach parentactions group to permissiondto
+        function(cb) {
+            var config = {
+                "currentwid": parentpermission,
+                "currentwidmethod": "permissiondto",
+                "targetwid": parentactions,
+                "targetwidmethod": "groupdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                cb(err);
+            })
+        },
+        // attach parentgroup group to permissiondto
+        function(cb) {
+            var config = {
+                "currentwid": parentpermission,
+                "currentwidmethod": "permissiondto",
+                "targetwid": parentgroup,
+                "targetwidmethod": "groupdto",
+                "linktype": "manytomany"
+            };
+            addtargetwidtocurrentwid(config, function(err, res) {
+                cb(err);
+            })
+        }
+    ], function(err, resp) {
+        // final callback
+        proxyprinttodiv('Function ex1sec done --  response  -- ', resp, 39);
+        callback(err, resp);
+    });
+
+};
+*/

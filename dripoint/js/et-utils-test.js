@@ -19,6 +19,17 @@ function run_daily_tests(params, callback)
 
 }
 
+function run_test_daily_tests(params, callback)
+{
+	var filter = {'category':'test-daily'};
+	console.log('sending param {"category":"test-daily"} to run_filtered_functions()');
+	run_filtered_functions(filter, function (err, res) {
+			console.log('end run_test_daily_tests');
+			callback(err, res);
+		});
+
+}
+
 function run_adhoc_tests(params, callback)
 {
 	var filter = {'subcategory':'adhoc'};
@@ -139,7 +150,7 @@ function run_filtered_functions(params, callback)
                         (   {},                     // parameters
                             function (err, result)  // callback
                             {
-                                cbMap(result)
+                                cbMap(err,result)
                             }                       
                         )    
                     } else {

@@ -109,7 +109,7 @@ function config123() {
     var configuration = {};   
     // what envrioment and what defaults should be used
     configuration.environment = 'local';
-    configuration.syncrule = 'sync_local';
+    configuration.syncrule = 'sync_local_server';
     configuration.collection = 'dricollection';
     configuration.db = 'data';
     configuration.datastore = 'localstorage';

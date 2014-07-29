@@ -5,7 +5,7 @@
     exports.addwidmaster = addwidmaster = function addwidmaster(object, callback) {
         var inbound_parameters_102 = JSON.parse(JSON.stringify(arguments));
         object = ConvertFromDOTdri(object);
-        // proxyprinttodiv("addwidmaster before", object, 99);
+        proxyprinttodiv("addwidmaster before", object, 17);
 
         var _object = object;
         var command = object.command;
@@ -24,8 +24,8 @@
             } else {
                 _object = res.obj;
                 _dto_object = res.dtoobj;
-                // proxyprinttodiv("addwidmaster after clean obj", _object, 99, true,true);
-                // proxyprinttodiv("addwidmaster after clean dto", _dto_object, 99,true, true);
+                proxyprinttodiv("addwidmaster after clean obj", _object, 17, true,true);
+                proxyprinttodiv("addwidmaster after clean dto", _dto_object, 17,true, true);
                 addwidobject(_object, _dto_object, null, null, null, command, function (err, res) {
                     // If error, bounce out
                     proxyprinttodiv("addwidmaster after addwidobject res", res, 17);
@@ -40,44 +40,13 @@
         });
     };
 
-    // exports.addwidmaster = addwidmaster = function addwidmaster(object, callback) {
-    //     var inbound_parameters = {};
-    //     inbound_parameters = JSON.parse(JSON.stringify(arguments));
-    //     var _command = {};
-    //     // Test for lowering parameters
-    //     tolowerparameters(object, {
-    //                                 "command":"",
-
-    //                                 }, false, _object, _command);
-
-
-    //     console.log('&&& _object\n' + JSON.stringify(_object, "-", 4));
-    //     console.log('&&& _command\n' + JSON.stringify(_command, "-", 4));
-
-    //     var _object = ConvertFromDOTdri(object);
-
-    //     var _dto_object;
-
-    //     var command = object.command;
-    //     delete object.command;
-
-    //     proxyprinttodiv("addwidmaster before clean", _object, 17);
-
-    //     cleanadd (_object, _dto_object, command, function (err, res) {
-    //         _object = res.obj;
-    //         _dto_object = res.dtoobj;
-
-    //         proxyprinttodiv("addwidmaster after clean object", _object, 17);
-    //         proxyprinttodiv("addwidmaster after clean", _dto_object, 17);
-
-    //         addwidobject(_object, _dto_object, command, function (err, res) {
-    //             callback(err, res);
-    //         });
-    //     });
-    // }
-
-
     exports.cleanadd = cleanadd = function cleanadd(object, dtoobject, command, callback) {
+<<<<<<< HEAD
+        // var tempflag
+        // if (object.sounddto && object.sounddto.note==="A flat") {tempflag=true}
+        // if (tempflag) {debuglevel=38}
+        proxyprinttodiv("cleanadd object", object, 93);
+=======
         var inbound_parameters = {};
 
         var tempflag
@@ -85,85 +54,110 @@
         if (tempflag) {debuglevel=17;}
 
         proxyprinttodiv("cleanadd object", object, 17);
+>>>>>>> FETCH_HEAD
         //if (object.wid==="wid1") {debuglevel=38;}
+        var dtotype = command.dtotype;
+        var output = {};
+        delete command.dtotype;
         getdtoobject(object, command, function (err, res) {
-            proxyprinttodiv("cleanadd object after getdtoobject res", res, 17);
+            if (dtotype) {command.dtotype = dtotype}
+            proxyprinttodiv("cleanadd object after getdtoobject res", res, 93);
+            //if (tempflag) {tempflag=false; debuglevel=0}
 
-            if (err && Object.keys(err).length > 0) {
+            if (err && Object.keys(err).length > 0) 
+            {
                 callback(err, res);
-            } else {
+            } 
+            else 
+            {
                 dtoobject = res;
+                // output.obj = object;
+                // output.dtoobj = dtoobject;
                 proxyprinttodiv("cleanadd getdtoobject object-------", object, 17);
+                //dto_to_get = dtoobject['metadata']['method'];
 
-                var dto_to_get;
-                var big_dto = {};
-                var result_obj = {};
-                var output = {};
-
-                if (!command) { command = {deepfilter:{convert:false}}; }
-                else if (!command.deepfilter) { command.deepfilter = {convert:false}; }
-                else if (!command.deepfilter.convert) { command.deepfilter.convert = false; }
-
-                output.obj = object;
-                output.dtoobj = dtoobject;
-                dto_to_get = dtoobject['metadata']['method'];
-
-               if (dto_to_get !== "string") {
+                //if (dto_to_get !== "string") {
+                if (dtotype) 
+                {
                     proxyprinttodiv("cleanadd dto_to_get", dto_to_get, 17);
 
                     var executeobject = {
                         "executethis": "getwidmaster",
-                        "wid": dto_to_get,
+                        "wid": dtotype,
                         "command.notfoundok": true,
                         "command.getwidmaster.execute": "ConvertFromDOTdri",
                         "command.getwidmaster.convertmethod": "dto",
                         "command.executetype":"series"
                     };
-
-                    proxyprinttodiv("cleanadd executeobject", executeobject, 17, true);
-                   
                     var env = new DriEnvironment(command.environment);                   
                     env.execute(executeobject, function (err, res) {
                         if (err && err.errorname === "failnotfound") { err=null; res={}; }
-
-                        if (err && Object.keys(err).length > 0) {
+                        if (err && Object.keys(err).length > 0) 
+                        {
                             callback(err, res);
-                        } else {
+                        } 
+                        else 
+                        {
                             proxyprinttodiv("cleanadd after execute", res, 17);
-
-                            big_dto = res;
-                            result_obj = insertbydtotype(object, big_dto, {}, command); // this fn in et-get
+                            var big_dto = res;
+                            var result_obj = insertbydtotype(object, big_dto, {}, command); // this fn in et-get
                             
                             proxyprinttodiv("cleanadd after insertbydtotype", result_obj, 17);
 
+                            if (!command) 
+                            {
+                                command = {deepfilter:
+                                                {convert:false}
+                                            }; 
+                            }
+                            else if (!command.deepfilter) 
+                            { 
+                                command.deepfilter = {convert:false}; 
+                            }
+                            else if (!command.deepfilter.convert) 
+                            { 
+                                command.deepfilter.convert = false; 
+                            }
+
                             deepfilter(result_obj, dtoobject, command, function (err, result_obj) {
-                                // If error, bounce out
-                                if (err && Object.keys(err).length > 0) {
+                                if (err && Object.keys(err).length > 0) 
+                                {
                                     callback(err, result_obj);
-                                } else {
+                                } 
+                                else 
+                                {
                                     output.obj = result_obj;
                                     output.dtoobj = dtoobject;
                                     proxyprinttodiv("cleanadd getdtoobject res------- if ", dtoobject, 17);
-
-                                    if (tempflag) {tempflag=false; debuglevel=0}
-
-
                                     callback(null, output);
                                 }
                             });
                         } // end else
                     });// end execute
-                } else { // if ==string
+                } 
+                else 
+                { // if !dtotype
                     proxyprinttodiv("cleanadd command", command, 17);
                     proxyprinttodiv("cleanadd getdtoobject object------- else", object, 17);
                     proxyprinttodiv("cleanadd getdtoobject dtoobject------- else", dtoobject, 17);
+                    if (!command) 
+                    {
+                        command = {deepfilter:
+                                        {convert:false}
+                                    }; 
+                    }
+                    else if (!command.deepfilter) 
+                    { 
+                        command.deepfilter = {convert:false}; 
+                    }
+                    else if (!command.deepfilter.convert) 
+                    { 
+                        command.deepfilter.convert = false; 
+                    }
                     deepfilter(object, dtoobject, command, function (err, result_obj) {
                         proxyprinttodiv("cleanadd getdtoobject result_obj------- else", result_obj, 17);
                         output.obj = result_obj;
                         output.dtoobj = dtoobject;
-
-                        if (tempflag) {tempflag=false; debuglevel=0}
-
                         callback(null, output);
                     });
                 } //  end if (dto_to_get !== "string")

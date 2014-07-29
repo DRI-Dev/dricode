@@ -1,7 +1,128 @@
 
 var widtests = widtests || {};
 
+exports.testupdatemm1 =  widtests.testupdatemm1 = testupdatemm1 = function testupdatemm1(executeobject, callback) 
+    {
+	  // if (!executeobject.command) {
+		 //  executeobject.command={};
+		 //  executeobject.command.environment={};
+		 //  executeobject.command.environment.run={};
+	  // };
+        proxyprinttodiv("testupdatemm1 executeobject", executeobject, 99, true, true);
+		
+		//executeobject.command.xrun = [{
+        executeobject = {"command.xrun":[{
+                "executethis": "addwidmaster",
+                "wid": "nest_1",
+                "target_prop": "target_value",
+                "metadata.method": "test_method",
+                "metadata.namespace.category": "test_category",
+                "metadata.namespace.subcategory": "test_sub_category",
+                "metadata.namespace.subdto": "test_subdto",
+                "html": "<h1>TEST HTML</h1>",
+                "command": {
+                    "executetype": "series",
+                    "processparameterfn": "execute_nothing",
+                    "environment": {
+                        "run": {
+                            "executelevel": 1
+                        }
+                    }
+                }
+            }]
+		};
+			
+      // var etEnvironment = new DriEnvironment(executeobject.command.environment)
+      // etEnvironment.execute(executeobject, function (error_obj, result_obj)
+        execute(executeobject, function (error_obj, result_obj)
+		{
+            proxyprinttodiv("testupdatemm1 res ", result_obj, 99, true, true);
+            callback(error_obj, result_obj);
+        });
+    }
 
+exports.testupdatemm2 =  widtests.testupdatemm2 = testupdatemm2 = function testupdatemm2(executeobject, callback) 
+    {
+      // if (!executeobject.command) {
+         //  executeobject.command={};
+         //  executeobject.command.environment={};
+         //  executeobject.command.environment.run={};
+      // };
+        proxyprinttodiv("testupdatemm1 executeobject", executeobject, 99, true, true);
+        
+        executeobject.command.xrun = [{
+        //executeobject = {"command.xrun":[{
+                "executethis": "addwidmaster",
+                "wid": "nest_1",
+                "target_prop": "target_value",
+                "metadata.method": "test_method",
+                "metadata.namespace.category": "test_category",
+                "metadata.namespace.subcategory": "test_sub_category",
+                "metadata.namespace.subdto": "test_subdto",
+                "html": "<h1>TEST HTML</h1>",
+                "command": {
+                    "executetype": "series",
+                    "processparameterfn": "execute_nothing",
+                    "environment": {
+                        "run": {
+                            "executelevel": 1
+                        }
+                    }
+                }
+            }]
+        //};
+            
+      // var etEnvironment = new DriEnvironment(executeobject.command.environment)
+      // etEnvironment.execute(executeobject, function (error_obj, result_obj)
+        execute(executeobject, function (error_obj, result_obj)
+        {
+            proxyprinttodiv("testupdatemm1 res ", result_obj, 99, true, true);
+            callback(error_obj, result_obj);
+        });
+    };
+	
+
+exports.testupdatemm3 =  widtests.testupdatemm3 = testupdatemm3 = function testupdatemm3(executeobject, callback) 
+    {
+      if (!executeobject.command) {
+          executeobject.command={};
+          executeobject.command.environment={};
+          executeobject.command.environment.run={};
+      };
+        proxyprinttodiv("testupdatemm1 executeobject", executeobject, 99, true, true);
+        
+        executeobject.command.xrun = [{
+        //executeobject = {"command.xrun":[{
+                "executethis": "addwidmaster",
+                "wid": "nest_1",
+                "target_prop": "target_value",
+                "metadata.method": "test_method",
+                "metadata.namespace.category": "test_category",
+                "metadata.namespace.subcategory": "test_sub_category",
+                "metadata.namespace.subdto": "test_subdto",
+                "html": "<h1>TEST HTML</h1>",
+                "command": {
+                    "executetype": "series",
+                    "processparameterfn": "execute_nothing",
+                    "environment": {
+                        "run": {
+                            "executelevel": 1
+                        }
+                    }
+                }
+            }]
+        //};
+            
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj)
+        //execute(executeobject, function (error_obj, result_obj)
+        {
+            proxyprinttodiv("testupdatemm1 res ", result_obj, 99, true, true);
+            callback(error_obj, result_obj);
+        });
+    };
+    
+	
 function manytoonesetupdto(inherit, dtotype, callback) {
     if (Object.keys(inherit).length === 0) {
         inherit = {
@@ -563,9 +684,15 @@ function addauthorrecord(parentparmkey, c, childparmkey, d, relativepreamble, re
     });
 }
 
-exports.testupdatewid0 = testupdatewid0 = function testupdatewid0(params, callback) {
-    execute([{
-            "executethis": "addwidmaster",
+exports.testupdatewid0 = testupdatewid0 = function testupdatewid0(executeobject, callback) {
+
+	  if (!executeobject.command) {
+		  executeobject.command={};
+		  executeobject.command.environment={};
+		  executeobject.command.environment.run={};
+	  }	
+    executeobject.command.xrun = [{
+            "executethis": "updatewid",
             "wid": "authordto",
             "metadata.method": "authordto",
             "name": "string",
@@ -573,36 +700,42 @@ exports.testupdatewid0 = testupdatewid0 = function testupdatewid0(params, callba
             "eyecolor": "string",
             "haircolor": "string"
         }, {
-            "executethis": "addwidmaster",
+            "executethis": "updatewid",
             "wid": "author1",
             "metadata.method": "authordto",
             "name": "Alex",
             "age": "44"
         }, {
-            "executethis": "addwidmaster",
+            "executethis": "updatewid",
             "wid": "author1",
             "eyecolor": "blue",
             "haircolor": "blonde",
             "metadata.method": "authordto"
         }, {
-            "executethis": "getwidmaster",
+            "executethis": "getwid",
             "wid": "author1"
-        }],
-        function (err, res) {
-            proxyprinttodiv('Full results: ', res, 99);
-            proxyprinttodiv('The author1 record: ', res[3], 99);
-
-            var result = logverify("testinheritdefault0_result", res[3], [{
-                "wid": "author1",
-                "metadata.method": "authordto",
-                "name": "Alex",
-                "age": "44",
-                "eyecolor": "blue",
-                "haircolor": "blonde"
-            }]);
-
-            callback(err, result);
-        });
+        }];
+	
+	var expectedresult = {
+							"wid": "author1",
+							"metadata": {
+								"date":{"exception":["created","changed","unchanged","updated"]},
+								"method": "authordto"
+							},
+							"name": "Alex",
+							"age": "44",
+							"eyecolor": "blue",
+							"haircolor": "blonde"
+						};
+						
+	var etEnvironment = new DriEnvironment(executeobject.command.environment);
+	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+	  {                       
+			proxyprinttodiv('result', result_obj[3], 99, true);
+			proxyprinttodiv('expected result', expectedresult, 99, true);
+			var result = logverify('testinheritdefault0_result', result_obj[3], expectedresult);
+			callback(null, result);
+	  });
 };
 
 
@@ -7239,7 +7372,7 @@ exports.ettestag2s = widtests.ettestag2s = ettestag2s = function ettestag2s(para
 
 widtests.ettestag2s.category = "daily";
 widtests.ettestag2s.subcategory = "push";
-widtests.ettestag2s.js = exports.ettestag1;
+widtests.ettestag2s.js = exports.ettestag2s;
 widtests.ettestag2s.description = "this does a test";
 
 
@@ -7358,7 +7491,7 @@ exports.ettestag3s = widtests.ettestag3s = ettestag3s = function ettestag3s(para
 
 widtests.ettestag3s.category = "daily";
 widtests.ettestag3s.subcategory = "push";
-widtests.ettestag3s.js = exports.ettestag1;
+widtests.ettestag3s.js = exports.ettestag3s;
 widtests.ettestag3s.description = "this does a test";
 
 // This test does not add the data records correctly
@@ -9227,8 +9360,88 @@ exports.testdltwid2 = testdltwid2 = function testdltwid2(params, callback) {
     });
 }
 
-
+// uses addwidmaster
 exports.simpleauthorbooktest = widtests.simpleauthorbooktest = simpleauthorbooktest = function simpleauthorbooktest(executeobject, callback) {
+    
+	  if (!executeobject.command) {
+		  executeobject.command={};
+		  executeobject.command.environment={};
+		  executeobject.command.environment.run={};
+	  }	
+    executeobject.command.xrun = [{
+        "executethis": "addwidmaster",
+        "metadata.method": "authordto",
+        "wid": "authordto",
+        "name": "string",
+        "age": "string",
+        "metdata.bookdto.type": "onetomany"
+    }, {
+        "executethis": "addwidmaster",
+        "metadata.method": "bookdto",
+        "wid": "bookdto",
+        "title": "string",
+        "pages": "string"
+    }, {
+        "executethis": "addwidmaster",
+        "metadata.method": "relationshipdto",
+        "wid": "relbooktoauthor",
+        "primarywid": "authordto",
+		"primarymethod": "authordto",
+        "secondarywid": "bookdto",
+		"secondarymethod": "bookdto",
+		"linktype": "onetomany",
+        "relationshiptype": "attributes"
+    }, {
+        "executethis": "addwidmaster",
+        "metadata.method": "authordto",
+        "wid": "elizabeth_heart",
+        "name": "Elizabeth Heart",
+        "age": "50",
+		"bookdto.wid": "book1",
+		"bookdto.title": "Michigan Haunted Houses",
+		"bookdto.pages": "500"
+    }, {
+		"executethis": "getwidmaster",
+		"wid": "elizabeth_heart",
+		"metadata.method": "authordto",
+         "command": {
+             "getwidmaster": {
+                 "execute": "ConvertToDOTdri"
+             }
+         }
+	}];
+	
+	var expectedresult = {
+						"wid":"elizabeth_heart",
+						"metadata.date":{"exception": ["updated"]},
+						"metadata.method":"authordto",
+						"metadata.bookdto.type":"onetomany",
+						"name":"Elizabeth Heart",
+						"age":"50",
+						"bookdto.0.wid":"book1",
+						"bookdto.0.metadata.date":{"exception": ["updated"]},
+						"bookdto.0.metadata.method":"bookdto",
+						"bookdto.0.metadata.parentwid.elizabeth_heart":"authordto",
+						"bookdto.0.title":"Michigan Haunted Houses",
+						"bookdto.0.pages":"500"
+						};
+	
+	var etEnvironment = new DriEnvironment(executeobject.command.environment);
+	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+	  {                       
+			proxyprinttodiv('result', result_obj[4], 99);
+			var result = logverify('simpleauthorbooktest_result', result_obj[4], expectedresult);
+			callback(null, result);
+	  });
+}
+widtests.simpleauthorbooktest.category = "daily";
+widtests.simpleauthorbooktest.subcategory = "push";
+widtests.simpleauthorbooktest.js = exports.simpleauthorbooktest;
+widtests.simpleauthorbooktest.description = "this does a test";
+
+
+
+exports.simpleauthorbooktest2 = widtests.simpleauthorbooktest2 = simpleauthorbooktest2 = function simpleauthorbooktest2(executeobject, callback) {
     
 	  if (!executeobject.command) {
 		  executeobject.command={};
@@ -9256,6 +9469,7 @@ exports.simpleauthorbooktest = widtests.simpleauthorbooktest = simpleauthorbookt
 		"primarymethod": "authordto",
         "secondarywid": "bookdto",
 		"secondarymethod": "bookdto",
+		"linktype": "onetomany",
         "relationshiptype": "attributes"
     }, {
         "executethis": "updatewid",
@@ -9263,21 +9477,47 @@ exports.simpleauthorbooktest = widtests.simpleauthorbooktest = simpleauthorbookt
         "wid": "elizabeth_heart",
         "name": "Elizabeth Heart",
         "age": "50",
+		"bookdto.wid": "book1",
 		"bookdto.title": "Michigan Haunted Houses",
 		"bookdto.pages": "500"
-    }];
+    }, {
+		"executethis": "getwidmaster",
+		"wid": "elizabeth_heart",
+		"metadata.method": "authordto",
+         "command": {
+             "getwidmaster": {
+                 "execute": "ConvertToDOTdri"
+             }
+         }
+	}];
+	
+	var expectedresult = {
+						"wid":"elizabeth_heart",
+						"metadata.date":{"exception": ["updated"]},
+						"metadata.method":"authordto",
+						"metadata.bookdto.type":"onetomany",
+						"name":"Elizabeth Heart",
+						"age":"50",
+						"bookdto.0.wid":"book1",
+						"bookdto.0.metadata.date":{"exception": ["updated"]},
+						"bookdto.0.metadata.method":"bookdto",
+						"bookdto.0.metadata.parentwid.elizabeth_heart":"authordto",
+						"bookdto.0.title":"Michigan Haunted Houses",
+						"bookdto.0.pages":"500"
+						};
 	
 	var etEnvironment = new DriEnvironment(executeobject.command.environment);
 	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 	  {                       
-			proxyprinttodiv('result', result_obj, 99);
-			callback(null, result_obj)
+			proxyprinttodiv('result', result_obj[4], 99);
+			var result = logverify('simpleauthorbooktest_result', result_obj[4], expectedresult);
+			callback(null, result);
 	  });
 }
-widtests.simpleauthorbooktest.category = "daily";
-widtests.simpleauthorbooktest.subcategory = "push";
-widtests.simpleauthorbooktest.js = exports.simpleauthorbooktest;
-widtests.simpleauthorbooktest.description = "this does a test";
+widtests.simpleauthorbooktest2.category = "daily";
+widtests.simpleauthorbooktest2.subcategory = "push";
+widtests.simpleauthorbooktest2.js = exports.simpleauthorbooktest2;
+widtests.simpleauthorbooktest2.description = "this does a test";
 
 
 exports.testgetwid1 = widtests.testgetwid1 = testgetwid1 = function testgetwid1(executeobject, callback) {
@@ -9297,11 +9537,22 @@ exports.testgetwid1 = widtests.testgetwid1 = testgetwid1 = function testgetwid1(
         "wid": "testwid1"
     }];
 	
+	var expectedresult = {
+							"age":"11",
+							"wid":"testwid1",
+							"metadata":{
+										"method":"defaultdto",
+										"date":{"exception":["created","changed","unchanged","updated"]}
+										}
+						};
+						
 	var etEnvironment = new DriEnvironment(executeobject.command.environment);
 	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 	  {                       
-			proxyprinttodiv('result', result_obj, 99);
-			callback(null, result_obj)
+			proxyprinttodiv('result', result_obj[1], 99, true);
+			proxyprinttodiv('expected result', expectedresult, 99, true);
+			var result = logverify('testgetwid1_result', result_obj[1], expectedresult);
+			callback(null, result);
 	  });
 }
 widtests.testgetwid1.category = "daily";
