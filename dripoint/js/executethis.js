@@ -1006,20 +1006,17 @@
                                     }
 
 
+
                                     if (command.result)
                                         {   // if the work has already been done then do not do it again
-                                            if (command.result === "queryresult" &&
-                                            resultparameters.queryresult)
-                                            // maybe add Object.keys(resultparameters).length == 1)
+                                            if (resultparameters.queryresult 
+                                                && Object.keys(resultparameters).length == 1)
                                             {
-                                            // nothing to do
+                                                resultparameters = resultparameters.queryresult;
                                             }
-                                        else
-                                            {
                                             var json = {};
                                             json[command.result] = resultparameters;
                                             resultparameters = json;
-                                            }
                                         }
 
                                     if (command.convertmethod === "todot")
