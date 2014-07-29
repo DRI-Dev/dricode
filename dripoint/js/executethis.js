@@ -863,8 +863,9 @@
     // main execute function
     window.execute_function = function execute_function(incomingparams, callback) {
         //if (!incomingparams.command) { incomingparams.command = {}; }
-        //--proxyprinttodiv('>>>> execute incomingparams ', incomingparams, 11, true);
+        proxyprinttodiv('>>>> execute incomingparams ', incomingparams, 11, true, true);
         // see if we need to recurse ... i.e. xrun or resulttable
+        incomingparams = converttojson(incomingparams);
         if (incomingparams.command.xrun
             || (incomingparams.command.resulttable
                 && incomingparams.command.executetype === "runfirstonewaterfall"))
@@ -873,9 +874,7 @@
         } 
         else // now check if targetfn exists
         {
-            incomingparams = converttojson(incomingparams);
-
-            if (!incomingparams.executethis) { 
+              if (!incomingparams.executethis) { 
                 callback(null, incomingparams); 
             } else {
                 var targetfn = window[incomingparams.executethis];
@@ -1005,10 +1004,6 @@
                                         // load a copy of the what was inherited
                                         resultparameters.command.inherit.data = copyOfInheritData;
                                     }
-
-
-
-
 
 
                                     if (command.result)

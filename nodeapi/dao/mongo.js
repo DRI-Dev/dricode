@@ -196,26 +196,20 @@ exports.mget = mget = function mget(objToFind, command, callback) {
 //                 recordtoadd = incopy;
 //             }
 
-//             // update rules: updatewid will unlock or lock record based on command.lock, 
-//             // it will fail if current record is already locked (and we are not unlocking)
-//             // updatewid also retreives current record in database
-//             //
-//             // do NOT update if:
-//             //    -currentrecord locked && command.lock !==false
-//             //    -OR  getwid && command.lock missing
-//             //    -current record is locked || !updatewid
-//             // update if:
-//             //    -current record is unlocked & updatewid 
-//             //    -OR command.lock=false 
+                // var currentlock = false;
+                // if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock)
+                // {
+                //     currentlock = true;
+                // }
 
-//             var currentlock = false;
-//             if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock)
-//             {
-//                 currentlock = true;
-//             }
+                // var shouldupdate = false;
+                // if (!err && 
+                //     ((command.getwidflag && command.hasOwnProperty("lock")) || (!command.getwidflag)))
+                // {
+                //     shouldupdate = true;
+                // }
 
-//             var err = null;
-//             if (command.lock === false || !currentlock)
+                // if (!currentlock && shouldupdate) 
 //             {   
 //                 if (!currentrecord) {currentrecord={};}
 //                 var convertedrecord = converttodriformat(recordtoadd, command); // get it ready to store
@@ -241,10 +235,10 @@ exports.mget = mget = function mget(objToFind, command, callback) {
 //                     });
 //                 }
 //             }
-//             else // if not okaytoupdate
-//             {
-//                 err = {"errorname":"locked"};
-//             }
+
+//                if (command.getwidflag === true && !found) {err = {"errorname": "notfound"};}
+//                if (currentlock && shouldupdate){err = {"errorname":"locked"};}
+
 //             callback(err, recordtoadd);
 //         }) 
 // };

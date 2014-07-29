@@ -43,8 +43,9 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
     delete incopy.command;
 
     // if record is not locked then okatoupdate = true, else false
-    if(!incopy.metadata){incopy.metadata={};}	
-    if (!incopy.metadata.systemdto) {incopy.metadata.systemdto={}}
+    if(!incopy.metadata){incopy.metadata={};}  
+    if (!incopy.metadata.systemdto && command.environment && 
+        (command.environment.userid || command.environment.loggedinuserid)) {incopy.metadata.systemdto={}}
 	if (!command.environment) {command.environment={}}
     if (command.environment.userid && !incopy.metadata.systemdto.userid) 
         {incopy.metadata.systemdto.userid=command.environment.userid}
@@ -52,7 +53,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
         {incopy.metadata.systemdto.loggedinuserid=command.environment.loggedinuserid}
 
     if(incopy && command && command.namespace)
-    {
+    { 
         // add namespace key:value pairs from command.namespace to metadata.namespace
 		if (!incopy.metadata.namespace) {incopy.metadata.namespace = {};}
 		for (var key in command.namespace) 
@@ -60,6 +61,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
 			incopy.metadata.namespace[key] = command.namespace[key];
 		}
     }
+    if (Object.keys(incopy.metadata).length === 0) {delete incopy.metadata}
     proxyprinttodiv('Function datastore incopy', incopy, 12);
     proxyprinttodiv('Function datastore command', command, 12,99, true);
     proxyprinttodiv('Function updatewid command.getwidflag', command.getwidflag, 12);
@@ -105,7 +107,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                 var currentrecord = keydatabase[incopy.wid];    // search for wid in current keydatabase
                 var recordtoadd = {};                           // data for the new record to be added
 
-                proxyprinttodiv('Function updatewid currentrecord', currentrecord, 12);
+                proxyprinttodiv('Function updatewid currentrecord I', currentrecord, 12);
 
                 // fix current wid as necessary
                 if (currentrecord) 
@@ -145,20 +147,33 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                 //    -current record is unlocked & updatewid 
                 //    -OR command.lock=false 
 
-                proxyprinttodiv('Function updatewid currentrecord', currentrecord, 12, true, true);
+                proxyprinttodiv('Function updatewid recordtoadd', recordtoadd, 12, true, true);
                 var currentlock = false;
                 if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock)
                 {
                     currentlock = true;
                 }
 
-                if (command.lock === false || !currentlock)
-                {   
+                proxyprinttodiv('Function updatewid not found err', err, 12, true, true);
+                proxyprinttodiv('Function datastore command', command, 12,99, true);
+                proxyprinttodiv('Function updatewid command.getwidflag', command.getwidflag, 12);
+                var shouldupdate = false;
+                if (!err && 
+                    ((command.getwidflag && command.hasOwnProperty("lock")) || (!command.getwidflag)))
+                {
+                    shouldupdate = true;
+                }
+
+                proxyprinttodiv('Function updatewid currentlock', currentlock, 12, true, true);
+                proxyprinttodiv('Function updatewid shouldupdate', shouldupdate, 12, true, true);
+                if (!currentlock && shouldupdate) 
+
+                {
                     if (!currentrecord) {currentrecord={};}
                     var convertedrecord = converttodriformat(recordtoadd, command); // get it ready to store
-                    proxyprinttodiv('Function updatewid convertedrecord', convertedrecord, 12);
+                    proxyprinttodiv('Function updatewid convertedrecord II', convertedrecord, 12);
                     extend(true, currentrecord, convertedrecord); // merge with existing record
-                    proxyprinttodiv('Function updatewid currentrecord', currentrecord, 12);
+                    proxyprinttodiv('Function updatewid currentrecord III', currentrecord, 12);
 
                     // delete code if empty
 
@@ -197,15 +212,12 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                     // the type of storage below is not needed
 //                    addToLocalStorage(command.databasetable + command.collection + incopy.wid, currentrecord);
 
-                    proxyprinttodiv('Function updatewid currentrecord', currentrecord, 12);
-                }
-                else // if not okaytoupdate
-                {
-                    err = {"errorname":"locked"};
+                    proxyprinttodiv('Function updatewid currentrecord IV', currentrecord, 12);
                 }
 
                 // if this was actually a getwid call and nothing found then err
                 if (command.getwidflag === true && !found) {err = {"errorname": "notfound"};}
+                if (currentlock && shouldupdate){err = {"errorname":"locked"};}
 
                 proxyprinttodiv('Function updatewid err', err, 12);
                 proxyprinttodiv('Function updatewid recordtoadd', recordtoadd, 12);

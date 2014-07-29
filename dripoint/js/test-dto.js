@@ -3,14 +3,15 @@ var widtests = widtests || {};
 
 exports.testupdatemm1 =  widtests.testupdatemm1 = testupdatemm1 = function testupdatemm1(executeobject, callback) 
     {
-	  if (!executeobject.command) {
-		  executeobject.command={};
-		  executeobject.command.environment={};
-		  executeobject.command.environment.run={};
-	  };
+	  // if (!executeobject.command) {
+		 //  executeobject.command={};
+		 //  executeobject.command.environment={};
+		 //  executeobject.command.environment.run={};
+	  // };
         proxyprinttodiv("testupdatemm1 executeobject", executeobject, 99, true, true);
 		
-		executeobject.command.xrun = [{
+		//executeobject.command.xrun = [{
+        executeobject = {"command.xrun":[{
                 "executethis": "addwidmaster",
                 "wid": "nest_1",
                 "target_prop": "target_value",
@@ -28,17 +29,99 @@ exports.testupdatemm1 =  widtests.testupdatemm1 = testupdatemm1 = function testu
                         }
                     }
                 }
-            }
-            ];
+            }]
+		};
 			
-      var etEnvironment = new DriEnvironment(executeobject.command.environment)
-      etEnvironment.execute(executeobject, function (error_obj, result_obj)
+      // var etEnvironment = new DriEnvironment(executeobject.command.environment)
+      // etEnvironment.execute(executeobject, function (error_obj, result_obj)
+        execute(executeobject, function (error_obj, result_obj)
 		{
             proxyprinttodiv("testupdatemm1 res ", result_obj, 99, true, true);
+            callback(error_obj, result_obj);
         });
     }
 
+exports.testupdatemm2 =  widtests.testupdatemm2 = testupdatemm2 = function testupdatemm2(executeobject, callback) 
+    {
+      // if (!executeobject.command) {
+         //  executeobject.command={};
+         //  executeobject.command.environment={};
+         //  executeobject.command.environment.run={};
+      // };
+        proxyprinttodiv("testupdatemm1 executeobject", executeobject, 99, true, true);
+        
+        executeobject.command.xrun = [{
+        //executeobject = {"command.xrun":[{
+                "executethis": "addwidmaster",
+                "wid": "nest_1",
+                "target_prop": "target_value",
+                "metadata.method": "test_method",
+                "metadata.namespace.category": "test_category",
+                "metadata.namespace.subcategory": "test_sub_category",
+                "metadata.namespace.subdto": "test_subdto",
+                "html": "<h1>TEST HTML</h1>",
+                "command": {
+                    "executetype": "series",
+                    "processparameterfn": "execute_nothing",
+                    "environment": {
+                        "run": {
+                            "executelevel": 1
+                        }
+                    }
+                }
+            }]
+        //};
+            
+      // var etEnvironment = new DriEnvironment(executeobject.command.environment)
+      // etEnvironment.execute(executeobject, function (error_obj, result_obj)
+        execute(executeobject, function (error_obj, result_obj)
+        {
+            proxyprinttodiv("testupdatemm1 res ", result_obj, 99, true, true);
+            callback(error_obj, result_obj);
+        });
+    };
 	
+
+exports.testupdatemm3 =  widtests.testupdatemm3 = testupdatemm3 = function testupdatemm3(executeobject, callback) 
+    {
+      if (!executeobject.command) {
+          executeobject.command={};
+          executeobject.command.environment={};
+          executeobject.command.environment.run={};
+      };
+        proxyprinttodiv("testupdatemm1 executeobject", executeobject, 99, true, true);
+        
+        executeobject.command.xrun = [{
+        //executeobject = {"command.xrun":[{
+                "executethis": "addwidmaster",
+                "wid": "nest_1",
+                "target_prop": "target_value",
+                "metadata.method": "test_method",
+                "metadata.namespace.category": "test_category",
+                "metadata.namespace.subcategory": "test_sub_category",
+                "metadata.namespace.subdto": "test_subdto",
+                "html": "<h1>TEST HTML</h1>",
+                "command": {
+                    "executetype": "series",
+                    "processparameterfn": "execute_nothing",
+                    "environment": {
+                        "run": {
+                            "executelevel": 1
+                        }
+                    }
+                }
+            }]
+        //};
+            
+      var etEnvironment = new DriEnvironment(executeobject.command.environment)
+      etEnvironment.execute(executeobject, function (error_obj, result_obj)
+        //execute(executeobject, function (error_obj, result_obj)
+        {
+            proxyprinttodiv("testupdatemm1 res ", result_obj, 99, true, true);
+            callback(error_obj, result_obj);
+        });
+    };
+    
 	
 function manytoonesetupdto(inherit, dtotype, callback) {
     if (Object.keys(inherit).length === 0) {
