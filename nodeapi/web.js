@@ -217,16 +217,17 @@ app.listen(process.env.PORT || serverconfig.SERVER_PORT);
         console.log('---- publishtest??-');
         console.log(JSON.stringify(parameters));
 
+        var dadata = parameters["command"];
         for (key in parameters)
         {
-            console.log("Key: " + key + " : " + parameters[key]);
+            console.log("Key: " + key + " : " + dadata[key]);
         }
         console.log('>-->>>');
         console.log('--- calling sendPostCall ---');
-        sendPostCall({"post_data":parameters}, function(err, result) {
-            console.log("call to sendPostCall has returned...");
-            }
-        );
+        //sendPostCall({"post_data":parameters}, function(err, result) {
+        //    console.log("call to sendPostCall has returned...");
+        //    }
+        //);
         sendsms({
             'to': '+12313133930',
             'body': 'This is the publishtest ' 
