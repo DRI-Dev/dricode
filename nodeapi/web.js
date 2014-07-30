@@ -218,7 +218,7 @@ app.listen(process.env.PORT || serverconfig.SERVER_PORT);
         console.log(JSON.stringify(parameters));
 
         var dadata = parameters["command"];
-        for (key in parameters)
+        for (key in dadata)
         {
             console.log("Key: " + key + " : " + dadata[key]);
         }
