@@ -274,21 +274,6 @@ sendpostcall = function sendpostcall(parameters, callback) {
     console.log("post_data --- veru emd of the file.");
 };
 
-// Get parameters from github, pass it on to publish test
-
-exports.publishtest = publishtest = function publishtest(parameters, callback) { 
-    // listToDo, eventname, callback) {
-    console.log('---- publishtest??-');
-    console.log(JSON.stringify(parameters));
-    console.log('>-->>>');
-    sendsms({
-        'to': '+12313133930',
-        'body': 'This is the publishtest ' 
-        }, 
-        callback
-    );
-    
-}
 
 
 //var startTime = new Date();
