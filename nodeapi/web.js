@@ -251,17 +251,26 @@ app.listen(process.env.PORT || serverconfig.SERVER_PORT);
         }
         console.log('>-->>>');
         console.log('--- calling sendPostCall ---');
+
+        getuptime(null, function(err, result) {
+            var passfail = "Unknown";
+            if (result.status) {
+                passfail = "Pass";
+            } else {
+                passfail = "Fail";
+            } 
+            sendsms({
+                'to': '+12313133930',
+                'body': 'publishtest - status: " + passfail + ', user: ' + pusher_name + 
+                    ", repo name: " + repo_name + ', ref: ' + ref  
+                }, 
+                callback
+            );
+        });
         //sendPostCall({"post_data":parameters}, function(err, result) {
         //    console.log("call to sendPostCall has returned...");
         //    }
         //);
-        sendsms({
-            'to': '+12313133930',
-            'body': 'This is the publishtest, user: ' + pusher_name + 
-                "repo name: " + repo_name + ', ref: ' + ref  
-            }, 
-            callback
-        );
         console.log('---- publishtest!!---');
 
     };
