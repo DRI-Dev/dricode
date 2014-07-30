@@ -217,7 +217,7 @@ app.listen(process.env.PORT || serverconfig.SERVER_PORT);
         console.log('---- publishtest??-');
         console.log(JSON.stringify(parameters));
 
-        for (key in paramters)
+        for (key in parameters)
         {
             console.log("Key: " + key + " : " + parameters[key]);
         }
