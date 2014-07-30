@@ -834,7 +834,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
                     //proxyprinttodiv('Function sc getting user for ac -- ', _accesstoken, 39);
                     getuserbyac(_accesstoken, function(err, userDto) {
                         if (userDto) {
-                            actorGroup = userDto.queryresult[0].wid;
+                            actorGroup = userDto[0].wid;
                             // get all groups from this user wid
                             getrelatedwids("", "groupdto", actorGroup, "userdto", {
                                 // "metadata.system.creator": _actorpretension
@@ -897,7 +897,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
                 var etEnvironment = new DriEnvironment(executeobject.command.environment);
                 etEnvironment.execute(executeobject, function(err, res) {
 
-                    var res1 = res.queryresult[0];
+                    var res1 = res[0];
                     actionwid = res1['wid'];
                     if (res1 && res1['metadata'] && res1['metadata']['system']) {
                         actionCreator = res1['metadata']['system']['creator'];
@@ -2283,9 +2283,9 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
         // Add teachergroup to kidgroup
         function(cb) {
             var config = {
-                "currentwid": kidgroup,
+                "currentwid": teachergroup,
                 "currentwidmethod": "groupdto",
-                "targetwid": teachergroup,
+                "targetwid": kidgroup,
                 "targetwidmethod": "groupdto",
                 "linktype": "manytomany"
             };
@@ -2299,9 +2299,9 @@ exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
         // Add teachergroup to parentgroup
         function(cb) {
             var config = {
-                "currentwid": teachergroup,
+                "currentwid": parentgroup,
                 "currentwidmethod": "groupdto",
-                "targetwid": parentgroup,
+                "targetwid": teachergroup,
                 "targetwidmethod": "groupdto",
                 "linktype": "manytomany"
             };
@@ -2926,11 +2926,109 @@ var johnnyconfig11={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency
         function(cb) {
             // perform the securitycheck for the getcurrency action, with organization user user ac
             sc(johnnyconfig11, function(err, resp) {
-                //proxyprinttodiv('Security check done 11 --  johnnyconfig11 -   response  -- ', resp, 39);
+                proxyprinttodiv('Security check done 11 --  johnnyconfig11 -   response  -- ', resp, 39);
 				johnny_result.getcurrency = resp.authstatus;
                 cb(err);
             });
         }	
+
+    ], function(err, resp) {
+        // final callback
+        proxyprinttodiv('Function ex1sectest done --  response  -- ', resp, 99);
+		
+		var expected_result = [sarah_expected,cindy_expected,johnny_expected];
+		var result = [sarah_result,cindy_result,johnny_result];
+		
+		proxyprinttodiv('Function ex1sectest expected_result -- ', expected_result, 99, true);
+        proxyprinttodiv('Function ex1sectest result -- ', result, 99, true);
+		
+		var final_obj = logverify('allowsec1tests_result',result, expected_result);
+        callback(err, final_obj);
+    });
+}
+
+
+// security check for the allowsec1 function. allowsec1 creates the security scheme and this tests it
+// 3 users are created, and permissions of those users are tested.
+exports.allowsec1tests2= allowsec1tests2 = function allowsec1tests2(params, callback) {
+
+    // Effective Permissions:   
+    // Johnny   getoffer
+
+    // Cindy    createoffer
+
+    // Sarah    createcurrency      
+
+	//debuglevel = 39;
+
+    // Sarah
+var sarahconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'createcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};		
+	
+    // Cindy
+var cindyconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'createoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};
+
+    // Johnny
+var johnnyconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'getoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};
+	
+	var sarah_expected = {
+						"createcurrency":"true",
+						};
+	var cindy_expected = {
+						"createoffer":"true",
+						};
+	var johnny_expected = {
+						"getoffer":"true",
+						};
+
+	var sarah_result = {};
+	var cindy_result = {};
+	var johnny_result = {};
+	
+
+	    async.series([
+
+        function(cb) {
+            // creates the allowances security scheme data. Creates users, actions, groups, and permissions.
+            allowsec1({}, function(err, resp) {
+                proxyprinttodiv('Data entered  -   response  -- ', resp, 39);
+                cb(err);
+            });
+
+        },
+        // check that Sarah can perform the createcurrency action
+        function(cb) {
+            // perform the securitycheck for the createcurrency action, with organization user user ac
+            sc(sarahconfig, function(err, resp) {
+                proxyprinttodiv('Security check done 1 --  sarahconfig -   response  -- ', resp, 39);
+				sarah_result[sarahconfig._action] = resp.authstatus;				
+                cb(err);
+            });
+        },
+
+		
+        // check that Cindy can perform the createoffer action
+        function(cb) {
+            // perform the securitycheck for the createoffer action, with organization user user ac
+            sc(cindyconfig, function(err, resp) {
+                proxyprinttodiv('Security check done 1 --  cindyconfig -   response  -- ', resp, 39);
+				cindy_result[cindyconfig._action] = resp.authstatus;				
+                cb(err);
+            });
+        },
+
+
+        // check that johnny can perform the getoffer action
+        function(cb) {
+            // perform the securitycheck for the getoffer action, with organization user user ac
+            sc(johnnyconfig, function(err, resp) {
+                proxyprinttodiv('Security check done 1 --  johnnyconfig -   response  -- ', resp, 39);
+				johnny_result[johnnyconfig._action] = resp.authstatus;				
+                cb(err);
+            });
+        },	
 
     ], function(err, resp) {
         // final callback

@@ -20,9 +20,11 @@ if (!exports) {
 // used to create the inital record for a database
 exports.setinitialwid = setinitialwid = function setinitialwid(params, command) {
     var initialwid = {};
-    extend(true, initialwid, params);
+    // extend(true, initialwid, params);
     var db = config.configuration.db;
-    if (params.command && params.command.db) {db=params.command.db}
+    if (command && command.db) {
+        db=command.db;
+    }
     initialwid.wid = "initialwid";
     initialwid.metadata={};
     initialwid.metadata.method="defaultdto";
@@ -84,8 +86,8 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                     if (!keydatabase) 
                     {
                         proxyprinttodiv('Function updatewid in localstorage check create', incopy, 12);
-                        addToLocalStorage(command.databasetable + command.collection, [{"initialwid":setinitialwid(incopy, command)}] );
-                        addToLocalStorage(command.databasetable + command.keycollection,setinitialwid(incopy, command));
+                        addToLocalStorage(command.databasetable + command.keycollection, {"initialwid":setinitialwid(incopy, command)} );
+                        addToLocalStorage(command.databasetable + command.collection,[setinitialwid(incopy, command)]);
                         keydatabase = getFromLocalStorage(command.databasetable + command.keycollection);
                         database = getFromLocalStorage(command.databasetable + command.collection);
                     }
@@ -96,8 +98,8 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                     database = getfromlocal(command.databasetable + command.collection);
                     if (!keydatabase) 
                     {
-                        addtolocal(command.databasetable + command.collection, [{"initialwid":setinitialwid(incopy, command)}]);
-                        addtolocal(command.databasetable + command.keycollection, setinitialwid(incopy, command));
+                        addtolocal(command.databasetable + command.keycollection, {"initialwid":setinitialwid(incopy, command)});
+                        addtolocal(command.databasetable + command.collection, [setinitialwid(incopy, command)]);
                         keydatabase = getfromlocal(command.databasetable + command.keycollection);
                         database = getfromlocal(command.databasetable + command.collection);
                     }
@@ -466,7 +468,7 @@ exports.copywid = copywid = copywid = function copywid(inobject, callback) {
     {
         if (err) 
         {
-            callback(er, getwidresult)
+            callback(err, getwidresult)
         }
         else 
         {
@@ -540,7 +542,7 @@ exports.deletewid = deletewid = deletewid = function deletewid(inobject, callbac
         inobject.command.from.datastore     = inobject.command.from.datastore     || inobject.command.datastore     || config.configuration.d.default.datastore;
         inobject.command.from.databasetable = inobject.command.from.databasetable || inobject.command.databasetable || config.configuration.d.default.databasetable;
         extend(true, inobject.command.to, config.configuration.delete, inobject.command.to);
-        command.delete=true;
+        inobject.command.delete=true;
         proxyprinttodiv('Function deletewid inobject before copywid', inobject, 27);
         copywid(inobject, function (err, copiedobject) {
             if (err)
