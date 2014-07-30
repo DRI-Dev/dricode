@@ -3028,7 +3028,7 @@ var johnnyconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'getoffer',"_d
 				johnny_result[johnnyconfig._action] = resp.authstatus;				
                 cb(err);
             });
-        },	
+        }	
 
     ], function(err, resp) {
         // final callback
