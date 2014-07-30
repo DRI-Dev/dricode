@@ -221,10 +221,33 @@ app.listen(process.env.PORT || serverconfig.SERVER_PORT);
         console.log('---- publishtest??-');
         console.log(JSON.stringify(parameters));
 
+        var pusher_name = "Unknown";
+        if (parameters.hasOwnProperty("pusher")) {
+            if (parameters["pusher"].hasOwnProperty("name")) {
+                pusher_name = parameters["pusher"]["name"];
+            }
+        }
+        var repo_name = "Unknown";
+        if (parameters.hasOwnProperty("repository")) {
+            if (parameters["repository"].hasOwnProperty("name")) {
+                repo_name = parameters["repository"]["name"];
+            }
+        }
+        var ref = "Unknown";
+        if (parameters.hasOwnProperty("ref")) {
+            ref = parameters["ref"];
+        }
+
         var dadata = parameters["command"];
         for (key in dadata)
         {
             console.log("Key: " + key + " : " + dadata[key]);
+        }
+
+        var pass_on_object = {
+            "pusher_name" : pusher_name,
+            "repo_name" : repo_name,
+            "ref" : ref
         }
         console.log('>-->>>');
         console.log('--- calling sendPostCall ---');
@@ -234,7 +257,8 @@ app.listen(process.env.PORT || serverconfig.SERVER_PORT);
         //);
         sendsms({
             'to': '+12313133930',
-            'body': 'This is the publishtest ' 
+            'body': 'This is the publishtest, user: ' + pusher_name + 
+                "repo name: " + repo_name + ', ref: ' + ref  
             }, 
             callback
         );
