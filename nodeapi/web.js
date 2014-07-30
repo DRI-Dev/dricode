@@ -261,7 +261,7 @@ app.listen(process.env.PORT || serverconfig.SERVER_PORT);
             } 
             sendsms({
                 'to': '+12313133930',
-                'body': 'publishtest - status: " + passfail + ', user: ' + pusher_name + 
+                'body': 'publishtest - status: ' + passfail + ', user: ' + pusher_name + 
                     ", repo name: " + repo_name + ', ref: ' + ref  
                 }, 
                 callback
