@@ -216,6 +216,11 @@ app.listen(process.env.PORT || serverconfig.SERVER_PORT);
         // listToDo, eventname, callback) {
         console.log('---- publishtest??-');
         console.log(JSON.stringify(parameters));
+
+        for (key in paramters)
+        {
+            console.log("Key: " + key + " : " + parameters[key]);
+        }
         console.log('>-->>>');
         console.log('--- calling sendPostCall ---');
         sendPostCall({"post_data":parameters}, function(err, result) {
