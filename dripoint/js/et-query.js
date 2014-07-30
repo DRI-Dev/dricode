@@ -5,7 +5,7 @@
 exports.querywidmaster = querywidmaster = function querywidmaster(params, callback) {
     params.command.queryconvertmethod = "object";
     proxyprinttodiv('querywidmaster', params, 28); 
-    querywid(params, function (err, results) {
+	querywid(params, function (err, results) {
         callback(err, results);
     });
 };
@@ -23,11 +23,11 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     var filter_data = getcommand(parameters,
         {
             "command": {
-                "datastore": config.configuration.defaultdatastore,
-                "collection":config.configuration.defaultcollection,
-                "keycollection":config.configuration.defaultkeycollection,
-                "db":config.configuration.defaultdb,
-                "databasetable":config.configuration.defaultdatabasetable,
+                "datastore": config.configuration.d.default.datastore,
+                "collection":config.configuration.d.default.collection,
+                "keycollection":config.configuration.d.default.keycollection,
+                "db":config.configuration.d.default.db,
+                "databasetable":config.configuration.d.default.databasetable,
                 "convert":"toobject",
                 "keepaddthis":true,
                 "queryconvertmethod":"each",
