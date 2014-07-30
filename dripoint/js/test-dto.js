@@ -9562,46 +9562,26 @@ widtests.testgetwid1.description = "this does a test";
 
 
 
-exports.testsavetoqueue = testsavetoqueue = function testsavetoqueue(p, callback) {
-    // Parameters if this is a normal function
-    // queuename - string - the name of the queue to save to
-    // 
-    proxyprinttodiv("savetoqueue **************", 7, 99);
-    var queuename = p.command.queuename;
-    proxyprinttodiv(" qname is ... ",  queuename, 99 );
-    delete p.command.queuename;
-    queuename = "eventonemin";
-    var itemtobesaved=p;
-    itemtobesaved = [
-        { "executethis": "printhello", "to": "+12313133930", "body":"This is a text" }
-    ]
-    var recorddef = {
-        // "wid":"russ112",
-        "executethis": "addwidmaster",
-        "container":itemtobesaved,   // no wid ... let system make it for you
-        "metadata" : {
-            "queuename": queuename,
-            "queueflag" : "true"
-        },
-        "command": {
-            "datastore": config.configuration.datastore,
-            "collection": queuename,
-            "keycollection": queuename+"key",
-            "db": config.configuration.db,
-            "databasetable": config.configuration.databasetable
+exports.testtestgetfromqueue = testtestgetfromqueue = function testtestgetfromqueue(params, callback) {
+
+    var qparams = {
+        "command" : {
+            "eventname" : "eventonemin"
         }
     };
-    proxyprinttodiv("update cache **************", recorddef, 99);
-    // var recorddef = { "wid": "russ1", "key": "value1"};
-    //addwidmaster(recorddef, function (err, res) {
-    execute(recorddef, function (err, res) {
-        callback(null, res);
-    });
+    testgetfromqueue( qparams, function(err, result) {
+        console.log("Testing testgetfromqueue - callback running");
+        callback(err, result);
+    }
 }
 
-exports.testgetfromqueue = testgetfromqueue = function testgetfromqueue(params, callback) {
+exports.testsavegetfromqueue = testsavegetfromqueue = function testsavegetfromqueue(params, callback) {
+    
+}
 
-    params.command.eventname = "eventonemin";
+exports.processqueue = processqueue = function processqueue( params, callback ) {
+
+    // params.command.eventname = "eventonemin";
 
 
     proxyprinttodiv("findparent inputobj", params, 99);
@@ -9624,7 +9604,7 @@ exports.testgetfromqueue = testgetfromqueue = function testgetfromqueue(params, 
     };
     var env = new DriEnvironment(params.command.environment);
     proxyprinttodiv("after environment", env, 99);
- proxyprinttodiv("after executeobject", executeobject, 99, true, true);
+    proxyprinttodiv("after executeobject", executeobject, 99, true, true);
     env.execute(executeobject, function (err, res) {
         proxyprinttodiv("findparent res2", res, 99);
         // findwidbyqueryresult(res, "primarywid", function (err, res) {
@@ -9686,7 +9666,7 @@ exports.testgetfromqueue = testgetfromqueue = function testgetfromqueue(params, 
                             {
                                 // If there is anything else left to do, 
                                 // then do it now.
-                                getfromquery(params, callback);
+                                processqueue(params, callback);
                             }
                             callback(err, res);
                         });
