@@ -15,6 +15,7 @@ $(document).ready(function () {
     // delete any 'et-delete' classes
     // useful for removing the link to this file before saving to storage
     $('.et-delete').remove();
+    debugger;
 
     // convert linked html page to a screenwid
     htmlToScreenwid(widName, $('body').html(), params, function() {
