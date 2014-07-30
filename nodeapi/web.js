@@ -73,6 +73,10 @@ app.listen(process.env.PORT || serverconfig.SERVER_PORT);
 
 
 
+
+// why are these functions in web.js?  seems like they should be somewhere else as
+// this is simply the node server web request config file...
+
     exports.saveexecuteevent = saveexecuteevent = function saveexecuteevent(eventname, callback) {
         callback(null,null)
 
