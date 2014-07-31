@@ -991,3 +991,31 @@ exports.getfromangular = getfromangular = function getfromangular(params, callba
     // this is a dummy getfromangular call for server use
     callback(null, {});
 };
+
+
+//var startTime = new Date();
+exports.getuptime = getuptime = function getuptime(params, callback) {
+    console.log(">>>>>>>-----------=======-----==-=-=-=-=-=-=---=-=-------======----------");
+    var execObj = [{
+        "executethis" : "getwid",
+        "wid": "russwid"
+    }];
+    execute(execObj, function (err, res) {
+            res = res[0][0];
+            var startTime = res.starttime;
+            var now = new Date().getTime();
+            var howLong = Math.floor((now - startTime)/1000) ;
+            var currentUser = params.currentuser;
+
+            console.log("How Long is " + howLong);
+            var tooLong = 30;
+            var upStatus = (howLong < tooLong);
+            console.log("RESULT is " + JSON.stringify(res));
+            res.status = upStatus;
+            res.uptime = howLong;
+            res.currentuser = currentUser; 
+            res.sms = '+12313133930';
+            callback(err, res)
+        }
+    );
+}
