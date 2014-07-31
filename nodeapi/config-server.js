@@ -241,7 +241,11 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
 
     // start eventonemin, eventtenmin and save the interval value so 
     // you can use "clearInterval" in the future if desired to stop things
-    var minutes = 60 * 1000;
+    var minute = 60 * 1000;
+    var day = minute * 60 * 24;
+    setInterval(eventonemin, 1 * minute);
+    setInterval(eventtenmin, 10 * minute);
+    setInterval(eventdaily, 1 * day);
 
     callback(null,null);
 };
