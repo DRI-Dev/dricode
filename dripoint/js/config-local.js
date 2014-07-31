@@ -185,107 +185,122 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
 
 
 exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-
+//    processevent(arguments.callee.name, function (err, res) {
+//        cb(err, res);
+//    });
+    cb(null);
 };
 
 exports.eventonline = eventonline = function eventonline(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
+//    processevent(arguments.callee.name, function (err, res) {
+//        cb(err, res);
+//    });
+    cb(null);
 };
 
 exports.eventoffline = eventoffline = function eventoffline(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
+//    processevent(arguments.callee.name, function (err, res) {
+//        cb(err, res);
+//    });
+    cb(null);
 };
 
 exports.eventonemin = eventonemin = function eventonemin() {
     proxyprinttodiv("eventonemin", 'one sec', 30);
-    processevent(arguments.callee.name, function (err, res) {
-        //cb(err, res);
-    });
+//    processevent(arguments.callee.name, function (err, res) {
+//        //cb(err, res);
+//    });
 };
 
 exports.eventtenmin = eventtenmin = function eventtenmin(params, cb) {    
-    processevent(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
+//    processevent(arguments.callee.name, function (err, res) {
+//        cb(err, res);
+//    });
+    cb(null);
 };
 
 exports.eventdaily = eventdaily = function eventdaily(params, cb) {    
-    processevent(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
+//    processevent(arguments.callee.name, function (err, res) {
+//        cb(err, res);
+//    });
+    cb(null);
 };
 
 exports.eventmonthly = eventmonthly = function eventmonthly(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
+//    processevent(arguments.callee.name, function (err, res) {
+//        cb(err, res);
+//    });
+    cb(null);
 };
 
 exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
+//    processevent(arguments.callee.name, function (err, res) {
+//        cb(err, res);
+//    });
+    cb(null);
 };
 
 exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
+//    processevent(arguments.callee.name, function (err, res) {
+//        cb(err, res);
+//    });
+    cb(null);
 };
 
 exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
+//    processevent(arguments.callee.name, function (err, res) {
+//        cb(err, res);
+//    });
+    cb(null);
 };
 
 exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
+//    processevent(arguments.callee.name, function (err, res) {
+//        cb(err, res);
+//    });
+    cb(null);
 };
 
 exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
+//    processevent(arguments.callee.name, function (err, res) {
+//        cb(err, res);
+//    });
+    cb(null);
 };
 
 exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
+//    processevent(arguments.callee.name, function (err, res) {
+//        cb(err, res);
+//    });
+    cb(null);
 };
 
 exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
+//    processevent(arguments.callee.name, function (err, res) {
+//        cb(err, res);
+//    });
+    cb(null);
 };
 
 exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
+//    processevent(arguments.callee.name, function (err, res) {
+//        cb(err, res);
+//    });
+    cb(null);
 };
 
 exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
+//    processevent(arguments.callee.name, function (err, res) {
+//        cb(err, res);
+//    });
+    cb(null);
 };
 
 exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters, cb) {
-    processevent(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
+//    processevent(arguments.callee.name, function (err, res) {
+//        cb(err, res);
+//    });
+    cb(null);
 };
 
 // exports.processevent = processevent = function processevent(params, callback) {
