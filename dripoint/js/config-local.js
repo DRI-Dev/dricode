@@ -216,7 +216,7 @@ exports.eventtenmin = eventtenmin = function eventtenmin(params, cb) {
 //    processevent(arguments.callee.name, function (err, res) {
 //        cb(err, res);
 //    });
-    cb(null);
+    if (typeof cb == 'function') { cb(null); }
 };
 
 exports.eventdaily = eventdaily = function eventdaily(params, cb) {    
