@@ -9572,7 +9572,7 @@ exports.testtestgetfromqueue = testtestgetfromqueue = function testtestgetfromqu
     testgetfromqueue( qparams, function(err, result) {
         console.log("Testing testgetfromqueue - callback running");
         callback(err, result);
-    }
+    });
 }
 
 exports.testsavegetfromqueue = testsavegetfromqueue = function testsavegetfromqueue(params, callback) {
