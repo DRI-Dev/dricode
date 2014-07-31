@@ -1851,51 +1851,7 @@ function ettest_executemisc(executeobject, callback)
 			});
 	  });
 	};
-	
-	
-	// test of executegetwid -- save a wid then execute it
-	exports.ettest_series1passegw2 = 
-	ettest_series1passegw2 = 
-	function ettest_series1passegw2(executeobject, callback) 
-	{
-		updatewid({
-				//"executethis":"updatewid",
-				"wid":"callpassfunction",
-				"metadata":{"method":"defaultdto"},
-				"addthis.executethis":"test_return_noerror_result"     // note save it with addthis in front
-				},                                                     // this will execute "test_return_noerror_result" 
-				function (err,res) {
 
-		  if (!executeobject.command) {
-              executeobject.command={};
-              executeobject.command.environment={};
-              executeobject.command.environment.run={};
-          }
-		  executeobject.command.executetype="series";
-		  executeobject.command.environment.run.executelevel=0;
-		  executeobject.command.environment.platform='local';
-	  
-  
-		  executeobject.command.environment.processfn="execute_get_wid";
-		  executeobject.serverfn="test_return_noerror_result2";
-		  executeobject.command.xrun={"executethis": 'callpassfunction'};
-
-		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
-		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
-		  {        
-				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
-				proxyprinttodiv('expected error', null, 99);
-				proxyprinttodiv('actual error', error_obj, 99);
-				proxyprinttodiv('expected result', result_assertion, 99);
-				proxyprinttodiv('actual result', result_obj, 99);
-
-				var composite_obj=logverifycomplex("ettest_series1pass", result_obj, result_assertion, error_obj, null);
-				proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj);
-		  });
-		}
-	  );
-	};
 
 exports.ettest_series1update1 = 
 ettest_series1update1 = 
