@@ -3673,13 +3673,13 @@ function totalStorageSize(){
    
 })();
 
-exports.processqueue = processqueue = function processqueue( params, callback ) {
+exports.processqueue = processqueue = function processqueue(queuename, callback ) {
 
     // params.command.eventname = "eventonemin";
 
 
-    proxyprinttodiv("findparent inputobj", params, 99);
-    var queuename = params.command.eventname;
+    //proxyprinttodiv("findparent inputobj", params, 99);
+    //var queuename = params.command.eventname;
     // var wid = inputobj["wid"];
     var executeobject = {};
     executeobject["executethis"] = "querywidmaster"; // Can be querywidmaster or querywid
@@ -3696,10 +3696,11 @@ exports.processqueue = processqueue = function processqueue( params, callback ) 
             "metadata.queuename": queuename,
         }]
     };
-    var env = new DriEnvironment(params.command.environment);
-    proxyprinttodiv("after environment", env, 99);
+    //var env = new DriEnvironment(params.command.environment);
+    //proxyprinttodiv("after environment", env, 99);
     proxyprinttodiv("after executeobject", executeobject, 99, true, true);
-    env.execute(executeobject, function (err, res) {
+    //env.execute(executeobject, function (err, res) {
+    execute(executeobject, function (err, res) {
         proxyprinttodiv("findparent res2", res, 99);
         // findwidbyqueryresult(res, "primarywid", function (err, res) {
         if (res.hasOwnProperty('queryresult'))
@@ -3725,7 +3726,9 @@ exports.processqueue = processqueue = function processqueue( params, callback ) 
                         "databasetable": config.configuration.databasetable
                     }
                 };
-                    env.execute(execobj_get1, function(err, res) {
+
+                    //env.execute(execobj_get1, function(err, res) {
+                    execute(execobj_get1, function(err, res) {
                     // Receive LOCKED object
                     // try to execute it
                     // proxyprinttodiv("getwid / lock callback", widname, 99);
@@ -3760,7 +3763,8 @@ exports.processqueue = processqueue = function processqueue( params, callback ) 
                             {
                                 // If there is anything else left to do, 
                                 // then do it now.
-                                processqueue(params, callback);
+                                processqueue(queuename, callback);
+                                //processqueue(params, callback);
                             }
                             callback(err, res);
                         });
