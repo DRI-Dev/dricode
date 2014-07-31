@@ -247,7 +247,18 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
     setInterval(eventtenmin, 10 * minute);
     setInterval(eventdaily, 1 * day);
 
-    callback(null,null);
+
+   var startTime = new Date().getTime().toString();
+   execute({
+       "executethis":"addwidmaster",
+       "wid":"bootwid",
+       "starttime": startTime
+       , "a": "ee"
+       }, function (err, res) {
+           console.log("Res is " + res.toString() );
+           callback(null,null);
+       }
+   );    
 };
 
 

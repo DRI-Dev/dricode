@@ -214,7 +214,7 @@ exports.getuptime = getuptime = function getuptime(params, callback) {
     console.log(">>>>>>>-----------=======-----==-=-=-=-=-=-=---=-=-------======----------");
     var execObj = [{
         "executethis" : "getwid",
-        "wid": "russwid"
+        "wid": "bootwid"
     }];
     execute(execObj, function (err, res) {
             res = res[0][0];
@@ -235,14 +235,4 @@ exports.getuptime = getuptime = function getuptime(params, callback) {
         }
     );
 }
-//    var startTime = new Date().getTime().toString();
-//    execute({
-//        "executethis":"addwidmaster",
-//        "wid":"russwid",
-//        "starttime": startTime
-//        , "a": "ee"
-//        }, function (err, res) {
-//            console.log("Res is " + res.toString() );
-//        }
-//    );
 
