@@ -183,6 +183,7 @@ function config123() {
     
     // what environment and what defaults should be used
     configuration.environment = 'server';
+    configuration.machinename = 'test3';
     configuration.syncrule = 'create_what_to_do_list';
     configuration.collection = 'dricollection';
     configuration.db = 'data';
@@ -1003,13 +1004,117 @@ exports.getfromangular = getfromangular = function getfromangular(params, callba
     callback(null, {});
 };
 
+// sendpostcall = function sendpostcall(parameters, callback) {
+//     console.log(' ??? sendPostCall started ???');
+//     // var post_host = 'test3.dripoint.com';
+//     var post_port = 80;
+//     //var post_uri = '/executethis?executethis=publishtest';
+//     var post_host = 'requestb.in';
+//     var post_uri = '/t0y6i6t0';
+//     var post_data_raw = parameters['post_data'];
+//     var post_data = querystring.stringify(post_data_raw);
+//     var post_options = {
+//         host: post_data,
+//         port: post_port,
+//         path: post_uri,
+//         method: 'POST',
+//         headers: {
+//             'Content-type': 'application/x-www-form-urlencoded',
+//             'Content-length': post_data.length
+//         }
+//     }
+//     var options = {
+//         headers: {
+//             "Content-Type": "application/json; charset=utf-8"
+//         }
+//     };
+
+//     // cleanup request for server2 :: GET REVIEWED BY ROGER
+
+//     // Setup the request
+//     var serverUrl = 'http://requestb.in/t0y6i6t0';
+//     var params = parameters;
+//     needle.post(serverUrl, JSON.stringify(params), options, function (err, response, body) {
+//         callback(err, body);
+//     });
+
+//     console.log("post_data --- veru emd of the file.");
+// };
+
+
+
+exports.publishtestdelay = publishtestdelay = function publishtestdelay(parameters, callback) {
+        publishtest(parameters, callback);
+    };
+
+    // Get parameters from github, pass it on to publish test
+
+    exports.publishtest = publishtest = function publishtest(parameters, callback) { 
+        // listToDo, eventname, callback) {
+        console.log('---- publishtest??-');
+        console.log(JSON.stringify(parameters));
+
+        var pusher_name = "Unknown";
+        if (parameters.hasOwnProperty("pusher")) {
+            if (parameters["pusher"].hasOwnProperty("name")) {
+                pusher_name = parameters["pusher"]["name"];
+            }
+        }
+        var repo_name = "Unknown";
+        if (parameters.hasOwnProperty("repository")) {
+            if (parameters["repository"].hasOwnProperty("name")) {
+                repo_name = parameters["repository"]["name"];
+            }
+        }
+        var ref = "Unknown";
+        if (parameters.hasOwnProperty("ref")) {
+            ref = parameters["ref"];
+        }
+
+        var dadata = parameters["command"];
+        for (key in dadata)
+        {
+            console.log("Key: " + key + " : " + dadata[key]);
+        }
+
+        var pass_on_object = {
+            "pusher_name" : pusher_name,
+            "repo_name" : repo_name,
+            "ref" : ref
+        }
+        console.log('>-->>>');
+        console.log('--- calling sendPostCall ---');
+
+        getuptime(null, function(err, result) {
+            var passfail = "Unknown";
+            if (result.status) {
+                passfail = "Pass";
+            } else {
+                passfail = "Fail";
+            } 
+            sendsms({
+                'to': '+12313133930',
+                'body': 'publishtest - status: ' + passfail + ', user: ' + pusher_name + 
+                    ", repo name: " + repo_name + ', ref: ' + ref  
+                }, 
+                callback
+            );
+        });
+        //sendPostCall({"post_data":parameters}, function(err, result) {
+        //    console.log("call to sendPostCall has returned...");
+        //    }
+        //);
+        console.log('---- publishtest!!---');
+
+    };
+
 
 //var startTime = new Date();
 exports.getuptime = getuptime = function getuptime(params, callback) {
     console.log(">>>>>>>-----------=======-----==-=-=-=-=-=-=---=-=-------======----------");
     var execObj = [{
         "executethis" : "getwid",
-        "wid": "russwid"
+        "wid": "bootwid"
     }];
     execute(execObj, function (err, res) {
             res = res[0][0];
@@ -1030,3 +1135,4 @@ exports.getuptime = getuptime = function getuptime(params, callback) {
         }
     );
 }
+
