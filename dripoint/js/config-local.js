@@ -171,10 +171,16 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
 
     // start eventonemin, eventtenmin and save the interval value so 
     // you can use "clearInterval" in the future if desired to stop things
-    var minutes = 60 * 1000;
+    // you can use "clearInterval" in the future if desired to stop things
+    var minute = 60 * 1000;
+    var day = minute * 60 * 24;
+    setInterval(eventonemin, 1 * minute);
+    setInterval(eventtenmin, 10 * minute);
+    setInterval(eventdaily, 1 * day);
 
     callback(null,null);
 };
+
 
 exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
     processevent(arguments.callee.name, function (err, res) {
@@ -280,9 +286,9 @@ exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters,
     });
 };
 
-exports.processevent = processevent = function processevent(params, callback) {
-    callback(null, null);
-};
+// exports.processevent = processevent = function processevent(params, callback) {
+//     callback(null, null);
+// };
 
 exports.execute_server = window.execute_server = execute_server = function execute_server(params, callback) {
     proxyprinttodiv('Function server TO ------', params, 99, true);

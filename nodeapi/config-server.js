@@ -247,117 +247,128 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
     setInterval(eventtenmin, 10 * minute);
     setInterval(eventdaily, 1 * day);
 
-    callback(null,null);
+
+   var startTime = new Date().getTime().toString();
+   execute({
+       "executethis":"addwidmaster",
+       "wid":"bootwid",
+       "starttime": startTime
+       , "a": "ee"
+       }, function (err, res) {
+           console.log("Res is " + res.toString() );
+           callback(null,null);
+       }
+   );    
 };
 
 
 
 exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processqueue(arguments.callee.name, function (err, res) {
         cb(err, res);
     });
 
 };
 
 exports.eventonline = eventonline = function eventonline(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processqueue(arguments.callee.name, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventoffline = eventoffline = function eventoffline(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processqueue(arguments.callee.name, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventonemin = eventonemin = function eventonemin() {
 //    proxyprinttodiv("eventonemin", 'one sec', 30);
-    processevent(arguments.callee.name, function (err, res) {
+    processqueue(arguments.callee.name, function (err, res) {
         //cb(err, res);
     });
 };
 
 exports.eventtenmin = eventtenmin = function eventtenmin(params, cb) {    
-    processevent(arguments.callee.name, function (err, res) {
+    processqueue(arguments.callee.name, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventdaily = eventdaily = function eventdaily(params, cb) {    
-    processevent(arguments.callee.name, function (err, res) {
+    processqueue(arguments.callee.name, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventmonthly = eventmonthly = function eventmonthly(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processqueue(arguments.callee.name, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processqueue(arguments.callee.name, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processqueue(arguments.callee.name, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processqueue(arguments.callee.name, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processqueue(arguments.callee.name, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processqueue(arguments.callee.name, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processqueue(arguments.callee.name, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processqueue(arguments.callee.name, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processqueue(arguments.callee.name, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend(params, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processqueue(arguments.callee.name, function (err, res) {
         cb(err, res);
     });
 };
 
 exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters, cb) {
-    processevent(arguments.callee.name, function (err, res) {
+    processqueue(arguments.callee.name, function (err, res) {
         cb(err, res);
     });
 };
 
-exports.processevent = processevent = function processevent(eventname, callback) {
-    callback(null,null);
+//exports.processevent = processevent = function processqueue(eventname, callback) {
+//    callback(null,null);
     // proxyprinttodiv("processeventqueue eventname----", eventname, 99);
     // getexecutelist(eventname, "queuecollection", function (err, executetodolist) {
     //     proxyprinttodiv("processeventqueue executelist", executetodolist, 17);
@@ -367,51 +378,51 @@ exports.processevent = processevent = function processevent(eventname, callback)
     //             });
     //         });
     //     });
-    };
+//    };
 
-exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, callback) {
-    async.mapSeries(listToDo, function (eachresult, cbMap) {
-        async.nextTick(function () {
-            fn(eachresult, function (err, res){
-                cbMap(err, res);
-            });
-        });
-    }, function (err, res) {
-        callback(err, res);
-    });
-};
+// exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, callback) {
+//     async.mapSeries(listToDo, function (eachresult, cbMap) {
+//         async.nextTick(function () {
+//             fn(eachresult, function (err, res){
+//                 cbMap(err, res);
+//             });
+//         });
+//     }, function (err, res) {
+//         callback(err, res);
+//     });
+// };
 
 
-exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eventtype, callback) {
-//    proxyprinttodiv("getexecutelist eventname(collection)", eventname, 17);
-//    proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
-    var executeobject = {"command": {"result": "queryresult"}};
-    var executetodolist=[];
-    executeobject.command.databasetable = eventtype;
-    executeobject.command.collection = eventname;
-    executeobject.command.db = "queuedata";
-    //executeobject.command.result = "queueresult";
-    executeobject["executethis"] = "querywid";
-    //executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
-    executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]}   
-//    proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
+// exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eventtype, callback) {
+// //    proxyprinttodiv("getexecutelist eventname(collection)", eventname, 17);
+// //    proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
+//     var executeobject = {"command": {"result": "queryresult"}};
+//     var executetodolist=[];
+//     executeobject.command.databasetable = eventtype;
+//     executeobject.command.collection = eventname;
+//     executeobject.command.db = "queuedata";
+//     //executeobject.command.result = "queueresult";
+//     executeobject["executethis"] = "querywid";
+//     //executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
+//     executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]}   
+// //    proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
     
-    execute(executeobject, function (err, res) {
-//        proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
-        if (res.length === 0) {
-            executetodolist = [];
-        }
-        else if(res[0] && res[0]["queryresult"]){
-            for (var everyaction in res[0]["queryresult"]){
-//                proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
-                //if (res[0]["queryresult"][everyaction]
-                executetodolist.push(res[0]["queryresult"][everyaction]);
-            }
+//     execute(executeobject, function (err, res) {
+// //        proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
+//         if (res.length === 0) {
+//             executetodolist = [];
+//         }
+//         else if(res[0] && res[0]["queryresult"]){
+//             for (var everyaction in res[0]["queryresult"]){
+// //                proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
+//                 //if (res[0]["queryresult"][everyaction]
+//                 executetodolist.push(res[0]["queryresult"][everyaction]);
+//             }
 
-        }
-        callback(null, executetodolist);
-    })
-};
+//         }
+//         callback(null, executetodolist);
+//     })
+// };
 
 
 
