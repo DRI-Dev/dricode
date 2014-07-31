@@ -1044,7 +1044,10 @@ exports.getfromangular = getfromangular = function getfromangular(params, callba
 
 
 exports.publishtestdelay = publishtestdelay = function publishtestdelay(parameters, callback) {
-        publishtest(parameters, callback);
+        // publishtest(parameters, callback);
+        parameters.command =  parameters.command || {};
+        parameters.command.queuename = "eventonemin";
+        savetoqueue(parameters, callback);
     };
 
     // Get parameters from github, pass it on to publish test
