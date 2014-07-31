@@ -1097,7 +1097,7 @@ exports.publishtestdelay = publishtestdelay = function publishtestdelay(paramete
                 'body': 'publishtest - status: ' + passfail + ', user: ' + pusher_name + 
                     ", repo name: " + repo_name + ', ref: ' + ref  
                 }, 
-                callback
+                callback(err, result);
             );
         });
         //sendPostCall({"post_data":parameters}, function(err, result) {
