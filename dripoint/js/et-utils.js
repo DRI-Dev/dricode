@@ -3789,9 +3789,9 @@ exports.savetoqueue = savetoqueue = function savetoqueue(p, callback) {
     delete p.command.queuename;
     // queuename = "eventonemin";
     var itemtobesaved=p;
-    itemtobesaved = [
-        { "executethis": "printhello", "to": "+12313133930", "body":"This is a text" }
-    ]
+    //itemtobesaved = [
+    //    { "executethis": "printhello", "to": "+12313133930", "body":"This is a text" }
+    //]
     var recorddef = {
         // "wid":"russ112",
         "executethis": "addwidmaster",
