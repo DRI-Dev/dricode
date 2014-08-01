@@ -705,6 +705,7 @@ exports.server = server = function server(params, callback) {
 };
 
 exports.anyserver = anyserver = function anyserver(params, callback) {
+    // 
     var server = params.server;
     delete params.server
     var serverUrl = 'http://'+server+'/executethis';
@@ -1052,7 +1053,7 @@ exports.publishtestdelay = publishtestdelay = function publishtestdelay(paramete
 
 exports.publishtest = publishtest = function publishtest(parameters, callback) { 
         // listToDo, eventname, callback) {
-        console.log('---- publishtest??-');
+        console.log('---- publishtest??-');/
         console.log(JSON.stringify(parameters));
 
         var pusher_name = "Unknown";
@@ -1086,8 +1087,15 @@ exports.publishtest = publishtest = function publishtest(parameters, callback) {
         console.log('>-->>>');
         console.log('--- calling sendPostCall ---');
 
+        // TODO: Create a function that given the REF of the COMMIT
+        //       from GITHUB.COM Webhook it will return it will return
+        //       the NAME of the server.  
+        // 
+        //      .  
         var server = "";
-        if (repo_name==="test3") {server=repo_name}
+        if (repo_name ==="test3") {
+            server=repo_name + ".dripoint.com";
+        }
         var executeobject = {};
         executeobject.executethis="getuptime"
         executeobject.server = server;
