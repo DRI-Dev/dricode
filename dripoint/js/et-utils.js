@@ -3737,6 +3737,8 @@ exports.processqueue = processqueue = function processqueue(queuename, callback 
                     proxyprinttodiv("getwid / lock callback - res", res, 99);
 
                     var contained_object = res.container[0];
+                    contained_object.executethis=contained_object.addthis.executethis;
+                    delete contained_object.addthis.executethis;
 
                     // get object from res parameter
                     // execute the object from the result
@@ -3801,7 +3803,7 @@ exports.savetoqueue = savetoqueue = function savetoqueue(p, callback) {
             "queueflag" : "true"
         },
         "command": {
-            "datastore": "localstore", // config.configuration.datastore,
+            "datastore": config.configuration.datastore,
             "collection": queuename,
             "keycollection": queuename+"key",
             "db": config.configuration.db,
