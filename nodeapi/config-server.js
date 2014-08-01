@@ -1049,11 +1049,11 @@ exports.publishtestdelay = publishtestdelay = function publishtestdelay(paramete
         parameters.command.queuename = "eventonemin";
         parameters["addthis.executethis"] = "publishtest";
         savetoqueue(parameters, callback);
-    };
+};
 
     // Get parameters from github, pass it on to publish test
 
-    exports.publishtest = publishtest = function publishtest(parameters, callback) { 
+exports.publishtest = publishtest = function publishtest(parameters, callback) { 
         // listToDo, eventname, callback) {
         console.log('---- publishtest??-');
         console.log(JSON.stringify(parameters));
@@ -1112,7 +1112,7 @@ exports.publishtestdelay = publishtestdelay = function publishtestdelay(paramete
         //);
         console.log('---- publishtest!!---');
 
-    };
+};
 
 
 //var startTime = new Date();
