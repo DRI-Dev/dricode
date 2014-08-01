@@ -701,22 +701,16 @@ exports.server = server = function server(params, callback) {
     });
 };
 
-exports.server2 = server2 = function server2(params, callback) {
-    // set up object in syntax that driApi is expecting
-    // also get getdata/<action> action from params object
-    console.log('>>> server 2');
-    var serverUrl = 'http://95.85.55.218/executethis';
+exports.anyserver = anyserver = function anyserver(params, callback) {
+    var server = params.server;
+    delete params.server
+    var serverUrl = 'http://'+server+'/executethis';
 
     var options = {
         headers: {
             "Content-Type": "application/json; charset=utf-8"
         }
     };
-
-    // cleanup request for server2 :: GET REVIEWED BY ROGER
-    delete params['command'];
-    delete params['command.debug'];
-    delete params['configuration'];
 
     needle.put(serverUrl, JSON.stringify(params), options, function (err, response, body) {
         callback(err, body);
@@ -1089,7 +1083,15 @@ exports.publishtestdelay = publishtestdelay = function publishtestdelay(paramete
         console.log('>-->>>');
         console.log('--- calling sendPostCall ---');
 
-        getuptime(null, function(err, result) {
+        var server = "";
+        if (repo_name==="test3") {server=repo_name}
+        var executeobject = {};
+        executeobject.executethis="getuptime"
+        executeobject.server = server;
+        
+        anyserver(executeobject,function(err, result) {
+
+            //getuptime(null, function(err, result) {
             var passfail = "Unknown";
             if (result.status) {
                 passfail = "Pass";
@@ -1106,6 +1108,7 @@ exports.publishtestdelay = publishtestdelay = function publishtestdelay(paramete
                 }
             );
         });
+
         //sendPostCall({"post_data":parameters}, function(err, result) {
         //    console.log("call to sendPostCall has returned...");
         //    }
