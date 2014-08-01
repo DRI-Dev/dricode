@@ -253,7 +253,7 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
    execute({
        "executethis":"addwidmaster",
         "command": {
-            "datastore": "localstore", // config.configuration.datastore,
+            "datastore": "localstore" // config.configuration.datastore,
         },
        "wid":"bootwid",
        "starttime": startTime
@@ -1053,7 +1053,7 @@ exports.publishtestdelay = publishtestdelay = function publishtestdelay(paramete
 
 exports.publishtest = publishtest = function publishtest(parameters, callback) { 
         // listToDo, eventname, callback) {
-        console.log('---- publishtest??-');/
+        console.log('---- publishtest??-');
         console.log(JSON.stringify(parameters));
 
         var pusher_name = "Unknown";
@@ -1135,7 +1135,7 @@ exports.getuptime = getuptime = function getuptime(params, callback) {
     var execObj = [{
         "executethis" : "getwid",
         "command": {
-            "datastore": "localstore", // config.configuration.datastore,
+            "datastore": "localstore" // config.configuration.datastore,
         },
         "wid": "bootwid"
     }];
