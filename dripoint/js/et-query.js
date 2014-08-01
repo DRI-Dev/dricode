@@ -139,7 +139,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                             mQueryString = BuildSingleQuery(widObject, "or", environmentdb);
                             proxyprinttodiv('Function MongoDataQuery singlemongoquery : ', mQueryString, 28, true);
                             mquery(mQueryString, projection, command, function (err, res) {
-                                if (err && Object.keys(err).length > 0) { cb1(err, res); }
+                                if (err) { cb1(err, res); }
                                 else { output = res; cb1(null, "step01"); }
                             }); // mquery
                         }
@@ -191,7 +191,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                                         mQueryString = BuildMultipleQuery(ListOfLists, "and", "or", environmentdb);
                                         proxyprinttodiv('querywid mQueryString multiple', mQueryString, 28);
                                         mquery(mQueryString, projection, command, function (err, res) {
-                                            if (err && Object.keys(err).length > 0)
+                                            if (err)
                                             {
                                                 cb1(err, res);
                                             }
@@ -253,7 +253,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
 
                     proxyprinttodiv('querywid mQueryString first main query', mQueryString, 28);
                     mquery(mQueryString, projection,  command, function (err, res) {
-                        if (err && Object.keys(err).length > 0) {
+                        if (err) {
                             cb1(err, res);
                         } else {
                             output = res;
@@ -313,7 +313,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     if (mQueryString) {
                         mquery(mQueryString, projection, command, function (err, res) {
                                proxyprinttodiv('mQueryString at step03 res',res, 28);
-                            if (err && Object.keys(err).length > 0) {
+                            if (err) {
                                 cb3(err, res);
                             } else {
                                 relationshipoutput = res;
@@ -360,7 +360,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     if (mQueryString) 
                     {
                         mquery(mQueryString, projection, command, function (err, res) {
-                            if (err && Object.keys(err).length > 0) {
+                            if (err) {
                                 cb4(err, res);
                             } else {
                                 output = res;

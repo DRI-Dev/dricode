@@ -3693,7 +3693,7 @@ exports.processqueue = processqueue = function processqueue(queuename, callback 
     };
     executeobject["mongorawquery"] = {
         "$and": [{
-            "metadata.queuename": queuename,
+            "metadata.queuename": queuename
         }]
     };
     //var env = new DriEnvironment(params.command.environment);
