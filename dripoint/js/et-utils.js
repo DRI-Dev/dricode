@@ -3801,7 +3801,7 @@ exports.savetoqueue = savetoqueue = function savetoqueue(p, callback) {
             "queueflag" : "true"
         },
         "command": {
-            "datastore": config.configuration.datastore,
+            "datastore": "localstore", // config.configuration.datastore,
             "collection": queuename,
             "keycollection": queuename+"key",
             "db": config.configuration.db,

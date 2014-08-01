@@ -252,6 +252,9 @@ exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, 
    var startTime = new Date().getTime().toString();
    execute({
        "executethis":"addwidmaster",
+        "command": {
+            "datastore": "localstore", // config.configuration.datastore,
+        },
        "wid":"bootwid",
        "starttime": startTime
        , "a": "ee"
@@ -1123,6 +1126,9 @@ exports.getuptime = getuptime = function getuptime(params, callback) {
     console.log(">>>>>>>-----------=======-----==-=-=-=-=-=-=---=-=-------======----------");
     var execObj = [{
         "executethis" : "getwid",
+        "command": {
+            "datastore": "localstore", // config.configuration.datastore,
+        },
         "wid": "bootwid"
     }];
     execute(execObj, function (err, res) {
