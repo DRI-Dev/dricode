@@ -140,7 +140,7 @@ exports.wget = wget = function wget(objToFind, command, callback) {
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
         db.collection(schemaToLookup).find({wid:objToFind.wid}).toArray(function(err, result) {
-            callback(null, result[0] || null);
+            callback(null, result ? result[0] || null : null);
         });
     });
 };
