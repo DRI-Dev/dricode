@@ -34,245 +34,285 @@ exports.setinitialwid = setinitialwid = function setinitialwid(params, command) 
     return initialwid
 };
 
-exports.updatewid = updatewid = updatewid = function updatewid(inobject, callback) {
-    proxyprinttodiv('Function updatewid inobject', inobject,12 , true, true);
-    var incopy = {};
-        extend(true, incopy, inobject);
-    var err = null;
-    var command = incopy.command || config.configuration.d.default;  // should always get command
-    var database = [];
-    var keydatabase = {};
-    delete incopy.command;
-
-    // if record is not locked then okatoupdate = true, else false
-    if(!incopy.metadata){incopy.metadata={};}  
-    if (!incopy.metadata.systemdto && command.environment && 
-        (command.environment.userid || command.environment.loggedinuserid)) {incopy.metadata.systemdto={}}
-	if (!command.environment) {command.environment={}}
-    if (command.environment.userid && !incopy.metadata.systemdto.userid) 
-        {incopy.metadata.systemdto.userid=command.environment.userid}
-    if (command.environment.loggedinuserid && !incopy.metadata.systemdto.loggeiduserid) 
-        {incopy.metadata.systemdto.loggedinuserid=command.environment.loggedinuserid}
-
-    if(incopy && command && command.namespace)
-    { 
-        // add namespace key:value pairs from command.namespace to metadata.namespace
-		if (!incopy.metadata.namespace) {incopy.metadata.namespace = {};}
-		for (var key in command.namespace) 
-        {
-			incopy.metadata.namespace[key] = command.namespace[key];
-		}
-    }
-    if (Object.keys(incopy.metadata).length === 0) {delete incopy.metadata}
-    proxyprinttodiv('Function datastore incopy', incopy, 12);
-    proxyprinttodiv('Function datastore command', command, 12,99, true);
-    proxyprinttodiv('Function updatewid command.getwidflag', command.getwidflag, 12);
-    if (incopy.wid) 
-    {
-        if (command.datastore === "localstore" || command.datastore === "localstorage") 
-        {
-            getfromangular(incopy, function (angularerr, resultobject) 
-            {
-                // extend incopy based on what was in angular 
-                if (resultobject) {extend(true, incopy, resultobject); }
-
-                // if not in memory then get it
-                // if empty then create them
-                if (command.datastore === "localstorage") 
-                {
-                    proxyprinttodiv('Function updatewid in localstorage check', incopy, 12);
-                    keydatabase = getFromLocalStorage(command.databasetable + command.keycollection);
-                    database = getFromLocalStorage(command.databasetable + command.collection);
-                    if (!keydatabase) 
-                    {
-                        proxyprinttodiv('Function updatewid in localstorage check create', incopy, 12);
-                        addToLocalStorage(command.databasetable + command.keycollection, {"initialwid":setinitialwid(incopy, command)} );
-                        addToLocalStorage(command.databasetable + command.collection,[setinitialwid(incopy, command)]);
-                        keydatabase = getFromLocalStorage(command.databasetable + command.keycollection);
-                        database = getFromLocalStorage(command.databasetable + command.collection);
-                    }
-                } 
-                else if (command.datastore === "localstore") 
-                {
-                    keydatabase = getfromlocal(command.databasetable + command.keycollection);
-                    database = getfromlocal(command.databasetable + command.collection);
-                    if (!keydatabase) 
-                    {
-                        addtolocal(command.databasetable + command.keycollection, {"initialwid":setinitialwid(incopy, command)});
-                        addtolocal(command.databasetable + command.collection, [setinitialwid(incopy, command)]);
-                        keydatabase = getfromlocal(command.databasetable + command.keycollection);
-                        database = getfromlocal(command.databasetable + command.collection);
-                    }
-                }
-
-                var found = false;                              // does current record exist?
-                var currentrecord = keydatabase[incopy.wid];    // search for wid in current keydatabase
-                var recordtoadd = {};                           // data for the new record to be added
-
-                proxyprinttodiv('Function updatewid currentrecord I', currentrecord, 12);
-
-                // fix current wid as necessary
-                if (currentrecord) 
-                {   
-                    // set up recordtoadd ready for addition
-                    recordtoadd = convertfromdriformatenhanced(currentrecord, command); 
-                    // flatten out record -- normal : {wid:wid1 a:b c:d}, driformat: {wid:wid1 data:{a:b c:d}}
-                    found = true;       // mark that the record was found                          
-                    // mark that current record exists
-                    if (command.datamethod === "insert")
-                    {
-                        recordtoadd=incopy; // current record does not matter
-                    }
-                    else // (command.datamethod === "upsert") // default
-                    {
-                        recordtoadd = extend(true, recordtoadd, incopy);
-                    }
-                    if (command.hasOwnProperty("lock")) // set the right property to save
-                    {
-                        recordtoadd.metadata.lock = command.lock;
-                    }
-                }
-                else 
-                {
-                    recordtoadd = incopy;
-                }
-
-                // update rules: updatewid will unlock or lock record based on command.lock, 
-                // it will fail if current record is already locked (and we are not unlocking)
-                // updatewid also retreives current record in database
-                //
-                // do NOT update if:
-                //    -currentrecord locked && command.lock !==false
-                //    -OR  getwid && command.lock missing
-                //    -current record is locked || !updatewid
-                // update if:
-                //    -current record is unlocked & updatewid 
-                //    -OR command.lock=false 
-
-                proxyprinttodiv('Function updatewid recordtoadd', recordtoadd, 12, true, true);
-                var currentlock = false;
-                if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock)
-                {
-                    currentlock = true;
-                }
-
-                proxyprinttodiv('Function updatewid not found err', err, 12, true, true);
-                proxyprinttodiv('Function datastore command', command, 12,99, true);
-                proxyprinttodiv('Function updatewid command.getwidflag', command.getwidflag, 12);
-                var shouldupdate = false;
-                if (!err && 
-                    ((command.getwidflag && command.hasOwnProperty("lock")) || (!command.getwidflag)))
-                {
-                    shouldupdate = true;
-                }
-
-                proxyprinttodiv('Function updatewid currentlock', currentlock, 12, true, true);
-                proxyprinttodiv('Function updatewid shouldupdate', shouldupdate, 12, true, true);
-                if (!currentlock && shouldupdate) 
-
-                {
-                    if (!currentrecord) {currentrecord={};}
-                    var convertedrecord = converttodriformat(recordtoadd, command); // get it ready to store
-                    proxyprinttodiv('Function updatewid convertedrecord II', convertedrecord, 12);
-                    extend(true, currentrecord, convertedrecord); // merge with existing record
-                    proxyprinttodiv('Function updatewid currentrecord III', currentrecord, 12);
-
-                    // delete code if empty
-
-
-                    // update key database
-                    keydatabase[incopy.wid] = currentrecord;
-                    // update list of objects database
-                    if (!found) // if did not exist then push it
-                    {
-                        database.push(currentrecord);
-                    }
-                    else
-                    {
-                        for (var record in database) // now see if record already exists by stepping though it
-                        {
-                            proxyprinttodiv('Function addtomongo database[record]', database[record], 12);
-                            if (database[record].wid === incopy.wid) {
-                                database[record] = currentrecord;
-                                break;
-                            }
-                        }
-                    }
-                    // save to local storage/store
-                    if (command.datastore === "localstorage") 
-                    {
-                        addToLocalStorage(command.databasetable + command.keycollection, keydatabase);
-                        addToLocalStorage(command.databasetable + command.collection, database);
-                    } 
-                    else if (command.datastore === "localstore") 
-                    {
-                        addtolocal(command.databasetable + command.keycollection, keydatabase);
-                        addtolocal(command.databasetable + command.collection, database);
-                    }
-                    // future upsert data in angular data model
-                    // future addToAngular(widName, incopy);
-                    // the type of storage below is not needed
-//                    addToLocalStorage(command.databasetable + command.collection + incopy.wid, currentrecord);
-
-                    proxyprinttodiv('Function updatewid currentrecord IV', currentrecord, 12);
-                }
-
-                // if this was actually a getwid call and nothing found then err
-                if (command.getwidflag === true && !found) {err = {"errorname": "notfound"};}
-                if (currentlock && shouldupdate){err = {"errorname":"locked"};}
-
-                proxyprinttodiv('Function updatewid err', err, 12);
-                proxyprinttodiv('Function updatewid recordtoadd', recordtoadd, 12);
-                callback(err, recordtoadd);
-            }) 
-        }
-        else if (command.datastore === 'mongo') 
-        { // if datastore == mongo
-            madd(incopy, command, function (err, res) {
-                callback(err, res);
-            });
-        } 
-        else // if not local nor mongo
-        {
-            callback(null, {});
-        }
-    } 
-    else 
-    { // if no widName
-        callback(null, {}); // should have better error here
-    }
-};
-
+// because of command.lock we must always read before we upate...therefore we can share code between get and update
 exports.getwid = getwid = function getwid(inobject, callback) {
     var incopy = {};
     extend(true, incopy, inobject);
     proxyprinttodiv('Function getwid incopy', incopy, 12);
     incopy.command.convert = "toobject"; // converttodriformat
     incopy.command.getwidflag=true;
-    var command = incopy.command;
+    //var command = incopy.command;
     proxyprinttodiv('Function datastore command -- get incopy', incopy, 12);
 
-    if (command.datastore === "localstorage" || command.datastore === "localstore")
-    {
-        updatewid(incopy, function (err, output) {
-            // regardless of return we can be done since update will return read wid
-            proxyprinttodiv('Function getwid output', output, 12);
-            callback(err, output);
-        })
-    }
-    else if (command.datastore === 'mongo')
-    {
-        mget(inobject, command, function (err, output) {
-            output = convertfromdriformatenhanced(output, command, incopy);
-            callback(err, output);
-        });
-    }
-    else
-    { // if not mongo
-        proxyprinttodiv('Function datastore command -- get incopy 4', incopy, 12);
-        callback(null, incopy);
-    }
-}; //End of getwid
+    updatewid(incopy, callback)
+}
+
+
+// Because of command.lock and the use of command local databases getwid calls updatewid
+// Within getwid are subfunctions:
+//     setupdata
+//     getcurrentwid
+//     processcurrentwid
+//         processcurrentwid calls madd or maddlocal
+// nested functions for updatewid...keep a global database and keydatabased var
+exports.updatewid = updatewid = updatewid = function updatewid(inobject, callback) {
+
+        // sets up defaults and default operations common to get/add
+        function recordsetup(inobject, callback) 
+        {
+            var err;
+            var incopy = {};
+            extend(true, incopy, inobject);
+            command = incopy.command || config.configuration.d.default;  // should always get command
+            delete incopy.command;
+
+            // if record is not locked then okatoupdate = true, else false
+            if(!incopy.metadata){incopy.metadata={};}  
+            if (!incopy.metadata.systemdto && command.environment && 
+                (command.environment.userid || command.environment.loggedinuserid)) {incopy.metadata.systemdto={}}
+            if (!command.environment) {command.environment={}}
+            if (command.environment.userid && !incopy.metadata.systemdto.userid) 
+                {incopy.metadata.systemdto.userid=command.environment.userid}
+            if (command.environment.loggedinuserid && !incopy.metadata.systemdto.loggeiduserid) 
+                {incopy.metadata.systemdto.loggedinuserid=command.environment.loggedinuserid}
+
+            if(incopy && command && command.namespace)
+            { 
+                // add namespace key:value pairs from command.namespace to metadata.namespace
+                if (!incopy.metadata.namespace) {incopy.metadata.namespace = {};}
+                for (var key in command.namespace) 
+                {
+                    incopy.metadata.namespace[key] = command.namespace[key];
+                }
+            }
+            if (Object.keys(incopy.metadata).length === 0) {delete incopy.metadata}
+            proxyprinttodiv('Function datastore incopy', incopy, 12);
+            proxyprinttodiv('Function datastore command', command, 12,99, true);
+            if (!incopy.wid) {err = {"errorname":"nowid"}}
+            callback(err, incopy, command);
+        }
+
+        // This function will also create a new database if not currently present
+        // based on datastore, get the current record...also get database and keydatabase, place globally
+        // callback record as it sits in db or NULL
+        function getcurrentrecord(incopy, command, callback)
+        {
+            if (command.datastore === "localstore" || command.datastore === "localstorage") 
+            {
+                getfromangular(incopy, function (angularerr, resultobject) 
+                {
+                    // extend incopy based on what was in angular 
+                    if (resultobject) {extend(true, incopy, resultobject); }
+
+                    // if not in memory then get it
+                    // if empty then create them
+                    if (command.datastore === "localstorage") 
+                    {
+                        proxyprinttodiv('Function updatewid in localstorage check', incopy, 12);
+                        keydatabase = getFromLocalStorage(command.databasetable + command.keycollection);
+                        database = getFromLocalStorage(command.databasetable + command.collection);
+                        if (!keydatabase) 
+                        {
+                            proxyprinttodiv('Function updatewid in localstorage check create', incopy, 12);
+                            addToLocalStorage(command.databasetable + command.keycollection, {"initialwid":setinitialwid(incopy, command)} );
+                            addToLocalStorage(command.databasetable + command.collection,[setinitialwid(incopy, command)]);
+                            keydatabase = getFromLocalStorage(command.databasetable + command.keycollection);
+                            database = getFromLocalStorage(command.databasetable + command.collection);
+                        }
+                        var currentrecord = keydatabase[incopy.wid];
+                        if (!currentrecord) {currentrecord={}; command.newrecord=true;};
+                        callback(null, currentrecord, command);
+                    } 
+                    else if (command.datastore === "localstore") 
+                    {
+                        keydatabase = getfromlocal(command.databasetable + command.keycollection);
+                        database = getfromlocal(command.databasetable + command.collection);
+                        if (!keydatabase) 
+                        {
+                            addtolocal(command.databasetable + command.keycollection, {"initialwid":setinitialwid(incopy, command)});
+                            addtolocal(command.databasetable + command.collection, [setinitialwid(incopy, command)]);
+                            keydatabase = getfromlocal(command.databasetable + command.keycollection);
+                            database = getfromlocal(command.databasetable + command.collection);
+                        }
+                        var currentrecord = keydatabase[incopy.wid];
+                        if (!currentrecord) {currentrecord={}; command.newrecord=true;};
+                        callback(null, currentrecord, command);
+                    }
+                    else if (command.datastore === "mongo") 
+                    {
+                        wget(incopy, command, function (err, currentrecord) {
+                            if (!currentrecord) {currentrecord={}; command.newrecord=true;};
+                            callback(err, currentrecord, command)
+                        })
+                    }
+                    else
+                    {
+                        callback({"errorname":"wrong datastore"}, null);
+                    }
+                })
+            }
+        }
+
+        // based on record existance, datamethod, lock, send back record to add and add flags
+        function calculaterecordtoadd(incopy, currentrecord, command, callback)
+        {
+            var recordtoadd = {};
+            proxyprinttodiv('Function updatewid currentrecord I', currentrecord, 12);
+            // fix current wid as necessary
+            if (!command.newrecord)
+            {   
+                // set up recordtoadd ready for addition
+                recordtoadd = convertfromdriformatenhanced(currentrecord, command); 
+                // flatten out record -- normal : {wid:wid1 a:b c:d}, driformat: {wid:wid1 data:{a:b c:d}}                    
+                if (command.datamethod === "insert")
+                {
+                    recordtoadd=incopy; // current record does not matter
+                }
+                else // (command.datamethod === "upsert") // default
+                {
+                    recordtoadd = extend(true, recordtoadd, incopy);
+                }
+                if (command.hasOwnProperty("lock")) // set the right property to save
+                {
+                    recordtoadd.metadata.lock = command.lock;
+                }
+            }
+            else 
+            {
+                recordtoadd = incopy;
+            }
+            callback(null, recordtoadd);
+        }
+
+        // update rules: updatewid will unlock or lock record based on command.lock, 
+        // it will fail if current record is already locked (and we are not unlocking)
+        // updatewid also retreives current record in database
+        //
+        // do NOT update if:
+        //    -currentrecord locked && command.lock !==false
+        //    -OR  getwid && command.lock missing
+        //    -current record is locked || !updatewid
+        // update if:
+        //    -current record is unlocked & updatewid 
+        //    -OR command.lock=false 
+        function restrictioncheck(currentrecord, command)
+        {
+            var shouldupdate = false;
+            var currentlock = false;
+
+            if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock)
+            {
+                currentlock = true;
+            }
+
+            proxyprinttodiv('Function datastore command', command, 12,99, true);
+
+            if ((command.getwidflag && command.hasOwnProperty("lock")) || (!command.getwidflag))
+            {
+                shouldupdate = true;
+            }
+            proxyprinttodiv('Function updatewid currentlock', currentlock, 12, true, true);
+            proxyprinttodiv('Function updatewid shouldupdate', shouldupdate, 12, true, true);
+
+            return {currentlock:currentlock, shouldupdate:shouldupdate}
+        }
+
+        // process and save current record based on command.datastore
+        function processcurrentrecord(currentrecord, recordtoadd, command, callback)
+        {
+            var err = null;
+            var restriction = restrictioncheck(currentrecord, command);
+
+            if (!restriction.currentlock && restriction.shouldupdate)
+            {
+                var convertedrecord = converttodriformat(recordtoadd, command); // get it ready to store
+                proxyprinttodiv('Function updatewid convertedrecord II', convertedrecord, 12);
+                extend(true, currentrecord, convertedrecord); // merge with existing record
+                proxyprinttodiv('Function updatewid currentrecord III', currentrecord, 12);
+                // delete code if empty
+                if (command.datastore === "mongo")
+                {
+                    wadd(currentrecord, command, callback);
+                }
+                else 
+                {
+                    waddlocal(currentrecord, command, callback);
+                }
+            }
+            else
+            {
+                if (restriction.currentlock && restriction.shouldupdate) {err = {"errorname":"locked"};}
+                callback(err, currentrecord);
+            }
+        }
+
+        function waddlocal(currentrecord, command, callback)
+        {
+            // update key database
+            keydatabase[currentrecord.wid] = currentrecord;
+            // update list of objects database
+            if (command.newrecord) // if did not exist then push it
+            {
+                database.push(currentrecord);
+            }
+            else
+            {
+                for (var record in database) // now see if record already exists by stepping though it
+                {
+                    proxyprinttodiv('Function addtomongo database[record]', database[record], 12);
+                    if (database[record].wid === incopy.wid) {
+                        database[record] = currentrecord;
+                        break;
+                    }
+                }
+            }
+            // save to local storage/store
+            if (command.datastore === "localstorage") 
+            {
+                addToLocalStorage(command.databasetable + command.keycollection, keydatabase);
+                addToLocalStorage(command.databasetable + command.collection, database);
+            } 
+            else if (command.datastore === "localstore") 
+            {
+                addtolocal(command.databasetable + command.keycollection, keydatabase);
+                addtolocal(command.databasetable + command.collection, database);
+            }
+
+            // future addToAngular(widName, incopy);
+
+            proxyprinttodiv('Function updatewid currentrecord IV', currentrecord, 12);
+            callback(null, currentrecord);  // return record as added
+        }
+
+
+    // ****** START OF UPDATEWID *******
+    // *********************************
+    proxyprinttodiv('Function updatewid inobject', inobject,12 , true, true);
+    var database = [];
+    var keydatabase = {};
+
+    recordsetup(inobject, function (err, incopy, command) // set up defaults, etc
+    { 
+        if (err) {callback(err, incopy)} 
+        else 
+        {
+            getcurrentrecord(incopy, command, function (err, currentrecord, command) // get it from local or mongo
+            {
+                calculaterecordtoadd(incopy, currentrecord, command, function (err, recordtoadd){
+                    processcurrentrecord(currentrecord, recordtoadd, command, function (err, currentrecord) // save to local or mongo
+                    {
+                        // if this was actually a getwid call and nothing found then err
+                        if (command.getwidflag === true && command.newrecord) {err = {"errorname": "notfound"};}
+                        proxyprinttodiv('Function updatewid err', err, 12);
+                        proxyprinttodiv('Function updatewid recordtoadd', recordtoadd, 12);
+                        callback(err, recordtoadd); // we return the pretty record
+                    })
+                });
+            })
+        }// if error 
+    })
+}; 
+
 
 //To get parents
 exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(inobject, callback) {

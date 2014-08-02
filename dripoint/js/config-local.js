@@ -93,20 +93,18 @@ function setdefaultparm() {
 
     exports.environment = "local";
     exports.Debug = Debug;
-    exports.debuglevel = debuglevel;
-    exports.everyMinuteInterval = 0;
-    exports.everyTenMinuteInterval = 0;
-    //exports.everyMinuteInterval = setInterval(exports.eventonemin,1000);
-    //exports.everyTenMinuteInterval = setInterval(exports.eventtenmin,10 * minutes);
+    exports.debuglevel = 0 || debuglevel;
+
+
 }
 
 
 function config123() {
     var configuration = {};   
-    // what envrioment and what defaults should be used
+    // what environment and what defaults should be used
     configuration.environment = 'local';
     configuration.syncrule = 'sync_local_server';
-    configuration.machinename = 'phonegap';
+    configuration.machinename = 'browser'; //'phonegap';
     configuration.startwid = 'startwid';
     configuration.collection = 'dricollection';
     configuration.db = 'data';
@@ -157,31 +155,96 @@ function config123() {
 
 
 // *********** EVENTS **************************************************
-exports.eventappinstall = eventappinstall = function eventappinstall() {
-  if (exports.environment === 'local') {
-      clearLocalStorage();
-  }
-};
+// this shoud run the very first time an app is installed
+// it should not run again when machine is rebooted, unless local storage is cleared
+exports.eventappinstall = eventappinstall = function eventappinstall(params, callback) {
+    if (config.configuration.environment === 'local') {
+        clearLocalStorage();
+        if (config.configuration.machinename==='phonegap')
+        {
+        // copy files to wids 
+        }
+    }
+    else
+    {   // if server
+        var startTime = new Date().getTime().toString();
+        execute({
+           "command.datastore":"localstore",
+           "executethis":"addwidmaster",
+           "wid":"bootwid",
+           "starttime": startTime
+           , "a": "ee"
+           }, function (err, res) {
+               console.log("Res is " + res.toString() );
+               callback(null,null);
+           }
+       );  
+    }
+}
+
+// this run when the device is turned on
+// we should always clear volitile memory localstore (clearLocal) and set defaults
+// we should NOT clear localstorage
 
 exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
     clearLocal();
     setdefaultparm();
-    if (!getFromLocalStorage(config.configuration.keycollection)) {
-        eventappinstall();
+    // if the databases are not there then must be first time
+    if (config.configuration.environment === 'local') 
+    {
+        getwid({wid: config.configuration.startwid}, function (err, startwid) 
+        {
+            // try to get the default startwid, if nothing there then eventappinstall
+            if (err) 
+            {
+                eventappinstall(params, function (err, res)
+                {
+                    eventnormalstart(params, callback); // proceed to normal start
+                })
+            }
+            else 
+            {   // if startwid existed
+                extend(true, params, startwid);
+                eventnormalstart(params, callback);
+            }
+        })
     }
-    proxyprinttodiv('eventdeviceready *******************************************', localStore, 99, true);
+    else 
+    {
+        eventnormalstart(params, callback);
+    }
+}
 
+exports.eventnormalstart = eventnormalstart = function eventnormalstart(params, callback) 
+{
+    if (config.configuration.machinename!=='phonegap')
+    {
+        var executeobject = {};
+        extend(true, executeobject, 
+            {"executethis":"getwidmaster", 
+            "wid":"startwid",
+            "command.syncrule":"sync_server"})
+        execute(executeobject, function (err, res) 
+        {
+            callback(err, res)    
+        })
+    }
+    else
+    {
+        callback(null, null)
+    }
+}
+
+
+// start other event handler
     // start eventonemin, eventtenmin and save the interval value so 
     // you can use "clearInterval" in the future if desired to stop things
-    // you can use "clearInterval" in the future if desired to stop things
-    var minute = 60 * 1000;
-    var day = minute * 60 * 24;
-    setInterval(eventonemin, 1 * minute);
-    setInterval(eventtenmin, 10 * minute);
-    setInterval(eventdaily, 1 * day);
 
-    callback(null,null);
-};
+    // var minute = 60 * 1000;
+    // var day = minute * 60 * 24;
+    // setInterval(eventonemin(), 1 * minute);
+    // setInterval(eventtenmin(), 10 * minute);
+    // setInterval(eventdaily(), 1 * day);
 
 
 exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
@@ -399,9 +462,9 @@ exports.clearLocalStorage = window.clearLocalStorage = clearLocalStorage = funct
     localStorage.clear();
     //localStore.clear();
     // items below can probably be cleared now
-    updatewid({"wid":"misc", "a":"b"}, function (err, res) {
-           proxyprinttodiv('clear from clearLocalStorage', res, 99);
-    })
+    // updatewid({"wid":"misc", "a":"b"}, function (err, res) {
+    //        proxyprinttodiv('clear from clearLocalStorage', res, 99);
+    // })
     // addToLocalStorage(config.configuration.databasetable + config.configuration.collection, [{
     //     "wid": "initialwid",
     //     "metadata": {
