@@ -1,6 +1,5 @@
 // copyright (c) 2014 DRI
 //
-//
 // command.processparameterfn
 // command.processfn
 // sync_local, sync_server, sync_local_server, sync_local_cache
@@ -10,22 +9,16 @@
 // most queries should be command.skipcache = false
 //
 // execute_queue
-//
-// search for configuration.environment 
-// future we may need to support multiple executeids
-// split command.xrun early for split local server
-// when to delete global
-// eval
-// do some getwid calls directly
-// getclean step2 do not call if "string"
-// getmongo, send more parms -- preamble can take out
-// command.lock
-// isobject errors
-// extend
 // how to save in cache command.recursive for example
+//
+// future we may need to support multiple executeids
+//
+// copy to command.systemdto.userid / loggedin user id
 // deepfilter
-// userid shoudl be copied in envirometn copy
-// committ
+//
+// server running
+// cache
+// other synch types
 
 (function (window) {
     // 'use strict';
@@ -180,14 +173,6 @@
             var currentexecutecount = command.resulttable[currentexecuteid].tryset.length; // seq based on how many are existing
             for (var eachitem in executionparameters) 
             {
-                // if no type then make default type series
-                // I think this code can be taken out since executeion preferences wil have this default
-                ////--proxyprinttodiv("inparams executionparameters[eachitem]", executionparameters[eachitem],11);
-                // if (!executionparameters[eachitem].command) {executionparameters[eachitem].command={};}
-                // if (!executionparameters[eachitem].command.environment) {executionparameters[eachitem].command.environment={};}
-                // if (!executionparameters[eachitem].command.environment.run) {executionparameters[eachitem].command.environment.run={};}
-                // if (!executionparameters[eachitem].command.executetype) {executionparameters[eachitem].command.executetype="series";}
-
                 var eachexecute = {
                     executeseq: currentexecutecount,
                     outgoingparam: executionparameters[eachitem]
@@ -401,17 +386,8 @@
             trycount = 0,
             incomingparams = {};
 
-        //extend(true, incomingparams, input);              // make copy of input 
-        ////--proxyprinttodiv('before -- remove -- incomingparams', incomingparams, 11, true, true);
-        //incomingparams=ConvertFromDOTdri(incomingparams); // convert from dot notation -- not necessary if dot notation not sent in
-        //incomingparams = converttojson(input); // converts to object and makes copy
-        // proxyprinttodiv('>>>>>>>>>>>>>>>>>>>>>>>>execute begin', input, 99, true, true);
 
-        //var command = converttocommand(incomingparams);    // call main conversion
-
-        //proxyprinttodiv('execute right after converttocommand ',command, 11, true);
         // fish out from converted results
-
         var command = converttocommand(input);    // call main conversion
         var executionpreferences = command.resulttable.executionpreferences,
             currentexecuteid = executionpreferences.command.environment.run.executeid,
@@ -421,7 +397,7 @@
             trylength = tryset.length;
 
         // read and save environment parameters
-        //executionpreferences.command.environment = checkenvironment(executionpreferences.command.environment);
+        // executionpreferences.command.environment = checkenvironment(executionpreferences.command.environment);
 
         // maybe delete command object if empty
         if (executionpreferences.command
@@ -539,16 +515,8 @@
                                             delete outgoingparam.command.processparameterfn;  // not needed since each has it own?
                                         }
                                         else
-                                        {   // if level 1 (really level 0 everywhere else) (and processparameterfn was not sent in) then get defaults
-                                            // if (level === 0)
-                                            // {   // level 0 look at syncrule (local-server)
-                                            //     pp = window[outgoingparam.command.environment.syncrule];
-                                            //     if (!pp) { pp = execute_nothing; }
-                                            // }
-                                            // else
-                                            //{   // other levels do execute_function, execute_parameter, execute_get_wid
-                                                pp = create_what_to_do_list;
-                                            //}
+                                        {   
+                                            pp = create_what_to_do_list;
                                         }
 
                                         // go an "massage" the outgoing parameters to get better outgoing parameters
@@ -640,15 +608,12 @@
                                     
                                    
                                     // update results to the right detail record based on executeseq
-                                    //if (!fromstep02err) 
-                                    //{
                                     for (var eachdetail in command.resulttable[currentexecuteid].detail) {
                                         if (command.resulttable[currentexecuteid].detail[eachdetail].executeseq === currentseq)
                                         {
                                             command.resulttable[currentexecuteid].detail[eachdetail] = executeresult;
                                         }
                                     }
-                                    //}
 
                                     // if waterfall and last one then only save last result
                                     if (((type === "waterfall") || (type === "runfirstonewaterfall")) && trylength === trycount)
@@ -717,20 +682,6 @@
                                     {
                                         previousresults = fromstep02res;
                                     }
-                                    // if ((type === "waterfall") || (type === "runfirstonewaterfall"))
-                                    // {
-                                    //     if (fromstep02res)  // or fromstep02err
-                                    //     {
-                                    //         previousresults = fromstep02res;
-                                    //     }
-                                    //     else // if results were null then send incoming parameters as input
-                                    //     {
-                                    //         //--proxyprinttodiv('execute step03 previousresults before change', previousresults, 11, true);
-                                    //         //--proxyprinttodiv('execute step03 currentexecute', currentexecute, 11, true);
-                                    //         previousresults = outgoingparam;
-                                    //         //--proxyprinttodiv('execute step03 previousresults after change', previousresults, 11, true);
-                                    //     }
-                                    // }
 
                                     // if group, then do not care about not found, will be done later
                                     if (type === "group"
@@ -844,14 +795,6 @@
                     proxyprinttodiv('execute SUMMARY resultsummary ', resultsummary, 11, true);
                     var color = Number(getglobal('debugcolor')); color--; saveglobal('debugcolor', color);
                     var indent = Number(getglobal('debugindent')); indent--; saveglobal('debugindent', indent);
-
-                    // if (executionpreferences.command.environment.run.executelevel === 0) {
-                    //     // reset environment now as we are at the end of the overall execute process
-                    //     resetenvironment();
-
-                    //     // remove the command property from the overall result if it still has it
-                    //     if (resultsummary && resultsummary.command) { delete resultsummary.command; }
-                    // }
 
                     callback(errorsummary, resultsummary)
                 }); // mapseries
@@ -1325,9 +1268,11 @@
             params.command.processparameterfn = "execute_nothing";
             params.command.processfn = "execute_function";
             params.command.keepaddthis=false;
+            proxyprinttodiv('execute end of execute_get_wid 0 params', params, 99, true);
             execute(params, function (err, res) {
-                // proxyprinttodiv('execute end of execute_get_wid I', inparams, 99, true);
-                // proxyprinttodiv('execute end of execute_get_wid I res', res, 99, true);
+                proxyprinttodiv('execute end of execute_get_wid 0-I params', params, 99, true);
+                proxyprinttodiv('execute end of execute_get_wid I', inparams, 99, true);
+                proxyprinttodiv('execute end of execute_get_wid I res', res, 99, true);
                 if (!res) { res = {}; }
                 if (!res.command) { res.command = {}; }
 

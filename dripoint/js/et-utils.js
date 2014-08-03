@@ -132,7 +132,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
             var err;
             var incopy = {};
             extend(true, incopy, inobject);
-            command = incopy.command || config.configuration.d.default;  // should always get command
+            var command = incopy.command || config.configuration.d.default;  // should always get command
             delete incopy.command;
 
             // if record is not locked then okatoupdate = true, else false
@@ -190,6 +190,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                             database = getFromLocalStorage(command.databasetable + command.collection);
                         }
                         var currentrecord = keydatabase[incopy.wid];
+                        proxyprinttodiv('Function updatewid currentrecord', currentrecord, 12);
                         if (!currentrecord) {currentrecord={}; command.newrecord=true;};
                         callback(null, currentrecord, command);
                     } 
@@ -367,14 +368,23 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
 
     recordsetup(inobject, function (err, incopy, command) // set up defaults, etc
     { 
+        proxyprinttodiv('Function updatewid err A ', err, 12, true, true);
+        proxyprinttodiv('Function updatewid incopy A ', incopy, 12, true, true);
+        proxyprinttodiv('Function updatewid command A ', command, 12, true, true);
         if (err) {callback(err, incopy)} 
         else 
         {
             getcurrentrecord(incopy, command, function (err, currentrecord, command) // get it from local or mongo
             {
+                proxyprinttodiv('Function updatewid currentrecord B ', currentrecord, 12, true, true);
+                proxyprinttodiv('Function updatewid command B ', command, 12, true, true);
                 calculaterecordtoadd(incopy, currentrecord, command, function (err, recordtoadd){
+                    proxyprinttodiv('Function updatewid err C ', err, 12, true, true);
+                    proxyprinttodiv('Function updatewid recordtoadd C ', recordtoadd, 12, true, true);
                     processcurrentrecord(currentrecord, recordtoadd, command, function (err, currentrecord) // save to local or mongo
                     {
+                        proxyprinttodiv('Function updatewid err D ', err, 12, true, true);
+                        proxyprinttodiv('Function updatewid currentrecord D ', currentrecord, 12, true, true);
                         // if this was actually a getwid call and nothing found then err
                         if (command.getwidflag === true && command.newrecord) {err = {"errorname": "notfound"};}
                         proxyprinttodiv('Function updatewid err', err, 12);

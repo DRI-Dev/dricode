@@ -1629,7 +1629,7 @@ function ettest_howtodo(executeobject, callback)
 	function ettest_series1passnormalgw(executeobject, callback) 
 	{
 	  // executethis: test_return_noerror_result
-	  updatewid({
+	  execute({
 		  "executethis":"updatewid",
 		  "wid":"callpassfunction",
 		  "metadata":{"method":"defaultdto"},

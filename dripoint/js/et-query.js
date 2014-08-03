@@ -1,6 +1,164 @@
 // copyright (c) 2014 DRI
 // to do make functions return objects, not strings
 
+exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
+    // mapreducemongo should receive: map, reduce, query, output, command into query
+    var p = {};
+    extend(true, p, inparameters);
+    var map = p.map;
+    var reduce = p.reduce;
+    delete p.map;
+    delete p.reduce;
+    if (!p.out) 
+    {
+        p.out = p.command.collection || config.configuration.d.default.collection
+    }
+
+    proxyprinttodiv('mapreduce p', p, 28,true, true);
+
+    if (config.configuration.environment!=="local")
+    {
+        // if p.queryresult then save the collection so mapreduceserver can get it
+        // mapreduceserver also shoudl be able to process p.query
+        mapreduceserver(map, reduce, p, callback);
+    }
+    else 
+    {
+        if (!p.queryresult) // if results not sent in then go process p.mongorawquery
+        {
+            p.mongorawquery = p.mongorawquery || p.query;
+            querywidmaster(p, function (err, res) 
+            {
+                p.queryresult = res.queryresult;
+                mapreducelocal(map, reduce, p, callback);
+            })
+        }
+        else // if queryresult sent in
+        {
+            mapreducelocal(map, reduce, p, callback);
+        }
+    }
+}
+
+function mapreducelocal(map, reduce, p, cb)
+{
+    function emit(k, v)
+    {
+        if (!resultlist[k]) {resultlist[k] = []};
+        resultlist[k].push(v);
+    }
+
+    var resultlist = p.queryresult;
+    // mapper step
+
+    if (p.sort) // sort input based on eg {dim0: 1} +1 ascending
+    {
+        for (var eachsortproperty in p.sort)
+        {
+            resultlist.sort(function (a, b) 
+            {
+                if (p.sort[eachsortproperty] === 1 ) {return a[eachsortproperty] > b[eachsortproperty];}
+                if (p.sort[eachsortproperty] === -1) {return a[eachsortproperty] < b[eachsortproperty];}
+            });   
+        }
+    }
+
+    for (var eachitem in resultlist) // example map: function () {emit(this.gender, 1);};
+    {
+        window[map](p.queryresult[eachitem])
+    } 
+
+    // reduce step
+    for (var eachitem in resultlist) // example reduce: function(gender, count){return Array.sum(count);};
+    {
+        resultlist[eachitem] = window[reduce](eachitem, resultlist[eachitem]);
+    }
+
+    if (p.limit) // Optional. Specifies a maximum number of documents to return from the collection.
+    {
+         resultlist.slice(0,p.limit);  
+    } 
+
+    if (p.finalize) // Optional. FN Follows the reduce method and modifies the output
+    {
+        for (var eachitem in resultlist)
+        {
+            resultlist[eachitem] = window[p.finalize](resultlist[eachitem]);
+        }  
+    }
+
+    if (p.scope) //Optional. Specifies global variables that are accessible in the map, reduce and finalize functions.
+    {
+        
+    } 
+
+    if (p.jsmode) //Optional. Specifies whether to convert intermediate data into BSON format between the execution of the map and reduce functions. Defaults to false.
+    {
+        
+    } 
+
+    if (p.verbose) // Optional. Specifies whether to include the timing information in the result information. The verbose defaults to true to include the timing information.
+    {
+        
+    } 
+
+    if (Object.keys(p.out).length > 0)
+    {
+        if (p.out.inline === 1) 
+        {
+            p.out = "queryresult";
+        }
+        // out: { <action>: <collectionName>
+        // [, db: <dbName>]
+        // [, sharded: <boolean> ]
+        // [, nonAtomic: <boolean> ] }
+        // out: { inline: 1 }
+        // set p.out
+    }
+
+    if (isString(p.out)) // save results to db
+    {
+        if (p.out ==="queryresult")
+        {
+            var temp = {};
+            temp.queryresult=resultlist;
+            cb(null,temp);
+        }
+        else // if not query result -- real save
+        {
+            updatecollection(p, cb);
+        }
+    }
+    else // else return the results
+    {
+        cb(null, resultlist);
+    }
+
+}
+
+function updatecollection(p, cb)
+{
+    var todolist = p.queryresult;
+    async.mapSeries(todolist, function (eachresult, cbMap) 
+    {
+        async.nextTick(function () 
+        {
+            eachresult.command.collection = p.out;
+            updatewid(eachresult, function (err, res)
+            {
+                cbMap(null);
+            }) 
+        })
+    },
+    function (err, res)
+    {
+        cb(null, res);
+    }
+    )
+}
+
+
+
 // returns [{},{}]
 exports.querywidmaster = querywidmaster = function querywidmaster(params, callback) {
     params.command.queryconvertmethod = "object";
