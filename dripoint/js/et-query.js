@@ -43,7 +43,8 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
             "mongosetfieldsexclude": {},
             "mongosinglequery": "",
             "mongomultiplequery": "",
-            "monogoprojection":""
+            "monogoprojection":"",
+            "queryresult": null
         },
         {
             "command": {
@@ -64,10 +65,12 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
             "mongosetfieldsexclude": "",
             "mongosinglequery": "",
             "mongomultiplequery": "",
-            "monogoprojection":""
+            "monogoprojection":"",
+            "queryresult":""
         },
         true);
 
+    
     proxyprinttodiv('querywid filteredobject', filter_data, 28, true);
     parameters = filter_data.filteredobject;
     var xparams = filter_data.output;  // xtra parameters will be left overs..will be used for further $ands to query
@@ -101,6 +104,15 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     var mQueryString;                                   // current query to be sent to mquery
     var environmentdb = command.db; 
     var projection = qparms.monogoprojection;
+
+    // if queryresult was sent in (xparams.queryresult) then move it to command.indb
+    // this will be the "database" that will be used for a search
+    // so you can send it in in "queryresult" or "command.indb"
+    if (xparams.queryresult)
+    {
+        command.indb = xparams.queryresult;
+        delete xparams.queryresult;
+    }
 
     proxyprinttodiv('querywid command', command, 28, true);
     proxyprinttodiv('querywid qparms', qparms, 28, true);

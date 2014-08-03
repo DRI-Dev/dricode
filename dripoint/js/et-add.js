@@ -386,7 +386,9 @@
         // if the incoming relationship is one to one
         async.series([
                 function step1(step1_callback) {
-                    if ((parentwid && inputrecord.wid) || (relationshiptype === "onetoone") || (relationshiptype === "manytoone")) { //|| (relationshiptype === "manytomany")
+                    proxyprinttodiv("addrecord inputrecord", inputrecord, 99, true,true);
+                    proxyprinttodiv("addrecord inputrecord.wid", inputrecord.wid, 99, true,true);
+                    if (parentwid && inputrecord.wid && ((relationshiptype === "onetoone") || (relationshiptype === "manytoone"))) { //|| (relationshiptype === "manytomany")
 
                         if (parentwid && inputrecord.wid) {
                             //|| (relationshiptype === "manytomany")
@@ -435,9 +437,11 @@
                             };
                         }
 
+
                         //var env = new DriEnvironment(inputrecord.command.environment);
                         var env = new DriEnvironment(command.environment);
                         env.execute(executeobject, function (err, widset1) {
+
                             if (err && err.errorname === "failnotfound") { err=null; widset1={"queryresult":[]}; }
                             // If error, bounce out                            
                             if (err && Object.keys(err).length > 0) {

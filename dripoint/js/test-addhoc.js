@@ -3,6 +3,33 @@
 
 var widtests = widtests || {};
 
+exports.adtest_allexecute = 
+widtests.adtest_allexecute = 
+adtest_allexecute = 
+function adtest_allexecute(executeobject, callback) 
+{
+	var start = new Date().getTime();
+    async.series(
+    [   
+    //function (cb1) {setest_testnestedgroups1({}, function (err, res) {cb1(null, res)})},
+    //function (cb1) {setest_allowsec1tests4({}, function (err, res) {cb1(null, res)})},
+    //function (cb1) {setest_allowsec1tests5({"setup":false}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {setest_allowsec1tests6({"setup":false}, function (err, res) {cb1(null, res)})}
+    ],
+    function (err, res) {
+      proxyprinttodiv('result from many array', res, 99);
+      callback(null,res);
+	  proxyprinttodiv('total elapsed time ', new Date().getTime() - start, 99);
+    })
+	console.log('end nstest_allexecute');
+};
+widtests.adtest_allexecute.category = "daily";
+widtests.adtest_allexecute.subcategory = "push";
+widtests.adtest_allexecute.js = adtest_allexecute;
+widtests.adtest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing addhoc.";
+
+
+
 exports.ettss2 = widtests.ettss2 = ettss2 = function ettss2(params, callback) {
     debuglevel = 17;
     saveglobal("debugname", "");

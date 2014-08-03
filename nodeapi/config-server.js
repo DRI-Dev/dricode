@@ -17,70 +17,15 @@ if (!debugon) { // debugfn
     var debugon = false;
 }
 
-exports.localStore = localStore = function () {
-    var json = {};
+eventdeviceready({}, function (err, res) {
+});
 
-    function clear() {
-        this.json = {};
-    }
-
-    function push(key, val) {
-        this.json[key] = val;
-    }
-
-    function get(key) {
-        return this.json[key];
-    }
-
-    function remove(key) {
-        delete this.json[key];
-    }
-
-    return {
-        "clear": clear,
-        "json": json,
-        "push": push,
-        "remove": remove,
-        "get": get
-    };
-
-}();
-
-localStore.clear();
-
-exports.getglobal = getglobal = function getglobal(varname) {
-    return localStore.get(varname);
-};
-
-exports.saveglobal = saveglobal = function saveglobal(varname, varvalue) {
-    return localStore.push(varname, varvalue);
-};
-
-// logic to add things to localStore object
-exports.addtolocal = addtolocal = function addtolocal(widName, widobject) {
-    if (!widobject) {
-        widobject = {};
-    }
-    if (widName) {
-        //localStore.push(config.configuration.widmasterkey + widName, widobject);
-        localStore.push(widName, widobject);
-    }
-};
-
-// logic to get things from localStore object
-exports.getfromlocal = getfromlocal = function getfromlocal(inputWidgetObject) {
-    var output = null;
-    output = localStore.get(inputWidgetObject);
-    //if (output === null) { output = {}; }
-    proxyprinttodiv('getfromlocal output', output, 38);
-    return output;
-};
-
-exports.clearLocal = clearLocal = function clearLocal() {
-    // widMasterKey = "widmaster_";
-    localStore.clear();
-    //potentialwid = 0;
-};
+sendsms({
+    'tonumber': '+12313133930',
+    'msgbody': 'This the server- I just restarted '
+}, function (err, result) {
+    //console.log('running');
+});
 
 
 var needle = require('needle');
@@ -90,18 +35,17 @@ var url = require('url');
 
 exports.consolere = require('console-remote-client').connect('console.re','80','dev-dri');
 exports.console = exports.consolere;
-
 var localStorage = exports.localStorage = {};
-
 exports.environment = 'server';
 exports.server = 'server1';
+var querystring = require('querystring');
+var https = require('https');
+var fs = require('fs');
 
 
 function setdefaultparm() {
 
     exports.config = config = config123();
-    //test_results = {};
-    //potentialwid = 0;
 
     saveglobal("debuglevel", 0);
     saveglobal("Debug", 'false');
@@ -115,65 +59,12 @@ function setdefaultparm() {
     saveglobal("debugindent", 0);
     saveglobal("debuglinenum", 0);
 
-    exports.environment = "server";
+    exports.environment = "local";
     exports.Debug = Debug;
-    exports.debuglevel = debuglevel;
+    exports.debuglevel = 0 || debuglevel;
+
 }
 
-// exports.Debug = Debug = 'false';
-// exports.debuglevel = debuglevel = 0;
-// exports.widMasterKey = widMasterKey = "widmaster_";
-// exports.test_results = test_results = {};
-// exports.potentialwid = potentialwid = 0;
-
-// //do not change these constants
-// exports.debugon = debugon = true;
-// exports.debugname = debugname = "";
-// exports.debugsubcat = debugsubcat = "";
-// exports.debugcat = debugcat = "";
-// exports.debugfilter = debugfilter = "";
-// exports.debugdestination = debugdestination = 1;
-// exports.debugcolor = debugcolor = 0;
-// exports.debugindent = debugindent = 0;
-// exports.environment = environment = 'server';
-// exports.debuglinenum = debuglinenum = 1;
-
-// function setdefaultparm() {
-//     localStore.clear();
-//     Debug = 'false'; // **** Saurabh ::  changed to make node compatible ****
-//     debuglevel = 0;
-//     widMasterKey = "widmaster_";
-//     test_results = {};
-//     potentialwid = 0;
-//     debugon = false;
-//     debugname = "";
-//     debugsubcat = "";
-//     debugcat = "";
-//     debugfilter = "";
-//     debugdestination = 1;
-//     debugcolor = 0;
-//     debugindent = 0;
-//     debuglinenum = 1;
-//     environment = "server";
-//     exports.environment = environment;
-//     test_results = {}; // can take out
-//     debuglog = {};
-//     exports.debuglog = debuglog;
-//     exports.Debug = Debug;
-//     exports.debuglevel = debuglevel;
-//     exports.widMasterKey = widMasterKey;
-//     exports.test_results = test_results;
-//     exports.potentialwid = potentialwid;
-//     exports.debugon = debugon;
-//     exports.debugname = debugname;
-//     exports.debugsubcat = debugsubcat;
-//     exports.debugcat = debugcat =
-//     exports.debugfilter = debugfilter;
-//     exports.debugdestination = debugdestination;
-//     exports.debugcolor = debugcolor;
-//     exports.debugindent = debugindent;
-//     exports.debuglinenum = debuglinenum;
-// }
 
 
 function config123() {
@@ -226,254 +117,6 @@ function config123() {
     };
 }
 
-// *********** EVENTS **************************************************
-exports.eventappinstall = eventappinstall = function eventappinstall() {
-    if (exports.environment === 'local') { // only clear local storage locally
-        clearLocalStorage()
-    }
-};
-
-exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
-    setdefaultparm();
-    //if (!getFromLocalStorage(config.configuration.defaultkeycollection)) {
-    if (Object.keys(config).length === 0) { // this will never happen on server
-        eventappinstall();
-    }
-
-    // start eventonemin, eventtenmin and save the interval value so 
-    // you can use "clearInterval" in the future if desired to stop things
-    var minute = 60 * 1000;
-    var day = minute * 60 * 24;
-    setInterval(eventonemin, 1 * minute);
-    setInterval(eventtenmin, 10 * minute);
-    setInterval(eventdaily, 1 * day);
-
-
-   var startTime = new Date().getTime().toString();
-   execute({
-       "executethis":"addwidmaster",
-        "command": {
-            "datastore": "localstore" // config.configuration.datastore,
-        },
-       "wid":"bootwid",
-       "starttime": startTime
-       , "a": "ee"
-       }, function (err, res) {
-           console.log("Res is " + res.toString() );
-           callback(null,null);
-       }
-   );    
-};
-
-
-
-exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-
-};
-
-exports.eventonline = eventonline = function eventonline(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventoffline = eventoffline = function eventoffline(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventonemin = eventonemin = function eventonemin() {
-//    proxyprinttodiv("eventonemin", 'one sec', 30);
-    processqueue(arguments.callee.name, function (err, res) {
-        //cb(err, res);
-    });
-};
-
-exports.eventtenmin = eventtenmin = function eventtenmin(params, cb) {    
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventdaily = eventdaily = function eventdaily(params, cb) {    
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventmonthly = eventmonthly = function eventmonthly(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-//exports.processevent = processevent = function processqueue(eventname, callback) {
-//    callback(null,null);
-    // proxyprinttodiv("processeventqueue eventname----", eventname, 99);
-    // getexecutelist(eventname, "queuecollection", function (err, executetodolist) {
-    //     proxyprinttodiv("processeventqueue executelist", executetodolist, 17);
-    //     executelistfn(executetodolist, execute, function (err, res) {
-    //         deletelist(executetodolist, eventname, function (err, res) {
-    //             callback(err, res);
-    //             });
-    //         });
-    //     });
-//    };
-
-// exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, callback) {
-//     async.mapSeries(listToDo, function (eachresult, cbMap) {
-//         async.nextTick(function () {
-//             fn(eachresult, function (err, res){
-//                 cbMap(err, res);
-//             });
-//         });
-//     }, function (err, res) {
-//         callback(err, res);
-//     });
-// };
-
-
-// exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eventtype, callback) {
-// //    proxyprinttodiv("getexecutelist eventname(collection)", eventname, 17);
-// //    proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
-//     var executeobject = {"command": {"result": "queryresult"}};
-//     var executetodolist=[];
-//     executeobject.command.databasetable = eventtype;
-//     executeobject.command.collection = eventname;
-//     executeobject.command.db = "queuedata";
-//     //executeobject.command.result = "queueresult";
-//     executeobject["executethis"] = "querywid";
-//     //executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
-//     executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]}   
-// //    proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
-    
-//     execute(executeobject, function (err, res) {
-// //        proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
-//         if (res.length === 0) {
-//             executetodolist = [];
-//         }
-//         else if(res[0] && res[0]["queryresult"]){
-//             for (var everyaction in res[0]["queryresult"]){
-// //                proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
-//                 //if (res[0]["queryresult"][everyaction]
-//                 executetodolist.push(res[0]["queryresult"][everyaction]);
-//             }
-
-//         }
-//         callback(null, executetodolist);
-//     })
-// };
-
-
-
-
-
-
-function executeAjax(allConfig, executeItem, callback, returnCallback) {
-    // var result;
-    // var success = false;
-    // result = "";
-
-    // //executeItem = "[" + JSON.stringify(executeItem) + "]";
-    // executeItem = JSON.stringify(executeItem);
-    // $.ajax({
-    //     type: 'PUT',
-    //     dataType: 'json',
-    //     url: '/executethis',
-    //     headers: {
-    //         'content-type': 'Application/json'
-    //     },
-    //     global: 'false',
-    //     cache: 'false',
-    //     async: 'false',
-    //     data: executeItem,
-    //     success: function(data) {
-    //         // alert(JSON.stringify(data));
-    //         if (data.error) {
-    //             result = "<pre> APPLICATION ERROR: </pre>" + JSON.stringify(data);
-    //         } else {
-    //             if (Object.keys(data).length > 0) {
-    //                 result = "<pre> SUCCESS: </pre>" + JSON.stringify(data);
-    //             } else {
-    //                 result = "<pre> <<< No Data Returned >>> </pre>";
-    //             }
-    //         }
-    //         callback(data, allConfig, 'html', returnCallback);
-    //     },
-    //     error: function(data) {
-    //         alert(JSON.stringify(data));
-    //         result = "FAILED TO CALL EXECUTETHIS " + JSON.stringify(data);
-    //         callback(data, allConfig, 'html', returnCallback);
-    //     }
-    // });
-}
-
-// Primary execute function called after doThis
-
 exports.test2 = test2 = function test2(name, callback) {
     var default_name = 'stranger';
     var use_name = name || default_name;
@@ -485,26 +128,46 @@ exports.test2 = test2 = function test2(name, callback) {
     );
 };
 
-exports.sayHello = sayHello = function (params, callback) {
 
+exports.getfromangular = getfromangular = function getfromangular(params, callback) {
+    // this is a dummy getfromangular call for server use
+    callback(null, {});
 };
 
+
 // Utility function to return json with all keys in lowercase
+// function toLowerKeys(obj) {
+//     var key, keys = Object.keys(obj);
+//     var n = keys.length;
+//     var newobj = {};
+//     while (n--) {
+//         key = keys[n];
+//         newobj[key.toLowerCase()] = obj[key];
+//     }
+//     return newobj;
+// }
 
-function toLowerKeys(obj) {
-    var key, keys = Object.keys(obj);
-    var n = keys.length;
-    var newobj = {};
-    while (n--) {
-        key = keys[n];
-        newobj[key.toLowerCase()] = obj[key];
-    }
-    return newobj;
-}
 
-var querystring = require('querystring');
-var https = require('https');
-var fs = require('fs');
+
+// send an SMS to someone
+// - parameters -
+//  To: phone number of who to send message to in +12315551212 format
+//  Body: text of the message to send, max 1600 characters
+exports.sendsms = sendsms = function (params, cb) {
+    var twilioFunction = 'Messages.json';
+    var twilioParameters = {
+        'To': params['to'],
+        'Body': params['body']
+    };
+    exports.twilioPassThrough({
+            'twilioFunction': twilioFunction,
+            'twilioParameters': twilioParameters
+        },
+        function (err, result) {
+            cb(err, result);
+        }
+    );
+};
 
 exports.twilioPassThrough = function (params, callback) {
     //    proxyprinttodiv('twilioPassThrough started', 99);
@@ -538,27 +201,6 @@ exports.twilioPassThrough = function (params, callback) {
     var twilioURI = twilioBasePath + '/' + twilioFunction;
     var callHTML = 'https://' + twilioHost + twilioURI;
 
-    //    proxuprinttodiv('Calling twilio function ' + twilioURI );
-
-    //// Maximum size of the message is 1600 characters
-    //if (messageBody)
-    //{
-    //    messageBody = messageBody.substr(0,1599);
-    //} else {
-    //    // no message body - abort
-    //    console.log('Message body paramter missing.  Aborting function');
-    //    return
-    //}
-
-    //// Build the post data object
-    //var post_data = querystring.stringify({
-    //        'From': callerFrom,
-    //        'To': callerTo,
-    //        'Body': messageBody ,                         
-    //    }
-    //);
-
-    // Pass through the paramters
     var twilioParameters = params['twilioParameters'];
     twilioParameters.From = callerFrom;
     var post_data = querystring.stringify(params['twilioParameters']);
@@ -596,65 +238,31 @@ exports.twilioPassThrough = function (params, callback) {
     //post the data
     post_request.write(post_data);
     post_request.end();
-
-
 };
 
 
-exports.gitPullEtCore = gitPullEtCore = function gitPullEtCore(params, cb) {
-    var cmd = 'git';
-    var cwd = '/Code/Dri/server-code/nodejsmtapi';
-    var args = ['pull'];
-    var options = {
-        'cwd': cwd
-    };
+// exports.gitPullEtCore = gitPullEtCore = function gitPullEtCore(params, cb) {
+//     var cmd = 'git';
+//     var cwd = '/Code/Dri/server-code/nodejsmtapi';
+//     var args = ['pull'];
+//     var options = {
+//         'cwd': cwd
+//     };
+//     console.log('calling ' + cmd + args.join(' '));
+
+//     var git = spawn(cmd, args, options);
+
+//     git.stdout.on('data', function (data) {
+//         console.log('git output: ' + data);
+//     });
+
+//     git.on('close', function (return_code) {
+//         console.log('gitPullEtCore has completed');
+//         cb(return_code, return_code);
+//     });
+// };
 
 
-    console.log('calling ' + cmd + args.join(' '));
-
-    var git = spawn(cmd, args, options);
-
-    git.stdout.on('data', function (data) {
-        console.log('git output: ' + data);
-    });
-
-    git.on('close', function (return_code) {
-        console.log('gitPullEtCore has completed');
-        cb(return_code, return_code);
-    });
-};
-
-
-
-
-// send an SMS to someone
-// - parameters -
-//  To: phone number of who to send message to in +12315551212 format
-//  Body: text of the message to send, max 1600 characters
-exports.sendsms = sendsms = function (params, cb) {
-    var twilioFunction = 'Messages.json';
-    var twilioParameters = {
-        'To': params['to'],
-        'Body': params['body']
-    };
-    exports.twilioPassThrough({
-            'twilioFunction': twilioFunction,
-            'twilioParameters': twilioParameters
-        },
-        function (err, result) {
-            cb(err, result);
-        }
-    );
-};
-
-//// lets test that function we just created
-//exports.twilioPassThrough( {
-//    'twilioFunction': 'Messages.json', 
-//    'twilioParameters': {
-//        'To': '+12313133930',
-//        'Body': 'This is a new text message for you'
-//    }
-//}, function() { console.log('123'); } );
 
 exports.server = server = function server(params, callback) {
     // set up object in syntax that driApi is expecting
@@ -722,133 +330,6 @@ exports.anyserver = anyserver = function anyserver(params, callback) {
 };
 
 
-//exports.getDriApiData = getDriApiData = function getDriApiData(params, callback) {
-//    // set up object in syntax that driApi is expecting
-//    // also get getdata/<action> action from params object
-//    console.log('>>> getDriApiData' + getDriApiData);
-//    var driExecuteObj = {
-//         actionQueryString: 'getalldata',
-//         parameterDTOs: []
-//    };
-//
-//    // convert passed in object to parameterdto list
-//    for (var prop in params) {
-//         if (params.hasOwnProperty(prop)) {
-//             driExecuteObj.parameterDTOs.push({
-//                 ParameterName: prop,
-//                 ParameterValue: 'eq:' + params[prop]
-//             });
-//         }
-//    }
-//
-//    needle.put('/getdata?accessToken=2afe5025-1964-4c50-abcf-bcd558188e74', driExecuteObj,
-//        function (err, response, body) {
-//            // convert returned list of DataModelDTOs to an object
-//            var resultsObj = {};
-//            for (var i = 0; i < results.length; i++) {
-//                 resultsObj[body[i].Key] = body[i].Value;
-//            }
-//
-//            callback(err, resultsObj);
-//        });
-//
-////    var driExecuteObj = [{
-////        "ParameterName": "wid",
-////        "ParameterValue": "eq:GetCodyTestSMS"
-////    }];
-//
-////    needle.put('http://wiziapi.drillar.com/ButtonServe.svc/GetData/getalldata?accessToken=2afe5025-1964-4c50-abcf-bcd558188e74', driExecuteObj, function (err, response, body) {
-////        // convert returned list of DataModelDTOs to an object
-////        // var resultsObj = {};
-////        // for (var i = 0; i < results.length; i++) {
-////        //     resultsObj[results[i].Key] = results[i].Value;
-////        // }
-////        console.log(JSON.stringify(response));
-////
-////        callback(null, response);
-////    });
-//
-//};
-
-// exports.convertfromdriformat = convertfromdriformat = function convertfromdriformat(widobject, command) {
-//     var outobject = {};
-//     var db = "data";
-//     if (command && command.db) {
-//         db = command.db
-//     }
-
-//     //widobject = ConvertToDOTdri(widobject); // in case db=a.b.c nested object sent in
-
-//     if ((widobject) && (Object.keys(widobject).length > 0)) {
-//         if (widobject[db]) {
-//             outobject = widobject[db];
-//         }
-
-//         if (widobject['wid']) {
-//             outobject['wid'] = widobject['wid'];
-//         } else {
-//             outobject['wid'] = "";
-//         }
-
-//         if (widobject['metadata']) {
-//             // deleting date from metadata, this is a fix for ag3
-//             if (widobject['metadata']['date']) {
-//                 delete widobject['metadata']['date'];
-//             }
-//             outobject['metadata'] = widobject['metadata'];
-
-//         } else {
-//             outobject['metadata'] = "";
-//         }
-//         outobject = ConvertToDOTdri(outobject);
-//     }
-//     return outobject;
-// };
-
-// exports.converttodriformat = converttodriformat = function converttodriformat(inputObject, command) {
-//     var inputWidgetObject = JSON.parse(JSON.stringify(inputObject));
-//     delete inputWidgetObject['executethis'];
-// //    proxyprinttodiv('Function updatewid in : inputWidgetObject', inputWidgetObject, 1);
-//     var saveobject = {};
-//     var db = "data";
-//     var wid;
-//     var metadata;
-//     var date;
-//     if (command && command.db) {
-//         db = command.db
-//     }
-
-//     inputWidgetObject['metadata.date'] = new Date();
-
-//     inputWidgetObject = ConvertFromDOTdri(inputWidgetObject);
-//     if (inputWidgetObject['wid']) {
-//         wid = inputWidgetObject['wid'];
-//         delete inputWidgetObject['wid']
-//     }
-//     if (inputWidgetObject['metadata']) {
-//         metadata = inputWidgetObject['metadata'];
-//         delete inputWidgetObject['metadata']
-//     }
-
-//     saveobject[db] = inputWidgetObject;
-//     saveobject['wid'] = wid;
-//     saveobject['metadata'] = metadata;
-
-// //    proxyprinttodiv('Function updatewid in : saveobject II', saveobject, 1);
-//     return saveobject;
-// };
-
-
-eventdeviceready({}, function (err, res) {
-});
-
-sendsms({
-    'tonumber': '+12313133930',
-    'msgbody': 'This the server- I just restarted '
-}, function (err, result) {
-    //console.log('running');
-});
-
 exports.getPropertyOrDefault = getPropertyOrDefault = function(params, propName, defaultValue) {
     if (params.hasOwnProperty(propName)) {
         return params[propName];
@@ -908,74 +389,76 @@ zapier_passthrough(
     }
 ); 
 
-	// series, level 0, 1 function that passes on the server
-	exports.server_serieslevel0pass1 = 
-	server_serieslevel0pass1 = 
-	function server_serieslevel0pass1(executeobject, callback) 
-	{
-		  if (!executeobject.command) {
+
+
+    // series, level 0, 1 function that passes on the server
+    exports.server_serieslevel0pass1 = 
+    server_serieslevel0pass1 = 
+    function server_serieslevel0pass1(executeobject, callback) 
+    {
+          if (!executeobject.command) {
               executeobject.command={};
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  
-		  executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=0;
-		  executeobject.command.environment.platform='server';          // used for server testing
-		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
+          
+          executeobject.command.environment.run.type="series"
+          executeobject.command.environment.run.executelevel=0;
+          executeobject.command.environment.platform='server';          // used for server testing
+          executeobject.command.environment.processfn="execute_function";          // what function handles functions
 
-		  executeobject.command.xrun={"executethis": 'test_return_noerror_result_server'};
+          executeobject.command.xrun={"executethis": 'test_return_noerror_result_server'};
 
-		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
-		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
-		  {        
-				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
-				proxyprinttodiv('expected error', null, 99);
-				proxyprinttodiv('actual error', error_obj, 99);
-				proxyprinttodiv('expected result', result_assertion, 99);
-				proxyprinttodiv('actual result', result_obj, 99);
+          var etEnvironment = new DriEnvironment(executeobject.command.environment);
+          etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+          {        
+                var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
+                proxyprinttodiv('expected error', null, 99);
+                proxyprinttodiv('actual error', error_obj, 99);
+                proxyprinttodiv('expected result', result_assertion, 99);
+                proxyprinttodiv('actual result', result_obj, 99);
 
-				var composite_obj = logverifycomplex("server_serieslevel0pass1", result_obj, result_assertion, error_obj, null);
-				proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj)
-		  });
+                var composite_obj = logverifycomplex("server_serieslevel0pass1", result_obj, result_assertion, error_obj, null);
+                proxyprinttodiv('composite_obj', composite_obj, 99);
+                callback(null, composite_obj)
+          });
 
-	};
+    };
 
-	// series, level 0, 1 : server tries to find a function that only exists locally and so fails
-	exports.server_serieslevel0fail1 = 
-	server_serieslevel0fail1 = 
-	function server_serieslevel0fail1(executeobject, callback) 
-	{
-		  if (!executeobject.command) {
+    // series, level 0, 1 : server tries to find a function that only exists locally and so fails
+    exports.server_serieslevel0fail1 = 
+    server_serieslevel0fail1 = 
+    function server_serieslevel0fail1(executeobject, callback) 
+    {
+          if (!executeobject.command) {
               executeobject.command={};
               executeobject.command.environment={};
               executeobject.command.environment.run={};
           }
-		  
-		  executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=0;
-		  executeobject.command.environment.platform='server';          // used for server testing
-		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
+          
+          executeobject.command.environment.run.type="series"
+          executeobject.command.environment.run.executelevel=0;
+          executeobject.command.environment.platform='server';          // used for server testing
+          executeobject.command.environment.processfn="execute_function";          // what function handles functions
 
-		  executeobject.command.xrun={"executethis": 'test_return_noerror_result_local'};
+          executeobject.command.xrun={"executethis": 'test_return_noerror_result_local'};
 
-		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
-		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
-		  {        
-				//var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
-				proxyprinttodiv('expected error', global_failnotfound, 99);
-				proxyprinttodiv('actual error', error_obj, 99);
-				proxyprinttodiv('expected result', null, 99);
-				proxyprinttodiv('actual result', result_obj, 99);
+          var etEnvironment = new DriEnvironment(executeobject.command.environment);
+          etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+          {        
+                //var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
+                proxyprinttodiv('expected error', global_failnotfound, 99);
+                proxyprinttodiv('actual error', error_obj, 99);
+                proxyprinttodiv('expected result', null, 99);
+                proxyprinttodiv('actual result', result_obj, 99);
 
-				var composite_obj = logverifycomplex("server_serieslevel0fail1", result_obj, null, error_obj, global_failnotfound);
-				proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj)
-		  });
+                var composite_obj = logverifycomplex("server_serieslevel0fail1", result_obj, null, error_obj, global_failnotfound);
+                proxyprinttodiv('composite_obj', composite_obj, 99);
+                callback(null, composite_obj)
+          });
 
-	};
-	
+    };
+    
 // server tests
 exports.test_return_noerror_result_server = test_return_noerror_result_server = function test_return_noerror_result_server (param, callback) 
 {
@@ -996,49 +479,6 @@ exports.test_return_noerror_result_server = test_return_noerror_result_server = 
         callback( error_obj, result_obj );
     }
 };
-
-exports.getfromangular = getfromangular = function getfromangular(params, callback) {
-    // this is a dummy getfromangular call for server use
-    callback(null, {});
-};
-
-// sendpostcall = function sendpostcall(parameters, callback) {
-//     console.log(' ??? sendPostCall started ???');
-//     // var post_host = 'test3.dripoint.com';
-//     var post_port = 80;
-//     //var post_uri = '/executethis?executethis=publishtest';
-//     var post_host = 'requestb.in';
-//     var post_uri = '/t0y6i6t0';
-//     var post_data_raw = parameters['post_data'];
-//     var post_data = querystring.stringify(post_data_raw);
-//     var post_options = {
-//         host: post_data,
-//         port: post_port,
-//         path: post_uri,
-//         method: 'POST',
-//         headers: {
-//             'Content-type': 'application/x-www-form-urlencoded',
-//             'Content-length': post_data.length
-//         }
-//     }
-//     var options = {
-//         headers: {
-//             "Content-Type": "application/json; charset=utf-8"
-//         }
-//     };
-
-//     // cleanup request for server2 :: GET REVIEWED BY ROGER
-
-//     // Setup the request
-//     var serverUrl = 'http://requestb.in/t0y6i6t0';
-//     var params = parameters;
-//     needle.post(serverUrl, JSON.stringify(params), options, function (err, response, body) {
-//         callback(err, body);
-//     });
-
-//     console.log("post_data --- veru emd of the file.");
-// };
-
 
 
 exports.publishtestdelay = publishtestdelay = function publishtestdelay(parameters, callback) {
@@ -1158,4 +598,160 @@ exports.getuptime = getuptime = function getuptime(params, callback) {
         }
     );
 }
+
+
+
+//exports.getDriApiData = getDriApiData = function getDriApiData(params, callback) {
+//    // set up object in syntax that driApi is expecting
+//    // also get getdata/<action> action from params object
+//    console.log('>>> getDriApiData' + getDriApiData);
+//    var driExecuteObj = {
+//         actionQueryString: 'getalldata',
+//         parameterDTOs: []
+//    };
+//
+//    // convert passed in object to parameterdto list
+//    for (var prop in params) {
+//         if (params.hasOwnProperty(prop)) {
+//             driExecuteObj.parameterDTOs.push({
+//                 ParameterName: prop,
+//                 ParameterValue: 'eq:' + params[prop]
+//             });
+//         }
+//    }
+//
+//    needle.put('/getdata?accessToken=2afe5025-1964-4c50-abcf-bcd558188e74', driExecuteObj,
+//        function (err, response, body) {
+//            // convert returned list of DataModelDTOs to an object
+//            var resultsObj = {};
+//            for (var i = 0; i < results.length; i++) {
+//                 resultsObj[body[i].Key] = body[i].Value;
+//            }
+//
+//            callback(err, resultsObj);
+//        });
+//
+////    var driExecuteObj = [{
+////        "ParameterName": "wid",
+////        "ParameterValue": "eq:GetCodyTestSMS"
+////    }];
+//
+////    needle.put('http://wiziapi.drillar.com/ButtonServe.svc/GetData/getalldata?accessToken=2afe5025-1964-4c50-abcf-bcd558188e74', driExecuteObj, function (err, response, body) {
+////        // convert returned list of DataModelDTOs to an object
+////        // var resultsObj = {};
+////        // for (var i = 0; i < results.length; i++) {
+////        //     resultsObj[results[i].Key] = results[i].Value;
+////        // }
+////        console.log(JSON.stringify(response));
+////
+////        callback(null, response);
+////    });
+//
+//};
+
+// exports.convertfromdriformat = convertfromdriformat = function convertfromdriformat(widobject, command) {
+//     var outobject = {};
+//     var db = "data";
+//     if (command && command.db) {
+//         db = command.db
+//     }
+
+//     //widobject = ConvertToDOTdri(widobject); // in case db=a.b.c nested object sent in
+
+//     if ((widobject) && (Object.keys(widobject).length > 0)) {
+//         if (widobject[db]) {
+//             outobject = widobject[db];
+//         }
+
+//         if (widobject['wid']) {
+//             outobject['wid'] = widobject['wid'];
+//         } else {
+//             outobject['wid'] = "";
+//         }
+
+//         if (widobject['metadata']) {
+//             // deleting date from metadata, this is a fix for ag3
+//             if (widobject['metadata']['date']) {
+//                 delete widobject['metadata']['date'];
+//             }
+//             outobject['metadata'] = widobject['metadata'];
+
+//         } else {
+//             outobject['metadata'] = "";
+//         }
+//         outobject = ConvertToDOTdri(outobject);
+//     }
+//     return outobject;
+// };
+
+// exports.converttodriformat = converttodriformat = function converttodriformat(inputObject, command) {
+//     var inputWidgetObject = JSON.parse(JSON.stringify(inputObject));
+//     delete inputWidgetObject['executethis'];
+// //    proxyprinttodiv('Function updatewid in : inputWidgetObject', inputWidgetObject, 1);
+//     var saveobject = {};
+//     var db = "data";
+//     var wid;
+//     var metadata;
+//     var date;
+//     if (command && command.db) {
+//         db = command.db
+//     }
+
+//     inputWidgetObject['metadata.date'] = new Date();
+
+//     inputWidgetObject = ConvertFromDOTdri(inputWidgetObject);
+//     if (inputWidgetObject['wid']) {
+//         wid = inputWidgetObject['wid'];
+//         delete inputWidgetObject['wid']
+//     }
+//     if (inputWidgetObject['metadata']) {
+//         metadata = inputWidgetObject['metadata'];
+//         delete inputWidgetObject['metadata']
+//     }
+
+//     saveobject[db] = inputWidgetObject;
+//     saveobject['wid'] = wid;
+//     saveobject['metadata'] = metadata;
+
+// //    proxyprinttodiv('Function updatewid in : saveobject II', saveobject, 1);
+//     return saveobject;
+// };
+
+// sendpostcall = function sendpostcall(parameters, callback) {
+//     console.log(' ??? sendPostCall started ???');
+//     // var post_host = 'test3.dripoint.com';
+//     var post_port = 80;
+//     //var post_uri = '/executethis?executethis=publishtest';
+//     var post_host = 'requestb.in';
+//     var post_uri = '/t0y6i6t0';
+//     var post_data_raw = parameters['post_data'];
+//     var post_data = querystring.stringify(post_data_raw);
+//     var post_options = {
+//         host: post_data,
+//         port: post_port,
+//         path: post_uri,
+//         method: 'POST',
+//         headers: {
+//             'Content-type': 'application/x-www-form-urlencoded',
+//             'Content-length': post_data.length
+//         }
+//     }
+//     var options = {
+//         headers: {
+//             "Content-Type": "application/json; charset=utf-8"
+//         }
+//     };
+
+//     // cleanup request for server2 :: GET REVIEWED BY ROGER
+
+//     // Setup the request
+//     var serverUrl = 'http://requestb.in/t0y6i6t0';
+//     var params = parameters;
+//     needle.post(serverUrl, JSON.stringify(params), options, function (err, response, body) {
+//         callback(err, body);
+//     });
+
+//     console.log("post_data --- veru emd of the file.");
+// };
+
 

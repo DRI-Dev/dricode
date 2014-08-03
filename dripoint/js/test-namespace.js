@@ -1,4 +1,32 @@
+
 var widtests = widtests || {};
+
+exports.nstest_allexecute = 
+widtests.nstest_allexecute = 
+nstest_allexecute = 
+function nstest_allexecute(executeobject, callback) 
+{
+	var start = new Date().getTime();
+    async.series(
+    [   
+    //function (cb1) {setest_testnestedgroups1({}, function (err, res) {cb1(null, res)})},
+    //function (cb1) {setest_allowsec1tests4({}, function (err, res) {cb1(null, res)})},
+    //function (cb1) {setest_allowsec1tests5({"setup":false}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {setest_allowsec1tests6({"setup":false}, function (err, res) {cb1(null, res)})}
+    ],
+    function (err, res) {
+      proxyprinttodiv('result from many array', res, 99);
+      callback(null,res);
+	  proxyprinttodiv('total elapsed time ', new Date().getTime() - start, 99);
+    })
+	console.log('end nstest_allexecute');
+};
+widtests.nstest_allexecute.category = "daily";
+widtests.nstest_allexecute.subcategory = "push";
+widtests.nstest_allexecute.js = nstest_allexecute;
+widtests.nstest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing namespace.";
+
+
 
 // tests addwidmaster with command.namespace.creator="cody"; This should show up in the metadata as {"creator":"cody"}. If we do a query later
 // on and specify namespace.creator = cody AND namespaceflag.creator = true later on then this record should be returned.

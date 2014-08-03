@@ -3,6 +3,8 @@
 
 // copyright (c) 2014 DRI
 
+// search for: (function () {
+
 // adding defaults here as this is loaded before config-server server side
 if (!Debug) { // printdiv
     var Debug = 'false';
@@ -16,6 +18,72 @@ if (!debugon) { // debugfn
 if (!exports) {
     var exports = {};
 }
+
+exports.localStore = localStore = function () {
+    var json = {};
+
+    function clear() {
+        this.json = {};
+    }
+
+    function push(key, val) {
+        this.json[key] = val;
+    }
+
+    function get(key) {
+        return this.json[key];
+    }
+
+    function remove(key) {
+        delete this.json[key];
+    }
+
+    return {
+        "clear": clear,
+        "json": json,
+        "push": push,
+        "remove": remove,
+        "get": get
+    };
+
+}();
+
+localStore.clear();
+
+exports.getglobal = getglobal = function getglobal(varname) {
+    return localStore.get(varname);
+};
+
+exports.saveglobal = saveglobal = function saveglobal(varname, varvalue) {
+    return localStore.push(varname, varvalue);
+};
+
+// logic to add things to localStore object
+exports.addtolocal = addtolocal = function addtolocal(widName, widobject) {
+    if (!widobject) {
+        widobject = {};
+    }
+    if (widName) {
+        //localStore.push(config.configuration.widmasterkey + widName, widobject);
+        localStore.push(widName, widobject);
+    }
+};
+
+// logic to get things from localStore object
+exports.getfromlocal = getfromlocal = function getfromlocal(inputWidgetObject) {
+    var output = null;
+    output = localStore.get(inputWidgetObject);
+    //if (output === null) { output = {}; }
+    proxyprinttodiv('getfromlocal output', output, 38);
+    return output;
+};
+
+exports.clearLocal = clearLocal = function clearLocal() {
+    // widMasterKey = "widmaster_";
+    localStore.clear();
+    //potentialwid = 0;
+};
+
 
 // used to create the inital record for a database
 exports.setinitialwid = setinitialwid = function setinitialwid(params, command) {
@@ -56,8 +124,9 @@ exports.getwid = getwid = function getwid(inobject, callback) {
 //         processcurrentwid calls madd or maddlocal
 // nested functions for updatewid...keep a global database and keydatabased var
 exports.updatewid = updatewid = updatewid = function updatewid(inobject, callback) {
+        // code begins at ***** below
 
-        // sets up defaults and default operations common to get/add
+        // internal fn to update wid sets up defaults and default operations common to get/add
         function recordsetup(inobject, callback) 
         {
             var err;
@@ -92,6 +161,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
             callback(err, incopy, command);
         }
 
+        // internal fn to updatewid
         // This function will also create a new database if not currently present
         // based on datastore, get the current record...also get database and keydatabase, place globally
         // callback record as it sits in db or NULL
@@ -153,6 +223,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
             }
         }
 
+        // internal fn to update wid
         // based on record existance, datamethod, lock, send back record to add and add flags
         function calculaterecordtoadd(incopy, currentrecord, command, callback)
         {
@@ -184,6 +255,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
             callback(null, recordtoadd);
         }
 
+        // internal fn to updatewid
         // update rules: updatewid will unlock or lock record based on command.lock, 
         // it will fail if current record is already locked (and we are not unlocking)
         // updatewid also retreives current record in database
@@ -217,6 +289,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
             return {currentlock:currentlock, shouldupdate:shouldupdate}
         }
 
+        // internal fn to update wid
         // process and save current record based on command.datastore
         function processcurrentrecord(currentrecord, recordtoadd, command, callback)
         {
@@ -246,6 +319,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
             }
         }
 
+        // internal fn to updatewid
         function waddlocal(currentrecord, command, callback)
         {
             // update key database
@@ -3713,6 +3787,122 @@ function totalStorageSize(){
    
 })();
 
+
+
+// start other event handler
+    // start eventonemin, eventtenmin and save the interval value so 
+    // you can use "clearInterval" in the future if desired to stop things
+
+    // var minute = 60 * 1000;
+    // var day = minute * 60 * 24;
+    // setInterval(eventonemin(), 1 * minute);
+    // setInterval(eventtenmin(), 10 * minute);
+    // setInterval(eventdaily(), 1 * day);
+
+exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+
+};
+
+exports.eventonline = eventonline = function eventonline(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventoffline = eventoffline = function eventoffline(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventonemin = eventonemin = function eventonemin() {
+//    proxyprinttodiv("eventonemin", 'one sec', 30);
+    processqueue(arguments.callee.name, function (err, res) {
+        //cb(err, res);
+    });
+};
+
+exports.eventtenmin = eventtenmin = function eventtenmin(params, cb) {    
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventdaily = eventdaily = function eventdaily(params, cb) {    
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventmonthly = eventmonthly = function eventmonthly(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
 exports.processqueue = processqueue = function processqueue(queuename, callback ) {
 
     // params.command.eventname = "eventonemin";
@@ -3857,4 +4047,101 @@ exports.savetoqueue = savetoqueue = function savetoqueue(p, callback) {
         callback(null, res);
     });
 }
+
+
+// *********** EVENTS **************************************************
+// this shoud run the very first time an app is installed
+// it should not run again when machine is rebooted, unless local storage is cleared
+exports.eventappinstall = eventappinstall = function eventappinstall(params, callback) {
+    clearLocal();
+    setdefaultparm();
+    if (config.configuration.environment === 'local') {
+        clearLocalStorage();
+        if (config.configuration.machinename==='phonegap')
+        {
+        // copy files to wids 
+        }
+    }
+    else
+    {   // if server
+
+        // start eventonemin, eventtenmin and save the interval value so 
+        // you can use "clearInterval" in the future if desired to stop things
+        var minute = 60 * 1000;
+        var day = minute * 60 * 24;
+        setInterval(eventonemin, 1 * minute);
+        setInterval(eventtenmin, 10 * minute);
+        setInterval(eventdaily, 1 * day);
+
+        var startTime = new Date().getTime().toString();
+        execute({
+           "command.datastore":"localstore",
+           "executethis":"addwidmaster",
+           "wid":"bootwid",
+           "starttime": startTime
+           , "a": "ee"
+           }, function (err, res) {
+               console.log("Res is " + res.toString() );
+               callback(null,null);
+           }
+       );  
+    }
+}
+
+
+
+
+// this run when the device is turned on
+// we should always clear volitile memory localstore (clearLocal) and set defaults
+// we should NOT clear localstorage
+
+exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
+    clearLocal();
+    setdefaultparm();
+    // if the databases are not there then must be first time
+    if (config.configuration.environment === 'local') 
+    {
+        getwid({wid: config.configuration.startwid}, function (err, startwid) 
+        {
+            // try to get the default startwid, if nothing there then eventappinstall
+            if (err) 
+            {
+                eventappinstall(params, function (err, res)
+                {
+                    eventnormalstart(params, callback); // proceed to normal start
+                })
+            }
+            else 
+            {   // if startwid existed
+                extend(true, params, startwid);
+                eventnormalstart(params, callback);
+            }
+        })
+    }
+    else 
+    {
+        eventnormalstart(params, callback);
+    }
+}
+
+exports.eventnormalstart = eventnormalstart = function eventnormalstart(params, callback) 
+{
+    if (config.configuration.machinename!=='phonegap')
+    {
+        var executeobject = {};
+        extend(true, executeobject, 
+            {"executethis":"getwidmaster", 
+            "wid":"startwid",
+            "command.syncrule":"sync_server"})
+        execute(executeobject, function (err, res) 
+        {
+            callback(err, res)    
+        })
+    }
+    else
+    {
+        callback(null, null)
+    }
+}
+
 

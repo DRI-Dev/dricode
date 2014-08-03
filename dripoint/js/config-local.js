@@ -7,77 +7,21 @@ if (!config) {
     var config = {};
 }
 
-exports.localStore = localStore = function () {
-    var json = {};
+if (!Debug) { // printdiv
+    var Debug = 'false';
+}
+if (!debuglevel) { // printdiv
+    var debuglevel = 0;
+}
+if (!debugon) { // debugfn
+    var debugon = false;
+}
 
-    function clear() {
-        this.json = {};
-    }
-
-    function push(key, val) {
-        this.json[key] = val;
-    }
-
-    function get(key) {
-        return this.json[key];
-    }
-
-    function remove(key) {
-        delete this.json[key];
-    }
-
-    return {
-        "clear": clear,
-        "json": json,
-        "push": push,
-        "remove": remove,
-        "get": get
-    };
-
-}();
-
-localStore.clear();
-
-exports.getglobal = getglobal = function getglobal(varname) {
-    return localStore.get(varname);
-};
-
-exports.saveglobal = saveglobal = function saveglobal(varname, varvalue) {
-    return localStore.push(varname, varvalue);
-};
-
-// logic to add things to localStore object
-exports.addtolocal = addtolocal = function addtolocal(widName, widobject) {
-    if (!widobject) {
-        widobject = {};
-    }
-    if (widName) {
-        //localStore.push(config.configuration.widmasterkey + widName, widobject);
-        localStore.push(widName, widobject);
-    }
-};
-
-// logic to get things from localStore object
-exports.getfromlocal = getfromlocal = function getfromlocal(inputWidgetObject) {
-    var output = null;
-    output = localStore.get(inputWidgetObject);
-    //if (output === null) { output = {}; }
-    proxyprinttodiv('getfromlocal output', output, 38);
-    return output;
-};
-
-exports.clearLocal = clearLocal = function clearLocal() {
-    // widMasterKey = "widmaster_";
-    localStore.clear();
-    //potentialwid = 0;
-};
 
 
 function setdefaultparm() {
 
     exports.config = config = config123();
-    //test_results = {};
-    //potentialwid = 0;
 
     saveglobal("debuglevel", 0);
     saveglobal("Debug", 'false');
@@ -95,7 +39,6 @@ function setdefaultparm() {
     exports.Debug = Debug;
     exports.debuglevel = 0 || debuglevel;
 
-
 }
 
 
@@ -111,11 +54,11 @@ function config123() {
     configuration.datastore = 'localstorage';
     configuration.keycollection = configuration.collection+'key';
     configuration.databasetable = 'wikiwallettesting';
+
     // configuration.e is the wid name for "environment"
     configuration.e = configuration.databasetable+configuration.collection+"environment";
 
     // configuration.d are the defaults that should be copied into command.environment during each execute
-
     configuration.d = {};
     configuration.d.default = {};
     configuration.d.default.collection = configuration.collection;
@@ -153,225 +96,6 @@ function config123() {
 }
 
 
-
-// *********** EVENTS **************************************************
-// this shoud run the very first time an app is installed
-// it should not run again when machine is rebooted, unless local storage is cleared
-exports.eventappinstall = eventappinstall = function eventappinstall(params, callback) {
-    clearLocal();
-    setdefaultparm();
-    if (config.configuration.environment === 'local') {
-        clearLocalStorage();
-        if (config.configuration.machinename==='phonegap')
-        {
-        // copy files to wids 
-        }
-    }
-    else
-    {   // if server
-        var startTime = new Date().getTime().toString();
-        execute({
-           "command.datastore":"localstore",
-           "executethis":"addwidmaster",
-           "wid":"bootwid",
-           "starttime": startTime
-           , "a": "ee"
-           }, function (err, res) {
-               console.log("Res is " + res.toString() );
-               callback(null,null);
-           }
-       );  
-    }
-}
-
-// this run when the device is turned on
-// we should always clear volitile memory localstore (clearLocal) and set defaults
-// we should NOT clear localstorage
-
-exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
-    clearLocal();
-    setdefaultparm();
-    // if the databases are not there then must be first time
-    if (config.configuration.environment === 'local') 
-    {
-        getwid({wid: config.configuration.startwid}, function (err, startwid) 
-        {
-            // try to get the default startwid, if nothing there then eventappinstall
-            if (err) 
-            {
-                eventappinstall(params, function (err, res)
-                {
-                    eventnormalstart(params, callback); // proceed to normal start
-                })
-            }
-            else 
-            {   // if startwid existed
-                extend(true, params, startwid);
-                eventnormalstart(params, callback);
-            }
-        })
-    }
-    else 
-    {
-        eventnormalstart(params, callback);
-    }
-}
-
-exports.eventnormalstart = eventnormalstart = function eventnormalstart(params, callback) 
-{
-    if (config.configuration.machinename!=='phonegap')
-    {
-        var executeobject = {};
-        extend(true, executeobject, 
-            {"executethis":"getwidmaster", 
-            "wid":"startwid",
-            "command.syncrule":"sync_server"})
-        execute(executeobject, function (err, res) 
-        {
-            callback(err, res)    
-        })
-    }
-    else
-    {
-        callback(null, null)
-    }
-}
-
-
-// start other event handler
-    // start eventonemin, eventtenmin and save the interval value so 
-    // you can use "clearInterval" in the future if desired to stop things
-
-    // var minute = 60 * 1000;
-    // var day = minute * 60 * 24;
-    // setInterval(eventonemin(), 1 * minute);
-    // setInterval(eventtenmin(), 10 * minute);
-    // setInterval(eventdaily(), 1 * day);
-
-
-exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
-//    processevent(arguments.callee.name, function (err, res) {
-//        cb(err, res);
-//    });
-    cb(null);
-};
-
-exports.eventonline = eventonline = function eventonline(params, cb) {
-//    processevent(arguments.callee.name, function (err, res) {
-//        cb(err, res);
-//    });
-    cb(null);
-};
-
-exports.eventoffline = eventoffline = function eventoffline(params, cb) {
-//    processevent(arguments.callee.name, function (err, res) {
-//        cb(err, res);
-//    });
-    cb(null);
-};
-
-exports.eventonemin = eventonemin = function eventonemin() {
-    proxyprinttodiv("eventonemin", 'one sec', 30);
-//    processevent(arguments.callee.name, function (err, res) {
-//        //cb(err, res);
-//    });
-};
-
-exports.eventtenmin = eventtenmin = function eventtenmin(params, cb) {    
-//    processevent(arguments.callee.name, function (err, res) {
-//        cb(err, res);
-//    });
-    if (typeof cb == 'function') { cb(null); }
-};
-
-exports.eventdaily = eventdaily = function eventdaily(params, cb) {    
-//    processevent(arguments.callee.name, function (err, res) {
-//        cb(err, res);
-//    });
-    cb(null);
-};
-
-exports.eventmonthly = eventmonthly = function eventmonthly(params, cb) {
-//    processevent(arguments.callee.name, function (err, res) {
-//        cb(err, res);
-//    });
-    cb(null);
-};
-
-exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess(params, cb) {
-//    processevent(arguments.callee.name, function (err, res) {
-//        cb(err, res);
-//    });
-    cb(null);
-};
-
-exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail(params, cb) {
-//    processevent(arguments.callee.name, function (err, res) {
-//        cb(err, res);
-//    });
-    cb(null);
-};
-
-exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent(params, cb) {
-//    processevent(arguments.callee.name, function (err, res) {
-//        cb(err, res);
-//    });
-    cb(null);
-};
-
-exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent(params, cb) {
-//    processevent(arguments.callee.name, function (err, res) {
-//        cb(err, res);
-//    });
-    cb(null);
-};
-
-exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent(params, cb) {
-//    processevent(arguments.callee.name, function (err, res) {
-//        cb(err, res);
-//    });
-    cb(null);
-};
-
-exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent(params, cb) {
-//    processevent(arguments.callee.name, function (err, res) {
-//        cb(err, res);
-//    });
-    cb(null);
-};
-
-exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent(params, cb) {
-//    processevent(arguments.callee.name, function (err, res) {
-//        cb(err, res);
-//    });
-    cb(null);
-};
-
-exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent(params, cb) {
-//    processevent(arguments.callee.name, function (err, res) {
-//        cb(err, res);
-//    });
-    cb(null);
-};
-
-exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend(params, cb) {
-//    processevent(arguments.callee.name, function (err, res) {
-//        cb(err, res);
-//    });
-    cb(null);
-};
-
-exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters, cb) {
-//    processevent(arguments.callee.name, function (err, res) {
-//        cb(err, res);
-//    });
-    cb(null);
-};
-
-// exports.processevent = processevent = function processevent(params, callback) {
-//     callback(null, null);
-// };
-
 exports.execute_server = window.execute_server = execute_server = function execute_server(params, callback) {
     proxyprinttodiv('Function server TO ------', params, 99, true);
 
@@ -390,6 +114,7 @@ exports.execute_server = window.execute_server = execute_server = function execu
     {
         params.command.xrun = params.serverfn;
         delete params.serverfn;
+        params.command.environment={};
         params.command.environment.platform = "server";
         proxyprinttodiv('server calling execute params', params, 99, true);
         execute(params, function (err, res) {
@@ -417,39 +142,6 @@ exports.execute_server = window.execute_server = execute_server = function execu
 };
 
 
-// exports.server = window.server = server = function server(params, callback) {
-//     proxyprinttodiv('Function server ------', params, 30);
-//     try {
-//         var inbound_parameters = {};
-//         extend(true, inbound_parameters, params);
-
-//         console.log('execute server called with ' + JSON.stringify(params));
-//         delete params['configuration'];
-//         params = toLowerKeys(params);
-
-//         var currentUser = window.localStorage ? JSON.parse(window.localStorage.getItem('driUser')) : undefined;
-//         if (currentUser) {
-//             if (!params.etenvironment) {
-//                 params.etenvironment = {};
-//             }
-//             params.etenvironment.accesstoken = currentUser.at;
-//         }
-
-//         executeAjax("", params, function (data) {
-//             console.log("Return from server: " + JSON.stringify(data));
-//             var err;
-//             callback(null, data);
-//         });
-//     } // end try
-//     catch (err) {
-//         var finalobject =
-//             createfinalobject({
-//                 "result": "server"
-//             }, {}, "server", err, inbound_parameters);
-//         callback(finalobject.err, finalobject.res);
-//     }
-// };
-
 
 exports.getFromLocalStorage = window.getFromLocalStorage = getFromLocalStorage = function getFromLocalStorage(key) {
     return JSON.parse(localStorage.getItem(key));
@@ -462,31 +154,6 @@ exports.addToLocalStorage = window.addToLocalStorage = addToLocalStorage = funct
 exports.clearLocalStorage = window.clearLocalStorage = clearLocalStorage = function clearLocalStorage() {
     proxyprinttodiv('clear clearLocalStorage', 'hi', 99);
     localStorage.clear();
-    //localStore.clear();
-    // items below can probably be cleared now
-    // updatewid({"wid":"misc", "a":"b"}, function (err, res) {
-    //        proxyprinttodiv('clear from clearLocalStorage', res, 99);
-    // })
-    // addToLocalStorage(config.configuration.databasetable + config.configuration.collection, [{
-    //     "wid": "initialwid",
-    //     "metadata": {
-    //         "date": new Date()
-    //     },
-    //     "data": {
-    //         "system generated": "clearLocalStorage10"
-    //     }
-    // }]);
-    // addToLocalStorage(config.configuration.databasetable + config.configuration.keycollection, {
-    //     "initialwid": {
-    //         "wid": "initialwid",
-    //         "metadata": {
-    //             "date": new Date()
-    //         },
-    //         "data": {
-    //             "system generated": "clearLocalStorage12"
-    //         }
-    //     }
-    // });
 };
 
 exports.removeFromLocalStorage = window.removeFromLocalStorage = removeFromLocalStorage = function removeFromLocalStorage(key) {
@@ -542,9 +209,6 @@ function test2(params, callback) {
 
 
 exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, callback) {
-
-
-
         proxyprinttodiv('Function inboundobj', inboundobj, 28);
         proxyprinttodiv('Function command', command, 28);
 
@@ -557,29 +221,27 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
             return true;
         }
 
-      var query = inboundobj;
+        var query = inboundobj;
         var outlist = [];
-        var convertedlist = [];
         var resultlist = [];
-        //var collection = "DRI";
-        //var keycollection = "DRIKEY";
-        //var collection = config.configuration.collection;
         var collection = command.collection;
-        //proxyprinttodiv("collection = ",collection,30);
-        //var keycollection = config.configuration.keycollection;
-        var keycollection = command.collection + "key";
-        //var databasetable = config.configuration.databasetable;
+        //var keycollection = command.collection + "key"; // not used for anything
         var databasetable = command.databasetable;
-        //proxyprinttodiv("db table = ",databasetable,30);
-        var database = {};
         var keydatabase = {};
         var eachwid;
 
-        // TODO :: SAURABH COMMENTED FOR MAKING SECURITY WORK, FIX THIS AND UNCOMMENT
-        // if (command.db) {db=command.db} // not needed
-        // if (command.collection) {collection=command.collection}
-        proxyprinttodiv('Function databasetable + collection', databasetable + collection, 28);
-        database = getFromLocalStorage(databasetable + collection);
+        var database = {};
+
+        // if command.indb sent in then use that database
+        // can also just send in parameter queryresult with database as value
+        if (command.indb) 
+        {
+            database = command.queryresult;
+        }
+        else
+        {
+            database = getFromLocalStorage(databasetable + collection);
+        }
 
         proxyprinttodiv('Function inlist', database, 28, true);
         if (database) {
@@ -588,7 +250,6 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
                 query = JSON.parse(inboundobj);
             }
             proxyprinttodiv('Function query', query, 28);
-            //proxyprinttodiv('Function query',  stringify(query),12);
 
             outlist = sift(query, database);
 
@@ -597,13 +258,6 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
                 return Date.parse(aObj["metadata"]["date"]) - Date.parse(bObj["metadata"]["date"]);
             });
 
-            // not sure if stuff below needed
-            //keydatabase = getFromLocalStorage(databasetable + keycollection);
-
-            //for (var eachrecord in outlist) {
-            //    eachwid = keydatabase[outlist[eachrecord]["wid"]];
-            //    resultlist.push(eachwid);
-            //}
             }
         else {
             resultlist = [];

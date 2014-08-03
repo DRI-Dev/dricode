@@ -1,8 +1,6 @@
 
 var widtests = widtests || {};
 
-var widtests = widtests || {};
-
 exports.setest_allexecute = 
 widtests.setest_allexecute = 
 setest_allexecute = 

@@ -187,10 +187,10 @@ function ettest_serieslevel0(executeobject, callback)
 		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
-				proxyprinttodiv('actual result', result_obj, 99, true);                         
-				proxyprinttodiv('expected result', null, 99, true);
-				proxyprinttodiv('actual error',error_obj, 99);
-				proxyprinttodiv('expected error', global_failnotfound, 99);
+				proxyprinttodiv('ettest_serieslevel0fail3middle actual result', result_obj, 99, true);                         
+				proxyprinttodiv('ettest_serieslevel0fail3middle expected result', null, 99, true);
+				proxyprinttodiv('ettest_serieslevel0fail3middle actual error',error_obj, 99);
+				proxyprinttodiv('ettest_serieslevel0fail3middle expected error', global_failnotfound, 99);
 				
 				composite_obj=logverifycomplex("ettest_serieslevel0fail3middle", result_obj,null, error_obj, global_failnotfound);
 				callback(null, composite_obj);

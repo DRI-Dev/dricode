@@ -100,15 +100,26 @@ function dttest_allexecute(executeobject, callback)
 	function (cb1) {testadding1({}, function (err, res) {cb1(null, res)})},
 	//function (cb1) {testupdating1({}, function (err, res) {cb1(null, res)})},
 	//function (cb1) {ettestag9000({}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {stbd1a({}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {getwidparents({}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {getwidparents({}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {getwidparents({}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {getwidparents({}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {getwidparents({}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {getwidparents({}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {getwidparents({}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {getwidparents({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {stbd1a({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {stbd1b({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {stbd1c({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {stbd1d({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {stbd1e({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {stbd1f({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {stbd1g({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {stbd1h({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {stbd1i({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {stbd1j({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {testupdateget({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testdltwid1({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testcopywid({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testgetrelatedrecords1({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {etd15({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testobjectoperations({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testdltwid2({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {simpleauthorbooktest({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {testgetwid1({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testgetfromqueue({}, function (err, res) {cb1(null, res)})}
     ],
     function (err, res) {
       proxyprinttodiv('result from many array', res, 99);
@@ -8628,6 +8639,15 @@ exports.stbd1a = stbd1a = function stbd1a(params, callback) {
 // command.datamethod = upsert(defaulted)
 // same database, same sub-database
 exports.stbd1b = stbd1b = function stbd1b(params, callback) {
+
+	var expectedresult = {
+							"wid": "db1dto",
+							"c.c1": "d1",
+							"c.c2.c21": "d21",
+							"metadata.method": "defaultdto",
+							"metadata.date.exception": ["changed","unchanged","created"]
+						};
+						
     execute([{
             "executethis": "addwidmaster",
             "wid": "db2dto",
@@ -8655,8 +8675,8 @@ exports.stbd1b = stbd1b = function stbd1b(params, callback) {
         }],
         function (err, res) {
             proxyprinttodiv('stbd1b result: ', res, 99);
-
-            callback(err, res);
+			var res_obj = logverify('stbd1b_result', res[2], expectedresult);
+            callback(err, res_obj);
         });
 }
 
@@ -8664,6 +8684,17 @@ exports.stbd1b = stbd1b = function stbd1b(params, callback) {
 // command.datamethod = upsert
 // same database, same sub-database
 exports.stbd1c = stbd1c = function stbd1c(params, callback) {
+
+	var expectedresult = {
+							"wid": "db1dto",
+							"a.a1": "b1",
+							"a.a2.a21": "b21",
+							"c.c1": "d1",
+							"c.c2.c21": "d21",
+							"metadata.method": "defaultdto",
+							"metadata.date.exception": ["changed","unchanged","created"]
+						};
+						
     execute([{
             "executethis": "addwidmaster",
             "wid": "db2dto",
@@ -8693,8 +8724,8 @@ exports.stbd1c = stbd1c = function stbd1c(params, callback) {
         }],
         function (err, res) {
             proxyprinttodiv('stbd1c result: ', res, 99);
-
-            callback(err, res);
+			var res_obj = logverify('stbd1c_result', res[2], expectedresult);
+            callback(err, res_obj);
         });
 }
 
@@ -8702,6 +8733,17 @@ exports.stbd1c = stbd1c = function stbd1c(params, callback) {
 // command.datamethod = upsert
 // same database, different sub-database
 exports.stbd1d = stbd1d = function stbd1d(params, callback) {
+
+	var expectedresult = {
+							"wid": "db1dto",
+							"a.a1": "b1",
+							"a.a2.a21": "b21",
+							"c.c1": "d1",
+							"c.c2.c21": "d21",
+							"metadata.method": "defaultdto",
+							"metadata.date.exception": ["changed","unchanged","created"]
+						};
+						
     execute([{
             "executethis": "updatewid",
             "wid": "db2dto",
@@ -8744,8 +8786,8 @@ exports.stbd1d = stbd1d = function stbd1d(params, callback) {
         }],
         function (err, res) {
             proxyprinttodiv('stbd1d result: ', res, 99);
-
-            callback(err, res);
+			var res_obj = logverify('stbd1d_result', res[2], expectedresult);
+            callback(err, res_obj);
         });
 }
 
@@ -8754,6 +8796,17 @@ exports.stbd1d = stbd1d = function stbd1d(params, callback) {
 // command.datamethod = upsert
 // same database, different sub-database
 exports.stbd1e = stbd1e = function stbd1e(params, callback) {
+
+	var expectedresult = {
+							"wid": "db1dto",
+							"a.a1": "b1",
+							"a.a2.a21": "b21",
+							"c.c1": "d1",
+							"c.c2.c21": "d21",
+							"metadata.method": "defaultdto",
+							"metadata.date.exception": ["changed","unchanged","created"]
+						};
+						
     execute([{
             "executethis": "addwidmaster",
             "wid": "db2dto",
@@ -8803,8 +8856,8 @@ exports.stbd1e = stbd1e = function stbd1e(params, callback) {
         }],
         function (err, res) {
             proxyprinttodiv('stbd1e result: ', res, 99);
-
-            callback(err, res);
+			var res_obj = logverify('stbd1e_result', res[2], expectedresult);
+            callback(err, res_obj);
         });
 }
 
@@ -8812,6 +8865,17 @@ exports.stbd1e = stbd1e = function stbd1e(params, callback) {
 // command.datamethod = insert
 // same database, different sub-database
 exports.stbd1f = stbd1f = function stbd1f(params, callback) {
+
+	var expectedresult = {
+							"wid": "db1dto",
+							"a.a1": "b1",
+							"a.a2.a21": "b21",
+							"c.c1": "d1",
+							"c.c2.c21": "d21",
+							"metadata.method": "defaultdto",
+							"metadata.date.exception": ["changed","unchanged","created"]
+						};
+						
     execute([{
             "executethis": "addwidmaster",
             "wid": "db2dto",
@@ -8861,8 +8925,8 @@ exports.stbd1f = stbd1f = function stbd1f(params, callback) {
         }],
         function (err, res) {
             proxyprinttodiv('stbd1f result: ', res, 99);
-
-            callback(err, res);
+			var res_obj = logverify('stbd1f_result', res[2], expectedresult);
+            callback(err, res_obj);
         });
 }
 
@@ -8872,6 +8936,17 @@ exports.stbd1f = stbd1f = function stbd1f(params, callback) {
 // command.datamethod = clear
 // same database, same sub-database
 exports.stbd1g = stbd1g = function stbd1g(params, callback) {
+
+	var expectedresult = {
+							"wid": "db1dto",
+							"a.a1": "b1",
+							"a.a2.a21": "b21",
+							"c.c1": "d1",
+							"c.c2.c21": "d21",
+							"metadata.method": "defaultdto",
+							"metadata.date.exception": ["changed","unchanged","created"]
+						};
+						
     execute([{
             "executethis": "addwidmaster",
             "wid": "db2dto",
@@ -8913,8 +8988,8 @@ exports.stbd1g = stbd1g = function stbd1g(params, callback) {
         }],
         function (err, res) {
             proxyprinttodiv('stbd1g result: ', res, 99);
-
-            callback(err, res);
+			var res_obj = logverify('stbd1g_result', res[2], expectedresult);
+            callback(err, res_obj);
         });
 }
 
@@ -8922,6 +8997,17 @@ exports.stbd1g = stbd1g = function stbd1g(params, callback) {
 // command.datamethod = clear
 // same database, same sub-database
 exports.stbd1h = stbd1h = function stbd1h(params, callback) {
+
+	var expectedresult = {
+							"wid": "db1dto",
+							"a.a1": "b1",
+							"a.a2.a21": "b21",
+							"c.c1": "d1",
+							"c.c2.c21": "d21",
+							"metadata.method": "defaultdto",
+							"metadata.date.exception": ["changed","unchanged","created"]
+						};
+						
     execute([{
             "executethis": "addwidmaster",
             "wid": "db2dto",
@@ -8963,8 +9049,8 @@ exports.stbd1h = stbd1h = function stbd1h(params, callback) {
         }],
         function (err, res) {
             proxyprinttodiv('stbd1h result: ', res, 99);
-
-            callback(err, res);
+			var res_obj = logverify('stbd1g_result', res[2], expectedresult);
+            callback(err, res_obj);
         });
 }
 
@@ -8976,6 +9062,57 @@ exports.stbd1h = stbd1h = function stbd1h(params, callback) {
 // command.db = "da"
 // same database, diff colection, same sub-database
 exports.stbd1i = stbd1i = function stbd1i(params, callback) {
+
+	var expectedresult = [{
+						"a": {
+							"a1":"b1",
+							"a2": {
+								"a21":"b21"
+								}
+							},
+						"wid":"db2dto",
+						"metadata": {
+							"method":"defaultdto",
+							"date.exception":["changed","unchanged","created"]
+							},
+						"c": {
+							"c1":"d1",
+							"c2": {
+								"c21":"d21"
+								}
+							},
+						"ac": {
+							"ac1":"ad1",
+							"ac2": {
+								"ac21":"ad21"
+								}
+							}
+						}, {
+						"a": {
+							"a1":"b1",
+							"a2": {
+								"a21":"b21"
+								}
+							},
+						"wid":"db2dto",
+						"metadata": {
+							"method":"defaultdto",
+							"date":["changed","unchanged","created"]
+							},
+						"c": {
+							"c1":"d1",
+							"c2": {
+								"c21":"d21"
+								}
+							},
+						"ac": {
+							"ac1":"ad1",
+							"ac2": {
+								"ac21":"ad21"
+								}
+							}
+						}];
+						
     execute([{
             "executethis": "addwidmaster",
             "wid": "db2dto",
@@ -9024,7 +9161,9 @@ exports.stbd1i = stbd1i = function stbd1i(params, callback) {
                     "ac21": "ad21"
                 }
             }
-        }, {
+        }],
+        function (err, res) {
+			execute([{
             "executethis": "getwidmaster",
             "command": {
                 "environment": {
@@ -9042,12 +9181,12 @@ exports.stbd1i = stbd1i = function stbd1i(params, callback) {
                 }
             },
             "wid": "db2dto"
-        }],
-        function (err, res) {
-            proxyprinttodiv('stbd1i result: ', res, 99);
-
-            callback(err, res);
-        });
+        }], function (err, res) {
+				proxyprinttodiv('stbd1i get result: ', res, 99);
+				var res_obj = logverify('stbd1i_result', res, expectedresult);
+				callback(err, res_obj);
+			});
+		});
 }
 
 
@@ -9058,6 +9197,57 @@ exports.stbd1i = stbd1i = function stbd1i(params, callback) {
 // command.db = "da"
 // diff database, same collection, same sub-database
 exports.stbd1j = stbd1j = function stbd1j(params, callback) {
+
+	var expectedresult = [{
+						"a": {
+							"a1":"b1",
+							"a2": {
+								"a21":"b21"
+								}
+							},
+						"wid":"db2dto",
+						"metadata": {
+							"method":"defaultdto",
+							"date.exception":["changed","unchanged","created"]
+							},
+						"c": {
+							"c1":"d1",
+							"c2": {
+								"c21":"d21"
+								}
+							},
+						"ac": {
+							"ac1":"ad1",
+							"ac2": {
+								"ac21":"ad21"
+								}
+							}
+						}, {
+						"a": {
+							"a1":"b1",
+							"a2": {
+								"a21":"b21"
+								}
+							},
+						"wid":"db2dto",
+						"metadata": {
+							"method":"defaultdto",
+							"date":["changed","unchanged","created"]
+							},
+						"c": {
+							"c1":"d1",
+							"c2": {
+								"c21":"d21"
+								}
+							},
+						"ac": {
+							"ac1":"ad1",
+							"ac2": {
+								"ac21":"ad21"
+								}
+							}
+						}];
+						
     execute([{
             "executethis": "addwidmaster",
             "wid": "db2dto",
@@ -9109,7 +9299,9 @@ exports.stbd1j = stbd1j = function stbd1j(params, callback) {
                     "ac21": "ad21"
                 }
             }
-        }, {
+        }],
+        function (err, res) {
+			execute([{
             "executethis": "getwidmaster",
             "command": {
                 "environment": {
@@ -9129,12 +9321,12 @@ exports.stbd1j = stbd1j = function stbd1j(params, callback) {
                 }
             },
             "wid": "db2dto"
-        }],
-        function (err, res) {
-            proxyprinttodiv('stbd1j result: ', res, 99);
-
-            callback(err, res);
-        });
+        }], function (err, res) {
+				proxyprinttodiv('stbd1j get result: ', res, 99);
+				var res_obj = logverify('stbd1j_result', res, expectedresult);
+				callback(err, res_obj);
+			});
+    });
 }
 
 // deletewid() test 
@@ -9373,6 +9565,7 @@ exports.testgetrelatedrecords1 = testgetrelatedrecords1 = function testgetrelate
         "command": {"reltype": "child", "recurse":true}
     }*/
     ], function (err, res) {
+		// logverify = author1 record
         callback(err, res);
     });
 }
@@ -9494,7 +9687,7 @@ exports.etd15 = etd15 = function etd15(params, callback) {
         var expected_result = [[{"o1":{"a":"b"},"a1":["hi","hi2"]}]];
         proxyprinttodiv("expected_result --", expected_result, 17);
 
-//      res = logverify("etd15", actual_result, expected_result);
+        res = logverify("etd15", actual_result, expected_result);
         callback(err, res);
     });
 }
@@ -9625,8 +9818,17 @@ exports.testdltwid2 = testdltwid2 = function testdltwid2(params, callback) {
         "command":{"reltype":"child", "recurse":true}
     }],
     function(err, res) {
-        proxyprinttodiv('testdltwid2 res', res, 99);
-        callback(err, res);
+		execute([{
+				"executethis": "getwidmaster",
+				"wid": "author1"
+				}, {
+				"executethis": "getwidmaster",
+				"wid": "book1"
+				}], function (err, res) {
+					proxyprinttodiv('testdltwid2 res', res, 99);
+					var res = logverify('testdltwid2_result', res, [{},{}]);
+					callback(err, res);
+			});
     });
 }
 
@@ -9708,86 +9910,6 @@ widtests.simpleauthorbooktest.category = "daily";
 widtests.simpleauthorbooktest.subcategory = "push";
 widtests.simpleauthorbooktest.js = exports.simpleauthorbooktest;
 widtests.simpleauthorbooktest.description = "this does a test";
-
-
-
-exports.simpleauthorbooktest2 = widtests.simpleauthorbooktest2 = simpleauthorbooktest2 = function simpleauthorbooktest2(executeobject, callback) {
-    
-	  if (!executeobject.command) {
-		  executeobject.command={};
-		  executeobject.command.environment={};
-		  executeobject.command.environment.run={};
-	  }	
-    executeobject.command.xrun = [{
-        "executethis": "updatewid",
-        "metadata.method": "authordto",
-        "wid": "authordto",
-        "name": "string",
-        "age": "string",
-        "metdata.bookdto.type": "onetomany"
-    }, {
-        "executethis": "updatewid",
-        "metadata.method": "bookdto",
-        "wid": "bookdto",
-        "title": "string",
-        "pages": "string"
-    }, {
-        "executethis": "updatewid",
-        "metadata.method": "relationshipdto",
-        "wid": "relbooktoauthor",
-        "primarywid": "authordto",
-		"primarymethod": "authordto",
-        "secondarywid": "bookdto",
-		"secondarymethod": "bookdto",
-		"linktype": "onetomany",
-        "relationshiptype": "attributes"
-    }, {
-        "executethis": "updatewid",
-        "metadata.method": "authordto",
-        "wid": "elizabeth_heart",
-        "name": "Elizabeth Heart",
-        "age": "50",
-		"bookdto.wid": "book1",
-		"bookdto.title": "Michigan Haunted Houses",
-		"bookdto.pages": "500"
-    }, {
-		"executethis": "getwidmaster",
-		"wid": "elizabeth_heart",
-		"metadata.method": "authordto",
-         "command": {
-             "getwidmaster": {
-                 "execute": "ConvertToDOTdri"
-             }
-         }
-	}];
-	
-	var expectedresult = {
-						"wid":"elizabeth_heart",
-						"metadata.date":{"exception": ["updated"]},
-						"metadata.method":"authordto",
-						"metadata.bookdto.type":"onetomany",
-						"name":"Elizabeth Heart",
-						"age":"50",
-						"bookdto.0.wid":"book1",
-						"bookdto.0.metadata.date":{"exception": ["updated"]},
-						"bookdto.0.metadata.method":"bookdto",
-						"bookdto.0.metadata.parentwid.elizabeth_heart":"authordto",
-						"bookdto.0.title":"Michigan Haunted Houses",
-						"bookdto.0.pages":"500"
-						};
-	
-	var etEnvironment = new DriEnvironment(executeobject.command.environment);
-	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
-	  {                       
-			proxyprinttodiv('result', result_obj[4], 99);
-			var result = logverify('simpleauthorbooktest_result', result_obj[4], expectedresult);
-			callback(null, result);
-	  });
-}
-widtests.simpleauthorbooktest2.category = "daily";
-widtests.simpleauthorbooktest2.subcategory = "push";
-widtests.simpleauthorbooktest2.js = exports.simpleauthorbooktest2;
-widtests.simpleauthorbooktest2.description = "this does a test";
 
 
 exports.testgetwid1 = widtests.testgetwid1 = testgetwid1 = function testgetwid1(executeobject, callback) {

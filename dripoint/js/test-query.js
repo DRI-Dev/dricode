@@ -1,6 +1,31 @@
 
 var widtests = widtests || {};
 
+exports.qutest_allexecute = 
+widtests.qutest_allexecute = 
+qutest_allexecute = 
+function qutest_allexecute(executeobject, callback) 
+{
+	var start = new Date().getTime();
+    async.series(
+    [   
+    //function (cb1) {setest_testnestedgroups1({}, function (err, res) {cb1(null, res)})},
+    //function (cb1) {setest_allowsec1tests4({}, function (err, res) {cb1(null, res)})},
+    //function (cb1) {setest_allowsec1tests5({"setup":false}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {setest_allowsec1tests6({"setup":false}, function (err, res) {cb1(null, res)})}
+    ],
+    function (err, res) {
+      proxyprinttodiv('result from many array', res, 99);
+      callback(null,res);
+	  proxyprinttodiv('total elapsed time ', new Date().getTime() - start, 99);
+    })
+	console.log('end qutest_allexecute');
+};
+widtests.qutest_allexecute.category = "daily";
+widtests.qutest_allexecute.subcategory = "push";
+widtests.qutest_allexecute.js = qutest_allexecute;
+widtests.qutest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing querywid and querywidmaster.";
+
 
 exports.etmttest2 = widtests.etmttest2 = etmttest2 = function etmttest2(params, callback) {
     debuglevel = 17;
