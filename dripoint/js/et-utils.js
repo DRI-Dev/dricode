@@ -260,7 +260,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                 for (var record in database) // now see if record already exists by stepping though it
                 {
                     proxyprinttodiv('Function addtomongo database[record]', database[record], 12);
-                    if (database[record].wid === incopy.wid) {
+                    if (database[record].wid === currentrecord.wid) {
                         database[record] = currentrecord;
                         break;
                     }

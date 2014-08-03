@@ -19,6 +19,16 @@ function run_daily_tests(params, callback)
 
 }
 
+function run_daily_push_tests(params, callback)
+{
+	var filter = {'category':'daily','subcategory':'push'};
+	console.log('sending param {"category":"daily","subcategory":"push"} to run_filtered_functions()');
+	run_filtered_functions(filter, function (err, res) {
+			console.log('end run_daily_push_tests');
+		});
+
+}
+
 function run_test_daily_tests(params, callback)
 {
 	var filter = {'category':'test-daily'};
@@ -30,19 +40,19 @@ function run_test_daily_tests(params, callback)
 
 }
 
-function run_adhoc_tests(params, callback)
+function run_daily_adhoc_tests(params, callback)
 {
-	var filter = {'subcategory':'adhoc'};
-	console.log('sending param {"subcategory":"adhoc"} to run_filtered_functions()');
+	var filter = {'category':'daily','subcategory':'adhoc'};
+	console.log('sending param {"category":"daily","subcategory":"adhoc"} to run_filtered_functions()');
 	run_filtered_functions(filter, function (err, res) {
-			console.log('end run_adhoc_tests');
+			console.log('end run_daily_adhoc_tests');
 		});
 
 }
 
 function run_expensive_tests(params, callback)
 {
-	var filter = {'subcategory':'expensive'};
+	var filter = {'category':'expensive'};
 	console.log('sending param {"subcategory":"expensive"} to run_filtered_functions()');
 	run_filtered_functions(filter, function (err, res) {
 			console.log('end run_expensive_tests');

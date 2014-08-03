@@ -158,6 +158,8 @@ function config123() {
 // this shoud run the very first time an app is installed
 // it should not run again when machine is rebooted, unless local storage is cleared
 exports.eventappinstall = eventappinstall = function eventappinstall(params, callback) {
+    clearLocal();
+    setdefaultparm();
     if (config.configuration.environment === 'local') {
         clearLocalStorage();
         if (config.configuration.machinename==='phonegap')

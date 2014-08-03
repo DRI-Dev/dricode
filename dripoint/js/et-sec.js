@@ -1,3 +1,35 @@
+
+var widtests = widtests || {};
+
+var widtests = widtests || {};
+
+exports.setest_allexecute = 
+widtests.setest_allexecute = 
+setest_allexecute = 
+function setest_allexecute(executeobject, callback) 
+{
+	var start = new Date().getTime();
+    async.series(
+    [   
+    function (cb1) {setest_testnestedgroups1({}, function (err, res) {cb1(null, res)})},
+    function (cb1) {setest_allowsec1tests4({}, function (err, res) {cb1(null, res)})},
+    function (cb1) {setest_allowsec1tests5({"setup":false}, function (err, res) {cb1(null, res)})},
+	function (cb1) {setest_allowsec1tests6({"setup":false}, function (err, res) {cb1(null, res)})}
+    ],
+    function (err, res) {
+      proxyprinttodiv('result from many array', res, 99);
+      callback(null,res);
+	  proxyprinttodiv('total elapsed time ', new Date().getTime() - start, 99);
+    })
+	console.log('end setest_allexecute');
+};
+
+widtests.setest_allexecute.category = "daily";
+widtests.setest_allexecute.subcategory = "push";
+widtests.setest_allexecute.js = setest_allexecute;
+widtests.setest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing execute.";
+
+
 /// add lots of data and then fetch permissions for each user
 /// example1 from SS https://docs.google.com/spreadsheet/ccc?key=0AqSqNB4MEkB0dGthbkY4WUZGNklnTXpGNXJMNVo2Rmc&usp=drive_web#gid=41 , securityexamples tab
 exports.ex1sec = ex1sec = function ex1sec(params, callback) {
@@ -833,18 +865,18 @@ exports.sc = sc = function sc(accessconfig, callback) {
                     proxyprinttodiv('Function sc getting user for ac -- ', _accesstoken, 39);
                     getuserbyac(_accesstoken, function(err, userDto) {
                         if (userDto) {
-                            actorGroup = userDto[0].wid;
+                            actorGroup = userDto.queryresult[0].wid;
                             // get all groups from this user wid
                             getrelatedwids("", "groupdto", actorGroup, "userdto", {
                                 // "metadata.system.creator": _actorpretension
                             }, function(err, res) {
-                                async.mapSeries(res, function(reljson, cbMap) {
+                                async.mapSeries(res.queryresult, function(reljson, cbMap) {
                                         async.nextTick(function() {
                                             groupofactors.push(reljson.primarywid); // push each of the the group wid for the user
 
                                             getrelatedwids("", "groupdto", reljson.primarywid, "groupdto", "", function(err, res) {
                                                 // addSavedGroupsDataIfNeeded(groupWid, actioncreatorgroups, function(e, actioncreatorgroups) {
-                                                async.mapSeries(res, function(reljsonInner, cbMapInner) {
+                                                async.mapSeries(res.queryresult, function(reljsonInner, cbMapInner) {
                                                         async.nextTick(function() {
                                                             groupofactors.push(reljsonInner.primarywid); // push each of the the group wid for the user
                                                             cbMapInner(null);
@@ -873,13 +905,13 @@ exports.sc = sc = function sc(accessconfig, callback) {
                     actorGroup = _mygroup;
 
                     getrelatedwids("", "groupdto", actorGroup, "groupdto", {}, function(err, res) {
-                        async.mapSeries(res, function(reljson, cbMap) {
+                        async.mapSeries(res.queryresult, function(reljson, cbMap) {
                             async.nextTick(function() {
                                     groupofactors.push(reljson.primarywid); // push each of the the group wid for the user
 
                                     getrelatedwids("", "groupdto", reljson.primarywid, "groupdto", "", function(err, res) {
                                         // addSavedGroupsDataIfNeeded(groupWid, actioncreatorgroups, function(e, actioncreatorgroups) {
-                                        async.mapSeries(res, function(reljsonInner, cbMapInner) {
+                                        async.mapSeries(res.queryresult, function(reljsonInner, cbMapInner) {
                                                 async.nextTick(function() {
                                                     groupofactors.push(reljsonInner.primarywid); // push each of the the group wid for the user
                                                     cbMapInner(null);
@@ -923,7 +955,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
                     var etEnvironment = new DriEnvironment(executeobject.command.environment);
                     etEnvironment.execute(executeobject, function(err, res) {
 
-                        var res1 = res[0];
+                        var res1 = res.queryresult[0];
                         actionwid = res1['wid'];
                         if (res1 && res1['metadata'] && res1['metadata']['system']) {
                             actionCreator = res1['metadata']['system']['creator'];
@@ -941,14 +973,14 @@ exports.sc = sc = function sc(accessconfig, callback) {
                     getrelatedwids("", "groupdto", actionCreator, "userdto", "", function(err, res) {
                         actioncreatorgroups = [];
                         // addSavedGroupsDataIfNeeded(actionCreator, actioncreatorgroups, function(e, actioncreatorgroups) {
-                        addGroupWids(actioncreatorgroups, res);
+                        addGroupWids(actioncreatorgroups, res.queryresult);
                         // iterate over all groups and get the related groups
                         async.mapSeries(actioncreatorgroups, function(groupWid, cbMap) {
                             async.nextTick(function() {
                                 // get all related groups recursively and concat to groups set
                                 getrelatedwids("", "groupdto", groupWid, "groupdto", "", function(err, res) {
                                     // addSavedGroupsDataIfNeeded(groupWid, actioncreatorgroups, function(e, actioncreatorgroups) {
-                                    addGroupWids(actioncreatorgroups, res);
+                                    addGroupWids(actioncreatorgroups, res.queryresult);
                                     cbMap(null);
                                     // });
                                 });
@@ -1057,10 +1089,10 @@ exports.sc = sc = function sc(accessconfig, callback) {
             "data.secondarymethod": "groupdto"
         };
         execute(executeobject1, function(err, per_usergroup_relationship) {
-            for (var i in per_usergroup_relationship) {
-                if ((per_usergroup_relationship[i].secondarywid !== per_usergroup_relationship[i].secondarymethod) && (per_usergroup_relationship[i].primarywid !== per_usergroup_relationship[i].primarymethod)) {
+            for (var i in per_usergroup_relationship.queryresult) {
+                if ((per_usergroup_relationship.queryresult[i].secondarywid !== per_usergroup_relationship.queryresult[i].secondarymethod) && (per_usergroup_relationship.queryresult[i].primarywid !== per_usergroup_relationship.queryresult[i].primarymethod)) {
                     // add action to the set
-                    permissionsarr.push(per_usergroup_relationship[i].primarywid);
+                    permissionsarr.push(per_usergroup_relationship.queryresult[i].primarywid);
                 }
             }
 
@@ -1075,10 +1107,10 @@ exports.sc = sc = function sc(accessconfig, callback) {
                 "data.secondarymethod": "groupdto"
             };
             execute(executeobject2, function(err, per_actiongroup_relationship) {
-                for (var i in per_actiongroup_relationship) {
-                    if ((per_actiongroup_relationship[i].secondarywid !== per_actiongroup_relationship[i].secondarymethod) && (per_actiongroup_relationship[i].primarywid !== per_actiongroup_relationship[i].primarymethod)) {
+                for (var i in per_actiongroup_relationship.queryresult) {
+                    if ((per_actiongroup_relationship.queryresult[i].secondarywid !== per_actiongroup_relationship.queryresult[i].secondarymethod) && (per_actiongroup_relationship.queryresult[i].primarywid !== per_actiongroup_relationship.queryresult[i].primarymethod)) {
                         // add action to the set
-                        actiongroupsarr.push(per_actiongroup_relationship[i].secondarywid);
+                        actiongroupsarr.push(per_actiongroup_relationship.queryresult[i].secondarywid);
                     }
                 }
 
@@ -1093,10 +1125,10 @@ exports.sc = sc = function sc(accessconfig, callback) {
                     "data.secondarymethod": "actiondto"
                 };
                 execute(executeobject3, function(err, actiongroup_action_relationship) {
-                    for (var i in actiongroup_action_relationship) {
-                        if ((actiongroup_action_relationship[i].secondarywid !== actiongroup_action_relationship[i].secondarymethod) && (actiongroup_action_relationship[i].primarywid !== actiongroup_action_relationship[i].primarymethod)) {
+                    for (var i in actiongroup_action_relationship.queryresult) {
+                        if ((actiongroup_action_relationship.queryresult[i].secondarywid !== actiongroup_action_relationship.queryresult[i].secondarymethod) && (actiongroup_action_relationship.queryresult[i].primarywid !== actiongroup_action_relationship.queryresult[i].primarymethod)) {
                             // add action to the set
-                            actionsarr.push(actiongroup_action_relationship[i].secondarywid);
+                            actionsarr.push(actiongroup_action_relationship.queryresult[i].secondarywid);
                         }
                     }
 
@@ -1633,1915 +1665,6 @@ exports.sc = sc = function sc(accessconfig, callback) {
 
     // logic to check if a call shall go through/security check , takes in -- loggedinuserid, userid, level, action
 
-
-
-
-
-    // The security TEST scheme for the Allowances App
-    exports.allowsec1 = allowsec1 = function allowsec1(params, callback) {
-
-        //debuglevel = 39;
-
-        // users. sarah = parent, cindy = teacher, johnny = kid
-        var sarah, cindy, johnny, driuser = "driuser";
-
-        // actions
-        var createcurrency, editcurrency, deletecurrency, getcurrency, createoffer, editoffer, deleteoffer, executeoffer, getoffer, addusertogroup, addpermissions;
-
-        // usergroups
-        var parentgroup, teachergroup, kidgroup;
-
-        // actiongroups
-        var parentactions, teacheractions, kidactions;
-
-        // permissions
-        var parentpermission, teacherpermission, kidpermission;
-
-        async.series([
-
-            // setup dtos for security - permission,security,action,user,groups etc.
-            function(cb) {
-                dtox({}, function(err, resp) {
-                    //proxyprinttodiv('Function created schema done --   for  -- ', resp, 39);
-                    cb(err);
-                });
-            },
-
-            // create user driuser
-            function(cb) {
-                createuserdata({
-                    "wid": "driuser",
-                    "fname": "driuser",
-                    "lname": "driuser",
-                    "phone": "555-555-5515",
-                    "email": "driuser@fake.com",
-                    "address": "115 W. River St.",
-                    "address2": "",
-                    "city": "Syracuse",
-                    "state": "NY",
-                    "zip": "13244",
-                    "country": "US"
-                }, function(err, resp) {
-                    cindy = resp.wid;
-                    //proxyprinttodiv('Function createuser done --  for  driuser -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-
-            // create user cindy
-            function(cb) {
-                createuserdata({
-                    "wid": "cindy",
-                    "fname": "Cindy",
-                    "lname": "P",
-                    "phone": "555-555-5515",
-                    "email": "cindy@fake.com",
-                    "address": "115 W. River St.",
-                    "address2": "",
-                    "city": "Syracuse",
-                    "state": "NY",
-                    "zip": "13244",
-                    "country": "US"
-                }, function(err, resp) {
-                    cindy = resp.wid;
-                    //proxyprinttodiv('Function createuser done --  for  cindy -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-            function(cb) {
-                // add accesstoken for cindy
-                addsecurity({
-                    "userwid": cindy,
-                    "securityac": "cindyac"
-                }, function(err, resp) {
-                    //proxyprinttodiv('Function addsecurity done --  for cindy -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-            // create user sarah
-            function(cb) {
-                createuserdata({
-                    "wid": "sarah",
-                    "fname": "Sarah",
-                    "lname": "P",
-                    "phone": "555-555-5515",
-                    "email": "sarah@fake.com",
-                    "address": "115 W. River St.",
-                    "address2": "",
-                    "city": "Syracuse",
-                    "state": "NY",
-                    "zip": "13244",
-                    "country": "US"
-                }, function(err, resp) {
-                    sarah = resp.wid;
-                    //proxyprinttodiv('Function createuser done --  for  sarah -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-            function(cb) {
-                // add accesstoken for sarah
-                addsecurity({
-                    "userwid": sarah,
-                    "securityac": "sarahac"
-                }, function(err, resp) {
-                    //proxyprinttodiv('Function addsecurity done --  for sarah -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-            // create user johnny
-            function(cb) {
-                createuserdata({
-                    "wid": "johnny",
-                    "fname": "Johnny",
-                    "lname": "P",
-                    "phone": "555-555-5515",
-                    "email": "johnny@fake.com",
-                    "address": "115 W. River St.",
-                    "address2": "",
-                    "city": "Syracuse",
-                    "state": "NY",
-                    "zip": "13244",
-                    "country": "US"
-                }, function(err, resp) {
-                    johnny = resp.wid;
-                    //proxyprinttodiv('Function createuser done --    for  johnny -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-            function(cb) {
-                // add access token for johnny
-                addsecurity({
-                    "userwid": johnny,
-                    "securityac": "johnnyac"
-                }, function(err, resp) {
-                    //proxyprinttodiv('Function addsecurity done --  for johnny -- ', resp, 39, true);
-                    cb(err);
-                });
-            }, // Create Actions    
-            // DRI creates createcurrency
-            function(cb) {
-                createaction({
-                    "creator": driuser,
-                    "actiontype": "createcurrency"
-                }, function(err, resp) {
-                    createcurrency = resp.wid;
-                    //proxyprinttodiv('Function createaction done --    for createcurrency  -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-            // DRI creates editcurrency
-            function(cb) {
-                createaction({
-                    "creator": driuser,
-                    "actiontype": "editcurrency"
-                }, function(err, resp) {
-                    editcurrency = resp.wid;
-                    //proxyprinttodiv('Function createaction done --    for editcurrency  -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-            // DRI creates deletecurrency
-            function(cb) {
-                createaction({
-                    "creator": driuser,
-                    "actiontype": "deletecurrency"
-                }, function(err, resp) {
-                    deletecurrency = resp.wid;
-                    //proxyprinttodiv('Function createaction done --    for deletecurrency  -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-            // DRI creates createoffer
-            function(cb) {
-                createaction({
-                    "creator": driuser,
-                    "actiontype": "createoffer"
-                }, function(err, resp) {
-                    createoffer = resp.wid;
-                    //proxyprinttodiv('Function createaction done --    for createoffer  -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-            // DRI creates editoffer
-            function(cb) {
-                createaction({
-                    "creator": driuser,
-                    "actiontype": "editoffer"
-                }, function(err, resp) {
-                    editoffer = resp.wid;
-                    //proxyprinttodiv('Function createaction done --    for editoffer  -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-            // DRI creates deleteoffer
-            function(cb) {
-                createaction({
-                    "creator": driuser,
-                    "actiontype": "deleteoffer"
-                }, function(err, resp) {
-                    deleteoffer = resp.wid;
-                    //proxyprinttodiv('Function createaction done --    for deleteoffer  -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-            // DRI creates executeoffer
-            function(cb) {
-                createaction({
-                    "creator": driuser,
-                    "actiontype": "executeoffer"
-                }, function(err, resp) {
-                    executeoffer = resp.wid;
-                    //proxyprinttodiv('Function createaction done --    for executeoffer  -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-            // DRI creates getoffer
-            function(cb) {
-                createaction({
-                    "creator": driuser,
-                    "actiontype": "getoffer"
-                }, function(err, resp) {
-                    getoffer = resp.wid;
-                    //proxyprinttodiv('Function createaction done --    for getoffer  -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-            // DRI creates addusertogroup
-            function(cb) {
-                createaction({
-                    "creator": driuser,
-                    "actiontype": "addusertogroup"
-                }, function(err, resp) {
-                    addusertogroup = resp.wid;
-                    //proxyprinttodiv('Function createaction done --    for addusertogroup  -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-            // DRI creates addpermissions
-            function(cb) {
-                createaction({
-                    "creator": driuser,
-                    "actiontype": "addpermissions"
-                }, function(err, resp) {
-                    addpermissions = resp.wid;
-                    //proxyprinttodiv('Function createaction done --    for addpermissions  -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-            // DRI creates getcurrency
-            function(cb) {
-                createaction({
-                    "creator": driuser,
-                    "actiontype": "getcurrency"
-                }, function(err, resp) {
-                    getcurrency = resp.wid;
-                    //proxyprinttodiv('Function createaction done --    for getcurrency  -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-
-            // Create User Groups:  
-            // create parent group
-            function(cb) {
-
-                creategroup({
-                    "grouptype": "parentgroup"
-                }, function(err, resp) {
-                    parentgroup = resp.wid;
-                    //proxyprinttodiv('Function creategroup done --    for parentgroup  -- ', resp, 39, true);
-
-                    cb(err);
-                });
-            },
-            // create teacher group
-            function(cb) {
-
-                creategroup({
-                    "grouptype": "teachergroup"
-                }, function(err, resp) {
-                    teachergroup = resp.wid;
-                    //proxyprinttodiv('Function creategroup done --    for teachergroup  -- ', resp, 39, true);
-
-                    cb(err);
-                });
-            },
-            // create kid group
-            function(cb) {
-
-                creategroup({
-                    "grouptype": "kidgroup"
-                }, function(err, resp) {
-                    kidgroup = resp.wid;
-                    //proxyprinttodiv('Function creategroup done --    for kidgroup  -- ', resp, 39, true);
-
-                    cb(err);
-                });
-            },
-
-
-
-            // Create Action Groups
-            // create parentactions group
-            function(cb) {
-
-                creategroup({
-                    "grouptype": "parentactions"
-                }, function(err, resp) {
-                    parentactions = resp.wid;
-                    //proxyprinttodiv('Function creategroup done --    for parentactions  -- ', resp, 39, true);
-
-                    cb(err);
-                });
-            },
-            // create teacheractions group
-            function(cb) {
-
-                creategroup({
-                    "grouptype": "teacheractions"
-                }, function(err, resp) {
-                    teacheractions = resp.wid;
-                    //proxyprinttodiv('Function creategroup done --    for teacheractions  -- ', resp, 39, true);
-
-                    cb(err);
-                });
-            },
-            // create kidactions group
-            function(cb) {
-
-                creategroup({
-                    "grouptype": "kidactions"
-                }, function(err, resp) {
-                    kidactions = resp.wid;
-                    //proxyprinttodiv('Function creategroup done --    for kidactions  -- ', resp, 39, true);
-
-                    cb(err);
-                });
-            },
-
-            // Add Users to Groups: 
-            // Sarah    parentgroup
-            // Cindy    teachergroup
-            // Johnny   kidgroup
-            // driuser   parentgroup
-
-            // Sarah    parentgroup
-            function(cb) {
-                var config = {
-                    "currentwid": parentgroup,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": sarah,
-                    "targetwidmethod": "userdto",
-                    "linktype": "manytomany"
-                };
-                // attach userdto to groupdto, sarah to parentgroup
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach userdto to groupdto, sarah to parentgroup   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // Cindy    teachergroup
-            function(cb) {
-                var config = {
-                    "currentwid": teachergroup,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": cindy,
-                    "targetwidmethod": "userdto",
-                    "linktype": "manytomany"
-                };
-                // attach userdto to groupdto, cindy to teachergroup            
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach userdto to groupdto, cindy to teachergroup   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // johnny   kidgroup
-            function(cb) {
-                var config = {
-                    "currentwid": kidgroup,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": johnny,
-                    "targetwidmethod": "userdto",
-                    "linktype": "manytomany"
-                };
-                // attach userdto to groupdto, johnny to kidgroup           
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach userdto to groupdto, johnny to kidgroup   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-			
-            // driuser    parentgroup
-            function(cb) {
-                var config = {
-                    "currentwid": parentgroup,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": driuser,
-                    "targetwidmethod": "userdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach userdto to groupdto, driuser to manager   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-			
-			
-            // Add Actions to Groups:
-
-            // add createcurrency to parentactions
-            function(cb) {
-                var config = {
-                    "currentwid": parentactions,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": createcurrency,
-                    "targetwidmethod": "actiondto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach actiondto to groupdto, createcurrency to parentactions   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // add editcurrency to parentactions
-            function(cb) {
-                var config = {
-                    "currentwid": parentactions,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": editcurrency,
-                    "targetwidmethod": "actiondto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach actiondto to groupdto, editcurrency to parentactions   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // add deletecurrency to parentactions
-            function(cb) {
-                var config = {
-                    "currentwid": parentactions,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": deletecurrency,
-                    "targetwidmethod": "actiondto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach actiondto to groupdto, deletecurrency to parentactions   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // add addusertogroup to parentactions
-            function(cb) {
-                var config = {
-                    "currentwid": parentactions,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": addusertogroup,
-                    "targetwidmethod": "actiondto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach actiondto to groupdto, addusertogroup to parentactions   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // add addpermissions to parentactions
-            function(cb) {
-                var config = {
-                    "currentwid": parentactions,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": addpermissions,
-                    "targetwidmethod": "actiondto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach actiondto to groupdto, addpermissions to parentactions   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // add createoffer to teacheractions
-            function(cb) {
-                var config = {
-                    "currentwid": teacheractions,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": createoffer,
-                    "targetwidmethod": "actiondto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach actiondto to groupdto, createoffer to teacheractions   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // add editoffer to teacheractions
-            function(cb) {
-                var config = {
-                    "currentwid": teacheractions,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": editoffer,
-                    "targetwidmethod": "actiondto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach actiondto to groupdto, editoffer to teacheractions   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // add deleteoffer to teacheractions
-            function(cb) {
-                var config = {
-                    "currentwid": teacheractions,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": deleteoffer,
-                    "targetwidmethod": "actiondto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach actiondto to groupdto, deleteoffer to teacheractions   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // add executeoffer to teacheractions
-            function(cb) {
-                var config = {
-                    "currentwid": teacheractions,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": executeoffer,
-                    "targetwidmethod": "actiondto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach actiondto to groupdto, executeoffer to teacheractions   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // add getcurrency to kidactions
-            function(cb) {
-                var config = {
-                    "currentwid": kidactions,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": getcurrency,
-                    "targetwidmethod": "actiondto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach actiondto to groupdto, getcurrency to kidactions   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // add getoffer to kidactions
-            function(cb) {
-                var config = {
-                    "currentwid": kidactions,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": getoffer,
-                    "targetwidmethod": "actiondto",
-                    "linktype": "manytomany"
-                };
-                // attach actiondto to groupdto
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach actiondto to groupdto, getoffer to kidactions   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-			
-			// Add User Groups to actioncreator
-			
-
-            // add kidactions to driuser
-            function(cb) {
-                var config = {
-                    "currentwid": kidgroup,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": driuser,
-                    "targetwidmethod": "userdto",
-                    "linktype": "manytomany"
-                };
-                // attach userdto to groupdto
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach userdto to groupdto, driuser to kidactions   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // add teacheractions to driuser
-            function(cb) {
-                var config = {
-                    "currentwid": teachergroup,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": driuser,
-                    "targetwidmethod": "userdto",
-                    "linktype": "manytomany"
-                };
-                // attach userdto to groupdto
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach userdto to groupdto, driuser to teacheractions   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // add parentactions to driuser
-            function(cb) {
-                var config = {
-                    "currentwid": parentactions,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": driuser,
-                    "targetwidmethod": "userdto",
-                    "linktype": "manytomany"
-                };
-                // attach userdto to groupdto
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach userdto to groupdto, driuser to kidactions   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-			
-            // Add Groups to Groups: Create Action Group Hierarchy  
-            // kidactions       teacheractions
-            // teacheractions   parentactions
-
-
-
-
-
-            // Add teachergroup to kidgroup
-            function(cb) {
-                var config = {
-                    "currentwid": kidgroup,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": teachergroup,
-                    "targetwidmethod": "groupdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('Add Groups to Groups:   -- kidgroup to teachergroup group -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // Add parentgroup to teachergroup
-            function(cb) {
-                var config = {
-                    "currentwid": teachergroup,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": parentgroup,
-                    "targetwidmethod": "groupdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('Add Groups to Groups:   -- teachergroup to parentgroup group -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // Enter Permissions:
-
-            // DRI  {  kidactions, kidgroup }
-            // add group create to actiongroup and usergroup
-            function(cb) {
-                addpermission({
-                    "permission.userwid": driuser,
-                    "onfailwid": "",
-                    "permission.level": 99, // TODO :: REMOVE HARDCODING
-                    "description": "DRI {  kidactions, kidgroup }"
-                }, function(err, resp) {
-                    //proxyprinttodiv('Function addpermission done --    for  kidpermission -- ', resp, 39);
-                    kidpermission = resp.wid;
-                    cb(err);
-                });
-            },
-            // attach kidactions group to permissiondto
-            function(cb) {
-                var config = {
-                    "currentwid": kidpermission,
-                    "currentwidmethod": "permissiondto",
-                    "targetwid": kidactions,
-                    "targetwidmethod": "groupdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    cb(err);
-                })
-            },
-            // attach kidgroup group to permissiondto
-            function(cb) {
-                var config = {
-                    "currentwid": kidpermission,
-                    "currentwidmethod": "permissiondto",
-                    "targetwid": kidgroup,
-                    "targetwidmethod": "groupdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    cb(err);
-                })
-            },
-
-            // DRI  {  teacheractions, teachergroup }
-            // add group create to actiongroup and usergroup
-            function(cb) {
-                addpermission({
-                    "permission.userwid": driuser,
-                    "onfailwid": "",
-                    "permission.level": 99, // TODO :: REMOVE HARDCODING
-                    "description": "DRI {  teacheractions, teachergroup }"
-                }, function(err, resp) {
-                    //proxyprinttodiv('Function addpermission done --    for  teacherpermission -- ', resp, 39);
-                    teacherpermission = resp.wid;
-                    cb(err);
-                });
-            },
-            // attach teacheractions group to permissiondto
-            function(cb) {
-                var config = {
-                    "currentwid": teacherpermission,
-                    "currentwidmethod": "permissiondto",
-                    "targetwid": teacheractions,
-                    "targetwidmethod": "groupdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    cb(err);
-                })
-            },
-            // attach teachergroup group to permissiondto
-            function(cb) {
-                var config = {
-                    "currentwid": teacherpermission,
-                    "currentwidmethod": "permissiondto",
-                    "targetwid": teachergroup,
-                    "targetwidmethod": "groupdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    cb(err);
-                })
-            },
-
-            // DRI  {  parentactions, parentgroup }
-            // add group create to actiongroup and usergroup
-            function(cb) {
-                addpermission({
-                    "permission.userwid": driuser,
-                    "onfailwid": "",
-                    "permission.level": 99, // TODO :: REMOVE HARDCODING
-                    "description": "DRI {  parentactions, parentgroup }"
-                }, function(err, resp) {
-                    //proxyprinttodiv('Function addpermission done --    for  parentpermission -- ', resp, 39);
-                    parentpermission = resp.wid;
-                    cb(err);
-                });
-            },
-            // attach parentactions group to permissiondto
-            function(cb) {
-                var config = {
-                    "currentwid": parentpermission,
-                    "currentwidmethod": "permissiondto",
-                    "targetwid": parentactions,
-                    "targetwidmethod": "groupdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    cb(err);
-                })
-            },
-            // attach parentgroup group to permissiondto
-            function(cb) {
-                var config = {
-                    "currentwid": parentpermission,
-                    "currentwidmethod": "permissiondto",
-                    "targetwid": parentgroup,
-                    "targetwidmethod": "groupdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    cb(err);
-                })
-            }
-        ], function(err, resp) {
-            // final callback
-            //proxyprinttodiv('Function ex1sec done --  response  -- ', resp, 39);
-            callback(err, resp);
-        });
-
-    };
-
-
-// security check for the allowsec1 function. allowsec1 creates the security scheme and this tests it
-// 3 users are created, and permissions of those users are tested.
-exports.allowsectestsfull= allowsectestsfull = function allowsectestsfull(params, callback) {
-
-    // Effective Permissions:   
-    // Johnny   getoffer
-    //          getcurrency
-
-    // Cindy    createoffer
-    //          editoffer
-    //          deleteoffer
-    //          executeoffer
-    //          getoffer
-    //          getcurrency
-
-    // Sarah    createoffer
-    //          editoffer
-    //          deleteoffer
-    //          executeoffer
-    //          getoffer
-    //          getcurrency
-    //          createcurrency
-    //          editcurrency
-    //          deletecurrency
-    //          addusertogroup
-    //          addpermission
-
-	//debuglevel = 39;
-
-    // Sarah
-var sarahconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'createcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};
-		
-var sarahconfig2={"_mygroup":'',"_myphone":'9873838958',"_action":'editcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};
-
-var sarahconfig3={"_mygroup":'',"_myphone":'9873838958',"_action":'deletecurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};	
-
-var sarahconfig4={"_mygroup":'',"_myphone":'9873838958',"_action":'addusertogroup',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};	
-
-var sarahconfig5={"_mygroup":'',"_myphone":'9873838958',"_action":'addpermissions',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};	
-
-var sarahconfig6={"_mygroup":'',"_myphone":'9873838958',"_action":'createoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};	
-
-var sarahconfig7={"_mygroup":'',"_myphone":'9873838958',"_action":'editoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};	
-
-var sarahconfig8={"_mygroup":'',"_myphone":'9873838958',"_action":'deleteoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};	
-
-var sarahconfig9={"_mygroup":'',"_myphone":'9873838958',"_action":'executeoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};	
-
-var sarahconfig10={"_mygroup":'',"_myphone":'9873838958',"_action":'getoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};	
-
-var sarahconfig11={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};			
-	
-    // Cindy
-var cindyconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'createcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};
-		
-var cindyconfig2={"_mygroup":'',"_myphone":'9873838958',"_action":'editcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};
-
-var cindyconfig3={"_mygroup":'',"_myphone":'9873838958',"_action":'deletecurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
-
-var cindyconfig4={"_mygroup":'',"_myphone":'9873838958',"_action":'addusertogroup',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
-
-var cindyconfig5={"_mygroup":'',"_myphone":'9873838958',"_action":'addpermissions',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
-
-var cindyconfig6={"_mygroup":'',"_myphone":'9873838958',"_action":'createoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
-
-var cindyconfig7={"_mygroup":'',"_myphone":'9873838958',"_action":'editoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
-
-var cindyconfig8={"_mygroup":'',"_myphone":'9873838958',"_action":'deleteoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
-
-var cindyconfig9={"_mygroup":'',"_myphone":'9873838958',"_action":'executeoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
-
-var cindyconfig10={"_mygroup":'',"_myphone":'9873838958',"_action":'getoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
-
-var cindyconfig11={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};
-
-    // Johnny
-var johnnyconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'createcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};
-		
-var johnnyconfig2={"_mygroup":'',"_myphone":'9873838958',"_action":'editcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};
-
-var johnnyconfig3={"_mygroup":'',"_myphone":'9873838958',"_action":'deletecurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};	
-
-var johnnyconfig4={"_mygroup":'',"_myphone":'9873838958',"_action":'addusertogroup',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};	
-
-var johnnyconfig5={"_mygroup":'',"_myphone":'9873838958',"_action":'addpermissions',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};	
-
-var johnnyconfig6={"_mygroup":'',"_myphone":'9873838958',"_action":'createoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};	
-
-var johnnyconfig7={"_mygroup":'',"_myphone":'9873838958',"_action":'editoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};	
-
-var johnnyconfig8={"_mygroup":'',"_myphone":'9873838958',"_action":'deleteoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};	
-
-var johnnyconfig9={"_mygroup":'',"_myphone":'9873838958',"_action":'executeoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};	
-
-var johnnyconfig10={"_mygroup":'',"_myphone":'9873838958',"_action":'getoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};	
-
-var johnnyconfig11={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
-		"command.result":"result","command.enviromment.accesstoken":"johnnyac","command.enviromment.userid":"driuser"};
-	
-	var sarah_expected = {
-						"createcurrency":true,
-						"editcurrency":true,
-						"deletecurrency":true,
-						"addusertogroup":true,
-						"addpermissions":true,
-						"createoffer":true,
-						"editoffer":true,
-						"deleteoffer":true,
-						"executeoffer":true,
-						"getoffer":true,
-						"getcurrency":true
-						};
-	var cindy_expected = {
-						"createcurrency":false,
-						"editcurrency":false,
-						"deletecurrency":false,
-						"addusertogroup":false,
-						"addpermissions":false,
-						"createoffer":true,
-						"editoffer":true,
-						"deleteoffer":true,
-						"executeoffer":true,
-						"getoffer":true,
-						"getcurrency":true
-						};
-	var johnny_expected = {
-						"createcurrency":false,
-						"editcurrency":false,
-						"deletecurrency":false,
-						"addusertogroup":false,
-						"addpermissions":false,
-						"createoffer":false,
-						"editoffer":false,
-						"deleteoffer":false,
-						"executeoffer":false,
-						"getoffer":true,
-						"getcurrency":true
-						};
-
-	var sarah_result = {};
-	var cindy_result = {};
-	var johnny_result = {};
-	
-
-	    async.series([
-
-        function(cb) {
-            // creates the allowances security scheme data. Creates users, actions, groups, and permissions.
-            allowsec1({}, function(err, resp) {
-                //proxyprinttodiv('Data entered  -   response  -- ', resp, 39);
-                cb(err);
-            });
-
-        },
-        // check that Sarah can perform the createcurrency action
-        function(cb) {
-            // perform the securitycheck for the createcurrency action, with organization user user ac
-            sc(sarahconfig, function(err, resp) {
-                //proxyprinttodiv('Security check done 1 --  sarahconfig -   response  -- ', resp, 39);
-				sarah_result.createcurrency = resp.authstatus;				
-                cb(err);
-            });
-        },
-		// check that Sarah can perform the editcurrency action
-        function(cb) {
-            // perform the securitycheck for the editcurrency action, with organization user user ac
-            sc(sarahconfig2, function(err, resp) {
-                //proxyprinttodiv('Security check done 2 --  sarahconfig2 -   response  -- ', resp, 39);
-				sarah_result.editcurrency = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that Sarah can perform the deletecurrency action
-        function(cb) {
-            // perform the securitycheck for the deletecurrency action, with organization user user ac
-            sc(sarahconfig3, function(err, resp) {
-                //proxyprinttodiv('Security check done 3 --  sarahconfig3 -   response  -- ', resp, 39);
-				sarah_result.deletecurrency = resp.authstatus;
-                cb(err);
-            });
-        },
-				// check that Sarah can perform the addusertogroup action
-        function(cb) {
-            // perform the securitycheck for the addusertogroup action, with organization user user ac
-            sc(sarahconfig4, function(err, resp) {
-                //proxyprinttodiv('Security check done 4 --  sarahconfig4 -   response  -- ', resp, 39);
-				sarah_result.addusertogroup = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that Sarah can perform the addpermissions action
-        function(cb) {
-            // perform the securitycheck for the addpermissions action, with organization user user ac
-            sc(sarahconfig5, function(err, resp) {
-                //proxyprinttodiv('Security check done 5 --  sarahconfig5 -   response  -- ', resp, 39);
-				sarah_result.addpermissions = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that Sarah can perform the createoffer action
-        function(cb) {
-            // perform the securitycheck for the createoffer action, with organization user user ac
-            sc(sarahconfig6, function(err, resp) {
-                //proxyprinttodiv('Security check done 6 --  sarahconfig6 -   response  -- ', resp, 39);
-				sarah_result.createoffer = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that Sarah can perform the editoffer action
-        function(cb) {
-            // perform the securitycheck for the editoffer action, with organization user user ac
-            sc(sarahconfig7, function(err, resp) {
-                //proxyprinttodiv('Security check done 7 --  sarahconfig7 -   response  -- ', resp, 39);
-				sarah_result.editoffer = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that Sarah can perform the deleteoffer action
-        function(cb) {
-            // perform the securitycheck for the deleteoffer action, with organization user user ac
-            sc(sarahconfig8, function(err, resp) {
-                //proxyprinttodiv('Security check done 8 --  sarahconfig8 -   response  -- ', resp, 39);
-				sarah_result.deleteoffer = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that Sarah can perform the executeoffer action
-        function(cb) {
-            // perform the securitycheck for the executeoffer action, with organization user user ac
-            sc(sarahconfig9, function(err, resp) {
-                //proxyprinttodiv('Security check done 9 --  sarahconfig9 -   response  -- ', resp, 39);
-				sarah_result.executeoffer = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that Sarah can perform the getoffer action
-        function(cb) {
-            // perform the securitycheck for the getoffer action, with organization user user ac
-            sc(sarahconfig10, function(err, resp) {
-                //proxyprinttodiv('Security check done 10 --  sarahconfig10 -   response  -- ', resp, 39);
-				sarah_result.getoffer = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that Sarah can perform the getcurrency action
-        function(cb) {
-            // perform the securitycheck for the getcurrency action, with organization user user ac
-            sc(sarahconfig11, function(err, resp) {
-                //proxyprinttodiv('Security check done 11 --  sarahconfig11 -   response  -- ', resp, 39);
-				sarah_result.getcurrency = resp.authstatus;
-                cb(err);
-            });
-        },
-		
-        // check that Cindy can perform the createcurrency action
-        function(cb) {
-            // perform the securitycheck for the createcurrency action, with organization user user ac
-            sc(cindyconfig, function(err, resp) {
-                //proxyprinttodiv('Security check done 1 --  cindyconfig -   response  -- ', resp, 39);
-				cindy_result.createcurrency = resp.authstatus;				
-                cb(err);
-            });
-        },
-		// check that cindy can perform the editcurrency action
-        function(cb) {
-            // perform the securitycheck for the editcurrency action, with organization user user ac
-            sc(cindyconfig2, function(err, resp) {
-                //proxyprinttodiv('Security check done 2 --  cindyconfig2 -   response  -- ', resp, 39);
-				cindy_result.editcurrency = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that cindy can perform the deletecurrency action
-        function(cb) {
-            // perform the securitycheck for the deletecurrency action, with organization user user ac
-            sc(cindyconfig3, function(err, resp) {
-                //proxyprinttodiv('Security check done 3 --  cindyconfig3 -   response  -- ', resp, 39);
-				cindy_result.deletecurrency = resp.authstatus;
-                cb(err);
-            });
-        },
-				// check that cindy can perform the addusertogroup action
-        function(cb) {
-            // perform the securitycheck for the addusertogroup action, with organization user user ac
-            sc(cindyconfig4, function(err, resp) {
-                //proxyprinttodiv('Security check done 4 --  cindyconfig4 -   response  -- ', resp, 39);
-				cindy_result.addusertogroup = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that cindy can perform the addpermissions action
-        function(cb) {
-            // perform the securitycheck for the addpermissions action, with organization user user ac
-            sc(cindyconfig5, function(err, resp) {
-                //proxyprinttodiv('Security check done 5 --  cindyconfig5 -   response  -- ', resp, 39);
-				cindy_result.addpermissions = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that cindy can perform the createoffer action
-        function(cb) {
-            // perform the securitycheck for the createoffer action, with organization user user ac
-            sc(cindyconfig6, function(err, resp) {
-                //proxyprinttodiv('Security check done 6 --  cindyconfig6 -   response  -- ', resp, 39);
-				cindy_result.createoffer = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that cindy can perform the editoffer action
-        function(cb) {
-            // perform the securitycheck for the editoffer action, with organization user user ac
-            sc(cindyconfig7, function(err, resp) {
-                //proxyprinttodiv('Security check done 7 --  cindyconfig7 -   response  -- ', resp, 39);
-				cindy_result.editoffer = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that cindy can perform the deleteoffer action
-        function(cb) {
-            // perform the securitycheck for the deleteoffer action, with organization user user ac
-            sc(cindyconfig8, function(err, resp) {
-                //proxyprinttodiv('Security check done 8 --  cindyconfig8 -   response  -- ', resp, 39);
-				cindy_result.deleteoffer = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that cindy can perform the executeoffer action
-        function(cb) {
-            // perform the securitycheck for the executeoffer action, with organization user user ac
-            sc(cindyconfig9, function(err, resp) {
-                //proxyprinttodiv('Security check done 9 --  cindyconfig9 -   response  -- ', resp, 39);
-				cindy_result.executeoffer = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that cindy can perform the getoffer action
-        function(cb) {
-            // perform the securitycheck for the getoffer action, with organization user user ac
-            sc(cindyconfig10, function(err, resp) {
-                //proxyprinttodiv('Security check done 10 --  cindyconfig10 -   response  -- ', resp, 39);
-				cindy_result.getoffer = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that cindy can perform the getcurrency action
-        function(cb) {
-            // perform the securitycheck for the getcurrency action, with organization user user ac
-            sc(cindyconfig11, function(err, resp) {
-                //proxyprinttodiv('Security check done 11 --  cindyconfig11 -   response  -- ', resp, 39);
-				cindy_result.getcurrency = resp.authstatus;
-                cb(err);
-            });
-        },
-
-
-        // check that johnny can perform the createcurrency action
-        function(cb) {
-            // perform the securitycheck for the createcurrency action, with organization user user ac
-            sc(johnnyconfig, function(err, resp) {
-                //proxyprinttodiv('Security check done 1 --  johnnyconfig -   response  -- ', resp, 39);
-				johnny_result.createcurrency = resp.authstatus;				
-                cb(err);
-            });
-        },
-		// check that johnny can perform the editcurrency action
-        function(cb) {
-            // perform the securitycheck for the editcurrency action, with organization user user ac
-            sc(johnnyconfig2, function(err, resp) {
-                //proxyprinttodiv('Security check done 2 --  johnnyconfig2 -   response  -- ', resp, 39);
-				johnny_result.editcurrency = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that johnny can perform the deletecurrency action
-        function(cb) {
-            // perform the securitycheck for the deletecurrency action, with organization user user ac
-            sc(johnnyconfig3, function(err, resp) {
-                //proxyprinttodiv('Security check done 3 --  johnnyconfig3 -   response  -- ', resp, 39);
-				johnny_result.deletecurrency = resp.authstatus;
-                cb(err);
-            });
-        },
-				// check that johnny can perform the addusertogroup action
-        function(cb) {
-            // perform the securitycheck for the addusertogroup action, with organization user user ac
-            sc(johnnyconfig4, function(err, resp) {
-                //proxyprinttodiv('Security check done 4 --  johnnyconfig4 -   response  -- ', resp, 39);
-				johnny_result.addusertogroup = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that johnny can perform the addpermissions action
-        function(cb) {
-            // perform the securitycheck for the addpermissions action, with organization user user ac
-            sc(johnnyconfig5, function(err, resp) {
-                //proxyprinttodiv('Security check done 5 --  johnnyconfig5 -   response  -- ', resp, 39);
-				johnny_result.addpermissions = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that johnny can perform the createoffer action
-        function(cb) {
-            // perform the securitycheck for the createoffer action, with organization user user ac
-            sc(johnnyconfig6, function(err, resp) {
-                //proxyprinttodiv('Security check done 6 --  johnnyconfig6 -   response  -- ', resp, 39);
-				johnny_result.createoffer = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that johnny can perform the editoffer action
-        function(cb) {
-            // perform the securitycheck for the editoffer action, with organization user user ac
-            sc(johnnyconfig7, function(err, resp) {
-                //proxyprinttodiv('Security check done 7 --  johnnyconfig7 -   response  -- ', resp, 39);
-				johnny_result.editoffer = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that johnny can perform the deleteoffer action
-        function(cb) {
-            // perform the securitycheck for the deleteoffer action, with organization user user ac
-            sc(johnnyconfig8, function(err, resp) {
-                //proxyprinttodiv('Security check done 8 --  johnnyconfig8 -   response  -- ', resp, 39);
-				johnny_result.deleteoffer = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that johnny can perform the executeoffer action
-        function(cb) {
-            // perform the securitycheck for the executeoffer action, with organization user user ac
-            sc(johnnyconfig9, function(err, resp) {
-                //proxyprinttodiv('Security check done 9 --  johnnyconfig9 -   response  -- ', resp, 39);
-				johnny_result.executeoffer = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that johnny can perform the getoffer action
-        function(cb) {
-            // perform the securitycheck for the getoffer action, with organization user user ac
-            sc(johnnyconfig10, function(err, resp) {
-                //proxyprinttodiv('Security check done 10 --  johnnyconfig10 -   response  -- ', resp, 39);
-				johnny_result.getoffer = resp.authstatus;
-                cb(err);
-            });
-        },
-		// check that johnny can perform the getcurrency action
-        function(cb) {
-            // perform the securitycheck for the getcurrency action, with organization user user ac
-            sc(johnnyconfig11, function(err, resp) {
-                proxyprinttodiv('Security check done 11 --  johnnyconfig11 -   response  -- ', resp, 39);
-				johnny_result.getcurrency = resp.authstatus;
-                cb(err);
-            });
-        }	
-
-    ], function(err, resp) {
-        // final callback
-        proxyprinttodiv('Function ex1sectest done --  response  -- ', resp, 99);
-		
-		var expected_result = [sarah_expected,cindy_expected,johnny_expected];
-		var result = [sarah_result,cindy_result,johnny_result];
-		
-		proxyprinttodiv('Function ex1sectest expected_result -- ', expected_result, 99, true);
-        proxyprinttodiv('Function ex1sectest result -- ', result, 99, true);
-		
-		var final_obj = logverify('allowsec1tests_result',result, expected_result);
-        callback(err, final_obj);
-    });
-}
-
-
-    // security check for the allowsec1 function. allowsec1 creates the security scheme and this tests it
-    // 3 users are created, and permissions of those users are tested.
-    exports.allowsec1tests3 = allowsec1tests3 = function allowsec1tests3(params, callback) {
-
-        // Effective Permissions:   
-        // Johnny   createoffer     
-
-        debuglevel = 39;
-
-        // Johnny
-        var johnnyconfig = {
-            "_mygroup": '',
-            "_myphone": '9873838958',
-            "_action": 'createoffer',
-            "_dbgroup": 'data',
-            "_collection": 'wikiwallettesting',
-            "_server": 'server1',
-            "_datastore": 'main',
-            "command.result": "result",
-            "command.enviromment.accesstoken": "johnnyac",
-            "command.enviromment.userid": "driuser"
-        };
-
-        var johnny_expected = {
-            "createoffer": "true",
-        };
-
-        var johnny_result = {};
-
-
-        async.series([
-
-            function(cb) {
-                // creates the allowances security scheme data. Creates users, actions, groups, and permissions.
-                allowsec1({}, function(err, resp) {
-                    proxyprinttodiv('Data entered  -   response  -- ', resp, 39);
-                    cb(err);
-                });
-
-            },
-
-            // check that johnny can perform the getoffer action
-            function(cb) {
-                // perform the securitycheck for the getoffer action, with organization user user ac
-                sc(johnnyconfig, function(err, resp) {
-                    proxyprinttodiv('Security check done 1 --  johnnyconfig -   response  -- ', resp, 39);
-                    johnny_result[johnnyconfig._action] = resp.authstatus;
-                    cb(err);
-                });
-            },
-
-        ], function(err, resp) {
-            // final callback
-            proxyprinttodiv('Function allowsec1tests3 done --  response  -- ', resp, 99);
-
-            var expected_result = [johnny_expected];
-            var result = [johnny_result];
-
-            proxyprinttodiv('Function allowsec1tests3 expected_result -- ', expected_result, 99, true);
-            proxyprinttodiv('Function allowsec1tests3 result -- ', result, 99, true);
-
-            var final_obj = logverify('allowsec1tests3_result', result, expected_result);
-            callback(err, final_obj);
-        });
-    }
-
-    // security check for the allowsec1 function. allowsec1 creates the security scheme and this tests it
-    // 3 users are created, and permissions of those users are tested.
-    exports.allowsec1tests32 = allowsec1tests32 = function allowsec1tests32(params, callback) {
-
-        // Effective Permissions:   
-        // Johnny   createoffer     
-
-        debuglevel = 39;
-
-        // Johnny
-        var johnnyconfig = {
-            "_mygroup": '',
-            "_myphone": '9873838958',
-            "_action": 'createoffer',
-            "_dbgroup": 'data',
-            "_collection": 'wikiwallettesting',
-            "_server": 'server1',
-            "_datastore": 'main',
-            "command.result": "result",
-            "command.enviromment.accesstoken": "johnnyac",
-            "command.enviromment.userid": "driuser"
-        };
-
-        var johnny_expected = {
-            "createoffer": false,
-        };
-
-        var johnny_result = {};
-
-
-        async.series([
-
-            function(cb) {
-                // creates the allowances security scheme data. Creates users, actions, groups, and permissions.
-                allowsec1test3setup({}, function(err, resp) {
-                    proxyprinttodiv('Data entered  -   response  -- ', resp, 39);
-                    cb(err);
-                });
-
-            },
-
-            // check that johnny can perform the getoffer action
-            function(cb) {
-                // perform the securitycheck for the getoffer action, with organization user user ac
-                sc(johnnyconfig, function(err, resp) {
-                    proxyprinttodiv('Security check done 1 --  johnnyconfig -   response  -- ', resp, 39);
-                    johnny_result[johnnyconfig._action] = resp.authstatus;
-                    cb(err);
-                });
-            },
-
-        ], function(err, resp) {
-            // final callback
-            proxyprinttodiv('Function allowsec1tests3 done --  response  -- ', resp, 99);
-
-            var expected_result = [johnny_expected];
-            var result = [johnny_result];
-
-            proxyprinttodiv('Function allowsec1tests3 expected_result -- ', expected_result, 99, true);
-            proxyprinttodiv('Function allowsec1tests3 result -- ', result, 99, true);
-
-            var final_obj = logverify('allowsec1tests3_result', result, expected_result);
-            callback(err, final_obj);
-        });
-    }
-
-
-
-    // The security TEST scheme for the Allowances App
-    exports.allowsec1test3setup = allowsec1test3setup = function allowsec1test3setup(params, callback) {
-
-        //debuglevel = 39;
-
-        // users. sarah = parent, cindy = teacher, johnny = kid
-        var johnny, driuser = "driuser";
-
-        // actions
-        var createoffer, getoffer;
-
-        // usergroups
-        var parentgroup, teachergroup, kidgroup;
-
-        // actiongroups
-        var parentactions, teacheractions, kidactions;
-
-        // permissions
-        var parentpermission, teacherpermission, kidpermission;
-
-        async.series([
-
-            // setup dtos for security - permission,security,action,user,groups etc.
-            function(cb) {
-                dtox({}, function(err, resp) {
-                    //proxyprinttodiv('Function created schema done --   for  -- ', resp, 39);
-                    cb(err);
-                });
-            },
-
-
-
-            // create user johnny
-            function(cb) {
-                createuserdata({
-                    "wid": "johnny",
-                    "fname": "Johnny",
-                    "lname": "P",
-                    "phone": "555-555-5515",
-                    "email": "johnny@fake.com",
-                    "address": "115 W. River St.",
-                    "address2": "",
-                    "city": "Syracuse",
-                    "state": "NY",
-                    "zip": "13244",
-                    "country": "US"
-                }, function(err, resp) {
-                    johnny = resp.wid;
-                    //proxyprinttodiv('Function createuser done --    for  johnny -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-            function(cb) {
-                // add access token for johnny
-                addsecurity({
-                    "userwid": johnny,
-                    "securityac": "johnnyac"
-                }, function(err, resp) {
-                    //proxyprinttodiv('Function addsecurity done --  for johnny -- ', resp, 39, true);
-                    cb(err);
-                });
-            }, // Create Actions    
-
-            // DRI creates createoffer
-            function(cb) {
-                createaction({
-                    // "creator": johnny,
-                    "creator": driuser,
-                    "actiontype": "createoffer"
-                }, function(err, resp) {
-                    createoffer = resp.wid;
-                    //proxyprinttodiv('Function createaction done --    for createoffer  -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-
-            // DRI creates getoffer
-            function(cb) {
-                createaction({
-                    // "creator": johnny,
-                    "creator": driuser,
-                    "actiontype": "getoffer"
-                }, function(err, resp) {
-                    getoffer = resp.wid;
-                    //proxyprinttodiv('Function createaction done --    for createoffer  -- ', resp, 39, true);
-                    cb(err);
-                });
-            },
-
-
-
-            // Create User Groups:  
-            // create parent group
-            function(cb) {
-
-                creategroup({
-                    "grouptype": "parentgroup"
-                }, function(err, resp) {
-                    parentgroup = resp.wid;
-                    //proxyprinttodiv('Function creategroup done --    for parentgroup  -- ', resp, 39, true);
-
-                    cb(err);
-                });
-            },
-            // create teacher group
-            function(cb) {
-
-                creategroup({
-                    "grouptype": "teachergroup"
-                }, function(err, resp) {
-                    teachergroup = resp.wid;
-                    //proxyprinttodiv('Function creategroup done --    for teachergroup  -- ', resp, 39, true);
-
-                    cb(err);
-                });
-            },
-            // create kid group
-            function(cb) {
-
-                creategroup({
-                    "grouptype": "kidgroup"
-                }, function(err, resp) {
-                    kidgroup = resp.wid;
-                    //proxyprinttodiv('Function creategroup done --    for kidgroup  -- ', resp, 39, true);
-
-                    cb(err);
-                });
-            },
-
-
-
-            // Create Action Groups
-            // create parentactions group
-            function(cb) {
-
-                creategroup({
-                    "grouptype": "parentactions"
-                }, function(err, resp) {
-                    parentactions = resp.wid;
-                    //proxyprinttodiv('Function creategroup done --    for parentactions  -- ', resp, 39, true);
-
-                    cb(err);
-                });
-            },
-            // create teacheractions group
-            function(cb) {
-
-                creategroup({
-                    "grouptype": "teacheractions"
-                }, function(err, resp) {
-                    teacheractions = resp.wid;
-                    //proxyprinttodiv('Function creategroup done --    for teacheractions  -- ', resp, 39, true);
-
-                    cb(err);
-                });
-            },
-            // create kidactions group
-            function(cb) {
-
-                creategroup({
-                    "grouptype": "kidactions"
-                }, function(err, resp) {
-                    kidactions = resp.wid;
-                    //proxyprinttodiv('Function creategroup done --    for kidactions  -- ', resp, 39, true);
-
-                    cb(err);
-                });
-            },
-
-            // Add Users to Groups: 
-            // Sarah    parentgroup
-            // Cindy    teachergroup
-            // Johnny   kidgroup
-            // driuser   parentgroup
-
-
-
-            // johnny   kidgroup
-            function(cb) {
-                var config = {
-                    "currentwid": kidgroup,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": johnny,
-                    "targetwidmethod": "userdto",
-                    "linktype": "manytomany"
-                };
-                // attach userdto to groupdto, johnny to kidgroup           
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach userdto to groupdto, johnny to kidgroup   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            function(cb) {
-                var config = {
-                    "currentwid": parentgroup,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": driuser,
-                    "targetwidmethod": "userdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach userdto to groupdto, driuser to manager   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // ********* CHANGED BY SAURABH ********//
-            // ********* BEGINS HERE ********//
-            // action group needs to be associated to the actioncreator //
-            function(cb) {
-                var config = {
-                    "currentwid": kidgroup,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": driuser,
-                    "targetwidmethod": "userdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach userdto to groupdto, driuser to manager   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            function(cb) {
-                var config = {
-                    "currentwid": teachergroup,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": driuser,
-                    "targetwidmethod": "userdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach userdto to groupdto, driuser to manager   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // ********* CHANGED BY SAURABH ********//
-            // ********* ENDS HERE ********//
-            // action group needs to be associated to the actioncreator //
-
-            // Add Actions to Groups:
-
-            // add createoffer to teacheractions
-            function(cb) {
-                var config = {
-                    "currentwid": teacheractions,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": createoffer,
-                    "targetwidmethod": "actiondto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach actiondto to groupdto, createoffer to teacheractions   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-
-            // add getoffer to kidactions
-            function(cb) {
-                var config = {
-                    "currentwid": kidactions,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": getoffer,
-                    "targetwidmethod": "actiondto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('attach actiondto to groupdto, getoffer to kidactions   -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-			
-			// Add teachergroup to kidgroup
-            function(cb) {
-                var config = {
-                    "currentwid": kidgroup,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": teachergroup,
-                    "targetwidmethod": "groupdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('Add Groups to Groups:   -- kidgroup to teachergroup group -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // Add parentgroup to teachergroup
-            function(cb) {
-                var config = {
-                    "currentwid": teachergroup,
-                    "currentwidmethod": "groupdto",
-                    "targetwid": parentgroup,
-                    "targetwidmethod": "groupdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    //proxyprinttodiv('Add Groups to Groups:   -- teachergroup to parentgroup group -- ', res, 39);
-
-                    cb(err);
-                })
-            },
-
-            // Enter Permissions:
-
-            // DRI  {  kidactions, kidgroup }
-            // add group create to actiongroup and usergroup
-            function(cb) {
-                addpermission({
-                    "permission.userwid": driuser,
-                    "onfailwid": "",
-                    "permission.level": 99, // TODO :: REMOVE HARDCODING
-                    "description": "DRI {  kidactions, kidgroup }"
-                }, function(err, resp) {
-                    //proxyprinttodiv('Function addpermission done --    for  kidpermission -- ', resp, 39);
-                    kidpermission = resp.wid;
-                    cb(err);
-                });
-            },
-            // attach kidactions group to permissiondto
-            function(cb) {
-                var config = {
-                    "currentwid": kidpermission,
-                    "currentwidmethod": "permissiondto",
-                    "targetwid": kidactions,
-                    "targetwidmethod": "groupdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    cb(err);
-                })
-            },
-            // attach kidgroup group to permissiondto
-            function(cb) {
-                var config = {
-                    "currentwid": kidpermission,
-                    "currentwidmethod": "permissiondto",
-                    "targetwid": kidgroup,
-                    "targetwidmethod": "groupdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    cb(err);
-                })
-            },
-
-            // DRI  {  teacheractions, teachergroup }
-            // add group create to actiongroup and usergroup
-            function(cb) {
-                addpermission({
-                    "permission.userwid": driuser,
-                    "onfailwid": "",
-                    "permission.level": 99, // TODO :: REMOVE HARDCODING
-                    "description": "DRI {  teacheractions, teachergroup }"
-                }, function(err, resp) {
-                    //proxyprinttodiv('Function addpermission done --    for  teacherpermission -- ', resp, 39);
-                    teacherpermission = resp.wid;
-                    cb(err);
-                });
-            },
-            // attach teacheractions group to permissiondto
-            function(cb) {
-                var config = {
-                    "currentwid": teacherpermission,
-                    "currentwidmethod": "permissiondto",
-                    "targetwid": teacheractions,
-                    "targetwidmethod": "groupdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    cb(err);
-                })
-            },
-            // attach teachergroup group to permissiondto
-            function(cb) {
-                var config = {
-                    "currentwid": teacherpermission,
-                    "currentwidmethod": "permissiondto",
-                    "targetwid": teachergroup,
-                    "targetwidmethod": "groupdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    cb(err);
-                })
-            },
-
-            // DRI  {  parentactions, parentgroup }
-            // add group create to actiongroup and usergroup
-            function(cb) {
-                addpermission({
-                    "permission.userwid": driuser,
-                    "onfailwid": "",
-                    "permission.level": 99, // TODO :: REMOVE HARDCODING
-                    "description": "DRI {  parentactions, parentgroup }"
-                }, function(err, resp) {
-                    //proxyprinttodiv('Function addpermission done --    for  parentpermission -- ', resp, 39);
-                    parentpermission = resp.wid;
-                    cb(err);
-                });
-            },
-            // attach parentactions group to permissiondto
-            function(cb) {
-                var config = {
-                    "currentwid": parentpermission,
-                    "currentwidmethod": "permissiondto",
-                    "targetwid": parentactions,
-                    "targetwidmethod": "groupdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    cb(err);
-                })
-            },
-            // attach parentgroup group to permissiondto
-            function(cb) {
-                var config = {
-                    "currentwid": parentpermission,
-                    "currentwidmethod": "permissiondto",
-                    "targetwid": parentgroup,
-                    "targetwidmethod": "groupdto",
-                    "linktype": "manytomany"
-                };
-                addtargetwidtocurrentwid(config, function(err, res) {
-                    cb(err);
-                })
-            }
-        ], function(err, resp) {
-            // final callback
-            //proxyprinttodiv('Function ex1sec done --  response  -- ', resp, 39);
-            callback(err, resp);
-        });
-
-    };
-	
 
 exports.allowsec1test4setupusers = 	allowsec1test4setupusers = function allowsec1test4setupusers (params, callback) {
 
@@ -4566,12 +2689,12 @@ exports.allowsec1test4setuppermissions = allowsec1test4setuppermissions = functi
 
 // security check for the allowsec1 function. allowsec1 creates the security scheme and this tests it
 // 3 users are created, and permissions of those users are tested.
-exports.allowsec1tests4 = allowsec1tests4 = function allowsec1tests4(params, callback) {
+exports.setest_allowsec1tests4 = setest_allowsec1tests4 = function setest_allowsec1tests4(params, callback) {
 
         // Effective Permissions:   
         // Johnny   createoffer     
 
-        debuglevel = 39;
+        //debuglevel = 39;
 
 		// Johnny
 var johnnyconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'createcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
@@ -4628,7 +2751,8 @@ var johnnyconfig11={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency
 
             function(cb) {
                 // creates the allowances security scheme data. Creates users, actions, groups, and permissions.
-                allowsec1test4setup({}, function(err, resp) {
+                if (params.setup === false) { cb(null) };                
+				allowsec1test4setup({}, function(err, resp) {
                     proxyprinttodiv('Data entered  -   response  -- ', resp, 39);
                     cb(err);
                 });
@@ -4716,6 +2840,7 @@ var johnnyconfig11={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency
                 cb(err);
             });
         },
+		
 		// check that johnny can perform the getoffer action
         function(cb) {
             // perform the securitycheck for the getoffer action, with organization user user ac
@@ -4752,12 +2877,12 @@ var johnnyconfig11={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency
 	
 // security check for the allowsec1 function. allowsec1 creates the security scheme and this tests it
 // 3 users are created, and permissions of those users are tested.
-exports.allowsec1tests5 = allowsec1tests5 = function allowsec1tests5(params, callback) {
+exports.setest_allowsec1tests5 = setest_allowsec1tests5 = function setest_allowsec1tests5(params, callback) {
 
         // Effective Permissions:   
         // Johnny   createoffer     
 
-        debuglevel = 39;
+        //debuglevel = 39;
 
 		// Johnny
 var sarahconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'createcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
@@ -4814,7 +2939,8 @@ var sarahconfig11={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency'
 
             function(cb) {
                 // creates the allowances security scheme data. Creates users, actions, groups, and permissions.
-                allowsec1test4setup({}, function(err, resp) {
+                if (params.setup === false) { cb(null) };                
+				allowsec1test4setup({}, function(err, resp) {
                     proxyprinttodiv('Data entered  -   response  -- ', resp, 39);
                     cb(err);
                 });
@@ -4923,20 +3049,209 @@ var sarahconfig11={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency'
 
         ], function(err, resp) {
             // final callback
-            proxyprinttodiv('Function allowsec1tests4 done --  response  -- ', resp, 99);
+            proxyprinttodiv('Function setest_allowsec1tests5 done --  response  -- ', resp, 99);
 
             var expected_result = [sarah_expected];
             var result = [sarah_result];
 
-            proxyprinttodiv('Function allowsec1tests4 expected_result -- ', expected_result, 99, true);
-            proxyprinttodiv('Function allowsec1tests4 result -- ', result, 99, true);
+            proxyprinttodiv('Function setest_allowsec1tests5 expected_result -- ', expected_result, 99, true);
+            proxyprinttodiv('Function setest_allowsec1tests5 result -- ', result, 99, true);
 
-            var final_obj = logverify('allowsec1tests4_result', result, expected_result);
+            var final_obj = logverify('allowsec1tests5_result', result, expected_result);
             callback(err, final_obj);
         });
     }	
+
+
+// security check for the allowsec1 function. allowsec1 creates the security scheme and this tests it
+// 3 users are created, and permissions of those users are tested.
+exports.setest_allowsec1tests6 = setest_allowsec1tests6 = function setest_allowsec1tests6(params, callback) {
+
+        // Effective Permissions:   
+        // Johnny   createoffer     
+
+        //debuglevel = 39;
+
+		// Johnny
+var cindyconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'createcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};
+		
+var cindyconfig2={"_mygroup":'',"_myphone":'9873838958',"_action":'editcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};
+
+var cindyconfig3={"_mygroup":'',"_myphone":'9873838958',"_action":'deletecurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
+
+var cindyconfig4={"_mygroup":'',"_myphone":'9873838958',"_action":'addusertogroup',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
+
+var cindyconfig5={"_mygroup":'',"_myphone":'9873838958',"_action":'addpermissions',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
+
+var cindyconfig6={"_mygroup":'',"_myphone":'9873838958',"_action":'createoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
+
+var cindyconfig7={"_mygroup":'',"_myphone":'9873838958',"_action":'editoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
+
+var cindyconfig8={"_mygroup":'',"_myphone":'9873838958',"_action":'deleteoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
+
+var cindyconfig9={"_mygroup":'',"_myphone":'9873838958',"_action":'executeoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
+
+var cindyconfig10={"_mygroup":'',"_myphone":'9873838958',"_action":'getoffer',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
+
+var cindyconfig11={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"cindyac","command.enviromment.userid":"driuser"};	
+
+	var cindy_expected = {
+						"createcurrency":false,
+						"editcurrency":false,
+						"deletecurrency":false,
+						"addusertogroup":false,
+						"addpermissions":false,
+						"createoffer":true,
+						"editoffer":true,
+						"deleteoffer":true,
+						"executeoffer":true,
+						"getoffer":true,
+						"getcurrency":true
+						};
+
+        var cindy_result = {};
+
+
+        async.series([
+
+            function(cb) {
+                // creates the allowances security scheme data. Creates users, actions, groups, and permissions.
+                if (params.setup === false) { cb(null) };
+				allowsec1test4setup({}, function(err, resp) {
+                    proxyprinttodiv('Data entered  -   response  -- ', resp, 39);
+                    cb(err);
+                });
+
+            },
+
+	        // check that Cindy can perform the createcurrency action
+        function(cb) {
+            // perform the securitycheck for the createcurrency action, with organization user user ac
+            sc(cindyconfig, function(err, resp) {
+                //proxyprinttodiv('Security check done 1 --  cindyconfig -   response  -- ', resp, 39);
+				cindy_result.createcurrency = resp.authstatus;				
+                cb(err);
+            });
+        },
+		// check that cindy can perform the editcurrency action
+        function(cb) {
+            // perform the securitycheck for the editcurrency action, with organization user user ac
+            sc(cindyconfig2, function(err, resp) {
+                //proxyprinttodiv('Security check done 2 --  cindyconfig2 -   response  -- ', resp, 39);
+				cindy_result.editcurrency = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that cindy can perform the deletecurrency action
+        function(cb) {
+            // perform the securitycheck for the deletecurrency action, with organization user user ac
+            sc(cindyconfig3, function(err, resp) {
+                //proxyprinttodiv('Security check done 3 --  cindyconfig3 -   response  -- ', resp, 39);
+				cindy_result.deletecurrency = resp.authstatus;
+                cb(err);
+            });
+        },
+				// check that cindy can perform the addusertogroup action
+        function(cb) {
+            // perform the securitycheck for the addusertogroup action, with organization user user ac
+            sc(cindyconfig4, function(err, resp) {
+                //proxyprinttodiv('Security check done 4 --  cindyconfig4 -   response  -- ', resp, 39);
+				cindy_result.addusertogroup = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that cindy can perform the addpermissions action
+        function(cb) {
+            // perform the securitycheck for the addpermissions action, with organization user user ac
+            sc(cindyconfig5, function(err, resp) {
+                //proxyprinttodiv('Security check done 5 --  cindyconfig5 -   response  -- ', resp, 39);
+				cindy_result.addpermissions = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that cindy can perform the createoffer action
+        function(cb) {
+            // perform the securitycheck for the createoffer action, with organization user user ac
+            sc(cindyconfig6, function(err, resp) {
+                //proxyprinttodiv('Security check done 6 --  cindyconfig6 -   response  -- ', resp, 39);
+				cindy_result.createoffer = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that cindy can perform the editoffer action
+        function(cb) {
+            // perform the securitycheck for the editoffer action, with organization user user ac
+            sc(cindyconfig7, function(err, resp) {
+                //proxyprinttodiv('Security check done 7 --  cindyconfig7 -   response  -- ', resp, 39);
+				cindy_result.editoffer = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that cindy can perform the deleteoffer action
+        function(cb) {
+            // perform the securitycheck for the deleteoffer action, with organization user user ac
+            sc(cindyconfig8, function(err, resp) {
+                //proxyprinttodiv('Security check done 8 --  cindyconfig8 -   response  -- ', resp, 39);
+				cindy_result.deleteoffer = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that cindy can perform the executeoffer action
+        function(cb) {
+            // perform the securitycheck for the executeoffer action, with organization user user ac
+            sc(cindyconfig9, function(err, resp) {
+                //proxyprinttodiv('Security check done 9 --  cindyconfig9 -   response  -- ', resp, 39);
+				cindy_result.executeoffer = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that cindy can perform the getoffer action
+        function(cb) {
+            // perform the securitycheck for the getoffer action, with organization user user ac
+            sc(cindyconfig10, function(err, resp) {
+                //proxyprinttodiv('Security check done 10 --  cindyconfig10 -   response  -- ', resp, 39);
+				cindy_result.getoffer = resp.authstatus;
+                cb(err);
+            });
+        },
+		// check that cindy can perform the getcurrency action
+        function(cb) {
+            // perform the securitycheck for the getcurrency action, with organization user user ac
+            sc(cindyconfig11, function(err, resp) {
+                //proxyprinttodiv('Security check done 11 --  cindyconfig11 -   response  -- ', resp, 39);
+				cindy_result.getcurrency = resp.authstatus;
+                cb(err);
+            });
+        }		
+
+        ], function(err, resp) {
+            // final callback
+            proxyprinttodiv('Function setest_allowsec1tests6 done --  response  -- ', resp, 99);
+
+            var expected_result = [cindy_expected];
+            var result = [cindy_result];
+
+            proxyprinttodiv('Function setest_allowsec1tests6 expected_result -- ', expected_result, 99, true);
+            proxyprinttodiv('Function setest_allowsec1tests6 result -- ', result, 99, true);
+
+            var final_obj = logverify('allowsec1tests6_result', result, expected_result);
+            callback(err, final_obj);
+        });
+    }		
+		
 	
-	exports.testnestedgroups1 = testnestedgroups1 = function testnestedgroups1 (params, callback) {
+	exports.setest_testnestedgroups1 = setest_testnestedgroups1 = function setest_testnestedgroups1 (params, callback) {
 
 	var sarah;
 	var kidgroup, teachergroup, parentgroup;
@@ -5061,9 +3376,9 @@ var sarahconfig11={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency'
 			// Get all of Sarah's groups
 			function (cb) {
 				getrelatedwids("", "groupdto", sarah, "userdto", "", function (err, res) {
-					mygroups.push(res[0].primarywid);
+					mygroups.push(res.queryresult[0].primarywid);
 					getrelatedwids("", "groupdto", mygroups[0],"groupdto", "", function (err, res) {
-						for (var x in res) { mygroups.push(res[x].primarywid) };
+						for (var x in res.queryresult) { mygroups.push(res.queryresult[x].primarywid) };
 						cb(err);						
 					});
 				});
