@@ -8,11 +8,10 @@ function nstest_allexecute(executeobject, callback)
 {
 	var start = new Date().getTime();
     async.series(
-    [   
-    //function (cb1) {setest_testnestedgroups1({}, function (err, res) {cb1(null, res)})},
-    //function (cb1) {setest_allowsec1tests4({}, function (err, res) {cb1(null, res)})},
-    //function (cb1) {setest_allowsec1tests5({"setup":false}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {setest_allowsec1tests6({"setup":false}, function (err, res) {cb1(null, res)})}
+    [
+    //function (cb1) {nstest_namespacequery1({"setup":false}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {nstest_appnamespaceget1({"setup":false}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {nstest_appnamewidget1fail({"setup":false}, function (err, res) {cb1(null, res)})}
     ],
     function (err, res) {
       proxyprinttodiv('result from many array', res, 99);
