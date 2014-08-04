@@ -4,13 +4,18 @@ require('./create_config.js');
 require('./config.js');
 
 // switch between the location of core files
-var DIR_TO_CORE_JS = '../dripoint/js/';
 
+config = require('./config-server.js');
+
+var DIR_TO_CORE_JS = '../dripoint/js/';
 require(DIR_TO_CORE_JS + 'et-dto.js');
 require(DIR_TO_CORE_JS + 'et-security.js');
 require(DIR_TO_CORE_JS + 'et-utils.js');
 require(DIR_TO_CORE_JS + 'et-add.js');
 require(DIR_TO_CORE_JS + 'et-get.js');
+require(DIR_TO_CORE_JS + 'et-query.js');
+require(DIR_TO_CORE_JS + 'executethis.js');
+
 require(DIR_TO_CORE_JS + 'et-test.js');
 require(DIR_TO_CORE_JS + 'test-addhoc.js');
 require(DIR_TO_CORE_JS + 'test-dto.js');
@@ -21,10 +26,8 @@ require(DIR_TO_CORE_JS + 'test-main.js');
 require(DIR_TO_CORE_JS + 'test-query.js');
 require(DIR_TO_CORE_JS + 'test-security.js');
 require(DIR_TO_CORE_JS + 'tests-up-for-review.js');
-require(DIR_TO_CORE_JS + 'et-query.js');
-require(DIR_TO_CORE_JS + 'executethis.js');
 
-exports.config = config = require('./config-server.js');
+//exports.config = config = require('./config-server.js');
 
 //exports.configuration = configuration = config.configuration;
 
@@ -34,11 +37,10 @@ exports.config = config = require('./config-server.js');
 
 
 //var async = require('async');
-
-    async = require('async');
 // var mongoskin = require('mongoskin'),
 //     SkinStore = require('connect-mongoskin');
 
+    async = require('async');
     path = require('path')
     // dao = require('../dao/alterdao.js'),
     dao = require('./dao/mongo.js')
@@ -50,7 +52,6 @@ exports.config = config = require('./config-server.js');
 //require('./dao/mongotest.js');
 // , drifn = require('../dao/dri_functions.js')
 
-
     express = require('express')
     app = express()
     http = require('http')
@@ -59,14 +60,13 @@ exports.config = config = require('./config-server.js');
 //    server = require('./routes/server')
     convert = require('./routes/convert.js')
     querystring = require('querystring')
-//  express = require('express'),
-var express = require('express'),
+    express = require('express'),
+//var express = require('express'),
     app = express(),
     request = require('request'),
     server = require('./routes/server'),
     convert = require('./routes/convert.js'),
     imageService = require('./routes/images.js');
-
 
 
 //// *********************** Express Application Configuration follows   *********************** 
@@ -117,21 +117,19 @@ app.get('/executethis', server.postputgetrunExecutethis);
 app.put('/filetowid', convert.convertFileToWid);
 app.put('/base64toserver', imageService.saveBase64ToServer);
 
-console.log('server config is ' + serverconfig.SERVER_PORT);
-
-exports.window = {"configuration":config.configuration};
-
+//console.log('server config is ' + serverconfig.SERVER_PORT);
+//exports.window = {"configuration":config.configuration};
 
 console.log('port is ' + serverconfig.SERVER_PORT);
 app.listen(process.env.PORT || serverconfig.SERVER_PORT);
 
 
 eventdeviceready({}, function (err, res) {
-    sendsms({
-    'tonumber': '+12313133930',
-    'msgbody': 'This the server- I just restarted '
-}, function (err, result) {
-    //console.log('running');
-});
+        sendsms({
+        'tonumber': '+12313133930',
+        'msgbody': 'This the server- I just restarted '
+    }, function (err, result) {
+        //console.log('running');
+    });
 });
 
