@@ -1053,7 +1053,7 @@ exports.publishtestdelay = publishtestdelay = function publishtestdelay(paramete
 
 exports.publishtest = publishtest = function publishtest(parameters, callback) { 
         // listToDo, eventname, callback) {
-        console.log('---- publishtest??-');/
+        console.log('---- publishtest??-');
         console.log(JSON.stringify(parameters));
 
         var pusher_name = "Unknown";
