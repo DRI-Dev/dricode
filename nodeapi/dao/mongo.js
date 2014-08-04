@@ -4,6 +4,16 @@
 // propose naming of wid fns to include var =, reduce typing
 // remove window() wrapping (utils, execute)… put if !window then window=global  
 
+// settings and config variables are declared in boxconfiguration
+var SkinStore = require('connect-mongoskin'),
+    mongoskin = require('mongoskin'),
+    schemaToLookup = config.configuration.defaultcollection,
+    databaseToLookup = config.configuration.defaultdb,
+    mongoDatabaseToLookup = config.configuration.defaultdatabasetable,
+    dbConnectionsManager = {},
+    // defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup,
+    flatten = require('flat').flatten;
+
 
 
 // manage multiple mongo database connections
