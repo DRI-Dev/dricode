@@ -17,15 +17,7 @@ if (!debugon) { // debugfn
     var debugon = false;
 }
 
-eventdeviceready({}, function (err, res) {
-});
 
-sendsms({
-    'tonumber': '+12313133930',
-    'msgbody': 'This the server- I just restarted '
-}, function (err, result) {
-    //console.log('running');
-});
 
 
 var needle = require('needle');

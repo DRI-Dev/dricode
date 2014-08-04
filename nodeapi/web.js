@@ -1,9 +1,9 @@
 // using common files at server side also ...
 exports.async = async = require('async');
-
+console.log('----x22');
 require('./create_config.js');
 require('./config.js');
-
+console.log('----X99');
 exports.window = {"configuration":config.configuration};
 
 var express = require('express'),
@@ -66,6 +66,16 @@ app.put('/filetowid', convert.convertFileToWid);
 app.put('/base64toserver', imageService.saveBase64ToServer);
 
 console.log('server config is ' + serverconfig.SERVER_PORT);
+
+eventdeviceready({}, function (err, res) {
+});
+
+sendsms({
+    'tonumber': '+12313133930',
+    'msgbody': 'This the server- I just restarted '
+}, function (err, result) {
+    //console.log('running');
+});
 
 console.log('port is ' + serverconfig.SERVER_PORT);
 app.listen(process.env.PORT || serverconfig.SERVER_PORT);
