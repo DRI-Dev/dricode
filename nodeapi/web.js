@@ -3,7 +3,6 @@
 console.log('----x22');
 require('./create_config.js');
 require('./config.js');
-require('./config-server.js');
 
 
 // switch between the location of core files
@@ -11,7 +10,7 @@ var DIR_TO_CORE_JS = '../dripoint/js/';
 
 require(DIR_TO_CORE_JS + 'et-dto.js');
 require(DIR_TO_CORE_JS + 'et-security.js');
-exports.utils = require(DIR_TO_CORE_JS + 'et-utils.js');
+require(DIR_TO_CORE_JS + 'et-utils.js');
 require(DIR_TO_CORE_JS + 'et-add.js');
 require(DIR_TO_CORE_JS + 'et-get.js');
 require(DIR_TO_CORE_JS + 'et-test.js');
@@ -25,16 +24,17 @@ require(DIR_TO_CORE_JS + 'test-query.js');
 require(DIR_TO_CORE_JS + 'test-security.js');
 require(DIR_TO_CORE_JS + 'tests-up-for-review.js');
 require(DIR_TO_CORE_JS + 'et-query.js');
-exports.executethis = require(DIR_TO_CORE_JS + 'executethis.js');
+require(DIR_TO_CORE_JS + 'executethis.js');
 
-exports.config = require('./config-server.js');
+exports.config = config = require('./config-server.js');
 
 exports.configuration = configuration = config.configuration;
+
+config.configuration = configuration;
 
 // Server specific Routes here
 console.log('server.js -- bof');
 
-require('../config.js');
 
 var async = require('async');
 
@@ -46,7 +46,7 @@ console.log('server.js -- a002');
   path = require('path')
 console.log('server.js -- a003');
     // dao = require('../dao/alterdao.js'),
-    dao = require('../dao/mongo.js')
+    dao = require('./dao/mongo.js')
 console.log('server.js -- a004');
     superagent = require('superagent')
 console.log('server.js -- a005');
@@ -57,7 +57,7 @@ console.log('server.js -- a007');
     url = require('url')
 console.log('server.js -- a008');
     util = require('util');
-require('../dao/mongotest.js');
+require('./dao/mongotest.js');
 // , drifn = require('../dao/dri_functions.js')
 
 
@@ -121,12 +121,17 @@ app.configure('development', function() {
     app.use(express.errorHandler());
 });
 
+
+console.log('webjs - before blue line');
 //// *********************** Route Mapping for Application follows   ***********************
 app.put('/executethis', server.postputgetrunExecutethis);
+console.log('webjs - 001'); 
 app.post('/executethis', server.postputgetrunExecutethis);
+console.log('webjs - 002'); 
 app.get('/executethis', server.postputgetrunExecutethis);
 // app.put('/executethis', server.putrunExecutethis);
 app.put('/filetowid', convert.convertFileToWid);
+console.log('webjs - 004'); 
 app.put('/base64toserver', imageService.saveBase64ToServer);
 
 console.log('server config is ' + serverconfig.SERVER_PORT);
