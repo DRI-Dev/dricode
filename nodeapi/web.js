@@ -1,6 +1,5 @@
 // using common files at server side also ...
 // exports.async = async = require('async');
-console.log('----x22');
 require('./create_config.js');
 require('./config.js');
 
@@ -33,7 +32,6 @@ exports.configuration = configuration = config.configuration;
 config.configuration = configuration;
 
 // Server specific Routes here
-console.log('server.js -- bof');
 
 
 var async = require('async');
@@ -41,44 +39,28 @@ var async = require('async');
 
 // var mongoskin = require('mongoskin'),
 //     SkinStore = require('connect-mongoskin');
-console.log('server.js -- a002');
 
   path = require('path')
-console.log('server.js -- a003');
     // dao = require('../dao/alterdao.js'),
     dao = require('./dao/mongo.js')
-console.log('server.js -- a004');
     superagent = require('superagent')
-console.log('server.js -- a005');
     https = require('https')
-console.log('server.js -- a006');
     querystring = require('querystring')
-console.log('server.js -- a007');
     url = require('url')
-console.log('server.js -- a008');
     util = require('util');
 require('./dao/mongotest.js');
 // , drifn = require('../dao/dri_functions.js')
 
 
 express = require('express')
-console.log('---44a');
     app = express()
-console.log('---44b');
     http = require('http')
-console.log('---44c');
     needle = require('needle')
-console.log('---44d');
     request = require('request')
-console.log('---44e');
 //    server = require('./routes/server')
-console.log('---44f');
     convert = require('./routes/convert.js')
-console.log('---44g');
     querystring = require('querystring')
-console.log('---44h');
     imageService = require('./routes/images.js');
-console.log('---44i');
 
 
 
@@ -122,16 +104,12 @@ app.configure('development', function() {
 });
 
 
-console.log('webjs - before blue line');
 //// *********************** Route Mapping for Application follows   ***********************
 app.put('/executethis', server.postputgetrunExecutethis);
-console.log('webjs - 001'); 
 app.post('/executethis', server.postputgetrunExecutethis);
-console.log('webjs - 002'); 
 app.get('/executethis', server.postputgetrunExecutethis);
 // app.put('/executethis', server.putrunExecutethis);
 app.put('/filetowid', convert.convertFileToWid);
-console.log('webjs - 004'); 
 app.put('/base64toserver', imageService.saveBase64ToServer);
 
 console.log('server config is ' + serverconfig.SERVER_PORT);
