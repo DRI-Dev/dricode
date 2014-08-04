@@ -318,8 +318,8 @@ $(document).ready(function() {
     $('#function_to_run').val(sessionStorage.getItem("function"));
     $('#function_to_run').focus();
 
-    eventdeviceready({}, function (err, res) {
-
+    //eventdeviceready({}, function (err, res) {
+    eventappinstall ({}, function (err, res) {
         $('dest_print').prop("checked", true);
         //alert(document.URL);
 
@@ -371,6 +371,7 @@ function execute_stuff(isTest, isServer, servername) {
     //etappinstall();
     if ($("#localStorageClean").is(':checked')) {
         // and the clearlocalstoraget ...check box >>  function etappinstall()
+        //eventdeviceready();
         eventappinstall();
     }
 

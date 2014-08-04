@@ -3,6 +3,8 @@
 
 // copyright (c) 2014 DRI
 
+// search for: (function () {
+
 // adding defaults here as this is loaded before config-server server side
 if (!Debug) { // printdiv
     var Debug = 'false';
@@ -16,6 +18,72 @@ if (!debugon) { // debugfn
 if (!exports) {
     var exports = {};
 }
+
+exports.localStore = localStore = function () {
+    var json = {};
+
+    function clear() {
+        this.json = {};
+    }
+
+    function push(key, val) {
+        this.json[key] = val;
+    }
+
+    function get(key) {
+        return this.json[key];
+    }
+
+    function remove(key) {
+        delete this.json[key];
+    }
+
+    return {
+        "clear": clear,
+        "json": json,
+        "push": push,
+        "remove": remove,
+        "get": get
+    };
+
+}();
+
+localStore.clear();
+
+exports.getglobal = getglobal = function getglobal(varname) {
+    return localStore.get(varname);
+};
+
+exports.saveglobal = saveglobal = function saveglobal(varname, varvalue) {
+    return localStore.push(varname, varvalue);
+};
+
+// logic to add things to localStore object
+exports.addtolocal = addtolocal = function addtolocal(widName, widobject) {
+    if (!widobject) {
+        widobject = {};
+    }
+    if (widName) {
+        //localStore.push(config.configuration.widmasterkey + widName, widobject);
+        localStore.push(widName, widobject);
+    }
+};
+
+// logic to get things from localStore object
+exports.getfromlocal = getfromlocal = function getfromlocal(inputWidgetObject) {
+    var output = null;
+    output = localStore.get(inputWidgetObject);
+    //if (output === null) { output = {}; }
+    proxyprinttodiv('getfromlocal output', output, 38);
+    return output;
+};
+
+exports.clearLocal = clearLocal = function clearLocal() {
+    // widMasterKey = "widmaster_";
+    localStore.clear();
+    //potentialwid = 0;
+};
+
 
 // used to create the inital record for a database
 exports.setinitialwid = setinitialwid = function setinitialwid(params, command) {
@@ -34,245 +102,301 @@ exports.setinitialwid = setinitialwid = function setinitialwid(params, command) 
     return initialwid
 };
 
-exports.updatewid = updatewid = updatewid = function updatewid(inobject, callback) {
-    proxyprinttodiv('Function updatewid inobject', inobject,12 , true, true);
-    var incopy = {};
-        extend(true, incopy, inobject);
-    var err = null;
-    var command = incopy.command || config.configuration.d.default;  // should always get command
-    var database = [];
-    var keydatabase = {};
-    delete incopy.command;
-
-    // if record is not locked then okatoupdate = true, else false
-    if(!incopy.metadata){incopy.metadata={};}  
-    if (!incopy.metadata.systemdto && command.environment && 
-        (command.environment.userid || command.environment.loggedinuserid)) {incopy.metadata.systemdto={}}
-	if (!command.environment) {command.environment={}}
-    if (command.environment.userid && !incopy.metadata.systemdto.userid) 
-        {incopy.metadata.systemdto.userid=command.environment.userid}
-    if (command.environment.loggedinuserid && !incopy.metadata.systemdto.loggeiduserid) 
-        {incopy.metadata.systemdto.loggedinuserid=command.environment.loggedinuserid}
-
-    if(incopy && command && command.namespace)
-    { 
-        // add namespace key:value pairs from command.namespace to metadata.namespace
-		if (!incopy.metadata.namespace) {incopy.metadata.namespace = {};}
-		for (var key in command.namespace) 
-        {
-			incopy.metadata.namespace[key] = command.namespace[key];
-		}
-    }
-    if (Object.keys(incopy.metadata).length === 0) {delete incopy.metadata}
-    proxyprinttodiv('Function datastore incopy', incopy, 12);
-    proxyprinttodiv('Function datastore command', command, 12,99, true);
-    proxyprinttodiv('Function updatewid command.getwidflag', command.getwidflag, 12);
-    if (incopy.wid) 
-    {
-        if (command.datastore === "localstore" || command.datastore === "localstorage") 
-        {
-            getfromangular(incopy, function (angularerr, resultobject) 
-            {
-                // extend incopy based on what was in angular 
-                if (resultobject) {extend(true, incopy, resultobject); }
-
-                // if not in memory then get it
-                // if empty then create them
-                if (command.datastore === "localstorage") 
-                {
-                    proxyprinttodiv('Function updatewid in localstorage check', incopy, 12);
-                    keydatabase = getFromLocalStorage(command.databasetable + command.keycollection);
-                    database = getFromLocalStorage(command.databasetable + command.collection);
-                    if (!keydatabase) 
-                    {
-                        proxyprinttodiv('Function updatewid in localstorage check create', incopy, 12);
-                        addToLocalStorage(command.databasetable + command.keycollection, {"initialwid":setinitialwid(incopy, command)} );
-                        addToLocalStorage(command.databasetable + command.collection,[setinitialwid(incopy, command)]);
-                        keydatabase = getFromLocalStorage(command.databasetable + command.keycollection);
-                        database = getFromLocalStorage(command.databasetable + command.collection);
-                    }
-                } 
-                else if (command.datastore === "localstore") 
-                {
-                    keydatabase = getfromlocal(command.databasetable + command.keycollection);
-                    database = getfromlocal(command.databasetable + command.collection);
-                    if (!keydatabase) 
-                    {
-                        addtolocal(command.databasetable + command.keycollection, {"initialwid":setinitialwid(incopy, command)});
-                        addtolocal(command.databasetable + command.collection, [setinitialwid(incopy, command)]);
-                        keydatabase = getfromlocal(command.databasetable + command.keycollection);
-                        database = getfromlocal(command.databasetable + command.collection);
-                    }
-                }
-
-                var found = false;                              // does current record exist?
-                var currentrecord = keydatabase[incopy.wid];    // search for wid in current keydatabase
-                var recordtoadd = {};                           // data for the new record to be added
-
-                proxyprinttodiv('Function updatewid currentrecord I', currentrecord, 12);
-
-                // fix current wid as necessary
-                if (currentrecord) 
-                {   
-                    // set up recordtoadd ready for addition
-                    recordtoadd = convertfromdriformatenhanced(currentrecord, command); 
-                    // flatten out record -- normal : {wid:wid1 a:b c:d}, driformat: {wid:wid1 data:{a:b c:d}}
-                    found = true;       // mark that the record was found                          
-                    // mark that current record exists
-                    if (command.datamethod === "insert")
-                    {
-                        recordtoadd=incopy; // current record does not matter
-                    }
-                    else // (command.datamethod === "upsert") // default
-                    {
-                        recordtoadd = extend(true, recordtoadd, incopy);
-                    }
-                    if (command.hasOwnProperty("lock")) // set the right property to save
-                    {
-                        recordtoadd.metadata.lock = command.lock;
-                    }
-                }
-                else 
-                {
-                    recordtoadd = incopy;
-                }
-
-                // update rules: updatewid will unlock or lock record based on command.lock, 
-                // it will fail if current record is already locked (and we are not unlocking)
-                // updatewid also retreives current record in database
-                //
-                // do NOT update if:
-                //    -currentrecord locked && command.lock !==false
-                //    -OR  getwid && command.lock missing
-                //    -current record is locked || !updatewid
-                // update if:
-                //    -current record is unlocked & updatewid 
-                //    -OR command.lock=false 
-
-                proxyprinttodiv('Function updatewid recordtoadd', recordtoadd, 12, true, true);
-                var currentlock = false;
-                if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock)
-                {
-                    currentlock = true;
-                }
-
-                proxyprinttodiv('Function updatewid not found err', err, 12, true, true);
-                proxyprinttodiv('Function datastore command', command, 12,99, true);
-                proxyprinttodiv('Function updatewid command.getwidflag', command.getwidflag, 12);
-                var shouldupdate = false;
-                if (!err && 
-                    ((command.getwidflag && command.hasOwnProperty("lock")) || (!command.getwidflag)))
-                {
-                    shouldupdate = true;
-                }
-
-                proxyprinttodiv('Function updatewid currentlock', currentlock, 12, true, true);
-                proxyprinttodiv('Function updatewid shouldupdate', shouldupdate, 12, true, true);
-                if (!currentlock && shouldupdate) 
-
-                {
-                    if (!currentrecord) {currentrecord={};}
-                    var convertedrecord = converttodriformat(recordtoadd, command); // get it ready to store
-                    proxyprinttodiv('Function updatewid convertedrecord II', convertedrecord, 12);
-                    extend(true, currentrecord, convertedrecord); // merge with existing record
-                    proxyprinttodiv('Function updatewid currentrecord III', currentrecord, 12);
-
-                    // delete code if empty
-
-
-                    // update key database
-                    keydatabase[incopy.wid] = currentrecord;
-                    // update list of objects database
-                    if (!found) // if did not exist then push it
-                    {
-                        database.push(currentrecord);
-                    }
-                    else
-                    {
-                        for (var record in database) // now see if record already exists by stepping though it
-                        {
-                            proxyprinttodiv('Function addtomongo database[record]', database[record], 12);
-                            if (database[record].wid === incopy.wid) {
-                                database[record] = currentrecord;
-                                break;
-                            }
-                        }
-                    }
-                    // save to local storage/store
-                    if (command.datastore === "localstorage") 
-                    {
-                        addToLocalStorage(command.databasetable + command.keycollection, keydatabase);
-                        addToLocalStorage(command.databasetable + command.collection, database);
-                    } 
-                    else if (command.datastore === "localstore") 
-                    {
-                        addtolocal(command.databasetable + command.keycollection, keydatabase);
-                        addtolocal(command.databasetable + command.collection, database);
-                    }
-                    // future upsert data in angular data model
-                    // future addToAngular(widName, incopy);
-                    // the type of storage below is not needed
-//                    addToLocalStorage(command.databasetable + command.collection + incopy.wid, currentrecord);
-
-                    proxyprinttodiv('Function updatewid currentrecord IV', currentrecord, 12);
-                }
-
-                // if this was actually a getwid call and nothing found then err
-                if (command.getwidflag === true && !found) {err = {"errorname": "notfound"};}
-                if (currentlock && shouldupdate){err = {"errorname":"locked"};}
-
-                proxyprinttodiv('Function updatewid err', err, 12);
-                proxyprinttodiv('Function updatewid recordtoadd', recordtoadd, 12);
-                callback(err, recordtoadd);
-            }) 
-        }
-        else if (command.datastore === 'mongo') 
-        { // if datastore == mongo
-            madd(incopy, command, function (err, res) {
-                callback(err, res);
-            });
-        } 
-        else // if not local nor mongo
-        {
-            callback(null, {});
-        }
-    } 
-    else 
-    { // if no widName
-        callback(null, {}); // should have better error here
-    }
-};
-
+// because of command.lock we must always read before we upate...therefore we can share code between get and update
 exports.getwid = getwid = function getwid(inobject, callback) {
     var incopy = {};
     extend(true, incopy, inobject);
     proxyprinttodiv('Function getwid incopy', incopy, 12);
     incopy.command.convert = "toobject"; // converttodriformat
     incopy.command.getwidflag=true;
-    var command = incopy.command;
+    //var command = incopy.command;
     proxyprinttodiv('Function datastore command -- get incopy', incopy, 12);
 
-    if (command.datastore === "localstorage" || command.datastore === "localstore")
-    {
-        updatewid(incopy, function (err, output) {
-            // regardless of return we can be done since update will return read wid
-            proxyprinttodiv('Function getwid output', output, 12);
-            callback(err, output);
-        })
-    }
-    else if (command.datastore === 'mongo')
-    {
-        mget(inobject, command, function (err, output) {
-            output = convertfromdriformatenhanced(output, command, incopy);
-            callback(err, output);
-        });
-    }
-    else
-    { // if not mongo
-        proxyprinttodiv('Function datastore command -- get incopy 4', incopy, 12);
-        callback(null, incopy);
-    }
-}; //End of getwid
+    updatewid(incopy, callback)
+}
+
+
+// Because of command.lock and the use of command local databases getwid calls updatewid
+// Within getwid are subfunctions:
+//     setupdata
+//     getcurrentwid
+//     processcurrentwid
+//         processcurrentwid calls madd or maddlocal
+// nested functions for updatewid...keep a global database and keydatabased var
+exports.updatewid = updatewid = updatewid = function updatewid(inobject, callback) {
+        // code begins at ***** below
+
+        // internal fn to update wid sets up defaults and default operations common to get/add
+        function recordsetup(inobject, callback) 
+        {
+            var err;
+            var incopy = {};
+            extend(true, incopy, inobject);
+            var command = incopy.command || config.configuration.d.default;  // should always get command
+            delete incopy.command;
+
+            // if record is not locked then okatoupdate = true, else false
+            if(!incopy.metadata){incopy.metadata={};}  
+            if (!incopy.metadata.systemdto && command.environment && 
+                (command.environment.userid || command.environment.loggedinuserid)) {incopy.metadata.systemdto={}}
+            if (!command.environment) {command.environment={}}
+            if (command.environment.userid && !incopy.metadata.systemdto.userid) 
+                {incopy.metadata.systemdto.userid=command.environment.userid}
+            if (command.environment.loggedinuserid && !incopy.metadata.systemdto.loggeiduserid) 
+                {incopy.metadata.systemdto.loggedinuserid=command.environment.loggedinuserid}
+
+            if(incopy && command && command.namespace)
+            { 
+                // add namespace key:value pairs from command.namespace to metadata.namespace
+                if (!incopy.metadata.namespace) {incopy.metadata.namespace = {};}
+                for (var key in command.namespace) 
+                {
+                    incopy.metadata.namespace[key] = command.namespace[key];
+                }
+            }
+            if (Object.keys(incopy.metadata).length === 0) {delete incopy.metadata}
+            proxyprinttodiv('Function datastore incopy', incopy, 12);
+            proxyprinttodiv('Function datastore command', command, 12,99, true);
+            if (!incopy.wid) {err = {"errorname":"nowid"}}
+            callback(err, incopy, command);
+        }
+
+        // internal fn to updatewid
+        // This function will also create a new database if not currently present
+        // based on datastore, get the current record...also get database and keydatabase, place globally
+        // callback record as it sits in db or NULL
+        function getcurrentrecord(incopy, command, callback)
+        {
+            if (command.datastore === "localstore" || command.datastore === "localstorage") 
+            {
+                getfromangular(incopy, function (angularerr, resultobject) 
+                {
+                    // extend incopy based on what was in angular 
+                    if (resultobject) {extend(true, incopy, resultobject); }
+
+                    // if not in memory then get it
+                    // if empty then create them
+                    if (command.datastore === "localstorage") 
+                    {
+                        proxyprinttodiv('Function updatewid in localstorage check', incopy, 12);
+                        keydatabase = getFromLocalStorage(command.databasetable + command.keycollection);
+                        database = getFromLocalStorage(command.databasetable + command.collection);
+                        if (!keydatabase) 
+                        {
+                            proxyprinttodiv('Function updatewid in localstorage check create', incopy, 12);
+                            addToLocalStorage(command.databasetable + command.keycollection, {"initialwid":setinitialwid(incopy, command)} );
+                            addToLocalStorage(command.databasetable + command.collection,[setinitialwid(incopy, command)]);
+                            keydatabase = getFromLocalStorage(command.databasetable + command.keycollection);
+                            database = getFromLocalStorage(command.databasetable + command.collection);
+                        }
+                        var currentrecord = keydatabase[incopy.wid];
+                        proxyprinttodiv('Function updatewid currentrecord', currentrecord, 12);
+                        if (!currentrecord) {currentrecord={}; command.newrecord=true;};
+                        callback(null, currentrecord, command);
+                    } 
+                    else if (command.datastore === "localstore") 
+                    {
+                        keydatabase = getfromlocal(command.databasetable + command.keycollection);
+                        database = getfromlocal(command.databasetable + command.collection);
+                        if (!keydatabase) 
+                        {
+                            addtolocal(command.databasetable + command.keycollection, {"initialwid":setinitialwid(incopy, command)});
+                            addtolocal(command.databasetable + command.collection, [setinitialwid(incopy, command)]);
+                            keydatabase = getfromlocal(command.databasetable + command.keycollection);
+                            database = getfromlocal(command.databasetable + command.collection);
+                        }
+                        var currentrecord = keydatabase[incopy.wid];
+                        if (!currentrecord) {currentrecord={}; command.newrecord=true;};
+                        callback(null, currentrecord, command);
+                    }
+                    else if (command.datastore === "mongo") 
+                    {
+                        wget(incopy, command, function (err, currentrecord) {
+                            if (!currentrecord) {currentrecord={}; command.newrecord=true;};
+                            callback(err, currentrecord, command)
+                        })
+                    }
+                    else
+                    {
+                        callback({"errorname":"wrong datastore"}, null);
+                    }
+                })
+            }
+        }
+
+        // internal fn to update wid
+        // based on record existance, datamethod, lock, send back record to add and add flags
+        function calculaterecordtoadd(incopy, currentrecord, command, callback)
+        {
+            var recordtoadd = {};
+            proxyprinttodiv('Function updatewid currentrecord I', currentrecord, 12);
+            // fix current wid as necessary
+            if (!command.newrecord)
+            {   
+                // set up recordtoadd ready for addition
+                recordtoadd = convertfromdriformatenhanced(currentrecord, command); 
+                // flatten out record -- normal : {wid:wid1 a:b c:d}, driformat: {wid:wid1 data:{a:b c:d}}                    
+                if (command.datamethod === "insert")
+                {
+                    recordtoadd=incopy; // current record does not matter
+                }
+                else // (command.datamethod === "upsert") // default
+                {
+                    recordtoadd = extend(true, recordtoadd, incopy);
+                }
+                if (command.hasOwnProperty("lock")) // set the right property to save
+                {
+                    recordtoadd.metadata.lock = command.lock;
+                }
+            }
+            else 
+            {
+                recordtoadd = incopy;
+            }
+            callback(null, recordtoadd);
+        }
+
+        // internal fn to updatewid
+        // update rules: updatewid will unlock or lock record based on command.lock, 
+        // it will fail if current record is already locked (and we are not unlocking)
+        // updatewid also retreives current record in database
+        //
+        // do NOT update if:
+        //    -currentrecord locked && command.lock !==false
+        //    -OR  getwid && command.lock missing
+        //    -current record is locked || !updatewid
+        // update if:
+        //    -current record is unlocked & updatewid 
+        //    -OR command.lock=false 
+        function restrictioncheck(currentrecord, command)
+        {
+            var shouldupdate = false;
+            var currentlock = false;
+
+            if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock)
+            {
+                currentlock = true;
+            }
+
+            proxyprinttodiv('Function datastore command', command, 12,99, true);
+
+            if ((command.getwidflag && command.hasOwnProperty("lock")) || (!command.getwidflag))
+            {
+                shouldupdate = true;
+            }
+            proxyprinttodiv('Function updatewid currentlock', currentlock, 12, true, true);
+            proxyprinttodiv('Function updatewid shouldupdate', shouldupdate, 12, true, true);
+
+            return {currentlock:currentlock, shouldupdate:shouldupdate}
+        }
+
+        // internal fn to update wid
+        // process and save current record based on command.datastore
+        function processcurrentrecord(currentrecord, recordtoadd, command, callback)
+        {
+            var err = null;
+            var restriction = restrictioncheck(currentrecord, command);
+
+            if (!restriction.currentlock && restriction.shouldupdate)
+            {
+                var convertedrecord = converttodriformat(recordtoadd, command); // get it ready to store
+                proxyprinttodiv('Function updatewid convertedrecord II', convertedrecord, 12);
+                extend(true, currentrecord, convertedrecord); // merge with existing record
+                proxyprinttodiv('Function updatewid currentrecord III', currentrecord, 12);
+                // delete code if empty
+                if (command.datastore === "mongo")
+                {
+                    wadd(currentrecord, command, callback);
+                }
+                else 
+                {
+                    waddlocal(currentrecord, command, callback);
+                }
+            }
+            else
+            {
+                if (restriction.currentlock && restriction.shouldupdate) {err = {"errorname":"locked"};}
+                callback(err, currentrecord);
+            }
+        }
+
+        // internal fn to updatewid
+        function waddlocal(currentrecord, command, callback)
+        {
+            // update key database
+            keydatabase[currentrecord.wid] = currentrecord;
+            // update list of objects database
+            if (command.newrecord) // if did not exist then push it
+            {
+                database.push(currentrecord);
+            }
+            else
+            {
+                for (var record in database) // now see if record already exists by stepping though it
+                {
+                    proxyprinttodiv('Function addtomongo database[record]', database[record], 12);
+                    if (database[record].wid === currentrecord.wid) {
+                        database[record] = currentrecord;
+                        break;
+                    }
+                }
+            }
+            // save to local storage/store
+            if (command.datastore === "localstorage") 
+            {
+                addToLocalStorage(command.databasetable + command.keycollection, keydatabase);
+                addToLocalStorage(command.databasetable + command.collection, database);
+            } 
+            else if (command.datastore === "localstore") 
+            {
+                addtolocal(command.databasetable + command.keycollection, keydatabase);
+                addtolocal(command.databasetable + command.collection, database);
+            }
+
+            // future addToAngular(widName, incopy);
+
+            proxyprinttodiv('Function updatewid currentrecord IV', currentrecord, 12);
+            callback(null, currentrecord);  // return record as added
+        }
+
+
+    // ****** START OF UPDATEWID *******
+    // *********************************
+    proxyprinttodiv('Function updatewid inobject', inobject,12 , true, true);
+    var database = [];
+    var keydatabase = {};
+
+    recordsetup(inobject, function (err, incopy, command) // set up defaults, etc
+    { 
+        proxyprinttodiv('Function updatewid err A ', err, 12, true, true);
+        proxyprinttodiv('Function updatewid incopy A ', incopy, 12, true, true);
+        proxyprinttodiv('Function updatewid command A ', command, 12, true, true);
+        if (err) {callback(err, incopy)} 
+        else 
+        {
+            getcurrentrecord(incopy, command, function (err, currentrecord, command) // get it from local or mongo
+            {
+                proxyprinttodiv('Function updatewid currentrecord B ', currentrecord, 12, true, true);
+                proxyprinttodiv('Function updatewid command B ', command, 12, true, true);
+                calculaterecordtoadd(incopy, currentrecord, command, function (err, recordtoadd){
+                    proxyprinttodiv('Function updatewid err C ', err, 12, true, true);
+                    proxyprinttodiv('Function updatewid recordtoadd C ', recordtoadd, 12, true, true);
+                    processcurrentrecord(currentrecord, recordtoadd, command, function (err, currentrecord) // save to local or mongo
+                    {
+                        proxyprinttodiv('Function updatewid err D ', err, 12, true, true);
+                        proxyprinttodiv('Function updatewid currentrecord D ', currentrecord, 12, true, true);
+                        // if this was actually a getwid call and nothing found then err
+                        if (command.getwidflag === true && command.newrecord) {err = {"errorname": "notfound"};}
+                        proxyprinttodiv('Function updatewid err', err, 12);
+                        proxyprinttodiv('Function updatewid recordtoadd', recordtoadd, 12);
+                        callback(err, recordtoadd); // we return the pretty record
+                    })
+                });
+            })
+        }// if error 
+    })
+}; 
+
 
 //To get parents
 exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(inobject, callback) {
@@ -2005,7 +2129,8 @@ function getRandomNumberByLength(length) {
         // check both objects...get a deep comparison
         var resulttable_result=logverifyresulttable(test_name, data_object, assertion_object);
 
-        var result0 = deepDiffMapper.map(assertion_object, data_object);
+        //var result0 = deepDiffMapper.map(assertion_object, data_object);
+        var result0 = deepDiffMapper.map(data_object, assertion_object);
         proxyprinttodiv('logverify  result0', result0, 91);
 
         // collapse the results so they are easy to check -- same level
@@ -2384,7 +2509,7 @@ function getRandomNumberByLength(length) {
                 if (this.isValue(obj1) || this.isValue(obj2)) {
                     return {
                         type: this.compareValues(obj1, obj2),
-                        data: obj1 || obj2
+                        data: obj2     // obj1 || obj2 changed 8/4 for logverify
                     };
                 }
                 var diff = {};
@@ -3170,78 +3295,78 @@ function getRandomNumberByLength(length) {
 
     //filterobject returns an object of based on a type of diffrence
 
-    exports.filterobject = function filterobject(obj1, obj2, command, callback) {
-        var type = "default";
-        var diffObj = {};
-        var diffMap = deepDiffMapper.map(obj1, obj2);
+    // exports.filterobject = function filterobject(obj1, obj2, command, callback) {
+    //     var type = "default";
+    //     var diffObj = {};
+    //     var diffMap = deepDiffMapper.map(obj1, obj2);
 
-        // set the type
-        if (command && command.filterobject && command.filterobject.type) {
-            type = command.filterobject.type;
-        }
+    //     // set the type
+    //     if (command && command.filterobject && command.filterobject.type) {
+    //         type = command.filterobject.type;
+    //     }
 
-        proxyprinttodiv("diff object map", diffMap, 27);
-        proxyprinttodiv("diff object map type", type, 27);
-        proxyprinttodiv("diff object map command", command, 27);
+    //     proxyprinttodiv("diff object map", diffMap, 27);
+    //     proxyprinttodiv("diff object map type", type, 27);
+    //     proxyprinttodiv("diff object map command", command, 27);
 
-        switch (type) {
-        case "default": // returns any difference found between two objects
-            for (var key in diffMap) {
-                if (diffMap[key]["type"] === "created" || diffMap[key]["type"] === "updated") {
-                    diffObj[key] = diffMap[key]["data"];
-                }
-            }
-            break;
-        case "match": // returns a property only if it matches in both objects
-            for (var key in diffMap) {
-                if (diffMap[key]["type"] === "unchanged") {
-                    diffObj[key] = diffMap[key]["data"];
-                }
-            }
-            break;
-        case "exists": // in new object it stil exists
-            for (var key in diffMap) {
-                if (diffMap[key]["type"] === "updated" || diffMap[key]["type"] === "unchanged") {
-                    obj[key] = diffMap[key]["data"];
-                } else {
-                    notobj[key] == diffMap[key]["data"];
-                }
-            }
-            break;
-        case "notdeleted": // in new object it was notdeleted
-            for (var key in diffMap) {
-                if (diffMap[key]["type"] === "created" || diffMap[key]["type"] === "updated" || diffMap[key]["type"] === "unchanged") {
-                    obj[key] = diffMap[key]["data"];
-                } else {
-                    notobj[key] == diffMap[key]["data"];
-                }
-            }
-            break;
+    //     switch (type) {
+    //     case "default": // returns any difference found between two objects
+    //         for (var key in diffMap) {
+    //             if (diffMap[key]["type"] === "created" || diffMap[key]["type"] === "updated") {
+    //                 diffObj[key] = diffMap[key]["data"];
+    //             }
+    //         }
+    //         break;
+    //     case "match": // returns a property only if it matches in both objects
+    //         for (var key in diffMap) {
+    //             if (diffMap[key]["type"] === "unchanged") {
+    //                 diffObj[key] = diffMap[key]["data"];
+    //             }
+    //         }
+    //         break;
+    //     case "exists": // in new object it stil exists
+    //         for (var key in diffMap) {
+    //             if (diffMap[key]["type"] === "updated" || diffMap[key]["type"] === "unchanged") {
+    //                 obj[key] = diffMap[key]["data"];
+    //             } else {
+    //                 notobj[key] == diffMap[key]["data"];
+    //             }
+    //         }
+    //         break;
+    //     case "notdeleted": // in new object it was notdeleted
+    //         for (var key in diffMap) {
+    //             if (diffMap[key]["type"] === "created" || diffMap[key]["type"] === "updated" || diffMap[key]["type"] === "unchanged") {
+    //                 obj[key] = diffMap[key]["data"];
+    //             } else {
+    //                 notobj[key] == diffMap[key]["data"];
+    //             }
+    //         }
+    //         break;
 
-        case "deleted": // in new object it was deleted
-            for (var key in diffMap) {
-                if (diffMap[key]["type"] === "deleted") {
-                    obj[key] = diffMap[key]["data"];
-                } else {
-                    notobj[key] == diffMap[key]["data"];
-                }
-            }
-            break;
+    //     case "deleted": // in new object it was deleted
+    //         for (var key in diffMap) {
+    //             if (diffMap[key]["type"] === "deleted") {
+    //                 obj[key] = diffMap[key]["data"];
+    //             } else {
+    //                 notobj[key] == diffMap[key]["data"];
+    //             }
+    //         }
+    //         break;
 
-        }
+    //     }
 
-        // VALUE_CREATED: 'created',
-        // VALUE_UPDATED: 'updated',
-        // VALUE_DELETED: 'deleted',
-        // VALUE_UNCHANGED: 'unchanged',
+    //     // VALUE_CREATED: 'created',
+    //     // VALUE_UPDATED: 'updated',
+    //     // VALUE_DELETED: 'deleted',
+    //     // VALUE_UNCHANGED: 'unchanged',
 
-        proxyprinttodiv("diff object to return", diffObj, 27);
-        if (callback) {
-            callback(null, diffObj);
-        } else {
-            return diffObj;
-        }
-    };
+    //     proxyprinttodiv("diff object to return", diffObj, 27);
+    //     if (callback) {
+    //         callback(null, diffObj);
+    //     } else {
+    //         return diffObj;
+    //     }
+    // };
 
     //filterobject returns an object of based on a type of diffrence
 
@@ -3673,6 +3798,122 @@ function totalStorageSize(){
    
 })();
 
+
+
+// start other event handler
+    // start eventonemin, eventtenmin and save the interval value so 
+    // you can use "clearInterval" in the future if desired to stop things
+
+    // var minute = 60 * 1000;
+    // var day = minute * 60 * 24;
+    // setInterval(eventonemin(), 1 * minute);
+    // setInterval(eventtenmin(), 10 * minute);
+    // setInterval(eventdaily(), 1 * day);
+
+exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+
+};
+
+exports.eventonline = eventonline = function eventonline(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventoffline = eventoffline = function eventoffline(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventonemin = eventonemin = function eventonemin() {
+//    proxyprinttodiv("eventonemin", 'one sec', 30);
+    processqueue(arguments.callee.name, function (err, res) {
+        //cb(err, res);
+    });
+};
+
+exports.eventtenmin = eventtenmin = function eventtenmin(params, cb) {    
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventdaily = eventdaily = function eventdaily(params, cb) {    
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventmonthly = eventmonthly = function eventmonthly(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend(params, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
+exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters, cb) {
+    processqueue(arguments.callee.name, function (err, res) {
+        cb(err, res);
+    });
+};
+
 exports.processqueue = processqueue = function processqueue(queuename, callback ) {
 
     // params.command.eventname = "eventonemin";
@@ -3693,7 +3934,7 @@ exports.processqueue = processqueue = function processqueue(queuename, callback 
     };
     executeobject["mongorawquery"] = {
         "$and": [{
-            "metadata.queuename": queuename,
+            "metadata.queuename": queuename
         }]
     };
     //var env = new DriEnvironment(params.command.environment);
@@ -3817,4 +4058,101 @@ exports.savetoqueue = savetoqueue = function savetoqueue(p, callback) {
         callback(null, res);
     });
 }
+
+
+// *********** EVENTS **************************************************
+// this shoud run the very first time an app is installed
+// it should not run again when machine is rebooted, unless local storage is cleared
+exports.eventappinstall = eventappinstall = function eventappinstall(params, callback) {
+    clearLocal();
+    setdefaultparm();
+    if (config.configuration.environment === 'local') {
+        clearLocalStorage();
+        if (config.configuration.machinename==='phonegap')
+        {
+        // copy files to wids 
+        }
+    }
+    else
+    {   // if server
+
+        // start eventonemin, eventtenmin and save the interval value so 
+        // you can use "clearInterval" in the future if desired to stop things
+        var minute = 60 * 1000;
+        var day = minute * 60 * 24;
+        setInterval(eventonemin, 1 * minute);
+        setInterval(eventtenmin, 10 * minute);
+        setInterval(eventdaily, 1 * day);
+
+        var startTime = new Date().getTime().toString();
+        execute({
+           "command.datastore":"localstore",
+           "executethis":"addwidmaster",
+           "wid":"bootwid",
+           "starttime": startTime
+           , "a": "ee"
+           }, function (err, res) {
+               console.log("Res is " + res.toString() );
+               callback(null,null);
+           }
+       );  
+    }
+}
+
+
+
+
+// this run when the device is turned on
+// we should always clear volitile memory localstore (clearLocal) and set defaults
+// we should NOT clear localstorage
+
+exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
+    clearLocal();
+    setdefaultparm();
+    // if the databases are not there then must be first time
+    if (config.configuration.environment === 'local') 
+    {
+        getwid({wid: config.configuration.startwid}, function (err, startwid) 
+        {
+            // try to get the default startwid, if nothing there then eventappinstall
+            if (err) 
+            {
+                eventappinstall(params, function (err, res)
+                {
+                    eventnormalstart(params, callback); // proceed to normal start
+                })
+            }
+            else 
+            {   // if startwid existed
+                extend(true, params, startwid);
+                eventnormalstart(params, callback);
+            }
+        })
+    }
+    else 
+    {
+        eventnormalstart(params, callback);
+    }
+}
+
+exports.eventnormalstart = eventnormalstart = function eventnormalstart(params, callback) 
+{
+    if (config.configuration.machinename!=='phonegap')
+    {
+        var executeobject = {};
+        extend(true, executeobject, 
+            {"executethis":"getwidmaster", 
+            "wid":"startwid",
+            "command.syncrule":"sync_server"})
+        execute(executeobject, function (err, res) 
+        {
+            callback(err, res)    
+        })
+    }
+    else
+    {
+        callback(null, null)
+    }
+}
+
 

@@ -1,8 +1,235 @@
 // copyright (c) 2014 DRI
 // to do make functions return objects, not strings
 
+// (function(){
+
+//     var keyPaths = [];
+
+//     var saveKeyPath = function(path) {
+//         keyPaths.push({
+//             sign: (path[0] === '+' || path[0] === '-')? parseInt(path.shift()+1) : 1,
+//             path: path
+//         });
+//     };
+
+//     var valueOf = function(object, path) {
+//         var ptr = object;
+//         path.each(function(key) { ptr = ptr[key] });
+//         return ptr;
+//     };
+
+//     var comparer = function(a, b) {
+//         for (var i = 0, l = keyPaths.length; i < l; i++) {
+//             aVal = valueOf(a, keyPaths[i].path);
+//             bVal = valueOf(b, keyPaths[i].path);
+//             if (aVal > bVal) return keyPaths[i].sign;
+//             if (aVal < bVal) return -keyPaths[i].sign;
+//         }
+//         return 0;
+//     };
+
+//     Array.implement('sortBy', function(){
+//         keyPaths.empty();
+//         Array.each(arguments, function(argument) {
+//             switch (typeOf(argument)) {
+//                 case "array": saveKeyPath(argument); break;
+//                 case "string": saveKeyPath(argument.match(/[+-]|[^.]+/g)); break;
+//             }
+//         });
+//         return this.sort(comparer);
+//     });
+
+// })();
+
+exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
+    // mapreducemongo should receive: map, reduce, query, output, command into query
+    var p = {};
+    extend(true, p, inparameters);
+    var map = p.map;
+    var reduce = p.reduce;
+    delete p.map;
+    delete p.reduce;
+    if (!p.out) 
+    {
+        p.out = p.command.collection || config.configuration.d.default.collection
+    }
+
+    proxyprinttodiv('mapreduce p', p, 99,true, true);
+
+    if (config.configuration.environment!=="local")
+    {
+        // if p.queryresult then save the collection so mapreduceserver can get it
+        // mapreduceserver also shoudl be able to process p.query
+        mapreduceserver(map, reduce, p, callback);
+    }
+    else 
+    {
+        if (!p.queryresult) // if results not sent in then go process p.mongorawquery
+        {
+            var temp={};
+            temp.mongorawquery = p.mongorawquery || p.query;
+            proxyprinttodiv('mapreduce before querywid', temp, 99,true, true);
+            querywidmaster(temp, function (err, res) 
+            {
+                proxyprinttodiv('mapreduce after query', res, 99,true, true);
+                p.queryresult = res.queryresult;
+                mapreducelocal(map, reduce, p, callback);
+            })
+        }
+        else // if queryresult sent in
+        {
+            mapreducelocal(map, reduce, p, callback);
+        }
+    }
+}
+
+
+// this function should not exist server side
+var globalresultobject = {};
+exports.globalresultobject = {};
+exports.emit = emit = function emit(k, v)
+    {
+        proxyprinttodiv('mapreduce emit k', k, 99,true, true);
+        proxyprinttodiv('mapreduce emit v', v, 99,true, true);
+        if (!globalresultobject[k]) {globalresultobject[k] = []};
+        globalresultobject[k].push(v);
+    }
+
+
+
+function mapreducelocal(map, reduce, p, cb)
+{
+    proxyprinttodiv('mapreduce map', map, 99,true, true);
+    proxyprinttodiv('mapreduce reduce', reduce, 99,true, true);
+    proxyprinttodiv('mapreduce p', p, 99,true, true);
+
+    // mapper step
+    globalresultobject = {};
+
+    if (p.sort) // sort input based on eg {dim0: 1} +1 ascending
+    {
+        //globalresultobject.sortBy(p.sort);
+    }
+
+    for (var eachitem in p.queryresult) // example map: function () {emit(this.gender, 1);};
+    {
+        // var parmarray = [];
+        // for (var eachprop in p.queryresult[eachitem])
+        // {
+        //     var temp={};
+        //     temp[eachprop] = p.queryresult[eachitem][eachprop];
+        //     parmarray.push(temp)
+        // }
+        proxyprinttodiv('mapreduce p.queryresult[eachitem]', p.queryresult[eachitem], 99,true, true);
+        // window[map].apply(this, parmarray);
+        //window[map](p.queryresult[eachitem]);
+        // had to hard code for now
+        window[map](p.queryresult[eachitem]);
+    } 
+    proxyprinttodiv('mapreduce globalresultobject I', globalresultobject, 99,true, true);
+
+    // reduce step
+    for (var eachitem in globalresultobject) // example reduce: function(gender, count){return Array.sum(count);};
+    {
+        globalresultobject[eachitem] = window[reduce](eachitem, globalresultobject[eachitem]);
+    }
+    proxyprinttodiv('mapreduce globalresultobject II', globalresultobject, 99,true, true);
+
+    var outlist =[];
+    if (!p.limit) {p.limit = Object.keys(globalresultobject).length}
+    if (p.limit) // Optional. Specifies a maximum number of documents to return from the collection.
+    {
+        for (var eachitem in globalresultobject)
+        {
+            outlist.push(globalresultobject[eachitem]);
+        }
+         
+    } 
+
+    if (p.finalize) // Optional. FN Follows the reduce method and modifies the output
+    {
+        for (var eachitem in outlist)
+        {
+            outlist[eachitem] = window[p.finalize](outlist[eachitem]);
+        }  
+    }
+
+    if (p.scope) //Optional. Specifies global variables that are accessible in the map, reduce and finalize functions.
+    {
+        
+    } 
+
+    if (p.jsmode) //Optional. Specifies whether to convert intermediate data into BSON format between the execution of the map and reduce functions. Defaults to false.
+    {
+        
+    } 
+
+    if (p.verbose) // Optional. Specifies whether to include the timing information in the result information. The verbose defaults to true to include the timing information.
+    {
+        
+    } 
+
+    if (!isString(p.out) && Object.keys(p.out).length > 0)
+    {
+        if (p.out.inline === 1) 
+        {
+            p.out = "queryresult";
+        }
+        // out: { <action>: <collectionName>
+        // [, db: <dbName>]
+        // [, sharded: <boolean> ]
+        // [, nonAtomic: <boolean> ] }
+        // out: { inline: 1 }
+        // set p.out
+    }
+
+    proxyprinttodiv('mapreduce in out globalresultobject', globalresultobject, 99,true, true);
+    p.queryresult=outlist;
+
+    if (isString(p.out)) // save results to db
+    {
+        if (p.out ==="queryresult")
+        {
+            cb(null,p);
+        }
+        else // if not query result -- real save
+        {
+            updatecollection(p, cb);
+        }
+    }
+    else // else return the results
+    {
+        cb(null, outlist);
+    }
+
+}
+
+function updatecollection(p, cb)
+{
+    var todolist = p.queryresult;
+    async.mapSeries(todolist, function (eachresult, cbMap) 
+    {
+        async.nextTick(function () 
+        {
+            eachresult.command.collection = p.out;
+            updatewid(eachresult, function (err, res)
+            {
+                cbMap(null);
+            }) 
+        })
+    },
+    function (err, res)
+    {
+        cb(null, res);
+    }
+    )
+}
+
+
+
 // returns [{},{}]
 exports.querywidmaster = querywidmaster = function querywidmaster(params, callback) {
+    if (!params.command) {params.command={}};
     params.command.queryconvertmethod = "object";
     proxyprinttodiv('querywidmaster', params, 28); 
 	querywid(params, function (err, results) {
@@ -43,7 +270,8 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
             "mongosetfieldsexclude": {},
             "mongosinglequery": "",
             "mongomultiplequery": "",
-            "monogoprojection":""
+            "monogoprojection":"",
+            "queryresult": null
         },
         {
             "command": {
@@ -64,10 +292,12 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
             "mongosetfieldsexclude": "",
             "mongosinglequery": "",
             "mongomultiplequery": "",
-            "monogoprojection":""
+            "monogoprojection":"",
+            "queryresult":""
         },
         true);
 
+    
     proxyprinttodiv('querywid filteredobject', filter_data, 28, true);
     parameters = filter_data.filteredobject;
     var xparams = filter_data.output;  // xtra parameters will be left overs..will be used for further $ands to query
@@ -101,6 +331,15 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     var mQueryString;                                   // current query to be sent to mquery
     var environmentdb = command.db; 
     var projection = qparms.monogoprojection;
+
+    // if queryresult was sent in (xparams.queryresult) then move it to command.indb
+    // this will be the "database" that will be used for a search
+    // so you can send it in in "queryresult" or "command.indb"
+    if (xparams.queryresult)
+    {
+        command.indb = xparams.queryresult;
+        delete xparams.queryresult;
+    }
 
     proxyprinttodiv('querywid command', command, 28, true);
     proxyprinttodiv('querywid qparms', qparms, 28, true);
@@ -139,7 +378,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                             mQueryString = BuildSingleQuery(widObject, "or", environmentdb);
                             proxyprinttodiv('Function MongoDataQuery singlemongoquery : ', mQueryString, 28, true);
                             mquery(mQueryString, projection, command, function (err, res) {
-                                if (err && Object.keys(err).length > 0) { cb1(err, res); }
+                                if (err) { cb1(err, res); }
                                 else { output = res; cb1(null, "step01"); }
                             }); // mquery
                         }
@@ -191,7 +430,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                                         mQueryString = BuildMultipleQuery(ListOfLists, "and", "or", environmentdb);
                                         proxyprinttodiv('querywid mQueryString multiple', mQueryString, 28);
                                         mquery(mQueryString, projection, command, function (err, res) {
-                                            if (err && Object.keys(err).length > 0)
+                                            if (err)
                                             {
                                                 cb1(err, res);
                                             }
@@ -253,7 +492,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
 
                     proxyprinttodiv('querywid mQueryString first main query', mQueryString, 28);
                     mquery(mQueryString, projection,  command, function (err, res) {
-                        if (err && Object.keys(err).length > 0) {
+                        if (err) {
                             cb1(err, res);
                         } else {
                             output = res;
@@ -313,7 +552,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     if (mQueryString) {
                         mquery(mQueryString, projection, command, function (err, res) {
                                proxyprinttodiv('mQueryString at step03 res',res, 28);
-                            if (err && Object.keys(err).length > 0) {
+                            if (err) {
                                 cb3(err, res);
                             } else {
                                 relationshipoutput = res;
@@ -360,7 +599,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     if (mQueryString) 
                     {
                         mquery(mQueryString, projection, command, function (err, res) {
-                            if (err && Object.keys(err).length > 0) {
+                            if (err) {
                                 cb4(err, res);
                             } else {
                                 output = res;

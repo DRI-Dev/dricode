@@ -17,70 +17,15 @@ if (!debugon) { // debugfn
     var debugon = false;
 }
 
-exports.localStore = localStore = function () {
-    var json = {};
+eventdeviceready({}, function (err, res) {
+});
 
-    function clear() {
-        this.json = {};
-    }
-
-    function push(key, val) {
-        this.json[key] = val;
-    }
-
-    function get(key) {
-        return this.json[key];
-    }
-
-    function remove(key) {
-        delete this.json[key];
-    }
-
-    return {
-        "clear": clear,
-        "json": json,
-        "push": push,
-        "remove": remove,
-        "get": get
-    };
-
-}();
-
-localStore.clear();
-
-exports.getglobal = getglobal = function getglobal(varname) {
-    return localStore.get(varname);
-};
-
-exports.saveglobal = saveglobal = function saveglobal(varname, varvalue) {
-    return localStore.push(varname, varvalue);
-};
-
-// logic to add things to localStore object
-exports.addtolocal = addtolocal = function addtolocal(widName, widobject) {
-    if (!widobject) {
-        widobject = {};
-    }
-    if (widName) {
-        //localStore.push(config.configuration.widmasterkey + widName, widobject);
-        localStore.push(widName, widobject);
-    }
-};
-
-// logic to get things from localStore object
-exports.getfromlocal = getfromlocal = function getfromlocal(inputWidgetObject) {
-    var output = null;
-    output = localStore.get(inputWidgetObject);
-    //if (output === null) { output = {}; }
-    proxyprinttodiv('getfromlocal output', output, 38);
-    return output;
-};
-
-exports.clearLocal = clearLocal = function clearLocal() {
-    // widMasterKey = "widmaster_";
-    localStore.clear();
-    //potentialwid = 0;
-};
+sendsms({
+    'tonumber': '+12313133930',
+    'msgbody': 'This the server- I just restarted '
+}, function (err, result) {
+    //console.log('running');
+});
 
 
 var needle = require('needle');
@@ -90,18 +35,17 @@ var url = require('url');
 
 exports.consolere = require('console-remote-client').connect('console.re','80','dev-dri');
 exports.console = exports.consolere;
-
 var localStorage = exports.localStorage = {};
-
 exports.environment = 'server';
 exports.server = 'server1';
+var querystring = require('querystring');
+var https = require('https');
+var fs = require('fs');
 
 
 function setdefaultparm() {
 
     exports.config = config = config123();
-    //test_results = {};
-    //potentialwid = 0;
 
     saveglobal("debuglevel", 0);
     saveglobal("Debug", 'false');
@@ -115,65 +59,12 @@ function setdefaultparm() {
     saveglobal("debugindent", 0);
     saveglobal("debuglinenum", 0);
 
-    exports.environment = "server";
+    exports.environment = "local";
     exports.Debug = Debug;
-    exports.debuglevel = debuglevel;
+    exports.debuglevel = 0 || debuglevel;
+
 }
 
-// exports.Debug = Debug = 'false';
-// exports.debuglevel = debuglevel = 0;
-// exports.widMasterKey = widMasterKey = "widmaster_";
-// exports.test_results = test_results = {};
-// exports.potentialwid = potentialwid = 0;
-
-// //do not change these constants
-// exports.debugon = debugon = true;
-// exports.debugname = debugname = "";
-// exports.debugsubcat = debugsubcat = "";
-// exports.debugcat = debugcat = "";
-// exports.debugfilter = debugfilter = "";
-// exports.debugdestination = debugdestination = 1;
-// exports.debugcolor = debugcolor = 0;
-// exports.debugindent = debugindent = 0;
-// exports.environment = environment = 'server';
-// exports.debuglinenum = debuglinenum = 1;
-
-// function setdefaultparm() {
-//     localStore.clear();
-//     Debug = 'false'; // **** Saurabh ::  changed to make node compatible ****
-//     debuglevel = 0;
-//     widMasterKey = "widmaster_";
-//     test_results = {};
-//     potentialwid = 0;
-//     debugon = false;
-//     debugname = "";
-//     debugsubcat = "";
-//     debugcat = "";
-//     debugfilter = "";
-//     debugdestination = 1;
-//     debugcolor = 0;
-//     debugindent = 0;
-//     debuglinenum = 1;
-//     environment = "server";
-//     exports.environment = environment;
-//     test_results = {}; // can take out
-//     debuglog = {};
-//     exports.debuglog = debuglog;
-//     exports.Debug = Debug;
-//     exports.debuglevel = debuglevel;
-//     exports.widMasterKey = widMasterKey;
-//     exports.test_results = test_results;
-//     exports.potentialwid = potentialwid;
-//     exports.debugon = debugon;
-//     exports.debugname = debugname;
-//     exports.debugsubcat = debugsubcat;
-//     exports.debugcat = debugcat =
-//     exports.debugfilter = debugfilter;
-//     exports.debugdestination = debugdestination;
-//     exports.debugcolor = debugcolor;
-//     exports.debugindent = debugindent;
-//     exports.debuglinenum = debuglinenum;
-// }
 
 
 function config123() {
@@ -226,254 +117,6 @@ function config123() {
     };
 }
 
-// *********** EVENTS **************************************************
-exports.eventappinstall = eventappinstall = function eventappinstall() {
-    if (exports.environment === 'local') { // only clear local storage locally
-        clearLocalStorage()
-    }
-};
-
-exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
-    setdefaultparm();
-    //if (!getFromLocalStorage(config.configuration.defaultkeycollection)) {
-    if (Object.keys(config).length === 0) { // this will never happen on server
-        eventappinstall();
-    }
-
-    // start eventonemin, eventtenmin and save the interval value so 
-    // you can use "clearInterval" in the future if desired to stop things
-    var minute = 60 * 1000;
-    var day = minute * 60 * 24;
-    setInterval(eventonemin, 1 * minute);
-    setInterval(eventtenmin, 10 * minute);
-    setInterval(eventdaily, 1 * day);
-
-
-   var startTime = new Date().getTime().toString();
-   execute({
-       "executethis":"addwidmaster",
-        "command": {
-            "datastore": "localstore", // config.configuration.datastore,
-        },
-       "wid":"bootwid",
-       "starttime": startTime
-       , "a": "ee"
-       }, function (err, res) {
-           console.log("Res is " + res.toString() );
-           callback(null,null);
-       }
-   );    
-};
-
-
-
-exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-
-};
-
-exports.eventonline = eventonline = function eventonline(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventoffline = eventoffline = function eventoffline(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventonemin = eventonemin = function eventonemin() {
-//    proxyprinttodiv("eventonemin", 'one sec', 30);
-    processqueue(arguments.callee.name, function (err, res) {
-        //cb(err, res);
-    });
-};
-
-exports.eventtenmin = eventtenmin = function eventtenmin(params, cb) {    
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventdaily = eventdaily = function eventdaily(params, cb) {    
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventmonthly = eventmonthly = function eventmonthly(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-//exports.processevent = processevent = function processqueue(eventname, callback) {
-//    callback(null,null);
-    // proxyprinttodiv("processeventqueue eventname----", eventname, 99);
-    // getexecutelist(eventname, "queuecollection", function (err, executetodolist) {
-    //     proxyprinttodiv("processeventqueue executelist", executetodolist, 17);
-    //     executelistfn(executetodolist, execute, function (err, res) {
-    //         deletelist(executetodolist, eventname, function (err, res) {
-    //             callback(err, res);
-    //             });
-    //         });
-    //     });
-//    };
-
-// exports.executelistfn = executelistfn = function executelistfn(listToDo, fn, callback) {
-//     async.mapSeries(listToDo, function (eachresult, cbMap) {
-//         async.nextTick(function () {
-//             fn(eachresult, function (err, res){
-//                 cbMap(err, res);
-//             });
-//         });
-//     }, function (err, res) {
-//         callback(err, res);
-//     });
-// };
-
-
-// exports.getexecutelist = getexecutelist = function getexecutelist(eventname, eventtype, callback) {
-// //    proxyprinttodiv("getexecutelist eventname(collection)", eventname, 17);
-// //    proxyprinttodiv("getexecutelist eventtype(databasetable)", eventtype, 17);
-//     var executeobject = {"command": {"result": "queryresult"}};
-//     var executetodolist=[];
-//     executeobject.command.databasetable = eventtype;
-//     executeobject.command.collection = eventname;
-//     executeobject.command.db = "queuedata";
-//     //executeobject.command.result = "queueresult";
-//     executeobject["executethis"] = "querywid";
-//     //executeobject["mongorawquery"] = { "queuedata" : { "$gt": {} }}; // find objects that are not empty
-//     executeobject["mongorawquery"] = {"$and": [{"wid": "doesnotmatter"}]}   
-// //    proxyprinttodiv("getexecutelist querywid executeobject", executeobject, 17);
-    
-//     execute(executeobject, function (err, res) {
-// //        proxyprinttodiv("getexecutelist mongorawquery res", res, 17);
-//         if (res.length === 0) {
-//             executetodolist = [];
-//         }
-//         else if(res[0] && res[0]["queryresult"]){
-//             for (var everyaction in res[0]["queryresult"]){
-// //                proxyprinttodiv("getexecutelist mongorawquery queryresult everyaction", everyaction, 17);
-//                 //if (res[0]["queryresult"][everyaction]
-//                 executetodolist.push(res[0]["queryresult"][everyaction]);
-//             }
-
-//         }
-//         callback(null, executetodolist);
-//     })
-// };
-
-
-
-
-
-
-function executeAjax(allConfig, executeItem, callback, returnCallback) {
-    // var result;
-    // var success = false;
-    // result = "";
-
-    // //executeItem = "[" + JSON.stringify(executeItem) + "]";
-    // executeItem = JSON.stringify(executeItem);
-    // $.ajax({
-    //     type: 'PUT',
-    //     dataType: 'json',
-    //     url: '/executethis',
-    //     headers: {
-    //         'content-type': 'Application/json'
-    //     },
-    //     global: 'false',
-    //     cache: 'false',
-    //     async: 'false',
-    //     data: executeItem,
-    //     success: function(data) {
-    //         // alert(JSON.stringify(data));
-    //         if (data.error) {
-    //             result = "<pre> APPLICATION ERROR: </pre>" + JSON.stringify(data);
-    //         } else {
-    //             if (Object.keys(data).length > 0) {
-    //                 result = "<pre> SUCCESS: </pre>" + JSON.stringify(data);
-    //             } else {
-    //                 result = "<pre> <<< No Data Returned >>> </pre>";
-    //             }
-    //         }
-    //         callback(data, allConfig, 'html', returnCallback);
-    //     },
-    //     error: function(data) {
-    //         alert(JSON.stringify(data));
-    //         result = "FAILED TO CALL EXECUTETHIS " + JSON.stringify(data);
-    //         callback(data, allConfig, 'html', returnCallback);
-    //     }
-    // });
-}
-
-// Primary execute function called after doThis
-
 exports.test2 = test2 = function test2(name, callback) {
     var default_name = 'stranger';
     var use_name = name || default_name;
@@ -485,26 +128,46 @@ exports.test2 = test2 = function test2(name, callback) {
     );
 };
 
-exports.sayHello = sayHello = function (params, callback) {
 
+exports.getfromangular = getfromangular = function getfromangular(params, callback) {
+    // this is a dummy getfromangular call for server use
+    callback(null, {});
 };
 
+
 // Utility function to return json with all keys in lowercase
+// function toLowerKeys(obj) {
+//     var key, keys = Object.keys(obj);
+//     var n = keys.length;
+//     var newobj = {};
+//     while (n--) {
+//         key = keys[n];
+//         newobj[key.toLowerCase()] = obj[key];
+//     }
+//     return newobj;
+// }
 
-function toLowerKeys(obj) {
-    var key, keys = Object.keys(obj);
-    var n = keys.length;
-    var newobj = {};
-    while (n--) {
-        key = keys[n];
-        newobj[key.toLowerCase()] = obj[key];
-    }
-    return newobj;
-}
 
-var querystring = require('querystring');
-var https = require('https');
-var fs = require('fs');
+
+// send an SMS to someone
+// - parameters -
+//  To: phone number of who to send message to in +12315551212 format
+//  Body: text of the message to send, max 1600 characters
+exports.sendsms = sendsms = function (params, cb) {
+    var twilioFunction = 'Messages.json';
+    var twilioParameters = {
+        'To': params['to'],
+        'Body': params['body']
+    };
+    exports.twilioPassThrough({
+            'twilioFunction': twilioFunction,
+            'twilioParameters': twilioParameters
+        },
+        function (err, result) {
+            cb(err, result);
+        }
+    );
+};
 
 exports.twilioPassThrough = function (params, callback) {
     //    proxyprinttodiv('twilioPassThrough started', 99);
@@ -538,27 +201,6 @@ exports.twilioPassThrough = function (params, callback) {
     var twilioURI = twilioBasePath + '/' + twilioFunction;
     var callHTML = 'https://' + twilioHost + twilioURI;
 
-    //    proxuprinttodiv('Calling twilio function ' + twilioURI );
-
-    //// Maximum size of the message is 1600 characters
-    //if (messageBody)
-    //{
-    //    messageBody = messageBody.substr(0,1599);
-    //} else {
-    //    // no message body - abort
-    //    console.log('Message body paramter missing.  Aborting function');
-    //    return
-    //}
-
-    //// Build the post data object
-    //var post_data = querystring.stringify({
-    //        'From': callerFrom,
-    //        'To': callerTo,
-    //        'Body': messageBody ,                         
-    //    }
-    //);
-
-    // Pass through the paramters
     var twilioParameters = params['twilioParameters'];
     twilioParameters.From = callerFrom;
     var post_data = querystring.stringify(params['twilioParameters']);
@@ -596,65 +238,31 @@ exports.twilioPassThrough = function (params, callback) {
     //post the data
     post_request.write(post_data);
     post_request.end();
-
-
 };
 
 
-exports.gitPullEtCore = gitPullEtCore = function gitPullEtCore(params, cb) {
-    var cmd = 'git';
-    var cwd = '/Code/Dri/server-code/nodejsmtapi';
-    var args = ['pull'];
-    var options = {
-        'cwd': cwd
-    };
+// exports.gitPullEtCore = gitPullEtCore = function gitPullEtCore(params, cb) {
+//     var cmd = 'git';
+//     var cwd = '/Code/Dri/server-code/nodejsmtapi';
+//     var args = ['pull'];
+//     var options = {
+//         'cwd': cwd
+//     };
+//     console.log('calling ' + cmd + args.join(' '));
+
+//     var git = spawn(cmd, args, options);
+
+//     git.stdout.on('data', function (data) {
+//         console.log('git output: ' + data);
+//     });
+
+//     git.on('close', function (return_code) {
+//         console.log('gitPullEtCore has completed');
+//         cb(return_code, return_code);
+//     });
+// };
 
 
-    console.log('calling ' + cmd + args.join(' '));
-
-    var git = spawn(cmd, args, options);
-
-    git.stdout.on('data', function (data) {
-        console.log('git output: ' + data);
-    });
-
-    git.on('close', function (return_code) {
-        console.log('gitPullEtCore has completed');
-        cb(return_code, return_code);
-    });
-};
-
-
-
-
-// send an SMS to someone
-// - parameters -
-//  To: phone number of who to send message to in +12315551212 format
-//  Body: text of the message to send, max 1600 characters
-exports.sendsms = sendsms = function (params, cb) {
-    var twilioFunction = 'Messages.json';
-    var twilioParameters = {
-        'To': params['to'],
-        'Body': params['body']
-    };
-    exports.twilioPassThrough({
-            'twilioFunction': twilioFunction,
-            'twilioParameters': twilioParameters
-        },
-        function (err, result) {
-            cb(err, result);
-        }
-    );
-};
-
-//// lets test that function we just created
-//exports.twilioPassThrough( {
-//    'twilioFunction': 'Messages.json', 
-//    'twilioParameters': {
-//        'To': '+12313133930',
-//        'Body': 'This is a new text message for you'
-//    }
-//}, function() { console.log('123'); } );
 
 exports.server = server = function server(params, callback) {
     // set up object in syntax that driApi is expecting
@@ -720,6 +328,277 @@ exports.anyserver = anyserver = function anyserver(params, callback) {
         callback(err, body);
     });
 };
+
+
+exports.getPropertyOrDefault = getPropertyOrDefault = function(params, propName, defaultValue) {
+    if (params.hasOwnProperty(propName)) {
+        return params[propName];
+    } else {
+        return defaultValue;
+    }
+};
+
+exports.zapier_passthrough = zapier_passthrough = function(params, cb) {
+    //var zapURL = 'https://zapier.com/hooks/catch/gurm8/';
+    //jQuery.getJSON(zapURL, onZapSent);
+    var zapURL = getPropertyOrDefault(params, 'zapURL', '');
+    var zapParams = getPropertyOrDefault(params, 'zapParams', {} );
+
+    var urlObj = url.parse(zapURL);
+    var zapHost = urlObj.host;
+    var zapPort = 443;
+    var post_data = querystring.stringify(zapParams);
+    var post_options = {
+        host: zapHost,
+        port: zapPort,
+        path: zapURL,
+        method: 'POST',
+        strictSSL: false,
+        secureProtocol: 'SSLv3_client_method',
+        // auth: accountSid + ':' + authToken,
+        headers: {
+            'Content-type': 'application/x-www-form-urlencoded',
+            'Content-length': post_data.length
+        }
+    };
+    
+    // Setup the request
+    var post_request = https.request(post_options, function (res) {
+        res.setEncoding('utf8');
+        res.on('data', function (chunk) {
+            //            proxyprinttodiv('Response: ' + chunk);
+
+            // assumes response is 1 chunk
+            cb(null, {
+                "test": "success"
+            });
+        });
+    });
+
+    //post the data
+    post_request.write(post_data);
+    post_request.end();
+
+};
+
+zapier_passthrough(
+    {'zapURL':'https://zapier.com/hooks/catch/gurm8/','zapParams':{'87': __dirname}}, 
+    function(err, res) {
+        console.log('The pass through function has ended.');
+        console.log('God save the queen');
+    }
+); 
+
+
+
+    // series, level 0, 1 function that passes on the server
+    exports.server_serieslevel0pass1 = 
+    server_serieslevel0pass1 = 
+    function server_serieslevel0pass1(executeobject, callback) 
+    {
+          if (!executeobject.command) {
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+          
+          executeobject.command.environment.run.type="series"
+          executeobject.command.environment.run.executelevel=0;
+          executeobject.command.environment.platform='server';          // used for server testing
+          executeobject.command.environment.processfn="execute_function";          // what function handles functions
+
+          executeobject.command.xrun={"executethis": 'test_return_noerror_result_server'};
+
+          var etEnvironment = new DriEnvironment(executeobject.command.environment);
+          etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+          {        
+                var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
+                proxyprinttodiv('expected error', null, 99);
+                proxyprinttodiv('actual error', error_obj, 99);
+                proxyprinttodiv('expected result', result_assertion, 99);
+                proxyprinttodiv('actual result', result_obj, 99);
+
+                var composite_obj = logverifycomplex("server_serieslevel0pass1", result_obj, result_assertion, error_obj, null);
+                proxyprinttodiv('composite_obj', composite_obj, 99);
+                callback(null, composite_obj)
+          });
+
+    };
+
+    // series, level 0, 1 : server tries to find a function that only exists locally and so fails
+    exports.server_serieslevel0fail1 = 
+    server_serieslevel0fail1 = 
+    function server_serieslevel0fail1(executeobject, callback) 
+    {
+          if (!executeobject.command) {
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+          
+          executeobject.command.environment.run.type="series"
+          executeobject.command.environment.run.executelevel=0;
+          executeobject.command.environment.platform='server';          // used for server testing
+          executeobject.command.environment.processfn="execute_function";          // what function handles functions
+
+          executeobject.command.xrun={"executethis": 'test_return_noerror_result_local'};
+
+          var etEnvironment = new DriEnvironment(executeobject.command.environment);
+          etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+          {        
+                //var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
+                proxyprinttodiv('expected error', global_failnotfound, 99);
+                proxyprinttodiv('actual error', error_obj, 99);
+                proxyprinttodiv('expected result', null, 99);
+                proxyprinttodiv('actual result', result_obj, 99);
+
+                var composite_obj = logverifycomplex("server_serieslevel0fail1", result_obj, null, error_obj, global_failnotfound);
+                proxyprinttodiv('composite_obj', composite_obj, 99);
+                callback(null, composite_obj)
+          });
+
+    };
+    
+// server tests
+exports.test_return_noerror_result_server = test_return_noerror_result_server = function test_return_noerror_result_server (param, callback) 
+{
+    // debugger;
+    proxyprinttodiv('test_return_noerror_result_server- incoming parm', param, 99);
+    var error_obj = null;
+    var env = param.command.environment.platform;
+    if (env==="server" && param.serverfn)     // if environment = server and serverfn parameter exist then redirect 
+                                              // to different function--that way we can on same machine pass locally and
+                                              // fail server
+    {
+        param.command.xrun=param.serverfn;
+        delete param.serverfn;
+        proxyprinttodiv('test ***** calling server', param, 99);
+        execute(param, callback);
+    } else {
+        var result_obj = { 'a':'b', env: env };
+        callback( error_obj, result_obj );
+    }
+};
+
+
+exports.publishtestdelay = publishtestdelay = function publishtestdelay(parameters, callback) {
+        // publishtest(parameters, callback);
+        parameters.command =  parameters.command || {};
+        parameters.command.queuename = "eventonemin";
+        parameters["addthis.executethis"] = "publishtest";
+        savetoqueue(parameters, callback);
+};
+
+    // Get parameters from github, pass it on to publish test
+
+exports.publishtest = publishtest = function publishtest(parameters, callback) { 
+        // listToDo, eventname, callback) {
+        console.log('---- publishtest??-');
+        console.log(JSON.stringify(parameters));
+
+        var pusher_name = "Unknown";
+        if (parameters.hasOwnProperty("pusher")) {
+            if (parameters["pusher"].hasOwnProperty("name")) {
+                pusher_name = parameters["pusher"]["name"];
+            }
+        }
+        var repo_name = "Unknown";
+        if (parameters.hasOwnProperty("repository")) {
+            if (parameters["repository"].hasOwnProperty("name")) {
+                repo_name = parameters["repository"]["name"];
+            }
+        }
+        var ref = "Unknown";
+        if (parameters.hasOwnProperty("ref")) {
+            ref = parameters["ref"];
+        }
+
+        var dadata = parameters["command"];
+        for (key in dadata)
+        {
+            console.log("Key: " + key + " : " + dadata[key]);
+        }
+
+        var pass_on_object = {
+            "pusher_name" : pusher_name,
+            "repo_name" : repo_name,
+            "ref" : ref
+        }
+        console.log('>-->>>');
+        console.log('--- calling sendPostCall ---');
+
+        // TODO: Create a function that given the REF of the COMMIT
+        //       from GITHUB.COM Webhook it will return it will return
+        //       the NAME of the server.  
+        // 
+        //      .  
+        var server = "";
+        if (repo_name ==="test3") {
+            server=repo_name + ".dripoint.com";
+        }
+        var executeobject = {};
+        executeobject.executethis="getuptime"
+        executeobject.server = server;
+        
+        anyserver(executeobject,function(err, result) {
+
+            //getuptime(null, function(err, result) {
+            var passfail = "Unknown";
+            if (result.status) {
+                passfail = "Pass";
+            } else {
+                passfail = "Fail";
+            } 
+            sendsms({
+                'to': '+12313133930',
+                'body': 'publishtest - status: ' + passfail + ', user: ' + pusher_name + 
+                    ", repo name: " + repo_name + ', ref: ' + ref  
+                }, 
+                function (err, result) {
+                    callback(err, result);
+                }
+            );
+        });
+
+        //sendPostCall({"post_data":parameters}, function(err, result) {
+        //    console.log("call to sendPostCall has returned...");
+        //    }
+        //);
+        console.log('---- publishtest!!---');
+
+};
+
+
+//var startTime = new Date();
+exports.getuptime = getuptime = function getuptime(params, callback) {
+    console.log(">>>>>>>-----------=======-----==-=-=-=-=-=-=---=-=-------======----------");
+    var execObj = [{
+        "executethis" : "getwid",
+        "command": {
+            "datastore": "localstore" // config.configuration.datastore,
+        },
+        "wid": "bootwid"
+    }];
+    execute(execObj, function (err, res) {
+            res = res[0][0];
+            var startTime = res.starttime;
+            var now = new Date().getTime();
+            var howLong = Math.floor((now - startTime)/1000) ;
+            var currentUser = params.currentuser;
+
+            console.log("How Long is " + howLong);
+            var tooLong = 30;
+            var upStatus = (howLong < tooLong);
+            console.log("RESULT is " + JSON.stringify(res));
+            res.status = upStatus;
+            res.uptime = howLong;
+            res.currentuser = currentUser; 
+            res.sms = '+12313133930';
+            callback(err, res)
+        }
+    );
+}
+
 
 
 //exports.getDriApiData = getDriApiData = function getDriApiData(params, callback) {
@@ -838,170 +717,6 @@ exports.anyserver = anyserver = function anyserver(params, callback) {
 //     return saveobject;
 // };
 
-
-eventdeviceready({}, function (err, res) {
-});
-
-sendsms({
-    'tonumber': '+12313133930',
-    'msgbody': 'This the server- I just restarted '
-}, function (err, result) {
-    //console.log('running');
-});
-
-exports.getPropertyOrDefault = getPropertyOrDefault = function(params, propName, defaultValue) {
-    if (params.hasOwnProperty(propName)) {
-        return params[propName];
-    } else {
-        return defaultValue;
-    }
-};
-
-exports.zapier_passthrough = zapier_passthrough = function(params, cb) {
-    //var zapURL = 'https://zapier.com/hooks/catch/gurm8/';
-    //jQuery.getJSON(zapURL, onZapSent);
-    var zapURL = getPropertyOrDefault(params, 'zapURL', '');
-    var zapParams = getPropertyOrDefault(params, 'zapParams', {} );
-
-    var urlObj = url.parse(zapURL);
-    var zapHost = urlObj.host;
-    var zapPort = 443;
-    var post_data = querystring.stringify(zapParams);
-    var post_options = {
-        host: zapHost,
-        port: zapPort,
-        path: zapURL,
-        method: 'POST',
-        strictSSL: false,
-        secureProtocol: 'SSLv3_client_method',
-        // auth: accountSid + ':' + authToken,
-        headers: {
-            'Content-type': 'application/x-www-form-urlencoded',
-            'Content-length': post_data.length
-        }
-    };
-    
-    // Setup the request
-    var post_request = https.request(post_options, function (res) {
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            //            proxyprinttodiv('Response: ' + chunk);
-
-            // assumes response is 1 chunk
-            cb(null, {
-                "test": "success"
-            });
-        });
-    });
-
-    //post the data
-    post_request.write(post_data);
-    post_request.end();
-
-};
-
-zapier_passthrough(
-    {'zapURL':'https://zapier.com/hooks/catch/gurm8/','zapParams':{'87': __dirname}}, 
-    function(err, res) {
-        console.log('The pass through function has ended.');
-        console.log('God save the queen');
-    }
-); 
-
-	// series, level 0, 1 function that passes on the server
-	exports.server_serieslevel0pass1 = 
-	server_serieslevel0pass1 = 
-	function server_serieslevel0pass1(executeobject, callback) 
-	{
-		  if (!executeobject.command) {
-              executeobject.command={};
-              executeobject.command.environment={};
-              executeobject.command.environment.run={};
-          }
-		  
-		  executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=0;
-		  executeobject.command.environment.platform='server';          // used for server testing
-		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
-
-		  executeobject.command.xrun={"executethis": 'test_return_noerror_result_server'};
-
-		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
-		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
-		  {        
-				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
-				proxyprinttodiv('expected error', null, 99);
-				proxyprinttodiv('actual error', error_obj, 99);
-				proxyprinttodiv('expected result', result_assertion, 99);
-				proxyprinttodiv('actual result', result_obj, 99);
-
-				var composite_obj = logverifycomplex("server_serieslevel0pass1", result_obj, result_assertion, error_obj, null);
-				proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj)
-		  });
-
-	};
-
-	// series, level 0, 1 : server tries to find a function that only exists locally and so fails
-	exports.server_serieslevel0fail1 = 
-	server_serieslevel0fail1 = 
-	function server_serieslevel0fail1(executeobject, callback) 
-	{
-		  if (!executeobject.command) {
-              executeobject.command={};
-              executeobject.command.environment={};
-              executeobject.command.environment.run={};
-          }
-		  
-		  executeobject.command.environment.run.type="series"
-		  executeobject.command.environment.run.executelevel=0;
-		  executeobject.command.environment.platform='server';          // used for server testing
-		  executeobject.command.environment.processfn="execute_function";          // what function handles functions
-
-		  executeobject.command.xrun={"executethis": 'test_return_noerror_result_local'};
-
-		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
-		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
-		  {        
-				//var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
-				proxyprinttodiv('expected error', global_failnotfound, 99);
-				proxyprinttodiv('actual error', error_obj, 99);
-				proxyprinttodiv('expected result', null, 99);
-				proxyprinttodiv('actual result', result_obj, 99);
-
-				var composite_obj = logverifycomplex("server_serieslevel0fail1", result_obj, null, error_obj, global_failnotfound);
-				proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj)
-		  });
-
-	};
-	
-// server tests
-exports.test_return_noerror_result_server = test_return_noerror_result_server = function test_return_noerror_result_server (param, callback) 
-{
-    // debugger;
-    proxyprinttodiv('test_return_noerror_result_server- incoming parm', param, 99);
-    var error_obj = null;
-    var env = param.command.environment.platform;
-    if (env==="server" && param.serverfn)     // if environment = server and serverfn parameter exist then redirect 
-                                              // to different function--that way we can on same machine pass locally and
-                                              // fail server
-    {
-        param.command.xrun=param.serverfn;
-        delete param.serverfn;
-        proxyprinttodiv('test ***** calling server', param, 99);
-        execute(param, callback);
-    } else {
-        var result_obj = { 'a':'b', env: env };
-        callback( error_obj, result_obj );
-    }
-};
-
-exports.getfromangular = getfromangular = function getfromangular(params, callback) {
-    // this is a dummy getfromangular call for server use
-    callback(null, {});
-};
-
 // sendpostcall = function sendpostcall(parameters, callback) {
 //     console.log(' ??? sendPostCall started ???');
 //     // var post_host = 'test3.dripoint.com';
@@ -1039,123 +754,4 @@ exports.getfromangular = getfromangular = function getfromangular(params, callba
 //     console.log("post_data --- veru emd of the file.");
 // };
 
-
-
-exports.publishtestdelay = publishtestdelay = function publishtestdelay(parameters, callback) {
-        // publishtest(parameters, callback);
-        parameters.command =  parameters.command || {};
-        parameters.command.queuename = "eventonemin";
-        parameters["addthis.executethis"] = "publishtest";
-        savetoqueue(parameters, callback);
-};
-
-    // Get parameters from github, pass it on to publish test
-
-exports.publishtest = publishtest = function publishtest(parameters, callback) { 
-        // listToDo, eventname, callback) {
-        console.log('---- publishtest??-');
-        console.log(JSON.stringify(parameters));
-
-        var pusher_name = "Unknown";
-        if (parameters.hasOwnProperty("pusher")) {
-            if (parameters["pusher"].hasOwnProperty("name")) {
-                pusher_name = parameters["pusher"]["name"];
-            }
-        }
-        var repo_name = "Unknown";
-        if (parameters.hasOwnProperty("repository")) {
-            if (parameters["repository"].hasOwnProperty("name")) {
-                repo_name = parameters["repository"]["name"];
-            }
-        }
-        var ref = "Unknown";
-        if (parameters.hasOwnProperty("ref")) {
-            ref = parameters["ref"];
-        }
-
-        var dadata = parameters["command"];
-        for (key in dadata)
-        {
-            console.log("Key: " + key + " : " + dadata[key]);
-        }
-
-        var pass_on_object = {
-            "pusher_name" : pusher_name,
-            "repo_name" : repo_name,
-            "ref" : ref
-        }
-        console.log('>-->>>');
-        console.log('--- calling sendPostCall ---');
-
-        // TODO: Create a function that given the REF of the COMMIT
-        //       from GITHUB.COM Webhook it will return it will return
-        //       the NAME of the server.  
-        // 
-        //      .  
-        var server = "";
-        if (repo_name ==="test3") {
-            server=repo_name + ".dripoint.com";
-        }
-        var executeobject = {};
-        executeobject.executethis="getuptime"
-        executeobject.server = server;
-        
-        anyserver(executeobject,function(err, result) {
-
-            //getuptime(null, function(err, result) {
-            var passfail = "Unknown";
-            if (result.status) {
-                passfail = "Pass";
-            } else {
-                passfail = "Fail";
-            } 
-            sendsms({
-                'to': '+12313133930',
-                'body': 'publishtest - status: ' + passfail + ', user: ' + pusher_name + 
-                    ", repo name: " + repo_name + ', ref: ' + ref  
-                }, 
-                function (err, result) {
-                    callback(err, result);
-                }
-            );
-        });
-
-        //sendPostCall({"post_data":parameters}, function(err, result) {
-        //    console.log("call to sendPostCall has returned...");
-        //    }
-        //);
-        console.log('---- publishtest!!---');
-
-};
-
-
-//var startTime = new Date();
-exports.getuptime = getuptime = function getuptime(params, callback) {
-    console.log(">>>>>>>-----------=======-----==-=-=-=-=-=-=---=-=-------======----------");
-    var execObj = [{
-        "executethis" : "getwid",
-        "command": {
-            "datastore": "localstore", // config.configuration.datastore,
-        },
-        "wid": "bootwid"
-    }];
-    execute(execObj, function (err, res) {
-            res = res[0][0];
-            var startTime = res.starttime;
-            var now = new Date().getTime();
-            var howLong = Math.floor((now - startTime)/1000) ;
-            var currentUser = params.currentuser;
-
-            console.log("How Long is " + howLong);
-            var tooLong = 30;
-            var upStatus = (howLong < tooLong);
-            console.log("RESULT is " + JSON.stringify(res));
-            res.status = upStatus;
-            res.uptime = howLong;
-            res.currentuser = currentUser; 
-            res.sms = '+12313133930';
-            callback(err, res)
-        }
-    );
-}
 

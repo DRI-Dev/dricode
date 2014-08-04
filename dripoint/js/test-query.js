@@ -1,6 +1,271 @@
 
 var widtests = widtests || {};
 
+exports.qutest_allexecute = 
+widtests.qutest_allexecute = 
+qutest_allexecute = 
+function qutest_allexecute(executeobject, callback) 
+{
+	var start = new Date().getTime();
+    async.series(
+    [   
+    //function (cb1) {setest_testnestedgroups1({}, function (err, res) {cb1(null, res)})},
+    //function (cb1) {setest_allowsec1tests4({}, function (err, res) {cb1(null, res)})},
+    //function (cb1) {setest_allowsec1tests5({"setup":false}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {setest_allowsec1tests6({"setup":false}, function (err, res) {cb1(null, res)})}
+    ],
+    function (err, res) {
+      proxyprinttodiv('result from many array', res, 99);
+      callback(null,res);
+	  proxyprinttodiv('total elapsed time ', new Date().getTime() - start, 99);
+    })
+	console.log('end qutest_allexecute');
+};
+widtests.qutest_allexecute.category = "daily";
+widtests.qutest_allexecute.subcategory = "push";
+widtests.qutest_allexecute.js = qutest_allexecute;
+widtests.qutest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing querywid and querywidmaster.";
+
+
+function mapreducetest1 (obj) {
+    proxyprinttodiv('mapreducetest1 obj', obj, 99,true, true);
+    var wid = obj.wid;
+    var hue = obj.hue; 
+    proxyprinttodiv('mapreducetest1 arguments', arguments, 99,true, true);
+    proxyprinttodiv('mapreducetest1 wid', wid, 99,true, true);
+    proxyprinttodiv('mapreducetest1 hue', hue, 99,true, true);
+    //emit(this.wid, this.hue);
+    emit(wid, hue);
+};
+function reducetest1(wid, hue){
+    proxyprinttodiv('reducetest1 wid', wid, 99,true, true);
+    proxyprinttodiv('reducetest1 hue', hue, 99,true, true);
+    var s=""; for (var i in hue) {s=s+hue[i]} return s
+};
+
+// this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
+exports.qutest_map1 =  
+widtests.qutest_map1 = 
+qutest_map1 = 
+function qutest_map1 (executeobject, callback) {
+
+	  if (!executeobject.command) {
+		  executeobject.command={};
+		  executeobject.command.environment={};
+		  executeobject.command.environment.run={};
+	  }
+	  executeobject.command.xrun=[{
+                                        "executethis": "addwidmaster",
+                                        "wid": "colordto",
+                                        "metadata.method": "colordto",
+                                        "hue": "string",
+                                        "sat": "string"
+                                    }, {
+                                        "executethis": "addwidmaster",
+                                        "wid": "color1",
+                                        "metadata.method": "colordto",
+                                        "hue": "red",
+                                        "sat": "red-sat"
+                                    }, {
+                                        "executethis": "addwidmaster",
+                                        "wid": "color2",
+                                        "metadata.method": "colordto",
+                                        "hue": "green",
+                                        "sat": "green-sat"
+                                    }, {
+                                        "executethis": "addwidmaster",
+                                        "wid": "color3",
+                                        "metadata.method": "colordto",
+                                        "hue": "blue",
+                                        "sat": "blue-sat"
+                                    }, {
+                                        "executethis": "addwidmaster",
+                                        "wid": "color4",
+                                        "metadata.method": "colordto",
+                                        "hue": "cyan",
+                                        "sat": "cyan-sat"
+                                    }, {
+                                        "executethis": "addwidmaster",
+                                        "wid": "color5",
+                                        "metadata.method": "colordto",
+                                        "hue": "magenta",
+                                        "sat": "magenta-sat"
+                                    }, {
+                                        "executethis": "addwidmaster",
+                                        "wid": "color6",
+                                        "metadata.method": "colordto",
+                                        "hue": "yellow",
+                                        "sat": "yellow-sat"
+                                    }, {
+                                        "executethis": "addwidmaster",
+                                        "wid": "color7",
+                                        "metadata.method": "colordto",
+                                        "hue": "black",
+                                        "sat": "black-sat"
+                                     }, {
+                                        "executethis": "mapreduce",
+                                        "map": "mapreducetest1",
+                                        "reduce": "reducetest1",
+                                        "out": "queryresult",
+                                        "query":   {
+                                                        "$or": [{
+                                                        "metadata.method":"colordto"
+                                                        }]
+                                                    }
+                                        //"queryresult": "queryresult",
+                                        //"sort": 
+                                        //"limit":
+                                        //"finalize":
+                                        //"scope":
+                                        //"jsmode":
+                                        //"verbose"
+                                    }
+								];
+
+	var expectedresult = [
+							{
+								"wid1":{
+									"color":"red",
+									"wid":"wid1",
+									"metadata": {
+										"date":{"exception":["created","changed","unchanged","updated"]}
+									}
+								}
+							}];
+							
+	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
+	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+	  {                    
+			//proxyprinttodiv('expected error', null, 99);
+			//proxyprinttodiv('actual error', error_obj, 99);
+			//proxyprinttodiv('expected result', expectedresult, 99);
+			proxyprinttodiv('actual result', result_obj, 99);
+
+			var composite_obj=logverify("simpleonewidquery1", result_obj[1], expectedresult);
+			//proxyprinttodiv('composite_obj', composite_obj, 99);
+			callback(null, composite_obj);
+	  });
+}
+widtests.qutest_map1.category = "daily";
+widtests.qutest_map1.subcategory = "push";
+widtests.qutest_map1.js = exports.qutest_map1;
+widtests.qutest_map1.description = "this does a test";
+
+
+
+// this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
+exports.qutest_reduced1 =  
+widtests.qutest_reduced1 = 
+qutest_reduced1 = 
+function qutest_reduced1 (executeobject, callback) {
+
+	  if (!executeobject.command) {
+		  executeobject.command={};
+		  executeobject.command.environment={};
+		  executeobject.command.environment.run={};
+	  }
+	  executeobject.command.xrun=[
+									{
+									"executethis":"updatewid",
+									"wid":"wid1",
+									"color":"red"
+									}, {
+									"executethis":"querywid",
+										"mongorawquery": {
+											"$or": [{
+												"data.color":"red"
+												}]
+											}
+									}
+								];
+
+	var expectedresult = [
+							{
+								"wid1":{
+									"color":"red",
+									"wid":"wid1",
+									"metadata": {
+										"date":{"exception":["created","changed","unchanged","updated"]}
+									}
+								}
+							}];
+							
+	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
+	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+	  {                    
+			//proxyprinttodiv('expected error', null, 99);
+			//proxyprinttodiv('actual error', error_obj, 99);
+			proxyprinttodiv('expected result', expectedresult, 99);
+			proxyprinttodiv('actual result', result_obj[1], 99);
+
+			var composite_obj=logverify("simpleonewidquery1", result_obj[1], expectedresult);
+			//proxyprinttodiv('composite_obj', composite_obj, 99);
+			callback(null, composite_obj);
+	  });
+}
+widtests.qutest_reduced1.category = "daily";
+widtests.qutest_reduced1.subcategory = "push";
+widtests.qutest_reduced1.js = exports.qutest_reduced1;
+widtests.qutest_reduced1.description = "this does a test";
+
+
+
+// this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
+exports.qutest_out1 =  
+widtests.qutest_out1 = 
+qutest_out1 = 
+function qutest_out1 (executeobject, callback) {
+
+	  if (!executeobject.command) {
+		  executeobject.command={};
+		  executeobject.command.environment={};
+		  executeobject.command.environment.run={};
+	  }
+	  executeobject.command.xrun=[
+									{
+									"executethis":"updatewid",
+									"wid":"wid1",
+									"color":"red"
+									}, {
+									"executethis":"querywid",
+										"mongorawquery": {
+											"$or": [{
+												"data.color":"red"
+												}]
+											}
+									}
+								];
+
+	var expectedresult = [
+							{
+								"wid1":{
+									"color":"red",
+									"wid":"wid1",
+									"metadata": {
+										"date":{"exception":["created","changed","unchanged","updated"]}
+									}
+								}
+							}];
+							
+	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
+	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+	  {                    
+			//proxyprinttodiv('expected error', null, 99);
+			//proxyprinttodiv('actual error', error_obj, 99);
+			proxyprinttodiv('expected result', expectedresult, 99);
+			proxyprinttodiv('actual result', result_obj[1], 99);
+
+			var composite_obj=logverify("simpleonewidquery1", result_obj[1], expectedresult);
+			//proxyprinttodiv('composite_obj', composite_obj, 99);
+			callback(null, composite_obj);
+	  });
+}
+widtests.qutest_out1.category = "daily";
+widtests.qutest_out1.subcategory = "push";
+widtests.qutest_out1.js = exports.qutest_out1;
+widtests.qutest_out1.description = "this does a test";
+
+
 
 exports.etmttest2 = widtests.etmttest2 = etmttest2 = function etmttest2(params, callback) {
     debuglevel = 17;

@@ -86,33 +86,22 @@ exports.mquery = mquery = function mquery(objToFind, projection, command, callba
     });
 };
 
-exports.mquery2 = mquery2 = function mquery2(objToFind, projection, command, callback) {
-    console.log('-->>-->> Inputs to mquery2 objToFind:\n' + 
-                JSON.stringify(objToFind, '-', 4) + '\nCommand: \n' +
-                JSON.stringify(command, '-', 4));
-    console.log("\nPROJECTION in mongo.js mquery2: " + JSON.stringify(projection));
+exports.mapreduceserver = mapreduceserver = function mapreduceserver(map, reduce, p, callback) {
+    var command = p.command;
+    console.log("\nPROJECTION in mongo.js mapreduceserver: " + JSON.stringify(p));
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-    if (typeof objToFind === "string") {
-        objToFind = JSON.parse(objToFind);
-    }
-
-    if (typeof projection === "string") {
-        projection = JSON.parse(projection);
-    }
-
-                // console.log('-]-]-]-] Inputs to mquery2 objToFind:\n' + 
-                // JSON.stringify(objToFind, '-', 4));
-                // console.log('\n-]-] Inputs to mquery2 projection:\n' + 
-                // JSON.stringify(projection, '-', 4));
+    var mapfn = window[map];
+    var reducefn = window[reduce];
+    var thirdparm = {};
+    thirdparm.out = p.out; 
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
-        db.collection(schemaToLookup).find(objToFind, projection).toArray(function(err, res) {
+        db.collection(schemaToLookup).mapReduce(mapfn, reducefn, thirdparm).toArray(function(err, res) {
 
             if (err) {
-                printLogs('mquery2', objToFind, err);
                 callback(err, {
                     etstatus: {
                         status: 'queryerror'
@@ -120,16 +109,59 @@ exports.mquery2 = mquery2 = function mquery2(objToFind, projection, command, cal
                 });
             } else {
                 if (res) {
-                    printLogs('mquery2', objToFind, res);
                     callback(err, res);
                 } else {
-                    printLogs('mquery2', objToFind, []);
                     callback(err, []);
                 }
             }
         });
     });
 };
+
+// exports.mquery2 = mquery2 = function mquery2(objToFind, projection, command, callback) {
+//     console.log('-->>-->> Inputs to mquery2 objToFind:\n' + 
+//                 JSON.stringify(objToFind, '-', 4) + '\nCommand: \n' +
+//                 JSON.stringify(command, '-', 4));
+//     console.log("\nPROJECTION in mongo.js mquery2: " + JSON.stringify(projection));
+//     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
+//     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
+//     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
+
+//     if (typeof objToFind === "string") {
+//         objToFind = JSON.parse(objToFind);
+//     }
+
+//     if (typeof projection === "string") {
+//         projection = JSON.parse(projection);
+//     }
+
+//                 // console.log('-]-]-]-] Inputs to mquery2 objToFind:\n' + 
+//                 // JSON.stringify(objToFind, '-', 4));
+//                 // console.log('\n-]-] Inputs to mquery2 projection:\n' + 
+//                 // JSON.stringify(projection, '-', 4));
+
+//     getConnection(mongoDatabaseToLookup, function(err, db) {
+//         db.collection(schemaToLookup).find(objToFind, projection).toArray(function(err, res) {
+
+//             if (err) {
+//                 printLogs('mquery2', objToFind, err);
+//                 callback(err, {
+//                     etstatus: {
+//                         status: 'queryerror'
+//                     }
+//                 });
+//             } else {
+//                 if (res) {
+//                     printLogs('mquery2', objToFind, res);
+//                     callback(err, res);
+//                 } else {
+//                     printLogs('mquery2', objToFind, []);
+//                     callback(err, []);
+//                 }
+//             }
+//         });
+//     });
+// };
 
 exports.wget = wget = function wget(objToFind, command, callback) {
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
@@ -145,36 +177,36 @@ exports.wget = wget = function wget(objToFind, command, callback) {
     });
 };
 
-exports.mget = mget = function mget(objToFind, command, callback) {
-    (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
-    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
-    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
+// exports.mget = mget = function mget(objToFind, command, callback) {
+//     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
+//     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
+//     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-    if (objToFind.command) { delete objToFind.command; }
+//     if (objToFind.command) { delete objToFind.command; }
 
-    madd(objToFind, command, function (err, result) {
-        callback(err, result);
-    });
-};
+//     madd(objToFind, command, function (err, result) {
+//         callback(err, result);
+//     });
+// };
 
 
-//exports.madd = madd = function madd(objToAdd, command, callback) {
+// exports.wadd = wadd = function wadd(objToAdd, command, callback) {
 //    (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
 //    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
 //    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
-//
+
 //    var widVal = {"wid":(objToAdd['wid'])};
-//
-//    objToAdd = converttodriformat(objToAdd, command);
-//
+
+//    //objToAdd = converttodriformat(objToAdd, command);
+
 //    getConnection(mongoDatabaseToLookup, function(err, db) {
 //        wget(widVal, command, function (err, widfound) {
 //            if (widfound) {
 //                // this is the update process for wids
 //                extend(true, objToAdd, widfound);
-//
+
 //                if (objToAdd._id) { delete objToAdd._id; }
-//
+
 //                db.collection(schemaToLookup).update(widVal, {$set:objToAdd}, {}, function (err, boolresult) {
 //                    if (err) {
 //                        callback(err, {etstatus: {status: "udpateerrror"}});
@@ -195,94 +227,121 @@ exports.mget = mget = function mget(objToFind, command, callback) {
 //            }
 //        });
 //    });
-//};
+// };
 
-exports.madd = madd = function madd(incopy, command, callback) {
-     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
-     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
-     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
+// exports.madd = madd = function madd(incopy, command, callback) {
+//      (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
+//      (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
+//      (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-     var widVal = {"wid":(incopy.wid)};
+//      var widVal = {"wid":(incopy.wid)};
 
-     getConnection(mongoDatabaseToLookup, function(err, db) {
-         wget(widVal, command, function (err, currentrecord) {
+//      getConnection(mongoDatabaseToLookup, function(err, db) {
+//          wget(widVal, command, function (err, currentrecord) {
 
-             var recordtoadd,
-                 found = false;
+//              var recordtoadd,
+//                  found = false;
 
-             if (currentrecord)
-             {
-                 // this is the update process for wids
-                 // set up recordtoadd ready for addition
-                 recordtoadd = convertfromdriformatenhanced(currentrecord, command);
-                 // flatten out record -- normal : {wid:wid1 a:b c:d}, driformat: {wid:wid1 data:{a:b c:d}}
-                 found = true;       // mark that the record was found
-                 // mark that current record exists
-                 if (command.datamethod === "insert")
-                 {
-                     recordtoadd = incopy; // current record does not matter
-                 }
-                 else // (command.datamethod === "upsert") // default
-                 {
-                     recordtoadd = extend(true, recordtoadd, incopy);
-                 }
-                 if (command.hasOwnProperty("lock")) // set the right property to save
-                 {
-                     recordtoadd.metadata.lock = command.lock;
-                 }
-             }
-             else
-             {
-                 recordtoadd = incopy;
-             }
+//              if (currentrecord)
+//              {
+//                  // this is the update process for wids
+//                  // set up recordtoadd ready for addition
+//                  recordtoadd = convertfromdriformatenhanced(currentrecord, command);
+//                  // flatten out record -- normal : {wid:wid1 a:b c:d}, driformat: {wid:wid1 data:{a:b c:d}}
+//                  found = true;       // mark that the record was found
+//                  // mark that current record exists
+//                  if (command.datamethod === "insert")
+//                  {
+//                      recordtoadd = incopy; // current record does not matter
+//                  }
+//                  else // (command.datamethod === "upsert") // default
+//                  {
+//                      recordtoadd = extend(true, recordtoadd, incopy);
+//                  }
+//                  if (command.hasOwnProperty("lock")) // set the right property to save
+//                  {
+//                      recordtoadd.metadata.lock = command.lock;
+//                  }
+//              }
+//              else
+//              {
+//                  recordtoadd = incopy;
+//              }
 
-             var currentlock = false;
-             if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock)
-             {
-                  currentlock = true;
-             }
+//              var currentlock = false;
+//              if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock)
+//              {
+//                   currentlock = true;
+//              }
 
-             var shouldupdate = false;
-             if (!err &&
-                  ((command.getwidflag && command.hasOwnProperty("lock")) || (!command.getwidflag)))
-             {
-                  shouldupdate = true;
-             }
+//              var shouldupdate = false;
+//              if (!err &&
+//                   ((command.getwidflag && command.hasOwnProperty("lock")) || (!command.getwidflag)))
+//              {
+//                   shouldupdate = true;
+//              }
 
-             if (!currentlock && shouldupdate)
-             {
-                 if (!currentrecord) { currentrecord = {}; }
-                 var convertedrecord = converttodriformat(recordtoadd, command); // get it ready to store
-                 extend(true, currentrecord, convertedrecord); // merge with existing record
+//              if (!currentlock && shouldupdate)
+//              {
+//                  if (!currentrecord) { currentrecord = {}; }
+//                  var convertedrecord = converttodriformat(recordtoadd, command); // get it ready to store
+//                  extend(true, currentrecord, convertedrecord); // merge with existing record
 
-                 if (currentrecord._id) { delete currentrecord._id; }
+//                  if (currentrecord._id) { delete currentrecord._id; }
 
-                 if (command.getwidflag === true && !found) { err = {"errorname": "notfound"}; }
+//                  if (command.getwidflag === true && !found) { err = {"errorname": "notfound"}; }
 
-                 // update list of objects database
-                 if (!found)
-                 {
-                     db.collection(schemaToLookup).insert(currentrecord, function(error, insertedWid) {
-                         // if this was actually a getwid call and nothing found then err
-                         callback(err || error, recordtoadd);
-                     });
-                 }
-                 else
-                 {
-                     db.collection(schemaToLookup).update(widVal, {$set:currentrecord}, {}, function (error, boolresult) {
-                         // if this was actually a getwid call and nothing found then err
-                         callback(err || error, recordtoadd);
-                     });
-                 }
-             }
+//                  // update list of objects database
+//                  if (!found)
+//                  {
+//                      db.collection(schemaToLookup).insert(currentrecord, function(error, insertedWid) {
+//                          // if this was actually a getwid call and nothing found then err
+//                          callback(err || error, recordtoadd);
+//                      });
+//                  }
+//                  else
+//                  {
+//                      db.collection(schemaToLookup).update(widVal, {$set:currentrecord}, {}, function (error, boolresult) {
+//                          // if this was actually a getwid call and nothing found then err
+//                          callback(err || error, recordtoadd);
+//                      });
+//                  }
+//              }
 
-                if (command.getwidflag === true && !found) { err = {"errorname": "notfound"}; }
-                if (currentlock && shouldupdate){ err = {"errorname":"locked"}; }
+//                 if (command.getwidflag === true && !found) { err = {"errorname": "notfound"}; }
+//                 if (currentlock && shouldupdate){ err = {"errorname":"locked"}; }
 
-             callback(err, recordtoadd);
-         })
+//              callback(err, recordtoadd);
+//          })
+//     });
+// };
+
+// DAO method to add an entry to specified schema:: the entry to be added is also specified :: 
+// the callback function on succesful addition is also specified
+exports.wadd = wadd = function wadd(objToAdd, command, callback) {
+    (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
+    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
+    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
+
+    getConnection(mongoDatabaseToLookup, function(err, db) {
+
+        if (command.newrecord)
+        {
+            db.collection(schemaToLookup).insert(currentrecord, function(error, insertedWid) {
+            callback(err || error, recordtoadd);
+            });
+        }
+        else
+        {
+            db.collection(schemaToLookup).update(widVal, {$set:currentrecord}, {}, function (error, boolresult) {
+            callback(err || error, recordtoadd);
+            });
+        }
+
     });
 };
+
+
 
 function printLogs(fnname, input, output) {
 
