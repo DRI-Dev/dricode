@@ -6,16 +6,7 @@
 
 
 require('../config.js');
-
-// settings and config variables are declared in boxconfiguration
-var SkinStore = require('connect-mongoskin'),
-    mongoskin = require('mongoskin'),
-    schemaToLookup = config.configuration.defaultcollection,
-    databaseToLookup = config.configuration.defaultdb,
-    mongoDatabaseToLookup = config.configuration.defaultdatabasetable,
-    dbConnectionsManager = {},
-    // defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup,
-    flatten = require('flat').flatten;
+require('../config-server.js');
 
 // manage multiple mongo database connections
 exports.getConnection = getConnection = function getConnection(mongoDatabaseToLookup, callback) {

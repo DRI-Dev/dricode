@@ -1,4 +1,5 @@
 // Server specific Routes here
+console.log('server.js -- bof');
 
 require('../config.js');
 
@@ -7,19 +8,27 @@ var async = require('async');
 
 // var mongoskin = require('mongoskin'),
 //     SkinStore = require('connect-mongoskin');
+console.log('server.js -- a002');
 
-var    path = require('path'),
+  path = require('path')
+console.log('server.js -- a003');
     // dao = require('../dao/alterdao.js'),
-    dao = require('../dao/mongo.js'),
-    superagent = require('superagent'),
-    https = require('https'),
-    querystring = require('querystring'),
-    url = require('url'),
+    dao = require('../dao/mongo.js')
+console.log('server.js -- a004');
+    superagent = require('superagent')
+console.log('server.js -- a005');
+    https = require('https')
+console.log('server.js -- a006');
+    querystring = require('querystring')
+console.log('server.js -- a007');
+    url = require('url')
+console.log('server.js -- a008');
     util = require('util');
 require('../dao/mongotest.js');
 // , drifn = require('../dao/dri_functions.js')
 
 
+console.log('server.js -- a001');
 
 
 exports.putrunExecutethis = function (req, resp) {
@@ -236,3 +245,4 @@ exports.gethtmlbyid = gethtmlbyid = function gethtmlbyid(params, callback) {
             callback(null, foundHtml);
         });
 };
+console.log('server.js -- eof');

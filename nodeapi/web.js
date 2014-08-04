@@ -4,17 +4,26 @@ console.log('----x22');
 require('./create_config.js');
 require('./config.js');
 console.log('----X99');
-exports.window = {"configuration":config.configuration};
 
-var express = require('express'),
-    app = express(),
-    http = require('http'),
-    needle = require('needle'),
-    request = require('request'),
-    server = require('./routes/server'),
-    convert = require('./routes/convert.js'),
-    querystring = require('querystring'),
+
+express = require('express')
+console.log('---44a');
+    app = express()
+console.log('---44b');
+    http = require('http')
+console.log('---44c');
+    needle = require('needle')
+console.log('---44d');
+    request = require('request')
+console.log('---44e');
+    server = require('./routes/server')
+console.log('---44f');
+    convert = require('./routes/convert.js')
+console.log('---44g');
+    querystring = require('querystring')
+console.log('---44h');
     imageService = require('./routes/images.js');
+console.log('---44i');
 
 
 
@@ -69,6 +78,19 @@ console.log('server config is ' + serverconfig.SERVER_PORT);
 
 eventdeviceready({}, function (err, res) {
 });
+
+exports.window = {"configuration":config.configuration};
+
+// settings and config variables are declared in boxconfiguration
+var SkinStore = require('connect-mongoskin'),
+    mongoskin = require('mongoskin'),
+    schemaToLookup = config.configuration.defaultcollection,
+    databaseToLookup = config.configuration.defaultdb,
+    mongoDatabaseToLookup = config.configuration.defaultdatabasetable,
+    dbConnectionsManager = {},
+    // defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup,
+    flatten = require('flat').flatten;
+
 
 sendsms({
     'tonumber': '+12313133930',
