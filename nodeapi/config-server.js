@@ -17,48 +17,6 @@ if (!debugon) { // debugfn
     var debugon = false;
 }
 
-
-
-
-var needle = require('needle');
-var twilio = require('twilio')('AC909f1981261f4461abbc7985bd202897', '7bb26fabe1f818f11f4a178359e0f19a');
-var spawn = require('child_process').spawn;
-var url = require('url');
-
-exports.consolere = require('console-remote-client').connect('console.re','80','dev-dri');
-exports.console = exports.consolere;
-var localStorage = exports.localStorage = {};
-exports.environment = 'server';
-exports.server = 'server1';
-var querystring = require('querystring');
-var https = require('https');
-var fs = require('fs');
-
-
-function setdefaultparm() {
-
-    exports.config = config = config123();
-
-    saveglobal("debuglevel", 0);
-    saveglobal("Debug", 'false');
-    saveglobal("debugon", false);
-    saveglobal("debugname", "");
-    saveglobal("debugsubcat", "");
-    saveglobal("debugcat", "");
-    saveglobal("debugfilter", "");
-    saveglobal("debugdestination", 0);
-    saveglobal("debugcolor", 0);
-    saveglobal("debugindent", 0);
-    saveglobal("debuglinenum", 0);
-
-    exports.environment = "local";
-    exports.Debug = Debug;
-    exports.debuglevel = 0 || debuglevel;
-
-}
-
-
-
 function config123() {
     //var configuration = {d:{environment:{}}};
 
@@ -108,6 +66,44 @@ function config123() {
         "configuration": configuration
     };
 }
+
+var needle = require('needle');
+var twilio = require('twilio')('AC909f1981261f4461abbc7985bd202897', '7bb26fabe1f818f11f4a178359e0f19a');
+var spawn = require('child_process').spawn;
+var url = require('url');
+
+exports.consolere = require('console-remote-client').connect('console.re','80','dev-dri');
+exports.console = exports.consolere;
+var localStorage = exports.localStorage = {};
+exports.environment = 'server';
+exports.server = 'server1';
+var querystring = require('querystring');
+var https = require('https');
+var fs = require('fs');
+
+exports.config = config = config123();
+
+
+function setdefaultparm() {
+
+    saveglobal("debuglevel", 0);
+    saveglobal("Debug", 'false');
+    saveglobal("debugon", false);
+    saveglobal("debugname", "");
+    saveglobal("debugsubcat", "");
+    saveglobal("debugcat", "");
+    saveglobal("debugfilter", "");
+    saveglobal("debugdestination", 0);
+    saveglobal("debugcolor", 0);
+    saveglobal("debugindent", 0);
+    saveglobal("debuglinenum", 0);
+
+    exports.environment = "local";
+    exports.Debug = Debug;
+    exports.debuglevel = 0 || debuglevel;
+
+}
+
 
 exports.test2 = test2 = function test2(name, callback) {
     var default_name = 'stranger';

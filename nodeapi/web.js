@@ -76,9 +76,6 @@ app.put('/base64toserver', imageService.saveBase64ToServer);
 
 console.log('server config is ' + serverconfig.SERVER_PORT);
 
-eventdeviceready({}, function (err, res) {
-});
-
 exports.window = {"configuration":config.configuration};
 
 // settings and config variables are declared in boxconfiguration
@@ -102,5 +99,8 @@ sendsms({
 console.log('port is ' + serverconfig.SERVER_PORT);
 app.listen(process.env.PORT || serverconfig.SERVER_PORT);
 
+
+eventdeviceready({}, function (err, res) {
+});
 
 
