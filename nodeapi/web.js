@@ -2,9 +2,18 @@
 exports.async = async = require('async');
 console.log('----x22');
 require('./create_config.js');
-require('./config.js');
+config = require('./config.js');
+require('./config-server.js');
 console.log('----X99');
 
+console.log('russ1');
+// console.log(russ1);
+console.log('russ2');
+console.log(russ2);
+console.log('russ3');
+// console.log(russ3);
+console.log('russ4');
+console.log(russ4);
 
 express = require('express')
 console.log('---44a');

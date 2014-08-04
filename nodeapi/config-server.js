@@ -17,10 +17,12 @@ if (!debugon) { // debugfn
     var debugon = false;
 }
 
+var configuration = {};
+
+
 function config123() {
     //var configuration = {d:{environment:{}}};
 
-    var configuration = {};
     
     // what environment and what defaults should be used
     configuration.environment = 'server';
@@ -83,6 +85,12 @@ var fs = require('fs');
 
 exports.config = config = config123();
 
+global.config = config;
+
+var russ1 = 'ryba1';
+russ2 = 'ryba2';
+exports.russ3 = 'ryba3';
+global.russ4 = 'ryba4';
 
 function setdefaultparm() {
 

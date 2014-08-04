@@ -5,8 +5,6 @@
 // remove window() wrapping (utils, execute)… put if !window then window=global  
 
 
-require('../config.js');
-require('../config-server.js');
 
 // manage multiple mongo database connections
 exports.getConnection = getConnection = function getConnection(mongoDatabaseToLookup, callback) {
