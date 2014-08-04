@@ -2129,7 +2129,8 @@ function getRandomNumberByLength(length) {
         // check both objects...get a deep comparison
         var resulttable_result=logverifyresulttable(test_name, data_object, assertion_object);
 
-        var result0 = deepDiffMapper.map(assertion_object, data_object);
+        //var result0 = deepDiffMapper.map(assertion_object, data_object);
+        var result0 = deepDiffMapper.map(data_object, assertion_object);
         proxyprinttodiv('logverify  result0', result0, 91);
 
         // collapse the results so they are easy to check -- same level
@@ -2508,7 +2509,7 @@ function getRandomNumberByLength(length) {
                 if (this.isValue(obj1) || this.isValue(obj2)) {
                     return {
                         type: this.compareValues(obj1, obj2),
-                        data: obj1 || obj2
+                        data: obj2     // obj1 || obj2 changed 8/4 for logverify
                     };
                 }
                 var diff = {};
@@ -3294,78 +3295,78 @@ function getRandomNumberByLength(length) {
 
     //filterobject returns an object of based on a type of diffrence
 
-    exports.filterobject = function filterobject(obj1, obj2, command, callback) {
-        var type = "default";
-        var diffObj = {};
-        var diffMap = deepDiffMapper.map(obj1, obj2);
+    // exports.filterobject = function filterobject(obj1, obj2, command, callback) {
+    //     var type = "default";
+    //     var diffObj = {};
+    //     var diffMap = deepDiffMapper.map(obj1, obj2);
 
-        // set the type
-        if (command && command.filterobject && command.filterobject.type) {
-            type = command.filterobject.type;
-        }
+    //     // set the type
+    //     if (command && command.filterobject && command.filterobject.type) {
+    //         type = command.filterobject.type;
+    //     }
 
-        proxyprinttodiv("diff object map", diffMap, 27);
-        proxyprinttodiv("diff object map type", type, 27);
-        proxyprinttodiv("diff object map command", command, 27);
+    //     proxyprinttodiv("diff object map", diffMap, 27);
+    //     proxyprinttodiv("diff object map type", type, 27);
+    //     proxyprinttodiv("diff object map command", command, 27);
 
-        switch (type) {
-        case "default": // returns any difference found between two objects
-            for (var key in diffMap) {
-                if (diffMap[key]["type"] === "created" || diffMap[key]["type"] === "updated") {
-                    diffObj[key] = diffMap[key]["data"];
-                }
-            }
-            break;
-        case "match": // returns a property only if it matches in both objects
-            for (var key in diffMap) {
-                if (diffMap[key]["type"] === "unchanged") {
-                    diffObj[key] = diffMap[key]["data"];
-                }
-            }
-            break;
-        case "exists": // in new object it stil exists
-            for (var key in diffMap) {
-                if (diffMap[key]["type"] === "updated" || diffMap[key]["type"] === "unchanged") {
-                    obj[key] = diffMap[key]["data"];
-                } else {
-                    notobj[key] == diffMap[key]["data"];
-                }
-            }
-            break;
-        case "notdeleted": // in new object it was notdeleted
-            for (var key in diffMap) {
-                if (diffMap[key]["type"] === "created" || diffMap[key]["type"] === "updated" || diffMap[key]["type"] === "unchanged") {
-                    obj[key] = diffMap[key]["data"];
-                } else {
-                    notobj[key] == diffMap[key]["data"];
-                }
-            }
-            break;
+    //     switch (type) {
+    //     case "default": // returns any difference found between two objects
+    //         for (var key in diffMap) {
+    //             if (diffMap[key]["type"] === "created" || diffMap[key]["type"] === "updated") {
+    //                 diffObj[key] = diffMap[key]["data"];
+    //             }
+    //         }
+    //         break;
+    //     case "match": // returns a property only if it matches in both objects
+    //         for (var key in diffMap) {
+    //             if (diffMap[key]["type"] === "unchanged") {
+    //                 diffObj[key] = diffMap[key]["data"];
+    //             }
+    //         }
+    //         break;
+    //     case "exists": // in new object it stil exists
+    //         for (var key in diffMap) {
+    //             if (diffMap[key]["type"] === "updated" || diffMap[key]["type"] === "unchanged") {
+    //                 obj[key] = diffMap[key]["data"];
+    //             } else {
+    //                 notobj[key] == diffMap[key]["data"];
+    //             }
+    //         }
+    //         break;
+    //     case "notdeleted": // in new object it was notdeleted
+    //         for (var key in diffMap) {
+    //             if (diffMap[key]["type"] === "created" || diffMap[key]["type"] === "updated" || diffMap[key]["type"] === "unchanged") {
+    //                 obj[key] = diffMap[key]["data"];
+    //             } else {
+    //                 notobj[key] == diffMap[key]["data"];
+    //             }
+    //         }
+    //         break;
 
-        case "deleted": // in new object it was deleted
-            for (var key in diffMap) {
-                if (diffMap[key]["type"] === "deleted") {
-                    obj[key] = diffMap[key]["data"];
-                } else {
-                    notobj[key] == diffMap[key]["data"];
-                }
-            }
-            break;
+    //     case "deleted": // in new object it was deleted
+    //         for (var key in diffMap) {
+    //             if (diffMap[key]["type"] === "deleted") {
+    //                 obj[key] = diffMap[key]["data"];
+    //             } else {
+    //                 notobj[key] == diffMap[key]["data"];
+    //             }
+    //         }
+    //         break;
 
-        }
+    //     }
 
-        // VALUE_CREATED: 'created',
-        // VALUE_UPDATED: 'updated',
-        // VALUE_DELETED: 'deleted',
-        // VALUE_UNCHANGED: 'unchanged',
+    //     // VALUE_CREATED: 'created',
+    //     // VALUE_UPDATED: 'updated',
+    //     // VALUE_DELETED: 'deleted',
+    //     // VALUE_UNCHANGED: 'unchanged',
 
-        proxyprinttodiv("diff object to return", diffObj, 27);
-        if (callback) {
-            callback(null, diffObj);
-        } else {
-            return diffObj;
-        }
-    };
+    //     proxyprinttodiv("diff object to return", diffObj, 27);
+    //     if (callback) {
+    //         callback(null, diffObj);
+    //     } else {
+    //         return diffObj;
+    //     }
+    // };
 
     //filterobject returns an object of based on a type of diffrence
 

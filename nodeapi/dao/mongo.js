@@ -86,6 +86,38 @@ exports.mquery = mquery = function mquery(objToFind, projection, command, callba
     });
 };
 
+exports.mapreduceserver = mapreduceserver = function mapreduceserver(map, reduce, p, callback) {
+    var command = p.command;
+    console.log("\nPROJECTION in mongo.js mapreduceserver: " + JSON.stringify(p));
+    (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
+    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
+    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
+
+    var mapfn = window[map];
+    var reducefn = window[reduce];
+    var thirdparm = {};
+    thirdparm.out = p.out; 
+
+    getConnection(mongoDatabaseToLookup, function(err, db) {
+        db.collection(schemaToLookup).mapReduce(mapfn, reducefn, thirdparm).toArray(function(err, res) {
+
+            if (err) {
+                callback(err, {
+                    etstatus: {
+                        status: 'queryerror'
+                    }
+                });
+            } else {
+                if (res) {
+                    callback(err, res);
+                } else {
+                    callback(err, []);
+                }
+            }
+        });
+    });
+};
+
 // exports.mquery2 = mquery2 = function mquery2(objToFind, projection, command, callback) {
 //     console.log('-->>-->> Inputs to mquery2 objToFind:\n' + 
 //                 JSON.stringify(objToFind, '-', 4) + '\nCommand: \n' +

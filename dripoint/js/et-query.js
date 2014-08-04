@@ -1,6 +1,46 @@
 // copyright (c) 2014 DRI
 // to do make functions return objects, not strings
 
+// (function(){
+
+//     var keyPaths = [];
+
+//     var saveKeyPath = function(path) {
+//         keyPaths.push({
+//             sign: (path[0] === '+' || path[0] === '-')? parseInt(path.shift()+1) : 1,
+//             path: path
+//         });
+//     };
+
+//     var valueOf = function(object, path) {
+//         var ptr = object;
+//         path.each(function(key) { ptr = ptr[key] });
+//         return ptr;
+//     };
+
+//     var comparer = function(a, b) {
+//         for (var i = 0, l = keyPaths.length; i < l; i++) {
+//             aVal = valueOf(a, keyPaths[i].path);
+//             bVal = valueOf(b, keyPaths[i].path);
+//             if (aVal > bVal) return keyPaths[i].sign;
+//             if (aVal < bVal) return -keyPaths[i].sign;
+//         }
+//         return 0;
+//     };
+
+//     Array.implement('sortBy', function(){
+//         keyPaths.empty();
+//         Array.each(arguments, function(argument) {
+//             switch (typeOf(argument)) {
+//                 case "array": saveKeyPath(argument); break;
+//                 case "string": saveKeyPath(argument.match(/[+-]|[^.]+/g)); break;
+//             }
+//         });
+//         return this.sort(comparer);
+//     });
+
+// })();
+
 exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     // mapreducemongo should receive: map, reduce, query, output, command into query
     var p = {};
@@ -14,7 +54,7 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
         p.out = p.command.collection || config.configuration.d.default.collection
     }
 
-    proxyprinttodiv('mapreduce p', p, 28,true, true);
+    proxyprinttodiv('mapreduce p', p, 99,true, true);
 
     if (config.configuration.environment!=="local")
     {
@@ -26,9 +66,12 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     {
         if (!p.queryresult) // if results not sent in then go process p.mongorawquery
         {
-            p.mongorawquery = p.mongorawquery || p.query;
-            querywidmaster(p, function (err, res) 
+            var temp={};
+            temp.mongorawquery = p.mongorawquery || p.query;
+            proxyprinttodiv('mapreduce before querywid', temp, 99,true, true);
+            querywidmaster(temp, function (err, res) 
             {
+                proxyprinttodiv('mapreduce after query', res, 99,true, true);
                 p.queryresult = res.queryresult;
                 mapreducelocal(map, reduce, p, callback);
             })
@@ -40,50 +83,74 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     }
 }
 
-function mapreducelocal(map, reduce, p, cb)
-{
-    function emit(k, v)
+
+// this function should not exist server side
+var globalresultobject = {};
+exports.globalresultobject = {};
+exports.emit = emit = function emit(k, v)
     {
-        if (!resultlist[k]) {resultlist[k] = []};
-        resultlist[k].push(v);
+        proxyprinttodiv('mapreduce emit k', k, 99,true, true);
+        proxyprinttodiv('mapreduce emit v', v, 99,true, true);
+        if (!globalresultobject[k]) {globalresultobject[k] = []};
+        globalresultobject[k].push(v);
     }
 
-    var resultlist = p.queryresult;
+
+
+function mapreducelocal(map, reduce, p, cb)
+{
+    proxyprinttodiv('mapreduce map', map, 99,true, true);
+    proxyprinttodiv('mapreduce reduce', reduce, 99,true, true);
+    proxyprinttodiv('mapreduce p', p, 99,true, true);
+
     // mapper step
+    globalresultobject = {};
 
     if (p.sort) // sort input based on eg {dim0: 1} +1 ascending
     {
-        for (var eachsortproperty in p.sort)
-        {
-            resultlist.sort(function (a, b) 
-            {
-                if (p.sort[eachsortproperty] === 1 ) {return a[eachsortproperty] > b[eachsortproperty];}
-                if (p.sort[eachsortproperty] === -1) {return a[eachsortproperty] < b[eachsortproperty];}
-            });   
-        }
+        //globalresultobject.sortBy(p.sort);
     }
 
-    for (var eachitem in resultlist) // example map: function () {emit(this.gender, 1);};
+    for (var eachitem in p.queryresult) // example map: function () {emit(this.gender, 1);};
     {
-        window[map](p.queryresult[eachitem])
+        // var parmarray = [];
+        // for (var eachprop in p.queryresult[eachitem])
+        // {
+        //     var temp={};
+        //     temp[eachprop] = p.queryresult[eachitem][eachprop];
+        //     parmarray.push(temp)
+        // }
+        proxyprinttodiv('mapreduce p.queryresult[eachitem]', p.queryresult[eachitem], 99,true, true);
+        // window[map].apply(this, parmarray);
+        //window[map](p.queryresult[eachitem]);
+        // had to hard code for now
+        window[map](p.queryresult[eachitem]);
     } 
+    proxyprinttodiv('mapreduce globalresultobject I', globalresultobject, 99,true, true);
 
     // reduce step
-    for (var eachitem in resultlist) // example reduce: function(gender, count){return Array.sum(count);};
+    for (var eachitem in globalresultobject) // example reduce: function(gender, count){return Array.sum(count);};
     {
-        resultlist[eachitem] = window[reduce](eachitem, resultlist[eachitem]);
+        globalresultobject[eachitem] = window[reduce](eachitem, globalresultobject[eachitem]);
     }
+    proxyprinttodiv('mapreduce globalresultobject II', globalresultobject, 99,true, true);
 
+    var outlist =[];
+    if (!p.limit) {p.limit = Object.keys(globalresultobject).length}
     if (p.limit) // Optional. Specifies a maximum number of documents to return from the collection.
     {
-         resultlist.slice(0,p.limit);  
+        for (var eachitem in globalresultobject)
+        {
+            outlist.push(globalresultobject[eachitem]);
+        }
+         
     } 
 
     if (p.finalize) // Optional. FN Follows the reduce method and modifies the output
     {
-        for (var eachitem in resultlist)
+        for (var eachitem in outlist)
         {
-            resultlist[eachitem] = window[p.finalize](resultlist[eachitem]);
+            outlist[eachitem] = window[p.finalize](outlist[eachitem]);
         }  
     }
 
@@ -102,7 +169,7 @@ function mapreducelocal(map, reduce, p, cb)
         
     } 
 
-    if (Object.keys(p.out).length > 0)
+    if (!isString(p.out) && Object.keys(p.out).length > 0)
     {
         if (p.out.inline === 1) 
         {
@@ -116,13 +183,14 @@ function mapreducelocal(map, reduce, p, cb)
         // set p.out
     }
 
+    proxyprinttodiv('mapreduce in out globalresultobject', globalresultobject, 99,true, true);
+    p.queryresult=outlist;
+
     if (isString(p.out)) // save results to db
     {
         if (p.out ==="queryresult")
         {
-            var temp = {};
-            temp.queryresult=resultlist;
-            cb(null,temp);
+            cb(null,p);
         }
         else // if not query result -- real save
         {
@@ -131,7 +199,7 @@ function mapreducelocal(map, reduce, p, cb)
     }
     else // else return the results
     {
-        cb(null, resultlist);
+        cb(null, outlist);
     }
 
 }
@@ -161,6 +229,7 @@ function updatecollection(p, cb)
 
 // returns [{},{}]
 exports.querywidmaster = querywidmaster = function querywidmaster(params, callback) {
+    if (!params.command) {params.command={}};
     params.command.queryconvertmethod = "object";
     proxyprinttodiv('querywidmaster', params, 28); 
 	querywid(params, function (err, results) {
