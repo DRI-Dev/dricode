@@ -1,17 +1,14 @@
 // using common files at server side also ...
 // exports.async = async = require('async');
-console.log('----x22');
 require('./create_config.js');
 require('./config.js');
-require('./config-server.js');
-
 
 // switch between the location of core files
 var DIR_TO_CORE_JS = '../dripoint/js/';
 
 require(DIR_TO_CORE_JS + 'et-dto.js');
 require(DIR_TO_CORE_JS + 'et-security.js');
-exports.utils = require(DIR_TO_CORE_JS + 'et-utils.js');
+require(DIR_TO_CORE_JS + 'et-utils.js');
 require(DIR_TO_CORE_JS + 'et-add.js');
 require(DIR_TO_CORE_JS + 'et-get.js');
 require(DIR_TO_CORE_JS + 'et-test.js');
@@ -25,60 +22,50 @@ require(DIR_TO_CORE_JS + 'test-query.js');
 require(DIR_TO_CORE_JS + 'test-security.js');
 require(DIR_TO_CORE_JS + 'tests-up-for-review.js');
 require(DIR_TO_CORE_JS + 'et-query.js');
-exports.executethis = require(DIR_TO_CORE_JS + 'executethis.js');
+require(DIR_TO_CORE_JS + 'executethis.js');
 
-exports.config = require('./config-server.js');
+exports.config = config = require('./config-server.js');
 
-exports.configuration = configuration = config.configuration;
+//exports.configuration = configuration = config.configuration;
+
+//config.configuration = configuration;
 
 // Server specific Routes here
-console.log('server.js -- bof');
-
-require('../config.js');
-
-var async = require('async');
 
 
+//var async = require('async');
+
+    async = require('async');
 // var mongoskin = require('mongoskin'),
 //     SkinStore = require('connect-mongoskin');
-console.log('server.js -- a002');
 
-  path = require('path')
-console.log('server.js -- a003');
+    path = require('path')
     // dao = require('../dao/alterdao.js'),
-    dao = require('../dao/mongo.js')
-console.log('server.js -- a004');
+    dao = require('./dao/mongo.js')
     superagent = require('superagent')
-console.log('server.js -- a005');
     https = require('https')
-console.log('server.js -- a006');
     querystring = require('querystring')
-console.log('server.js -- a007');
     url = require('url')
-console.log('server.js -- a008');
     util = require('util');
-require('../dao/mongotest.js');
+//require('./dao/mongotest.js');
 // , drifn = require('../dao/dri_functions.js')
 
 
-express = require('express')
-console.log('---44a');
+    express = require('express')
     app = express()
-console.log('---44b');
     http = require('http')
-console.log('---44c');
     needle = require('needle')
-console.log('---44d');
     request = require('request')
-console.log('---44e');
 //    server = require('./routes/server')
-console.log('---44f');
     convert = require('./routes/convert.js')
-console.log('---44g');
     querystring = require('querystring')
-console.log('---44h');
+//  express = require('express'),
+var express = require('express'),
+    app = express(),
+    request = require('request'),
+    server = require('./routes/server'),
+    convert = require('./routes/convert.js'),
     imageService = require('./routes/images.js');
-console.log('---44i');
 
 
 
@@ -120,6 +107,7 @@ app.configure(function() {
 app.configure('development', function() {
     app.use(express.errorHandler());
 });
+
 
 //// *********************** Route Mapping for Application follows   ***********************
 app.put('/executethis', server.postputgetrunExecutethis);

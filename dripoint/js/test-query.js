@@ -276,6 +276,7 @@ function qutest_reduced1 (executeobject, callback) {
 					"executethis":"mapreduce",
 					"map": "map1",
 					"reduce": "reduce1",
+					"out": "queryresult",
 					"query": {
 							"$and": [{
 							"data.status":"completed"
