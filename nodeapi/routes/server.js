@@ -1,10 +1,12 @@
 // Server specific Routes here
 console.log('server.js -- bof');
 
-require('../config.js');
+// require('../config.js');
 
 var async = require('async');
 
+console.log('russ4');
+console.log(russ4);
 
 // var mongoskin = require('mongoskin'),
 //     SkinStore = require('connect-mongoskin');
@@ -28,8 +30,23 @@ require('../dao/mongotest.js');
 // , drifn = require('../dao/dri_functions.js')
 
 
-console.log('server.js -- a001');
+console.log('server.js -- v001');
 
+// settings and config variables are declared in boxconfiguration
+var SkinStore = require('connect-mongoskin');
+    mongoskin = require('mongoskin');
+console.log('server.js -- v002');
+    schemaToLookup = config.configuration.defaultcollection;
+console.log('server.js -- v003');
+    databaseToLookup = config.configuration.defaultdb,
+console.log('server.js -- v004');
+    mongoDatabaseToLookup = config.configuration.defaultdatabasetable,
+    dbConnectionsManager = {},
+console.log('server.js -- v001');
+    // defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup,
+    flatten = require('flat').flatten;
+
+console.log('server.js -- v002');
 
 exports.putrunExecutethis = function (req, resp) {
     var parameters = req.body;
@@ -245,4 +262,5 @@ exports.gethtmlbyid = gethtmlbyid = function gethtmlbyid(params, callback) {
             callback(null, foundHtml);
         });
 };
+
 console.log('server.js -- eof');

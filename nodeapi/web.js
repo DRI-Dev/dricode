@@ -1,9 +1,10 @@
 // using common files at server side also ...
-exports.async = async = require('async');
+// exports.async = async = require('async');
 console.log('----x22');
 require('./create_config.js');
-config = require('./config.js');
+require('./config.js');
 require('./config-server.js');
+
 console.log('----X99');
 
 console.log('russ1');
@@ -87,15 +88,8 @@ console.log('server config is ' + serverconfig.SERVER_PORT);
 
 exports.window = {"configuration":config.configuration};
 
-// settings and config variables are declared in boxconfiguration
-var SkinStore = require('connect-mongoskin'),
-    mongoskin = require('mongoskin'),
-    schemaToLookup = config.configuration.defaultcollection,
-    databaseToLookup = config.configuration.defaultdb,
-    mongoDatabaseToLookup = config.configuration.defaultdatabasetable,
-    dbConnectionsManager = {},
-    // defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup,
-    flatten = require('flat').flatten;
+console.log(JSON.stringify(config));
+
 
 
 sendsms({

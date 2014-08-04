@@ -93,6 +93,7 @@ exports.russ3 = 'ryba3';
 global.russ4 = 'ryba4';
 
 function setdefaultparm() {
+    russ5 = 'ryba5';
 
     saveglobal("debuglevel", 0);
     saveglobal("Debug", 'false');
