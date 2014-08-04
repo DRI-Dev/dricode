@@ -9,10 +9,22 @@ function qutest_allexecute(executeobject, callback)
 	var start = new Date().getTime();
     async.series(
     [   
-    //function (cb1) {setest_testnestedgroups1({}, function (err, res) {cb1(null, res)})},
-    //function (cb1) {setest_allowsec1tests4({}, function (err, res) {cb1(null, res)})},
-    //function (cb1) {setest_allowsec1tests5({"setup":false}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {setest_allowsec1tests6({"setup":false}, function (err, res) {cb1(null, res)})}
+    //function (cb1) {qutest_map1({}, function (err, res) {cb1(null, res)})},
+    function (cb1) {etmttest2({}, function (err, res) {cb1(null, res)})},
+    //function (cb1) {qw1({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {qw2({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {simpleonewidquery1({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {simpleonewidquerymaster1({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {simplefivewidquery1({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {complexfivewidquery1or({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {complexfivewidquery1and({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {complexfivewidquery1andor({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {complexfivewidquery1nestedor({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {complexfivewidquery1nestedand({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {complexfivewidquery1nestedandor({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {complexfivewidquerymaster1nestedandor({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {simplerelatedquery1({}, function (err, res) {cb1(null, res)})}
+	//function (cb1) {simpledeepfiltertest1({}, function (err, res) {cb1(null, res)})}
     ],
     function (err, res) {
       proxyprinttodiv('result from many array', res, 99);
@@ -152,6 +164,18 @@ widtests.qutest_map1.js = exports.qutest_map1;
 widtests.qutest_map1.description = "this does a test";
 
 
+function map1 (obj) {
+	emit(obj.name,obj.amount);
+}
+
+function reduce1 (key, values) {
+	proxyprinttodiv('values for ' + key, values, 99);
+	alert(Number(values[0]));
+	var amt;
+	
+	for (var i in values) { amt += Number(values[i]); }
+	return amt;
+}
 
 // this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
 exports.qutest_reduced1 =  
@@ -166,17 +190,65 @@ function qutest_reduced1 (executeobject, callback) {
 	  }
 	  executeobject.command.xrun=[
 									{
-									"executethis":"updatewid",
-									"wid":"wid1",
-									"color":"red"
+									"executethis":"addwidmaster",
+									"metadata.method": "purchasedto",
+									"wid":"roger1",
+									"name": "Roger",
+									"status":"completed",
+									"amount": "100"
 									}, {
-									"executethis":"querywid",
-										"mongorawquery": {
+									"executethis":"addwidmaster",
+									"metadata.method": "purchasedto",									
+									"wid":"roger2",
+									"name": "Roger",									
+									"status":"completed",
+									"amount": "400"
+									}, {
+									"executethis":"addwidmaster",
+									"metadata.method": "purchasedto",									
+									"wid":"roger3",
+									"name": "Roger",									
+									"status":"completed",
+									"amount": "500"
+									}, {
+									"executethis":"addwidmaster",
+									"metadata.method": "purchasedto",									
+									"wid":"roger4",
+									"name": "Roger",									
+									"status":"completed",
+									"amount": "1000"
+									}, {
+									"executethis":"addwidmaster",
+									"metadata.method": "purchasedto",									
+									"wid":"roger5",
+									"name": "Roger",									
+									"status":"shipped",
+									"amount": "100"
+									}, {
+									"executethis":"addwidmaster",
+									"metadata.method": "purchasedto",									
+									"wid":"cody1",
+									"name": "Cody",									
+									"status":"completed",
+									"amount": "500"
+									}, {
+									"executethis":"addwidmaster",
+									"metadata.method": "purchasedto",									
+									"wid":"cody2",
+									"name": "Cody",									
+									"status":"completed",
+									"amount": "400"
+									}/*, {
+									"executethis":"mapreduce",									
+									"map": "map1",
+									"reduce": "reduce1",
+									"query": {
 											"$or": [{
-												"data.color":"red"
-												}]
-											}
+											"status":"completed"
+											}]
+										}
 									}
+									*/
 								];
 
 	var expectedresult = [
@@ -190,17 +262,30 @@ function qutest_reduced1 (executeobject, callback) {
 								}
 							}];
 							
+	var queryobj = [{
+					"executethis":"mapreduce",
+					"map": "map1",
+					"reduce": "reduce1",
+					"query": {
+							"$and": [{
+							"data.status":"completed"
+							}, {
+							"metadata.method": "purchasedto"
+							}]
+							 }
+					}];						
 	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
-	  {                    
-			//proxyprinttodiv('expected error', null, 99);
-			//proxyprinttodiv('actual error', error_obj, 99);
-			proxyprinttodiv('expected result', expectedresult, 99);
-			proxyprinttodiv('actual result', result_obj[1], 99);
+	  {     
+			proxyprinttodiv('add results', result_obj, 99, true);
+			etEnvironment.execute(queryobj, function (err, res) {
+				proxyprinttodiv('expected result', expectedresult, 99);
+				proxyprinttodiv('actual result', res, 99);
 
-			var composite_obj=logverify("simpleonewidquery1", result_obj[1], expectedresult);
-			//proxyprinttodiv('composite_obj', composite_obj, 99);
-			callback(null, composite_obj);
+				var composite_obj=logverify("simpleonewidquery1", res, expectedresult);
+				//proxyprinttodiv('composite_obj', composite_obj, 99);
+				callback(null, composite_obj);
+			});
 	  });
 }
 widtests.qutest_reduced1.category = "daily";
@@ -352,7 +437,7 @@ exports.etmttest2 = widtests.etmttest2 = etmttest2 = function etmttest2(params, 
                 "wid": "testdto",
                 "metadata": {
                     "method": "testdto",
-                    "date": "2014-03-19T11:37:35.827Z"
+                    "date": {"exception":["changed","created","deleted"]}
                 }
             }],
             [{
@@ -363,7 +448,7 @@ exports.etmttest2 = widtests.etmttest2 = etmttest2 = function etmttest2(params, 
                 "wid": "wid1",
                 "metadata": {
                     "method": "testdto",
-                    "date": "2014-03-19T11:37:35.878Z"
+                    "date": {"exception":["changed","created","deleted"]}
                 }
             }],
             [{
@@ -374,7 +459,7 @@ exports.etmttest2 = widtests.etmttest2 = etmttest2 = function etmttest2(params, 
                 "wid": "wid2",
                 "metadata": {
                     "method": "testdto",
-                    "date": "2014-03-19T11:37:35.952Z"
+                    "date": {"exception":["changed","created","deleted"]}
                 }
             }],
             [{
@@ -385,7 +470,7 @@ exports.etmttest2 = widtests.etmttest2 = etmttest2 = function etmttest2(params, 
                 "wid": "wid3",
                 "metadata": {
                     "method": "testdto",
-                    "date": "2014-03-19T11:37:35.998Z"
+                    "date": {"exception":["changed","created","deleted"]}
                 }
             }],
             [{
@@ -396,7 +481,7 @@ exports.etmttest2 = widtests.etmttest2 = etmttest2 = function etmttest2(params, 
                 "wid": "wid4",
                 "metadata": {
                     "method": "testdto",
-                    "date": "2014-03-19T11:37:36.049Z"
+                    "date": {"exception":["changed","created","deleted"]}
                 }
             }],
             [{
@@ -407,7 +492,7 @@ exports.etmttest2 = widtests.etmttest2 = etmttest2 = function etmttest2(params, 
                 "wid": "wid5",
                 "metadata": {
                     "method": "testdto",
-                    "date": "2014-03-19T11:37:36.097Z"
+                    "date": {"exception":["changed","created","deleted"]}
                 }
             }],
             [],
@@ -892,6 +977,8 @@ widtests.etmttest333.js = exports.etmttest333;
 widtests.etmttest333.description = "this does a test";
 
 // fails immediately
+// executetest is not defined
+/*
 exports.mt3 = widtests.mt3 = mt3 = function mt3(params, callback) {
     var x = [];
     var y;
@@ -1241,6 +1328,7 @@ widtests.etmttest3.category = "execute";
 widtests.etmttest3.subcategory = "query";
 widtests.etmttest3.js = exports.etmttest3;
 widtests.etmttest3.description = "this does a test";
+*/
 
 // Wids :--
 // {"wid": "colordto", "metadata.method": "colordto", "hue": "string", "sat": "string"}
@@ -1292,6 +1380,8 @@ widtests.etmttest3.description = "this does a test";
 // {"wid": "color8", "metadata.method": "colordto", "hue": "black", "sat": "red-sat"}
 // {"wid": "color9", "metadata.method": "colordto", "hue": "cyan", "sat": "red-sat"}
 
+// debuglog is not defined
+/*
 exports.etmttest4 = widtests.etmttest4 = etmttest4 = function etmttest4(params, callback) {
 
     debuglevel = 17;
@@ -1309,7 +1399,7 @@ exports.etmttest4 = widtests.etmttest4 = etmttest4 = function etmttest4(params, 
         debuglevel = 30;
     }
     //debuglevel=17;
-    /* adding wids */
+    // adding wids 
     eventappinstall();
     debugname = "updatewid";
     saveglobal("debugsubcat", "code");
@@ -1435,7 +1525,8 @@ exports.etmttest4 = widtests.etmttest4 = etmttest4 = function etmttest4(params, 
 
 
 
-    /* mongo raw queries */
+    // mongo raw queries 
+	
     if (mongorawquerytests) {
         var queryList = [{
             "executethis": "querywid",
@@ -1470,7 +1561,8 @@ exports.etmttest4 = widtests.etmttest4 = etmttest4 = function etmttest4(params, 
         });
     }
 
-    /* mongo single queries */
+    // mongo single queries
+	
     if (mongosinglequerytests) {
         var queryList = [{
             "executethis": "querywid",
@@ -1504,6 +1596,8 @@ widtests.etmttest4.category = "execute";
 widtests.etmttest4.subcategory = "query";
 widtests.etmttest4.js = exports.etmttest4;
 widtests.etmttest4.description = "this does a test";
+*/
+
 
 exports.qw1 = widtests.qw1 = qw1 = function(params, callback) {
     var q = '[{"dtotype":"","convertmethod":"","mongowidmethod":"","command.results":"queryresult","mongorelationshipdirection":"forward","mongorelationshipmethod":"all","mongorelationshiptype":"attributes"}]';
@@ -1818,7 +1912,8 @@ widtests.mts2.description = "this does a test";
 */
 
 
-
+// addmttestdata is not defined
+/*
 exports.etmttest1 = widtests.etmttest1 = etmttest1 = function etmttest1(params, callback) {
     console.log("<< mongoquery_two_test >>");
 
@@ -1845,7 +1940,7 @@ exports.etmttest1 = widtests.etmttest1 = etmttest1 = function etmttest1(params, 
         debuglevel = 30;
     }
 
-    /* adding wids */
+    //adding wids 
     eventappinstall();
     var executeList = [];
     executeList = addmttestdata(callback);
@@ -1853,7 +1948,7 @@ exports.etmttest1 = widtests.etmttest1 = etmttest1 = function etmttest1(params, 
         console.log(' >>> final response after executerray >>> ' + JSON.stringify(res));
     });
 
-    /* $or queries */
+    // $or queries 
     if (ortests) {
         var mongorawquery = '{"$or":[{"data.a":"string"}]}';
         mongoquery(mongorawquery, function(err, result) {
@@ -1872,7 +1967,7 @@ exports.etmttest1 = widtests.etmttest1 = etmttest1 = function etmttest1(params, 
 
     }
 
-    /* $and queries */
+    // $and queries 
     if (andtests) {
         var mongorawquery = '{"$and":[{"data.a":"string"}]}';
         mongoquery(mongorawquery, function(err, result) {
@@ -1900,7 +1995,7 @@ exports.etmttest1 = widtests.etmttest1 = etmttest1 = function etmttest1(params, 
         });
     }
 
-    /* $or-$or tests */
+    // $or-$or tests 
     if (orortests) {
         var mongorawquery = '{"$or":[{"data.a":"1"},{"$or":[{"data.b":"25"},{"data.a":"5"},{"data.a":"5"},{"data.a":"1"}]}]}';
         mongoquery(mongorawquery, function(err, result) {
@@ -1916,7 +2011,7 @@ exports.etmttest1 = widtests.etmttest1 = etmttest1 = function etmttest1(params, 
         });
     }
 
-    /* $and-$and queries */
+    // $and-$and queries 
     if (andandtests) {
         var mongorawquery = '{"$and":[{"data.a":"1"},{"$and":[{"data.b":"1"}]}]}';
         mongoquery(mongorawquery, function(err, result) {
@@ -1933,7 +2028,7 @@ exports.etmttest1 = widtests.etmttest1 = etmttest1 = function etmttest1(params, 
         });
     }
 
-    /* $or-$and queries */
+    // $or-$and queries 
     if (orandtests) {
         var mongorawquery = '{"$or":[{"data.a":"1"},{"$and":[{"data.b":"1"}]}]}';
         mongoquery(mongorawquery, function(err, result) {
@@ -1945,7 +2040,7 @@ exports.etmttest1 = widtests.etmttest1 = etmttest1 = function etmttest1(params, 
         });
     }
 
-    /* fail test cases */
+    // fail test cases 
     if (failedtests) {
         var mongorawquery = '{"$and":[{"data.a":"4"},{"$or":[{"data.a":"2"},{"$or":[{"data.b":"16"}]}]}]}';
         mongoquery(mongorawquery, function(err, result) {
@@ -1957,7 +2052,7 @@ exports.etmttest1 = widtests.etmttest1 = etmttest1 = function etmttest1(params, 
         });
     }
 
-    /* 20 more test cases */
+    // 20 more test cases
     if (orandtests20) {
         var mongorawquery = '{"$or":[{"data.a":"25"},{"$and":[{"data.a":"44"},{"data.a":"64"},{"$or":[{"data.b":"400"}]}]}]}';
         mongoquery(mongorawquery, function(err, result) {
@@ -1986,7 +2081,7 @@ exports.etmttest1 = widtests.etmttest1 = etmttest1 = function etmttest1(params, 
         });
     }
 
-    /* varify test cases */
+    // varify test cases
     if (verifytests) {
         console.log("<< inside verifytests >>");
 
@@ -2013,7 +2108,7 @@ exports.etmttest1 = widtests.etmttest1 = etmttest1 = function etmttest1(params, 
         });
     }
 
-    /* Sift Test cases */
+    // Sift Test cases
     if (sifttests) {
         //sift syntax :-  var result =  sif({$operator:[cond],  [array]});
         var widArray = [{
@@ -2096,7 +2191,7 @@ widtests.etmttest1.category = "execute";
 widtests.etmttest1.subcategory = "daily";
 widtests.etmttest1.js = exports.etmttest1;
 widtests.etmttest1.description = "this does a test";
-
+*/
 
 // this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
 exports.simpleonewidquery1 =  
