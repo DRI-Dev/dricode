@@ -170,11 +170,13 @@ function map1 (obj) {
 
 function reduce1 (key, values) {
 	proxyprinttodiv('values for ' + key, values, 99);
-	alert(Number(values[0]));
-	var amt;
+	var amt = 0;
 	
-	for (var i in values) { amt += Number(values[i]); }
-	return amt;
+	for (var i in values) {
+		amt += parseInt(values[i]);
+	} 
+	
+	return amt
 }
 
 // this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
@@ -238,6 +240,14 @@ function qutest_reduced1 (executeobject, callback) {
 									"name": "Cody",									
 									"status":"completed",
 									"amount": "400"
+									}, {
+									"executethis": "addwidmaster",
+									"metadata.method": "selldto",
+									"wid": "bill1",
+									"name": "Bill",
+									"status": "completed",
+									"amount": "1000",
+									"customer": "Roger"
 									}/*, {
 									"executethis":"mapreduce",									
 									"map": "map1",
