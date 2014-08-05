@@ -211,18 +211,18 @@ exports.updatewid = updatewid = function updatewid(inobject, callback) {
                         if (!currentrecord) { currentrecord={}; command.newrecord=true; }
                         callback(null, currentrecord, command);
                     }
-                    else if (command.datastore === "mongo") 
-                    {
-                        wget(incopy, command, function (err, currentrecord) {
-                            if (!currentrecord) { currentrecord={}; command.newrecord=true; }
-                            callback(err, currentrecord, command);
-                        });
-                    }
-                    else
-                    {
-                        callback({"errorname":"wrong datastore"}, null);
-                    }
                 })
+            }
+            else if (command.datastore === "mongo")
+            {
+                wget(incopy, command, function (err, currentrecord) {
+                    if (!currentrecord) { currentrecord={}; command.newrecord=true; }
+                    callback(err, currentrecord, command);
+                });
+            }
+            else
+            {
+                callback({"errorname":"wrong datastore"}, null);
             }
         }
 
