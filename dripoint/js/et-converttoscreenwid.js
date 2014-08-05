@@ -16,9 +16,10 @@ $(document).ready(function () {
     // convert linked html page to a screenwid
     htmlToScreenwid(widName, $('body').html(), params, function() {
         $('body').html('<div class="container" style="margin-top:30px;text-align:center;">'
-                     + '<div class="row well col-md-8 col-md-offset-2"><h4>This page has been saved as the '
-                     + widName + ' screenwid.<br /> ' + 'You will be redirected to <a href="http://dripoint.com?wid='
-                     + widName + '">http://dripoint.com?wid = ' + widName + '</a></h4></div></div>');
+            + '<div class="row well col-md-8 col-md-offset-2"><h4>This page has been saved as the '
+            + widName + ' screenwid in the current angular data model as well as in localStorage.<br /> '
+            + 'You will be redirected to <a href="http://dripoint.com?wid='
+            + widName + '">http://dripoint.com?wid = ' + widName + '</h4></div></div>');
         setTimeout(function() { window.location = 'http://dripoint.com?wid=' + widName; },3500);
     });
 });

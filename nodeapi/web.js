@@ -4,62 +4,11 @@ require('./create_config.js');
 require('./config.js');
 
 
-// switch between the location of core files
-var DIR_TO_CORE_JS = '../dripoint/js/';
-
-require(DIR_TO_CORE_JS + 'et-dto.js');
-require(DIR_TO_CORE_JS + 'et-security.js');
-require(DIR_TO_CORE_JS + 'et-utils.js');
-require(DIR_TO_CORE_JS + 'et-add.js');
-require(DIR_TO_CORE_JS + 'et-get.js');
-require(DIR_TO_CORE_JS + 'et-test.js');
-require(DIR_TO_CORE_JS + 'test-addhoc.js');
-require(DIR_TO_CORE_JS + 'test-dto.js');
-require(DIR_TO_CORE_JS + 'test-et-utils.js');
-require(DIR_TO_CORE_JS + 'test-execute.js');
-require(DIR_TO_CORE_JS + 'test-inherit.js');
-require(DIR_TO_CORE_JS + 'test-main.js');
-require(DIR_TO_CORE_JS + 'test-query.js');
-require(DIR_TO_CORE_JS + 'test-security.js');
-require(DIR_TO_CORE_JS + 'tests-up-for-review.js');
-require(DIR_TO_CORE_JS + 'et-query.js');
-require(DIR_TO_CORE_JS + 'executethis.js');
-
-exports.config = config = require('./config-server.js');
-
-exports.configuration = configuration = config.configuration;
-
-config.configuration = configuration;
-
-// Server specific Routes here
-
-
-var async = require('async');
-
-
-// var mongoskin = require('mongoskin'),
-//     SkinStore = require('connect-mongoskin');
-
-  path = require('path')
-    // dao = require('../dao/alterdao.js'),
-    dao = require('./dao/mongo.js')
-    superagent = require('superagent')
-    https = require('https')
-    querystring = require('querystring')
-    url = require('url')
-    util = require('util');
-require('./dao/mongotest.js');
-// , drifn = require('../dao/dri_functions.js')
-
-
-express = require('express')
-    app = express()
-    http = require('http')
-    needle = require('needle')
-    request = require('request')
-//    server = require('./routes/server')
-    convert = require('./routes/convert.js')
-    querystring = require('querystring')
+var express = require('express'),
+    app = express(),
+    request = require('request'),
+    server = require('./routes/server'),
+    convert = require('./routes/convert.js'),
     imageService = require('./routes/images.js');
 
 

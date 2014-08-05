@@ -360,11 +360,56 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
         }
 
 
-    // ****** START OF UPDATEWID *******
-    // *********************************
-    proxyprinttodiv('Function updatewid inobject', inobject,12 , true, true);
-    var database = [];
-    var keydatabase = {};
+            if (config.configuration.environment === "local") {
+                getfromangular(inputWidgetObject, function (angularerr, resultobject) {
+                    if (resultobject) {
+                        if (output) { // resultobject && output
+                            output = extend(true, resultobject, output);
+                        } else { // resultobject && !output
+                            output = resultobject;
+                        }
+                    }
+
+                    if (output) {
+                        err = null;
+                        // make sure data is bundled properly for convertfromdriformat()
+                        for (var prop in output) {
+                            if (output.hasOwnProperty(prop)) {
+                                if (prop !== 'wid' && prop !== 'metadata' && prop !== 'converttodriformat' && prop !== db) {
+                                    //if (prop !== 'wid' && prop !== 'metadata' && prop !== 'converttodriformat' && prop !== 'data') {
+                                    if (!output[db]) {
+                                        output[db] = {};
+                                    }
+                                    output[db][prop] = output[prop];
+                                    delete output[prop];
+                                }
+                            }
+                        }
+                        output = convertfromdriformatenhanced(output, command, originalarguments);
+                        // output=convertfromdriformat(output, command);
+                        // if (output && Object.keys(output) > 0) {
+                        //     output = extend(true, originalarguments, output);
+                        // }
+                        // proxyprinttodiv('Function getwid command.convertmethod >> 1', command.convertmethod,12);
+                        // if (((Object.keys(output).length) > 0) && (command.convertmethod === 'toobject')) {
+                        //     output =  ConvertFromDOTdri(output);
+                        // }
+                    } // if output
+                    else { // if no output
+                        output = {};
+                        err = {};
+                        err = {
+                            "errorname": "notfound",
+                            "errorparameters": {
+                                "command": {
+                                    "queueparameters": originalarguments[0],
+                                    "overallresultparameters": [],
+                                    "currenterror": null,
+                                    "currentresult": null,
+                                    "currentparameters": originalarguments[0]
+                                }
+                            }
+                        }
 
     recordsetup(inobject, function (err, incopy, command) // set up defaults, etc
     { 

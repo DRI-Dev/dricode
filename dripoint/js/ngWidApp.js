@@ -66,13 +66,11 @@ if (typeof angular !== 'undefined') {
 
                 $http.put('/base64toserver', {path:path, imagesrc:base64image}, {headers:{"content-type": "application/json"}}).
                     success(function(data, status, lheaders, config) {
-                        console.log('** Image service saved ' + filename + ' to dripoint.com **');
-                        $('#successlog').html('** Image service successfully saved ' + filename + ' to dripoint.com **');
+                        console.log('** Image service successfully saved ' + filename + ' to dripoint.com **');
                         if (callback instanceof Function) { callback(null); }
                     }).
                     error(function(data, status, headers, config) {
                         console.log('** Image service incountered an error saving ' + filename + ' **');
-                        $('#errorlog').html('** Image service incountered an error saving ' + filename + ' **');
                         if (callback instanceof Function) { callback(null); }
                     });
             }
@@ -298,6 +296,102 @@ if (typeof angular !== 'undefined') {
         }
         return obj;
     }
+
+    // mostly processes wid names found in execute results
+    // TODO : remove this as all of these variables are depricated and no longer used
+    exports.etProcessScreenWid = etProcessScreenWid = function etProcessScreenWid(parameters, scope, callback) {
+        var widforview = [],
+            widforbase = [],
+            widforbackground = [],
+            links = [],
+            dataforview = {},
+            all_wids= [];
+
+        scope = scope || $('body').scope();
+
+        if (parameters.widforview) { widforview = parameters.widforview.split(','); delete parameters['widforview']; }
+        else if (typeof widForView !== 'undefined') { widforview = widForView.split(','); }
+
+        if (widforview.length > 0) { scope.widforview = widforview; }
+
+        if (parameters.widforbase) { widforbase = parameters.widforbase.split(','); delete parameters['widforbase']; }
+        else if (typeof widForBase !== 'undefined') { widforbase = widForBase.split(','); }
+
+        if (widforbase.length > 0) { scope.widforbase = widforbase; }
+
+        if (parameters.widforbackground) { widforbackground = parameters.widforbackground.split(','); delete parameters['widforbackground']; }
+        else if (typeof widForBackground !== 'undefined') { widforbackground = widForBackground.split(','); }
+
+        if (widforbackground.length > 0) { scope.widforbackground = widforbackground; }
+
+        if (parameters.links) {
+            links = JSON.parse(parameters.links);
+            delete parameters['links'];
+            scope.links = links;
+        }
+
+        // handle action binding from links variable
+        for (var i = 0; i < links.length; i++) {
+            var identifier = links[i].id  // get jquery identifier bassed on id or class passsed in
+                    ? '#' + links[i].id
+                    : links[i].class
+                    ? '.' + links[i].class
+                    : 'idAndClassMissing',
+                eventParams = {};
+
+            if (identifier === 'idAndClassMissing') {
+                console.log('links object must contain an id or class property. => ' + JSON.stringify(links[i]));
+            }
+
+            // check if the executethis property is an object
+            if (widAppHelper.isJsonStr(links[i].executethis)) { eventParams = JSON.parse(links[i].executethis); }
+            else { eventParams.executethis = links[i].executethis; }
+
+            if (links[i].id) {
+                // add event attributes to element
+                $(identifier).attr('etparams', JSON.stringify(eventParams));
+
+                // add event listener to element
+                $(identifier).attr('on' + links[i].trigger, 'callExecute(this)');
+            } else if (links[i].class) {  // if class was passed in, apply links logic to all elemenets with class
+                $(identifier).each(function (i, ele) {
+                    // add event attributes to element
+                    $(ele).attr('etparams', JSON.stringify(eventParams));
+
+                    // add event listener to element
+                    $(ele).attr('on' + links[i].trigger, 'callExecute(this)');
+                });
+            }
+        }
+
+        if (parameters.dataforview) {
+            dataforview = JSON.parse(parameters.dataforview);
+
+            angular.injector(['ng', 'widApp'])
+                .get('dataService')
+                .storeData(dataforview, scope, 'dataforview');
+
+            delete parameters['dataforview'];
+        }
+
+        for (var a = 0; a < widforview.length; a++) { all_wids.push({executethis:widforview[a].trim()}); }
+        for (var b = 0; b < widforbase.length; b++) { all_wids.push({executethis:widforbase[b].trim()}); }
+        for (var c = 0; c < widforbackground.length; c++) { all_wids.push({executethis:widforbackground[c].trim()}); }
+
+        async.eachSeries(all_wids,
+            function(executeObj, cb) {
+                execute(executeObj, function (err, resultArray) {
+                    angular.injector(['ng', 'widApp'])
+                        .get('dataService')
+                        .storeData(resultArray, scope, '', function() {
+                            cb();
+                        });
+                });
+            },
+            function(err) {
+                if (callback instanceof Function) { callback(); }
+            });
+    };
 
     // adds the passed in object to the current angularJS scope (model) under the passed in name
     exports.addToAngular = addToAngular = function addToAngular(name, obj) {
