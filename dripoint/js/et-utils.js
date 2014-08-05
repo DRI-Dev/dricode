@@ -15,9 +15,9 @@
 // if (!debugon) { // debugfn
 //     var debugon = false;
 // }
-if (!exports) {
-     var exports = {};
-}
+//if (!exports) {
+//     var exports = {};
+//}
 
 (function (window) {
 
