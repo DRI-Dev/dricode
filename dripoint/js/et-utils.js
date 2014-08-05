@@ -109,13 +109,16 @@ exports.getwid = getwid = function getwid(inobject, callback) {
     var incopy = {};
     extend(true, incopy, inobject);
     proxyprinttodiv('Function getwid incopy', incopy, 12);
+
+    if (!incopy.command) { incopy.command = {}; }
+
     incopy.command.convert = "toobject"; // converttodriformat
     incopy.command.getwidflag=true;
     //var command = incopy.command;
     proxyprinttodiv('Function datastore command -- get incopy', incopy, 12);
 
     updatewid(incopy, callback)
-}
+};
 
 
 // Because of command.lock and the use of command local databases getwid calls updatewid
