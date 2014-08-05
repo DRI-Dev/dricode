@@ -295,7 +295,9 @@ exports.wadd = wadd = function wadd(objToAdd, command, callback) {
         else
         {
             db.collection(schemaToLookup).update({wid:objToAdd.wid}, {$set:objToAdd}, {}, function (error, boolresult) {
-                callback(err || error, boolresult);
+                wget({wid:objToAdd.wid}, command, function (err, foundwid) {
+                    callback(err || error, foundwid);
+                });
             });
         }
 
