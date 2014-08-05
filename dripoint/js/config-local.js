@@ -17,6 +17,7 @@ if (!debugon) { // debugfn
     var debugon = false;
 }
 
+
 function config123() {
     var configuration = {};   
     // what environment and what defaults should be used

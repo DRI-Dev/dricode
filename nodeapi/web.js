@@ -8,7 +8,7 @@ require('./config.js');
 config = require('./config-server.js');
 
 var DIR_TO_CORE_JS = '../dripoint/js/';
-require(DIR_TO_CORE_JS + 'et-dto.js');
+
 require(DIR_TO_CORE_JS + 'et-security.js');
 require(DIR_TO_CORE_JS + 'et-utils.js');
 require(DIR_TO_CORE_JS + 'et-add.js');
@@ -26,6 +26,7 @@ require(DIR_TO_CORE_JS + 'test-main.js');
 require(DIR_TO_CORE_JS + 'test-query.js');
 require(DIR_TO_CORE_JS + 'test-security.js');
 require(DIR_TO_CORE_JS + 'tests-up-for-review.js');
+require(DIR_TO_CORE_JS + 'et-dto.js');
 
 //exports.config = config = require('./config-server.js');
 
