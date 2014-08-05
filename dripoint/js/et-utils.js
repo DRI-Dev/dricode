@@ -313,6 +313,9 @@ exports.updatewid = updatewid = function updatewid(inobject, callback) {
                 proxyprinttodiv('Function updatewid convertedrecord II', convertedrecord, 12);
                 extend(true, currentrecord, convertedrecord); // merge with existing record
                 proxyprinttodiv('Function updatewid currentrecord III', currentrecord, 12);
+
+                if (!command) { command = {}; }
+
                 // delete code if empty
                 if (command.datastore === "mongo")
                 {
