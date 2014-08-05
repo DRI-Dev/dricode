@@ -394,16 +394,23 @@ exports.updatewid = updatewid = function updatewid(inobject, callback) {
                 calculaterecordtoadd(incopy, currentrecord, command, function (err, recordtoadd){
                     proxyprinttodiv('Function updatewid err C ', err, 12, true, true);
                     proxyprinttodiv('Function updatewid recordtoadd C ', recordtoadd, 12, true, true);
-                    processcurrentrecord(currentrecord, recordtoadd, command, function (err, currentrecord) // save to local or mongo
+                    if (currentrecord)
                     {
-                        proxyprinttodiv('Function updatewid err D ', err, 12, true, true);
-                        proxyprinttodiv('Function updatewid currentrecord D ', currentrecord, 12, true, true);
-                        // if this was actually a getwid call and nothing found then err
-                        if (command.getwidflag === true && command.newrecord) {err = {"errorname": "notfound"};}
-                        proxyprinttodiv('Function updatewid err', err, 12);
-                        proxyprinttodiv('Function updatewid recordtoadd', recordtoadd, 12);
-                        callback(err, recordtoadd); // we return the pretty record
-                    })
+                        processcurrentrecord(currentrecord, recordtoadd, command, function (err, currentrecord) // save to local or mongo
+                        {
+                            proxyprinttodiv('Function updatewid err D ', err, 12, true, true);
+                            proxyprinttodiv('Function updatewid currentrecord D ', currentrecord, 12, true, true);
+                            // if this was actually a getwid call and nothing found then err
+                            if (command.getwidflag === true && command.newrecord) {err = {"errorname": "notfound"};}
+                            proxyprinttodiv('Function updatewid err', err, 12);
+                            proxyprinttodiv('Function updatewid recordtoadd', recordtoadd, 12);
+                            callback(err, recordtoadd); // we return the pretty record
+                        });
+                    }
+                    else
+                    {
+                        callback({"errorname": "notfound"}, {});
+                    }
                 });
             })
         }// if error 
