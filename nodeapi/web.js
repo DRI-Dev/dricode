@@ -118,7 +118,7 @@ app.put('/base64toserver', imageService.saveBase64ToServer);
 //exports.window = {"configuration":config.configuration};
 
 //console.log('port is ' + serverconfig.SERVER_PORT);
-//app.listen(process.env.PORT || serverconfig.SERVER_PORT);
+app.listen(process.env.PORT || serverconfig.SERVER_PORT);
 
 
 eventdeviceready({}, function (err, res) {

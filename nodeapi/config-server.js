@@ -7,15 +7,16 @@
 //     var exports = {};
 // }
 
-if (!Debug) { // printdiv
-    global.Debug = 'false';
-}
-if (!debuglevel) { // printdiv
-    global.debuglevel = 0;
-}
-if (!debugon) { // debugfn
-    global.debugon = false;
-}
+// if (!Debug) { // printdiv
+//    global.Debug = 'false';
+//}
+//if (!debuglevel) { // printdiv
+//    global.debuglevel = 0;
+//}
+//if (!debugon) { // debugfn
+//   global.debugon = false;
+//}
+
 
 // var configuration = {};
 
@@ -108,9 +109,14 @@ function setdefaultparm() {
     saveglobal("debugindent", 0);
     saveglobal("debuglinenum", 0);
 
-    exports.environment = "local";
-    exports.Debug = Debug;
-    exports.debuglevel = 0 || debuglevel;
+    //exports.environment = "local";
+    // exports.Debug = Debug;
+    // exports.debuglevel = 0 || debuglevel;
+    
+    global.environment = "server";
+    global.Debug = 'false';
+    global.debuglevel = 0;
+    global.debugon = false;
 
 }
 
