@@ -125,7 +125,7 @@ exports.getwid = getwid = function getwid(inobject, callback) {
 //     processcurrentwid
 //         processcurrentwid calls madd or maddlocal
 // nested functions for updatewid...keep a global database and keydatabased var
-exports.updatewid = updatewid = updatewid = function updatewid(inobject, callback) {
+exports.updatewid = updatewid = function updatewid(inobject, callback) {
         // code begins at ***** below
 
         // internal fn to update wid sets up defaults and default operations common to get/add
@@ -159,7 +159,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
             if (Object.keys(incopy.metadata).length === 0) {delete incopy.metadata}
             proxyprinttodiv('Function datastore incopy', incopy, 12);
             proxyprinttodiv('Function datastore command', command, 12,99, true);
-            if (!incopy.wid) {err = {"errorname":"nowid"}}
+            if (!incopy.wid) { err = {"errorname":"nowid"}; }
             callback(err, incopy, command);
         }
 
@@ -174,7 +174,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                 getfromangular(incopy, function (angularerr, resultobject) 
                 {
                     // extend incopy based on what was in angular 
-                    if (resultobject) {extend(true, incopy, resultobject); }
+                    if (resultobject) { extend(true, incopy, resultobject); }
 
                     // if not in memory then get it
                     // if empty then create them
@@ -193,7 +193,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                         }
                         var currentrecord = keydatabase[incopy.wid];
                         proxyprinttodiv('Function updatewid currentrecord', currentrecord, 12);
-                        if (!currentrecord) {currentrecord={}; command.newrecord=true;};
+                        if (!currentrecord) { currentrecord={}; command.newrecord=true; }
                         callback(null, currentrecord, command);
                     } 
                     else if (command.datastore === "localstore") 
@@ -208,15 +208,15 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                             database = getfromlocal(command.databasetable + command.collection);
                         }
                         var currentrecord = keydatabase[incopy.wid];
-                        if (!currentrecord) {currentrecord={}; command.newrecord=true;};
+                        if (!currentrecord) { currentrecord={}; command.newrecord=true; }
                         callback(null, currentrecord, command);
                     }
                     else if (command.datastore === "mongo") 
                     {
                         wget(incopy, command, function (err, currentrecord) {
-                            if (!currentrecord) {currentrecord={}; command.newrecord=true;};
-                            callback(err, currentrecord, command)
-                        })
+                            if (!currentrecord) { currentrecord={}; command.newrecord=true; }
+                            callback(err, currentrecord, command);
+                        });
                     }
                     else
                     {
@@ -317,7 +317,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
             }
             else
             {
-                if (restriction.currentlock && restriction.shouldupdate) {err = {"errorname":"locked"};}
+                if (restriction.currentlock && restriction.shouldupdate) { err = {"errorname":"locked"}; }
                 callback(err, currentrecord);
             }
         }
@@ -373,7 +373,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
         proxyprinttodiv('Function updatewid err A ', err, 12, true, true);
         proxyprinttodiv('Function updatewid incopy A ', incopy, 12, true, true);
         proxyprinttodiv('Function updatewid command A ', command, 12, true, true);
-        if (err) {callback(err, incopy)} 
+        if (err) { callback(err, incopy); }
         else 
         {
             getcurrentrecord(incopy, command, function (err, currentrecord, command) // get it from local or mongo
