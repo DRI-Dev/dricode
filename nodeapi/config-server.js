@@ -17,7 +17,7 @@ if (!debugon) { // debugfn
     var debugon = false;
 }
 
-//var configuration = {};
+var configuration = {};
 
 
 function config123() {
