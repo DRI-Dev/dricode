@@ -1,61 +1,4 @@
-// Server specific Routes here
-console.log('server.js -- bof');
-
-// require('../config.js');
-
-var async = require('async');
-
-console.log('russ4');
-console.log(russ4);
-
-// var mongoskin = require('mongoskin'),
-//     SkinStore = require('connect-mongoskin');
-console.log('server.js -- a002');
-
-  path = require('path')
-console.log('server.js -- a003');
-    // dao = require('../dao/alterdao.js'),
-    dao = require('../dao/mongo.js')
-console.log('server.js -- a004');
-    superagent = require('superagent')
-console.log('server.js -- a005');
-    https = require('https')
-console.log('server.js -- a006');
-    querystring = require('querystring')
-console.log('server.js -- a007');
-    url = require('url')
-console.log('server.js -- a008');
-    util = require('util');
-require('../dao/mongotest.js');
-// , drifn = require('../dao/dri_functions.js')
-
-
-console.log('server.js -- v001');
-
-// settings and config variables are declared in boxconfiguration
-var SkinStore = require('connect-mongoskin');
-    mongoskin = require('mongoskin');
-console.log('server.js -- v002');
-    schemaToLookup = config.configuration.defaultcollection;
-console.log('server.js -- v003');
-    databaseToLookup = config.configuration.defaultdb,
-console.log('server.js -- v004');
-    mongoDatabaseToLookup = config.configuration.defaultdatabasetable,
-    dbConnectionsManager = {},
-console.log('server.js -- v001');
-    // defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup,
-    flatten = require('flat').flatten;
-
-console.log('server.js -- v002');
-
-exports.putrunExecutethis = function (req, resp) {
-    var parameters = req.body;
-    console.log(" JSON " + JSON.stringify(parameters));
-    runExecuteThis(parameters, resp);
-};
-
-
-exports.postputgetrunExecutethis = function (req, resp) {
+exports.postputgetrunExecutethis = function postputgetrunExecutethis(req, resp) {
     var parameters = req.body;
     console.log(" JSON " + JSON.stringify(parameters));
     var url_parts = url.parse(req.url, true);
@@ -63,21 +6,9 @@ exports.postputgetrunExecutethis = function (req, resp) {
 
     extend(true, parameters, query);
     runExecuteThis(parameters, resp);
-};
-
-
-exports.getrunExecutethis = function (req, resp) {
-    var url_parts = url.parse(req.url, true);
-    var query = url_parts.query;
-
-    console.log(query); //{Object}
-    console.log(" JSON " + JSON.stringify(query));
-    runExecuteThis(query, resp);
-
-};
+}
 
 function runExecuteThis(parameters, resp) {
-
     Debug = false;
     if (parameters.Debug) {
         Debug = "true";
@@ -129,106 +60,6 @@ function runExecuteThis(parameters, resp) {
     });
 }
 
-function callUpdateWid(entityToAdd, callback) {
-    // Make another request, to update DB data
-    var data = JSON.stringify(entityToAdd["data"]);
-    console.log(">>>>>> callUpdateWid >>>>>>> :::: " + data);
-    var requestObj = [];
-    requestObj.push({
-        "executethis": "updatewid",
-        "Wid": entityToAdd["wid"],
-        "data": entityToAdd["data"]
-    });
-
-    superagent.put(settings.SERVICE_URL + 'executethis')
-        .send(requestObj)
-        .end(function (e, res) {
-            console.log('>>>>>>>>> callUpdateWid :::: Sent another request :: updatewid :: PUT request ');
-            callback(res);
-        });
-}
-
-function getJsonFromMap(leftOverParameters) {
-    var rec = {};
-    leftOverParameters.forEach(function (value, key) {
-        if (key != "Wid") {
-            rec[key] = value;
-        }
-    });
-    return rec;
-}
-
-function handleProcessHtmlPersistence(nodeObjects, callback) {
-    if (nodeObjects && nodeObjects['processHtmlJson'] && nodeObjects['processHtmlJson'][0]) {
-        // persist the scrape results from processHTML process   
-        for (var i = 0; i < nodeObjects['processHtmlJson'][0].length; i++) {
-            // iterate over objects and make according entries in the DB
-            var entityToAdd = nodeObjects['processHtmlJson'][0][i];
-            console.log(">>>> :::: extractthis :::: processHtmlJson Now go ahead and add the requested JSON to mongoDB : " + JSON.stringify(entityToAdd));
-
-            callUpdateWid(entityToAdd, function (o) {
-                console.log("::: extractthis :: processHtmlJson :: After adding/updating node to Mongo - " + o);
-                callback();
-            });
-        }
-    } else {
-        callback();
-    }
-}
-
-function handleAddThisPersistence(nodeObjects, callback) {
-    if (nodeObjects && nodeObjects['addThisJson'] && nodeObjects['addThisJson'][0]) {
-        // persist the scrape results from processHTML process   
-        for (var i = 0; i < nodeObjects['addThisJson'][0].length; i++) {
-            // iterate over objects and make according entries in the DB
-            var entityToAdd = nodeObjects['addThisJson'][0][i];
-            console.log(">>>> :::: extractthis :::: handleAddThisPersistence Now go ahead and add the requested JSON to mongoDB : " + JSON.stringify(entityToAdd));
-
-            callUpdateWid(entityToAdd, function (o) {
-                console.log("::: extractthis :: handleAddThisPersistence :: After adding/updating node to Mongo - " + o);
-                callback();
-            });
-        }
-    } else {
-        callback();
-    }
-}
-
-
-function cleanParameters(inboundParameters, paramsToClean) {
-    var outBoundParameters = {};
-    extend(true, outBoundParameters, inboundParameters);
-    for (var i = 0; i < paramsToClean.length; i++) {
-        if (outBoundParameters[paramsToClean[i]]) {
-            delete outBoundParameters[paramsToClean[i]];
-        }
-    }
-    return outBoundParameters;
-}
-
-function mergeParameters(c1, c2) {
-    var mergedMap = {};
-    extend(true, mergedMap, c1);
-
-    for (var key in c2 && (!mergedMap[key])) {
-        mergedMap[key] = c2[key];
-    }
-
-    return mergedMap;
-}
-
-
-function toLowerKeys(obj) {
-    var key, keys = Object.keys(obj);
-    var n = keys.length;
-    var newobj = {};
-    while (n--) {
-        key = keys[n];
-        newobj[key.toLowerCase()] = obj[key];
-    }
-    return newobj;
-}
-
 exports.gethtmlbyid = gethtmlbyid = function gethtmlbyid(params, callback) {
     var foundHtml;
 
@@ -262,5 +93,3 @@ exports.gethtmlbyid = gethtmlbyid = function gethtmlbyid(params, callback) {
             callback(null, foundHtml);
         });
 };
-
-console.log('server.js -- eof');

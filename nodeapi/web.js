@@ -88,9 +88,9 @@ app.configure('development', function() {
 
 
 //// *********************** Route Mapping for Application follows   ***********************
-app.put('/executethis', postputgetrunExecutethis);
-app.post('/executethis', postputgetrunExecutethis);
-app.get('/executethis', postputgetrunExecutethis);
+app.put('/executethis', server.postputgetrunExecutethis);
+app.post('/executethis', server.postputgetrunExecutethis);
+app.get('/executethis', server.postputgetrunExecutethis);
 // app.put('/executethis', server.putrunExecutethis);
 app.put('/filetowid', convert.convertFileToWid);
 app.put('/base64toserver', imageService.saveBase64ToServer);
@@ -110,69 +110,5 @@ eventdeviceready({}, function (err, res) {
         //console.log('running');
     });
 });
-
-exports.postputgetrunExecutethis = function (req, resp) {
-    var parameters = req.body;
-    console.log(" JSON " + JSON.stringify(parameters));
-    var url_parts = url.parse(req.url, true);
-    var query = url_parts.query;
-
-    extend(true, parameters, query);
-    runExecuteThis(parameters, resp);
-};
-
-
-function runExecuteThis(parameters, resp) {
-
-    Debug = false;
-    if (parameters.Debug) {
-        Debug = "true";
-        delete parameters.Debug
-    }
-
-    if (parameters.command) {
-        // grab server defaults
-        extend(true, parameters.command, config.configuration.d.default);
-
-        if (parameters.command.environment && parameters.command.environment.default) {
-            // overwrite current environment defaults with server defaults
-            parameters.command.environment.default = config.configuration.d.default;
-        }
-    }
-
-    // also grab server defaults for xrun objects
-    if (parameters.command && parameters.command.xrun) {
-        for (var index in parameters.command.xrun) {
-            if (parameters.command.xrun[index].command) {
-                extend(true, parameters.command.xrun[index].command, config.configuration.d.default);
-
-                if (parameters.command.xrun[index].command.environment
-                    && parameters.command.xrun[index].command.environment.default) {
-                    // overwrite current environment defaults with server defaults
-                    parameters.command.xrun[index].command.environment.default = config.configuration.d.default;
-                }
-            }
-        }
-    }
-
-    execute(parameters, function (err, results) {
-        if (Debug === 'true') {
-            var tempoutput = {};
-            tempoutput.command = {};
-            tempoutput.command.angularexeucute = {};
-            tempoutput.command.angularexeucute.parameters = {};
-            extend(true, tempoutput.command.angularexeucute.parameters, localStore);
-            // extend(true, executeobject, postResults);
-            results.push(tempoutput);
-            localStore.clear();
-        }
-        debuglinenum = 0;
-
-        if (!results) { results = {}; }
-
-        resp.send(results);
-        resp.end();
-    });
-}
 
 
