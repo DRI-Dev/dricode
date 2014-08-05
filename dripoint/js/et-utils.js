@@ -280,7 +280,7 @@ exports.updatewid = updatewid = function updatewid(inobject, callback) {
         {
             var shouldupdate = false;
             var currentlock = false;
-            
+
             if (!command) { command = {}; }
 
             if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock)
@@ -770,6 +770,9 @@ exports.converttodriformat = converttodriformat = function converttodriformat(in
     delete inobject['executethis'];
     proxyprinttodiv('Function updatewid in : inobject', inobject, 12);
     var saveobject = {};
+
+    if (!command) { command = {}; }
+
     var db = command.db || config.configuration.db;
     var wid;
     var metadata;
