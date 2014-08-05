@@ -9,10 +9,31 @@ function intest_allexecute(executeobject, callback)
 	var start = new Date().getTime();
     async.series(
     [   
-    //function (cb1) {setest_testnestedgroups1({}, function (err, res) {cb1(null, res)})},
-    //function (cb1) {setest_allowsec1tests4({}, function (err, res) {cb1(null, res)})},
-    //function (cb1) {setest_allowsec1tests5({"setup":false}, function (err, res) {cb1(null, res)})},
-	//function (cb1) {setest_allowsec1tests6({"setup":false}, function (err, res) {cb1(null, res)})}
+    //function (cb1) {etaddwidtest4({}, function (err, res) {cb1(null, res)})},
+    //function (cb1) {etadd1({}, function (err, res) {cb1(null, res)})},
+    //function (cb1) {etadd11({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {etaddwidtest6({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {etaddwidtest7({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testinheritdefault0({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testinheritdefault1({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testinheritdefault2({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testcommanddtotype({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testinheritdefault3({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testinheritdefault4({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testinheritdefault41({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testinheritdefault5({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testinheritoverride0({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testinheritoverride1({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testinheritoverride2({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testinheritoverride3({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testinheritoverride4({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {multiinheritoverride0({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {multiinheritoverride1({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {multiinheritoverride2({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {multiinheritoverride3({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testaddauthor1({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {testjsononetoone0({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {etcreateinheritdefault1({}, function (err, res) {cb1(null, res)})}
     ],
     function (err, res) {
       proxyprinttodiv('result from many array', res, 99);

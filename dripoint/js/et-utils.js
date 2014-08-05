@@ -6,18 +6,20 @@
 // search for: (function () {
 
 // adding defaults here as this is loaded before config-server server side
-if (!Debug) { // printdiv
-    var Debug = 'false';
-}
-if (!debuglevel) { // printdiv
-    var debuglevel = 0;
-}
-if (!debugon) { // debugfn
-    var debugon = false;
-}
-if (!exports) {
-    var exports = {};
-}
+// if (!Debug) { // printdiv
+//     var Debug = 'false';
+// }
+// if (!debuglevel) { // printdiv
+//     var debuglevel = 0;
+// }
+// if (!debugon) { // debugfn
+//     var debugon = false;
+// }
+// if (!exports) {
+//     var exports = {};
+// }
+
+(function (window) {
 
 exports.localStore = localStore = function () {
     var json = {};
@@ -1570,8 +1572,6 @@ function getRandomNumberByLength(length) {
 
 }
 
-(function (window) {
-
     // Utility function to return json with all keys in lowercase
     exports.toLowerKeys = toLowerKeys = function toLowerKeys(obj) {
         if (obj && obj instanceof Object) {
@@ -2637,9 +2637,7 @@ function getRandomNumberByLength(length) {
         }
     }
 
-})(typeof window === "undefined" ? global : window);
 
-(function () {
     /*
      * Sift
      *
@@ -3841,7 +3839,7 @@ function totalStorageSize(){
     };
 
    
-})();
+
 
 
 
@@ -4200,4 +4198,9 @@ exports.eventnormalstart = eventnormalstart = function eventnormalstart(params, 
     }
 }
 
+
+})(typeof window === "undefined" ? global : window);
+
+//(function () {
+//    })();
 
