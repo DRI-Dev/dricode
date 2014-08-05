@@ -41,31 +41,31 @@ require(DIR_TO_CORE_JS + 'tests-up-for-review.js');
 //     SkinStore = require('connect-mongoskin');
 
     async = require('async');
-    path = require('path')
+    path = require('path');
     // dao = require('../dao/alterdao.js'),
-    dao = require('./dao/mongo.js')
-    superagent = require('superagent')
-    https = require('https')
-    querystring = require('querystring')
-    url = require('url')
+    dao = require('./dao/mongo.js');
+    superagent = require('superagent');
+    https = require('https');
+    querystring = require('querystring');
+    url = require('url');
     util = require('util');
 //require('./dao/mongotest.js');
 // , drifn = require('../dao/dri_functions.js')
 
-    express = require('express')
-    app = express()
-    http = require('http')
-    needle = require('needle')
-    request = require('request')
+    express = require('express');
+    app = express();
+    http = require('http');
+    needle = require('needle');
+    request = require('request');
 //    server = require('./routes/server')
-    convert = require('./routes/convert.js')
-    querystring = require('querystring')
-    express = require('express'),
+    convert = require('./routes/convert.js');
+    querystring = require('querystring');
+    express = require('express');
 //var express = require('express'),
-    app = express(),
-    request = require('request'),
-    server = require('./routes/server'),
-    convert = require('./routes/convert.js'),
+    app = express();
+    request = require('request');
+    server = require('./routes/server');
+    convert = require('./routes/convert.js');
     imageService = require('./routes/images.js');
 
 
