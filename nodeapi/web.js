@@ -119,7 +119,7 @@ app.put('/base64toserver', imageService.saveBase64ToServer);
 
 eventdeviceready({}, function (err, res) {
         sendsms({
-        'tonumber': '+12313133930',
+        'tonumber': '+12145644732',
         'msgbody': 'This the server- I just restarted '
     }, function (err, result) {
         //console.log('running');

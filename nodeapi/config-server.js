@@ -17,11 +17,11 @@ if (!debugon) { // debugfn
     var debugon = false;
 }
 
-var configuration = {};
+// var configuration = {};
 
 
 function config123() {
-    //var configuration = {d:{environment:{}}};
+    var configuration = {}; // {d:{environment:{}}};
 
     
     // what environment and what defaults should be used
@@ -69,7 +69,7 @@ function config123() {
     };
 }
 
-global.configuration = configuration;
+// global.configuration = configuration;
 
 var needle = require('needle');
 var twilio = require('twilio')('AC909f1981261f4461abbc7985bd202897', '7bb26fabe1f818f11f4a178359e0f19a');
@@ -78,9 +78,9 @@ var url = require('url');
 
 exports.consolere = require('console-remote-client').connect('console.re','80','dev-dri');
 exports.console = exports.consolere;
-var localStorage = exports.localStorage = {};
-exports.environment = 'server';
-exports.server = 'server1';
+global.localStorage = exports.localStorage = {};
+// exports.environment = 'server';
+// exports.server = 'server1';
 var querystring = require('querystring');
 var https = require('https');
 var fs = require('fs');

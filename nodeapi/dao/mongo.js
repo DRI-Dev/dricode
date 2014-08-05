@@ -1,3 +1,4 @@
+(function (window) {
 // require(config-local) not bc=require(config-local), 
 // otherwise functions inside config not available to execute, 
 //also any place where config is used might have an issue
@@ -356,3 +357,6 @@ function printLogs(fnname, input, output) {
     // console.log(' DAO :: >>>>>> ::: ' + fnname + ' end ::: ');
     // console.log(' DAO :: ***************************');
 }
+
+})(typeof window == "undefined" ? global : window);
+

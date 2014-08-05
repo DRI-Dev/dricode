@@ -7,7 +7,6 @@
 
 exports.serverconfig = serverconfig = {
     SERVER_PORT: 3000,
-    LOOKUP_DIR: '../dripoint/',
     SERVICE_URL: 'http://localhost:3009/'
 };
 
