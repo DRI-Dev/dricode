@@ -72,7 +72,7 @@ function config123() {
 }
 
 exports.config = config = config123();
-
+config.setdefaultparm = setdefaultparm;
 
 function setdefaultparm() {
 
