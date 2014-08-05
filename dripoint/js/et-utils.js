@@ -235,6 +235,9 @@ exports.updatewid = updatewid = function updatewid(inobject, callback) {
         {
             var recordtoadd = {};
             proxyprinttodiv('Function updatewid currentrecord I', currentrecord, 12);
+
+            if (!command) { command = {}; }
+
             // fix current wid as necessary
             if (!command.newrecord)
             {   
