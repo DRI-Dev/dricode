@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <!--<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/>-->
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css" />
-    <title>WikiWallet</title>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css" />
+    <title>WikiWallet - DEV Branch</title>
 
     <style>
         #successlog {
@@ -40,23 +40,23 @@
     <script src="js/bootstrap/autofields/autofields.min.js"></script>
     <script src="js/bootstrap/autofields/autoFields-bootstrap.min.js"></script>
     <script src="js/ngWidApp.js"></script>
-
+    
     <script>
-        // line below added by Roger -- taken away from ngwidapp line 6
-        eventdeviceready({}, function (err, results) { });
+    // line below added by Roger -- taken away from ngwidapp line 6
+     eventdeviceready({}, function (err, results) { });
 
         angular.element(document).ready(function() {
             angular.bootstrap(document, ['widApp']);
         });
-    </script>
+    </script> 
 </head>
 <body ng-controller='widCtrl'>
 
-<div id="default_view_loc"></div>
+    <div id="default_view_loc"></div>
 
-<div id="logs" class="container">
-    <p id="errorlog" class="row"></p>
-    <p id="successlog" class="row"></p>
-</div>
+    <div id="logs" class="container">
+        <p id="errorlog" class="row"></p>
+        <p id="successlog" class="row"></p>
+    </div>
 </body>
 </html>

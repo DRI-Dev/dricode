@@ -1,396 +1,58 @@
 // copyright (c) 2014 DRI
-    // require('../utils/addget.js');
-    // require('../config.js');
+// to do make functions return objects, not strings
 
-    // external functions are testquery, querywid, relationShipQuery, aggregationQuery, addonQuery(
-    // FYI we now call proxyprinttodiv which is in config that calls printtodiv
+// (function(){
 
+//     var keyPaths = [];
 
-    exports.testquery = testquery = function testquery(parameters) {
-        parameters["IAMALIVE"] = "hello";
-        proxyprinttodiv('testquery parameters', parameters, true);
-        return parameters;
-    };
+//     var saveKeyPath = function(path) {
+//         keyPaths.push({
+//             sign: (path[0] === '+' || path[0] === '-')? parseInt(path.shift()+1) : 1,
+//             path: path
+//         });
+//     };
 
-    exports.querywidmaster = querywidmaster = function querywidmaster(params, callback) {
-        querywid(params, function (err, results) {
-            var formattedResults = [];
+//     var valueOf = function(object, path) {
+//         var ptr = object;
+//         path.each(function(key) { ptr = ptr[key] });
+//         return ptr;
+//     };
 
-            for (var i = 0; i < results.length; i++) {
-                var thisObj = {};
+//     var comparer = function(a, b) {
+//         for (var i = 0, l = keyPaths.length; i < l; i++) {
+//             aVal = valueOf(a, keyPaths[i].path);
+//             bVal = valueOf(b, keyPaths[i].path);
+//             if (aVal > bVal) return keyPaths[i].sign;
+//             if (aVal < bVal) return -keyPaths[i].sign;
+//         }
+//         return 0;
+//     };
 
-                for (var prop in results[i]) {
-                    if (results[i].hasOwnProperty(prop)) {
-                        if (results[i][prop] instanceof Object
-                            && results[i][prop] !== null
-                            && prop.toLowerCase() !== 'metadata'
-                            && prop.toLowerCase() !== 'command') {
-                            extend(true, thisObj, results[i][prop]);
-                        }
-                        else if (prop.toLowerCase() === 'metadata') {
-                            thisObj.metadata = results[i][prop];
-                        }
-                        else if (prop.toLowerCase() === 'command') {
-                            thisObj.command = results[i][prop];
-                        }
+//     Array.implement('sortBy', function(){
+//         keyPaths.empty();
+//         Array.each(arguments, function(argument) {
+//             switch (typeOf(argument)) {
+//                 case "array": saveKeyPath(argument); break;
+//                 case "string": saveKeyPath(argument.match(/[+-]|[^.]+/g)); break;
+//             }
+//         });
+//         return this.sort(comparer);
+//     });
 
-                        formattedResults.push(thisObj);
-                    }
-                }
-            }
+// })();
 
-            callback(err, formattedResults);
-        });
-    };
-
-    //Starting of querywid function...formerly MongoDataQuery
-    //exports.querywid = querywid = function (parameters,target,callback) {
-    exports.querywid = querywid = function querywid(parameters, callback) { // can change to call back
-        try {
-            var inbound_parameters_107 = arguments;
-
-            delete parameters['executethis']; //** added 11/2
-
-            // var x = window['mongoquery'];
-            // if (exports.environment === "local") {
-            //         offlinemongoquery(parameters, callback);
-            //     } else { 
-            //          return offlinemongoquery(err, parameters);
-            //     } // TODO :: check if this is fine
-            // } else {
-
-            // if (parameters['mongorawquery']) {
-            //      return mongoquery(parameters);
-            //  } else {
-            //      return querywidlocal(parameters);
-            //  };
-
-            var output = [];
-            var mQueryString = "";
-
-            // Fish out params
-            proxyprinttodiv('querywid parameters I', parameters, 28);
-            var p = fishOut(parameters);
-            // check for err on the 'return' of an object
-            if (p.err) {
-                throw (p.err.error);
-            }
-
-            console.log('object that came back from fishOut => ' + JSON.stringify(p));
-            proxyprinttodiv('querywid parameters', parameters, 28);
-            proxyprinttodiv('querywid p ', p, 28);
-            var queParams = p[0];
-            var relParams = p[1];
-            var addParams = p[2];
-            var aggParams = p[3];
-            proxyprinttodiv('querywid p aggParams', aggParams, 28);
-
-            var xtrParams = p[4];
-            var relafterParams = p[5];
-            var commandParams = p[6];
-            var ListOfLists = [];
-            var database = {};
-            var queryresults = {};
-            var wid;
-            var environmentdb;
-            //var convertmethod = commandParams['command.convertmethod'];
-            var extraparameters = {};
-            //proxyprinttodiv('querywid convertmethod', convertmethod, 38);
-            //proxyprinttodiv('querywid commandParams', commandParams, 38);
-            // if (commandParams["db"]) {
-            if (false) {
-                environmentdb = commandParams["db"];
-            } else {
-                environmentdb = config.configuration.defaultdb;
-            }
-            // if (config.configuration.environment==="local") {commandParams.datastore='localstorage';} 
-            //                                             else {commandParams.datastore='mongo';}
-
-            function debugvars(varlist) {
-                var allvars = {
-                    1: {
-                        "queParams": queParams,
-                        "relParams": relParams,
-                        "aggParams": aggParams,
-                        "addParams": addParams,
-                        "xtrParams": xtrParams,
-                        "relafterParams": relafterParams,
-                        "ListOfLists": ListOfLists,
-                        "queryresults": queryresults,
-                        "wid": wid
-                    },
-                    2: {
-                        "queParams": queParams,
-                        "relParams": relParams,
-                        "aggParams": aggParams
-                    },
-                    3: {
-                        "parameters": parameters
-                    },
-                    4: {
-                        "res": output
-                    },
-                    5: {
-                        "mQueryString": mQueryString
-                    },
-                    6: {
-                        "output": output
-                    }
-                };
-                var resultObj = {};
-                var vargroup;
-                if (!varlist) {
-                    for (var eachvar in allvars) {
-                        varlist.push(eachvar);
-                    }
-                }
-
-                for (var eachgroup in varlist) {
-                    vargroup = varlist[eachgroup];
-                    resultObj = jsonConcat(resultObj, allvars[vargroup]);
-                }
-
-                return resultObj;
-            }
-
-            if (!((queParams['mongosinglequery'] !== undefined && queParams['mongosinglequery'] !== "") ||
-                (queParams['mongowid'] !== undefined && queParams['mongowid'] !== "") ||
-                (queParams['mongorawquery'] !== undefined && queParams['mongorawquery'] !== "") ||
-                (queParams['mongomultiplequery'] !== undefined && queParams['mongomultiplequery'] !== ""))) {
-                callback(undefined, []);
-            } else {
-                async.series([
-                        function step01(cb) {
-
-                            // throw ({'Sample_error': 'querywid_async_step01'});
-
-                            debugfn("querywid start", "querywid", "query", "begin", getglobal("debugcolor"), getglobal("debugindent"), debugvars([3]));
-
-                            // Use single to set up a query with the params of 1 wid
-                            if (Object.keys(queParams).length > 0 && queParams['mongosinglequery'] != undefined && Object.keys(xtrParams).length === 0) {
-                                console.log('singlemongoquery => ' + queParams['mongosinglequery']);
-                                var wid = queParams['mongosinglequery'];
-                                execute({
-                                    'executethis': 'getwid',
-                                    'wid': wid
-                                }, function (err, res) {
-                                    // If error, bounce out
-                                    if (err && Object.keys(err).length > 0) {
-                                        cb(err, res);
-                                    } else {
-                                        try {
-                                            var widObject = res;
-                                            delete widObject['wid'];
-                                            delete widObject['metadata.method'];
-                                            mQueryString = BuildSingleQuery(widObject, "or", environmentdb);
-                                            proxyprinttodiv('Function MongoDataQuery singlemongoquery : ', mQueryString, 28);
-                                            //mQueryString = output.substring(0, output.length - 1);
-                                            // if (validParams(mQueryString)) {
-                                            mquery(mQueryString,{}, commandParams, function (err, res) {
-                                                // If error, bounce out
-                                                if (err && Object.keys(err).length > 0) {
-                                                    cb(err, res);
-                                                } else {
-                                                    //
-                                                    output = res;
-                                                    //output = formatlist(res, "wid", "wid");  &&& takenout by roger
-                                                    cb(null, "step01");
-                                                }
-                                            });
-                                            // } else {
-                                            //     if(!output)
-                                            //         output = {};
-                                            //     cb(null, "step01");
-                                            // }
-                                        } catch (err) {
-                                            var finalobject = createfinalobject({
-                                                "result": "getwid_executethis"
-                                            }, {}, "getwid_executethis", err, inbound_parameters_107);
-                                            cb(finalobject.err, finalobject.res);
-                                        }
-                                    }
-                                })
-                            } else if (queParams && queParams['mongomultiplequery']) {
-                                output = "";
-                                var paramList = {};
-                                wid = queParams['mongomultiplequery'];
-
-                                execute({
-                                    'executethis': 'getwid',
-                                    'wid': wid
-                                }, function (err, res) {
-                                    // If error, bounce out
-                                    if (err && Object.keys(err).length > 0) {
-                                        callback(err, res);
-                                    } else {
-                                        try {
-                                            var listOfWids = res;
-                                            delete listOfWids["wid"];
-                                            delete listOfWids["metadata.method"];
-                                            proxyprinttodiv('Function MongoDataQuery listOfWids : ', listOfWids, 31);
-
-                                            var i = 0;
-                                            ListOfLists = [];
-                                            var todolist = [];
-                                            for (var w in listOfWids) {
-                                                todolist.push(w);
-                                            }
-
-                                            async.mapSeries(todolist, function (w, cbMap) {
-                                                    async.nextTick(function () {
-                                                        execute({
-                                                            'executethis': 'getwid',
-                                                            'wid': w
-                                                            //getwid({
-                                                            //    'wid': w
-                                                        }, function (err, res) {
-                                                            // If error, bounce out
-                                                            if (err && Object.keys(err).length > 0) {
-                                                                cbMap(err, res);
-                                                            } else {
-                                                                try {
-                                                                    var tempwid = res;
-                                                                    delete tempwid["wid"];
-                                                                    delete tempwid["metadata.method"];
-                                                                    // for (var t in tempwid) {
-                                                                    //     paramList[t] = tempwid[t];
-                                                                    // }
-                                                                    ListOfLists.push(tempwid);
-                                                                    paramList = {};
-
-                                                                    cbMap(null, "map");
-                                                                } catch (err) {
-                                                                    var finalobject = createfinalobject({
-                                                                        "result": "getwid_executethis_async_getwid"
-                                                                    }, {}, "getwid_executethis_async_getwid", err, res);
-                                                                    cbMap(finalobject.err, finalobject.res);
-                                                                }
-                                                            }
-                                                        });
-                                                    });
-                                                    // }, function (err, res) {
-                                                    //     var listOfWids = res;
-                                                    //     delete listOfWids["wid"];
-                                                    //     delete listOfWids["metadata.method"];
-                                                    //     proxyprinttodiv('Function MongoDataQuery listOfWids : ', listOfWids, 31);
-
-                                                    //     var i = 0;
-                                                    //     ListOfLists = [];
-                                                    //     var todolist = [];
-                                                    //     for (var w in listOfWids) {
-                                                    //         todolist.push(w);
-                                                    //     }
-
-                                                    //     async.mapSeries(todolist, function (w, cbMap) {
-                                                    //         getwid({
-                                                    //             'wid': w
-                                                    //         }, function (err, res) {
-                                                    //             var tempwid = res;
-                                                    //             delete tempwid["wid"];
-                                                    //             delete tempwid["metadata.method"];
-                                                    //             // for (var t in tempwid) {
-                                                    //             //     paramList[t] = tempwid[t];
-                                                    //             // }
-                                                    //             ListOfLists.push(tempwid);
-                                                    //             paramList = {};
-
-                                                    //             cbMap(null, "map");
-                                                    //         });
-                                                },
-
-                                                function (err, res) {
-                                                    // If error, bounce out
-                                                    if (err && Object.keys(err).length > 0) {
-                                                        cb(err, res);
-                                                    } else {
-                                                        try {
-                                                            if (xtrParams) {
-                                                                ListOfLists.push(xtrParams);
-                                                            }
-                                                            mQueryString = BuildMultipleQuery(ListOfLists, "and", "or", environmentdb);
-                                                            proxyprinttodiv('querywid mQueryString init', mQueryString, 28);
-
-                                                            // if (validParams(mQueryString)) {
-                                                            mquery(mQueryString,{}, commandParams, function (err, res) {
-                                                                // If error, bounce out
-                                                                if (err && Object.keys(err).length > 0) {
-                                                                    cb(err, res);
-                                                                } else {
-                                                                    //                                        
-                                                                    output = res;
-                                                                    //output = formatlist(res, "wid", "wid");  &&& takenout by roger
-                                                                    cb(null, 'step01');
-                                                                }
-                                                            });
-                                                            // } else {
-                                                            //     if(!output)
-                                                            //         output = {};
-                                                            //     cb(null, "step01");
-                                                            // }
-                                                        } catch (err) {
-                                                            var finalobject = createfinalobject({
-                                                                "result": "getwid_executethis_async"
-                                                            }, {}, "getwid_executethis_async", err, res);
-                                                            cb(finalobject.err, finalobject.res);
-                                                        }
-                                                    }
-                                                });
-                                        } // end try
-                                        catch (err) {
-                                            var finalobject = createfinalobject({
-                                                "result": "getwid_executethis_step1"
-                                            }, {}, "getwid_executethis_step1", err, res);
-                                            cb(finalobject.err, finalobject.res);
-                                        }
-                                    } // end else
-                                });
-                            } else if (queParams && queParams['mongorawquery'] !== undefined) {
-
-                                // throw ({'Sample_error': 'querywid_async_step01_else if'});
-
-                                console.log('mongorawquery => ' + JSON.stringify(queParams['mongorawquery']));
-                                mQueryString = queParams['mongorawquery'];
-                                console.log('mQueryString at step01 => ' + JSON.stringify(mQueryString));
-                                debugfn("querywid before mQueryString1", "querywid", "query", "mid", getglobal("debugcolor"), getglobal("debugindent"), debugvars([5]));
-                                proxyprinttodiv('querywid mQueryString second', mQueryString, 28);
-
-                                // if we are not dealing with the default collection then 
-                                // preform a find and replace in the query string
-                                // this may need to be moved
-                                if(environmentdb !== "data") {
-                                    var s = JSON.stringify(mQueryString);
-                                    s.replace("data", environmentdb);
-                                    mQueryString = JSON.parse(s);
-                                }
-
-                                // if (validParams(mQueryString)) {
-                                mquery(mQueryString,{}, commandParams, function (err, res) {
-                                    // If error, bounce out
-                                    if (err && Object.keys(err).length > 0) {
-                                        cb(err, res);
-                                    } else {
-                                        // 
-                                        output = res;
-                                        //output = formatlist(res, "wid", "wid");  &&& takenout by roger
-                                        console.log(' *** get primary wids *** ' + JSON.stringify(output));
-                                        debugfn("move queParams to output", "querywid", "query", "mid", getglobal("debugcolor"), getglobal("debugindent"), debugvars([4]));
-                                        cb(null, "step01");
-                                    }
-                                });
-
-                                // } else {
-                                //     if(!output)
-                                //     output = {};
-                                //     cb(null, "step01");
-                                // }
-                            } else {
-                                if (!output)
-                                    output = {};
-                                cb(null, "step01");
-                            }
-                        },
-
-                        function step02(cb) {
+exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
+    // mapreducemongo should receive: map, reduce, query, output, command into query
+    var p = {};
+    extend(true, p, inparameters);
+    var map = p.map;
+    var reduce = p.reduce;
+    delete p.map;
+    delete p.reduce;
+    if (!p.out) 
+    {
+        p.out = p.command.collection || config.configuration.d.default.collection
+    }
 
     proxyprinttodiv('mapreduce p', p, 99,true, true);
 
@@ -570,7 +232,7 @@ exports.querywidmaster = querywidmaster = function querywidmaster(params, callba
     if (!params.command) {params.command={}};
     params.command.queryconvertmethod = "object";
     proxyprinttodiv('querywidmaster', params, 28); 
-	querywid(params, function (err, results) {
+    querywid(params, function (err, results) {
         callback(err, results);
     });
 };
