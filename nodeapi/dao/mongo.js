@@ -189,46 +189,6 @@ exports.wget = wget = function wget(objToFind, command, callback) {
 //     });
 // };
 
-
-// exports.wadd = wadd = function wadd(objToAdd, command, callback) {
-//    (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
-//    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
-//    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
-
-//    var widVal = {"wid":(objToAdd['wid'])};
-
-//    //objToAdd = converttodriformat(objToAdd, command);
-
-//    getConnection(mongoDatabaseToLookup, function(err, db) {
-//        wget(widVal, command, function (err, widfound) {
-//            if (widfound) {
-//                // this is the update process for wids
-//                extend(true, objToAdd, widfound);
-
-//                if (objToAdd._id) { delete objToAdd._id; }
-
-//                db.collection(schemaToLookup).update(widVal, {$set:objToAdd}, {}, function (err, boolresult) {
-//                    if (err) {
-//                        callback(err, {etstatus: {status: "udpateerrror"}});
-//                    } else {
-//                        wget(widVal, command, function (err, result) {
-//                            callback(err, result);
-//                        });
-//                    }
-//                });
-//            } else {
-//                db.collection(schemaToLookup).insert(objToAdd, function(err, insertedWid) {
-//                    if (err) {
-//                        callback(err, {etstatus: {status: "adderrror"}});
-//                    } else {
-//                        callback(err, insertedWid[0]);
-//                    }
-//                });
-//            }
-//        });
-//    });
-// };
-
 // exports.madd = madd = function madd(incopy, command, callback) {
 //      (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
 //      (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
