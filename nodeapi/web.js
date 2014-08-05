@@ -5,7 +5,7 @@ require('./config.js');
 
 // switch between the location of core files
 
-config = require('./config-server.js');
+configfn = require('./config-server.js');
 
 var DIR_TO_CORE_JS = '../dripoint/js/';
 
@@ -27,6 +27,10 @@ require(DIR_TO_CORE_JS + 'test-query.js');
 require(DIR_TO_CORE_JS + 'test-security.js');
 require(DIR_TO_CORE_JS + 'tests-up-for-review.js');
 require(DIR_TO_CORE_JS + 'et-dto.js');
+
+console.log('-----');
+console.log(config);
+console.log(config.configuration);
 
 //exports.config = config = require('./config-server.js');
 
@@ -118,7 +122,7 @@ app.put('/base64toserver', imageService.saveBase64ToServer);
 
 
 eventdeviceready({}, function (err, res) {
-        sendsms({
+    sendsms({
         'tonumber': '+12145644732',
         'msgbody': 'This the server- I just restarted '
     }, function (err, result) {

@@ -8,13 +8,13 @@
 // }
 
 if (!Debug) { // printdiv
-    var Debug = 'false';
+    global.Debug = 'false';
 }
 if (!debuglevel) { // printdiv
-    var debuglevel = 0;
+    global.debuglevel = 0;
 }
 if (!debugon) { // debugfn
-    var debugon = false;
+    global.debugon = false;
 }
 
 // var configuration = {};
@@ -85,8 +85,9 @@ var querystring = require('querystring');
 var https = require('https');
 var fs = require('fs');
 
-exports.config = config = config123();
-global.config = config;
+
+// console.log(JSON.stringify(config));
+// console.log(config.configuration);
 
 var russ1 = 'ryba1';
 russ2 = 'ryba2';
@@ -94,7 +95,6 @@ exports.russ3 = 'ryba3';
 global.russ4 = 'ryba4';
 
 function setdefaultparm() {
-    russ5 = 'ryba5';
 
     saveglobal("debuglevel", 0);
     saveglobal("Debug", 'false');
@@ -114,6 +114,9 @@ function setdefaultparm() {
 
 }
 
+exports.config = config = config123();
+global.config = config;
+config.setdefaultparm = setdefaultparm;
 
 exports.test2 = test2 = function test2(name, callback) {
     var default_name = 'stranger';

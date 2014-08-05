@@ -4106,7 +4106,7 @@ exports.eventappinstall = eventappinstall = function eventappinstall(params, cal
 
 exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
     clearLocal();
-    setdefaultparm();
+    config.setdefaultparm();
     // if the databases are not there then must be first time
     if (config.configuration.environment === 'local') 
     {
