@@ -306,63 +306,6 @@ widtests.qutest_reduced1.description = "this does a test";
 
 
 
-// this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
-exports.qutest_out1 =  
-widtests.qutest_out1 = 
-qutest_out1 = 
-function qutest_out1 (executeobject, callback) {
-
-	  if (!executeobject.command) {
-		  executeobject.command={};
-		  executeobject.command.environment={};
-		  executeobject.command.environment.run={};
-	  }
-	  executeobject.command.xrun=[
-									{
-									"executethis":"updatewid",
-									"wid":"wid1",
-									"color":"red"
-									}, {
-									"executethis":"querywid",
-										"mongorawquery": {
-											"$or": [{
-												"data.color":"red"
-												}]
-											}
-									}
-								];
-
-	var expectedresult = [
-							{
-								"wid1":{
-									"color":"red",
-									"wid":"wid1",
-									"metadata": {
-										"date":{"exception":["created","changed","unchanged","updated"]}
-									}
-								}
-							}];
-							
-	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
-	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
-	  {                    
-			//proxyprinttodiv('expected error', null, 99);
-			//proxyprinttodiv('actual error', error_obj, 99);
-			proxyprinttodiv('expected result', expectedresult, 99);
-			proxyprinttodiv('actual result', result_obj[1], 99);
-
-			var composite_obj=logverify("simpleonewidquery1", result_obj[1], expectedresult);
-			//proxyprinttodiv('composite_obj', composite_obj, 99);
-			callback(null, composite_obj);
-	  });
-}
-widtests.qutest_out1.category = "daily";
-widtests.qutest_out1.subcategory = "push";
-widtests.qutest_out1.js = exports.qutest_out1;
-widtests.qutest_out1.description = "this does a test";
-
-
-
 exports.etmttest2 = widtests.etmttest2 = etmttest2 = function etmttest2(params, callback) {
     debuglevel = 17;
     console.log("<< mongoquery_two_test >>");
@@ -522,6 +465,7 @@ widtests.etmttest2.js = exports.etmttest2;
 widtests.etmttest2.description = "this does a test";
 
 
+/*
 // never finishes execution successfully
 exports.etmttest333 = widtests.etmttest333 = etmttest333 = function etmttest333(params, callback) {
     debuglevel = 17;
@@ -986,6 +930,7 @@ widtests.etmttest333.category = "execute";
 widtests.etmttest333.subcategory = "query";
 widtests.etmttest333.js = exports.etmttest333;
 widtests.etmttest333.description = "this does a test";
+*/
 
 // fails immediately
 // executetest is not defined

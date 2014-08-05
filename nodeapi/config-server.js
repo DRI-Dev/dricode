@@ -17,7 +17,7 @@ if (!debugon) { // debugfn
     var debugon = false;
 }
 
-var configuration = {};
+//var configuration = {};
 
 
 function config123() {
@@ -84,7 +84,6 @@ var https = require('https');
 var fs = require('fs');
 
 exports.config = config = config123();
-
 global.config = config;
 
 var russ1 = 'ryba1';
