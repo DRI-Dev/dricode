@@ -36,7 +36,6 @@ require(DIR_TO_CORE_JS + 'tests-up-for-review.js');
 // Server specific Routes here
 
 
-//var async = require('async');
 // var mongoskin = require('mongoskin'),
 //     SkinStore = require('connect-mongoskin');
 
@@ -56,13 +55,6 @@ require(DIR_TO_CORE_JS + 'tests-up-for-review.js');
     app = express();
     http = require('http');
     needle = require('needle');
-    request = require('request');
-//    server = require('./routes/server')
-    convert = require('./routes/convert.js');
-    querystring = require('querystring');
-    express = require('express');
-//var express = require('express'),
-    app = express();
     request = require('request');
     server = require('./routes/server');
     convert = require('./routes/convert.js');
