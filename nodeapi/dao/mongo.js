@@ -289,17 +289,19 @@ exports.wadd = wadd = function wadd(objToAdd, command, callback) {
         if (command.newrecord)
         {
             db.collection(schemaToLookup).insert(objToAdd, function(error, insertedWid) {
-                wget({wid:objToAdd.wid}, command, function (err, foundwid) {
-                    callback(err || error, foundwid);
-                });
+                callback(err || error, objToAdd);
+//                wget({wid:objToAdd.wid}, command, function (err, foundwid) {
+//                    callback(err || error, foundwid);
+//                });
             });
         }
         else
         {
             db.collection(schemaToLookup).update({wid:objToAdd.wid}, {$set:objToAdd}, {}, function (error, boolresult) {
-                wget({wid:objToAdd.wid}, command, function (err, foundwid) {
-                    callback(err || error, foundwid);
-                });
+                callback(err || error, objToAdd);
+//                wget({wid:objToAdd.wid}, command, function (err, foundwid) {
+//                    callback(err || error, foundwid);
+//                });
             });
         }
 
