@@ -280,6 +280,8 @@ exports.updatewid = updatewid = function updatewid(inobject, callback) {
         {
             var shouldupdate = false;
             var currentlock = false;
+            
+            if (!command) { command = {}; }
 
             if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock)
             {
