@@ -28,42 +28,23 @@ require(DIR_TO_CORE_JS + 'test-security.js');
 require(DIR_TO_CORE_JS + 'tests-up-for-review.js');
 require(DIR_TO_CORE_JS + 'et-dto.js');
 
-console.log('-----');
-console.log(config);
-console.log(config.configuration);
+require('./dao/mongo.js');
+async = require('async');
+path = require('path');
+superagent = require('superagent');
+https = require('https');
+querystring = require('querystring');
+url = require('url');
+util = require('util');
 
-//exports.config = config = require('./config-server.js');
-
-//exports.configuration = configuration = config.configuration;
-
-//config.configuration = configuration;
-
-// Server specific Routes here
-
-
-// var mongoskin = require('mongoskin'),
-//     SkinStore = require('connect-mongoskin');
-
-    async = require('async');
-    path = require('path');
-    // dao = require('../dao/alterdao.js'),
-    dao = require('./dao/mongo.js');
-    superagent = require('superagent');
-    https = require('https');
-    querystring = require('querystring');
-    url = require('url');
-    util = require('util');
-//require('./dao/mongotest.js');
-// , drifn = require('../dao/dri_functions.js')
-
-    express = require('express');
-    app = express();
-    http = require('http');
-    needle = require('needle');
-    request = require('request');
-    server = require('./routes/server');
-    convert = require('./routes/convert.js');
-    imageService = require('./routes/images.js');
+express = require('express');
+app = express();
+http = require('http');
+needle = require('needle');
+request = require('request');
+server = require('./routes/server');
+convert = require('./routes/convert.js');
+imageService = require('./routes/images.js');
 
 
 //// *********************** Express Application Configuration follows   *********************** 
