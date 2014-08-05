@@ -283,18 +283,19 @@ exports.wadd = wadd = function wadd(objToAdd, command, callback) {
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-    getConnection(mongoDatabaseToLookup, function(err, db) {
+    if (!objToAdd.wid) { callback({error:"no wid passed to wadd function"}, null); }
 
+    getConnection(mongoDatabaseToLookup, function(err, db) {
         if (command.newrecord)
         {
-            db.collection(schemaToLookup).insert(currentrecord, function(error, insertedWid) {
-            callback(err || error, recordtoadd);
+            db.collection(schemaToLookup).insert(objToAdd, function(error, insertedWid) {
+                callback(err || error, insertedWid);
             });
         }
         else
         {
-            db.collection(schemaToLookup).update(widVal, {$set:currentrecord}, {}, function (error, boolresult) {
-            callback(err || error, recordtoadd);
+            db.collection(schemaToLookup).update({wid:objToAdd.wid}, {$set:objToAdd}, {}, function (error, boolresult) {
+                callback(err || error, boolresult);
             });
         }
 
