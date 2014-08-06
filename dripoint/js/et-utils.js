@@ -22,6 +22,7 @@
 (function (window) {
 
     if (config.configuration.environment !== 'local') {
+        require('./config-server.js');
         var consolere = require('console-remote-client').connect('console.re','80','dev-dri');
     }
 

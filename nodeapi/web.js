@@ -5,11 +5,10 @@ require('./config.js');
 
 // switch between the location of core files
 
-configfn = require('config-server.js');
+configfn = require('./config-server.js');
 
 var DIR_TO_CORE_JS = '../dripoint/js/';
 
-require('config-server.js');
 require(DIR_TO_CORE_JS + 'et-security.js');
 require(DIR_TO_CORE_JS + 'et-utils.js');
 require(DIR_TO_CORE_JS + 'et-add.js');
