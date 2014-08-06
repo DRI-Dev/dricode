@@ -3,7 +3,7 @@
 require('./create_config.js');
 require('./config.js');
 
-var consolere = require('console-remote-client').connect('console.re','3022','jasontest');
+var consolere = require('console-remote-client').connect('console.re','80','jasontest');
 console.re.log('remote log test');
 
 // switch between the location of core files
