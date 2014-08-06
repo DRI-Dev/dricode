@@ -1,5 +1,6 @@
 // copyright (c) 2014 DRI 
 
+// these are similar to "global" in node.js
 if (!exports) {
     var exports = {};
 }
@@ -71,9 +72,6 @@ function config123() {
     };
 }
 
-exports.config = config = config123();
-config.setdefaultparm = setdefaultparm;
-
 function setdefaultparm() {
 
     saveglobal("debuglevel", 0);
@@ -93,6 +91,12 @@ function setdefaultparm() {
     exports.debuglevel = 0 || debuglevel;
 
 }
+
+
+
+config = config123();
+config.setdefaultparm = setdefaultparm;
+
 
 
 

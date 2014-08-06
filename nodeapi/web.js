@@ -1,5 +1,6 @@
 // using common files at server side also ...
 // exports.async = async = require('async');
+
 require('./create_config.js');
 require('./config.js');
 
@@ -98,7 +99,7 @@ app.put('/base64toserver', imageService.saveBase64ToServer);
 //console.log('server config is ' + serverconfig.SERVER_PORT);
 //exports.window = {"configuration":config.configuration};
 
-//console.log('port is ' + serverconfig.SERVER_PORT);
+console.log('port is ' + serverconfig.SERVER_PORT);
 app.listen(process.env.PORT || serverconfig.SERVER_PORT);
 
 
@@ -110,4 +111,5 @@ eventdeviceready({}, function (err, res) {
         //console.log('running');
     });
 });
+
 

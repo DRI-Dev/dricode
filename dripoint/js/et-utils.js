@@ -15,121 +15,124 @@
 // if (!debugon) { // debugfn
 //     var debugon = false;
 // }
-// if (!exports) {
+//if (!exports) {
 //     var exports = {};
-// }
+//}
 
 (function (window) {
+    
+    exports.localStore = localStore = function () {
+        var json = {};
 
-exports.localStore = localStore = function () {
-    var json = {};
+        function clear() {
+            this.json = {};
+        }
 
-    function clear() {
-        this.json = {};
-    }
+        function push(key, val) {
+            this.json[key] = val;
+        }
 
-    function push(key, val) {
-        this.json[key] = val;
-    }
+        function get(key) {
+            return this.json[key];
+        }
 
-    function get(key) {
-        return this.json[key];
-    }
+        function remove(key) {
+            delete this.json[key];
+        }
 
-    function remove(key) {
-        delete this.json[key];
-    }
+        return {
+            "clear": clear,
+            "json": json,
+            "push": push,
+            "remove": remove,
+            "get": get
+        };
 
-    return {
-        "clear": clear,
-        "json": json,
-        "push": push,
-        "remove": remove,
-        "get": get
+    }();
+
+    localStore.clear();
+
+    exports.getglobal = getglobal = function getglobal(varname) {
+        return localStore.get(varname);
     };
 
-}();
+    exports.saveglobal = saveglobal = function saveglobal(varname, varvalue) {
+        return localStore.push(varname, varvalue);
+    };
 
-localStore.clear();
+    // logic to add things to localStore object
+    exports.addtolocal = addtolocal = function addtolocal(widName, widobject) {
+        if (!widobject) {
+            widobject = {};
+        }
+        if (widName) {
+            //localStore.push(config.configuration.widmasterkey + widName, widobject);
+            localStore.push(widName, widobject);
+        }
+    };
 
-exports.getglobal = getglobal = function getglobal(varname) {
-    return localStore.get(varname);
-};
+    // logic to get things from localStore object
+    exports.getfromlocal = getfromlocal = function getfromlocal(inputWidgetObject) {
+        var output = null;
+        output = localStore.get(inputWidgetObject);
+        //if (output === null) { output = {}; }
+        proxyprinttodiv('getfromlocal output', output, 38);
+        return output;
+    };
 
-exports.saveglobal = saveglobal = function saveglobal(varname, varvalue) {
-    return localStore.push(varname, varvalue);
-};
-
-// logic to add things to localStore object
-exports.addtolocal = addtolocal = function addtolocal(widName, widobject) {
-    if (!widobject) {
-        widobject = {};
-    }
-    if (widName) {
-        //localStore.push(config.configuration.widmasterkey + widName, widobject);
-        localStore.push(widName, widobject);
-    }
-};
-
-// logic to get things from localStore object
-exports.getfromlocal = getfromlocal = function getfromlocal(inputWidgetObject) {
-    var output = null;
-    output = localStore.get(inputWidgetObject);
-    //if (output === null) { output = {}; }
-    proxyprinttodiv('getfromlocal output', output, 38);
-    return output;
-};
-
-exports.clearLocal = clearLocal = function clearLocal() {
-    // widMasterKey = "widmaster_";
-    localStore.clear();
-    //potentialwid = 0;
-};
+    exports.clearLocal = clearLocal = function clearLocal() {
+        // widMasterKey = "widmaster_";
+        localStore.clear();
+        //potentialwid = 0;
+    };
 
 
-// used to create the inital record for a database
-exports.setinitialwid = setinitialwid = function setinitialwid(params, command) {
-    var initialwid = {};
-    // extend(true, initialwid, params);
-    var db = config.configuration.db;
-    if (command && command.db) {
-        db=command.db;
-    }
-    initialwid.wid = "initialwid";
-    initialwid.metadata={};
-    initialwid.metadata.method="defaultdto";
-    initialwid.metadata.date = new Date();
-    initialwid[db]=params;
-    proxyprinttodiv('Function initialwid', initialwid, 12);
-    return initialwid
-};
+    // used to create the inital record for a database
+    exports.setinitialwid = setinitialwid = function setinitialwid(params, command) {
+        var initialwid = {};
+        // extend(true, initialwid, params);
+        var db = config.configuration.db;
+        if (command && command.db) {
+            db=command.db;
+        }
+        initialwid.wid = "initialwid";
+        initialwid.metadata={};
+        initialwid.metadata.method="defaultdto";
+        initialwid.metadata.date = new Date();
+        initialwid[db]=params;
+        proxyprinttodiv('Function initialwid', initialwid, 12);
+        return initialwid
+    };
 
-// because of command.lock we must always read before we upate...therefore we can share code between get and update
-exports.getwid = getwid = function getwid(inobject, callback) {
-    var incopy = {};
-    extend(true, incopy, inobject);
-    proxyprinttodiv('Function getwid incopy', incopy, 12);
-    incopy.command.convert = "toobject"; // converttodriformat
-    incopy.command.getwidflag=true;
-    //var command = incopy.command;
-    proxyprinttodiv('Function datastore command -- get incopy', incopy, 12);
+    // because of command.lock we must always read before we upate...therefore we can share code between get and update
+    exports.getwid = getwid = function getwid(inobject, callback) {
+        var incopy = {};
+        extend(true, incopy, inobject);
+        proxyprinttodiv('Function getwid incopy', incopy, 12);
 
-    updatewid(incopy, callback)
-}
+        if (!incopy.command) { incopy.command = {}; }
+
+        incopy.command.convert = "toobject"; // converttodriformat
+        incopy.command.getwidflag=true;
+        //var command = incopy.command;
+        proxyprinttodiv('Function datastore command -- get incopy', incopy, 12);
+
+        updatewid(incopy, callback)
+    };
 
 
-// Because of command.lock and the use of command local databases getwid calls updatewid
-// Within getwid are subfunctions:
-//     setupdata
-//     getcurrentwid
-//     processcurrentwid
-//         processcurrentwid calls madd or maddlocal
-// nested functions for updatewid...keep a global database and keydatabased var
-exports.updatewid = updatewid = updatewid = function updatewid(inobject, callback) {
+    // Because of command.lock and the use of command local databases getwid calls updatewid
+    // Within getwid are subfunctions:
+    //     setupdata
+    //     getcurrentwid
+    //     processcurrentwid
+    //         processcurrentwid calls madd or maddlocal
+    // nested functions for updatewid...keep a global database and keydatabased var
+    exports.updatewid = updatewid = function updatewid(inobject, callback) {
         // code begins at ***** below
 
         // internal fn to update wid sets up defaults and default operations common to get/add
-        function recordsetup(inobject, callback) 
+        function recordsetup(inobject, callback)
         {
             var err;
             var incopy = {};
@@ -138,20 +141,20 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
             delete incopy.command;
 
             // if record is not locked then okatoupdate = true, else false
-            if(!incopy.metadata){incopy.metadata={};}  
-            if (!incopy.metadata.systemdto && command.environment && 
+            if(!incopy.metadata){incopy.metadata={};}
+            if (!incopy.metadata.systemdto && command.environment &&
                 (command.environment.userid || command.environment.loggedinuserid)) {incopy.metadata.systemdto={}}
             if (!command.environment) {command.environment={}}
-            if (command.environment.userid && !incopy.metadata.systemdto.userid) 
-                {incopy.metadata.systemdto.userid=command.environment.userid}
-            if (command.environment.loggedinuserid && !incopy.metadata.systemdto.loggeiduserid) 
-                {incopy.metadata.systemdto.loggedinuserid=command.environment.loggedinuserid}
+            if (command.environment.userid && !incopy.metadata.systemdto.userid)
+            {incopy.metadata.systemdto.userid=command.environment.userid}
+            if (command.environment.loggedinuserid && !incopy.metadata.systemdto.loggeiduserid)
+            {incopy.metadata.systemdto.loggedinuserid=command.environment.loggedinuserid}
 
             if(incopy && command && command.namespace)
-            { 
+            {
                 // add namespace key:value pairs from command.namespace to metadata.namespace
                 if (!incopy.metadata.namespace) {incopy.metadata.namespace = {};}
-                for (var key in command.namespace) 
+                for (var key in command.namespace)
                 {
                     incopy.metadata.namespace[key] = command.namespace[key];
                 }
@@ -159,7 +162,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
             if (Object.keys(incopy.metadata).length === 0) {delete incopy.metadata}
             proxyprinttodiv('Function datastore incopy', incopy, 12);
             proxyprinttodiv('Function datastore command', command, 12,99, true);
-            if (!incopy.wid) {err = {"errorname":"nowid"}}
+            if (!incopy.wid) { err = {"errorname":"nowid"}; }
             callback(err, incopy, command);
         }
 
@@ -169,21 +172,21 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
         // callback record as it sits in db or NULL
         function getcurrentrecord(incopy, command, callback)
         {
-            if (command.datastore === "localstore" || command.datastore === "localstorage") 
+            if (command.datastore === "localstore" || command.datastore === "localstorage")
             {
-                getfromangular(incopy, function (angularerr, resultobject) 
+                getfromangular(incopy, function (angularerr, resultobject)
                 {
-                    // extend incopy based on what was in angular 
-                    if (resultobject) {extend(true, incopy, resultobject); }
+                    // extend incopy based on what was in angular
+                    if (resultobject) { extend(true, incopy, resultobject); }
 
                     // if not in memory then get it
                     // if empty then create them
-                    if (command.datastore === "localstorage") 
+                    if (command.datastore === "localstorage")
                     {
                         proxyprinttodiv('Function updatewid in localstorage check', incopy, 12);
                         keydatabase = getFromLocalStorage(command.databasetable + command.keycollection);
                         database = getFromLocalStorage(command.databasetable + command.collection);
-                        if (!keydatabase) 
+                        if (!keydatabase)
                         {
                             proxyprinttodiv('Function updatewid in localstorage check create', incopy, 12);
                             addToLocalStorage(command.databasetable + command.keycollection, {"initialwid":setinitialwid(incopy, command)} );
@@ -193,14 +196,14 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                         }
                         var currentrecord = keydatabase[incopy.wid];
                         proxyprinttodiv('Function updatewid currentrecord', currentrecord, 12);
-                        if (!currentrecord) {currentrecord={}; command.newrecord=true;};
+                        if (!currentrecord) { currentrecord={}; command.newrecord=true; }
                         callback(null, currentrecord, command);
-                    } 
-                    else if (command.datastore === "localstore") 
+                    }
+                    else if (command.datastore === "localstore")
                     {
                         keydatabase = getfromlocal(command.databasetable + command.keycollection);
                         database = getfromlocal(command.databasetable + command.collection);
-                        if (!keydatabase) 
+                        if (!keydatabase)
                         {
                             addtolocal(command.databasetable + command.keycollection, {"initialwid":setinitialwid(incopy, command)});
                             addtolocal(command.databasetable + command.collection, [setinitialwid(incopy, command)]);
@@ -208,21 +211,21 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                             database = getfromlocal(command.databasetable + command.collection);
                         }
                         var currentrecord = keydatabase[incopy.wid];
-                        if (!currentrecord) {currentrecord={}; command.newrecord=true;};
+                        if (!currentrecord) { currentrecord={}; command.newrecord=true; }
                         callback(null, currentrecord, command);
                     }
-                    else if (command.datastore === "mongo") 
-                    {
-                        wget(incopy, command, function (err, currentrecord) {
-                            if (!currentrecord) {currentrecord={}; command.newrecord=true;};
-                            callback(err, currentrecord, command)
-                        })
-                    }
-                    else
-                    {
-                        callback({"errorname":"wrong datastore"}, null);
-                    }
                 })
+            }
+            else if (command.datastore === "mongo")
+            {
+                wget(incopy, command, function (err, currentrecord) {
+                    if (!currentrecord) { currentrecord={}; command.newrecord=true; }
+                    callback(err, currentrecord, command);
+                });
+            }
+            else
+            {
+                callback({"errorname":"wrong datastore"}, null);
             }
         }
 
@@ -232,12 +235,15 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
         {
             var recordtoadd = {};
             proxyprinttodiv('Function updatewid currentrecord I', currentrecord, 12);
+
+            if (!command) { command = {}; }
+
             // fix current wid as necessary
             if (!command.newrecord)
-            {   
+            {
                 // set up recordtoadd ready for addition
-                recordtoadd = convertfromdriformatenhanced(currentrecord, command); 
-                // flatten out record -- normal : {wid:wid1 a:b c:d}, driformat: {wid:wid1 data:{a:b c:d}}                    
+                recordtoadd = convertfromdriformatenhanced(currentrecord, command);
+                // flatten out record -- normal : {wid:wid1 a:b c:d}, driformat: {wid:wid1 data:{a:b c:d}}
                 if (command.datamethod === "insert")
                 {
                     recordtoadd=incopy; // current record does not matter
@@ -251,7 +257,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                     recordtoadd.metadata.lock = command.lock;
                 }
             }
-            else 
+            else
             {
                 recordtoadd = incopy;
             }
@@ -259,7 +265,7 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
         }
 
         // internal fn to updatewid
-        // update rules: updatewid will unlock or lock record based on command.lock, 
+        // update rules: updatewid will unlock or lock record based on command.lock,
         // it will fail if current record is already locked (and we are not unlocking)
         // updatewid also retreives current record in database
         //
@@ -268,12 +274,14 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
         //    -OR  getwid && command.lock missing
         //    -current record is locked || !updatewid
         // update if:
-        //    -current record is unlocked & updatewid 
-        //    -OR command.lock=false 
+        //    -current record is unlocked & updatewid
+        //    -OR command.lock=false
         function restrictioncheck(currentrecord, command)
         {
             var shouldupdate = false;
             var currentlock = false;
+
+            if (!command) { command = {}; }
 
             if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock)
             {
@@ -305,19 +313,22 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                 proxyprinttodiv('Function updatewid convertedrecord II', convertedrecord, 12);
                 extend(true, currentrecord, convertedrecord); // merge with existing record
                 proxyprinttodiv('Function updatewid currentrecord III', currentrecord, 12);
+
+                if (!command) { command = {}; }
+
                 // delete code if empty
                 if (command.datastore === "mongo")
                 {
                     wadd(currentrecord, command, callback);
                 }
-                else 
+                else
                 {
                     waddlocal(currentrecord, command, callback);
                 }
             }
             else
             {
-                if (restriction.currentlock && restriction.shouldupdate) {err = {"errorname":"locked"};}
+                if (restriction.currentlock && restriction.shouldupdate) { err = {"errorname":"locked"}; }
                 callback(err, currentrecord);
             }
         }
@@ -344,12 +355,12 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
                 }
             }
             // save to local storage/store
-            if (command.datastore === "localstorage") 
+            if (command.datastore === "localstorage")
             {
                 addToLocalStorage(command.databasetable + command.keycollection, keydatabase);
                 addToLocalStorage(command.databasetable + command.collection, database);
-            } 
-            else if (command.datastore === "localstore") 
+            }
+            else if (command.datastore === "localstore")
             {
                 addtolocal(command.databasetable + command.keycollection, keydatabase);
                 addtolocal(command.databasetable + command.collection, database);
@@ -362,445 +373,455 @@ exports.updatewid = updatewid = updatewid = function updatewid(inobject, callbac
         }
 
 
-    // ****** START OF UPDATEWID *******
-    // *********************************
-    proxyprinttodiv('Function updatewid inobject', inobject,12 , true, true);
-    var database = [];
-    var keydatabase = {};
+        // ****** START OF UPDATEWID *******
+        // *********************************
+        proxyprinttodiv('Function updatewid inobject', inobject,12 , true, true);
+        var database = [];
+        var keydatabase = {};
 
-    recordsetup(inobject, function (err, incopy, command) // set up defaults, etc
-    { 
-        proxyprinttodiv('Function updatewid err A ', err, 12, true, true);
-        proxyprinttodiv('Function updatewid incopy A ', incopy, 12, true, true);
-        proxyprinttodiv('Function updatewid command A ', command, 12, true, true);
-        if (err) {callback(err, incopy)} 
-        else 
+        recordsetup(inobject, function (err, incopy, command) // set up defaults, etc
         {
-            getcurrentrecord(incopy, command, function (err, currentrecord, command) // get it from local or mongo
+            proxyprinttodiv('Function updatewid err A ', err, 12, true, true);
+            proxyprinttodiv('Function updatewid incopy A ', incopy, 12, true, true);
+            proxyprinttodiv('Function updatewid command A ', command, 12, true, true);
+            if (err) { callback(err, incopy); }
+            else
             {
-                proxyprinttodiv('Function updatewid currentrecord B ', currentrecord, 12, true, true);
-                proxyprinttodiv('Function updatewid command B ', command, 12, true, true);
-                calculaterecordtoadd(incopy, currentrecord, command, function (err, recordtoadd){
-                    proxyprinttodiv('Function updatewid err C ', err, 12, true, true);
-                    proxyprinttodiv('Function updatewid recordtoadd C ', recordtoadd, 12, true, true);
-                    processcurrentrecord(currentrecord, recordtoadd, command, function (err, currentrecord) // save to local or mongo
-                    {
-                        proxyprinttodiv('Function updatewid err D ', err, 12, true, true);
-                        proxyprinttodiv('Function updatewid currentrecord D ', currentrecord, 12, true, true);
-                        // if this was actually a getwid call and nothing found then err
-                        if (command.getwidflag === true && command.newrecord) {err = {"errorname": "notfound"};}
-                        proxyprinttodiv('Function updatewid err', err, 12);
-                        proxyprinttodiv('Function updatewid recordtoadd', recordtoadd, 12);
-                        callback(err, recordtoadd); // we return the pretty record
-                    })
-                });
-            })
-        }// if error 
-    })
-}; 
-
-
-//To get parents
-exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(inobject, callback) {
-    var obj = {};
-    extend(true, obj, inobject);
-    proxyprinttodiv('Function getrelatedrecords obj', obj, 27);
-    // we send in {widlist : [wid1, wid2, wid3], command.reltype:parent}
-    // var filter_data = getcommand(obj, 
-    //     { // create defaults
-    //         "widlist": [],
-    //         "command": 
-    //         {
-    //             "reltype": "parent",
-    //             "recurse": true,
-    //             "result": "recordresult"
-    //         }
-    //     }, 
-    //     {        
-    //         "command": {}
-    //     }, 
-    //     true);
-    // obj = filter_data.output;
-    // var command = filter_data.filteredobject.command;
-    var command = obj.command;
-    delete obj.command;
-    var widlist = obj.widlist;
-    proxyprinttodiv('Function getrelatedrecords widlist', widlist, 27);
-    if (widlist.length === 0) {
-        var res = {};
-        res[command.result] = widlist;
-        callback(null, res);
-    } else {
-        var reltype = command.reltype;
-        var recurse = command.recurse;
-        for (var index in widlist) { //we need to query every item in the incomming list
-            var widName = widlist[index];
-            var executeobject = {};
-            executeobject["executethis"] = "querywid";
-            executeobject["command"] = {
-                "notfoundok": true,
-                "result": "queryresult"
-            };
-            if (reltype === 'parent') {
-                executeobject["mongorawquery"] = {
-                    "$and": [{
-                        "data.secondarywid": widName
-                    }]
-                };
-            } else {
-                executeobject["mongorawquery"] = {
-                    "$and": [{
-                        "data.primarywid": widName
-                    }]
-                };
-            }
-            proxyprinttodiv('Function getrelatedrecords query', executeobject, 27);
-            executeobject["command"]= {
-                "executetype":"series"
-            };
-
-            var env = new DriEnvironment(command.environment);
-            env.execute(executeobject, function (err, res) {
-                proxyprinttodiv('Function getrelatedrecords query res', res, 27);
-                if (err && (Object.keys(err).length) > 0) {
-                    callback({}, widlist);
-                } else {
-                    if (res && (Object.keys(res).length) > 0) {
-                        var recurselist = [];
-                        proxyprinttodiv('Function getrelatedrecords res', res, 27);
-                        var resultlist = res[0].queryresult;
-                        proxyprinttodiv('Function getrelatedrecords resultlist', resultlist, 27);
-                        if (resultlist && resultlist.length > 0) {
-                            async.each(resultlist, function (wid, callback1) {
-                                proxyprinttodiv('Function getrelatedrecords wid', wid, 27);
-                                for (widkey in wid) {
-                                    proxyprinttodiv('Function getrelatedrecords widkey', widkey, 27);
-                                    var eachrecord = wid[widkey];
-                                    proxyprinttodiv('Function getrelatedrecords eachrecord', eachrecord, 27);
-
-                                    var eachwid;
-                                    if (reltype === 'parent') {
-                                        eachwid = eachrecord.primarywid;
-                                    } else {
-                                        eachwid = eachrecord.secondarywid;
-                                    }
-
-                                    proxyprinttodiv('Function getrelatedrecords eachwid **', eachwid, 27);
-                                    recurselist.push(eachwid);
-                                    widlist.push(eachwid);
-                                    callback1();
-                                }
-                            }, function (err) {
-                                if (err && (Object.keys(err).length) > 0) {
-                                    callback({}, widlist);
-                                }
-                            });
-                        } else {
-                            var res = {};
-                            res[command.result] = widlist;
-                            proxyprinttodiv('Function getrelatedrecords callback1 with res', res, 27);
-                            callback(null, res);
-                        }
-
-                        if (recurselist && recurselist.length > 0 && (recurse === true)) {
-                            executeobject = {
-                                widlist: recurselist,
-                                command: {
-                                    reltype: reltype,
-                                    recurse: recurse,
-                                    result: command.result
-                                }
-                            };
-
-                            proxyprinttodiv('Function getrelatedrecords recurse object', executeobject, 27);
-                            getrelatedrecords(executeobject, function (err, returnlist) {
-                                if (err && (Object.keys(err).length) > 0) {
-                                    callback({}, widlist);
-                                } else {
-                                    if (res && (Object.keys(res).length) > 0) {
-                                        for (var eachitem in returnlist[command.result]) {
-                                            widlist.push(returnlist[command.result][eachitem]);
-                                        }
-                                        proxyprinttodiv('Function getrelatedrecords callback2 with returnlist', returnlist, 27);
-                                        var res = {};
-                                        res[command.result] = widlist;
-                                        proxyprinttodiv('Function getrelatedrecords callback2 with res', res, 27);
-                                        callback(null, res);
-                                    } else {
-                                        var res = {};
-                                        res[command.result] = widlist;
-                                        proxyprinttodiv('Function getrelatedrecords callback2 with res', res, 27);
-                                        callback(null, res);
-                                    }
-                                }
-                            });
-                        } else {
-                            var res = {};
-                            res[command.result] = widlist;
-                            proxyprinttodiv('Function getrelatedrecords callback4 with res', res, 27);
-                            callback(null, res);
-                        }
-                    } else {
-                        var res = {};
-                        res[command.result] = widlist;
-                        proxyprinttodiv('Function getrelatedrecords callback5 with res', res, 27);
-                        callback(null, res);
-                    }
-                }
-            })
-        }
-    }
-}; //End of getrelatedwids
-
-/*
- copywid fn steps :-
- 1. call getwid fn with fromwid, fromdb, fromcollection, fromdatastore
- 2. call updatewid fn with get result wid, towid, todb, tocollection, todatastore
- 3. call updatewid with blank record, fromwid, fromdb, fromcollection, fromdatastore if command.delete
- */
-
-exports.copywid = copywid = copywid = function copywid(inobject, callback) {
-
-    proxyprinttodiv('Function delete inobject', inobject, 18, true);
-    if (!inobject.command.from) {inobject.command.from={}}
-    if (!inobject.command.to) {inobject.command.to={}}
-    var incopy = {};
-    extend(true, incopy, inobject); // work from a copy
-    var command = incopy.command;
-    var lock = false;
-    if (command.delete) {lock=true}
-
-    //fromwid, fromdb, fromcollection, fromdatastore, towid, todb, tocollection, todatastore, command,
-    //1. call getwid fn with fromwid, fromdb, fromcollection, fromdatastore
-
-    // first get from/to from all the different possible places
-    extend(true, command.from, config.configuration.d.default, incopy.command.from);
-    extend(true, command.to, config.configuration.d.default, incopy.command.to);
-
-    // ** GET **
-    // in the case of from it might have been sent it at root of command
-    var getwidinput = {
-        "wid": incopy.wid || command.from.wid,
-        "command": {
-            "db": command.db || command.from.db,
-            "collection": command.collection || command.from.collection,
-            "datastore": command.datastore || command.from.datastore,
-            "databasetable": command.databasetable || command.from.databasetable,
-            "lock" : lock // lock it if delete until it is copied
-        }
-    };
-    proxyprinttodiv('Function copywid getwidinput', getwidinput, 18);
-    getwid(getwidinput, function (err, getwidresult) 
-    {
-        if (err) 
-        {
-            callback(err, getwidresult)
-        }
-        else 
-        {
-            proxyprinttodiv('Function copywid getwidresult', getwidresult, 18);
-
-            // ** UPDATE **
-            //2. call updatewid fn with get result wid, towid, todb, tocollection, todatastore
-            var updatewidinput = {
-                "wid": command.to.wid,
-                "command": {
-                    "db": command.to.db,
-                    "collection": command.to.collection,
-                    "datastore": command.to.datastore,
-                    "databasetable": command.to.databasetable
-                }
-                };
-            updatewidinput = extend(true, {}, inobject, getwidresult, updatewidinput); // combine the result + original incoming + update record
-            proxyprinttodiv('Function copywid updatewidinput', updatewidinput, 18);
-            updatewid(updatewidinput, function (err, updatewidresult) 
-            {
-                if (err)
+                getcurrentrecord(incopy, command, function (err, currentrecord, command) // get it from local or mongo
                 {
-                    callback(err, updatewidresult);
-                }
-                else
-                {
-                    proxyprinttodiv('Function copywid updatewidresult', updatewidresult, 18);
-
-                    // ** UPDATE and unlock **
-                    //3. call updatewid with blank record, fromwid, fromdb, fromcollection, fromdatastore if command.delete
-                    if (command.delete) 
-                    {
-                        getwidinput.command.datamethod="insert";
-                        // insert a blank record
-                        command.lock = lock;
-                        updatewid({"wid":incopy.wid, "command":command}, function (err, updatewidblankinputresult) 
+                    proxyprinttodiv('Function updatewid currentrecord B ', currentrecord, 12, true, true);
+                    proxyprinttodiv('Function updatewid command B ', command, 12, true, true);
+                    calculaterecordtoadd(incopy, currentrecord, command, function (err, recordtoadd){
+                        proxyprinttodiv('Function updatewid err C ', err, 12, true, true);
+                        proxyprinttodiv('Function updatewid recordtoadd C ', recordtoadd, 12, true, true);
+                        if (currentrecord)
                         {
-                            if (err)
+                            processcurrentrecord(currentrecord, recordtoadd, command, function (err, currentrecord) // save to local or mongo
                             {
-                                callback(err, updatewidblankinputresult);
-                            }
-                            else
-                            {
-                            proxyprinttodiv('Function copywid updatewidblankinputresult', updatewidblankinputresult, 27);
-                            callback(err, updatewidblankinputresult);
-                            }
-                        });
-                    } 
-                    else 
-                    {
-                        callback(err, updatewidresult);
-                    }
+                                proxyprinttodiv('Function updatewid err D ', err, 12, true, true);
+                                proxyprinttodiv('Function updatewid currentrecord D ', currentrecord, 12, true, true);
+                                // if this was actually a getwid call and nothing found then err
+                                if (command.getwidflag === true && command.newrecord) {err = {"errorname": "notfound"};}
+                                proxyprinttodiv('Function updatewid err', err, 12);
+                                proxyprinttodiv('Function updatewid recordtoadd', recordtoadd, 12);
+                                callback(err, recordtoadd); // we return the pretty record
+                            });
+                        }
+                        else
+                        {
+                            callback({"errorname": "notfound"}, {});
+                        }
+                    });
+                })
+            }// if error
+        })
+    };
+
+
+    //To get parents
+    exports.getrelatedrecords = getrelatedrecords = function getrelatedrecords(inobject, callback) {
+        var obj = {};
+        extend(true, obj, inobject);
+        proxyprinttodiv('Function getrelatedrecords obj', obj, 27);
+        // we send in {widlist : [wid1, wid2, wid3], command.reltype:parent}
+        // var filter_data = getcommand(obj,
+        //     { // create defaults
+        //         "widlist": [],
+        //         "command":
+        //         {
+        //             "reltype": "parent",
+        //             "recurse": true,
+        //             "result": "recordresult"
+        //         }
+        //     },
+        //     {
+        //         "command": {}
+        //     },
+        //     true);
+        // obj = filter_data.output;
+        // var command = filter_data.filteredobject.command;
+        var command = obj.command;
+        delete obj.command;
+        var widlist = obj.widlist;
+        proxyprinttodiv('Function getrelatedrecords widlist', widlist, 27);
+        if (widlist.length === 0) {
+            var res = {};
+            res[command.result] = widlist;
+            callback(null, res);
+        } else {
+            var reltype = command.reltype;
+            var recurse = command.recurse;
+            for (var index in widlist) { //we need to query every item in the incomming list
+                var widName = widlist[index];
+                var executeobject = {};
+                executeobject["executethis"] = "querywid";
+                executeobject["command"] = {
+                    "notfoundok": true,
+                    "result": "queryresult"
+                };
+                if (reltype === 'parent') {
+                    executeobject["mongorawquery"] = {
+                        "$and": [{
+                            "data.secondarywid": widName
+                        }]
+                    };
+                } else {
+                    executeobject["mongorawquery"] = {
+                        "$and": [{
+                            "data.primarywid": widName
+                        }]
+                    };
                 }
-            });
+                proxyprinttodiv('Function getrelatedrecords query', executeobject, 27);
+                executeobject["command"]= {
+                    "executetype":"series"
+                };
+
+                var env = new DriEnvironment(command.environment);
+                env.execute(executeobject, function (err, res) {
+                    proxyprinttodiv('Function getrelatedrecords query res', res, 27);
+                    if (err && (Object.keys(err).length) > 0) {
+                        callback({}, widlist);
+                    } else {
+                        if (res && (Object.keys(res).length) > 0) {
+                            var recurselist = [];
+                            proxyprinttodiv('Function getrelatedrecords res', res, 27);
+                            var resultlist = res[0].queryresult;
+                            proxyprinttodiv('Function getrelatedrecords resultlist', resultlist, 27);
+                            if (resultlist && resultlist.length > 0) {
+                                async.each(resultlist, function (wid, callback1) {
+                                    proxyprinttodiv('Function getrelatedrecords wid', wid, 27);
+                                    for (widkey in wid) {
+                                        proxyprinttodiv('Function getrelatedrecords widkey', widkey, 27);
+                                        var eachrecord = wid[widkey];
+                                        proxyprinttodiv('Function getrelatedrecords eachrecord', eachrecord, 27);
+
+                                        var eachwid;
+                                        if (reltype === 'parent') {
+                                            eachwid = eachrecord.primarywid;
+                                        } else {
+                                            eachwid = eachrecord.secondarywid;
+                                        }
+
+                                        proxyprinttodiv('Function getrelatedrecords eachwid **', eachwid, 27);
+                                        recurselist.push(eachwid);
+                                        widlist.push(eachwid);
+                                        callback1();
+                                    }
+                                }, function (err) {
+                                    if (err && (Object.keys(err).length) > 0) {
+                                        callback({}, widlist);
+                                    }
+                                });
+                            } else {
+                                var res = {};
+                                res[command.result] = widlist;
+                                proxyprinttodiv('Function getrelatedrecords callback1 with res', res, 27);
+                                callback(null, res);
+                            }
+
+                            if (recurselist && recurselist.length > 0 && (recurse === true)) {
+                                executeobject = {
+                                    widlist: recurselist,
+                                    command: {
+                                        reltype: reltype,
+                                        recurse: recurse,
+                                        result: command.result
+                                    }
+                                };
+
+                                proxyprinttodiv('Function getrelatedrecords recurse object', executeobject, 27);
+                                getrelatedrecords(executeobject, function (err, returnlist) {
+                                    if (err && (Object.keys(err).length) > 0) {
+                                        callback({}, widlist);
+                                    } else {
+                                        if (res && (Object.keys(res).length) > 0) {
+                                            for (var eachitem in returnlist[command.result]) {
+                                                widlist.push(returnlist[command.result][eachitem]);
+                                            }
+                                            proxyprinttodiv('Function getrelatedrecords callback2 with returnlist', returnlist, 27);
+                                            var res = {};
+                                            res[command.result] = widlist;
+                                            proxyprinttodiv('Function getrelatedrecords callback2 with res', res, 27);
+                                            callback(null, res);
+                                        } else {
+                                            var res = {};
+                                            res[command.result] = widlist;
+                                            proxyprinttodiv('Function getrelatedrecords callback2 with res', res, 27);
+                                            callback(null, res);
+                                        }
+                                    }
+                                });
+                            } else {
+                                var res = {};
+                                res[command.result] = widlist;
+                                proxyprinttodiv('Function getrelatedrecords callback4 with res', res, 27);
+                                callback(null, res);
+                            }
+                        } else {
+                            var res = {};
+                            res[command.result] = widlist;
+                            proxyprinttodiv('Function getrelatedrecords callback5 with res', res, 27);
+                            callback(null, res);
+                        }
+                    }
+                })
+            }
         }
-    });
-};
+    }; //End of getrelatedwids
 
-/*
-    deletewid()
-    - To move wid from original location to datasettable=driarchive, db=new Date()
-*/
-exports.deletewid = deletewid = deletewid = function deletewid(inobject, callback) {
-    proxyprinttodiv('Function deletewid inobject', inobject, 27);
-    if (inobject.wid) {
+    /*
+     copywid fn steps :-
+     1. call getwid fn with fromwid, fromdb, fromcollection, fromdatastore
+     2. call updatewid fn with get result wid, towid, todb, tocollection, todatastore
+     3. call updatewid with blank record, fromwid, fromdb, fromcollection, fromdatastore if command.delete
+     */
 
-        if (!inobject.command.from) {inobject.command.from={}};
-        if (!inobject.command.to)   {inobject.command.to={}};
-        inobject.command.from.db            = inobject.command.from.db            || inobject.command.db            || config.configuration.d.default.db;
-        inobject.command.from.collection    = inobject.command.from.collection    || inobject.command.collection    || config.configuration.d.default.collection;
-        inobject.command.from.datastore     = inobject.command.from.datastore     || inobject.command.datastore     || config.configuration.d.default.datastore;
-        inobject.command.from.databasetable = inobject.command.from.databasetable || inobject.command.databasetable || config.configuration.d.default.databasetable;
-        extend(true, inobject.command.to, config.configuration.delete, inobject.command.to);
-        inobject.command.delete=true;
-        proxyprinttodiv('Function deletewid inobject before copywid', inobject, 27);
-        copywid(inobject, function (err, copiedobject) {
+    exports.copywid = copywid = copywid = function copywid(inobject, callback) {
+
+        proxyprinttodiv('Function delete inobject', inobject, 18, true);
+        if (!inobject.command.from) {inobject.command.from={}}
+        if (!inobject.command.to) {inobject.command.to={}}
+        var incopy = {};
+        extend(true, incopy, inobject); // work from a copy
+        var command = incopy.command;
+        var lock = false;
+        if (command.delete) {lock=true}
+
+        //fromwid, fromdb, fromcollection, fromdatastore, towid, todb, tocollection, todatastore, command,
+        //1. call getwid fn with fromwid, fromdb, fromcollection, fromdatastore
+
+        // first get from/to from all the different possible places
+        extend(true, command.from, config.configuration.d.default, incopy.command.from);
+        extend(true, command.to, config.configuration.d.default, incopy.command.to);
+
+        // ** GET **
+        // in the case of from it might have been sent it at root of command
+        var getwidinput = {
+            "wid": incopy.wid || command.from.wid,
+            "command": {
+                "db": command.db || command.from.db,
+                "collection": command.collection || command.from.collection,
+                "datastore": command.datastore || command.from.datastore,
+                "databasetable": command.databasetable || command.from.databasetable,
+                "lock" : lock // lock it if delete until it is copied
+            }
+        };
+        proxyprinttodiv('Function copywid getwidinput', getwidinput, 18);
+        getwid(getwidinput, function (err, getwidresult)
+        {
             if (err)
             {
-                callback(err, copiedobject);
+                callback(err, getwidresult)
             }
             else
             {
-                proxyprinttodiv('Function deletewid copiedobject ', copiedobject, 27);
-                callback(null, copiedobject);
+                proxyprinttodiv('Function copywid getwidresult', getwidresult, 18);
+
+                // ** UPDATE **
+                //2. call updatewid fn with get result wid, towid, todb, tocollection, todatastore
+                var updatewidinput = {
+                    "wid": command.to.wid,
+                    "command": {
+                        "db": command.to.db,
+                        "collection": command.to.collection,
+                        "datastore": command.to.datastore,
+                        "databasetable": command.to.databasetable
+                    }
+                };
+                updatewidinput = extend(true, {}, inobject, getwidresult, updatewidinput); // combine the result + original incoming + update record
+                proxyprinttodiv('Function copywid updatewidinput', updatewidinput, 18);
+                updatewid(updatewidinput, function (err, updatewidresult)
+                {
+                    if (err)
+                    {
+                        callback(err, updatewidresult);
+                    }
+                    else
+                    {
+                        proxyprinttodiv('Function copywid updatewidresult', updatewidresult, 18);
+
+                        // ** UPDATE and unlock **
+                        //3. call updatewid with blank record, fromwid, fromdb, fromcollection, fromdatastore if command.delete
+                        if (command.delete)
+                        {
+                            getwidinput.command.datamethod="insert";
+                            // insert a blank record
+                            command.lock = lock;
+                            updatewid({"wid":incopy.wid, "command":command}, function (err, updatewidblankinputresult)
+                            {
+                                if (err)
+                                {
+                                    callback(err, updatewidblankinputresult);
+                                }
+                                else
+                                {
+                                    proxyprinttodiv('Function copywid updatewidblankinputresult', updatewidblankinputresult, 27);
+                                    callback(err, updatewidblankinputresult);
+                                }
+                            });
+                        }
+                        else
+                        {
+                            callback(err, updatewidresult);
+                        }
+                    }
+                });
             }
         });
-    } else { // if no widName
-        callback({"errorname":"nowid", "errorfn":"deletewid"}, {}); 
-    }
-};
+    };
+
+    /*
+     deletewid()
+     - To move wid from original location to datasettable=driarchive, db=new Date()
+     */
+    exports.deletewid = deletewid = deletewid = function deletewid(inobject, callback) {
+        proxyprinttodiv('Function deletewid inobject', inobject, 27);
+        if (inobject.wid) {
+
+            if (!inobject.command.from) {inobject.command.from={}};
+            if (!inobject.command.to)   {inobject.command.to={}};
+            inobject.command.from.db            = inobject.command.from.db            || inobject.command.db            || config.configuration.d.default.db;
+            inobject.command.from.collection    = inobject.command.from.collection    || inobject.command.collection    || config.configuration.d.default.collection;
+            inobject.command.from.datastore     = inobject.command.from.datastore     || inobject.command.datastore     || config.configuration.d.default.datastore;
+            inobject.command.from.databasetable = inobject.command.from.databasetable || inobject.command.databasetable || config.configuration.d.default.databasetable;
+            extend(true, inobject.command.to, config.configuration.delete, inobject.command.to);
+            inobject.command.delete=true;
+            proxyprinttodiv('Function deletewid inobject before copywid', inobject, 27);
+            copywid(inobject, function (err, copiedobject) {
+                if (err)
+                {
+                    callback(err, copiedobject);
+                }
+                else
+                {
+                    proxyprinttodiv('Function deletewid copiedobject ', copiedobject, 27);
+                    callback(null, copiedobject);
+                }
+            });
+        } else { // if no widName
+            callback({"errorname":"nowid", "errorfn":"deletewid"}, {});
+        }
+    };
 
 
-exports.convertfromdriformatenhanced = convertfromdriformatenhanced = function convertfromdriformatenhanced(output, command, originalarguments) {
-    output = convertfromdriformat(output, command);
-    if (output && Object.keys(output).length > 0) {
-        output = extend(true, {}, originalarguments, output);
-    }
-    if (Object.keys(output).length > 0 && command.convert === 'todot') {
-        output = ConvertToDOTdri(output);
-    }
-    return output
-};
+    exports.convertfromdriformatenhanced = convertfromdriformatenhanced = function convertfromdriformatenhanced(output, command, originalarguments) {
+        output = convertfromdriformat(output, command);
+        if (output && Object.keys(output).length > 0) {
+            output = extend(true, {}, originalarguments, output);
+        }
+        if (Object.keys(output).length > 0 && command.convert === 'todot') {
+            output = ConvertToDOTdri(output);
+        }
+        return output
+    };
 
-exports.convertfromdriformat = convertfromdriformat = function convertfromdriformat(widobject, command) {
-    var outobject = {};
-    //var outobject = null;
-    var db = config.configuration.db;
-    if (!command) {
-        command = {}
-    }
-    if (command && command.db) {
-        db = command.db;
-    }
-
-    if ((widobject) && (Object.keys(widobject).length > 0)) {
-        if (isArray(widobject[db])) {
-            outobject = widobject[db][0];
-        } else {
-            outobject = widobject[db] || {};
+    exports.convertfromdriformat = convertfromdriformat = function convertfromdriformat(widobject, command) {
+        var outobject = {};
+        //var outobject = null;
+        var db = config.configuration.db;
+        if (!command) {
+            command = {}
+        }
+        if (command && command.db) {
+            db = command.db;
         }
 
-        if (widobject.wid && !outobject.wid) {
-            outobject.wid = widobject.wid;
+        if ((widobject) && (Object.keys(widobject).length > 0)) {
+            if (isArray(widobject[db])) {
+                outobject = widobject[db][0];
+            } else {
+                outobject = widobject[db] || {};
+            }
+
+            if (widobject.wid && !outobject.wid) {
+                outobject.wid = widobject.wid;
+            }
+
+            if (widobject.metadata && !outobject.metadata) {
+                outobject.metadata=widobject.metadata;
+            }
+
+            // if (widobject['metadata']) {
+            //     if (widobject['metadata']['date']) {
+            //         delete widobject['metadata']['date'];
+            //     }
+            //     outobject['metadata'] = widobject['metadata'];
+
+            // } else {
+            //     outobject['metadata'] = "";
+            // }
+
+            // if (command.driformat === "nowid") {
+            //     delete outobject.wid;
+            //     delete outobject.metadata;
+            // }
+            //commented by Roger
+            //outobject = ConvertToDOTdri(outobject);
         }
 
-        if (widobject.metadata && !outobject.metadata) {
-            outobject.metadata=widobject.metadata;
+        if (command.hasOwnProperty("keepaddthis") && !command.keepaddthis) { // i.e. remove add this if false
+
+            if (outobject.hasOwnProperty("addthis")) {
+                var _add_this = outobject["addthis"];
+                delete outobject["addthis"];
+                outobject = extend(true, outobject, _add_this)
+            }
         }
 
-        // if (widobject['metadata']) {
-        //     if (widobject['metadata']['date']) {
-        //         delete widobject['metadata']['date'];
-        //     }
-        //     outobject['metadata'] = widobject['metadata'];
+        return outobject;
+    };
 
-        // } else {
-        //     outobject['metadata'] = "";
+
+
+
+    exports.converttodriformat = converttodriformat = function converttodriformat(inputObject, command) {
+        var inobject = JSON.parse(JSON.stringify(inputObject));
+        delete inobject['executethis'];
+        proxyprinttodiv('Function updatewid in : inobject', inobject, 12);
+        var saveobject = {};
+
+        if (!command) { command = {}; }
+
+        var db = command.db || config.configuration.db;
+        var wid;
+        var metadata;
+        var date;
+        // if (command && command.db) {
+        //     db = command.db;
         // }
 
-        // if (command.driformat === "nowid") {
-        //     delete outobject.wid;
-        //     delete outobject.metadata;
-        // }
-        //commented by Roger
-        //outobject = ConvertToDOTdri(outobject);
-    }
+        if (!inobject.metadata) {inobject.metadata={}}
+        inobject.metadata.date = new Date();
 
-    if (command.hasOwnProperty("keepaddthis") && !command.keepaddthis) { // i.e. remove add this if false
+        //inobject['metadata.date'] = new Date();
+        //inobject = ConvertFromDOTdri(inobject);
 
-        if (outobject.hasOwnProperty("addthis")) {
-            var _add_this = outobject["addthis"];
-            delete outobject["addthis"];
-            outobject = extend(true, outobject, _add_this)
+        if (inobject['wid']) {
+            wid = inobject['wid'];
+            delete inobject['wid'];
         }
-    }
+        if (inobject['metadata']) {
+            metadata = inobject['metadata'];
+            delete inobject['metadata'];
+        }
 
-    return outobject;
-};
+        // if (!metadata['expirationdate']) {
+        //     metadata['expirationdate'] = new Date();
+        // }
 
-
-
-
-exports.converttodriformat = converttodriformat = function converttodriformat(inputObject, command) {
-    var inobject = JSON.parse(JSON.stringify(inputObject));
-    delete inobject['executethis'];
-    proxyprinttodiv('Function updatewid in : inobject', inobject, 12);
-    var saveobject = {};
-    var db = command.db || config.configuration.db;
-    var wid;
-    var metadata;
-    var date;
-    // if (command && command.db) {
-    //     db = command.db;
-    // }
-
-    if (!inobject.metadata) {inobject.metadata={}}
-    inobject.metadata.date = new Date();
-
-    //inobject['metadata.date'] = new Date();
-    //inobject = ConvertFromDOTdri(inobject);
-    
-    if (inobject['wid']) {
-        wid = inobject['wid'];
-        delete inobject['wid'];
-    }
-    if (inobject['metadata']) {
-        metadata = inobject['metadata'];
-        delete inobject['metadata'];
-    }
-
-    // if (!metadata['expirationdate']) {
-    //     metadata['expirationdate'] = new Date();
-    // }
-
-    saveobject[db] = inobject;
-    saveobject['wid'] = wid;
-    saveobject['metadata'] = metadata;
-    proxyprinttodiv('Function updatewid in : saveobject II', saveobject, 12);
-    return saveobject;
-};
+        saveobject[db] = inobject;
+        saveobject['wid'] = wid;
+        saveobject['metadata'] = metadata;
+        proxyprinttodiv('Function updatewid in : saveobject II', saveobject, 12);
+        return saveobject;
+    };
 
 
-exports.cnt = 0;
-exports.printToDiv = printToDiv = function printToDiv(text, outobject, debugone, pretty, expanddefault) {
-    var inbound_parameters = arguments;
-    var color_list = [
+    exports.cnt = 0;
+    exports.printToDiv = printToDiv = function printToDiv(text, outobject, debugone, pretty, expanddefault) {
+        var inbound_parameters = arguments;
+        var color_list = [
             "black",
             "red",
             "green",
@@ -814,12 +835,12 @@ exports.printToDiv = printToDiv = function printToDiv(text, outobject, debugone,
             "green",
             "MediumBlue"
         ];
-    exports.cnt = exports.cnt + 1;
-    
-    if (getglobal('expanddefault')) {expanddefault=true}
-    
-    if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
-            var displaycolor = color_list[getglobal("debugcolor")];    
+        exports.cnt = exports.cnt + 1;
+
+        if (getglobal('expanddefault')) {expanddefault=true}
+
+        if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
+            var displaycolor = color_list[getglobal("debugcolor")];
             var indent = getglobal("debugindent");
             indent=indent*5;
             var z = getglobal('debuglinenum');
@@ -839,14 +860,14 @@ exports.printToDiv = printToDiv = function printToDiv(text, outobject, debugone,
             }
 
             var linenum = getglobal('debuglinenum');
-            exports.cnt++;  
-            
+            exports.cnt++;
+
             printText =  '<pre>';
             if (indent > 0) {
                 printText +='<div style="color:' + displaycolor + '; padding-left:' + (1 * indent) + 'em;">';
                 printText +='<button type="button" class="btn collapsiblebtn" data-toggle="collapse" data-target="#myDiv'+ exports.cnt + '"data-open-text="+" data-close-text="-">+</button> <'+ linenum + '> -' + indent/5 + '-';
                 printText += text;
-                
+
                 printText +='</div>';
             } else {
                 printText +='<div style="color:' + displaycolor + '";">';
@@ -859,673 +880,673 @@ exports.printToDiv = printToDiv = function printToDiv(text, outobject, debugone,
             if(expanddefault){
                 printText +='<div class="span4 collapse in" id="myDiv'+ exports.cnt +'">';
             }else{
-                 printText +='<div class="span4 collapse" id="myDiv'+ exports.cnt +'">';
+                printText +='<div class="span4 collapse" id="myDiv'+ exports.cnt +'">';
             }
-            
+
             printText += syntaxHighlight(jsonPretty) +'</div></pre>';
-                
-        if (document.getElementById('divprint')) {
-            document.getElementById('divprint').innerHTML = document.getElementById('divprint').innerHTML + printText; //append(printText);
+
+            if (document.getElementById('divprint')) {
+                document.getElementById('divprint').innerHTML = document.getElementById('divprint').innerHTML + printText; //append(printText);
+            }
+
         }
 
-    }
+    };
 
-};
+    exports.proxyprinttodiv = proxyprinttodiv = function proxyprinttodiv(text, obj, debugone, pretty,expanddefault) { // **** making code node compatible
+        var inbound_parameters = arguments;
+        var g_debuglinenum = getglobal("debuglinenum");
 
-exports.proxyprinttodiv = proxyprinttodiv = function proxyprinttodiv(text, obj, debugone, pretty,expanddefault) { // **** making code node compatible
-    var inbound_parameters = arguments;
-    var g_debuglinenum = getglobal("debuglinenum");
-
-    if (!debugone) {
-        debugone = -1;
-    }
-    if (exports.environment === "local") {
-        printToDiv(text, obj, debugone, pretty,expanddefault);
-    } else {
-        if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
-            console.re.log(text);
-            console.re.log(obj);
+        if (!debugone) {
+            debugone = -1;
+        }
+        if (exports.environment === "local") {
+            printToDiv(text, obj, debugone, pretty,expanddefault);
+        } else {
+            if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
+                console.re.log(text);
+                console.re.log(obj);
+            }
         }
     }
-}
 
-// 
-//   this will command.dtotype inisde bigdto
-//   this will give an address for dtotype inside bigdto
-//   then it uses that address to insert insertobjc into inputobj
-//
-//
+    //
+    //   this will command.dtotype inisde bigdto
+    //   this will give an address for dtotype inside bigdto
+    //   then it uses that address to insert insertobjc into inputobj
+    //
+    //
 
-exports.insertbydtotype = insertbydtotype = function insertbydtotype(inputobj, bigdto, insertobj, command) {
-    proxyprinttodiv("insertbydtotype input inputobj :- ", inputobj, 38);
-    proxyprinttodiv("insertbydtotype input bigdto :- ", bigdto, 38);
-    proxyprinttodiv("insertbydtotype input insertobj :- ", insertobj, 38);
-    proxyprinttodiv("insertbydtotype input command :- ", command, 38);
+    exports.insertbydtotype = insertbydtotype = function insertbydtotype(inputobj, bigdto, insertobj, command) {
+        proxyprinttodiv("insertbydtotype input inputobj :- ", inputobj, 38);
+        proxyprinttodiv("insertbydtotype input bigdto :- ", bigdto, 38);
+        proxyprinttodiv("insertbydtotype input insertobj :- ", insertobj, 38);
+        proxyprinttodiv("insertbydtotype input command :- ", command, 38);
 
-    var dtoname;
-    var dtonameobj;
-    var dtoindex;
-    if (bigdto.metadata && bigdto["metadata"]["method"]) {
-        dtoname = bigdto["metadata"]["method"];
-    }
-    if (insertobj.metadata && insertobj["metadata"]["method"]) {
-        dtoname = insertobj["metadata"]["method"];
-    }
-    if (command && command.dtotype) {
-        dtoname = command.dtotype;
-    }
-    proxyprinttodiv("insertbydtotype dtoname :- ", dtoname, 38);
-    if (dtoname) {
-        dtoindex = getindex(bigdto, dtoname, null);
-        proxyprinttodiv("insertbydtotype dtoindex:- ", dtoindex, 38);
-        if (!insertobj.metadata) {
-            insertobj.metadata = {};
+        var dtoname;
+        var dtonameobj;
+        var dtoindex;
+        if (bigdto.metadata && bigdto["metadata"]["method"]) {
+            dtoname = bigdto["metadata"]["method"];
         }
-        delete insertobj.wid;
-        insertobj["metadata"]["method"] = dtoname;
-        proxyprinttodiv("insertbydtotype setbyindex  insertobj:- ", insertobj, 38);
-        proxyprinttodiv("insertbydtotype setbyindex  null inputobj:- I", inputobj, 38);
-        if (dtoindex === null) 
-        { // create outside wrapper
-            proxyprinttodiv("insertbydtotype setbyindex  null insertobj:- II", insertobj, 38);
-            proxyprinttodiv("insertbydtotype setbyindex  null inputobj:- II", inputobj, 38);
-            proxyprinttodiv("insertbydtotype setbyindex  null command.inherit:- II", command.inherit, 38);
-
-            // this section handels the inherit types
-            if (command.inherit === "default") {inputobj = extend(true, insertobj, inputobj);}
-            else if (command.inherit === "override") {inputobj = extend(true, inputobj, insertobj);}
-            // notice the inputs are fliped
-            delete command.inherit;  // clean up the command object
-        } 
-        else 
-        {
-            setbyindex(inputobj, dtoindex, insertobj);
-            proxyprinttodiv("insertbydtotype setbyindex  inputobj:- ", inputobj, 38);
-            inputobj = ConvertFromDOTdri(inputobj);
+        if (insertobj.metadata && insertobj["metadata"]["method"]) {
+            dtoname = insertobj["metadata"]["method"];
         }
-    }
-    proxyprinttodiv("insertbydtotype result :- ", inputobj, 38);
-    return inputobj;
-};
+        if (command && command.dtotype) {
+            dtoname = command.dtotype;
+        }
+        proxyprinttodiv("insertbydtotype dtoname :- ", dtoname, 38);
+        if (dtoname) {
+            dtoindex = getindex(bigdto, dtoname, null);
+            proxyprinttodiv("insertbydtotype dtoindex:- ", dtoindex, 38);
+            if (!insertobj.metadata) {
+                insertobj.metadata = {};
+            }
+            delete insertobj.wid;
+            insertobj["metadata"]["method"] = dtoname;
+            proxyprinttodiv("insertbydtotype setbyindex  insertobj:- ", insertobj, 38);
+            proxyprinttodiv("insertbydtotype setbyindex  null inputobj:- I", inputobj, 38);
+            if (dtoindex === null)
+            { // create outside wrapper
+                proxyprinttodiv("insertbydtotype setbyindex  null insertobj:- II", insertobj, 38);
+                proxyprinttodiv("insertbydtotype setbyindex  null inputobj:- II", inputobj, 38);
+                proxyprinttodiv("insertbydtotype setbyindex  null command.inherit:- II", command.inherit, 38);
 
-
-function getindex(parameterobject, dtoname, indexstring) {
-    var inbound_parameters = arguments;
-    var match;
-    var potentialmap;
-    if (parameterobject["metadata"] && parameterobject["metadata"]["method"] && parameterobject["metadata"]["method"] === dtoname) {
-        return "";
-    } else {
-        for (var eachelement in parameterobject) 
-        {
-            if (parameterobject.hasOwnProperty(eachelement)) 
+                // this section handels the inherit types
+                if (command.inherit === "default") {inputobj = extend(true, insertobj, inputobj);}
+                else if (command.inherit === "override") {inputobj = extend(true, inputobj, insertobj);}
+                // notice the inputs are fliped
+                delete command.inherit;  // clean up the command object
+            }
+            else
             {
-                proxyprinttodiv('Function getindex eachelement', eachelement, 23);
-                if (eachelement === dtoname) {
-                    if (indexstring) {indexstring = indexstring + '.' + eachelement;} 
-                    else {indexstring = eachelement;}
-                    proxyprinttodiv('Function indexstring FOUND', indexstring, 23);
-                    break;
-                }
+                setbyindex(inputobj, dtoindex, insertobj);
+                proxyprinttodiv("insertbydtotype setbyindex  inputobj:- ", inputobj, 38);
+                inputobj = ConvertFromDOTdri(inputobj);
+            }
+        }
+        proxyprinttodiv("insertbydtotype result :- ", inputobj, 38);
+        return inputobj;
+    };
 
-                if (parameterobject[eachelement] instanceof Object) {
-                    if (indexstring) {potentialmap = indexstring + '.' + eachelement;} 
-                    else {potentialmap = eachelement;}
-                    match = getindex(parameterobject[eachelement], dtoname, potentialmap);
-                    if (potentialmap !== match) 
-                    {
-                        indexstring = match;
-                        proxyprinttodiv('Function match inside', match, 23);
+
+    function getindex(parameterobject, dtoname, indexstring) {
+        var inbound_parameters = arguments;
+        var match;
+        var potentialmap;
+        if (parameterobject["metadata"] && parameterobject["metadata"]["method"] && parameterobject["metadata"]["method"] === dtoname) {
+            return "";
+        } else {
+            for (var eachelement in parameterobject)
+            {
+                if (parameterobject.hasOwnProperty(eachelement))
+                {
+                    proxyprinttodiv('Function getindex eachelement', eachelement, 23);
+                    if (eachelement === dtoname) {
+                        if (indexstring) {indexstring = indexstring + '.' + eachelement;}
+                        else {indexstring = eachelement;}
+                        proxyprinttodiv('Function indexstring FOUND', indexstring, 23);
                         break;
+                    }
+
+                    if (parameterobject[eachelement] instanceof Object) {
+                        if (indexstring) {potentialmap = indexstring + '.' + eachelement;}
+                        else {potentialmap = eachelement;}
+                        match = getindex(parameterobject[eachelement], dtoname, potentialmap);
+                        if (potentialmap !== match)
+                        {
+                            indexstring = match;
+                            proxyprinttodiv('Function match inside', match, 23);
+                            break;
+                        }
                     }
                 }
             }
         }
+        proxyprinttodiv('Function indexstring ', indexstring, 23);
+        return indexstring;
     }
-    proxyprinttodiv('Function indexstring ', indexstring, 23);
-    return indexstring;
-}
 
-function setbyindex(obj, str, val) {
-    var keys, key;
-    //make sure str is a string with length
-    if (str === "") {
-        extend(true, obj, val)
-    } else {
-        if (!str || !str.length || Object.prototype.toString.call(str) !== "[object String]") {
-            return false;
-        }
-        if (obj !== Object(obj)) {
-            //if it's not an object, make it one
-            obj = {};
-        }
-        keys = str.split(".");
-        while (keys.length > 1) {
-            key = keys.shift();
+    function setbyindex(obj, str, val) {
+        var keys, key;
+        //make sure str is a string with length
+        if (str === "") {
+            extend(true, obj, val)
+        } else {
+            if (!str || !str.length || Object.prototype.toString.call(str) !== "[object String]") {
+                return false;
+            }
             if (obj !== Object(obj)) {
                 //if it's not an object, make it one
                 obj = {};
             }
-            if (!(key in obj)) {
-                //if obj doesn't contain the key, add it and set it to an empty object
-                obj[key] = {};
+            keys = str.split(".");
+            while (keys.length > 1) {
+                key = keys.shift();
+                if (obj !== Object(obj)) {
+                    //if it's not an object, make it one
+                    obj = {};
+                }
+                if (!(key in obj)) {
+                    //if obj doesn't contain the key, add it and set it to an empty object
+                    obj[key] = {};
+                }
+                obj = obj[key];
             }
-            obj = obj[key];
+            // return obj[keys[0]] = val;
+            return extend(true, obj[keys[0]], val); // we want to add data not overwrite data
         }
-        // return obj[keys[0]] = val;
-        return extend(true, obj[keys[0]], val); // we want to add data not overwrite data
-    }
-}
-
-
-
-exports.deepfilter = deepfilter = function deepfilter(inputObj, dtoObjOpt, command, callback) {
-    proxyprinttodiv("deepfilter inputObj", inputObj, 41, true);
-    proxyprinttodiv("deepfilter dtoObjOpt", dtoObjOpt, 41, true);
-    // proxyprinttodiv("deepfilter command", command, 99);
-    var modifiedObj = {};
-    extend(true, modifiedObj, inputObj);     // copying inputobj into modifiedObj
-    var convert;
-    var totype;
-    var inbound_parameters_110 = arguments;
-    // -- Convert --
-    if (command && command.deepfilter && command.deepfilter.convert === undefined) { //if command.deepfilter.convert undefined
-        convert = false; //default value
-    } else {
-        convert = command.deepfilter.convert;
-    }
-    // -- toType --
-    if (command && command.deepfilter && command.deepfilter.totype === undefined) { //if command.deepfilter.totype undefined
-        totype = false; //default value
-    } else {
-        totype = command.deepfilter.totype;
     }
 
-    if (dtoObjOpt) 
-    {
-        recurseModObj(modifiedObj, dtoObjOpt, convert, totype, command, function (err, res) {
-            if (err && Object.keys(err).length > 0) {
-                callback(err, res);
-            } else {
-                callback(null, res);
-            }
-        });
-    } 
-    else // if not dtoObjOpt
-    {
-        proxyprinttodiv("deepfilter result without dtoObjOpt", inputObj, 41);
-        callback(null, inputObj);
-    }
-};
 
-// inpKey: inpKey --- DTO: inpKey: dataType >> modifiedObj
-function recurseModObj(inputObject, dtoObject, convert, totype, command, callback) {
-    proxyprinttodiv("recurseModObj - inputObject ", inputObject, 41);
-    proxyprinttodiv("recurseModObj - dtoObject ", dtoObject, 41);
 
-    var temparray = [];
-    var modifiedObj = {};
-    var todolist = []; 
-    if (dtoObject instanceof Object) // make a list based on the dto
-    {
-        Object.keys(dtoObject).forEach(function (inpKey) {
-            todolist.push(inpKey);
-        });
-    } 
-    proxyprinttodiv("recurseModObj - todolist ", todolist, 41);
-    async.mapSeries(todolist, function (inpKey, cbMap) {
-        // proxyprinttodiv("recurseModObj - modifiedObj ", modifiedObj, 41);
-        // proxyprinttodiv("recurseModObj - top each inpKey", inpKey, 27);
-        async.nextTick(function () { 
-            var inpVal = inputObject[inpKey];   // inputval is the value of each inputObject
-            var dataType = dtoObject[inpKey]; 
-            if (inpKey==="wid" && (dataType!=="guid" || dataType!=="shortguid")) {dataType="guid"}
-            proxyprinttodiv("*** recurseModObj - inpKey ", inpKey, 41);
-            proxyprinttodiv("*** recurseModObj - inpVal ", inpVal, 41);
-            proxyprinttodiv("*** recurseModObj - dataType ", dataType, 41);
-            // if there is no inpVal or inpKey is metadata or command
-            if (!inpVal || (inpKey === "metadata") || (inpKey === "command")) 
-            { //Ignoring metadata property in input.
-                proxyprinttodiv("inside metadata / command inputval may be null inpKey", inpKey, 41);
-                modifiedObj[inpKey] = inpVal; 
-                cbMap(null);
-            } 
-            else 
-            {                    
-                // if (dtoObject.hasOwnProperty(inpKey)) 
-                // {
-                proxyprinttodiv("inside metadata / command dataType", dataType, 41);
-                proxyprinttodiv("inside metadata / command dataType isObject", isObject(dataType), 41);
-                if (dataType === "boolean" || dataType === "string" || dataType === "number" ||
-                    dataType === "date" || dataType === "integer" || dataType === "shortguid" ||
-                    dataType === "guid" || dataType === "hash" || dataType === "phone" ||
-                    dataType === "random4" || dataType === "object" || dataType === "array") 
-                {
-                    //proxyprinttodiv("recurseModObj - dataType ", dataType, 27);
-                    //proxyprinttodiv("recurseModObj - inpKey ", inpKey, 27);
-                    //proxyprinttodiv("recurseModObj - inpVal ", inpVal, 27);
+    exports.deepfilter = deepfilter = function deepfilter(inputObj, dtoObjOpt, command, callback) {
+        proxyprinttodiv("deepfilter inputObj", inputObj, 41, true);
+        proxyprinttodiv("deepfilter dtoObjOpt", dtoObjOpt, 41, true);
+        // proxyprinttodiv("deepfilter command", command, 99);
+        var modifiedObj = {};
+        extend(true, modifiedObj, inputObj);     // copying inputobj into modifiedObj
+        var convert;
+        var totype;
+        var inbound_parameters_110 = arguments;
+        // -- Convert --
+        if (command && command.deepfilter && command.deepfilter.convert === undefined) { //if command.deepfilter.convert undefined
+            convert = false; //default value
+        } else {
+            convert = command.deepfilter.convert;
+        }
+        // -- toType --
+        if (command && command.deepfilter && command.deepfilter.totype === undefined) { //if command.deepfilter.totype undefined
+            totype = false; //default value
+        } else {
+            totype = command.deepfilter.totype;
+        }
 
-                    /*
-                     For below cases,
-                     if input provided, then no change
-                     if input not provided, then set new values
-                     */
-                    if (inpVal === undefined || inpVal === "undefined") 
-                    {
-                        switch (dataType) {
-                        case "shortguid": //to create 5 digit alphanumeric string
-                            //modifiedObj[inpKey] = createNewShortGuid();
-                            inpVal = createNewShortGuid();
-                            break;
-                        case "guid":
-                            //modifiedObj[inpKey] = createNewGuid();
-                            inpVal = createNewGuid();
-                            break;
-                        case "random4": //to create 4 digit number
-                            //modifiedObj[inpKey] = createNewRandom4DigitNumber();
-                            inpVal = createNewRandom4DigitNumber();
-                            break;
-                        }
+        if (dtoObjOpt)
+        {
+            recurseModObj(modifiedObj, dtoObjOpt, convert, totype, command, function (err, res) {
+                if (err && Object.keys(err).length > 0) {
+                    callback(err, res);
+                } else {
+                    callback(null, res);
+                }
+            });
+        }
+        else // if not dtoObjOpt
+        {
+            proxyprinttodiv("deepfilter result without dtoObjOpt", inputObj, 41);
+            callback(null, inputObj);
+        }
+    };
+
+    // inpKey: inpKey --- DTO: inpKey: dataType >> modifiedObj
+    function recurseModObj(inputObject, dtoObject, convert, totype, command, callback) {
+        proxyprinttodiv("recurseModObj - inputObject ", inputObject, 41);
+        proxyprinttodiv("recurseModObj - dtoObject ", dtoObject, 41);
+
+        var temparray = [];
+        var modifiedObj = {};
+        var todolist = [];
+        if (dtoObject instanceof Object) // make a list based on the dto
+        {
+            Object.keys(dtoObject).forEach(function (inpKey) {
+                todolist.push(inpKey);
+            });
+        }
+        proxyprinttodiv("recurseModObj - todolist ", todolist, 41);
+        async.mapSeries(todolist, function (inpKey, cbMap) {
+                // proxyprinttodiv("recurseModObj - modifiedObj ", modifiedObj, 41);
+                // proxyprinttodiv("recurseModObj - top each inpKey", inpKey, 27);
+                async.nextTick(function () {
+                    var inpVal = inputObject[inpKey];   // inputval is the value of each inputObject
+                    var dataType = dtoObject[inpKey];
+                    if (inpKey==="wid" && (dataType!=="guid" || dataType!=="shortguid")) {dataType="guid"}
+                    proxyprinttodiv("*** recurseModObj - inpKey ", inpKey, 41);
+                    proxyprinttodiv("*** recurseModObj - inpVal ", inpVal, 41);
+                    proxyprinttodiv("*** recurseModObj - dataType ", dataType, 41);
+                    // if there is no inpVal or inpKey is metadata or command
+                    if (!inpVal || (inpKey === "metadata") || (inpKey === "command"))
+                    { //Ignoring metadata property in input.
+                        proxyprinttodiv("inside metadata / command inputval may be null inpKey", inpKey, 41);
+                        modifiedObj[inpKey] = inpVal;
+                        cbMap(null);
                     }
-
-                    switch (dataType) 
+                    else
                     {
-                        // placeholders, these may need to be fleshed out per roger, thats why the set value logic is here and not above
-                    case "shortguid": //to create 5 digit alphanumeric string
-                        modifiedObj[inpKey] = inpVal;
-                        break;
-                    case "guid":
-                        modifiedObj[inpKey] = inpVal;
-                        break;
-                    case "random4": //to create 4 digit number
-                        modifiedObj[inpKey] = inpVal;
-                        break;
-                    case "boolean":
-                        if (inpVal === true || inpVal == "true") 
+                        // if (dtoObject.hasOwnProperty(inpKey))
+                        // {
+                        proxyprinttodiv("inside metadata / command dataType", dataType, 41);
+                        proxyprinttodiv("inside metadata / command dataType isObject", isObject(dataType), 41);
+                        if (dataType === "boolean" || dataType === "string" || dataType === "number" ||
+                            dataType === "date" || dataType === "integer" || dataType === "shortguid" ||
+                            dataType === "guid" || dataType === "hash" || dataType === "phone" ||
+                            dataType === "random4" || dataType === "object" || dataType === "array")
                         {
-                            if (convert === false) 
-                            {
-                                modifiedObj[inpKey] = inpVal;
-                            } 
-                            else 
-                            {
-                                if (totype === true) 
-                                {
-                                    modifiedObj[inpKey] = true;
-                                } 
-                                else 
-                                {
-                                    modifiedObj[inpKey] = "true";
-                                }
-                            }
-                            //modifiedObj[inpKey] = true;
-                        } else if (inpVal === false || inpVal == "false") 
-                        {
-                            if (convert === false) 
-                            {
-                                modifiedObj[inpKey] = inpVal;
-                            } 
-                            else 
-                            {
-                                if (totype === true) 
-                                {
-                                    modifiedObj[inpKey] = false;
-                                } 
-                                else 
-                                {
-                                    modifiedObj[inpKey] = "false";
-                                }
-                            }
-                            //modifiedObj[inpKey] = false;
-                        }
-                        break;
+                            //proxyprinttodiv("recurseModObj - dataType ", dataType, 27);
+                            //proxyprinttodiv("recurseModObj - inpKey ", inpKey, 27);
+                            //proxyprinttodiv("recurseModObj - inpVal ", inpVal, 27);
 
-                    case "string":
-                        if (isString(inpVal)) 
-                        {
-                            if (convert === false) 
-                            {
-                                modifiedObj[inpKey] = inpVal;
-                            } 
-                            else 
-                            {
-                                if (totype === true) 
-                                {
-                                    modifiedObj[inpKey] = String(inpVal);
-                                } else 
-                                {
-                                    modifiedObj[inpKey] = String(inpVal);
-                                }
-                            }
-                            //modifiedObj[inpKey] = String(inpVal);
-                        }
-                        break;
-                    case "number":
-                        {
-
-                        }
-                        //modifiedObj[inpKey] = false;
-                        break;
-                    case "integer":
-                        if (parseInt(inpVal)) 
-                        {
-                            if (convert === false) 
-                            {
-                                modifiedObj[inpKey] = inpVal;
-                            } else 
-                            {
-                                if (totype === true) {
-                                    modifiedObj[inpKey] = parseInt(inpVal);
-                                } else {
-                                    modifiedObj[inpKey] = String(inpVal);
-                                }
-                            }
-                            //modifiedObj[inpKey] = parseInt(inpVal);
-                        }
-                        break;
-                    case "date":
-                        /*
-                             var arrD = inpVal.split("/");
-                             var m = arrD[0];
-                             m = (m < 38 ? '0' + m : m);
-                             var d = arrD[1];
-                             d = (d < 38 ? '0' + d : d);
-                             var y = arrD[2];
-                             var date = new Date(y, m - 1, d);
-                             // add a day
-                             date.setDate(date.getDate() + 1);
-                             modifiedObj[inpKey] = date;
+                            /*
+                             For below cases,
+                             if input provided, then no change
+                             if input not provided, then set new values
                              */
-                        if (inpVal) 
-                        {
-                            var d = new Date(inpVal);
-                            if (!isNaN(d)) 
+                            if (inpVal === undefined || inpVal === "undefined")
                             {
-                                if (convert === false) 
-                                {
+                                switch (dataType) {
+                                    case "shortguid": //to create 5 digit alphanumeric string
+                                        //modifiedObj[inpKey] = createNewShortGuid();
+                                        inpVal = createNewShortGuid();
+                                        break;
+                                    case "guid":
+                                        //modifiedObj[inpKey] = createNewGuid();
+                                        inpVal = createNewGuid();
+                                        break;
+                                    case "random4": //to create 4 digit number
+                                        //modifiedObj[inpKey] = createNewRandom4DigitNumber();
+                                        inpVal = createNewRandom4DigitNumber();
+                                        break;
+                                }
+                            }
+
+                            switch (dataType)
+                            {
+                                // placeholders, these may need to be fleshed out per roger, thats why the set value logic is here and not above
+                                case "shortguid": //to create 5 digit alphanumeric string
                                     modifiedObj[inpKey] = inpVal;
-                                } 
-                                else 
-                                {
-                                    if (totype === true) 
+                                    break;
+                                case "guid":
+                                    modifiedObj[inpKey] = inpVal;
+                                    break;
+                                case "random4": //to create 4 digit number
+                                    modifiedObj[inpKey] = inpVal;
+                                    break;
+                                case "boolean":
+                                    if (inpVal === true || inpVal == "true")
                                     {
-                                        modifiedObj[inpKey] = d.toISOString();
-                                    } else {
-                                        modifiedObj[inpKey] = String(inpVal);
+                                        if (convert === false)
+                                        {
+                                            modifiedObj[inpKey] = inpVal;
+                                        }
+                                        else
+                                        {
+                                            if (totype === true)
+                                            {
+                                                modifiedObj[inpKey] = true;
+                                            }
+                                            else
+                                            {
+                                                modifiedObj[inpKey] = "true";
+                                            }
+                                        }
+                                        //modifiedObj[inpKey] = true;
+                                    } else if (inpVal === false || inpVal == "false")
+                                    {
+                                        if (convert === false)
+                                        {
+                                            modifiedObj[inpKey] = inpVal;
+                                        }
+                                        else
+                                        {
+                                            if (totype === true)
+                                            {
+                                                modifiedObj[inpKey] = false;
+                                            }
+                                            else
+                                            {
+                                                modifiedObj[inpKey] = "false";
+                                            }
+                                        }
+                                        //modifiedObj[inpKey] = false;
                                     }
+                                    break;
+
+                                case "string":
+                                    if (isString(inpVal))
+                                    {
+                                        if (convert === false)
+                                        {
+                                            modifiedObj[inpKey] = inpVal;
+                                        }
+                                        else
+                                        {
+                                            if (totype === true)
+                                            {
+                                                modifiedObj[inpKey] = String(inpVal);
+                                            } else
+                                            {
+                                                modifiedObj[inpKey] = String(inpVal);
+                                            }
+                                        }
+                                        //modifiedObj[inpKey] = String(inpVal);
+                                    }
+                                    break;
+                                case "number":
+                                {
+
                                 }
-                                //modifiedObj[inpKey] = d.toISOString();
-                            }
-                        }
-                        break;
-                    case "hash":
-                        if (inpVal && inpVal.length >= 6) 
-                        {
-                            if (convert === false) 
-                            {
-                                modifiedObj[inpKey] = inpVal;
-                            } 
-                            else 
-                            {
-                                if (totype === true) 
-                                {
-                                    modifiedObj[inpKey] = parseToHashFormat(inpVal);
-                                } 
-                                else 
-                                {
-                                    modifiedObj[inpKey] = String(inpVal);
-                                }
-                            }
-                            //if(inpVal && inpVal.length>=6){
-                            //    modifiedObj[inpKey] = parseHashFormatToString(inpVal);
-                            //}
-                            //modifiedObj[inpKey] = parseToHashFormat(inpVal);
-                        }
-                        break;
-                    case "phone": //+9 129 129 1212
-                        if (inpVal && inpVal.length >= 11) 
-                        {
-                            if (convert === false) 
-                            {
-                                modifiedObj[inpKey] = inpVal;
-                            } 
-                            else 
-                            {
-                                if (totype === true) 
-                                {
-                                    modifiedObj[inpKey] = parseToPhoneFormat(inpVal);
-                                } 
-                                else 
-                                {
-                                    modifiedObj[inpKey] = String(inpVal);
-                                }
-                            }
-                            //if(inpVal && inpVal.length>=11){
-                            //    modifiedObj[inpKey] = parsePhoneFormatToString(inpVal);
-                            // }
-                            //modifiedObj[inpKey] = parseToPhoneFormat(inpVal);
-                        }
-                        break;
-                    case "object":
-                        if (inpVal && isObject(inpVal)) 
-                        {
-                            modifiedObj[inpKey] = inpVal;
-                        }
-                        break;
-                    case "array":
-                        if (inpVal && isArray(inpVal)) 
-                        {
-                            modifiedObj[inpKey] = inpVal;
-                        }
-                        break;
-                    }
-                    //proxyprinttodiv("recurseModObj - modifiedObj[inpKey] I ", modifiedObj[inpKey], 41);
-                    cbMap(null);
-                } // end of big if statment
-                // step through the right side of inputval
-                else if (isArray(dataType)) 
-                {
-                    proxyprinttodiv("recurseModObj inside isArray ", dataType, 41);
-                    if (isArray(dataType)) 
-                    {
-                        dataType = dataType[0];
-                    }
-                    if (!modifiedObj[inpKey]) 
-                    {
-                        modifiedObj[inpKey] = [];
-                    }
-                    if (!isArray(inpVal)) 
-                    {
-                        temparray = [];
-                        temparray.push(inpVal);
-                        inpVal = temparray;
-                    }
-                    //proxyprinttodiv("recurseModObj - before mapseries inpKey ", inpKey, 41);
-                    //proxyprinttodiv("recurseModObj - before mapseries inpVal ", inpVal, 41);
-                    //proxyprinttodiv("recurseModObj - before mapseries inpVal isArray", isArray(inpVal), 41);
-                    //proxyprinttodiv("recurseModObj - before mapseries dataType ", dataType, 41);
-                    async.mapSeries(inpVal, function (eachinputval, cb1) { // step through each inpVal
-                        async.nextTick(function () {
-                            proxyprinttodiv("recurseModObj - in mapseries just before recurise eachinputval ", eachinputval, 41);
-                            recurseModObj(eachinputval, dataType, convert, totype, command, function (err, result) {
-                                if (err && Object.keys(err).length > 0) 
-                                {
-                                    cb1(err, result);
-                                } 
-                                else 
-                                {
-                                    proxyprinttodiv("recurseModObj - after recurse ", result, 41);
-                                    modifiedObj[inpKey].push(result);
-                                    //proxyprinttodiv("recurseModObj - modifiedObj[inpKey] ", modifiedObj[inpKey], 41);
-                                    //proxyprinttodiv("recurseModObj - modifiedObj ", modifiedObj, 41);
-                                    //}
-                                    //proxyprinttodiv("recurseModObj - after if ", modifiedObj[inpKey], 41);
-                                    cb1(null);
-                                }
-                            }); // recurse
-                            //proxyprinttodiv("recurseModObj - modifiedObj[inpKey]", modifiedObj[inpKey], 41);
-                        }); // next tick
-                    proxyprinttodiv("recurseModObj - between II ", modifiedObj[inpKey], 41);
-                    },
-                    function (err, res) {
-                        // If error, bounce out
-                        if (err && Object.keys(err).length > 0) 
-                        {
-                            cbMap(err, res);
-                        } 
-                        else 
-                        {
-                            proxyprinttodiv("recurseModObj - modifiedObj[inpKey] end nextTick ", modifiedObj[inpKey], 41);
-                            cbMap(null);
-                        }
-                    });
-                } 
-                else if (isObject(inpVal) && isObject(dataType)) 
-                {
-                    proxyprinttodiv("typeof inpVal (object) inpVal III", inpVal, 41);
-                    proxyprinttodiv("typeof inpVal (object) modifiedObj[inpKey] III ", modifiedObj[inpKey], 41);
-                    recurseModObj(inpVal, dataType, convert, totype, command, function (err, result) {
-                        if (err && Object.keys(err).length > 0) 
-                        {
-                            cbMap(err, result);
-                        } 
-                        else 
-                        {
-                            modifiedObj[inpKey] = result;
-                            proxyprinttodiv("recurseModObj - modifiedObj[inpKey] III ", modifiedObj[inpKey], 41);
-                            cbMap(null);
-                        }
-                    });
-                } 
-                else 
-                { 
-                   // to read wid obj via getwidmaster
-                    proxyprinttodiv("recurseModObj - getwid dataType", dataType, 41);
-                    if (dataType !== 'string') 
-                    {
-                        var executeobject = {
-                            "command": {
-                                "executetype":"series",
-                                "notfoundok":true
-                                // "environment": {
-                                //     "run": {
-                                //         "type": "series"
-                                //     }
-                                // }
-                            }
-                        };
-                        executeobject.executethis=dataType;
-                        var env = new DriEnvironment(command.environment);
-                        env.execute(executeobject, function (err, res) {
-                            // If error, bounce out
-                            if ((err && Object.keys(err).length > 0) || Object.keys(res).length === 0) 
-                            {
-                                cbMap(err, res);
-                            } 
-                            else 
-                            {
-                                proxyprinttodiv("deepfilter getwidmaster result for wid  res ", res, 41);
-                                var widObj = res[0];
-                                if (widObj) 
-                                {
-                                    if (widObj.hasOwnProperty(inpVal)) 
+                                    //modifiedObj[inpKey] = false;
+                                    break;
+                                case "integer":
+                                    if (parseInt(inpVal))
+                                    {
+                                        if (convert === false)
+                                        {
+                                            modifiedObj[inpKey] = inpVal;
+                                        } else
+                                        {
+                                            if (totype === true) {
+                                                modifiedObj[inpKey] = parseInt(inpVal);
+                                            } else {
+                                                modifiedObj[inpKey] = String(inpVal);
+                                            }
+                                        }
+                                        //modifiedObj[inpKey] = parseInt(inpVal);
+                                    }
+                                    break;
+                                case "date":
+                                    /*
+                                     var arrD = inpVal.split("/");
+                                     var m = arrD[0];
+                                     m = (m < 38 ? '0' + m : m);
+                                     var d = arrD[1];
+                                     d = (d < 38 ? '0' + d : d);
+                                     var y = arrD[2];
+                                     var date = new Date(y, m - 1, d);
+                                     // add a day
+                                     date.setDate(date.getDate() + 1);
+                                     modifiedObj[inpKey] = date;
+                                     */
+                                    if (inpVal)
+                                    {
+                                        var d = new Date(inpVal);
+                                        if (!isNaN(d))
+                                        {
+                                            if (convert === false)
+                                            {
+                                                modifiedObj[inpKey] = inpVal;
+                                            }
+                                            else
+                                            {
+                                                if (totype === true)
+                                                {
+                                                    modifiedObj[inpKey] = d.toISOString();
+                                                } else {
+                                                    modifiedObj[inpKey] = String(inpVal);
+                                                }
+                                            }
+                                            //modifiedObj[inpKey] = d.toISOString();
+                                        }
+                                    }
+                                    break;
+                                case "hash":
+                                    if (inpVal && inpVal.length >= 6)
+                                    {
+                                        if (convert === false)
+                                        {
+                                            modifiedObj[inpKey] = inpVal;
+                                        }
+                                        else
+                                        {
+                                            if (totype === true)
+                                            {
+                                                modifiedObj[inpKey] = parseToHashFormat(inpVal);
+                                            }
+                                            else
+                                            {
+                                                modifiedObj[inpKey] = String(inpVal);
+                                            }
+                                        }
+                                        //if(inpVal && inpVal.length>=6){
+                                        //    modifiedObj[inpKey] = parseHashFormatToString(inpVal);
+                                        //}
+                                        //modifiedObj[inpKey] = parseToHashFormat(inpVal);
+                                    }
+                                    break;
+                                case "phone": //+9 129 129 1212
+                                    if (inpVal && inpVal.length >= 11)
+                                    {
+                                        if (convert === false)
+                                        {
+                                            modifiedObj[inpKey] = inpVal;
+                                        }
+                                        else
+                                        {
+                                            if (totype === true)
+                                            {
+                                                modifiedObj[inpKey] = parseToPhoneFormat(inpVal);
+                                            }
+                                            else
+                                            {
+                                                modifiedObj[inpKey] = String(inpVal);
+                                            }
+                                        }
+                                        //if(inpVal && inpVal.length>=11){
+                                        //    modifiedObj[inpKey] = parsePhoneFormatToString(inpVal);
+                                        // }
+                                        //modifiedObj[inpKey] = parseToPhoneFormat(inpVal);
+                                    }
+                                    break;
+                                case "object":
+                                    if (inpVal && isObject(inpVal))
                                     {
                                         modifiedObj[inpKey] = inpVal;
                                     }
-                                }
-                                proxyprinttodiv("recurseModObj - modifiedObj[inpKey] V ", modifiedObj[inpKey], 41);
-                                cbMap(null);
+                                    break;
+                                case "array":
+                                    if (inpVal && isArray(inpVal))
+                                    {
+                                        modifiedObj[inpKey] = inpVal;
+                                    }
+                                    break;
                             }
-                        });
+                            //proxyprinttodiv("recurseModObj - modifiedObj[inpKey] I ", modifiedObj[inpKey], 41);
+                            cbMap(null);
+                        } // end of big if statment
+                        // step through the right side of inputval
+                        else if (isArray(dataType))
+                        {
+                            proxyprinttodiv("recurseModObj inside isArray ", dataType, 41);
+                            if (isArray(dataType))
+                            {
+                                dataType = dataType[0];
+                            }
+                            if (!modifiedObj[inpKey])
+                            {
+                                modifiedObj[inpKey] = [];
+                            }
+                            if (!isArray(inpVal))
+                            {
+                                temparray = [];
+                                temparray.push(inpVal);
+                                inpVal = temparray;
+                            }
+                            //proxyprinttodiv("recurseModObj - before mapseries inpKey ", inpKey, 41);
+                            //proxyprinttodiv("recurseModObj - before mapseries inpVal ", inpVal, 41);
+                            //proxyprinttodiv("recurseModObj - before mapseries inpVal isArray", isArray(inpVal), 41);
+                            //proxyprinttodiv("recurseModObj - before mapseries dataType ", dataType, 41);
+                            async.mapSeries(inpVal, function (eachinputval, cb1) { // step through each inpVal
+                                    async.nextTick(function () {
+                                        proxyprinttodiv("recurseModObj - in mapseries just before recurise eachinputval ", eachinputval, 41);
+                                        recurseModObj(eachinputval, dataType, convert, totype, command, function (err, result) {
+                                            if (err && Object.keys(err).length > 0)
+                                            {
+                                                cb1(err, result);
+                                            }
+                                            else
+                                            {
+                                                proxyprinttodiv("recurseModObj - after recurse ", result, 41);
+                                                modifiedObj[inpKey].push(result);
+                                                //proxyprinttodiv("recurseModObj - modifiedObj[inpKey] ", modifiedObj[inpKey], 41);
+                                                //proxyprinttodiv("recurseModObj - modifiedObj ", modifiedObj, 41);
+                                                //}
+                                                //proxyprinttodiv("recurseModObj - after if ", modifiedObj[inpKey], 41);
+                                                cb1(null);
+                                            }
+                                        }); // recurse
+                                        //proxyprinttodiv("recurseModObj - modifiedObj[inpKey]", modifiedObj[inpKey], 41);
+                                    }); // next tick
+                                    proxyprinttodiv("recurseModObj - between II ", modifiedObj[inpKey], 41);
+                                },
+                                function (err, res) {
+                                    // If error, bounce out
+                                    if (err && Object.keys(err).length > 0)
+                                    {
+                                        cbMap(err, res);
+                                    }
+                                    else
+                                    {
+                                        proxyprinttodiv("recurseModObj - modifiedObj[inpKey] end nextTick ", modifiedObj[inpKey], 41);
+                                        cbMap(null);
+                                    }
+                                });
+                        }
+                        else if (isObject(inpVal) && isObject(dataType))
+                        {
+                            proxyprinttodiv("typeof inpVal (object) inpVal III", inpVal, 41);
+                            proxyprinttodiv("typeof inpVal (object) modifiedObj[inpKey] III ", modifiedObj[inpKey], 41);
+                            recurseModObj(inpVal, dataType, convert, totype, command, function (err, result) {
+                                if (err && Object.keys(err).length > 0)
+                                {
+                                    cbMap(err, result);
+                                }
+                                else
+                                {
+                                    modifiedObj[inpKey] = result;
+                                    proxyprinttodiv("recurseModObj - modifiedObj[inpKey] III ", modifiedObj[inpKey], 41);
+                                    cbMap(null);
+                                }
+                            });
+                        }
+                        else
+                        {
+                            // to read wid obj via getwidmaster
+                            proxyprinttodiv("recurseModObj - getwid dataType", dataType, 41);
+                            if (dataType !== 'string')
+                            {
+                                var executeobject = {
+                                    "command": {
+                                        "executetype":"series",
+                                        "notfoundok":true
+                                        // "environment": {
+                                        //     "run": {
+                                        //         "type": "series"
+                                        //     }
+                                        // }
+                                    }
+                                };
+                                executeobject.executethis=dataType;
+                                var env = new DriEnvironment(command.environment);
+                                env.execute(executeobject, function (err, res) {
+                                    // If error, bounce out
+                                    if ((err && Object.keys(err).length > 0) || Object.keys(res).length === 0)
+                                    {
+                                        cbMap(err, res);
+                                    }
+                                    else
+                                    {
+                                        proxyprinttodiv("deepfilter getwidmaster result for wid  res ", res, 41);
+                                        var widObj = res[0];
+                                        if (widObj)
+                                        {
+                                            if (widObj.hasOwnProperty(inpVal))
+                                            {
+                                                modifiedObj[inpKey] = inpVal;
+                                            }
+                                        }
+                                        proxyprinttodiv("recurseModObj - modifiedObj[inpKey] V ", modifiedObj[inpKey], 41);
+                                        cbMap(null);
+                                    }
+                                });
+                            }
+                        } // end of elses
+                        //}
+                        //else // NOT: if (dtoObject.hasOwnProperty(inpKey))
+                        //{
+                        //    delete modifiedObj[inpKey];
+                        //    proxyprinttodiv("recurseModObj - modifiedObj[inpKey] VI ", modifiedObj[inpKey], 41);
+                        //    cbMap(null);
+                        //}
                     }
-                } // end of elses
-                //} 
-                //else // NOT: if (dtoObject.hasOwnProperty(inpKey)) 
-                //{
-                //    delete modifiedObj[inpKey];
-                //    proxyprinttodiv("recurseModObj - modifiedObj[inpKey] VI ", modifiedObj[inpKey], 41);
-                //    cbMap(null);
-                //}
-            }
-        });
-    },
-    function (err, res) {
-        proxyprinttodiv("recurseModObj end mod", modifiedObj, 41);
-        if (err && Object.keys(err).length > 0) 
-        {
-            callback(err, res);
-        } 
-        else 
-        {
-            callback(null, modifiedObj);
-        }
-    });
-}
-
-//deepfilter dataType=shortguid - to create new 5 digit alphanumeric string
-//ref : http://stackoverflow.com/questions/1349404/generate-a-string-of-5-random-characters-in-javascript
-
-function createNewShortGuid() {
-    return createAlphanumericStringByLength(5);
-}
-
-function createAlphanumericStringByLength(length) {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (var i = 0; i < 5; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
+                });
+            },
+            function (err, res) {
+                proxyprinttodiv("recurseModObj end mod", modifiedObj, 41);
+                if (err && Object.keys(err).length > 0)
+                {
+                    callback(err, res);
+                }
+                else
+                {
+                    callback(null, modifiedObj);
+                }
+            });
     }
-    return text;
-}
 
-//deepfilter dataType=guid - to create new guid
-//ref : http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
-exports.createNewGuid = createNewGuid = function createNewGuid() {
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-};
+    //deepfilter dataType=shortguid - to create new 5 digit alphanumeric string
+    //ref : http://stackoverflow.com/questions/1349404/generate-a-string-of-5-random-characters-in-javascript
 
-function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-}
+    function createNewShortGuid() {
+        return createAlphanumericStringByLength(5);
+    }
 
-//deepfilter dataType=hash - to convert string to hash and hash to string
+    function createAlphanumericStringByLength(length) {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for (var i = 0; i < 5; i++) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+        return text;
+    }
 
-function parseToHashFormat(hash) {
-    var lastSixChars = hash.substr(hash.length - 6);
-    return "#" + lastSixChars;
-}
+    //deepfilter dataType=guid - to create new guid
+    //ref : http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
+    exports.createNewGuid = createNewGuid = function createNewGuid() {
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    };
 
-function parseHashFormatToString(hashStr) {
-    var lastSixChars = hashStr.substr(hashStr.length - 6);
-    return lastSixChars;
-}
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+    }
 
-//deepfilter dataType=phone - to convert phone with phone regex
-//Formats a phone number to be in +1 129 888 7777 format
-//Ref : http://liljosh.com/javascript-format-phone-number-function
+    //deepfilter dataType=hash - to convert string to hash and hash to string
 
-function parseToPhoneFormat(phone) {
-    phone = phone.replace(/[^0-9]/g, '');
-    phone = phone.replace(/(\d{1})(\d{3})(\d{3})(\d{4})/, "+$1 $2 $3 $4");
-    return phone;
-}
+    function parseToHashFormat(hash) {
+        var lastSixChars = hash.substr(hash.length - 6);
+        return "#" + lastSixChars;
+    }
 
-function parsePhoneFormatToString(phoneStr) {
-    phoneStr = phoneStr.replace(/[^0-9]/g, '');
-    return phoneStr;
-}
+    function parseHashFormatToString(hashStr) {
+        var lastSixChars = hashStr.substr(hashStr.length - 6);
+        return lastSixChars;
+    }
 
-//deepfilter dataType=random4 - to create new random 4 digit number
-//ref: http://stackoverflow.com/questions/3437133/javascript-generate-a-random-number-that-is-9-numbers-in-length
+    //deepfilter dataType=phone - to convert phone with phone regex
+    //Formats a phone number to be in +1 129 888 7777 format
+    //Ref : http://liljosh.com/javascript-format-phone-number-function
 
-function createNewRandom4DigitNumber() {
-    return getRandomNumberByLength(4);
-}
+    function parseToPhoneFormat(phone) {
+        phone = phone.replace(/[^0-9]/g, '');
+        phone = phone.replace(/(\d{1})(\d{3})(\d{3})(\d{4})/, "+$1 $2 $3 $4");
+        return phone;
+    }
 
-function getRandomNumberByLength(length) {
-    return Math.floor(Math.pow(10, length - 1) + Math.random() * 9 * Math.pow(10, length - 1));
+    function parsePhoneFormatToString(phoneStr) {
+        phoneStr = phoneStr.replace(/[^0-9]/g, '');
+        return phoneStr;
+    }
 
-}
+    //deepfilter dataType=random4 - to create new random 4 digit number
+    //ref: http://stackoverflow.com/questions/3437133/javascript-generate-a-random-number-that-is-9-numbers-in-length
+
+    function createNewRandom4DigitNumber() {
+        return getRandomNumberByLength(4);
+    }
+
+    function getRandomNumberByLength(length) {
+        return Math.floor(Math.pow(10, length - 1) + Math.random() * 9 * Math.pow(10, length - 1));
+
+    }
 
     // Utility function to return json with all keys in lowercase
     exports.toLowerKeys = toLowerKeys = function toLowerKeys(obj) {
@@ -1581,7 +1602,7 @@ function getRandomNumberByLength(length) {
                 if (data.hasOwnProperty(item)) {
                     var iArray = item.split(".");
                     var value = data[item];
-                    // Copy all of the properties in the source objects over to the destination object, and return the destination object. 
+                    // Copy all of the properties in the source objects over to the destination object, and return the destination object.
                     // It's in-order, so the last source will override properties of the same name in previous arguments.
                     extend(true, output, recurFunc(iArray, value));
                 }
@@ -1698,8 +1719,8 @@ function getRandomNumberByLength(length) {
 
     //http://jsfiddle.net/WSzec/14/
 
-    // Creates an object with a hash parent:value. If the chain array is more that 1, 
-    // recurse until there is only 1 chain so you get chain:value returned. This is called only 
+    // Creates an object with a hash parent:value. If the chain array is more that 1,
+    // recurse until there is only 1 chain so you get chain:value returned. This is called only
     // from ConvertFrom DOT, so you can see it part of the process of deconstructing the dot.notaion string.
     exports.createObjects = createObjects = function createObjects(parent, chainArray, value) {
         //proxyprinttodiv('createobject parent',  parent,38);
@@ -1774,7 +1795,7 @@ function getRandomNumberByLength(length) {
         }
     };
 
-    // Deletes a hash from an object    
+    // Deletes a hash from an object
     exports.remove = remove = function remove(parameters, str) {
         var inbound_parameters = arguments;
         //function remove(parameters, str){
@@ -2021,7 +2042,7 @@ function getRandomNumberByLength(length) {
         }
         return true;
     };
- exports.logverifycomplex = logverifycomplex = function logverifycomplex(test_name, result_object, result_assertion, error_object, error_assertion)
+    exports.logverifycomplex = logverifycomplex = function logverifycomplex(test_name, result_object, result_assertion, error_object, error_assertion)
     {
         // step 1 - compare result objects
         // step 2 - compare error objects
@@ -2044,8 +2065,8 @@ function getRandomNumberByLength(length) {
             complex_error = logverify(test_name + '_err', error_object, error_assertion);
             proxyprinttodiv('logverifycomplex complex_error I ', complex_error, 91);
         }
-        
-        // Step 3 - conslidate 
+
+        // Step 3 - conslidate
         // var return_object = {'result': complex_result, 'error': complex_error };
         return_object = extend(true, complex_result, complex_error);
         return_object = distillresults(test_name, return_object);
@@ -2054,7 +2075,7 @@ function getRandomNumberByLength(length) {
         // Step 4 - return it all
         return return_object;
     };
- 
+
 
     function generatepropertylist(objin, objlist)
     {
@@ -2070,7 +2091,7 @@ function getRandomNumberByLength(length) {
                 {
                     objlist[key]=objin[key];
                 } else {
-                    // needs key fetching from object which is inside 
+                    // needs key fetching from object which is inside
                     var objinplay =  objin[key];
                     objlist[key]=objin[key];
                     if(objinplay instanceof Array)
@@ -2078,7 +2099,7 @@ function getRandomNumberByLength(length) {
                         // handle arrays
                         for(var idx in objinplay)
                         {
-                        generatepropertylist(objinplay[idx], objlist);
+                            generatepropertylist(objinplay[idx], objlist);
                         }
                     } else {
                         // handle JSON objects
@@ -2090,26 +2111,26 @@ function getRandomNumberByLength(length) {
     }
 
     function logverifyresulttable(test_name, data_object, assertion_object)
-        {
+    {
         var data_object_resulttable={};
         var assertion_object_resulttable={};
         var resulttable_result={};
         if (assertion_object && assertion_object.command && assertion_object.command.resulttable &&
             data_object.command && data_object.command.resulttable)
         {
-            for (var eachresulttable in data_object.command.resulttable) 
+            for (var eachresulttable in data_object.command.resulttable)
             {
-                if (assertion_object.command.resulttable[eachresulttable]) 
+                if (assertion_object.command.resulttable[eachresulttable])
                 {
                     assertion_object_resulttable=assertion_object.command.resulttable[eachresulttable];
                 }
                 else
                 {
-                     assertion_object_resulttable=assertion_object.command.resulttable;
+                    assertion_object_resulttable=assertion_object.command.resulttable;
                 }
                 data_object_resulttable=data_object.command.resulttable[eachresulttable];
-                extend(true, 
-                    resulttable_result, 
+                extend(true,
+                    resulttable_result,
                     logverify(test_name+'_RT'+eachresulttable, data_object_resulttable, assertion_object_resulttable));
             }
             delete data_object.command.resulttable;
@@ -2146,7 +2167,7 @@ function getRandomNumberByLength(length) {
         } else {
             var exception_pass = 'PASS';
             var diff_obj = xresults[test_name + '_diff'];
-            var match = undefined; 
+            var match = undefined;
 
             proxyprinttodiv('logverify diff_obj', diff_obj, 91,true);
             // go through difference object
@@ -2157,25 +2178,25 @@ function getRandomNumberByLength(length) {
                 proxyprinttodiv('logverify diff_obj_item', diff_obj_item, 91);
                 // look for any objects with a type...those have comparisons
                 if (diff_obj_item && diff_obj_item['type']!==null && diff_obj_item['type'] !== "unchanged")
-                {   
+                {
                     var diff_type = diff_obj_item['type'];
                     proxyprinttodiv('logverify diff_type', diff_type, 91);
                     // if data.execption exists then we want to study it
                     if (diff_obj[key_name].data && diff_obj[key_name].data.exception)
                     {
                         var exception_types = diff_obj[key_name].data.exception;
-                        
+
                         proxyprinttodiv('logverify exception_types', exception_types, 91);
                         proxyprinttodiv('logverify exception_types.indexOf(diff_type)', exception_types.indexOf(diff_type), 91);
                         // see if actual type found matches the execption list
-//                        if (exception_types.indexOf(diff_type) === -1) // not found = -1
-//                        {
-//                            match=false;
-//                        }
-//                        else
-//                        {
-//                            match=true;
-//                        }
+                        //                        if (exception_types.indexOf(diff_type) === -1) // not found = -1
+                        //                        {
+                        //                            match=false;
+                        //                        }
+                        //                        else
+                        //                        {
+                        //                            match=true;
+                        //                        }
 
                         // simplified conditional statement
                         // see if actual type found matches the execption list
@@ -2184,7 +2205,7 @@ function getRandomNumberByLength(length) {
                     }
                 }
                 if (match===false){break;} // if one bad then we can stop
-            }        
+            }
 
             if (match)
             {
@@ -2208,15 +2229,15 @@ function getRandomNumberByLength(length) {
 
         // If there is a value of 'unchanged', there IS data that has passed,
         // so for now, set the 'test_results' to PASS.
-        if (temp_string.indexOf("unchanged") !== -1 || 
+        if (temp_string.indexOf("unchanged") !== -1 ||
             temp_string === "PASS" ||
-            temp_string === "{}") 
+            temp_string === "{}")
         {
             test_results = "PASS";
         }
 
         // If there are any of 'created', 'updated', 'deleted', the tests now fails, even if
-        // it passed before...if none of the 4 strings are found, the test_results will 
+        // it passed before...if none of the 4 strings are found, the test_results will
         // remain 'UNKNOWN'
         if (temp_string.indexOf("created") !== -1 ||
             temp_string.indexOf("FAIL") !== -1 ||
@@ -2253,7 +2274,7 @@ function getRandomNumberByLength(length) {
             "MediumBlue"
         ];
 
-        var indebugdesc = String(arguments[0]) || ""; // 
+        var indebugdesc = String(arguments[0]) || ""; //
         var indebugname = String(arguments[1]) || ""; // main fn
         var indebugcat = String(arguments[2]) || ""; // add/get
         var indebugsubcat = String(arguments[3]) || ""; // sub fn
@@ -2326,52 +2347,52 @@ function getRandomNumberByLength(length) {
         var zed = getglobal("debugfilter");
         switch (zed) {
 
-        case 0:
-            outobject = debugobjectlist;
-            break;
+            case 0:
+                outobject = debugobjectlist;
+                break;
 
-        case 1:
-            // only the first var
-            break;
+            case 1:
+                // only the first var
+                break;
 
-        case 2:
-            // only the 1,2 var
-            break;
+            case 2:
+                // only the 1,2 var
+                break;
         }
 
         switch (indebugdest) // 1 for print, 2 for googlespreadsheets, 3 for both
         {
-        case 1:
-            dbug_print(indebugindent, displaycolor);
-            break;
+            case 1:
+                dbug_print(indebugindent, displaycolor);
+                break;
 
-        case 2:
-            store_to_google(indebugname, outobject);
-            break;
+            case 2:
+                store_to_google(indebugname, outobject);
+                break;
 
-        case 3:
-            dbug_print(indebugindent, displaycolor);
-            store_to_google(indebugname, outobject);
-            break;
-        case 4:
-            etlogresults(indebugname, outobject);
-            break;
-        case 5:
-            etcreatecode(indebugindent, displaycolor, indebugname);
-            break;
-        case 6:
-            if (exports.environment === 'local') {
-                outobject[3] = getFromLocalStorage("maincollection");
-                // outobject[4]=getFromLocalStorage("DRIKEY");
+            case 3:
+                dbug_print(indebugindent, displaycolor);
+                store_to_google(indebugname, outobject);
+                break;
+            case 4:
                 etlogresults(indebugname, outobject);
-            }
-            break;
-        case 7:
-            etcreatecode(indebugindent, displaycolor, indebugname);
-            break;
-        case 9:
-            create_string(indebugindent, displaycolor, indebugname);
-            break;
+                break;
+            case 5:
+                etcreatecode(indebugindent, displaycolor, indebugname);
+                break;
+            case 6:
+                if (exports.environment === 'local') {
+                    outobject[3] = getFromLocalStorage("maincollection");
+                    // outobject[4]=getFromLocalStorage("DRIKEY");
+                    etlogresults(indebugname, outobject);
+                }
+                break;
+            case 7:
+                etcreatecode(indebugindent, displaycolor, indebugname);
+                break;
+            case 9:
+                create_string(indebugindent, displaycolor, indebugname);
+                break;
         }
 
         function etlogresults(indebugname, outobject) {
@@ -2572,23 +2593,23 @@ function getRandomNumberByLength(length) {
 
     exports.syntaxHighlight = syntaxHighlight = function syntaxHighlight(json) {
         if(json){
-        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-            var cls = 'number';
-            if (/^"/.test(match)) {
-                if (/:$/.test(match)) {
-                    cls = 'key';
-                } else {
-                    cls = 'string';
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                var cls = 'number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'key';
+                    } else {
+                        cls = 'string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
                 }
-            } else if (/true|false/.test(match)) {
-                cls = 'boolean';
-            } else if (/null/.test(match)) {
-                cls = 'null';
-            }
-            return '<span class="' + cls + '">' + match + '</span>';
-        });
-            
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+
         }
     }
 
@@ -2672,10 +2693,10 @@ function getRandomNumberByLength(length) {
                         //we create a new statement (traversing)
                         var operator = !! _testers[k] ? k : '$trav',
 
-                            //value of given statement (the match)
+                        //value of given statement (the match)
                             value = statement[k],
 
-                            //default = match
+                        //default = match
                             exprValue = value;
 
                         //if we're working with a traversable operator, then set the expr value
@@ -2942,7 +2963,7 @@ function getRandomNumberByLength(length) {
                     return -1;
                 }
 
-                //continue to traverse even if there isn't a value - this is needed for 
+                //continue to traverse even if there isn't a value - this is needed for
                 //something like name:{$exists:false}
                 return priority(a, b ? b[a.k] : undefined);
             }
@@ -3444,8 +3465,8 @@ function getRandomNumberByLength(length) {
 
                 if ( // if array or object then recurse
                     (isObject(obj1[eachelement] || isArray(obj1[eachelement]))) &&
-                    (obj2.hasOwnProperty(eachelement) && (isObject(obj2[eachelement]) || isArray(obj2[eachelement])))
-                ) {
+                        (obj2.hasOwnProperty(eachelement) && (isObject(obj2[eachelement]) || isArray(obj2[eachelement])))
+                    ) {
                     var recurse = {};
                     recurse = objectrelationships(obj1[eachelement], obj2[eachelement], type);
                     if (Object.keys(recurse.andobj).length !== 0) {
@@ -3480,7 +3501,7 @@ function getRandomNumberByLength(length) {
                         }
                     } // if exists
                 } // if not object
-            } // for 
+            } // for
 
             proxyprinttodiv("objectrelationships result", result, 65);
             return result
@@ -3545,181 +3566,181 @@ function getRandomNumberByLength(length) {
     //##
 
 
-/*
-    object operations
-    -size (either local object or localstorage object)
-    -delete
-*/
-exports.objectoperations = objectoperations = function objectoperations(inobject, callback) {
-    proxyprinttodiv('Function objectoperations inobject', inobject, 27);
-    var command = inobject.command;
-    
-    //2). if command.collection or command.databasetable exists then return used space
-    var collection = command.collection;
-    var databasetable = command.databasetable;
-    var commandObj = command.object;
-    var objectSize = 0;
-    var db={};
+    /*
+     object operations
+     -size (either local object or localstorage object)
+     -delete
+     */
+    exports.objectoperations = objectoperations = function objectoperations(inobject, callback) {
+        proxyprinttodiv('Function objectoperations inobject', inobject, 27);
+        var command = inobject.command;
 
-    proxyprinttodiv('Function objectoperations command collection', collection, 18);
-    proxyprinttodiv('Function objectoperations command databasetable', databasetable, 18);
-    
-    if(!commandObj){  
-        if (command.datastore === "localstore") {
-            command.object=localStore;
-        } else {
-            command.object=localStorage;
-        }
-    }
-    proxyprinttodiv('Function objectoperations command object', command.object, 27);
+        //2). if command.collection or command.databasetable exists then return used space
+        var collection = command.collection;
+        var databasetable = command.databasetable;
+        var commandObj = command.object;
+        var objectSize = 0;
+        var db={};
 
-    for(key in command.object) {
-        proxyprinttodiv('Function objectoperations object key ----------', key, 27);
-        var storedObj = command.object[key];
-        var splittedKeys = key.split("_");
+        proxyprinttodiv('Function objectoperations command collection', collection, 18);
+        proxyprinttodiv('Function objectoperations command databasetable', databasetable, 18);
 
-        var targetcollection = null;
-        var targetdatabasetable = null;
-
-        for(index in splittedKeys) {
-            splittedKey = splittedKeys[index];
-            var keyValues = splittedKey.split("-");
-            if( keyValues && keyValues.length==2 ){
-                if( keyValues[0]=="collection" ) {
-                    targetcollection = keyValues[1];
-                }
-                if( keyValues[0]=="databasetable" ) {
-                    targetdatabasetable = keyValues[1];
-                }
+        if(!commandObj){
+            if (command.datastore === "localstore") {
+                command.object=localStore;
+            } else {
+                command.object=localStorage;
             }
         }
+        proxyprinttodiv('Function objectoperations command object', command.object, 27);
 
-        if( commandObj ) {
-            var size = memorySizeOf(storedObj);
-            proxyprinttodiv('Function objectoperations size 1 ', size, 27);
-            objectSize+=size;
-        } else {  //If no command.object
-            if((collection && collection===targetcollection) || (databasetable && databasetable===targetdatabasetable)){ //To get particular collection/databasetable size
-                proxyprinttodiv('Function objectoperations targetcollection', targetcollection, 27);
-                proxyprinttodiv('Function objectoperations targetdatabasetable', targetdatabasetable, 27);
-                
-                size = memorySizeOf(storedObj);
-                proxyprinttodiv('Function objectoperations size 2', size, 27);
-                objectSize+=size;
-            }
-        }       
-    
-        //3). if command.delete exists and true then delete from localstorage
-        if(command && command["delete"] && command["delete"]===true){
-            removeFromLocalStorage(key);
-        }   
-    }
-    
-    var res = {};
-    res["objectsize"]=formatByteSize(objectSize);
-    callback(null, res);    
-};
+        for(key in command.object) {
+            proxyprinttodiv('Function objectoperations object key ----------', key, 27);
+            var storedObj = command.object[key];
+            var splittedKeys = key.split("_");
 
-/*
--- To calculate object size 
-Reference -- https://gist.github.com/zensh/4975495
-*/  
-function memorySizeOf(obj) {
-    var bytes = 0;
- 
-    function sizeOf(obj) {
-        if(obj !== null && obj !== undefined) {
-            switch(typeof obj) {
-            case 'number':
-                bytes += 8;
-                break;
-            case 'string':
-                bytes += obj.length * 2;
-                break;
-            case 'boolean':
-                bytes += 4;
-                break;
-            case 'object':
-                var objClass = Object.prototype.toString.call(obj).slice(8, -1);
-                if(objClass === 'Object' || objClass === 'Array') {
-                    for(var key in obj) {
-                        if(!obj.hasOwnProperty(key)) continue;
-                        sizeOf(obj[key]);
+            var targetcollection = null;
+            var targetdatabasetable = null;
+
+            for(index in splittedKeys) {
+                splittedKey = splittedKeys[index];
+                var keyValues = splittedKey.split("-");
+                if( keyValues && keyValues.length==2 ){
+                    if( keyValues[0]=="collection" ) {
+                        targetcollection = keyValues[1];
                     }
-                } else bytes += obj.toString().length * 2;
-                break;
+                    if( keyValues[0]=="databasetable" ) {
+                        targetdatabasetable = keyValues[1];
+                    }
+                }
+            }
+
+            if( commandObj ) {
+                var size = memorySizeOf(storedObj);
+                proxyprinttodiv('Function objectoperations size 1 ', size, 27);
+                objectSize+=size;
+            } else {  //If no command.object
+                if((collection && collection===targetcollection) || (databasetable && databasetable===targetdatabasetable)){ //To get particular collection/databasetable size
+                    proxyprinttodiv('Function objectoperations targetcollection', targetcollection, 27);
+                    proxyprinttodiv('Function objectoperations targetdatabasetable', targetdatabasetable, 27);
+
+                    size = memorySizeOf(storedObj);
+                    proxyprinttodiv('Function objectoperations size 2', size, 27);
+                    objectSize+=size;
+                }
+            }
+
+            //3). if command.delete exists and true then delete from localstorage
+            if(command && command["delete"] && command["delete"]===true){
+                removeFromLocalStorage(key);
             }
         }
-        return bytes;
-    }
-    return sizeOf(obj);
-}
-function formatByteSize(bytes) {
-    if(bytes < 1024) return bytes + " bytes";
-    else if(bytes < 1048576) return(bytes / 1024).toFixed(3) + " KiB";
-    else if(bytes < 1073741824) return(bytes / 1048576).toFixed(3) + " MiB";
-    else return(bytes / 1073741824).toFixed(3) + " GiB";
-}
 
-/*
--- To calculate localstorage object size 
-Reference -- http://glynrob.com/javascript/calculate-localstorage-space
-*/  
-function memorySizeOfObjFromLocalStorage(key){  
-    var objectValue = localStorage.getItem(key);
-    objectSize = 0;
-    if(objectValue){
-        objectSize = lengthInUtf8Bytes(objectValue);
-    }
-    return formatByteSize(objectSize);
-}
+        var res = {};
+        res["objectsize"]=formatByteSize(objectSize);
+        callback(null, res);
+    };
 
-// To calculate the size in bytes of the data currently stored
-function sizeofAllStorage(){  
-    var size = 0;
-    var eachObjectSize = 0;
-    var eachObjectSizeInMB = 0;
-    for (i=0; i<=localStorage.length-1; i++) {  
-        key = localStorage.key(i);  
-        eachObjectSize = lengthInUtf8Bytes(localStorage.getItem(key));
-        size += eachObjectSize;
-        eachObjectSizeInMB = Math.ceil((eachObjectSize/1024/1024)*100)/100;
-        proxyprinttodiv("calculatespace size ("+ key +")", eachObjectSizeInMB, 27);
-    }  
-    return Math.ceil((size/1024/1024)*100)/100; // get into MB
-}
-function lengthInUtf8Bytes(str) {
-  // Matches only the 10.. bytes that are non-initial characters in a multi-byte sequence.
-  var m = encodeURIComponent(str).match(/%[89ABab]/g);
-  return str.length + (m ? m.length : 0);
-}
+    /*
+     -- To calculate object size
+     Reference -- https://gist.github.com/zensh/4975495
+     */
+    function memorySizeOf(obj) {
+        var bytes = 0;
 
-//To get total storage size
-function totalStorageSize(){
-    var storeSpace = 0;
-    var maxMBToTest = 10;
-    localStorage.clear();
-    var i = 0;
-    var testPacket = new Array( 1025 ).join( "a" ); // create 1024 characters so 1KB
-    while (i<maxMBToTest){ // MB level
-        var t = 0;
-        while (t<1025){ // KB level
-            try {
-                localStorage.setItem(i+"|"+t, testPacket);
-            } catch( error ) {
-                var kbsaved = Math.floor(((t / 1024) * 100)); // calculate percentage of 1024
-                storeSpace = i+'.'+kbsaved; // add MB and KB values
-                storeSpace =  (Math.floor(storeSpace*100))/100; // rounds down the value
-                t = 1025;
-                i = maxMBToTest+1;
+        function sizeOf(obj) {
+            if(obj !== null && obj !== undefined) {
+                switch(typeof obj) {
+                    case 'number':
+                        bytes += 8;
+                        break;
+                    case 'string':
+                        bytes += obj.length * 2;
+                        break;
+                    case 'boolean':
+                        bytes += 4;
+                        break;
+                    case 'object':
+                        var objClass = Object.prototype.toString.call(obj).slice(8, -1);
+                        if(objClass === 'Object' || objClass === 'Array') {
+                            for(var key in obj) {
+                                if(!obj.hasOwnProperty(key)) continue;
+                                sizeOf(obj[key]);
+                            }
+                        } else bytes += obj.toString().length * 2;
+                        break;
+                }
             }
-            t++;
+            return bytes;
         }
-        i++;
+        return sizeOf(obj);
     }
-    localStorage.clear();
-    return storeSpace;
-}
+    function formatByteSize(bytes) {
+        if(bytes < 1024) return bytes + " bytes";
+        else if(bytes < 1048576) return(bytes / 1024).toFixed(3) + " KiB";
+        else if(bytes < 1073741824) return(bytes / 1048576).toFixed(3) + " MiB";
+        else return(bytes / 1073741824).toFixed(3) + " GiB";
+    }
+
+    /*
+     -- To calculate localstorage object size
+     Reference -- http://glynrob.com/javascript/calculate-localstorage-space
+     */
+    function memorySizeOfObjFromLocalStorage(key){
+        var objectValue = localStorage.getItem(key);
+        objectSize = 0;
+        if(objectValue){
+            objectSize = lengthInUtf8Bytes(objectValue);
+        }
+        return formatByteSize(objectSize);
+    }
+
+    // To calculate the size in bytes of the data currently stored
+    function sizeofAllStorage(){
+        var size = 0;
+        var eachObjectSize = 0;
+        var eachObjectSizeInMB = 0;
+        for (i=0; i<=localStorage.length-1; i++) {
+            key = localStorage.key(i);
+            eachObjectSize = lengthInUtf8Bytes(localStorage.getItem(key));
+            size += eachObjectSize;
+            eachObjectSizeInMB = Math.ceil((eachObjectSize/1024/1024)*100)/100;
+            proxyprinttodiv("calculatespace size ("+ key +")", eachObjectSizeInMB, 27);
+        }
+        return Math.ceil((size/1024/1024)*100)/100; // get into MB
+    }
+    function lengthInUtf8Bytes(str) {
+        // Matches only the 10.. bytes that are non-initial characters in a multi-byte sequence.
+        var m = encodeURIComponent(str).match(/%[89ABab]/g);
+        return str.length + (m ? m.length : 0);
+    }
+
+    //To get total storage size
+    function totalStorageSize(){
+        var storeSpace = 0;
+        var maxMBToTest = 10;
+        localStorage.clear();
+        var i = 0;
+        var testPacket = new Array( 1025 ).join( "a" ); // create 1024 characters so 1KB
+        while (i<maxMBToTest){ // MB level
+            var t = 0;
+            while (t<1025){ // KB level
+                try {
+                    localStorage.setItem(i+"|"+t, testPacket);
+                } catch( error ) {
+                    var kbsaved = Math.floor(((t / 1024) * 100)); // calculate percentage of 1024
+                    storeSpace = i+'.'+kbsaved; // add MB and KB values
+                    storeSpace =  (Math.floor(storeSpace*100))/100; // rounds down the value
+                    t = 1025;
+                    i = maxMBToTest+1;
+                }
+                t++;
+            }
+            i++;
+        }
+        localStorage.clear();
+        return storeSpace;
+    }
 
     exports.copyEnvironmentCommands = copyEnvironmentCommands = function (inobject) {
         //now repeat that code in getwid, copywod, and bottom of query
@@ -3793,13 +3814,13 @@ function totalStorageSize(){
         };
     };
 
-   
 
 
 
 
-// start other event handler
-    // start eventonemin, eventtenmin and save the interval value so 
+
+    // start other event handler
+    // start eventonemin, eventtenmin and save the interval value so
     // you can use "clearInterval" in the future if desired to stop things
 
     // var minute = 60 * 1000;
@@ -3808,354 +3829,349 @@ function totalStorageSize(){
     // setInterval(eventtenmin(), 10 * minute);
     // setInterval(eventdaily(), 1 * day);
 
-exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
+    exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
+        processqueue(arguments.callee.name, function (err, res) {
+            cb(err, res);
+        });
 
-};
-
-exports.eventonline = eventonline = function eventonline(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventoffline = eventoffline = function eventoffline(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventonemin = eventonemin = function eventonemin() {
-//    proxyprinttodiv("eventonemin", 'one sec', 30);
-    processqueue(arguments.callee.name, function (err, res) {
-        //cb(err, res);
-    });
-};
-
-exports.eventtenmin = eventtenmin = function eventtenmin(params, cb) {    
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventdaily = eventdaily = function eventdaily(params, cb) {    
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventmonthly = eventmonthly = function eventmonthly(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend(params, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters, cb) {
-    processqueue(arguments.callee.name, function (err, res) {
-        cb(err, res);
-    });
-};
-
-exports.processqueue = processqueue = function processqueue(queuename, callback ) {
-
-    // params.command.eventname = "eventonemin";
-
-
-    //proxyprinttodiv("findparent inputobj", params, 99);
-    //var queuename = params.command.eventname;
-    // var wid = inputobj["wid"];
-    var executeobject = {};
-    executeobject["executethis"] = "querywidmaster"; // Can be querywidmaster or querywid
-    executeobject["command"] = {
-        "result": "queryresult",
-        "datastore": config.configuration.datastore,
-        "collection": queuename,
-        "keycollection": queuename+"key",
-        "db": config.configuration.db,
-        "databasetable": config.configuration.databasetable
     };
-    executeobject["mongorawquery"] = {
-        "$and": [{
-            "metadata.queuename": queuename
-        }]
+
+    exports.eventonline = eventonline = function eventonline(params, cb) {
+        processqueue(arguments.callee.name, function (err, res) {
+            cb(err, res);
+        });
     };
-    //var env = new DriEnvironment(params.command.environment);
-    //proxyprinttodiv("after environment", env, 99);
-    proxyprinttodiv("after executeobject", executeobject, 99, true, true);
-    //env.execute(executeobject, function (err, res) {
-    execute(executeobject, function (err, res) {
-        proxyprinttodiv("findparent res2", res, 99);
-        // findwidbyqueryresult(res, "primarywid", function (err, res) {
-        if (res.hasOwnProperty('queryresult'))
-        {
-            var queuecount = res.queryresult.length;
-            proxyprinttodiv("Queuecount / result has this many records", queuecount, 99);
-            if (queuecount > 0)
-            {
-                // Step 1 - Get the wid name from the first object from the results
-                var first_object = res.queryresult[0];
-                var widname = first_object.wid;
 
-                // Step 2 - Get and LOCK the object in the storage system
-                var execobj_get1 = {
-                    "wid" : widname,
-                    "executethis" : "getwid",
-                    "command": {
-                        "lock" : true,
-                        "datastore": config.configuration.datastore,
-                        "collection": queuename,
-                        "keycollection": queuename+"key",
-                        "db": config.configuration.db,
-                        "databasetable": config.configuration.databasetable
-                    }
-                };
+    exports.eventoffline = eventoffline = function eventoffline(params, cb) {
+        processqueue(arguments.callee.name, function (err, res) {
+            cb(err, res);
+        });
+    };
 
-                    //env.execute(execobj_get1, function(err, res) {
-                    execute(execobj_get1, function(err, res) {
-                    // Receive LOCKED object
-                    // try to execute it
-                    // proxyprinttodiv("getwid / lock callback", widname, 99);
-                    proxyprinttodiv("getwid / lock callback - widname", widname, 99);
-                    proxyprinttodiv("getwid / lock callback - execobj_get1", execobj_get1, 99);
-                    proxyprinttodiv("getwid / lock callback - res", res, 99);
+    exports.eventonemin = eventonemin = function eventonemin() {
+        //    proxyprinttodiv("eventonemin", 'one sec', 30);
+        processqueue(arguments.callee.name, function (err, res) {
+            //cb(err, res);
+        });
+    };
 
-                    var contained_object = res.container[0];
-                    contained_object.executethis=contained_object.addthis.executethis;
-                    delete contained_object.addthis.executethis;
+    exports.eventtenmin = eventtenmin = function eventtenmin(params, cb) {
+        processqueue(arguments.callee.name, function (err, res) {
+            cb(err, res);
+        });
+    };
 
-                    // get object from res parameter
-                    // execute the object from the result
-                    execute(contained_object, function(err, res) {
-                        // Pass or fail - Now DELETE this wid
-                        proxyprinttodiv("execute the object callback", res, 99);
-                        var execobj_del1 = {
-                            "executethis" : "deletewid",
-                            "wid" : widname,
-                            "command": {
-                                "lock" : false,
-                                "datastore": config.configuration.datastore,
-                                "collection": queuename,
-                                "keycollection": queuename+"key",
-                                "db": config.configuration.db,
-                                "databasetable": config.configuration.databasetable
-                            }
-                        };
-                        execute(execobj_del1, function(err, res) {
-                            // delete has happened, call the callback
-                            proxyprinttodiv("Delete has finished / result", res, 99);
-                            proxyprinttodiv("Delete has finished / execobj_del1", execobj_del1, 99);
-                            if (queuecount > 1)
-                            {
-                                // If there is anything else left to do, 
-                                // then do it now.
-                                processqueue(queuename, callback);
-                                //processqueue(params, callback);
-                            }
-                            callback(err, res);
-                        });
-                    });
-                });
-            } else {
-                // Nothing to do
-                proxyprinttodiv("No results from query, just calling callback", 0, 99);
-                callback(err, res);
-            }
-        }
-    });
-};
+    exports.eventdaily = eventdaily = function eventdaily(params, cb) {
+        processqueue(arguments.callee.name, function (err, res) {
+            cb(err, res);
+        });
+    };
 
-exports.savetoqueue = savetoqueue = function savetoqueue(p, callback) {
-    // Parameters if this is a normal function
-    // queuename - string - the name of the queue to save to
-    // 
-    proxyprinttodiv("savetoqueue **************", 7, 99);
-    var queuename = p.command.queuename;
-    proxyprinttodiv(" qname is ... ",  queuename, 99 );
-    delete p.command.queuename;
-    // queuename = "eventonemin";
-    var itemtobesaved=p;
-    //itemtobesaved = [
-    //    { "executethis": "printhello", "to": "+12313133930", "body":"This is a text" }
-    //]
-    var recorddef = {
-        // "wid":"russ112",
-        "executethis": "addwidmaster",
-        "container":itemtobesaved,   // no wid ... let system make it for you
-        "metadata" : {
-            "queuename": queuename,
-            "queueflag" : "true"
-        },
-        "command": {
+    exports.eventmonthly = eventmonthly = function eventmonthly(params, cb) {
+        processqueue(arguments.callee.name, function (err, res) {
+            cb(err, res);
+        });
+    };
+
+    exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess(params, cb) {
+        processqueue(arguments.callee.name, function (err, res) {
+            cb(err, res);
+        });
+    };
+
+    exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail(params, cb) {
+        processqueue(arguments.callee.name, function (err, res) {
+            cb(err, res);
+        });
+    };
+
+    exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent(params, cb) {
+        processqueue(arguments.callee.name, function (err, res) {
+            cb(err, res);
+        });
+    };
+
+    exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent(params, cb) {
+        processqueue(arguments.callee.name, function (err, res) {
+            cb(err, res);
+        });
+    };
+
+    exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent(params, cb) {
+        processqueue(arguments.callee.name, function (err, res) {
+            cb(err, res);
+        });
+    };
+
+    exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent(params, cb) {
+        processqueue(arguments.callee.name, function (err, res) {
+            cb(err, res);
+        });
+    };
+
+    exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent(params, cb) {
+        processqueue(arguments.callee.name, function (err, res) {
+            cb(err, res);
+        });
+    };
+
+    exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent(params, cb) {
+        processqueue(arguments.callee.name, function (err, res) {
+            cb(err, res);
+        });
+    };
+
+    exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend(params, cb) {
+        processqueue(arguments.callee.name, function (err, res) {
+            cb(err, res);
+        });
+    };
+
+    exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters, cb) {
+        processqueue(arguments.callee.name, function (err, res) {
+            cb(err, res);
+        });
+    };
+
+    exports.processqueue = processqueue = function processqueue(queuename, callback ) {
+
+        // params.command.eventname = "eventonemin";
+
+
+        //proxyprinttodiv("findparent inputobj", params, 99);
+        //var queuename = params.command.eventname;
+        // var wid = inputobj["wid"];
+        var executeobject = {};
+        executeobject["executethis"] = "querywidmaster"; // Can be querywidmaster or querywid
+        executeobject["command"] = {
+            "result": "queryresult",
             "datastore": config.configuration.datastore,
             "collection": queuename,
             "keycollection": queuename+"key",
             "db": config.configuration.db,
             "databasetable": config.configuration.databasetable
-        }
-    };
-    proxyprinttodiv("update cache **************", recorddef, 99);
-    // var recorddef = { "wid": "russ1", "key": "value1"};
-    //addwidmaster(recorddef, function (err, res) {
-    execute(recorddef, function (err, res) {
-        callback(null, res);
-    });
-}
-
-
-// *********** EVENTS **************************************************
-// this shoud run the very first time an app is installed
-// it should not run again when machine is rebooted, unless local storage is cleared
-exports.eventappinstall = eventappinstall = function eventappinstall(params, callback) {
-    clearLocal();
-    setdefaultparm();
-    if (config.configuration.environment === 'local') {
-        clearLocalStorage();
-        if (config.configuration.machinename==='phonegap')
-        {
-        // copy files to wids 
-        }
-    }
-    else
-    {   // if server
-
-        // start eventonemin, eventtenmin and save the interval value so 
-        // you can use "clearInterval" in the future if desired to stop things
-        var minute = 60 * 1000;
-        var day = minute * 60 * 24;
-        setInterval(eventonemin, 1 * minute);
-        setInterval(eventtenmin, 10 * minute);
-        setInterval(eventdaily, 1 * day);
-
-        var startTime = new Date().getTime().toString();
-        execute({
-           "command.datastore":"localstore",
-           "executethis":"addwidmaster",
-           "wid":"bootwid",
-           "starttime": startTime
-           , "a": "ee"
-           }, function (err, res) {
-               console.log("Res is " + res.toString() );
-               callback(null,null);
-           }
-       );  
-    }
-}
-
-
-
-
-// this run when the device is turned on
-// we should always clear volitile memory localstore (clearLocal) and set defaults
-// we should NOT clear localstorage
-
-exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
-    clearLocal();
-    config.setdefaultparm();
-    // if the databases are not there then must be first time
-    if (config.configuration.environment === 'local') 
-    {
-        getwid({wid: config.configuration.startwid}, function (err, startwid) 
-        {
-            // try to get the default startwid, if nothing there then eventappinstall
-            if (err) 
+        };
+        executeobject["mongorawquery"] = {
+            "$and": [{
+                "metadata.queuename": queuename
+            }]
+        };
+        //var env = new DriEnvironment(params.command.environment);
+        //proxyprinttodiv("after environment", env, 99);
+        proxyprinttodiv("after executeobject", executeobject, 99, true, true);
+        //env.execute(executeobject, function (err, res) {
+        execute(executeobject, function (err, res) {
+            proxyprinttodiv("findparent res2", res, 99);
+            // findwidbyqueryresult(res, "primarywid", function (err, res) {
+            if (res.hasOwnProperty('queryresult'))
             {
-                eventappinstall(params, function (err, res)
+                var queuecount = res.queryresult.length;
+                proxyprinttodiv("Queuecount / result has this many records", queuecount, 99);
+                if (queuecount > 0)
                 {
-                    eventnormalstart(params, callback); // proceed to normal start
-                })
-            }
-            else 
-            {   // if startwid existed
-                extend(true, params, startwid);
-                eventnormalstart(params, callback);
-            }
-        })
-    }
-    else 
-    {
-        eventnormalstart(params, callback);
-    }
-}
+                    // Step 1 - Get the wid name from the first object from the results
+                    var first_object = res.queryresult[0];
+                    var widname = first_object.wid;
 
-exports.eventnormalstart = eventnormalstart = function eventnormalstart(params, callback) 
-{
-    if (config.configuration.machinename!=='phonegap')
-    {
-        var executeobject = {};
-        extend(true, executeobject, 
-            {"executethis":"getwidmaster", 
-            "wid":"startwid",
-            "command.syncrule":"sync_server"})
-        execute(executeobject, function (err, res) 
+                    // Step 2 - Get and LOCK the object in the storage system
+                    var execobj_get1 = {
+                        "wid" : widname,
+                        "executethis" : "getwid",
+                        "command": {
+                            "lock" : true,
+                            "datastore": config.configuration.datastore,
+                            "collection": queuename,
+                            "keycollection": queuename+"key",
+                            "db": config.configuration.db,
+                            "databasetable": config.configuration.databasetable
+                        }
+                    };
+
+                    //env.execute(execobj_get1, function(err, res) {
+                    execute(execobj_get1, function(err, res) {
+                        // Receive LOCKED object
+                        // try to execute it
+                        // proxyprinttodiv("getwid / lock callback", widname, 99);
+                        proxyprinttodiv("getwid / lock callback - widname", widname, 99);
+                        proxyprinttodiv("getwid / lock callback - execobj_get1", execobj_get1, 99);
+                        proxyprinttodiv("getwid / lock callback - res", res, 99);
+
+                        var contained_object = res.container[0];
+                        contained_object.executethis=contained_object.addthis.executethis;
+                        delete contained_object.addthis.executethis;
+
+                        // get object from res parameter
+                        // execute the object from the result
+                        execute(contained_object, function(err, res) {
+                            // Pass or fail - Now DELETE this wid
+                            proxyprinttodiv("execute the object callback", res, 99);
+                            var execobj_del1 = {
+                                "executethis" : "deletewid",
+                                "wid" : widname,
+                                "command": {
+                                    "lock" : false,
+                                    "datastore": config.configuration.datastore,
+                                    "collection": queuename,
+                                    "keycollection": queuename+"key",
+                                    "db": config.configuration.db,
+                                    "databasetable": config.configuration.databasetable
+                                }
+                            };
+                            execute(execobj_del1, function(err, res) {
+                                // delete has happened, call the callback
+                                proxyprinttodiv("Delete has finished / result", res, 99);
+                                proxyprinttodiv("Delete has finished / execobj_del1", execobj_del1, 99);
+                                if (queuecount > 1)
+                                {
+                                    // If there is anything else left to do,
+                                    // then do it now.
+                                    processqueue(queuename, callback);
+                                    //processqueue(params, callback);
+                                }
+                                callback(err, res);
+                            });
+                        });
+                    });
+                } else {
+                    // Nothing to do
+                    proxyprinttodiv("No results from query, just calling callback", 0, 99);
+                    callback(err, res);
+                }
+            }
+        });
+    };
+
+    exports.savetoqueue = savetoqueue = function savetoqueue(p, callback) {
+        // Parameters if this is a normal function
+        // queuename - string - the name of the queue to save to
+        //
+        proxyprinttodiv("savetoqueue **************", 7, 99);
+        var queuename = p.command.queuename;
+        proxyprinttodiv(" qname is ... ",  queuename, 99 );
+        delete p.command.queuename;
+        // queuename = "eventonemin";
+        var itemtobesaved=p;
+        //itemtobesaved = [
+        //    { "executethis": "printhello", "to": "+12313133930", "body":"This is a text" }
+        //]
+        var recorddef = {
+            // "wid":"russ112",
+            "executethis": "addwidmaster",
+            "container":itemtobesaved,   // no wid ... let system make it for you
+            "metadata" : {
+                "queuename": queuename,
+                "queueflag" : "true"
+            },
+            "command": {
+                "datastore": config.configuration.datastore,
+                "collection": queuename,
+                "keycollection": queuename+"key",
+                "db": config.configuration.db,
+                "databasetable": config.configuration.databasetable
+            }
+        };
+        proxyprinttodiv("update cache **************", recorddef, 99);
+        // var recorddef = { "wid": "russ1", "key": "value1"};
+        //addwidmaster(recorddef, function (err, res) {
+        execute(recorddef, function (err, res) {
+            callback(null, res);
+        });
+    }
+
+
+    // *********** EVENTS **************************************************
+    // this shoud run the very first time an app is installed
+    // it should not run again when machine is rebooted, unless local storage is cleared
+    exports.eventappinstall = eventappinstall = function eventappinstall(params, callback) {
+        clearLocal();
+        setdefaultparm();
+        if (config.configuration.environment === 'local') {
+            clearLocalStorage();
+            if (config.configuration.machinename==='phonegap')
+            {
+                // copy files to wids
+            }
+        }
+        else
+        {   // if server
+
+            // start eventonemin, eventtenmin and save the interval value so
+            // you can use "clearInterval" in the future if desired to stop things
+            var minute = 60 * 1000;
+            var day = minute * 60 * 24;
+            setInterval(eventonemin, 1 * minute);
+            setInterval(eventtenmin, 10 * minute);
+            setInterval(eventdaily, 1 * day);
+
+            var startTime = new Date().getTime().toString();
+            execute({
+                    "command.datastore":"localstore",
+                    "executethis":"addwidmaster",
+                    "wid":"bootwid",
+                    "starttime": startTime
+                    , "a": "ee"
+                }, function (err, res) {
+                    console.log("Res is " + res.toString() );
+                    callback(null,null);
+                }
+            );
+        }
+    }
+
+
+
+
+    // this run when the device is turned on
+    // we should always clear volitile memory localstore (clearLocal) and set defaults
+    // we should NOT clear localstorage
+
+    exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
+        clearLocal();
+        config.setdefaultparm();
+        // if the databases are not there then must be first time
+        if (config.configuration.environment === 'local')
         {
-            callback(err, res)    
-        })
+            getwid({wid: config.configuration.startwid}, function (err, startwid)
+            {
+                // try to get the default startwid, if nothing there then eventappinstall
+                if (err)
+                {
+                    eventappinstall(params, function (err, res)
+                    {
+                        eventnormalstart(params, callback); // proceed to normal start
+                    })
+                }
+                else
+                {   // if startwid existed
+                    extend(true, params, startwid);
+                    eventnormalstart(params, callback);
+                }
+            })
+        }
+        else
+        {
+            eventnormalstart(params, callback);
+        }
     }
-    else
-    {
-        callback(null, null)
-    }
-}
 
+    exports.eventnormalstart = eventnormalstart = function eventnormalstart(params, callback)
+    {
+        if (config.configuration.machinename!=='phonegap')
+        {
+            var executeobject = {};
+            extend(true, executeobject,
+                {"executethis":"getwidmaster",
+                    "wid":"startwid",
+                    "command.syncrule":"sync_server"})
+            execute(executeobject, function (err, res)
+            {
+                callback(err, res)
+            })
+        }
+        else
+        {
+            callback(null, null)
+        }
+    }
 
 })(typeof window === "undefined" ? global : window);
-
-//(function () {
-//    })();
-
