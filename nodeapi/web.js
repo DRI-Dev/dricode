@@ -1,7 +1,5 @@
 // using common files at server side also ...
 // exports.async = async = require('async');
-var consolere = require('console-remote-client').connect('console.re','80','jasontest');
-console.re.log('remote log test');
 
 require('./create_config.js');
 require('./config.js');

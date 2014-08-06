@@ -93,10 +93,10 @@ global.Debug = 'true';
 
 global.debuglevel = 0;
 global.debugon = false;
-//var consolere = require('console-remote-client').connect('console.re','80','dev-dri');
+require('console-remote-client').connect('console.re','80','dev-dri');
+console.re.log('remote log test');
 global.localStorage = exports.localStorage = {};
 
-//console.re.log('remote log test');
 
 // these are internal to this file
 var needle = require('needle');
