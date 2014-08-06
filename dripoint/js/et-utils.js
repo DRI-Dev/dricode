@@ -4180,7 +4180,3 @@ exports.eventnormalstart = eventnormalstart = function eventnormalstart(params, 
 
 
 })(typeof window === "undefined" ? global : window);
-
-//(function () {
-//    })();
-
