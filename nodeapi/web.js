@@ -17,17 +17,15 @@ require(DIR_TO_CORE_JS + 'et-get.js');
 require(DIR_TO_CORE_JS + 'et-query.js');
 require(DIR_TO_CORE_JS + 'executethis.js');
 
-require(DIR_TO_CORE_JS + 'et-test.js');
+require(DIR_TO_CORE_JS + 'et-util-test.js')
 require(DIR_TO_CORE_JS + 'test-addhoc.js');
 require(DIR_TO_CORE_JS + 'test-dto.js');
 require(DIR_TO_CORE_JS + 'test-et-utils.js');
 require(DIR_TO_CORE_JS + 'test-execute.js');
 require(DIR_TO_CORE_JS + 'test-inherit.js');
-require(DIR_TO_CORE_JS + 'test-main.js');
+require(DIR_TO_CORE_JS + 'test-namespace.js');
 require(DIR_TO_CORE_JS + 'test-query.js');
 require(DIR_TO_CORE_JS + 'test-security.js');
-require(DIR_TO_CORE_JS + 'tests-up-for-review.js');
-require(DIR_TO_CORE_JS + 'et-dto.js');
 
 require('./dao/mongo.js');
 async = require('async');
