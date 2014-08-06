@@ -93,8 +93,7 @@ global.Debug = 'true';
 
 global.debuglevel = 0;
 global.debugon = false;
-exports.consolere = require('console-remote-client').connect('console.re','80','dev-dri');
-exports.console = exports.consolere;
+
 global.localStorage = exports.localStorage = {};
 
 

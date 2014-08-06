@@ -21,6 +21,10 @@
 
 (function (window) {
 
+    if (config.configuration.environment !== 'local') {
+        var consolere = require('console-remote-client').connect('console.re','80','dev-dri');
+    }
+
 exports.localStore = localStore = function () {
     var json = {};
 
