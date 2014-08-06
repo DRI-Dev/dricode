@@ -20,6 +20,8 @@
 
 // var configuration = {};
 
+console.log('beginning of config-server hit!');
+
 function config123() {
     var configuration = {}; // {d:{environment:{}}};
     // what environment and what defaults should be used
