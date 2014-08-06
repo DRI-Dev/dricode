@@ -448,6 +448,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 } 
                 else if (qparms.mongorawquery || (extracommands.namespace && extracommands.namespaceflag))
                 {
+proxyprinttodiv('querywid qparms.mongorawquery', qparms.mongorawquery, 28);
                     if(extracommands.namespaceflag){
                         var criteriajsonarray = [];
 
@@ -456,17 +457,30 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                             if(extracommands.namespace[key] && extracommands.namespaceflag[key]) 
                             {
                                 var jsonnamespaceobj = {};
-                                jsonnamespaceobj["metadata.namespace." + key] = userns[key];
+                                jsonnamespaceobj["metadata.namespace." + key] = extracommands.namespace[key];
                                 criteriajsonarray.push(jsonnamespaceobj);
                             }
                         }
 
                         var queryjson = {"$and":criteriajsonarray};
-
+proxyprinttodiv('querywid queryjson', queryjson, 28);
                         // create a query based on criteriajsonarray, load as xtra parms for next step
-                        xparams['$and'] = BuildSingleQuery([queryjson,qparms.mongorawquery], "and", environmentdb); 
+                        var queryarray = [];
+                        queryarray.push(queryjson);
+                        if (qparms.mongorawquery) 
+                        {
+                            var querycopy = {};
+                            extend(true, querycopy, qparms.mongorawquery)
+                            queryarray.push(querycopy)
 
+                        };
+                        qparms.mongorawquery = {};
+proxyprinttodiv('querywid queryarray', queryarray, 28);                        
+                        qparms.mongorawquery['$and'] = queryarray;//BuildSingleQuery(queryarray, "and", environmentdb); 
+proxyprinttodiv('querywid qparms.mongorawquery', qparms.mongorawquery, 28); 
                     }
+
+proxyprinttodiv('querywid xparams', xparams, 28);
 
                     // create a query based on xparams
                     if (xparams && Object.keys(xparams).length > 0)
@@ -477,7 +491,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     {
                         mQueryString = qparms.mongorawquery
                     }
-
+proxyprinttodiv('querywid mQueryString multiple IV', mQueryString, 28);
 
                     // if query looks like this ...data...data...data then swtich out to current environmentdb
                     // perform a find and replace in the query string

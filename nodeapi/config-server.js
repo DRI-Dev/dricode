@@ -20,11 +20,8 @@
 
 // var configuration = {};
 
-
 function config123() {
     var configuration = {}; // {d:{environment:{}}};
-
-    
     // what environment and what defaults should be used
     configuration.environment = 'server';
     configuration.machinename = 'test3';
@@ -70,33 +67,8 @@ function config123() {
     };
 }
 
-// global.configuration = configuration;
-
-var needle = require('needle');
-var twilio = require('twilio')('AC909f1981261f4461abbc7985bd202897', '7bb26fabe1f818f11f4a178359e0f19a');
-var spawn = require('child_process').spawn;
-var url = require('url');
-
-exports.consolere = require('console-remote-client').connect('console.re','80','dev-dri');
-exports.console = exports.consolere;
-global.localStorage = exports.localStorage = {};
-// exports.environment = 'server';
-// exports.server = 'server1';
-var querystring = require('querystring');
-var https = require('https');
-var fs = require('fs');
-
-
-// console.log(JSON.stringify(config));
-// console.log(config.configuration);
-
-var russ1 = 'ryba1';
-russ2 = 'ryba2';
-exports.russ3 = 'ryba3';
-global.russ4 = 'ryba4';
-
+// this is called from eventdeviceready after all files are loaded
 function setdefaultparm() {
-
     saveglobal("debuglevel", 0);
     saveglobal("Debug", 'false');
     saveglobal("debugon", false);
@@ -108,21 +80,32 @@ function setdefaultparm() {
     saveglobal("debugcolor", 0);
     saveglobal("debugindent", 0);
     saveglobal("debuglinenum", 0);
-
-    //exports.environment = "local";
-    // exports.Debug = Debug;
-    // exports.debuglevel = 0 || debuglevel;
-    
-    global.environment = "server";
-    global.Debug = 'false';
-    global.debuglevel = 0;
-    global.debugon = false;
-
 }
 
-exports.config = config = config123();
-global.config = config;
+
+// these are executed before other files load
+global.config = config = config123();
 config.setdefaultparm = setdefaultparm;
+global.environment = "server";
+
+// the line below determines if all the prints are enabled or not
+global.Debug = 'true';
+
+global.debuglevel = 0;
+global.debugon = false;
+global.consolere = require('console-remote-client').connect('console.re','80','dev-dri');
+global.console = exports.consolere;
+global.localStorage = exports.localStorage = {};
+
+
+// these are internal to this file
+var needle = require('needle');
+var twilio = require('twilio')('AC909f1981261f4461abbc7985bd202897', '7bb26fabe1f818f11f4a178359e0f19a');
+var spawn = require('child_process').spawn;
+var url = require('url');
+var querystring = require('querystring');
+var https = require('https');
+var fs = require('fs');
 
 exports.test2 = test2 = function test2(name, callback) {
     var default_name = 'stranger';
