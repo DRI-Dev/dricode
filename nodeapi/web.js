@@ -7,8 +7,6 @@ require('./config.js');
 
 configfn = require('./config-server.js');
 
-console.log('config-server was just included through a require statement.');
-
 var DIR_TO_CORE_JS = '../dripoint/js/';
 
 require(DIR_TO_CORE_JS + 'et-security.js');
