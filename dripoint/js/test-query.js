@@ -39,6 +39,49 @@ widtests.qutest_allexecute.js = qutest_allexecute;
 widtests.qutest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing querywid and querywidmaster.";
 
 
+mapreducetest = function mapreducetest(mapfn, reducefn, querystring, callback) {
+    // var mapfn = window[map];
+    // var reducefn = window[reduce];
+    // var thirdparm = {};
+    // thirdparm.out = p.out; 
+
+    querystring = {"$and": [{"metadata.method": "defaultdto"}]};
+    
+    getConnection(mongoDatabaseToLookup, function(err, db) {
+        db.collection(schemaToLookup).mapReduce(mapfn, reducefn, querystring).toArray(function(err, res) {
+
+            if (err) {
+                callback(err, {
+                    etstatus: {
+                        status: 'queryerror'
+                    }
+                });
+            } else {
+                if (res) {
+                    callback(err, res);
+                } else {
+                    callback(err, []);
+                }
+            }
+        });
+    });
+};
+
+function reduce1(key, count) { 
+    return Array.sum(count); 
+}
+
+function map1() { 
+    // emit the wid name as uniquq value
+    emit(this.wid, this.data);
+}
+
+function testmapreducea() {
+    var query = {"$and":[{"metadata.method": "defaultdto"}]}; 
+
+    mapreducetest(map1, reduce1, query);
+}
+
 function mapreducetest1 (obj) {
     proxyprinttodiv('mapreducetest1 obj', obj, 99,true, true);
     var wid = obj.wid;
