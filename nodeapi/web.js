@@ -17,7 +17,7 @@ require(DIR_TO_CORE_JS + 'et-get.js');
 require(DIR_TO_CORE_JS + 'et-query.js');
 require(DIR_TO_CORE_JS + 'executethis.js');
 
-require(DIR_TO_CORE_JS + 'et-util-test.js')
+require(DIR_TO_CORE_JS + 'et-utils-test.js');
 require(DIR_TO_CORE_JS + 'test-addhoc.js');
 require(DIR_TO_CORE_JS + 'test-dto.js');
 require(DIR_TO_CORE_JS + 'test-et-utils.js');
