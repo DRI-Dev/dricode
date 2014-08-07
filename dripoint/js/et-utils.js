@@ -394,7 +394,7 @@
                     calculaterecordtoadd(incopy, currentrecord, command, function (err, recordtoadd){
                         proxyprinttodiv('Function updatewid err C ', err, 12, true, true);
                         proxyprinttodiv('Function updatewid recordtoadd C ', recordtoadd, 12, true, true);
-                        if (currentrecord)
+                        if (currentrecord && Object.size(currentrecord))
                         {
                             processcurrentrecord(currentrecord, recordtoadd, command, function (err, currentrecord) // save to local or mongo
                             {
@@ -3696,6 +3696,15 @@
         }
         return formatByteSize(objectSize);
     }
+
+    // adding a size function to Object's prototype
+    Object.size = function(obj) {
+        var size = 0, key;
+        for (key in obj) {
+            if (obj.hasOwnProperty(key)) size++;
+        }
+        return size;
+    };
 
     // To calculate the size in bytes of the data currently stored
     function sizeofAllStorage(){
