@@ -4138,32 +4138,33 @@
     // we should NOT clear localstorage
 
     exports.eventdeviceready = eventdeviceready = function eventdeviceready(params, callback) {
-        clearLocal();
-        config.setdefaultparm();
-        // if the databases are not there then must be first time
-        if (config.configuration.environment === 'local')
-        {
-            getwid({wid: config.configuration.startwid}, function (err, startwid)
-            {
-                // try to get the default startwid, if nothing there then eventappinstall
-                if (err)
-                {
-                    eventappinstall(params, function (err, res)
-                    {
-                        eventnormalstart(params, callback); // proceed to normal start
-                    })
-                }
-                else
-                {   // if startwid existed
-                    extend(true, params, startwid);
-                    eventnormalstart(params, callback);
-                }
-            })
-        }
-        else
-        {
-            eventnormalstart(params, callback);
-        }
+        callback(null, null);
+//        clearLocal();
+//        config.setdefaultparm();
+//        // if the databases are not there then must be first time
+//        if (config.configuration.environment === 'local')
+//        {
+//            getwid({wid: config.configuration.startwid}, function (err, startwid)
+//            {
+//                // try to get the default startwid, if nothing there then eventappinstall
+//                if (err)
+//                {
+//                    eventappinstall(params, function (err, res)
+//                    {
+//                        eventnormalstart(params, callback); // proceed to normal start
+//                    })
+//                }
+//                else
+//                {   // if startwid existed
+//                    extend(true, params, startwid);
+//                    eventnormalstart(params, callback);
+//                }
+//            })
+//        }
+//        else
+//        {
+//            eventnormalstart(params, callback);
+//        }
     }
 
     exports.eventnormalstart = eventnormalstart = function eventnormalstart(params, callback)
