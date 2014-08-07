@@ -4174,15 +4174,15 @@
             extend(true, executeobject,
                 {"executethis":"getwidmaster",
                     "wid":"startwid",
-                    "command.syncrule":"sync_server"})
+                    "command.syncrule":"sync_server"});
             execute(executeobject, function (err, res)
             {
-                if (typeof callback == 'function') { callback(err, res); } else {return}
+                if (typeof callback == 'function') { callback(err, res); } else {return res;}
             })
         }
         else
         {
-            if (typeof callback == 'function') { callback(null, null); } else {return}
+            if (typeof callback == 'function') { callback(null, null); } else {return null;}
         }
     }
 
