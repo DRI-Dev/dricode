@@ -42,7 +42,7 @@ var logger = new winston.Logger({
     transports: [
         new winston.transports.Papertrail({
             host: 'logs.papertrailapp.com',
-            port: '8889'
+            port: '3022'
         })
     ]
 });
