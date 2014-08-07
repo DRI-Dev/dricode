@@ -173,7 +173,7 @@ function qutest_map1 (executeobject, callback) {
                                                         "$or": [{
                                                             "metadata.method":"colordto"
                                                         }]
-                                                    }
+                                                    },
                                         //"queryresult": "queryresult",
                                         "sort": { "hue" : 1 } 
                                         //"limit":
