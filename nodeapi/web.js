@@ -37,18 +37,6 @@ url = require('url');
 util = require('util');
 
 stringifyObject = require('stringify-object');
-require('winston-papertrail').Papertrail;
-var logger = new winston.Logger({
-    transports: [
-        new winston.transports.Papertrail({
-            host: 'logs.papertrailapp.com',
-            port: '3022'
-        })
-    ]
-});
-
-logger.info('this is a papertrail log');
-
 express = require('express');
 app = express();
 http = require('http');
