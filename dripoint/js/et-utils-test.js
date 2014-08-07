@@ -1,4 +1,4 @@
-
+/*
 function run_cat1_tests(params, callback)
 {
 	var filter = {'category':'cat1'};
@@ -8,7 +8,10 @@ function run_cat1_tests(params, callback)
 		});
 
 }
+*/
 
+exports.run_daily_tests = 
+run_daily_tests = 
 function run_daily_tests(params, callback)
 {
 	var filter = {'category':'daily'};
@@ -19,6 +22,8 @@ function run_daily_tests(params, callback)
 
 }
 
+exports.run_daily_push_tests = 
+run_daily_push_tests = 
 function run_daily_push_tests(params, callback)
 {
 	var filter = {'category':'daily','subcategory':'push'};
@@ -29,6 +34,8 @@ function run_daily_push_tests(params, callback)
 
 }
 
+exports.run_test_daily_tests = 
+run_test_daily_tests = 
 function run_test_daily_tests(params, callback)
 {
 	var filter = {'category':'test-daily'};
@@ -40,6 +47,8 @@ function run_test_daily_tests(params, callback)
 
 }
 
+exports.run_daily_adhoc_tests = 
+run_daily_adhoc_tests =
 function run_daily_adhoc_tests(params, callback)
 {
 	var filter = {'category':'daily','subcategory':'adhoc'};
@@ -50,6 +59,8 @@ function run_daily_adhoc_tests(params, callback)
 
 }
 
+exports.run_expensive_tests = 
+run_expensive_tests = 
 function run_expensive_tests(params, callback)
 {
 	var filter = {'category':'expensive'};
@@ -60,6 +71,8 @@ function run_expensive_tests(params, callback)
 
 }
 
+exports.run_push_tests = 
+run_push_tests = 
 function run_push_tests(params, callback)
 {
 	var filter = {'subcategory':'push'};
@@ -70,6 +83,8 @@ function run_push_tests(params, callback)
 
 }
 
+exports.run_query_tests = 
+run_query_tests =
 function run_query_tests(params, callback)
 {
 	var filter = {'subcategory':'query'};
@@ -80,6 +95,8 @@ function run_query_tests(params, callback)
 
 }
 
+exports.run_execute_tests = 
+run_execute_tests = 
 function run_execute_tests(params, callback)
 {
 	var filter = {'category':'execute'};
