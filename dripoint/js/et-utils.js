@@ -912,9 +912,6 @@
 
                     console.log(text);
                     console.log(prettystring);
-
-//                    console.re.log(text);
-//                    console.re.log(obj);
                 }
             }
         }
