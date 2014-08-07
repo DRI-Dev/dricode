@@ -36,7 +36,7 @@ querystring = require('querystring');
 url = require('url');
 util = require('util');
 
-stringifyObject = require('stringify-object');
+stringifyObject = require('./stringify-object');
 express = require('express');
 app = express();
 http = require('http');
