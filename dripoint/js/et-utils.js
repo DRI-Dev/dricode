@@ -4093,7 +4093,7 @@
             {
                 // copy files to wids
             }
-            callback(null, null);
+            if (typeof callback == 'function') { callback(null, null); } else {return}
         }
         else
         {   // if server
@@ -4168,12 +4168,12 @@
                     "command.syncrule":"sync_server"})
             execute(executeobject, function (err, res)
             {
-                callback(err, res)
+                if (typeof callback == 'function') { callback(err, res); } else {return}
             })
         }
         else
         {
-            callback(null, null)
+            if (typeof callback == 'function') { callback(null, null); } else {return}
         }
     }
 
