@@ -394,7 +394,7 @@
                     calculaterecordtoadd(incopy, currentrecord, command, function (err, recordtoadd){
                         proxyprinttodiv('Function updatewid err C ', err, 12, true, true);
                         proxyprinttodiv('Function updatewid recordtoadd C ', recordtoadd, 12, true, true);
-                        if (currentrecord && Object.size(currentrecord) == 0)
+                        if (currentrecord && Object.size(currentrecord) > 0)
                         {
                             processcurrentrecord(currentrecord, recordtoadd, command, function (err, currentrecord) // save to local or mongo
                             {
