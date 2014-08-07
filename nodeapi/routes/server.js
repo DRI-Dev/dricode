@@ -48,7 +48,14 @@ function runExecuteThis(parameters, resp) {
             tempoutput.command.angularexeucute.parameters = {};
             extend(true, tempoutput.command.angularexeucute.parameters, localStore);
             // extend(true, executeobject, postResults);
-            results.push(tempoutput);
+            if (Array.isArray(results)) { results.push(tempoutput); }
+            else {
+                var newArray = [];
+                newArray.push(results);
+                newArray.push(tempoutput);
+                results = newArray;
+            }
+
             localStore.clear();
         }
         debuglinenum = 0;
