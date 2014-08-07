@@ -912,6 +912,10 @@
 
                     console.log(text);
                     console.log(prettystring);
+
+                    // write to debuglog
+                    fs.appendFile('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', text);
+                    fs.appendFile('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', prettystring);
                 }
             }
         }
