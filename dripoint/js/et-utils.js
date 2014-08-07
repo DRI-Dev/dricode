@@ -905,8 +905,16 @@
                 printToDiv(text, obj, debugone, pretty,expanddefault);
             } else {
                 if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
-                    console.re.log(text);
-                    console.re.log(obj);
+                    var prettystring = stringifyObject(obj, {
+                        indent: '  ',
+                        singleQuotes: false
+                    });
+
+                    console.log(text);
+                    console.log(prettystring);
+
+//                    console.re.log(text);
+//                    console.re.log(obj);
                 }
             }
         }
