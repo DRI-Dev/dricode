@@ -3697,6 +3697,15 @@
         return formatByteSize(objectSize);
     }
 
+    // adding a size function to Object's prototype
+    Object.size = function(obj) {
+        var size = 0, key;
+        for (key in obj) {
+            if (obj.hasOwnProperty(key)) size++;
+        }
+        return size;
+    };
+
     // To calculate the size in bytes of the data currently stored
     function sizeofAllStorage(){
         var size = 0;
