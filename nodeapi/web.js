@@ -37,7 +37,7 @@ url = require('url');
 util = require('util');
 
 stringifyObject = require('stringify-object');
-winston = require('winston-papertrail').Papertrail;
+require('winston-papertrail').Papertrail;
 var logger = new winston.Logger({
     transports: [
         new winston.transports.Papertrail({
