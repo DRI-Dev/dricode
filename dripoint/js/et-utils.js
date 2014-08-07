@@ -900,12 +900,14 @@
         if (!debugone) {
             debugone = -1;
         }
-        if (exports.environment === "local") {
-            printToDiv(text, obj, debugone, pretty,expanddefault);
-        } else {
-            if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
-                console.re.log(text);
-                console.re.log(obj);
+        if (debuglevel!==-1) {
+            if (config.configuration.environment === "local") {
+                printToDiv(text, obj, debugone, pretty,expanddefault);
+            } else {
+                if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
+                    console.re.log(text);
+                    console.re.log(obj);
+                }
             }
         }
     }
@@ -4091,6 +4093,7 @@
             {
                 // copy files to wids
             }
+            callback(null, null);
         }
         else
         {   // if server
