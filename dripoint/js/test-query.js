@@ -73,29 +73,36 @@ function reduce1(key, count) {
 
 function map1() { 
     // emit the wid name as uniquq value
-    emit(this.wid, this.data);
+    emit(this.wid, 1); // this.data);
 }
 
-function testmapreducea() {
-    var query = {"$and":[{"metadata.method": "defaultdto"}]}; 
+function testmapreduce1() {
+    var query = {}; 
+    query.query = {"$and":[{"metadata.method": "defaultdto"}]}; 
 
     mapreducetest(map1, reduce1, query);
 }
 
-function mapreducetest1 (obj) {
-    proxyprinttodiv('mapreducetest1 obj', obj, 99,true, true);
-    var wid = obj.wid;
-    var hue = obj.hue; 
-    proxyprinttodiv('mapreducetest1 arguments', arguments, 99,true, true);
-    proxyprinttodiv('mapreducetest1 wid', wid, 99,true, true);
-    proxyprinttodiv('mapreducetest1 hue', hue, 99,true, true);
+function mapreducetest1 () {
+    // proxyprinttodiv('mapreducetest1 obj', obj, 99,true, true);
+    // var wid = obj.wid;
+    // var hue = obj.hue; 
+    // proxyprinttodiv('mapreducetest1 arguments', arguments, 99,true, true);
+    // proxyprinttodiv('mapreducetest1 wid', wid, 99,true, true);
+    // proxyprinttodiv('mapreducetest1 hue', hue, 99,true, true);
     //emit(this.wid, this.hue);
-    emit(wid, hue);
+    // emit(wid, hue);
+    emit(this.hue, 1);
 };
 function reducetest1(wid, hue){
+    debugger;
     proxyprinttodiv('reducetest1 wid', wid, 99,true, true);
     proxyprinttodiv('reducetest1 hue', hue, 99,true, true);
-    var s=""; for (var i in hue) {s=s+hue[i]} return s
+    var s=""; 
+    for (var i in hue) {
+        s=s+hue[i]
+    }
+    return s
 };
 
 // this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
@@ -137,7 +144,7 @@ function qutest_map1 (executeobject, callback) {
                                         "executethis": "addwidmaster",
                                         "wid": "color4",
                                         "metadata.method": "colordto",
-                                        "hue": "cyan",
+                                        "hue": "blue",
                                         "sat": "cyan-sat"
                                     }, {
                                         "executethis": "addwidmaster",
@@ -164,11 +171,11 @@ function qutest_map1 (executeobject, callback) {
                                         "out": "queryresult",
                                         "query":   {
                                                         "$or": [{
-                                                        "metadata.method":"colordto"
+                                                            "metadata.method":"colordto"
                                                         }]
                                                     }
                                         //"queryresult": "queryresult",
-                                        //"sort": 
+                                        "sort": { "hue" : 1 } 
                                         //"limit":
                                         //"finalize":
                                         //"scope":

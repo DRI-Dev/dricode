@@ -1,46 +1,6 @@
 // copyright (c) 2014 DRI
 // to do make functions return objects, not strings
 
-// (function(){
-
-//     var keyPaths = [];
-
-//     var saveKeyPath = function(path) {
-//         keyPaths.push({
-//             sign: (path[0] === '+' || path[0] === '-')? parseInt(path.shift()+1) : 1,
-//             path: path
-//         });
-//     };
-
-//     var valueOf = function(object, path) {
-//         var ptr = object;
-//         path.each(function(key) { ptr = ptr[key] });
-//         return ptr;
-//     };
-
-//     var comparer = function(a, b) {
-//         for (var i = 0, l = keyPaths.length; i < l; i++) {
-//             aVal = valueOf(a, keyPaths[i].path);
-//             bVal = valueOf(b, keyPaths[i].path);
-//             if (aVal > bVal) return keyPaths[i].sign;
-//             if (aVal < bVal) return -keyPaths[i].sign;
-//         }
-//         return 0;
-//     };
-
-//     Array.implement('sortBy', function(){
-//         keyPaths.empty();
-//         Array.each(arguments, function(argument) {
-//             switch (typeOf(argument)) {
-//                 case "array": saveKeyPath(argument); break;
-//                 case "string": saveKeyPath(argument.match(/[+-]|[^.]+/g)); break;
-//             }
-//         });
-//         return this.sort(comparer);
-//     });
-
-// })();
-
 exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     // mapreducemongo should receive: map, reduce, query, output, command into query
     var p = {};
@@ -106,10 +66,6 @@ function mapreducelocal(map, reduce, p, cb)
     // mapper step
     globalresultobject = {};
 
-    if (p.sort) // sort input based on eg {dim0: 1} +1 ascending
-    {
-        //globalresultobject.sortBy(p.sort);
-    }
 
     for (var eachitem in p.queryresult) // example map: function () {emit(this.gender, 1);};
     {
@@ -124,7 +80,8 @@ function mapreducelocal(map, reduce, p, cb)
         // window[map].apply(this, parmarray);
         //window[map](p.queryresult[eachitem]);
         // had to hard code for now
-        window[map](p.queryresult[eachitem]);
+        // window[map](p.queryresult[eachitem]);
+        window[map].apply(p.queryresult[eachitem]);
     } 
     proxyprinttodiv('mapreduce globalresultobject I', globalresultobject, 99,true, true);
 
@@ -145,6 +102,11 @@ function mapreducelocal(map, reduce, p, cb)
         }
          
     } 
+    
+    if (p.sort) // sort input based on eg {dim0: 1} +1 ascending
+    {
+        globalresultobject.sortBy(p.sort);
+    }
 
     if (p.finalize) // Optional. FN Follows the reduce method and modifies the output
     {
