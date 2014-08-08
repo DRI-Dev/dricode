@@ -607,7 +607,7 @@ proxyprinttodiv('querywid mQueryString multiple IV', mQueryString, 28);
             else 
             {
                 proxyprinttodiv('querywid just before finalformat output--', output, 28, true); 
-                finalformat(output, relationshipoutput, qparms, extracommands, command, function (err, res) {
+                finalformat(output, relationshipoutput, qparms, extracommands, projection, command, function (err, res) {
                     callback(err,res);
                 })
             } // else
@@ -617,7 +617,7 @@ proxyprinttodiv('querywid mQueryString multiple IV', mQueryString, 28);
 };
 
 
-function finalformat(output, relationshipoutput, qparms, extracommands, command, callback) {
+function finalformat(output, relationshipoutput, qparms, extracommands, projection, command, callback) {
     proxyprinttodiv('querywid finalformat qparms', qparms, 28, true);
     var queryconvertmethod = extracommands.queryconvertmethod;
     var excludeparameters = qparms.mongosetfieldsexclude;
@@ -652,6 +652,7 @@ function finalformat(output, relationshipoutput, qparms, extracommands, command,
             var enhancedrecord = convertfromdriformatenhanced(output[eachout], command, foundrecord);
             proxyprinttodiv('querywid finalformat enhancedrecord', enhancedrecord, 28, true);
             proxyprinttodiv('querywid queryconvertmethod', queryconvertmethod, 28);
+            projectionrecord = getprojectionresult( enhancedrecord, projectiondefinition );
             // now convert teach record based on query convertmethod
             if (queryconvertmethod === "object")
             {
@@ -672,6 +673,36 @@ function finalformat(output, relationshipoutput, qparms, extracommands, command,
     proxyprinttodiv('querywid finaloutput', temp, 28, true);
     callback(null, temp);
 } // final format
+
+///
+// getprojectionresult
+// - sourcerecord - an object of some kind
+// - projectiondef - a mongodb compatible projection definition object.
+// 
+function getprojectionresult( sourcerecord, projectiondef ) {
+    // remove properties
+    for( var prop in projectiondef ) {
+        if (projectiondef[prop] == 0) {
+            delete(sourcerecord[prop]);
+        }
+    }
+    // include only these properties
+    var newobj = {};
+    var onlyIncludeCount = 0;
+    for (var prop in projectiondef ) {
+        onlyIncludeCount += 1;
+        if (projectiondef[prop] == 1) {
+            newobj[prop] = sourcerecord[prop];    
+        }
+    }
+    var result = sourcerecord;
+    if (onlyIncludeCount > 0) {
+        result = newobj;
+    }
+    return result;
+}
+
+// getprojectionresult( {"a":"apple", "b":"banana", "c":"cherry"}, {"a":1, "b": 0} );
 
 function distilllist(inlist, field, environmentdb) {
     var outlist = [];
