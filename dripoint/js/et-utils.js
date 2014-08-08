@@ -911,10 +911,10 @@
 
                     console.log(text);
                     console.log(prettystring);
-
+                    var outtext = text.substring(1, text.length-1)
                     // write to debuglog
                     fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', "PRINT");
-                    fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', text.substring(1, text.length()-1));
+                    fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', outtext);
                     fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', prettystring);
                 }
             }
