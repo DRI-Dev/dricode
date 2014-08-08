@@ -904,15 +904,17 @@
             } else {
                 if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
                     var prettystring = stringifyObject(obj, {
-                        indent: '  ',
+                        indent: '     ',
                         singleQuotes: false
                     });
+
 
                     console.log(text);
                     console.log(prettystring);
 
                     // write to debuglog
-                    fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', text);
+                    fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', "PRINT");
+                    fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', text.substring(1, loginToken.length()-1));
                     fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', prettystring);
                 }
             }

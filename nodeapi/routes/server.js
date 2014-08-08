@@ -9,6 +9,13 @@ exports.postputgetrunExecutethis = function postputgetrunExecutethis(req, resp) 
 }
 
 function runExecuteThis(parameters, resp) {
+    if (parameters.Debug || parameters.debuglevel)
+    {
+        var runtime = new Date();
+
+        fs.writeFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', runtime.toDateString());
+    }
+
     Debug = false;
     if (parameters.Debug) {
         Debug = "true";
@@ -19,10 +26,6 @@ function runExecuteThis(parameters, resp) {
         debuglevel = parameters.debuglevel;
         delete parameters.debuglevel;
     }
-
-        // if (config.configuration.environment == 'server' && level == 0) {
-        //     fs.writeFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', '');
-        // }
 
     if (parameters.command) {
         // grab server defaults
