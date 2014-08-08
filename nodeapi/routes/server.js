@@ -20,6 +20,10 @@ function runExecuteThis(parameters, resp) {
         delete parameters.debuglevel;
     }
 
+        // if (config.configuration.environment == 'server' && level == 0) {
+        //     fs.writeFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', '');
+        // }
+
     if (parameters.command) {
         // grab server defaults
         extend(true, parameters.command, config.configuration.d.default);
