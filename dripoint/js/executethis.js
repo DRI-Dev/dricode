@@ -378,7 +378,7 @@
     // 7) interpret results and provide a consolidated err, res
     exports.execute = window.execute = execute = function execute(input, callback) {
         var color = Number(getglobal('debugcolor')); if (!color || color >= 15) { color = 0; } color++; saveglobal('debugcolor', color);
-        var indent = Number(getglobal('debugindent')); if (!indent) {indent=0}; indent++; saveglobal('debugindent', indent);
+        var indent = Number(getglobal('debugindent')); if (!indent) {indent=0;} indent++; saveglobal('debugindent', indent);
         var previousresults = null,
             skipexecute = false,
             overallerror = null,
@@ -395,6 +395,11 @@
             type = executionpreferences.command.executetype,
             tryset = command.resulttable[currentexecuteid].tryset,
             trylength = tryset.length;
+
+        // if it's the first time through and we're server side, clear log file
+        // if (config.configuration.environment == 'server' && level == 0) {
+        //     fs.writeFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', '');
+        // }
 
         // read and save environment parameters
         // executionpreferences.command.environment = checkenvironment(executionpreferences.command.environment);
@@ -448,7 +453,7 @@
                 {
                     async.nextTick(function () 
                     {
-                        var color  = Number(getglobal('debugcolor')); color++; if (color >= 15) { color = 0; }; saveglobal('debugcolor', color);
+                        var color  = Number(getglobal('debugcolor')); color++; if (color >= 15) { color = 0; } saveglobal('debugcolor', color);
                         //var indent  = Number(getglobal('debugindent')); indent++; saveglobal('debugindent', indent);
                         if (skipexecute) 
                         {

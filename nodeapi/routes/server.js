@@ -9,10 +9,22 @@ exports.postputgetrunExecutethis = function postputgetrunExecutethis(req, resp) 
 }
 
 function runExecuteThis(parameters, resp) {
+    if (parameters.Debug || parameters.debuglevel)
+    {
+        var runtime = new Date();
+
+        fs.writeFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', runtime.toDateString());
+    }
+
     Debug = false;
     if (parameters.Debug) {
         Debug = "true";
-        delete parameters.Debug
+        delete parameters.Debug;
+    }
+
+    if (parameters.debuglevel) {
+        debuglevel = parameters.debuglevel;
+        delete parameters.debuglevel;
     }
 
     if (parameters.command) {
@@ -48,7 +60,14 @@ function runExecuteThis(parameters, resp) {
             tempoutput.command.angularexeucute.parameters = {};
             extend(true, tempoutput.command.angularexeucute.parameters, localStore);
             // extend(true, executeobject, postResults);
-            results.push(tempoutput);
+            if (Array.isArray(results)) { results.push(tempoutput); }
+            else {
+                var newArray = [];
+                newArray.push(results);
+                newArray.push(tempoutput);
+                results = newArray;
+            }
+
             localStore.clear();
         }
         debuglinenum = 0;

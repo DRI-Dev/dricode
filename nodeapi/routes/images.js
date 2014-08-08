@@ -1,6 +1,5 @@
 'use strict';
-var fs = require('fs'),
-    saveBase64ToServer;
+var saveBase64ToServer;
 
 exports.saveBase64ToServer = saveBase64ToServer = function saveBase64ToServer(req, res) {
     var parameters = req.body,

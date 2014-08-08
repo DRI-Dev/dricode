@@ -1,14 +1,14 @@
 'use strict';
 var cheerio = require('cheerio')
     , $ = undefined
-    , fs = require('graceful-fs')
+    , filesys = require('graceful-fs')
     , convertFileToWid;
 
 exports.convertFileToWid = convertFileToWid = function convertFileToWid(req, res) {
     var parameters = req.body,
         filename = parameters.filename,
         filepath = parameters.path,
-        fileContents = fs.readFileSync(filepath).toString(),
+        fileContents = filesys.readFileSync(filepath).toString(),
         shortFilename = filename.slice(0, filename.indexOf('.')),
         extension = filename.slice(filename.indexOf('.') + 1, filename.length),
         $ = cheerio.load(fileContents),

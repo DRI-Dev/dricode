@@ -894,8 +894,6 @@
     };
 
     exports.proxyprinttodiv = proxyprinttodiv = function proxyprinttodiv(text, obj, debugone, pretty,expanddefault) { // **** making code node compatible
-        var inbound_parameters = arguments;
-        var g_debuglinenum = getglobal("debuglinenum");
 
         if (!debugone) {
             debugone = -1;
@@ -905,8 +903,19 @@
                 printToDiv(text, obj, debugone, pretty,expanddefault);
             } else {
                 if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
-                    console.re.log(text);
-                    console.re.log(obj);
+                    var prettystring = stringifyObject(obj, {
+                        indent: '     ',
+                        singleQuotes: false
+                    });
+
+
+                    console.log(text);
+                    console.log(prettystring);
+
+                    // write to debuglog
+                    fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', "PRINT");
+                    fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', text.substring(1, loginToken.length()-1));
+                    fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', prettystring);
                 }
             }
         }
@@ -4174,15 +4183,15 @@
             extend(true, executeobject,
                 {"executethis":"getwidmaster",
                     "wid":"startwid",
-                    "command.syncrule":"sync_server"})
+                    "command.syncrule":"sync_server"});
             execute(executeobject, function (err, res)
             {
-                if (typeof callback == 'function') { callback(err, res); } else {return}
+                if (typeof callback == 'function') { callback(err, res); } else {return res;}
             })
         }
         else
         {
-            if (typeof callback == 'function') { callback(null, null); } else {return}
+            if (typeof callback == 'function') { callback(null, null); } else {return null;}
         }
     }
 
