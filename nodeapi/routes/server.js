@@ -12,7 +12,12 @@ function runExecuteThis(parameters, resp) {
     Debug = false;
     if (parameters.Debug) {
         Debug = "true";
-        delete parameters.Debug
+        delete parameters.Debug;
+    }
+
+    if (parameters.debuglevel) {
+        debuglevel = parameters.debuglevel;
+        delete parameters.debuglevel;
     }
 
     if (parameters.command) {

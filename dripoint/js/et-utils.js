@@ -894,8 +894,6 @@
     };
 
     exports.proxyprinttodiv = proxyprinttodiv = function proxyprinttodiv(text, obj, debugone, pretty,expanddefault) { // **** making code node compatible
-        var inbound_parameters = arguments;
-        var g_debuglinenum = getglobal("debuglinenum");
 
         if (!debugone) {
             debugone = -1;
