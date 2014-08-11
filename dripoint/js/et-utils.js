@@ -903,16 +903,25 @@
                 printToDiv(text, obj, debugone, pretty,expanddefault);
             } else {
                 if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
+                    var outtext = text.substring(0, text.length-1);
                     var prettystring = stringifyObject(obj, {
                         indent: '     ',
                         singleQuotes: false
                     });
+                    var currentdate = new Date();
+                    var datetime = "Last Sync: " + currentdate.getDate() + "/"
+                        + (currentdate.getMonth()+1)  + "/"
+                        + currentdate.getFullYear() + " @ "
+                        + currentdate.getHours() + ":"
+                        + currentdate.getMinutes() + ":"
+                        + currentdate.getSeconds();
 
 
                     console.log(text);
                     console.log(prettystring);
-                    var outtext = text.substring(0, text.length-1);
+
                     // write to debuglog
+                    fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', datetime + '\n');
                     fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', "PRINT >> ");
                     fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', outtext);
                     fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', prettystring + '\n');
