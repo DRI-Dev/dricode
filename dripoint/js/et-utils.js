@@ -909,8 +909,8 @@
                         singleQuotes: false
                     });
                     var currentdate = new Date();
-                    var printtime = "\nPRINT " + currentdate.getDate() + "/"
-                        + (currentdate.getMonth()+1)  + "/"
+                    var printtime = "\nPRINT " + (currentdate.getMonth()+1) + "/"
+                        + currentdate.getDate() + "/"
                         + currentdate.getFullYear() + " @ "
                         + currentdate.getHours() + ":"
                         + currentdate.getMinutes() + ":"
