@@ -915,7 +915,7 @@
                     // write to debuglog
                     fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', "PRINT >> ");
                     fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', outtext);
-                    fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', prettystring);
+                    fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', prettystring + '\n');
                 }
             }
         }
