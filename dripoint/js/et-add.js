@@ -369,7 +369,7 @@
     };
 
 
-    exports.addrecord = addrecord = function addrecord(originalinputrecord, dtoobject, parentwid, parentmethod, relationshiptype, command, callback) {
+    exports.addrecord = addrecord = function addrecord(inputrecord, dtoobject, parentwid, parentmethod, relationshiptype, command, callback) {
         var inbound_parameters_101 = JSON.parse(JSON.stringify(arguments));
 
         proxyprinttodiv("addrecord input inputrecord :- ", inputrecord, 17);
@@ -378,7 +378,6 @@
         proxyprinttodiv("addrecord input parentwid :- ", parentmethod, 17);
         proxyprinttodiv("addrecord input relationshiptype :- ", relationshiptype, 17);
 
-        var inputrecord = extend(true, {}, originalinputrecord);
         var relobj = {};
         var currentrelationshipobj=null;
         var reldto = {};
