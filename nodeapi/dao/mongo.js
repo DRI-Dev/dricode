@@ -284,6 +284,7 @@ exports.wadd = wadd = function wadd(objToAdd, command, callback) {
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
     if (!objToAdd.wid) { callback({error:"no wid passed to wadd function"}, null); }
+    if (objToAdd['_id']) { delete objToAdd['_id']; }
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
         if (command.newrecord)
