@@ -652,7 +652,7 @@ function finalformat(output, relationshipoutput, qparms, extracommands, projecti
             var enhancedrecord = convertfromdriformatenhanced(output[eachout], command, foundrecord);
             proxyprinttodiv('querywid finalformat enhancedrecord', enhancedrecord, 28, true);
             proxyprinttodiv('querywid queryconvertmethod', queryconvertmethod, 28);
-            projectionrecord = getprojectionresult( enhancedrecord, projectiondefinition );
+//            var projectionrecord = getprojectionresult(enhancedrecord, {});
             // now convert teach record based on query convertmethod
             if (queryconvertmethod === "object")
             {
