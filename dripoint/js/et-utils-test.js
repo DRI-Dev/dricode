@@ -142,9 +142,8 @@ function run_filtered_functions(params, callback)
 	// filter the list of function names by category and subcateory if they exist
 	// all parameter filters must pass - AND match
 	console.log('fintering functions to run');
-//	var functions2run = widtests;
-    var functions2run = {};
-	for (var property_name in params)
+	var functions2run = widtests;
+	for (property_name in params)
 	{
 		// Filter out each property for matching names
 		if (params.hasOwnProperty(property_name) )
@@ -157,7 +156,7 @@ function run_filtered_functions(params, callback)
 
 	// now convert the functions into an array so mapSeries will work with them
 	var fnList = [];
-	for (var fnName in functions2run)
+	for (fnName in functions2run)
 	{
 		if (functions2run.hasOwnProperty(fnName) && typeof functions2run[fnName] === "function" )
 		{
