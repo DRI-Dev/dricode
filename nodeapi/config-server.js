@@ -95,7 +95,7 @@ global.debuglevel = 0;
 global.debugon = false;
 //var consolere = require('console-remote-client').connect('console.re','80','dev-dri');
 //console.re.log('remote log test');
-global.localStorage = exports.localStorage = {};
+//global.localStorage = exports.localStorage = {};
 
 
 // these are internal to this file
