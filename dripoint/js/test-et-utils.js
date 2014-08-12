@@ -29,7 +29,7 @@ exports.lwr1 = widtests.lwr1 = lwr1 = function lwr1(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
-widtests.lwr1.category = "daily";
+widtests.lwr1.category = "redaily";
 widtests.lwr1.subcategory = "addhoc";
 widtests.lwr1.js = exports.lwr1;
 widtests.lwr1.description = "this does a test";
@@ -58,7 +58,7 @@ exports.lwr3 = widtests.lwr3 = lwr3 = function lwr3(params, callback) {
     callback(err, result);
 
 }
-widtests.lwr3.category = "daily";
+widtests.lwr3.category = "redaily";
 widtests.lwr3.subcategory = "addhoc";
 widtests.lwr3.js = exports.lwr3;
 widtests.lwr3.description = "this does a test";
@@ -87,7 +87,7 @@ exports.lwr5 = widtests.lwr5 = lwr5 = function lwr5(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
-widtests.lwr5.category = "daily";
+widtests.lwr5.category = "redaily";
 widtests.lwr5.subcategory = "addhoc";
 widtests.lwr5.js = exports.lwr5;
 widtests.lwr5.description = "this does a test";
@@ -116,7 +116,7 @@ exports.lwr6 = widtests.lwr6 = lwr6 = function lwr6(params, callback) {
     result = getcommand(params, defaults, filter, false);
     callback(err, result);
 }
-widtests.lwr6.category = "daily";
+widtests.lwr6.category = "redaily";
 widtests.lwr6.subcategory = "addhoc";
 widtests.lwr6.js = exports.lwr6;
 widtests.lwr6.description = "this does a test";
@@ -137,7 +137,7 @@ exports.lwr7 = widtests.lwr7 = lwr7 = function lwr7(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
-widtests.lwr7.category = "daily";
+widtests.lwr7.category = "redaily";
 widtests.lwr7.subcategory = "addhoc";
 widtests.lwr7.js = exports.lwr7;
 widtests.lwr7.description = "this does a test";
@@ -165,7 +165,7 @@ exports.lwr9 = widtests.lwr9 = lwr9 = function lwr9(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
-widtests.lwr9.category = "daily";
+widtests.lwr9.category = "redaily";
 widtests.lwr9.subcategory = "addhoc";
 widtests.lwr9.js = exports.lwr9;
 widtests.lwr9.description = "this does a test";
@@ -194,7 +194,7 @@ exports.lwr11 = widtests.lwr11 = lwr11 = function lwr11(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
-widtests.lwr11.category = "daily";
+widtests.lwr11.category = "redaily";
 widtests.lwr11.subcategory = "addhoc";
 widtests.lwr11.js = exports.lwr11;
 widtests.lwr11.description = "this does a test";
@@ -220,7 +220,7 @@ exports.lwr13 = widtests.lwr13 = lwr13 = function lwr13(params, callback) {
     result = getcommand(params, defaults, filter, true);
     callback(err, result);
 }
-widtests.lwr13.category = "daily";
+widtests.lwr13.category = "redaily";
 widtests.lwr13.subcategory = "addhoc";
 widtests.lwr13.js = exports.lwr13;
 widtests.lwr13.description = "this does a test";
@@ -246,7 +246,7 @@ exports.lwr14 = widtests.lwr14 = lwr14 = function lwr14(params, callback) {
 	console.log('ran lwr14');
     callback(err, result);
 }
-widtests.lwr14.category = "daily";
+widtests.lwr14.category = "redaily";
 widtests.lwr14.subcategory = "addhoc";
 widtests.lwr14.js = exports.lwr14;
 widtests.lwr14.description = "this does a test";
@@ -359,7 +359,7 @@ exports.etget4 = widtests.etget4 = etget4 = function etget4(parameters, callback
     res = logverify("logverify", actual_result, expected_result);
     callback(null, res);
 }
-widtests.etget4.category = "daily";
+widtests.etget4.category = "redaily";
 widtests.etget4.subcategory = "addhoc";
 widtests.etget4.js = exports.etget4;
 widtests.etget4.description = "this does a test";
@@ -460,7 +460,7 @@ exports.etget22 = widtests.etget22 = etget22 = function etget22(parameters, call
     res = logverify("logverify", actual_result, expected_result);
     callback(null, res);
 }
-widtests.etget22.category = "daily";
+widtests.etget22.category = "redaily";
 widtests.etget22.subcategory = "addhoc";
 widtests.etget22.js = exports.etget22;
 widtests.etget22.description = "this does a test";
@@ -562,7 +562,7 @@ exports.etget5 = widtests.etget5 = etget5 = function etget5(parameters, callback
     res = logverify("logverify", actual_result, expected_result);
     callback(null, res);
 }
-widtests.etget5.category = "daily";
+widtests.etget5.category = "redaily";
 widtests.etget5.subcategory = "addhoc";
 widtests.etget5.js = exports.etget5;
 widtests.etget5.description = "this does a test";
@@ -665,7 +665,7 @@ exports.etget6 = widtests.etget6 = etget6 = function etget6(parameters, callback
     res = logverify("logverify", actual_result, expected_result);
     callback(null, res);
 }
-widtests.etget6.category = "daily";
+widtests.etget6.category = "redaily";
 widtests.etget6.subcategory = "addhoc";
 widtests.etget6.js = exports.etget6;
 widtests.etget6.description = "this does a test";
@@ -772,7 +772,7 @@ exports.etget7 = widtests.etget7 = etget7 = function etget7(parameters, callback
     res = logverify("logverify", actual_result, expected_result);
     callback(null, res);
 }
-widtests.etget7.category = "daily";
+widtests.etget7.category = "redaily";
 widtests.etget7.subcategory = "addhoc";
 widtests.etget7.js = exports.etget7;
 widtests.etget7.description = "this does a test";
@@ -876,7 +876,7 @@ exports.etget8 = widtests.etget8 = etget8 = function etget8(parameters, callback
     res = logverify("logverify", actual_result, expected_result);
     callback(null, res);
 }
-widtests.etget8.category = "daily";
+widtests.etget8.category = "redaily";
 widtests.etget8.subcategory = "addhoc";
 widtests.etget8.js = exports.etget8;
 widtests.etget8.description = "this does a test";
@@ -908,7 +908,7 @@ exports.ettestetdtt = widtests.ettestetdtt = ettestetdtt = function ettestetdtt(
         });
     });
 };
-widtests.ettestetdtt.category = "daily";
+widtests.ettestetdtt.category = "redaily";
 widtests.ettestetdtt.subcategory = "addhoc";
 widtests.ettestetdtt.js = exports.ettestetdtt;
 widtests.ettestetdtt.description = "this does a test";
@@ -1050,7 +1050,7 @@ exports.etd1 = widtests.etd1 = etd1 = function etd1(params, callback) {
         });
     });
 }
-widtests.etd1.category = "daily";
+widtests.etd1.category = "redaily";
 widtests.etd1.subcategory = "addhoc";
 widtests.etd1.js = exports.etd1;
 widtests.etd1.description = "this does a test";
@@ -1146,7 +1146,7 @@ exports.etd2 = widtests.etd2 = etd2 = function etd2(params, callback) {
         });
     });
 }
-widtests.etd2.category = "daily";
+widtests.etd2.category = "redaily";
 widtests.etd2.subcategory = "addhoc";
 widtests.etd2.js = exports.etd2;
 widtests.etd2.description = "this does a test";
@@ -1198,7 +1198,7 @@ exports.etd3 = widtests.etd3 = etd3 = function etd3(params, callback) {
         });
     });
 }
-widtests.etd3.category = "daily";
+widtests.etd3.category = "redaily";
 widtests.etd3.subcategory = "addhoc";
 widtests.etd3.js = exports.etd3;
 widtests.etd3.description = "this does a test";
@@ -1239,7 +1239,7 @@ exports.dupdateget4 = widtests.dupdateget4 = dupdateget4 = function dupdateget4(
         callback(err, params);
     });
 }
-widtests.dupdateget4.category = "daily";
+widtests.dupdateget4.category = "redaily";
 widtests.dupdateget4.subcategory = "addhoc";
 widtests.dupdateget4.js = exports.dupdateget4;
 widtests.dupdateget4.description = "this does a test";
@@ -1350,7 +1350,7 @@ exports.etd5 = widtests.etd5 = etd5 = function etd5(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd5.category = "daily";
+widtests.etd5.category = "redaily";
 widtests.etd5.subcategory = "addhoc";
 widtests.etd5.js = exports.etd5;
 widtests.etd5.description = "this does a test";
@@ -1427,7 +1427,7 @@ exports.etd6 = widtests.etd6 = etd6 = function etd6(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd6.category = "daily";
+widtests.etd6.category = "redaily";
 widtests.etd6.subcategory = "addhoc";
 widtests.etd6.js = exports.etd6;
 widtests.etd6.description = "this does a test";
@@ -1523,7 +1523,7 @@ exports.etd7 = widtests.etd7 = etd7 = function etd7(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd7.category = "daily";
+widtests.etd7.category = "redaily";
 widtests.etd7.subcategory = "addhoc";
 widtests.etd7.js = exports.etd7;
 widtests.etd7.description = "this does a test";
@@ -1592,7 +1592,7 @@ exports.etd8 = widtests.etd8 = etd8 = function etd8(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd8.category = "daily";
+widtests.etd8.category = "redaily";
 widtests.etd8.subcategory = "addhoc";
 widtests.etd8.js = exports.etd8;
 widtests.etd8.description = "this does a test";
@@ -1652,7 +1652,7 @@ exports.etd10 = widtests.etd10 = etd10 = function etd10(params, callback) {
         });
     });
 }
-widtests.etd10.category = "daily";
+widtests.etd10.category = "redaily";
 widtests.etd10.subcategory = "addhoc";
 widtests.etd10.js = exports.etd10;
 widtests.etd10.description = "this does a test";
@@ -1740,7 +1740,7 @@ exports.etd10b = widtests.etd10b = etd10b = function etd10b(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd10b.category = "daily";
+widtests.etd10b.category = "redaily";
 widtests.etd10b.subcategory = "addhoc";
 widtests.etd10b.js = exports.etd10b;
 widtests.etd10b.description = "this does a test";
@@ -1917,7 +1917,7 @@ exports.etd11 = widtests.etd11 = etd11 = function etd11(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd11.category = "daily";
+widtests.etd11.category = "redaily";
 widtests.etd11.subcategory = "addhoc";
 widtests.etd11.js = exports.etd11;
 widtests.etd11.description = "this does a test";
@@ -1995,7 +1995,7 @@ exports.etd12 = widtests.etd12 = etd12 = function etd12(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd12.category = "daily";
+widtests.etd12.category = "redaily";
 widtests.etd12.subcategory = "addhoc";
 widtests.etd12.js = exports.etd12;
 widtests.etd12.description = "this does a test";
@@ -2083,7 +2083,7 @@ exports.etd13 = widtests.etd13 = etd13 = function etd13(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd13.category = "daily";
+widtests.etd13.category = "redaily";
 widtests.etd13.subcategory = "addhoc";
 widtests.etd13.js = exports.etd13;
 widtests.etd13.description = "this does a test";
@@ -2173,7 +2173,7 @@ exports.etd14 = widtests.etd14 = etd14 = function etd14(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd14.category = "daily";
+widtests.etd14.category = "redaily";
 widtests.etd14.subcategory = "addhoc";
 widtests.etd14.js = exports.etd14;
 widtests.etd14.description = "this does a test";
@@ -2226,7 +2226,7 @@ exports.etalldeepfiltertests = widtests.etalldeepfiltertests = etalldeepfilterte
 
     });
 }
-widtests.etalldeepfiltertests.category = "daily";
+widtests.etalldeepfiltertests.category = "redaily";
 widtests.etalldeepfiltertests.subcategory = "addhoc";
 widtests.etalldeepfiltertests.js = exports.etalldeepfiltertests;
 widtests.etalldeepfiltertests.description = "this does a test";
@@ -2518,7 +2518,7 @@ exports.etd9 = widtests.etd9 = etd9 = function etd9(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd9.category = "daily";
+widtests.etd9.category = "redaily";
 widtests.etd9.subcategory = "addhoc";
 widtests.etd9.js = exports.etd9;
 widtests.etd9.description = "this does a test";
@@ -2674,7 +2674,7 @@ exports.etd16 = widtests.etd16 = etd16 = function etd16(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd16.category = "daily";
+widtests.etd16.category = "redaily";
 widtests.etd16.subcategory = "addhoc";
 widtests.etd16.js = exports.etd16;
 widtests.etd16.description = "this does a test";
@@ -2692,7 +2692,7 @@ exports.etd17 = widtests.etd17 = etd17 = function etd17(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd17.category = "daily";
+widtests.etd17.category = "redaily";
 widtests.etd17.subcategory = "addhoc";
 widtests.etd17.js = exports.etd17;
 widtests.etd17.description = "this does a test";
@@ -2711,7 +2711,7 @@ exports.etd18 = widtests.etd18 = etd18 = function etd18(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd18.category = "daily";
+widtests.etd18.category = "redaily";
 widtests.etd18.subcategory = "addhoc";
 widtests.etd18.js = exports.etd18;
 widtests.etd18.description = "this does a test";
@@ -2730,7 +2730,7 @@ exports.etd19 = widtests.etd19 = etd19 = function etd19(params, callback) {
         callback(err, res);
     });
 }
-widtests.etd19.category = "daily";
+widtests.etd19.category = "redaily";
 widtests.etd19.subcategory = "addhoc";
 widtests.etd19.js = exports.etd19;
 widtests.etd19.description = "this does a test";
@@ -2911,7 +2911,7 @@ exports.etd26 = widtests.etd26 = etd26 = function etd26(params, callback) {
             callback(err, res);
         });
 }
-widtests.etd26.category = "daily";
+widtests.etd26.category = "redaily";
 widtests.etd26.subcategory = "addhoc";
 widtests.etd26.js = exports.etd26;
 widtests.etd26.description = "this does a test";
@@ -2948,7 +2948,7 @@ exports.etd27 = widtests.etd27 = etd27 = function etd27(params, callback) {
             callback(err, res);
         });
 }
-widtests.etd27.category = "daily";
+widtests.etd27.category = "redaily";
 widtests.etd27.subcategory = "addhoc";
 widtests.etd27.js = exports.etd27;
 widtests.etd27.description = "this does a test";
@@ -2986,7 +2986,7 @@ exports.etd28 = widtests.etd28 = etd28 = function etd28(params, callback) {
             callback(err, res);
         });
 }
-widtests.etd28.category = "daily";
+widtests.etd28.category = "redaily";
 widtests.etd28.subcategory = "addhoc";
 widtests.etd28.js = exports.etd28;
 widtests.etd28.description = "this does a test";
@@ -3024,7 +3024,7 @@ exports.etd29 = widtests.etd29 = etd29 = function etd29(params, callback) {
             callback(err, res);
         });
 }
-widtests.etd29.category = "daily";
+widtests.etd29.category = "redaily";
 widtests.etd29.subcategory = "addhoc";
 widtests.etd29.js = exports.etd29;
 widtests.etd29.description = "this does a test";
@@ -3186,7 +3186,7 @@ exports.etd30 = widtests.etd30 = etd30 = function etd30(params, callback) {
         });
     });
 }
-widtests.etd30.category = "daily";
+widtests.etd30.category = "redaily";
 widtests.etd30.subcategory = "addhoc";
 widtests.etd30.js = exports.etd16;
 widtests.etd30.description = "this does a test";
@@ -3242,7 +3242,7 @@ exports.lmetd2 = widtests.lmetd2 = lmetd2 = function lmetd2(params, callback) {
         });
     });
 }
-widtests.lmetd2.category = "daily";
+widtests.lmetd2.category = "redaily";
 widtests.lmetd2.subcategory = "addhoc";
 widtests.lmetd2.js = exports.lmetd2;
 widtests.lmetd2.description = "this does a test";
@@ -3283,7 +3283,7 @@ exports.lmetd3 = widtests.lmetd3 = lmetd3 = function lmetd3(params, callback) {
         });
     });
 }
-widtests.lmetd3.category = "daily";
+widtests.lmetd3.category = "redaily";
 widtests.lmetd3.subcategory = "addhoc";
 widtests.lmetd3.js = exports.lmetd3;
 widtests.lmetd3.description = "this does a test";
@@ -3326,7 +3326,7 @@ exports.lmetd4 = widtests.lmetd4 = lmetd4 = function lmetd4(params, callback) {
         });
     });
 }
-widtests.lmetd4.category = "daily";
+widtests.lmetd4.category = "redaily";
 widtests.lmetd4.subcategory = "addhoc";
 widtests.lmetd4.js = exports.lmetd4;
 widtests.lmetd4.description = "this does a test";
@@ -3368,7 +3368,7 @@ exports.lmetd5 = widtests.lmetd5 = lmetd5 = function lmetd5(params, callback) {
         });
     });
 };
-widtests.lmetd5.category = "daily";
+widtests.lmetd5.category = "redaily";
 widtests.lmetd5.subcategory = "addhoc";
 widtests.lmetd5.js = exports.lmetd5;
 widtests.lmetd5.description = "this does a test";

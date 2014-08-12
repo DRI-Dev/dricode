@@ -59,7 +59,7 @@ function ettest_allexecute(executeobject, callback)
 	console.log('end ettest_allexecute');
 };
 
-widtests.ettest_allexecute.category = "daily";
+widtests.ettest_allexecute.category = "redaily";
 widtests.ettest_allexecute.subcategory = "push";
 widtests.ettest_allexecute.js = ettest_allexecute;
 widtests.ettest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing execute.";
@@ -187,10 +187,10 @@ function ettest_serieslevel0(executeobject, callback)
 		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
 		  {
-				proxyprinttodiv('ettest_serieslevel0fail3middle actual result', result_obj, 99, true);                         
-				proxyprinttodiv('ettest_serieslevel0fail3middle expected result', null, 99, true);
-				proxyprinttodiv('ettest_serieslevel0fail3middle actual error',error_obj, 99);
-				proxyprinttodiv('ettest_serieslevel0fail3middle expected error', global_failnotfound, 99);
+				proxyprinttodiv('actual result', result_obj, 99, true);                         
+				proxyprinttodiv('expected result', null, 99, true);
+				proxyprinttodiv('actual error',error_obj, 99);
+				proxyprinttodiv('expected error', global_failnotfound, 99);
 				
 				composite_obj=logverifycomplex("ettest_serieslevel0fail3middle", result_obj,null, error_obj, global_failnotfound);
 				callback(null, composite_obj);
@@ -1629,7 +1629,7 @@ function ettest_howtodo(executeobject, callback)
 	function ettest_series1passnormalgw(executeobject, callback) 
 	{
 	  // executethis: test_return_noerror_result
-	  execute({
+	  updatewid({
 		  "executethis":"updatewid",
 		  "wid":"callpassfunction",
 		  "metadata":{"method":"defaultdto"},
@@ -1851,7 +1851,51 @@ function ettest_executemisc(executeobject, callback)
 			});
 	  });
 	};
+	
+	
+	// test of executegetwid -- save a wid then execute it
+	exports.ettest_series1passegw2 = 
+	ettest_series1passegw2 = 
+	function ettest_series1passegw2(executeobject, callback) 
+	{
+		updatewid({
+				//"executethis":"updatewid",
+				"wid":"callpassfunction",
+				"metadata":{"method":"defaultdto"},
+				"addthis.executethis":"test_return_noerror_result"     // note save it with addthis in front
+				},                                                     // this will execute "test_return_noerror_result" 
+				function (err,res) {
 
+		  if (!executeobject.command) {
+              executeobject.command={};
+              executeobject.command.environment={};
+              executeobject.command.environment.run={};
+          }
+		  executeobject.command.executetype="series";
+		  executeobject.command.environment.run.executelevel=0;
+		  executeobject.command.environment.platform='local';
+	  
+  
+		  executeobject.command.environment.processfn="execute_get_wid";
+		  executeobject.serverfn="test_return_noerror_result2";
+		  executeobject.command.xrun={"executethis": 'callpassfunction'};
+
+		  var etEnvironment = new DriEnvironment(executeobject.command.environment);
+		  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+		  {        
+				var result_assertion={"a":"b", "env":executeobject.command.environment.platform};               
+				proxyprinttodiv('expected error', null, 99);
+				proxyprinttodiv('actual error', error_obj, 99);
+				proxyprinttodiv('expected result', result_assertion, 99);
+				proxyprinttodiv('actual result', result_obj, 99);
+
+				var composite_obj=logverifycomplex("ettest_series1pass", result_obj, result_assertion, error_obj, null);
+				proxyprinttodiv('composite_obj', composite_obj, 99);
+				callback(null, composite_obj);
+		  });
+		}
+	  );
+	};
 
 exports.ettest_series1update1 = 
 ettest_series1update1 = 
@@ -3244,7 +3288,7 @@ exports.testnested2 = widtests.testnested2 = testnested2 = function testnested2(
 
     execute(inparams, callback);
 }
-widtests.testnested2.category = "daily";
+widtests.testnested2.category = "redaily";
 widtests.testnested2.subcategory = "daily";
 widtests.testnested2.js = exports.testnested2;
 widtests.testnested2.description = "this does a test";
@@ -3289,7 +3333,7 @@ function ettest_testenvglobal1(executeobject, callback)
       } 
     );
 };
-widtests.ettest_testenvglobal1.category = "daily";
+widtests.ettest_testenvglobal1.category = "redaily";
 widtests.ettest_testenvglobal1.subcategory = "push";
 widtests.ettest_testenvglobal1.js = exports.testenvglobal1;
 widtests.ettest_testenvglobal1.description = "this does a test";
@@ -3323,7 +3367,7 @@ function ettest_testenvfunctionvar1(executeobject, callback)
       } 
     );
 };
-widtests.ettest_testenvfunctionvar1.category = "daily";
+widtests.ettest_testenvfunctionvar1.category = "redaily";
 widtests.ettest_testenvfunctionvar1.subcategory = "push";
 widtests.ettest_testenvfunctionvar1.js = exports.testenvfunctionvar1;
 widtests.ettest_testenvfunctionvar1.description = "this does a test";
@@ -3375,7 +3419,7 @@ function ettest_globalmetadata1(executeobject, callback)
       } 
     );
 }
-widtests.ettest_globalmetadata1.category = "daily";
+widtests.ettest_globalmetadata1.category = "redaily";
 widtests.ettest_globalmetadata1.subcategory = "push";
 widtests.ettest_globalmetadata1.js = exports.ettest_globalmetadata1;
 widtests.ettest_globalmetadata1.description = "this does a test";
@@ -3426,7 +3470,7 @@ function ettest_metadatauserid1(executeobject, callback)
       } 
     );
 }
-widtests.ettest_metadatauserid1.category = "daily";
+widtests.ettest_metadatauserid1.category = "redaily";
 widtests.ettest_metadatauserid1.subcategory = "push";
 widtests.ettest_metadatauserid1.js = exports.ettest_metadatauserid1;
 widtests.ettest_metadatauserid1.description = "this does a test";
@@ -3477,7 +3521,7 @@ function ettest_metadatamerchantid1(executeobject, callback)
       } 
     );
 }
-widtests.ettest_metadatamerchantid1.category = "daily";
+widtests.ettest_metadatamerchantid1.category = "redaily";
 widtests.ettest_metadatamerchantid1.subcategory = "push";
 widtests.ettest_metadatamerchantid1.js = exports.ettest_metadatamerchantid1;
 widtests.ettest_metadatamerchantid1.description = "this does a test";
@@ -3529,7 +3573,7 @@ function ettest_metadataattributes1(executeobject, callback)
       } 
     );
 }
-widtests.ettest_metadataattributes1.category = "daily";
+widtests.ettest_metadataattributes1.category = "redaily";
 widtests.ettest_metadataattributes1.subcategory = "push";
 widtests.ettest_metadataattributes1.js = exports.ettest_metadataattributes1;
 widtests.ettest_metadataattributes1.description = "this does a test";	
@@ -3851,6 +3895,3 @@ widtests.ettest_testcache2.category = "test-daily";
 widtests.ettest_testcache2.subcategory = "push";
 widtests.ettest_testcache2.js = exports.ettest_testcache2;
 widtests.ettest_testcache2.description = "this does a test";
-
-
-

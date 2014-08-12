@@ -57,7 +57,7 @@ function adtest_allexecute(executeobject, callback)
     })
 	console.log('end nstest_allexecute');
 };
-widtests.adtest_allexecute.category = "daily";
+widtests.adtest_allexecute.category = "redaily";
 widtests.adtest_allexecute.subcategory = "push";
 widtests.adtest_allexecute.js = adtest_allexecute;
 widtests.adtest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing addhoc.";
@@ -365,7 +365,7 @@ exports.ettss3 = widtests.ettss3 = ettss3 = function ettss3(params, callback) {
         callback(err, res);
     });
 }
-widtests.ettss3.category = "daily";
+widtests.ettss3.category = "redaily";
 widtests.ettss3.subcategory = "adhoc";
 widtests.ettss3.js = exports.ettss3;
 widtests.ettss3.description = "this does a test";
@@ -381,7 +381,7 @@ exports.sleep = widtests.sleep = sleep = function sleep(params, callback) {
         }
     }
 }
-widtests.sleep.category = "daily";
+widtests.sleep.category = "redaily";
 widtests.sleep.subcategory = "adhoc";
 widtests.sleep.js = exports.sleep;
 widtests.sleep.description = "this does a test";
@@ -398,7 +398,7 @@ exports.alertFn1 = widtests.alertFn1 = alertFn1 = function alertFn1(params, call
     var err;
     callback(err, params);
 }
-widtests.alertFn1.category = "daily";
+widtests.alertFn1.category = "redaily";
 widtests.alertFn1.subcategory = "adhoc";
 widtests.alertFn1.js = exports.alertFn1;
 widtests.alertFn1.description = "this does a test";
@@ -570,7 +570,7 @@ exports.ettest_recurseModObj = widtests.ettest_recurseModObj = ettest_recurseMod
         callback(err, res);
     });
 }
-widtests.ettest_recurseModObj.category = "daily";
+widtests.ettest_recurseModObj.category = "redaily";
 widtests.ettest_recurseModObj.subcategory = "addhoc";
 widtests.ettest_recurseModObj.js = exports.ettest_recurseModObj;
 widtests.ettest_recurseModObj.description = "this does a test";
@@ -600,7 +600,7 @@ exports.pu1 = widtests.pu1 = pu1 = function pu1(params, callback) {
     result = pack_up_params(params, command, "somefunction");
     callback(err, result);
 }
-widtests.pu1.category = "daily";
+widtests.pu1.category = "redaily";
 widtests.pu1.subcategory = "addhoc";
 widtests.pu1.js = exports.pu1;
 widtests.pu1.description = "this does a test";

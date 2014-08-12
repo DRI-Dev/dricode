@@ -22,7 +22,7 @@ function setest_allexecute(executeobject, callback)
 	console.log('end setest_allexecute');
 };
 
-widtests.setest_allexecute.category = "daily";
+widtests.setest_allexecute.category = "redaily";
 widtests.setest_allexecute.subcategory = "push";
 widtests.setest_allexecute.js = setest_allexecute;
 widtests.setest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing execute.";
@@ -1808,7 +1808,7 @@ function setests_metadataaddtogroup1 (executeobject, callback) {
       } 
     );
 };
-widtests.setests_metadataaddtogroup1.category = "daily";
+widtests.setests_metadataaddtogroup1.category = "redaily";
 widtests.setests_metadataaddtogroup1.subcategory = "push";
 widtests.setests_metadataaddtogroup1.js = exports.setests_metadataaddtogroup1;
 widtests.setests_metadataaddtogroup1.description = "this does a test";
@@ -1870,7 +1870,7 @@ function setests_metadataaddtogroup2 (executeobject, callback) {
 			});
 	});
 };
-widtests.setests_metadataaddtogroup2.category = "daily";
+widtests.setests_metadataaddtogroup2.category = "redaily";
 widtests.setests_metadataaddtogroup2.subcategory = "push";
 widtests.setests_metadataaddtogroup2.js = exports.setests_metadataaddtogroup2;
 widtests.setests_metadataaddtogroup2.description = "this does a test";
@@ -1933,7 +1933,7 @@ function setests_metadataaddgrouppermissions1 (executeobject, callback) {
       } 
     );
 };
-widtests.setests_metadataaddgrouppermissions1.category = "daily";
+widtests.setests_metadataaddgrouppermissions1.category = "redaily";
 widtests.setests_metadataaddgrouppermissions1.subcategory = "push";
 widtests.setests_metadataaddgrouppermissions1.js = exports.setests_metadataaddgrouppermissions1;
 widtests.setests_metadataaddgrouppermissions1.description = "this does a test";
@@ -2015,7 +2015,7 @@ function setests_metadataaddgrouppermissions1 (executeobject, callback) {
       } 
     );
 };
-widtests.setests_metadataaddgrouppermissions1.category = "daily";
+widtests.setests_metadataaddgrouppermissions1.category = "redaily";
 widtests.setests_metadataaddgrouppermissions1.subcategory = "push";
 widtests.setests_metadataaddgrouppermissions1.js = exports.setests_metadataaddgrouppermissions1;
 widtests.setests_metadataaddgrouppermissions1.description = "this does a test";
@@ -2078,7 +2078,7 @@ function setests_metadataaddgrouppermissions1 (executeobject, callback) {
       } 
     );
 };
-widtests.setests_metadataaddgrouppermissions1.category = "daily";
+widtests.setests_metadataaddgrouppermissions1.category = "redaily";
 widtests.setests_metadataaddgrouppermissions1.subcategory = "push";
 widtests.setests_metadataaddgrouppermissions1.js = exports.setests_metadataaddgrouppermissions1;
 widtests.setests_metadataaddgrouppermissions1.description = "this does a test";
@@ -2152,7 +2152,7 @@ function setests_metadataaddgrouppermissions2 (executeobject, callback) {
       } 
     );
 };
-widtests.setests_metadataaddgrouppermissions2.category = "daily";
+widtests.setests_metadataaddgrouppermissions2.category = "redaily";
 widtests.setests_metadataaddgrouppermissions2.subcategory = "push";
 widtests.setests_metadataaddgrouppermissions2.js = exports.setests_metadataaddgrouppermissions2;
 widtests.setests_metadataaddgrouppermissions2.description = "this does a test";

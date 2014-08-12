@@ -20,7 +20,7 @@ function nstest_allexecute(executeobject, callback)
     })
 	console.log('end nstest_allexecute');
 };
-widtests.nstest_allexecute.category = "daily";
+widtests.nstest_allexecute.category = "redaily";
 widtests.nstest_allexecute.subcategory = "push";
 widtests.nstest_allexecute.js = nstest_allexecute;
 widtests.nstest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing namespace.";
@@ -73,7 +73,7 @@ function nstest_namespaceadd1(executeobject, callback)
       } 
     );
 }
-widtests.nstest_namespaceadd1.category = "daily";
+widtests.nstest_namespaceadd1.category = "redaily";
 widtests.nstest_namespaceadd1.subcategory = "push";
 widtests.nstest_namespaceadd1.js = exports.nstest_namespaceadd1;
 widtests.nstest_namespaceadd1.description = "this does a test";
@@ -120,7 +120,7 @@ function nstest_genericadd1(executeobject, callback)
       } 
     );
 }
-widtests.nstest_genericadd1.category = "daily";
+widtests.nstest_genericadd1.category = "redaily";
 widtests.nstest_genericadd1.subcategory = "push";
 widtests.nstest_genericadd1.js = exports.nstest_genericadd1;
 widtests.nstest_genericadd1.description = "this does a test";
@@ -188,7 +188,7 @@ function nstest_namespacequery1(executeobject, callback)
       } 
     );
 }
-widtests.nstest_namespacequery1.category = "daily";
+widtests.nstest_namespacequery1.category = "redaily";
 widtests.nstest_namespacequery1.subcategory = "push";
 widtests.nstest_namespacequery1.js = exports.ettest_namespaceadd1;
 widtests.nstest_namespacequery1.description = "this does a test";
@@ -235,7 +235,7 @@ function nstest_appnamespaceadd1(executeobject, callback)
       } 
     );
 }
-widtests.nstest_appnamespaceadd1.category = "daily";
+widtests.nstest_appnamespaceadd1.category = "redaily";
 widtests.nstest_appnamespaceadd1.subcategory = "push";
 widtests.nstest_appnamespaceadd1.js = exports.nstest_appnamespaceadd1;
 widtests.nstest_appnamespaceadd1.description = "this does a test";
@@ -281,7 +281,7 @@ function nstest_appnamespaceget1(executeobject, callback)
       } 
     );
 }
-widtests.nstest_appnamespaceget1.category = "daily";
+widtests.nstest_appnamespaceget1.category = "redaily";
 widtests.nstest_appnamespaceget1.subcategory = "push";
 widtests.nstest_appnamespaceget1.js = exports.nstest_appnamespaceget1;
 widtests.nstest_appnamespaceget1.description = "this does a test";
@@ -319,7 +319,7 @@ function nstest_appnamespaceget1fail(executeobject, callback)
       } 
     );
 }
-widtests.nstest_appnamespaceget1fail.category = "daily";
+widtests.nstest_appnamespaceget1fail.category = "redaily";
 widtests.nstest_appnamespaceget1fail.subcategory = "push";
 widtests.nstest_appnamespaceget1fail.js = exports.nstest_appnamespaceget1fail;
 widtests.nstest_appnamespaceget1fail.description = "this does a test";
@@ -376,7 +376,7 @@ function nstest_appnamewidadd1(executeobject, callback)
       } 
     );
 }
-widtests.nstest_appnamewidadd1.category = "daily";
+widtests.nstest_appnamewidadd1.category = "redaily";
 widtests.nstest_appnamewidadd1.subcategory = "push";
 widtests.nstest_appnamewidadd1.js = exports.nstest_appnamewidadd1;
 widtests.nstest_appnamewidadd1.description = "this does a test";
@@ -427,7 +427,7 @@ function nstest_appnamewidget1(executeobject, callback)
       } 
     );
 }
-widtests.nstest_appnamewidget1.category = "daily";
+widtests.nstest_appnamewidget1.category = "redaily";
 widtests.nstest_appnamewidget1.subcategory = "push";
 widtests.nstest_appnamewidget1.js = exports.nstest_appnamewidget1;
 widtests.nstest_appnamewidget1.description = "this does a test";
@@ -469,7 +469,7 @@ function nstest_appnamewidget1fail(executeobject, callback)
       } 
     );
 }
-widtests.nstest_appnamewidget1fail.category = "daily";
+widtests.nstest_appnamewidget1fail.category = "redaily";
 widtests.nstest_appnamewidget1fail.subcategory = "push";
 widtests.nstest_appnamewidget1fail.js = exports.nstest_appnamewidget1fail;
 widtests.nstest_appnamewidget1fail.description = "this does a test";	

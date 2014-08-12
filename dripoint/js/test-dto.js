@@ -130,7 +130,7 @@ function dttest_allexecute(executeobject, callback)
 	console.log('end dttest_allexecute');
 };
 
-widtests.dttest_allexecute.category = "daily";
+widtests.dttest_allexecute.category = "redaily";
 widtests.dttest_allexecute.subcategory = "push";
 widtests.dttest_allexecute.js = dttest_allexecute;
 widtests.dttest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing dtos.";
@@ -4116,7 +4116,7 @@ exports.ettestagtt = widtests.ettestagtt = ettestagtt = function ettestagtt(para
         });
     });
 };
-widtests.ettestagtt.category = "daily";
+widtests.ettestagtt.category = "redaily";
 widtests.ettestagtt.subcategory = "push";
 widtests.ettestagtt.js = exports.ettestagtt;
 widtests.ettestagtt.description = "this does a test";
@@ -4207,7 +4207,7 @@ exports.ettestag3v2 = widtests.ettestag3v2 = ettestag3v2 = function ettestag3v2(
             })
         });
 };
-widtests.ettestag3v2.category = "daily";
+widtests.ettestag3v2.category = "redaily";
 widtests.ettestag3v2.subcategory = "push";
 widtests.ettestag3v2.js = exports.ettestag3v2;
 widtests.ettestag3v2.description = "this does a test";
@@ -4285,7 +4285,7 @@ exports.ettest1dot3dot = widtests.ettest1dot3dot = ettest1dot3dot = function ett
             })
         });
 }
-widtests.ettest1dot3dot.category = "daily";
+widtests.ettest1dot3dot.category = "redaily";
 widtests.ettest1dot3dot.subcategory = "push";
 widtests.ettest1dot3dot.js = exports.ettest1dot3dot;
 widtests.ettest1dot3dot.description = "this does a test";
@@ -4376,7 +4376,7 @@ exports.ettest3dot3dot = widtests.ettest3dot3dot = ettest3dot3dot = function ett
             })
         });
 }
-widtests.ettest3dot3dot.category = "daily";
+widtests.ettest3dot3dot.category = "redaily";
 widtests.ettest3dot3dot.subcategory = "push";
 widtests.ettest3dot3dot.js = exports.ettest3dot3dot;
 widtests.ettest3dot3dot.description = "this does a test";
@@ -4457,7 +4457,7 @@ exports.ettest3dot1dot = widtests.ettest3dot1dot = ettest3dot1dot = function ett
             })
         });
 }
-widtests.ettest3dot1dot.category = "daily";
+widtests.ettest3dot1dot.category = "redaily";
 widtests.ettest3dot1dot.subcategory = "push";
 widtests.ettest3dot1dot.js = exports.ettest3dot1dot;
 widtests.ettest3dot1dot.description = "this does a test";
@@ -4526,7 +4526,7 @@ exports.ettest1dot1dot = widtests.ettest1dot1dot = ettest1dot1dot = function ett
             })
         });
 }
-widtests.ettest1dot1dot.category = "daily";
+widtests.ettest1dot1dot.category = "redaily";
 widtests.ettest1dot1dot.subcategory = "push";
 widtests.ettest1dot1dot.js = exports.ettest1dot1dot;
 widtests.ettest1dot1dot.description = "this does a test";
@@ -4605,7 +4605,7 @@ exports.ettest1dot3dotjsonmany = widtests.ettest1dot3dotjsonmany = ettest1dot3do
             })
         });
 }
-widtests.ettest1dot3dotjsonmany.category = "daily";
+widtests.ettest1dot3dotjsonmany.category = "redaily";
 widtests.ettest1dot3dotjsonmany.subcategory = "push";
 widtests.ettest1dot3dotjsonmany.js = exports.ettest1dot3dotjsonmany;
 widtests.ettest1dot3dotjsonmany.description = "this does a test";
@@ -4687,7 +4687,7 @@ exports.ettest3dot3dotjsonmany = widtests.ettest3dot3dotjsonmany = ettest3dot3do
             })
         });
 }
-widtests.ettest3dot3dotjsonmany.category = "daily";
+widtests.ettest3dot3dotjsonmany.category = "redaily";
 widtests.ettest3dot3dotjsonmany.subcategory = "push";
 widtests.ettest3dot3dotjsonmany.js = exports.ettest3dot3dotjsonmany;
 widtests.ettest3dot3dotjsonmany.description = "this does a test";
@@ -4759,7 +4759,7 @@ exports.ettest3dot1dotjsonmany = widtests.ettest3dot1dotjsonmany = ettest3dot1do
             })
         });
 }
-widtests.ettest3dot1dotjsonmany.category = "daily";
+widtests.ettest3dot1dotjsonmany.category = "redaily";
 widtests.ettest3dot1dotjsonmany.subcategory = "push";
 widtests.ettest3dot1dotjsonmany.js = exports.ettest3dot1dotjsonmany;
 widtests.ettest3dot1dotjsonmany.description = "this does a test";
@@ -4819,7 +4819,7 @@ exports.ettest1dot1dotjsonmany = widtests.ettest1dot1dotjsonmany = ettest1dot1do
             })
         });
 }
-widtests.ettest1dot1dotjsonmany.category = "daily";
+widtests.ettest1dot1dotjsonmany.category = "redaily";
 widtests.ettest1dot1dotjsonmany.subcategory = "push";
 widtests.ettest1dot1dotjsonmany.js = exports.ettest1dot1dotjsonmany;
 widtests.ettest1dot1dotjsonmany.description = "this does a test";
@@ -4891,7 +4891,7 @@ exports.ettest1dot3dotjsonone = widtests.ettest1dot3dotjsonone = ettest1dot3dotj
             })
         });
 }
-widtests.ettest1dot3dotjsonone.category = "daily";
+widtests.ettest1dot3dotjsonone.category = "redaily";
 widtests.ettest1dot3dotjsonone.subcategory = "push";
 widtests.ettest1dot3dotjsonone.js = exports.ettest1dot3dotjsonone;
 widtests.ettest1dot3dotjsonone.description = "this does a test";
@@ -4971,7 +4971,7 @@ exports.ettest3dot3dotjsonone = widtests.ettest3dot3dotjsonone = ettest3dot3dotj
             })
         });
 }
-widtests.ettest3dot3dotjsonone.category = "daily";
+widtests.ettest3dot3dotjsonone.category = "redaily";
 widtests.ettest3dot3dotjsonone.subcategory = "push";
 widtests.ettest3dot3dotjsonone.js = exports.ettest3dot3dotjsonone;
 widtests.ettest3dot3dotjsonone.description = "this does a test";
@@ -5043,7 +5043,7 @@ exports.ettest3dot1dotjsonone = widtests.ettest3dot1dotjsonone = ettest3dot1dotj
             })
         });
 }
-widtests.ettest3dot1dotjsonone.category = "daily";
+widtests.ettest3dot1dotjsonone.category = "redaily";
 widtests.ettest3dot1dotjsonone.subcategory = "push";
 widtests.ettest3dot1dotjsonone.js = exports.ettest3dot1dotjsonone;
 widtests.ettest3dot1dotjsonone.description = "this does a test";
@@ -5102,7 +5102,7 @@ exports.ettest1dot1dotjsonone = widtests.ettest1dot1dotjsonone = ettest1dot1dotj
             })
         });
 }
-widtests.ettest1dot1dotjsonone.category = "daily";
+widtests.ettest1dot1dotjsonone.category = "redaily";
 widtests.ettest1dot1dotjsonone.subcategory = "push";
 widtests.ettest1dot1dotjsonone.js = exports.ettest1dot1dotjsonone;
 widtests.ettest1dot1dotjsonone.description = "this does a test";
@@ -5197,7 +5197,7 @@ exports.ettest1dot3dotobject = widtests.ettest1dot3dotobject = ettest1dot3dotobj
             })
         });
 }
-widtests.ettest1dot3dotobject.category = "daily";
+widtests.ettest1dot3dotobject.category = "redaily";
 widtests.ettest1dot3dotobject.subcategory = "push";
 widtests.ettest1dot3dotobject.js = exports.ettest1dot3dotobject;
 widtests.ettest1dot3dotobject.description = "this does a test";
@@ -5295,7 +5295,7 @@ exports.ettest3dot3dotobject = widtests.ettest3dot3dotobject = ettest3dot3dotobj
             })
         });
 }
-widtests.ettest3dot3dotobject.category = "daily";
+widtests.ettest3dot3dotobject.category = "redaily";
 widtests.ettest3dot3dotobject.subcategory = "push";
 widtests.ettest3dot3dotobject.js = exports.ettest3dot3dotobject;
 widtests.ettest3dot3dotobject.description = "this does a test";
@@ -5373,7 +5373,7 @@ exports.ettest3dot1dotobject = widtests.ettest3dot1dotobject = ettest3dot1dotobj
             })
         });
 }
-widtests.ettest3dot1dotobject.category = "daily";
+widtests.ettest3dot1dotobject.category = "redaily";
 widtests.ettest3dot1dotobject.subcategory = "push";
 widtests.ettest3dot1dotobject.js = exports.ettest3dot1dotobject;
 widtests.ettest3dot1dotobject.description = "this does a test";
@@ -5448,7 +5448,7 @@ exports.ettest1dot1dotobject = widtests.ettest1dot1dotobject = ettest1dot1dotobj
             })
         });
 }
-widtests.ettest1dot1dotobject.category = "daily";
+widtests.ettest1dot1dotobject.category = "redaily";
 widtests.ettest1dot1dotobject.subcategory = "push";
 widtests.ettest1dot1dotobject.js = exports.ettest1dot1dotobject;
 widtests.ettest1dot1dotobject.description = "this does a test";
@@ -5512,7 +5512,7 @@ exports.ettestdot = widtests.ettestdot = ettestdot = function ettestdot(params, 
         });
     });
 }
-widtests.ettestdot.category = "daily";
+widtests.ettestdot.category = "redaily";
 widtests.ettestdot.subcategory = "push";
 widtests.ettestdot.js = exports.ettestdot;
 widtests.ettestdot.description = "this does a test";
@@ -5526,7 +5526,7 @@ exports.addwid4params = widtests.addwid4params = addwid4params = function addwid
     var json = JSON.parse(paramsDataString);
     addwidmaster(json, callback);
 }
-widtests.addwid4params.category = "daily";
+widtests.addwid4params.category = "redaily";
 widtests.addwid4params.subcategory = "push";
 widtests.addwid4params.js = exports.addwid4params;
 widtests.addwid4params.description = "this does a test";
@@ -5756,7 +5756,7 @@ exports.ettss1 = widtests.ettss1 = ettss1 = function ettss1(params, callback) {
         callback(err, res);
     });
 }
-widtests.ettss1.category = "daily";
+widtests.ettss1.category = "redaily";
 widtests.ettss1.subcategory = "push";
 widtests.ettss1.js = exports.ettss1;
 widtests.ettss1.description = "this does a test";
@@ -5865,7 +5865,7 @@ exports.ett1 = widtests.ett1 = ett1 = function ett1(params, callback) {
         callback(err, res);
     });
 }
-widtests.ett1.category = "daily";
+widtests.ett1.category = "redaily";
 widtests.ett1.subcategory = "push";
 widtests.ett1.js = exports.ett1;
 widtests.ett1.description = "this does a test";
@@ -6000,7 +6000,7 @@ exports.ett2 = widtests.ett2 = ett2 = function ett2(params, callback) {
         callback(err, res);
     });
 }
-widtests.ett2.category = "daily";
+widtests.ett2.category = "redaily";
 widtests.ett2.subcategory = "push";
 widtests.ett2.js = exports.ett2;
 widtests.ett2.description = "this does a test";
@@ -6086,7 +6086,7 @@ exports.ett3 = widtests.ett3 = ett3 = function ett3(params, callback) {
         callback(err, res);
     });
 }
-widtests.ett3.category = "daily";
+widtests.ett3.category = "redaily";
 widtests.ett3.subcategory = "push";
 widtests.ett3.js = exports.ett3;
 widtests.ett3.description = "this does a test";
@@ -6175,7 +6175,7 @@ exports.etadd01 = widtests.etadd01 = etadd01 = function etadd01(parameters, call
     });
 
 }
-widtests.etadd01.category = "daily";
+widtests.etadd01.category = "redaily";
 widtests.etadd01.subcategory = "push";
 widtests.etadd01.js = exports.etadd01;
 widtests.etadd01.description = "this does a test";
@@ -6278,7 +6278,7 @@ exports.etadd0 = widtests.etadd0 = etadd0 = function etadd0(parameters, callback
     });
 
 }
-widtests.etadd0.category = "daily";
+widtests.etadd0.category = "redaily";
 widtests.etadd0.subcategory = "push";
 widtests.etadd0.js = exports.etadd0;
 widtests.etadd0.description = "this does a test";
@@ -6345,7 +6345,7 @@ exports.etaddwidtest2 = widtests.etaddwidtest2 = etaddwidtest2 = function etaddw
         });
     });
 }
-widtests.etaddwidtest2.category = "daily";
+widtests.etaddwidtest2.category = "redaily";
 widtests.etaddwidtest2.subcategory = "push";
 widtests.etaddwidtest2.js = exports.etaddwidtest2;
 widtests.etaddwidtest2.description = "this does a test";
@@ -6414,7 +6414,7 @@ exports.etaddwidtest3 = widtests.etaddwidtest3 = etaddwidtest3 = function etaddw
         });
     });
 }
-widtests.etaddwidtest3.category = "daily";
+widtests.etaddwidtest3.category = "redaily";
 widtests.etaddwidtest3.subcategory = "push";
 widtests.etaddwidtest3.js = exports.etaddwidtest3;
 widtests.etaddwidtest3.description = "this does a test";
@@ -6483,7 +6483,7 @@ exports.etaddwidtest5 = widtests.etaddwidtest5 = etaddwidtest5 = function etaddw
         });
     });
 }
-widtests.etaddwidtest5.category = "daily";
+widtests.etaddwidtest5.category = "redaily";
 widtests.etaddwidtest5.subcategory = "push";
 widtests.etaddwidtest5.js = exports.etaddwidtest5;
 widtests.etaddwidtest5.description = "this does a test";
@@ -6554,7 +6554,7 @@ exports.etadd2 = widtests.etadd2 = etadd2 = function etadd2(parameters, callback
         callback(err, res);
     });
 }
-widtests.etadd2.category = "daily";
+widtests.etadd2.category = "redaily";
 widtests.etadd2.subcategory = "push";
 widtests.etadd2.js = exports.etadd2;
 widtests.etadd2.description = "this does a test";
@@ -6666,7 +6666,7 @@ exports.etget1 = widtests.etget1 = etget1 = function etget1(parameters, callback
         });
     });
 }
-widtests.etget1.category = "daily";
+widtests.etget1.category = "redaily";
 widtests.etget1.subcategory = "push";
 widtests.etget1.js = exports.etget1;
 widtests.etget1.description = "this does a test";
@@ -6773,7 +6773,7 @@ exports.etget3 = widtests.etget3 = etget3 = function etget3(parameters, callback
         callback(err, res);
     });
 }
-widtests.etget3.category = "daily";
+widtests.etget3.category = "redaily";
 widtests.etget3.subcategory = "push";
 widtests.etget3.js = exports.etget3;
 widtests.etget3.description = "this does a test";
@@ -6907,7 +6907,7 @@ exports.etget2 = widtests.etget2 = etget2 = function etget2(parameters, callback
         callback(err, res);
     });
 }
-widtests.etget2.category = "daily";
+widtests.etget2.category = "redaily";
 widtests.etget2.subcategory = "push";
 widtests.etget2.js = exports.etget2;
 widtests.etget2.description = "this does a test";
@@ -7061,7 +7061,7 @@ exports.etget11 = widtests.etget11 = etget11 = function etget11(parameters, call
     //         callback(err, res);
     //     });
 }
-widtests.etget11.category = "daily";
+widtests.etget11.category = "redaily";
 widtests.etget11.subcategory = "push";
 widtests.etget11.js = exports.etget11;
 widtests.etget11.description = "this does a test";
@@ -7123,7 +7123,7 @@ exports.ettestag11 = widtests.ettestag11 = ettestag11 = function ettestag11(para
             callback(err, res);
         });
 };
-widtests.ettestag11.category = "daily";
+widtests.ettestag11.category = "redaily";
 widtests.ettestag11.subcategory = "push";
 widtests.ettestag11.js = exports.ettestag11;
 widtests.ettestag11.description = "this does a test";
@@ -7196,7 +7196,7 @@ exports.ettestag1 = widtests.ettestag1 = ettestag1 = function ettestag1(params, 
             callback(err, res);
         });
 };
-widtests.ettestag1.category = "daily";
+widtests.ettestag1.category = "redaily";
 widtests.ettestag1.subcategory = "push";
 widtests.ettestag1.js = exports.ettestag1;
 widtests.ettestag1.description = "this does a test";
@@ -7243,7 +7243,7 @@ exports.ettestag1s = widtests.ettestag1s = ettestag1s = function ettestag1s(para
         });
 };
 
-widtests.ettestag1s.category = "daily";
+widtests.ettestag1s.category = "redaily";
 widtests.ettestag1s.subcategory = "push";
 widtests.ettestag1s.js = exports.ettestag1;
 widtests.ettestag1s.description = "this does a test";
@@ -7286,7 +7286,7 @@ exports.ettestag1a = widtests.ettestag1a = ettestag1a = function ettestag1a(para
             callback(err, res);
         });
 };
-widtests.ettestag1a.category = "daily";
+widtests.ettestag1a.category = "redaily";
 widtests.ettestag1a.subcategory = "push";
 widtests.ettestag1a.js = exports.ettestag1a;
 widtests.ettestag1a.description = "this does a test";
@@ -7361,7 +7361,7 @@ exports.ettestag122 = widtests.ettestag122 = ettestag122 = function ettestag122(
     proxyprinttodiv('>>>> after a', filter_data.output, 99);
 
 };
-widtests.ettestag122.category = "daily";
+widtests.ettestag122.category = "redaily";
 widtests.ettestag122.subcategory = "push";
 widtests.ettestag122.js = exports.ag211;
 widtests.ettestag122.description = "this does a test";
@@ -7427,7 +7427,7 @@ exports.ettestag2 = widtests.ettestag2 = ettestag2 = function ettestag2(params, 
         });
 };
 
-widtests.ettestag2.category = "daily";
+widtests.ettestag2.category = "redaily";
 widtests.ettestag2.subcategory = "push";
 widtests.ettestag2.js = exports.ettestag1;
 widtests.ettestag2.description = "this does a test";
@@ -7543,7 +7543,7 @@ exports.ettestag3 = widtests.ettestag3 = ettestag3 = function ettestag3(params, 
         //});
     };
 
-widtests.ettestag3.category = "daily";
+widtests.ettestag3.category = "redaily";
 widtests.ettestag3.subcategory = "push";
 widtests.ettestag3.js = exports.ettestag1;
 widtests.ettestag3.description = "this does a test";
@@ -7577,7 +7577,7 @@ exports.ettestag3x = widtests.ettestag3x = ettestag3x = function ettestag3x(para
         })
     };
 
-widtests.ettestag3x.category = "daily";
+widtests.ettestag3x.category = "redaily";
 widtests.ettestag3x.subcategory = "push";
 widtests.ettestag3x.js = exports.ettestag1;
 widtests.ettestag3x.description = "this does a test";
@@ -7642,7 +7642,7 @@ exports.ettestag2s = widtests.ettestag2s = ettestag2s = function ettestag2s(para
         });
 };
 
-widtests.ettestag2s.category = "daily";
+widtests.ettestag2s.category = "redaily";
 widtests.ettestag2s.subcategory = "push";
 widtests.ettestag2s.js = exports.ettestag2s;
 widtests.ettestag2s.description = "this does a test";
@@ -7761,7 +7761,7 @@ exports.ettestag3s = widtests.ettestag3s = ettestag3s = function ettestag3s(para
         });
 };
 
-widtests.ettestag3s.category = "daily";
+widtests.ettestag3s.category = "redaily";
 widtests.ettestag3s.subcategory = "push";
 widtests.ettestag3s.js = exports.ettestag3s;
 widtests.ettestag3s.description = "this does a test";
@@ -7842,7 +7842,7 @@ exports.ettestag3b = widtests.ettestag3b = ettestag3b = function ettestag3b(para
             })
         });
 }
-widtests.ettestag3b.category = "daily";
+widtests.ettestag3b.category = "redaily";
 widtests.ettestag3b.subcategory = "push";
 widtests.ettestag3b.js = exports.ettestag3b;
 widtests.ettestag3b.description = "this does a test";
@@ -7947,7 +7947,7 @@ exports.ettestag5 = widtests.ettestag5 = ettestag5 = function ettestag5(params, 
             });
         });
 }
-widtests.ettestag5.category = "daily";
+widtests.ettestag5.category = "redaily";
 widtests.ettestag5.subcategory = "push";
 widtests.ettestag5.js = exports.ettestag5;
 widtests.ettestag5.description = "this does a test";
@@ -8017,7 +8017,7 @@ exports.ettestag6 = widtests.ettestag6 = ettestag6 = function ettestag6(params, 
             });
         });
 }
-widtests.ettestag6.category = "daily";
+widtests.ettestag6.category = "redaily";
 widtests.ettestag6.subcategory = "push";
 widtests.ettestag6.js = exports.ettestag6;
 widtests.ettestag6.description = "this does a test";
@@ -8069,7 +8069,7 @@ exports.ettestag7 = widtests.ettestag7 = ettestag7 = function ettestag7(params, 
         proxyprinttodiv("getdtoobject -- RES --> ", res, 17);
     });
 }
-widtests.ettestag7.category = "daily";
+widtests.ettestag7.category = "redaily";
 widtests.ettestag7.subcategory = "push";
 widtests.ettestag7.js = exports.ettestag7;
 widtests.ettestag7.description = "this does a test";
@@ -8114,7 +8114,7 @@ exports.ettestag8 = widtests.ettestag8 = ettestag8 = function ettestag8(params, 
             });
         });
 }
-widtests.ettestag8.category = "daily";
+widtests.ettestag8.category = "redaily";
 widtests.ettestag8.subcategory = "push";
 widtests.ettestag8.js = exports.ettestag8;
 widtests.ettestag8.description = "this does a test";
@@ -8193,7 +8193,7 @@ exports.ettestag9 = widtests.ettestag9 = ettestag9 = function ettestag9(params, 
             });
         });
 }
-widtests.ettestag9.category = "daily";
+widtests.ettestag9.category = "redaily";
 widtests.ettestag9.subcategory = "push";
 widtests.ettestag9.js = exports.ettestag9;
 widtests.ettestag9.description = "this does a test";
@@ -8272,7 +8272,7 @@ exports.ettestag3a = widtests.ettestag3a = ettestag3a = function ettestag3a(para
             });
         });
 }
-widtests.ettestag3a.category = "daily";
+widtests.ettestag3a.category = "redaily";
 widtests.ettestag3a.subcategory = "push";
 widtests.ettestag3a.js = exports.ettestag3a;
 widtests.ettestag3a.description = "this does a test";
@@ -9907,7 +9907,7 @@ exports.simpleauthorbooktest = widtests.simpleauthorbooktest = simpleauthorbookt
 			callback(null, result);
 	  });
 }
-widtests.simpleauthorbooktest.category = "daily";
+widtests.simpleauthorbooktest.category = "redaily";
 widtests.simpleauthorbooktest.subcategory = "push";
 widtests.simpleauthorbooktest.js = exports.simpleauthorbooktest;
 widtests.simpleauthorbooktest.description = "this does a test";
@@ -9948,7 +9948,7 @@ exports.testgetwid1 = widtests.testgetwid1 = testgetwid1 = function testgetwid1(
 			callback(null, result);
 	  });
 }
-widtests.testgetwid1.category = "daily";
+widtests.testgetwid1.category = "redaily";
 widtests.testgetwid1.subcategory = "push";
 widtests.testgetwid1.js = exports.testgetwid1;
 widtests.testgetwid1.description = "this does a test";
@@ -10601,7 +10601,7 @@ exports.ettss2 = widtests.ettss2 = ettss2 = function ettss2(params, callback) {
             callback(err, res);
         });
 }
-widtests.ettss2.category = "daily";
+widtests.ettss2.category = "redaily";
 widtests.ettss2.subcategory = "adhoc";
 widtests.ettss2.js = exports.ettss2;
 widtests.ettss2.description = "this does a test";

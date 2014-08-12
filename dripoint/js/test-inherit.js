@@ -42,7 +42,7 @@ function intest_allexecute(executeobject, callback)
     })
 	console.log('end nstest_allexecute');
 };
-widtests.intest_allexecute.category = "daily";
+widtests.intest_allexecute.category = "redaily";
 widtests.intest_allexecute.subcategory = "push";
 widtests.intest_allexecute.js = intest_allexecute;
 widtests.intest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing inherit.";
