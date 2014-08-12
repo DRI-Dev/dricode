@@ -177,6 +177,20 @@ exports.wget = wget = function wget(objToFind, command, callback) {
     });
 };
 
+exports.wgettest = wgettest = function wgettest(objToFind, callback) {
+    (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
+    (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
+    (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
+
+    if (typeof objToFind === "string") { objToFind = JSON.parse(objToFind); }
+
+    getConnection(mongoDatabaseToLookup, function(err, db) {
+        db.collection(schemaToLookup).find({wid:objToFind.wid}).toArray(function(err, result) {
+            callback(null, result ? result[0] || null : null);
+        });
+    });
+};
+
 // exports.mget = mget = function mget(objToFind, command, callback) {
 //     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
 //     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
