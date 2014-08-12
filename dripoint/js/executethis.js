@@ -1027,13 +1027,19 @@
         };
 
         var objkey=null;
+        var dtotype=null;
 
-        if (inboundparams.metadata && inboundparams.metadata.method) 
+        if ((inboundparams.metadata && !inboundparams.metadata.method) || (!inboundparams.metadata))
         {
-            var dtotype = inboundparams.metadata.method;
-            var cachesettings = table[dtotype];
-            extend(true, command, cachesettings);
+            dtotype = "defaultdto";
         }
+        else 
+        {
+            dtotype = inboundparams.metadata.method;
+        }
+        
+        var cachesettings = table[dtotype];
+        extend(true, command, cachesettings);
 
         if (!command.skipcache || command.updatecache) {objkey = hashobj(inboundparams, command); }
 

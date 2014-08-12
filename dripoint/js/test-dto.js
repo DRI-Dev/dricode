@@ -7467,7 +7467,7 @@ exports.ettestag3 = widtests.ettestag3 = ettestag3 = function ettestag3(params, 
         executeobject.command.environment={};
         executeobject.command.environment.run={};
         executeobject.command.environment.run.executelevel=0;
-        executeobject.command.environment.syncrule = "sync_local";
+        //executeobject.command.environment.syncrule = "sync_local";
 		
     executeobject.command.xrun = [{
         "executethis": "addwidmaster",
