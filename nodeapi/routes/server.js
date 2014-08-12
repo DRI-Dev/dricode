@@ -11,9 +11,7 @@ exports.postputgetrunExecutethis = function postputgetrunExecutethis(req, resp) 
 function runExecuteThis(parameters, resp) {
     if (parameters.Debug || parameters.debuglevel)
     {
-        var runtime = new Date();
-
-        fs.writeFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', runtime.toDateString());
+        fs.writeFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', '');
     }
 
     Debug = false;

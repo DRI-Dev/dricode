@@ -396,11 +396,6 @@
             tryset = command.resulttable[currentexecuteid].tryset,
             trylength = tryset.length;
 
-        // if it's the first time through and we're server side, clear log file
-        // if (config.configuration.environment == 'server' && level == 0) {
-        //     fs.writeFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', '');
-        // }
-
         // read and save environment parameters
         // executionpreferences.command.environment = checkenvironment(executionpreferences.command.environment);
 

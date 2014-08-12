@@ -141,14 +141,14 @@
             delete incopy.command;
 
             // if record is not locked then okatoupdate = true, else false
-            if(!incopy.metadata){incopy.metadata={};}
+            if(!incopy.metadata){ incopy.metadata={}; }
             if (!incopy.metadata.systemdto && command.environment &&
-                (command.environment.userid || command.environment.loggedinuserid)) {incopy.metadata.systemdto={}}
-            if (!command.environment) {command.environment={}}
+                (command.environment.userid || command.environment.loggedinuserid)) { incopy.metadata.systemdto={}; }
+            if (!command.environment) { command.environment={}; }
             if (command.environment.userid && !incopy.metadata.systemdto.userid)
-            {incopy.metadata.systemdto.userid=command.environment.userid}
+            { incopy.metadata.systemdto.userid=command.environment.userid; }
             if (command.environment.loggedinuserid && !incopy.metadata.systemdto.loggeiduserid)
-            {incopy.metadata.systemdto.loggedinuserid=command.environment.loggedinuserid}
+            { incopy.metadata.systemdto.loggedinuserid=command.environment.loggedinuserid; }
 
             if(incopy && command && command.namespace)
             {
@@ -159,7 +159,7 @@
                     incopy.metadata.namespace[key] = command.namespace[key];
                 }
             }
-            if (Object.keys(incopy.metadata).length === 0) {delete incopy.metadata}
+            if (Object.keys(incopy.metadata).length === 0) { delete incopy.metadata; }
             proxyprinttodiv('Function datastore incopy', incopy, 12);
             proxyprinttodiv('Function datastore command', command, 12,99, true);
             if (!incopy.wid) { err = {"errorname":"nowid"}; }
@@ -679,11 +679,11 @@
         proxyprinttodiv('Function deletewid inobject', inobject, 27);
         if (inobject.wid) {
 
-            if (!inobject.command.from) {inobject.command.from={}};
-            if (!inobject.command.to)   {inobject.command.to={}};
-            inobject.command.from.db            = inobject.command.from.db            || inobject.command.db            || config.configuration.d.default.db;
-            inobject.command.from.collection    = inobject.command.from.collection    || inobject.command.collection    || config.configuration.d.default.collection;
-            inobject.command.from.datastore     = inobject.command.from.datastore     || inobject.command.datastore     || config.configuration.d.default.datastore;
+            if (!inobject.command.from) { inobject.command.from={}; }
+            if (!inobject.command.to) { inobject.command.to={}; }
+            inobject.command.from.db = inobject.command.from.db || inobject.command.db || config.configuration.d.default.db;
+            inobject.command.from.collection = inobject.command.from.collection || inobject.command.collection || config.configuration.d.default.collection;
+            inobject.command.from.datastore = inobject.command.from.datastore || inobject.command.datastore || config.configuration.d.default.datastore;
             inobject.command.from.databasetable = inobject.command.from.databasetable || inobject.command.databasetable || config.configuration.d.default.databasetable;
             extend(true, inobject.command.to, config.configuration.delete, inobject.command.to);
             inobject.command.delete=true;
@@ -786,13 +786,13 @@
         var db = command.db || config.configuration.db;
         var wid;
         var metadata;
-        var date;
+        var date = new Date();
         // if (command && command.db) {
         //     db = command.db;
         // }
 
-        if (!inobject.metadata) {inobject.metadata={}}
-        inobject.metadata.date = new Date();
+        if (!inobject.metadata) { inobject.metadata={}; }
+        inobject.metadata.date = date.toString();
 
         //inobject['metadata.date'] = new Date();
         //inobject = ConvertFromDOTdri(inobject);
