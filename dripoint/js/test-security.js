@@ -1235,7 +1235,7 @@ var johnnyconfig11={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency
             var final_obj = logverify('allowsec1tests4_result', result, expected_result);
             callback(err, final_obj);
         });
-    };
+	};
 	
 // security check for the allowsec1 function. allowsec1 creates the security scheme and this tests it
 // 3 users are created, and permissions of those users are tested.

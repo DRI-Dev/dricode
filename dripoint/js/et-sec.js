@@ -10,6 +10,176 @@
 // > we get all the groups of B
 // > we get all the permissions where BC groups match
 // ***************************************************************
+
+exports.dtox = dtox = function dtox(params, callback) {
+
+    var executeobject = [{ // systemdto
+        "executethis": "addwidmaster",
+        "metadata.method": "systemdto",
+        "wid": "systemdto",
+        "ownerid": "string",
+        "expirationtimer": "string",
+        "expirationdate": "string",
+        "executecount": "integer"
+            // ,
+            // "permissiondto.something1.something2": "string", // this is just a field, but will look like dto data to outside
+            // "metadata.inherit.0": {
+            //     "wid": "systemdefault",
+            //     "command": {
+            //         "dtotype": "",
+            //         "adopt": "default"
+            //     }
+            // }
+            // }, { // system default
+            //     "executethis": "addwidmaster",
+            //     "wid": "systemdefault",
+            //     "metadata.method": "systemdto",
+            //     "expirationtimer": "90",
+            //     "expirationdate": "6/14/14",
+            //     "permissiondto.something1.something2": "someanwser"
+
+    }, { //userdto
+        "executethis": "addwidmaster",
+        "metadata.method": "userdto",
+        "wid": "userdto",
+        "fname": "string",
+        "lname": "string",
+        "phone": "string",
+        "email": "string",
+        "address": "string",
+        "address2": "string",
+        "city": "string",
+        "state": "string",
+        "zip": "string",
+        "country": "string",
+        //"metadata.systemdto.type": "onetoone",
+        "metadata.securitydto.type": "onetoone",
+        "metadata.permissiondto.type": "onetomany",
+        //"metadata.usergroupdto.type": "onetomany"
+    }, { // securitydto
+        "executethis": "addwidmaster",
+        "metadata.method": "securitydto",
+        "wid": "securitydto",
+        "ac": "string"
+    }, { // permissiondto
+        "executethis": "addwidmaster",
+        "metadata.method": "permissiondto",
+        "wid": "permissiondto",
+        "level": "string",
+        "metadata.groupdto.type": "manytomany"
+            // }, { // permission default
+            //     "executethis": "addwidmaster",
+            //     "wid": "rel_user_sys",
+            //     "metadata.method": "relationshipdto",
+            //     "primarywid": "userdto",
+            //     "secondarywid": "systemdto",
+            //     "primarymethod": "userdto",
+            //     "secondarymethod": "systemdto",
+            //     "linktype": "onetoone",
+            //     "relationshiptype": "attributes"
+    }, { // actiondto
+        "executethis": "addwidmaster",
+        "wid": "actiondto",
+        "type": "string",
+        "metadata.method": "actiondto"
+    }, { // groupdto
+        "executethis": "addwidmaster",
+        "wid": "groupdto",
+        "metadata.method": "groupdto",
+        "type": "string",
+        "groupname": "string",
+        "metadata.groupdto.type": "manytoone", // changed -- debateable
+        "metadata.userdto.type": "manytomany", // added
+        "metadata.actiondto.type": "manytomany", // added
+        // user to ... relationships
+    }, {
+        "executethis": "addwidmaster",
+        "wid": "rel_user_sec",
+        "metadata.method": "relationshipdto",
+        "primarywid": "userdto",
+        "secondarywid": "securitydto",
+        "primarymethod": "userdto",
+        "secondarymethod": "securitydto",
+        "linktype": "onetoone",
+        "relationshiptype": "attributes"
+    }, {
+        "executethis": "addwidmaster",
+        "wid": "rel_user_permission",
+        "metadata.method": "relationshipdto",
+        "primarywid": "userdto",
+        "secondarywid": "permissiondto",
+        "primarymethod": "userdto",
+        "secondarymethod": "permissiondto",
+        "linktype": "onetomany",
+        "relationshiptype": "attributes"
+            // permission to relationships
+    }, {
+        "executethis": "addwidmaster",
+        "wid": "rel_permission_group",
+        "metadata.method": "relationshipdto",
+        "primarywid": "permissiondto",
+        "secondarywid": "groupdto",
+        "primarymethod": "permissiondto",
+        "secondarymethod": "groupdto",
+        "linktype": "manytomany",
+        "relationshiptype": "attributes"
+    }, {
+        "executethis": "addwidmaster",
+        "wid": "rel_action_group",
+        "metadata.method": "relationshipdto",
+        "primarywid": "groupdto", //"actiondto",
+        "secondarywid": "actiondto", //"groupdto"
+        "primarymethod": "groupdto", // "actiondto",
+        "secondarymethod": "actiondto", // "groupdto",
+        "linktype": "manytomany", // "onetomany",
+        "relationshiptype": "attributes"
+    }, {
+        "executethis": "addwidmaster",
+        "wid": "rel_user_group",
+        "metadata.method": "relationshipdto",
+        "primarywid": "groupdto", //"groupdto",
+        "secondarywid": "userdto", //"userdto"
+        "primarymethod": "groupdto", // "groupdto",
+        "secondarymethod": "userdto", // "userdto",
+        "linktype": "manytomany", // "onetomany",
+        "relationshiptype": "attributes"
+    }, { // group to group
+        "executethis": "addwidmaster",
+        "wid": "rel_group_group",
+        "metadata.method": "relationshipdto",
+        "primarywid": "groupdto",
+        "secondarywid": "groupdto",
+        "primarymethod": "groupdto",
+        "secondarymethod": "groupdto",
+        "linktype": "manytoone", // changed
+        "relationshiptype": "attributes"
+    }, {
+        "executethis": "getwidmaster",
+        "metadata.method": "userdto",
+        "wid": "userdto"
+    }];
+
+    
+    if (!executeobject.command) {
+        executeobject.command = {
+            "executetype": "series",
+            "notfoundok": true, // if results back are blank then that is ok
+            "getwidmaster": {
+                "convertmethod": "dto",
+                "execute": "ConvertFromDOTdri"
+            },
+            "environment": {"run":{}}
+        };
+    };
+    var etEnvironment = new DriEnvironment(executeobject.command.environment);
+    etEnvironment.execute(executeobject, function(err, res) {
+        proxyprinttodiv('Function data  ', res, 99);
+        console.log(JSON.stringify(res));
+        callback(err, res);
+    });
+}
+
+
 exports.sc = sc = function sc(accessconfig, callback) {
 
     // // ***********************************************************************************
