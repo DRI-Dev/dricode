@@ -234,7 +234,7 @@
                         //objlist[key] = objin[key];
                         if (objinplay instanceof Array) 
                         { // handle arrays
-                            for (var idx in objinplay) 
+                            for (var idx in objinplay)
                             {
                                 generatedtotablelist(objinplay[idx], objlist, key); // recurse
                             }
@@ -1022,7 +1022,7 @@
                                 } 
                                 else 
                                 {
-                                    systemdto = res;
+                                    var systemdto = res;
                                     // make sure it not an empty command object
                                     proxyprinttodiv("--- What i'm looking at systemdto inside system dto ---", systemdto, 38);
                                     if (parameterobject && Object.keys(parameterobject).length > 0) {
