@@ -792,7 +792,7 @@
         // }
 
         if (!inobject.metadata) { inobject.metadata={}; }
-        inobject.metadata.date = date.toString();
+        inobject.metadata.date = date.toUTCString();
 
         //inobject['metadata.date'] = new Date();
         //inobject = ConvertFromDOTdri(inobject);
