@@ -25,30 +25,30 @@ function runExecuteThis(parameters, resp) {
         delete parameters.debuglevel;
     }
 
-    if (parameters.command) {
-        // grab server defaults
-        extend(true, parameters.command, config.configuration.d.default);
-
-        if (parameters.command.environment && parameters.command.environment.default) {
-            // overwrite current environment defaults with server defaults
-            parameters.command.environment.default = config.configuration.d.default;
-        }
-    }
-
-    // also grab server defaults for xrun objects
-    if (parameters.command && parameters.command.xrun) {
-        for (var index in parameters.command.xrun) {
-            if (parameters.command.xrun[index].command) {
-                extend(true, parameters.command.xrun[index].command, config.configuration.d.default);
-
-                if (parameters.command.xrun[index].command.environment
-                    && parameters.command.xrun[index].command.environment.default) {
-                    // overwrite current environment defaults with server defaults
-                    parameters.command.xrun[index].command.environment.default = config.configuration.d.default;
-                }
-            }
-        }
-    }
+//    if (parameters.command) {
+//        // grab server defaults
+//        extend(true, parameters.command, config.configuration.d.default);
+//
+//        if (parameters.command.environment && parameters.command.environment.default) {
+//            // overwrite current environment defaults with server defaults
+//            parameters.command.environment.default = config.configuration.d.default;
+//        }
+//    }
+//
+//    // also grab server defaults for xrun objects
+//    if (parameters.command && parameters.command.xrun) {
+//        for (var index in parameters.command.xrun) {
+//            if (parameters.command.xrun[index].command) {
+//                extend(true, parameters.command.xrun[index].command, config.configuration.d.default);
+//
+//                if (parameters.command.xrun[index].command.environment
+//                    && parameters.command.xrun[index].command.environment.default) {
+//                    // overwrite current environment defaults with server defaults
+//                    parameters.command.xrun[index].command.environment.default = config.configuration.d.default;
+//                }
+//            }
+//        }
+//    }
 
     execute(parameters, function (err, results) {
         if (Debug === 'true') {

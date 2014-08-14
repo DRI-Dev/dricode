@@ -1297,9 +1297,9 @@
                         else
                         {
                             // send results to step2, but do not execute again
-                            if (!res.command) {res.command={}};
+                            if (!res.command) {res.command={};}
                             res.command.processfn = res.command.processfn || "execute_nothing";
-                            cb(null, res)
+                            cb(null, res);
                         }
                     })
                 }
@@ -1309,7 +1309,7 @@
 
     // function for where there is nothing to do
     window.execute_nothing =  function execute_nothing(params, callback) {
-        if (params.command && Object.keys(params.command).length === 0) {delete params.command}
+        if (params.command && Object.keys(params.command).length === 0) { delete params.command; }
         callback(null, params);
     };
  
