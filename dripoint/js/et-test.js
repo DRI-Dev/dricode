@@ -4213,6 +4213,14 @@ exports.ettestexecutegetwid = ettestexecutegetwid = function ettestexecutegetwid
     });
 };
 
+exports.ettestexecutegetwidserver = ettestexecutegetwidserver = function ettestexecutegetwidserver(params, callback) {
+    var etEnvironment = new DriEnvironment(params.command.environment);
+    etEnvironment.execute({command:{environment:{syncrule:'sync_server'}},executethis:'testdata123'}, function (err, result) {
+        proxyprinttodiv('executegetwid results', result, 99);
+        callback(err, result);
+    });
+};
+
 exports.ettestag3getwidmaster = ettestag3getwidmaster = function ettestag3getwidmaster(params, callback) {
     var etEvironment = new DriEnvironment(params.command.environment);
     etEvironment.execute()
