@@ -26,10 +26,12 @@ function runExecuteThis(parameters, resp) {
     }
 
     if (parameters.command) {
-        // grab accesstoken if found and keep it for after the next code block runs
-
         // grab server defaults
         extend(true, parameters.command, config.configuration.d.default);
+
+        if (parameters.command.environment) {
+            extend(true, parameters.command.environment, config.configuration.d.default);
+        }
 
         if (parameters.command.environment && parameters.command.environment.default) {
             // overwrite current environment defaults with server defaults
@@ -42,6 +44,10 @@ function runExecuteThis(parameters, resp) {
         for (var index in parameters.command.xrun) {
             if (parameters.command.xrun[index].command) {
                 extend(true, parameters.command.xrun[index].command, config.configuration.d.default);
+
+                if (parameters.command.xrun[index].command.environment) {
+                    extend(true, parameters.command.xrun[index].command.environment, config.configuration.d.default);
+                }
 
                 if (parameters.command.xrun[index].command.environment
                     && parameters.command.xrun[index].command.environment.default) {

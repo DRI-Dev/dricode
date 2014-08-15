@@ -578,24 +578,20 @@
 
                                         if (processfn) 
                                         {
-                                            if (processfn == execute_server) {
-                                                processfn(initialoutgoingparam, function (err, res)
-                                                    {
-                                                        fromstep02res = res;
-                                                        fromstep02err = err;
-                                                        cbstep2(null);
-                                                    }
-                                                );
-                                            } else {
-                                                ////--proxyprinttodiv("execute calling processfn",processfn.name , 11);
-                                                processfn(outgoingparam, function (err, res)
-                                                    {
-                                                        fromstep02res = res;
-                                                        fromstep02err = err;
-                                                        cbstep2(null);
-                                                    }
-                                                );
-                                            }
+                                            var processfnparams;
+
+                                            // if we are calling the server ajax function then send in the initial simple params
+                                            if (processfn == window['execute_server']) { processfnparams = initialoutgoingparam; }
+                                            else { processfnparams = outgoingparam; }
+
+                                            ////--proxyprinttodiv("execute calling processfn",processfn.name , 11);
+                                            processfn(processfnparams, function (err, res)
+                                                {
+                                                    fromstep02res = res;
+                                                    fromstep02err = err;
+                                                    cbstep2(null);
+                                                }
+                                            );
                                         } 
                                         else 
                                         {   // not needed defaulted in create list
