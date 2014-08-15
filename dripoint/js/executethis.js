@@ -578,14 +578,14 @@
 
                                         if (processfn) 
                                         {
-                                            var processfnparams;
-
-                                            // if we are calling the server ajax function then send in the initial simple params
-                                            if (processfn == window['execute_server']) { processfnparams = initialoutgoingparam; }
-                                            else { processfnparams = outgoingparam; }
+//                                            var processfnparams;
+//
+//                                            // if we are calling the server ajax function then send in the initial simple params
+//                                            if (processfn == window['execute_server']) { processfnparams = initialoutgoingparam; }
+//                                            else { processfnparams = outgoingparam; }
 
                                             ////--proxyprinttodiv("execute calling processfn",processfn.name , 11);
-                                            processfn(processfnparams, function (err, res)
+                                            processfn(outgoingparam, function (err, res)
                                                 {
                                                     fromstep02res = res;
                                                     fromstep02err = err;
