@@ -31,7 +31,7 @@ function config123() {
     configuration.datastore = 'mongo';
     configuration.keycollection = configuration.collection+'key';
     // configuration.defaultmongodb = 'wikiwallettesting'  // *******
-    configuration.databasetable = 'wikiwallettesting';
+    configuration.databasetable = 'dricluster';
 
     // configuration.e is the wid name for "environment"
     configuration.e = configuration.databasetable+"_"+configuration.collection+"_"+ "environment";
@@ -185,7 +185,7 @@ exports.twilioPassThrough = function (params, callback) {
     // Override parameters for testing
     if (false) {
         twilioFunction = 'Messages.json';
-        callerTo = '+12313133930';
+        callerTo = '+12145644732';
         messageBody = 'Hello russ';
     }
     var twilioURI = twilioBasePath + '/' + twilioFunction;
@@ -540,7 +540,7 @@ exports.publishtest = publishtest = function publishtest(parameters, callback) {
                 passfail = "Fail";
             } 
             sendsms({
-                'to': '+12313133930',
+                'to': '+12145644732',
                 'body': 'publishtest - status: ' + passfail + ', user: ' + pusher_name + 
                     ", repo name: " + repo_name + ', ref: ' + ref  
                 }, 
@@ -583,7 +583,7 @@ exports.getuptime = getuptime = function getuptime(params, callback) {
             res.status = upStatus;
             res.uptime = howLong;
             res.currentuser = currentUser; 
-            res.sms = '+12313133930';
+            res.sms = '+12145644732';
             callback(err, res)
         }
     );
