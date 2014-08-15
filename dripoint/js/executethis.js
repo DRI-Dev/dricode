@@ -12,25 +12,47 @@
 // how to save in cache command.recursive for example
 //
 // future we may need to support multiple executeids
+// enhance params based on dto, appname, server, user
+// controlling collection based on dto: extend(true, currentparamters, config.dtolookup[currentparameters.metadata.method))
+// test synch
 //
-// copy to command.systemdto.userid / loggedin user id
-// deepfilter
-//
-// server running
-// cache
-// other synch types
+
 
 (function (window) {
     // 'use strict';
 
     var execute;
 
-    // get other parameters that might be for this function
+    // called one perexecute in convertcommand, it get other command and command.environment parameters that might be for this function
+    //
+    // enhance params based on dto, appname, server, user -- these should be changed to ths form:
+    // controlling collection based on dto: extend(true, currentparamters, config.dtolookup[currentparameters.metadata.method))   
     function enhanceparameters(inboundparams, callback) {
         //proxyprinttodiv("enhanceparameters before checkenvironment", inboundparams, 11, true);
         // note this could probably be moved to drienvrionment in utils
         if (!inboundparams.command) {inboundparams.command={};}
         if (!inboundparams.command.environment) {inboundparams.command.environment={};}
+
+        // enhance params based on wid, dto (metadata.method), wid, appname, server, user
+        // to parm level, command, command.environment
+        // do dto in getwid, updatewid, 
+        // server.js should addtolocal based on ac
+        // var userperf = getfromlocal(inboundparams.command.environment.accesstoken)
+        // if (!userperf) {getuserpref, userpref =} -- get user pref gets from params
+        // var executethispref = preferencestable[executethis]
+        // var widpref = 
+        // var widpropertypref
+        // var methodpref
+        // setup based on server, appname, user
+        // global
+        // var
+        // if no ac
+        // extend(true, inboundparams.command, config.configuration.dtolookup[inboundparams.metadata.method))  
+        // extend(true, inboundparams.command.environment, config.configuration.appname[inboundparams.metadata.method))  
+        // extend(true, inboundparams.command.environment, config.configuration.d[inboundparams.metadata.method))  
+        // extend(true, inboundparams.command.environment, localusertable[inboundparams.command.environment.accesstoken)) 
+        // save 
+        // how to delete from them
 
         // first save and get from environment
         inboundparams.command.environment = checkenvironment(inboundparams.command.environment);
@@ -134,8 +156,6 @@
                 else
                 {
                     var type = command.resulttable.executionpreferences.command.executetype;
-                    //**
-                    //var type = command.resulttable.executionpreferences.command.environment.run.type;
                     // //--proxyprinttodiv("processresulttable command after clearing tryset", command, 11, true);
                     // fish out from commmand.result table only the ones with errors in case of group, all of them otherwise
                     for (var eachitem in command.resulttable[eachexecuteid].detail)
@@ -168,8 +188,6 @@
     function addexecutionparameters(command, executionparameters, currentexecuteid) {
         //--proxyprinttodiv("inparams executionparameters", executionparameters,11);
 
-        //if (command.resulttable[currentexecuteid].tryset) 
-        //{
             var currentexecutecount = command.resulttable[currentexecuteid].tryset.length; // seq based on how many are existing
             for (var eachitem in executionparameters) 
             {
@@ -189,7 +207,6 @@
                 command.resulttable[currentexecuteid].tryset.push(eachexecute);
                 currentexecutecount++;
             }
-        //}
     }
 
     function createresulttable(command, currentexecuteid) {
@@ -368,7 +385,7 @@
 
     // main entry to execute
     // 1) convert parameters to resulttable
-    // 2) fishout list to be done (try set), common parameters to list (executionpreferences)
+    // 2) fishout list to be done (tryset), common parameters to list (executionpreferences)
     // 3) execute all in try set
     //  a-based on type fix current iteration's try parameters (i.e use previous results for waterfall)
     //  b-merge current iteration with executionpreferences
@@ -460,13 +477,14 @@
                         {
                             var currentexecute = currenttry.outgoingparam;
                             var currentseq = currenttry.executeseq;
-                            var outgoingparam = {};
+                            var initialoutgoingparam = {};
+                            
 
                             ////--proxyprinttodiv("before execute - currenttry ", currenttry, 11);
                             ////--proxyprinttodiv("before execute currentexecute", currentexecute, 11);
                             ////--proxyprinttodiv("before execute currentseq", currentseq, 11);
                             ////--proxyprinttodiv("skipexecute is", skipexecute, 11);
-                            //--proxyprinttodiv("before execute outgoingparam", outgoingparam, 11);
+                            //--proxyprinttodiv("before execute initialoutgoingparam", initialoutgoingparam, 11);
 
                             if (isArray(currentexecute)) 
                             {
@@ -481,38 +499,40 @@
 
                             ////--proxyprinttodiv('execute executionpreferences.command.environment.run.executelevel I', executionpreferences.command.environment.run.executelevel, 11);
 
-                            extend(true, outgoingparam, previousresults, executionpreferences, currentexecute);
+                            extend(true, initialoutgoingparam, previousresults, executionpreferences, currentexecute);
 
                             // use the new level in outgoing params
-                            outgoingparam.command.environment.run.executelevel = executionpreferences.command.environment.run.executelevel;
+                            initialoutgoingparam.command.environment.run.executelevel = executionpreferences.command.environment.run.executelevel;
 
                             ////--proxyprinttodiv('execute executionpreferences.command.environment.run.executelevel II', executionpreferences.command.environment.run.executelevel, 11);
-                            ////--proxyprinttodiv("before execute outgoingparam", outgoingparam, 11);
+                            ////--proxyprinttodiv("before execute initialoutgoingparam", initialoutgoingparam, 11);
                             ////--proxyprinttodiv("before execute executionpreferences", executionpreferences, 11);
-                            proxyprinttodiv("execute step 00 outgoingparam", outgoingparam, 11, true);
+                            proxyprinttodiv("execute step 00 initialoutgoingparam", initialoutgoingparam, 11, true);
                             //proxyprinttodiv('execute step 00 type', type, 11);
-                            // step1 massage parameters based on command.processparameterfn, send results via outgoingparam
+                            // step1 massage parameters based on command.processparameterfn, send results via initialoutgoingparam
                             // step2 execute based on command.processfn, send results and error in from stestep02res/err
                             // step3 log the results based on type
                             var fromstep02res = {};
                             var fromstep02err = null;
                             var tempobj = {};
+                            var outgoingparam = {};
+                            outgoingparam = initialoutgoingparam;
 
                             async.series(
                             [   
                                 function step01(cbstep1) 
                                 {   // if resulttable exists then skip this process
-                                    if (outgoingparam.command.resulttable) 
+                                    if (initialoutgoingparam.command.resulttable) 
                                     {
                                         cbstep1(null);
                                     }
                                     else
                                     {
                                         var pp;
-                                        if (outgoingparam && outgoingparam.command && outgoingparam.command.processparameterfn) 
+                                        if (initialoutgoingparam && initialoutgoingparam.command && initialoutgoingparam.command.processparameterfn) 
                                         {   // if processparameterfn sent in then use it
-                                            pp = window[outgoingparam.command.processparameterfn];
-                                            delete outgoingparam.command.processparameterfn;  // not needed since each has it own?
+                                            pp = window[initialoutgoingparam.command.processparameterfn];
+                                            delete initialoutgoingparam.command.processparameterfn;  // not needed since each has it own?
                                         }
                                         else
                                         {   
@@ -520,7 +540,7 @@
                                         }
 
                                         // go an "massage" the outgoing parameters to get better outgoing parameters
-                                        pp(outgoingparam, function (err, res) {
+                                        pp(initialoutgoingparam, function (err, res) {
                                             if (err)
                                             {
                                                 fromstep02res = res;
@@ -587,23 +607,17 @@
                                     //proxyprinttodiv('execute step03 end results', fromstep02res, 11);
                                     //proxyprinttodiv('execute step03 end error', fromstep02err, 11);
 
-                                    // if (outgoingparam
-                                    //     && outgoingparam.command
-                                    //     && outgoingparam.command.environment
-                                    //     && outgoingparam.command.environment.executelevel)
-                                    // {
-                                    //     // do not log execute level for future use... not relevant
-                                    //     delete outgoingparam.command.environment.executelevel;
-                                    // }
-
-                                    var executeresult = {
-                                        outgoingparam: outgoingparam,
+                                    var executeresult = 
+                                        {
+                                        outgoingparam: initialoutgoingparam,
+                                        //outgoingparam: outgoingparam,
                                         err: fromstep02err,
                                         res: fromstep02res,
                                         executeseq: currentseq
-                                    };
+                                        };
 
-                                    proxyprinttodiv('execute executeresult.outgoingparam', executeresult.outgoingparam, 11, true);
+                                    proxyprinttodiv('execute initialoutgoingparam', executeresult.outgoingparam, 11, true);
+                                    proxyprinttodiv('execute outgoingparam', outgoingparam, 11, true);
                                     proxyprinttodiv('execute tempobj', tempobj, 11, true);
                                     
                                    
@@ -706,6 +720,7 @@
                             function (err, res) 
                             {
                                 ////--proxyprinttodiv('execute level type III ', String(executionpreferences.command.environment.run.executelevel) + ' ' + type, 11);
+                                proxyprinttodiv("execute step04 end initialoutgoingparam", initialoutgoingparam, 11, true);
                                 proxyprinttodiv("execute step04 end outgoingparam", outgoingparam, 11, true);
                                 proxyprinttodiv('execute step04 end results', fromstep02res, 11);
                                 proxyprinttodiv('execute step04 end error', fromstep02err, 11);
