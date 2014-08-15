@@ -31,7 +31,7 @@ function config123() {
     configuration.datastore = 'mongo';
     configuration.keycollection = configuration.collection+'key';
     // configuration.defaultmongodb = 'wikiwallettesting'  // *******
-    configuration.databasetable = 'wikiwallettesting';
+    configuration.databasetable = 'dricluster';
 
     // configuration.e is the wid name for "environment"
     configuration.e = configuration.databasetable+"_"+configuration.collection+"_"+ "environment";
