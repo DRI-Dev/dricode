@@ -20,6 +20,11 @@ exports.settings = settings = {
         "wikiwallettesting": {
             "DB_USER_ID": "trugate",
             "DB_USER_PWD": "tempalte-77",
+            "DB_HOST_NAME": 'ds063259-a0.mongolab.com:63259'
+        },
+        "wikiwallettestingfree": {
+            "DB_USER_ID": "trugate",
+            "DB_USER_PWD": "tempalte-77",
             "DB_HOST_NAME": 'ds045627.mongolab.com:45627'
         },
         "wikiwallettesting1": {

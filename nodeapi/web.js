@@ -20,7 +20,7 @@ require(DIR_TO_CORE_JS + 'executethis.js');
 require(DIR_TO_CORE_JS + 'et-utils-test.js');
 require(DIR_TO_CORE_JS + 'test-addhoc.js');
 require(DIR_TO_CORE_JS + 'test-dto.js');
-require(DIR_TO_CORE_JS + 'test-et-utils.js');
+// require(DIR_TO_CORE_JS + 'test-et-utils.js');
 require(DIR_TO_CORE_JS + 'test-execute.js');
 require(DIR_TO_CORE_JS + 'test-inherit.js');
 require(DIR_TO_CORE_JS + 'test-namespace.js');
