@@ -903,7 +903,6 @@
                 printToDiv(text, obj, debugone, pretty,expanddefault);
             } else {
                 if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
-                    var outtext = text.substring(0, text.length-1);
                     var prettystring = stringifyObject(obj, {
                         indent: '     ',
                         singleQuotes: false
@@ -922,7 +921,7 @@
 
                     // write to debuglog
                     fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', printtime + '\n');
-                    fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', outtext);
+                    fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', text);
                     fs.appendFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', prettystring + '\n');
                 }
             }
@@ -2428,7 +2427,7 @@
                 outobject[1] = {};
             }
             if (outobject[2] === undefined) {
-                outobject[2] = new Date();
+                outobject[2] = new Date().toUTCString();
             }
             if (outobject[3] === undefined) {
                 outobject[3] = {};
@@ -4132,7 +4131,7 @@
             setInterval(eventtenmin, 10 * minute);
             setInterval(eventdaily, 1 * day);
 
-            var startTime = new Date().getTime().toString();
+            var startTime = new Date().getTime();
             execute({
                     "command.datastore":"localstore",
                     "executethis":"addwidmaster",
