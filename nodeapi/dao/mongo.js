@@ -8,9 +8,9 @@
 // settings and config variables are declared in boxconfiguration
 var SkinStore = require('connect-mongoskin'),
     mongoskin = require('mongoskin'),
-    schemaToLookup = config.configuration.defaultcollection,
-    databaseToLookup = config.configuration.defaultdb,
-    mongoDatabaseToLookup = config.configuration.defaultdatabasetable,
+    schemaToLookup = config.configuration.d.default.collection,
+    databaseToLookup = config.configuration.d.default.db,
+    mongoDatabaseToLookup = config.configuration.d.default.databasetable,
     dbConnectionsManager = {},
     // defaultDatabaseurl = settings.MONGODB_URL + mongoDatabaseToLookup,
     flatten = require('flat').flatten;
