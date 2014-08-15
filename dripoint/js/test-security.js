@@ -1612,7 +1612,56 @@ var cindyconfig11={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency'
         });
     }
 
+exports.setest_allowsec1testsmini = setest_allowsec1testsmini = function setest_allowsec1testsmini(params, callback) {
 
+
+var sarahconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"sarahac","command.enviromment.userid":"driuser"};	
+
+	var sarah_expected = {
+						"getcurrency":true
+						};
+
+        var sarah_result = {};
+
+
+        async.series([
+
+            function(cb) {
+                // creates the allowances security scheme data. Creates users, actions, groups, and permissions.
+                if (params.setup === false) { cb(null) };                
+				allowsec1test4setup({}, function(err, resp) {
+                    proxyprinttodiv('Data entered  -   response  -- ', resp, 39);
+                    cb(err);
+                });
+
+            },
+		// check that sarah can perform the getcurrency action
+        function(cb) {
+            // perform the securitycheck for the getcurrency action, with organization user user ac
+            sc(sarahconfig, function(err, resp) {
+                proxyprinttodiv('Security check done 11 --  sarahconfig11 -   response  -- ', resp, 39);
+				sarah_result.getcurrency = resp.authstatus;
+                cb(err);
+            });
+        }		
+
+        ], function(err, resp) {
+            // final callback
+            proxyprinttodiv('Function setest_allowsec1tests5 done --  response  -- ', resp, 99);
+
+            var expected_result = [sarah_expected];
+            var result = [sarah_result];
+
+            proxyprinttodiv('Function setest_allowsec1tests5 expected_result -- ', expected_result, 99, true);
+            proxyprinttodiv('Function setest_allowsec1tests5 result -- ', result, 99, true);
+
+            var final_obj = logverify('allowsec1tests5_result', result, expected_result);
+            callback(err, final_obj);
+        });
+    }	
+	
+	
 	exports.setest_testnestedgroups1 = setest_testnestedgroups1 = function setest_testnestedgroups1 (params, callback) {
 
 	var sarah;
@@ -1767,6 +1816,58 @@ var cindyconfig11={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency'
 				callback(err, complex_result);
 			});
 }
+
+
+// tests getwid with appnamespace.namespace="cody122". The wid created in nstest_appnamespaceadd1() above should NOT be returned
+// back because that wid was created with appnamespace.namespace="cody123" and not "cody122".
+exports.setest_commanduserid = 
+setest_commanduserid = 
+widtests.setest_commanduserid = 
+function setest_commanduserid(executeobject, callback) 
+{
+      var executeobject = [{
+							"executethis": "updatewid",
+							"command.environment.userid": "1000",
+							"command.environment.loggedinuserid": "1001",
+							"wid": "wid1",
+							"color": "red"
+							},
+							{"executethis": "getwidmaster",
+							"wid": "wid1"
+							}];
+							
+		var expectedresult = {
+								"color":"red",
+								"wid":"wid1",
+								"metadata": {
+									"systemdto": {
+										"userid":"1000",
+										"loggedinuserid":"1001"
+									},
+								//"date":{"exception":["updated"]},
+								"method":"defaultdto"
+								}
+							};
+		
+      //var etEnvironment = new drienvironment(executeobject.command.environment)
+      //etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      execute(executeobject, function (error_obj, result_obj) 
+      {
+			  
+		proxyprinttodiv('expected error', null, 99);
+		proxyprinttodiv('actual error', error_obj, 99);
+		proxyprinttodiv('expected result', expectedresult, 99);
+		proxyprinttodiv('actual result', result_obj[1], 99);
+		composite_obj=logverify("nstest_appnamewidget1", result_obj[1],expectedresult);
+		callback(null, composite_obj)
+
+      } 
+    );
+}
+widtests.setest_commanduserid.category = "redaily";
+widtests.setest_commanduserid.subcategory = "push";
+widtests.setest_commanduserid.js = exports.setest_commanduserid;
+widtests.setest_commanduserid.description = "this does a test";
 
 
 // Creates a wid and adds that wid to a group
