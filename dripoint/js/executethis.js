@@ -579,6 +579,8 @@
                                         if (processfn) 
                                         {
                                             var processfnparams;
+
+                                            // if we are calling the server ajax function then send in the initial simple params
                                             if (processfn == execute_server) { processfnparams = initialoutgoingparam; }
                                             else { processfnparams = outgoingparam; }
 
