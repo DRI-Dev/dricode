@@ -26,6 +26,8 @@ function runExecuteThis(parameters, resp) {
     }
 
     if (parameters.command) {
+        // grab accesstoken if found and keep it for after the next code block runs
+
         // grab server defaults
         extend(true, parameters.command, config.configuration.d.default);
 

@@ -578,14 +578,24 @@
 
                                         if (processfn) 
                                         {
-                                            ////--proxyprinttodiv("execute calling processfn",processfn.name , 11);
-                                            processfn(outgoingparam, function (err, res) 
-                                                {
-                                                    fromstep02res = res;
-                                                    fromstep02err = err;
-                                                    cbstep2(null);
-                                                }
-                                            )
+                                            if (processfn == execute_server) {
+                                                processfn(initialoutgoingparam, function (err, res)
+                                                    {
+                                                        fromstep02res = res;
+                                                        fromstep02err = err;
+                                                        cbstep2(null);
+                                                    }
+                                                );
+                                            } else {
+                                                ////--proxyprinttodiv("execute calling processfn",processfn.name , 11);
+                                                processfn(outgoingparam, function (err, res)
+                                                    {
+                                                        fromstep02res = res;
+                                                        fromstep02err = err;
+                                                        cbstep2(null);
+                                                    }
+                                                );
+                                            }
                                         } 
                                         else 
                                         {   // not needed defaulted in create list
