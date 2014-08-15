@@ -29,7 +29,7 @@ function runExecuteThis(parameters, resp) {
         // grab server defaults
         extend(true, parameters.command, config.configuration.d.default);
 
-        if (parameters.comand.environment) {
+        if (parameters.command.environment) {
             extend(true, parameters.command.environment, config.configuration.d.default);
         }
 
