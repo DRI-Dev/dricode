@@ -30,7 +30,7 @@ function config123() {
     configuration.db = 'data';
     configuration.datastore = 'localstorage';
     configuration.keycollection = configuration.collection+'key';
-    configuration.databasetable = 'wikiwallettesting';
+    configuration.databasetable = 'dricluster';
 
     // configuration.e is the wid name for "environment"
     configuration.e = configuration.databasetable+configuration.collection+"environment";

@@ -17,7 +17,7 @@ exports.serverconfig = serverconfig = {
             // "DB_HOST_NAME": 'localhost:27017'
 exports.settings = settings = {
     DB_SET: {
-        "wikiwallettesting": {
+        "dricluster": {
             "DB_USER_ID": "trugate",
             "DB_USER_PWD": "tempalte-77",
             "DB_HOST_NAME": 'ds063259-a0.mongolab.com:63259'
