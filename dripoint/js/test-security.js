@@ -1848,7 +1848,7 @@ function setests_metadataaddtogroup2 (executeobject, callback) {
 	creategroup({
 			"grouptype": "colorwids"
 		}, function(err, res) {
-			proxyprinttodiv('Function creategroup done --    for  -- ', res[0][0].wid, 99);
+			proxyprinttodiv('Function creategroup done --    for  -- ', res.wid, 99);
 			var executeobject = [{
 								"executethis": "addwidmaster",
 								"wid":"mycolorwid1",
@@ -1859,7 +1859,7 @@ function setests_metadataaddtogroup2 (executeobject, callback) {
 								"wid": "mycolorwid1"
 								}, {
 								"executethis":"getwid",
-								"wid": res[0][0].wid
+								"wid": res.wid
 					}];
 					
 			execute(executeobject,function (err, res) {

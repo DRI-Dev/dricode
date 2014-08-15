@@ -1,6 +1,32 @@
 
 var widtests = widtests || {};
 
+exports.tftest_allexecute = 
+widtests.tftest_allexecute = 
+tftest_allexecute = 
+function tftest_allexecute(executeobject, callback) 
+{
+	var start = new Date().getTime();
+    async.series(
+    [   
+    //function (cb1) {ettest_serieslevel0({}, function (err, res) {cb1(null, res)})},
+    //function (cb1) {ettest_serieslevel1({}, function (err, res) {cb1(null, res)})},
+    //function (cb1) {ettest_grouplevel0({}, function (err, res) {cb1(null, res)})},
+	//function (cb1) {ettest_grouplevel1({}, function (err, res) {cb1(null, res)})},	
+    ],
+    function (err, res) {
+      proxyprinttodiv('result from many array', res, 99);
+      callback(null,res);
+	  proxyprinttodiv('total elapsed time ', new Date().getTime() - start, 99);
+    })
+	console.log('end tftest_allexecute');
+};
+widtests.ettest_allexecute.category = "redaily";
+widtests.ettest_allexecute.subcategory = "push";
+widtests.ettest_allexecute.js = ettest_allexecute;
+widtests.ettest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing execute.";
+
+
 //*********************************************
 // getcommand() tests
 //*********************************************

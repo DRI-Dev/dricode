@@ -1886,3 +1886,14 @@ exports.testhtmladd2 = testhtmladd2 = function testhtmladd2(params, callback) {
         });
 }
 
+exports.testgetwid555 = testgetwid555 = function testgetwid555 (params, callback) {
+	getwid({"wid": "wid1"}, function (err, res) {
+		callback(err, res);
+	});
+	
+	execute({"executethis": "getwid",
+			"wid": "wid1"
+			}, function (err, res) {
+				proxyprinttodiv('result --', res, 99);
+		});
+}
