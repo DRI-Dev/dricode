@@ -1786,13 +1786,45 @@ var sarahconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency',"
 			
 			// Get all of Sarah's groups
 			function (cb) {
-				getrelatedwids("", "groupdto", sarah, "userdto", "", function (err, res) {
-					mygroups.push(res.queryresult[0].primarywid);
-					getrelatedwids("", "groupdto", mygroups[0],"groupdto", "", function (err, res) {
-						for (var x in res.queryresult) { mygroups.push(res.queryresult[x].primarywid) };
-						cb(err);						
-					});
-				});
+				getrelatedwids("", "groupdto", sarah, "userdto", "", function (err, res1) {
+
+                    async.mapSeries(res1.queryresult, function(reljson1, cbMap1) {
+                        async.nextTick(function() {
+                            // group
+                            var group = reljson1.primarywid;
+                            mygroups.push(group);
+
+
+                            // get all groups recursively
+                            function getgroupsofgroups(group,mygroups,cb1){
+                                getrelatedwids("", "groupdto", group,"groupdto", "", function (err, res2) {
+                                    async.mapSeries(res2.queryresult, function(reljson2, cbMap2) {
+                                        async.nextTick(function() {
+                                            // group
+                                            var group = reljson2.primarywid;
+                                            mygroups.push(group);// append/concat the groups related
+
+                                            getgroupsofgroups(group,mygroups,function(e,r){
+                                                cbMap2(err);
+                                            });
+                                        })
+                                    },
+                                    function(err, res) {
+                                        cb1(err, mygroups);
+                                    });
+                                });
+                            }
+
+                            getgroupsofgroups(group,mygroups, function(err,resp){
+                                cbMap1(err);
+                            });
+                        });
+                        
+                    },
+                    function(err, res) {
+                        cb(err);
+                    });
+                });
 			}
 			], function (err, res) {
 				var expected_result = [parentgroup, teachergroup, kidgroup]
@@ -1803,7 +1835,7 @@ var sarahconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency',"
 				for (var i in mygroups) {
 					if (mygroups[i] === parentgroup) { name_result.push("parentgroup") }
 					else if (mygroups[i] === teachergroup) { name_result.push("teachergroup") }
-					else if (mygroup[i] === kidgroup) { name_result.push("kidgroup") }
+					else if (mygroups[i] === kidgroup) { name_result.push("kidgroup") }
 				};
 				
 				proxyprinttodiv('groups connected to me (wid names) --', mygroups, 99);

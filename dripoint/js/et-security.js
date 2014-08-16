@@ -173,7 +173,7 @@ exports.dtox = dtox = function dtox(params, callback) {
     };
     var etEnvironment = new DriEnvironment(executeobject.command.environment);
     etEnvironment.execute(executeobject, function(err, res) {
-        proxyprinttodiv('Function data  ', res, 99);
+        //proxyprinttodiv('Function data  ', res, 99);
         console.log(JSON.stringify(res));
         callback(err, res);
     });
@@ -197,13 +197,13 @@ exports.sc = sc = function sc(accessconfig, callback) {
 
     var groupsfrommetadata = [];
 
-    proxyprinttodiv('Function securitytest accesstoken-- ', _accesstoken, 39);
-    proxyprinttodiv('Function securitytest mygroup-- ', _mygroup, 39);
-    proxyprinttodiv('Function securitytest actiongroup-- ', _action, 39);
-    proxyprinttodiv('Function securitytest _myphone-- ', _myphone, 39);
-    proxyprinttodiv('Function securitytest server-- ', _server, 39);
-    proxyprinttodiv('Function securitytest dbgroup-- ', _dbgroup, 39);
-    proxyprinttodiv('Function securitytest _datastore-- ', _datastore, 39);
+    //proxyprinttodiv('Function securitytest accesstoken-- ', _accesstoken, 39);
+    //proxyprinttodiv('Function securitytest mygroup-- ', _mygroup, 39);
+    //proxyprinttodiv('Function securitytest actiongroup-- ', _action, 39);
+    //proxyprinttodiv('Function securitytest _myphone-- ', _myphone, 39);
+    //proxyprinttodiv('Function securitytest server-- ', _server, 39);
+    //proxyprinttodiv('Function securitytest dbgroup-- ', _dbgroup, 39);
+    //proxyprinttodiv('Function securitytest _datastore-- ', _datastore, 39);
 
     var securityCheckOutput = false;
     var actor;
@@ -239,7 +239,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
             function(cb1) {
                 // if mygroup not sent in then convert AC to my userwid (mygroup)
                 if (!_mygroup) {
-                    proxyprinttodiv('Function sc getting user for ac -- ', _accesstoken, 39);
+                    //proxyprinttodiv('Function sc getting user for ac -- ', _accesstoken, 39);
                     getuserbyac(_accesstoken, function(err, userDto) {
                         if (userDto) {
                             actorGroup = userDto.queryresult[0].wid;
@@ -250,7 +250,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
                                 async.mapSeries(res.queryresult, function(reljson, cbMap) {
                                         async.nextTick(function() {
                                             groupofactors.push(reljson.primarywid); // push each of the the group wid for the user
-
+/*
                                             getrelatedwids("", "groupdto", reljson.primarywid, "groupdto", "", function(err, res) {
                                                 // addSavedGroupsDataIfNeeded(groupWid, actioncreatorgroups, function(e, actioncreatorgroups) {
                                                 async.mapSeries(res.queryresult, function(reljsonInner, cbMapInner) {
@@ -264,10 +264,14 @@ exports.sc = sc = function sc(accessconfig, callback) {
                                                     });
                                                 // });
                                             });
+*/
+											getgroupsofgroups(reljson.primarywid,groupofactors, function (err1,res1) {
+												cbMap(err1);
+											});
                                         });
                                     },
                                     function(err, res) {
-                                        proxyprinttodiv('Function sc got actor groups from user for ac -- ', groupofactors, 39);
+                                        //proxyprinttodiv('Function sc got actor groups from user for ac -- ', groupofactors, 39);
                                         //alert(JSON.stringify(groupofactors));
                                         cb1(err, groupofactors);
                                     });
@@ -285,7 +289,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
                         async.mapSeries(res.queryresult, function(reljson, cbMap) {
                             async.nextTick(function() {
                                     groupofactors.push(reljson.primarywid); // push each of the the group wid for the user
-
+/*
                                     getrelatedwids("", "groupdto", reljson.primarywid, "groupdto", "", function(err, res) {
                                         // addSavedGroupsDataIfNeeded(groupWid, actioncreatorgroups, function(e, actioncreatorgroups) {
                                         async.mapSeries(res.queryresult, function(reljsonInner, cbMapInner) {
@@ -299,9 +303,14 @@ exports.sc = sc = function sc(accessconfig, callback) {
                                             });
                                         // });
                                     });
+*/
+
+									getgroupsofgroups(reljson.primarywid, groupofactors, function (err1, res1) {
+										cbMap(err1);
+									});
                                 },
                                 function(err, res) {
-                                    proxyprinttodiv('Function sc received actor Group for ac -- ', groupofactors, 39);
+                                    //proxyprinttodiv('Function sc received actor Group for ac -- ', groupofactors, 39);
                                     cb1(err, groupofactors);
                                 });
                         });
@@ -336,7 +345,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
                         actionwid = res1['wid'];
                         if (res1 && res1['metadata'] && res1['metadata']['system']) {
                             actionCreator = res1['metadata']['system']['creator'];
-                            proxyprinttodiv('Function securityCheckOutputeck Action creator is -- ', actionCreator, 39);
+                            //proxyprinttodiv('Function securityCheckOutputeck Action creator is -- ', actionCreator, 39);
                             cb1(null, "identified action owner");
                         } else {
                             cb1(null);
@@ -355,15 +364,16 @@ exports.sc = sc = function sc(accessconfig, callback) {
                         async.mapSeries(actioncreatorgroups, function(groupWid, cbMap) {
                             async.nextTick(function() {
                                 // get all related groups recursively and concat to groups set
-                                getrelatedwids("", "groupdto", groupWid, "groupdto", "", function(err, res) {
+                                //getrelatedwids("", "groupdto", groupWid, "groupdto", "", function(err, res) {
+								getgroupsofgroups(groupWid,actioncreatorgroups,function (err1, res1) {
                                     // addSavedGroupsDataIfNeeded(groupWid, actioncreatorgroups, function(e, actioncreatorgroups) {
-                                    addGroupWids(actioncreatorgroups, res.queryresult);
-                                    cbMap(null);
+                                    //addGroupWids(actioncreatorgroups, res.queryresult);
+                                    cbMap(err1);
                                     // });
                                 });
                             });
                         }, function(err, res) {
-                            proxyprinttodiv('get user groups where user granted permissions is the action owner  -- ', actioncreatorgroups, 39);
+                            //proxyprinttodiv('get user groups where user granted permissions is the action owner  -- ', actioncreatorgroups, 39);
                             cb1(err, actioncreatorgroups);
                         });
                     });
@@ -381,7 +391,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
                     // match the 2 arrays for commonality
                     checkSecurityPermissions(actionwid, actorGroup, actioncreatorgroups, actorgroups, function(err, resp) {
                         isMatch = resp;
-                        proxyprinttodiv('Function securitycheck auth status -- ', isMatch, 39);
+                        //proxyprinttodiv('Function securitycheck auth status -- ', isMatch, 39);
                         securityCheckOutput = isMatch;
                         cb1(null, "matching permissions list");
                     });
@@ -392,7 +402,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
 
             function(err, res) {
                 // final callback
-                proxyprinttodiv('Function Final callback returns -- ', securityCheckOutput, 39);
+                //proxyprinttodiv('Function Final callback returns -- ', securityCheckOutput, 39);
                 callback(err, {
                     "authstatus": securityCheckOutput
                 });
@@ -595,8 +605,8 @@ exports.sc = sc = function sc(accessconfig, callback) {
         //                 allallowedactionsarr2.push(relationship2[i].secondarywid);
         //             }
         //         }
-        //         proxyprinttodiv('Function checkSecurityPermissions allallowedactionsarr2 -- ', allallowedactionsarr2, 39);
-        //         proxyprinttodiv('Function checkSecurityPermissions allallowedactionsarr1 -- ', allallowedactionsarr1, 39);
+        //         //proxyprinttodiv('Function checkSecurityPermissions allallowedactionsarr2 -- ', allallowedactionsarr2, 39);
+        //         //proxyprinttodiv('Function checkSecurityPermissions allallowedactionsarr1 -- ', allallowedactionsarr1, 39);
 
         //         // check if the combination matches the current operation
         //         isMatch = ((allallowedactionsarr2.indexOf(_actionwid) !== -1) && (allallowedactionsarr1.indexOf(_actionwid) !== -1))
@@ -700,7 +710,7 @@ function checkSecurityEx(actioncreatorgroups, actorgroups, callback) {
                 var etEnvironment = new DriEnvironment(executeobject.command.environment);
                 etEnvironment.execute(executeobject, function(err, res1) {
                     if (res1) {
-                        proxyprinttodiv('Function getuserbyac query1 -- res', res1, 39);
+                        //proxyprinttodiv('Function getuserbyac query1 -- res', res1, 39);
 
                         userWid = res1;
                         cb(null);
@@ -712,8 +722,8 @@ function checkSecurityEx(actioncreatorgroups, actorgroups, callback) {
             }
         ], function(err, res) {
             //console.debug' done securitycheck in sync manner.');
-            // proxyprinttodiv('securitycheck userDto ', userDto, 39);
-            proxyprinttodiv('Function getuserbyac --  >>>>>>  >>>>> userWid -- ', userWid, 39);
+            // //proxyprinttodiv('securitycheck userDto ', userDto, 39);
+            //proxyprinttodiv('Function getuserbyac --  >>>>>>  >>>>> userWid -- ', userWid, 39);
             callback(err, userWid);
         });
 
@@ -783,7 +793,7 @@ function checkSecurityEx(actioncreatorgroups, actorgroups, callback) {
         var etEnvironment = new DriEnvironment(executeobject.command.environment);
         etEnvironment.execute(executeobject, function(err, res) {
             // create securitydto data
-            proxyprinttodiv('Function createuserdata -- added getwidmaster on user  -- ' + userobj.wid, res, 39);
+            //proxyprinttodiv('Function createuserdata -- added getwidmaster on user  -- ' + userobj.wid, res, 39);
             callback(err, res);
             // getwidmaster({
             //     "wid": userobj.wid
@@ -800,7 +810,7 @@ function checkSecurityEx(actioncreatorgroups, actorgroups, callback) {
     // ** GENERIC FUNCTION TO CREATE A GROUP ON THE BASIS OF RECEIVED DATA **
     // logic to create a group --
     exports.creategroup = creategroup = function creategroup(config, callback) {
-        // proxyprinttodiv('Function creategroup -- adding group of ', config, 39);
+        // //proxyprinttodiv('Function creategroup -- adding group of ', config, 39);
 
         var grouptype = config['grouptype'];
         var commandresult = config["command.result"];
@@ -846,7 +856,7 @@ function checkSecurityEx(actioncreatorgroups, actorgroups, callback) {
         var etEnvironment = new DriEnvironment(executeobject.command.environment);
 
         etEnvironment.execute(executeobject, function(err, res) {
-            proxyprinttodiv('Function creategroup -- added group -- ', res, 39);
+            //proxyprinttodiv('Function creategroup -- added group -- ', res, 39);
             callback(err, res);
         });
     };
@@ -856,7 +866,7 @@ function checkSecurityEx(actioncreatorgroups, actorgroups, callback) {
     // ** GENERIC FUNCTION TO CREATE AN ACTION ON THE BASIS OF RECEIVED DATA **
     // logic to create an action -- taking the type of action
     exports.createaction = createaction = function createaction(config, callback) {
-        // proxyprinttodiv('Function createaction -- adding action of ', config, 39);
+        // //proxyprinttodiv('Function createaction -- adding action of ', config, 39);
         var actiontype = config['actiontype'];
         var commandresult = config["command.result"];
         var creator = config["creator"];
@@ -896,7 +906,7 @@ function checkSecurityEx(actioncreatorgroups, actorgroups, callback) {
         };
         var etEnvironment = new DriEnvironment(executeobject.command.environment);
         etEnvironment.execute(executeobject, function(err, res) {
-            proxyprinttodiv('Function createaction -- added group of type "' + actiontype + '"  -- ', res, 39);
+            //proxyprinttodiv('Function createaction -- added group of type "' + actiontype + '"  -- ', res, 39);
             callback(err, res);
         });
     };
@@ -932,7 +942,7 @@ exports.createrelationship = createrelationship = function createrelationship(pr
     };
     var etEnvironment = new DriEnvironment(executeobject.command.environment);
     etEnvironment.execute(executeobject, function(err, res) {
-        // proxyprinttodiv('Function createrelationship -- added relationship for  -- ' + primarywid + ' >> ' + secondarywid, linktype, 39);
+        // //proxyprinttodiv('Function createrelationship -- added relationship for  -- ' + primarywid + ' >> ' + secondarywid, linktype, 39);
         callback(err, res);
     });
 
@@ -983,7 +993,7 @@ exports.createrelationship = createrelationship = function createrelationship(pr
         };
         var etEnvironment = new DriEnvironment(executeobject.command.environment);
         etEnvironment.execute(executeobject, function(err, res) {
-            proxyprinttodiv('Function addpermission done --  >>>>>> added permission >>>>>  for  -- ', res, 39);
+            //proxyprinttodiv('Function addpermission done --  >>>>>> added permission >>>>>  for  -- ', res, 39);
             callback(err, res);
         });
     }
@@ -1027,7 +1037,7 @@ exports.createrelationship = createrelationship = function createrelationship(pr
                 "linktype": "onetoone"
             };
             addtargetwidtocurrentwid(config1, function(err, res) {
-                proxyprinttodiv('Function addsecurity --  >>>>>> added security  >>>>>  for  -- ', res, 39);
+                //proxyprinttodiv('Function addsecurity --  >>>>>> added security  >>>>>  for  -- ', res, 39);
                 // console.debug('added security for wid ' + wid + " >>>> " + JSON.stringify(res));
                 callback(err, res)
             })
@@ -1069,7 +1079,7 @@ exports.addwidtogroup = addwidtogroup = function addwidtogroup(config, callback)
     };
     var etEnvironment = new DriEnvironment(executeobject.command.environment);
     etEnvironment.execute(executeobject, function(err, res) {
-        proxyprinttodiv('Function addwidtogroup done --  >>>>>> added group  to wid >>>>>  for  -- ' + config['group.wid'] + " >>> " + config['group.targetwid'], res, 39);
+        //proxyprinttodiv('Function addwidtogroup done --  >>>>>> added group  to wid >>>>>  for  -- ' + config['group.wid'] + " >>> " + config['group.targetwid'], res, 39);
         callback(err, res);
     });
 
@@ -1204,7 +1214,7 @@ exports.datax = datax = function datax(groupname, callback) {
         function(cb) {
             // create admin user
             dtox({}, function(err, resp) {
-                proxyprinttodiv('Function created schema done --   for  -- ', resp, 39);
+                //proxyprinttodiv('Function created schema done --   for  -- ', resp, 39);
                 cb(err);
             });
         },
@@ -1212,7 +1222,7 @@ exports.datax = datax = function datax(groupname, callback) {
             // create organization user 1
             createuserdata(organizationuser1, function(err, resp) {
                 user1wid = resp.wid;
-                proxyprinttodiv('Function organization createuser 1 done --  for  -- ', user1wid, 39);
+                //proxyprinttodiv('Function organization createuser 1 done --  for  -- ', user1wid, 39);
                 cb(err);
             });
         },
@@ -1222,7 +1232,7 @@ exports.datax = datax = function datax(groupname, callback) {
                 "userwid": user1wid,
                 "securityac": organizationuser1security.ac
             }, function(err, resp) {
-                proxyprinttodiv('Function addsecurity done --  for user1 -- ', user1wid, 39);
+                //proxyprinttodiv('Function addsecurity done --  for user1 -- ', user1wid, 39);
                 cb(err);
             });
         },
@@ -1232,7 +1242,7 @@ exports.datax = datax = function datax(groupname, callback) {
                 "actiontype": action1
             }, function(err, resp) {
                 action1wid = resp.wid;
-                proxyprinttodiv('Function createaction done --    for  -- ', action1wid, 39);
+                //proxyprinttodiv('Function createaction done --    for  -- ', action1wid, 39);
                 cb(err);
             });
         },
@@ -1242,7 +1252,7 @@ exports.datax = datax = function datax(groupname, callback) {
                 "actiontype": action2
             }, function(err, resp) {
                 action2wid = resp.wid;
-                proxyprinttodiv('Function createaction done --    for  -- ', action2wid, 39);
+                //proxyprinttodiv('Function createaction done --    for  -- ', action2wid, 39);
                 cb(err);
             });
         },
@@ -1253,7 +1263,7 @@ exports.datax = datax = function datax(groupname, callback) {
                 "grouptype": group1
             }, function(err, resp) {
                 group1wid = resp.wid;
-                proxyprinttodiv('Function creategroup done --    for  -- ', group1wid, 39);
+                //proxyprinttodiv('Function creategroup done --    for  -- ', group1wid, 39);
                 cb(err);
             });
         },
@@ -1264,7 +1274,7 @@ exports.datax = datax = function datax(groupname, callback) {
                 "grouptype": group2
             }, function(err, resp) {
                 group2wid = resp.wid;
-                proxyprinttodiv('Function creategroup done --    for  -- ', group2wid, 39);
+                //proxyprinttodiv('Function creategroup done --    for  -- ', group2wid, 39);
                 cb(err);
             });
         },
@@ -1279,7 +1289,7 @@ exports.datax = datax = function datax(groupname, callback) {
                 "permission.level": 99, // TODO :: REMOVE HARDCODING
                 "permission.groupwid": group1wid
             }, function(err, resp) {
-                proxyprinttodiv('Function addpermission done --    for  -- ', resp, 39);
+                //proxyprinttodiv('Function addpermission done --    for  -- ', resp, 39);
                 permissionwid = resp.wid;
                 cb(err);
             });
@@ -1343,32 +1353,55 @@ exports.datax = datax = function datax(groupname, callback) {
         //         "executethis": "getwidmaster",
         //         "wid": organizationuser1.wid
         //     }, function (err, resp) {
-        //         proxyprinttodiv('Function getwidmaster done --    for  -- ', resp, 39);
+        //         //proxyprinttodiv('Function getwidmaster done --    for  -- ', resp, 39);
         //         cb(err);
         //     });
         // },
         function(cb) {
             // perform the securitycheck for the getaction, with organization user user ac
             sc(accessconfig1, function(err, resp) {
-                proxyprinttodiv('Security check done 1 --    response  -- ', resp, 39);
+                //proxyprinttodiv('Security check done 1 --    response  -- ', resp, 39);
                 cb(err);
             });
         // },
         // function(cb) {
         //     // perform the securitycheck for the getaction, with organization user user ac
         //     sc(accessconfig2, function(err, resp) {
-        //         proxyprinttodiv('Security check done 2 --    response  -- ', resp, 39);
+        //         //proxyprinttodiv('Security check done 2 --    response  -- ', resp, 39);
         //         cb(err);
         //     });
         }
 
     ], function(err, resp) {
         // final callback
-        proxyprinttodiv('Function datax done --  response  -- ', resp, 39);
+        //proxyprinttodiv('Function datax done --  response  -- ', resp, 39);
         callback(err, resp);
     });
 }
 
+
+	// get all groups recursively
+	exports.getgroupsofgroups = 
+	getgroupsofgroups = 
+	function getgroupsofgroups(group,mygroups,cb1){
+		getrelatedwids("", "groupdto", group,"groupdto", "", function (err, res2) {
+			async.mapSeries(res2.queryresult, function(reljson2, cbMap2) {
+				async.nextTick(function() {
+					// group
+					var group = reljson2.primarywid;
+					mygroups.push(group);// append/concat the groups related
+
+					getgroupsofgroups(group,mygroups,function(e,r){
+						cbMap2(err);
+					});
+				})
+			},
+			function(err, res) {
+				cb1(err, mygroups);
+			});
+		});
+	}
+	
 // get list of all related wids as per the criteria
     exports.getrelatedwids = getrelatedwids = function getrelatedwids(primarywidtype, primarywidval, secondarywidtype, secondarywidval, extracondition, callback) {
 
@@ -1424,7 +1457,7 @@ exports.datax = datax = function datax(groupname, callback) {
         var etEnvironment = new DriEnvironment(executeobject.command.environment);
         etEnvironment.execute(executeobject, function(err, resp) { // final callback
             // var resp = res[0];
-            proxyprinttodiv('Function getrelatedwids done --  response  -- ', resp, 39);
+            //proxyprinttodiv('Function getrelatedwids done --  response  -- ', resp, 39);
             callback(err, resp);
         });
     }
@@ -1459,7 +1492,7 @@ exports.datax = datax = function datax(groupname, callback) {
         };
         var etEnvironment = new DriEnvironment(executeobject.command.environment);
         etEnvironment.execute(executeobject, function(err, res) {
-            proxyprinttodiv('Function addtargetwidtocurrentwid done -- ' + config['currentwid'] + ' >>>>>> ' + config['linktype'] + ' >>>>> ' + config['targetwid'] + '  -- ', res, 99);
+            //proxyprinttodiv('Function addtargetwidtocurrentwid done -- ' + config['currentwid'] + ' >>>>>> ' + config['linktype'] + ' >>>>> ' + config['targetwid'] + '  -- ', res, 99);
             callback(err, res);
         });
 
@@ -1515,7 +1548,7 @@ exports.testscreens = testscreens = function testscreens(config, callback) {
             // });
 
 
-            proxyprinttodiv('Function testscreens done --  response  -- ', resp, 39);
+            //proxyprinttodiv('Function testscreens done --  response  -- ', resp, 39);
             callback(err, resp);
         });
 }
