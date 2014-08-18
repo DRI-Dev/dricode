@@ -629,7 +629,7 @@ function finalformat(output, relationshipoutput, qparms, extracommands, projecti
 
     for (var eachout in output)
     {
-        var wid = output[eachout][db].wid ||output[eachout].wid;
+        var wid = output[eachout][db].wid || output[eachout].wid;
         proxyprinttodiv('querywid finalforma wid', wid, 28);
         // only proceed if current paramter is not in exclude parameter set
         proxyprinttodiv('querywid finalformat', output[eachout], 28);
