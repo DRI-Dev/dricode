@@ -629,7 +629,8 @@ function finalformat(output, relationshipoutput, qparms, extracommands, projecti
 
     for (var eachout in output)
     {
-        if (!output[eachout].wid || output[eachout][db].wid) {
+        if (!output[eachout].wid || !output[eachout][db].wid) {
+            var baddata = output[eachout];
             debugger;
         }
 
