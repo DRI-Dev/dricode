@@ -707,10 +707,15 @@
 
     exports.convertfromdriformatenhanced = convertfromdriformatenhanced = function convertfromdriformatenhanced(output, command, originalarguments) {
         output = convertfromdriformat(output, command);
-        if (output && Object.keys(output).length > 0) {
+
+        if (typeof output != 'Object') {
+            debugger;
+        }
+
+        if (output && Object.size(output) > 0) {
             output = extend(true, {}, originalarguments, output);
         }
-        if (Object.keys(output).length > 0 && command.convert === 'todot') {
+        if (Object.size(output) > 0 && command.convert === 'todot') {
             output = ConvertToDOTdri(output);
         }
         return output
@@ -727,7 +732,7 @@
             db = command.db;
         }
 
-        if ((widobject) && (Object.keys(widobject).length > 0)) {
+        if ((widobject) && (Object.size(widobject) > 0)) {
             if (isArray(widobject[db])) {
                 outobject = widobject[db][0];
             } else {
