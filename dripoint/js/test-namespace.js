@@ -46,19 +46,21 @@ function nstest_namespaceadd1(executeobject, callback)
 							"command.namespace.creator": "cody",
 							"command.namespaceflag.creator": "true",
 							"color": "red"
+							}, {
+							"executethis": "getwidmaster",
+							"wid": "nswid1"
 							}];
 							
 		var expectedresult = {
+								"color":"red",
 								"wid":"nswid1",
-								"data": {
-											"color":"red"
-										},
 								"metadata": {
-												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
-												"date":{"exception":["created","changed","unchanged","updated"]},
-												"creator":"cody"
-											}
-							}
+									"method":"defaultdto",
+									"namespace": {
+										"creator":"cody"
+									}
+								}
+							};
 		
 	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
 	  etEnvironment.execute(executeobject, function (err, res) 
@@ -67,8 +69,8 @@ function nstest_namespaceadd1(executeobject, callback)
             proxyprinttodiv('expected error', null, 99);
             proxyprinttodiv('actual error', err, 99);
             proxyprinttodiv('expected result', expectedresult, 99);
-            proxyprinttodiv('actual result', res, 99);
-            composite_obj=logverify("nstest_namespaceadd1", res,expectedresult);
+            proxyprinttodiv('actual result', res[1], 99);
+            composite_obj=logverify("nstest_namespaceadd1", res[1],expectedresult);
             callback(null, composite_obj)
       } 
     );
@@ -151,19 +153,26 @@ function nstest_namespacequery1(executeobject, callback)
 							];
 		
 		var expectedresult = {
-								"wid":"nswid1",
-								"color":"red",
-								"metadata": {
-												"expirationdate":{"exception":["created","changed","unchanged","updated"]},
-												"date":{"exception":["created","changed","unchanged","updated"]},
-												"creator":"cody"
+								"queryresult": [
+									{
+										"nswid1": {
+											"color":"red",
+											"wid":"nswid1",
+											"metadata": {
+												"method":"defaultdto",
+												"namespace": {
+													"creator":"cody"
+												}
 											}
-							}
+										}
+									}
+								]
+							};			
+											
 		var queryobj = [
-					{"executethis":"querywidmaster",
+					{"executethis":"querywid",
 							"command.namespace.creator": "cody",
 							"command.namespaceflag.creator": "true",
-							"command.queryresult": "each",
 							"mongorawquery": {
 								"$and": [{
 									"data.color":"red"

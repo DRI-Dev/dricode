@@ -4221,7 +4221,22 @@ exports.ettestexecutegetwidserver = ettestexecutegetwidserver = function etteste
     });
 };
 
-exports.ettestag3getwidmaster = ettestag3getwidmaster = function ettestag3getwidmaster(params, callback) {
+exports.lukesdatatest = lukesdatatest = function lukesdatatest(params, callback) {
     var etEvironment = new DriEnvironment(params.command.environment);
-    etEvironment.execute()
+    etEvironment.execute({
+        "executethis": "querywidmaster",
+        "command.result": "queryresult",
+        "mongorawquery": {
+            "metadata.method": {
+                "$exists": true
+            }
+        },
+        "command": {
+            "environment": {
+                "syncrule": "sync_server"
+            }
+        }
+    }, function (err, result) {
+        callback(err, result);
+    })
 };

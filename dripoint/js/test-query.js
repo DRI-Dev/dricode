@@ -33,8 +33,10 @@ function qutest_allexecute(executeobject, callback)
     })
 	console.log('end qutest_allexecute');
 };
-widtests.qutest_allexecute.category = "daily";
-widtests.qutest_allexecute.subcategory = "push";
+widtests.qutest_allexecute.metadata = {};
+widtests.qutest_allexecute.metadata.namespace = {};
+widtests.qutest_allexecute.metadata.namespace.category = "daily";
+widtests.qutest_allexecute.metadata.namespace.subcategory = "push";
 widtests.qutest_allexecute.js = qutest_allexecute;
 widtests.qutest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing querywid and querywidmaster.";
 

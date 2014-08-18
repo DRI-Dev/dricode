@@ -14,7 +14,15 @@ exports.run_daily_tests =
 run_daily_tests = 
 function run_daily_tests(params, callback)
 {
-	var filter = {'category':'daily'};
+	//var filter = {'metadata.namespace.category':'daily'};
+	var filter = {
+					"metadata": {
+						"namespace": {
+							"category": "daily"
+							}
+						}
+					};
+					
 	console.log('sending param {"category":"daily"} to run_filtered_functions()');
 	run_filtered_functions(filter, function (err, res) {
 			console.log('end run_daily_tests');
