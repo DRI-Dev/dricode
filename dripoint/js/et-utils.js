@@ -1,4 +1,4 @@
-// 'use strict';
+// 'use strict'; 
 // -- test to trigger github
 
 // copyright (c) 2014 DRI
