@@ -65,13 +65,13 @@ if (typeof angular !== 'undefined') {
                 var startIndex = (path.indexOf('\\') >= 0 ? path.lastIndexOf('\\') : path.lastIndexOf('/')),
                     filename = path.substring(startIndex + 1);
 
-                $http.put('/base64toserver', {path:path, imagesrc:base64image}, {headers:{"content-type": "application/json"}}).
-                    success(function(data, status, lheaders, config) {
+                $http.put('/base64toserver', {path:path, imagesrc:base64image}, {headers:{"content-type": "application/json"}})
+                    .success(function(data, status, lheaders, config) {
                         console.log('** Image service saved ' + filename + ' to dripoint.com **');
                         $('#successlog').html('** Image service successfully saved ' + filename + ' to dripoint.com **');
                         if (callback instanceof Function) { callback(null); }
-                    }).
-                    error(function(data, status, headers, config) {
+                    })
+                    .error(function(data, status, headers, config) {
                         console.log('** Image service incountered an error saving ' + filename + ' **');
                         $('#errorlog').html('** Image service incountered an error saving ' + filename + ' **');
                         if (callback instanceof Function) { callback(null); }
@@ -140,7 +140,7 @@ if (typeof angular !== 'undefined') {
                         for (var i = 0; i < results.length; i++) {
                             processExecuteResult(results[i], scope);
                         }
-                    } else { processExecuteResult(results); }
+                    } else { processExecuteResult(results, scope); }
 
                     // send array to callback
                     if (callback instanceof Function) { callback(err, results); }
@@ -190,8 +190,8 @@ if (typeof angular !== 'undefined') {
             var querystring = window.location.search,
                 urlParameters = widAppHelper.queryStrToObj(querystring.substring(1));
 
-            // get local urlparams wid and extend them into urlParmeters
-            execute({command:{environment:{syncrule:'sync_local'}}, executethis:'urlparams'}, function (err, urlparamswid) {
+            // get urlparams wid and extend them into urlParmeters
+            execute({executethis:'urlparams'}, function (err, urlparamswid) {
                 extend(true, urlParameters, urlparamswid);
 
                 // default wid to 'startwid'
