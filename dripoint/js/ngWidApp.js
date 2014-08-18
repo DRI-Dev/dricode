@@ -135,25 +135,15 @@ if (typeof angular !== 'undefined') {
                     delete parameters['wid'];
                 }
 
-                execute(parameters, function (err, resultArray) {
-                    for (var x = 0; x < resultArray.length; x++) {
-                        if (Array.isArray(resultArray[x])) {
-                            for (var y = 0; y < resultArray[x].length; y++) {
-                                if (Array.isArray(resultArray[x][y])) {
-                                    for (var z = 0; z < resultArray[x][y].length; z++) {
-                                        if (Array.isArray(resultArray[x][y][z])) {
-                                            for (var i = 0; i < resultArray[x][y][z].length; i++) {
-                                                processExecuteResult(resultArray[x][y][z][i], scope);
-                                            }
-                                        } else { processExecuteResult(resultArray[x][y][z], scope); }
-                                    }
-                                } else { processExecuteResult(resultArray[x][y], scope); }
-                            }
-                        } else { processExecuteResult(resultArray[x], scope); }
-                    }
+                execute(parameters, function (err, results) {
+                    if (Array.isArray(results)) {
+                        for (var i = 0; i < results.length; i++) {
+                            processExecuteResult(results[i], scope);
+                        }
+                    } else { processExecuteResult(results); }
 
                     // send array to callback
-                    if (callback instanceof Function) { callback(err, resultArray); }
+                    if (callback instanceof Function) { callback(err, results); }
                 });
             }
         }
@@ -200,8 +190,8 @@ if (typeof angular !== 'undefined') {
             var querystring = window.location.search,
                 urlParameters = widAppHelper.queryStrToObj(querystring.substring(1));
 
-            // get urlparams wid and extend them into urlParmeters
-            execute({executethis:'urlparams'}, function (err, urlparamswid) {
+            // get local urlparams wid and extend them into urlParmeters
+            execute({command:{environment:{syncrule:'sync_local'}}, executethis:'urlparams'}, function (err, urlparamswid) {
                 extend(true, urlParameters, urlparamswid);
 
                 // default wid to 'startwid'
