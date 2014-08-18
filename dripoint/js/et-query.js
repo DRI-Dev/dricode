@@ -629,11 +629,6 @@ function finalformat(output, relationshipoutput, qparms, extracommands, projecti
 
     for (var eachout in output)
     {
-//        if (!output[eachout].wid && !output[eachout][db].wid) {
-//            var baddata = output[eachout];
-//            debugger;
-//        }
-
         var wid = output[eachout][db] ? output[eachout][db].wid : output[eachout].wid;
         proxyprinttodiv('querywid finalforma wid', wid, 28);
         // only proceed if current paramter is not in exclude parameter set
