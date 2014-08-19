@@ -530,6 +530,16 @@ exports.publishtest = publishtest = function publishtest(parameters, callback) {
         executeobject.executethis="getuptime"
         executeobject.server = server;
         
+        var default_number + '+12145644732';
+        var pusher_numbers = {
+            'rogerjs' : '+12145644732',
+            'info@dri.com' : default_number,
+            'Jason' : '+12317352532'
+        }
+        var text2number = default_number;
+        if (push_numbers.hasOwnProperty( pusher_name )) {   
+            text2number = push_numbers[pusher_name];
+        }
         anyserver(executeobject,function(err, result) {
 
             //getuptime(null, function(err, result) {
@@ -540,7 +550,7 @@ exports.publishtest = publishtest = function publishtest(parameters, callback) {
                 passfail = "Fail";
             } 
             sendsms({
-                'to': '+12145644732',
+                'to': text2number,
                 'body': 'publishtest - status: ' + passfail + ', user: ' + pusher_name + 
                     ", repo name: " + repo_name + ', ref: ' + ref  
                 }, 
