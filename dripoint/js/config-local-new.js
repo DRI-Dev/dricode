@@ -75,10 +75,183 @@ function config123() {
 var dtotable = {
             "defaultdto": {"skipcache":true, "updatecache":false, "cachetime": 0, "securitygroups":[]},
             "systemdto": {"skipcache":false, "updatecache":true, "cachetime": 9999},
-            "relationshipdto": {"skipcache":false, "updatecache":true, "cachetime": 9999}
-            userdto
-            actiondto
-            
+            "relationshipdto": {"skipcache":false, "updatecache":true, "cachetime": 9999},
+            "userdto": {"skipcache": false, "updatecache": true, "cachetime": 9999, "securitygroups":["allusers"]},
+            "merchantdto": {"skipcache": false, "updatecache": true, "cachetime": 9999, "securitygroups":["allmerchants"]}//,
+            //"actiondto": {"skipcache": false, "updatecache": true, "cachetime": 9999, "securitygroups":["alluseractions"]},
+		};
+
+/*
+var actiondefaults = {
+				"createcurrency": {"skipcache": false, "updatecache": true, "cachetime": 9999, "securitygroups":["allmerchantactions"]},
+				"editcurrency": {"skipcache": false, "updatecache": true, "cachetime": 9999, "securitygroups":["allmerchantactions"]},
+				"deletecurrency": {"skipcache": false, "updatecache": true, "cachetime": 9999, "securitygroups":["allmerchantactions"]},
+				"createoffer": {"skipcache": false, "updatecache": true, "cachetime": 9999, "securitygroups":["allmerchantactions"]},
+				"editoffer": {"skipcache": false, "updatecache": true, "cachetime": 9999, "securitygroups":["allmerchantactions"]},
+				"deleteoffer": {"skipcache": false, "updatecache": true, "cachetime": 9999, "securitygroups":["allmerchantactions"]},
+				"executeoffer": {"skipcache": false, "updatecache": true, "cachetime": 9999, "securitygroups":["allmerchantactions"]},
+				"addusertogroup": {"skipcache": false, "updatecache": true, "cachetime": 9999, "securitygroups":["allmerchantactions"]},
+				"addpermission": {"skipcache": false, "updatecache": true, "cachetime": 9999, "securitygroups":["allmerchantactions"]},
+				
+				"getoffer": {"skipcache": false, "updatecache": true, "cachetime": 9999, "securitygroups":["alluseractions"]},
+				"getcurrency": {"skipcache": false, "updatecache": true, "cachetime": 9999, "securitygroups":["alluseractions"]}
+};
+*/
+
+/***** SECURITY DEFAULTS *****/
+
+var driuser = "";
+
+var merchantactionstable = {
+					"createcurrency": "",
+					"editcurrency": "",
+					"deletecurrency": "",
+					"createoffer": "",
+					"editoffer": "",
+					"deleteoffer": "",
+					"executeoffer": "",
+					"addusertogroup": "",
+					"addpermissions": ""
+				};
+				
+var useractionstable = {
+					"getoffer": "",
+					"getcurrency": ""
+					};
+
+var actiongroupstable = {
+						"alluseractions": "",
+						"allmerchantactions": ""
+						};
+
+var usergroupstable = {
+						"allusers": "",
+						"allmerchants": ""
+					};
+					
+function setup_dri_account(callback) {
+        
+	createuserdata({
+		"wid": "driuser",
+		"fname": "driuser",
+		"lname": "driuser",
+		"phone": "",
+		"email": "",
+		"address": "161 E. Front St.",
+		"address2": "",
+		"city": "Traverse City",
+		"state": "MI",
+		"zip": "49684",
+		"country": "US"
+	}, function(err, resp) {
+		driuser = resp.wid;
+		//proxyprinttodiv('Function createuser done --  for  driuser -- ', resp, 39, true);
+		callback(err, resp);
+	});
+        
+}
+
+
+function setup_actions(callback)
+{	
+	err_obj = {};
+	
+	// merchantactions
+	for (var key in merchantactionstable) {
+		createaction({
+			"creator": driuser,
+			"actiontype": key
+			}, function (err, resp) {
+				err_obj[key] = err;
+				if (!err) { merchantactionstable[key] = resp.wid };
+				//proxyprinttodiv('createaction for ' + key + ' generated the following response --', resp, 39, true);
+			});
+	};
+	
+	// useractions
+	for (var key in useractionstable) {
+		createaction({
+			"creator": driuser,
+			"actiontype": key
+			}, function (err, resp) {
+				err_obj[key] = err;
+				if (!err) { useractionstable[key] = resp.wid };
+				//proxyprinttodiv('createaction for ' + key + ' generated the following response --', resp, 39, true);
+			});
+	};	
+	
+	callback(err_array);
+}
+	
+function setup_user_groups(callback) {	
+	err_obj = {};
+	
+	for (var key in usergroupstable) {
+		creategroup({
+			"grouptype": key
+			}, function (err, resp) {
+				err_obj[key] = err;
+				usergroupstable[key] = resp.wid;
+			});
+	
+	callback(err_obj);
+}
+
+
+function setup_action_groups(callback)
+{	
+	err_obj = {};
+	
+	for (var key in actiongroupstable) {
+		creategroup({
+			"grouptype": key
+			}, function (err, resp) {
+				err_obj[key] = err;
+				actiongroupstable[key] = resp.wid;
+			});
+	
+	callback(err_obj);
+}
+
+
+function relate_actions_actiongroups(callback) {
+
+	err_obj = {};
+	var merchconfig = {};
+	var usrconfig = {};
+	
+	// relate actions to allmerchants group
+	for (var merchkey in merchantactionstable) {
+		merchconfig = {
+				"currentwid": actiongroupstable.allmerchantactions,
+				"currentwidmethod": "groupdto",
+				"targetwid": merchantactionstable[merchkey],
+				"targetwidmethod": "actiondto",
+				"linktype": "manytomany"
+			};
+		addtargetwidtocurrentwid(merchconfig, function(err, res) {
+			//proxyprinttodiv('attach actiondto to groupdto, createoffer to parentactions   -- ', res, 39);
+			err_obj[merchkey] = err;
+		});			
+	};
+
+	// relate actions to allmerchants group
+	for (var usrkey in useractionstable) {
+		usrconfig = {
+				"currentwid": actiongroupstable.alluseractions,
+				"currentwidmethod": "groupdto",
+				"targetwid": useractionstable[usrkey],
+				"targetwidmethod": "actiondto",
+				"linktype": "manytomany"
+			};
+		addtargetwidtocurrentwid(usrconfig, function(err, res) {
+			//proxyprinttodiv('attach actiondto to groupdto, createoffer to parentactions   -- ', res, 39);
+			err_obj[usrkey] = err;
+		});			
+	};
+	
+	callback(err_obj);
+}
 
 var permissiontable = {
 
