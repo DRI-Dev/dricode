@@ -9,6 +9,7 @@ exports.postputgetrunExecutethis = function postputgetrunExecutethis(req, resp) 
 }
 
 function runExecuteThis(parameters, resp) {
+    proxyprinttodiv(" JSON runExecutethis", JSON.stringify(parameters), 99);
     if (parameters.Debug || parameters.debuglevel)
     {
         fs.writeFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', '');
