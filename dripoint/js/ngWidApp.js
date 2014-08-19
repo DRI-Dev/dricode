@@ -26,6 +26,7 @@ if (typeof angular !== 'undefined') {
             for (var prop in obj) {
                 if (obj.hasOwnProperty(prop)) {
                     if (obj[prop] instanceof Object) {
+
                         storeAllData(obj[prop], scope, prop);
                     } else {
                         if (phase !== '$apply' && phase !== '$digest') {
@@ -64,13 +65,13 @@ if (typeof angular !== 'undefined') {
                 var startIndex = (path.indexOf('\\') >= 0 ? path.lastIndexOf('\\') : path.lastIndexOf('/')),
                     filename = path.substring(startIndex + 1);
 
-                $http.put('/base64toserver', {path:path, imagesrc:base64image}, {headers:{"content-type": "application/json"}}).
-                    success(function(data, status, lheaders, config) {
+                $http.put('/base64toserver', {path:path, imagesrc:base64image}, {headers:{"content-type": "application/json"}})
+                    .success(function(data, status, lheaders, config) {
                         console.log('** Image service saved ' + filename + ' to dripoint.com **');
                         $('#successlog').html('** Image service successfully saved ' + filename + ' to dripoint.com **');
                         if (callback instanceof Function) { callback(null); }
-                    }).
-                    error(function(data, status, headers, config) {
+                    })
+                    .error(function(data, status, headers, config) {
                         console.log('** Image service incountered an error saving ' + filename + ' **');
                         $('#errorlog').html('** Image service incountered an error saving ' + filename + ' **');
                         if (callback instanceof Function) { callback(null); }
@@ -105,7 +106,7 @@ if (typeof angular !== 'undefined') {
                 if (typeof result.command.angularexecute === 'object') { extend(true, executeObj, result.command.angularexecute); }
                 else { executeObj.executethis = result.command.angularexecute; }
 
-                angularExecute(executeObj, function (err, result) { });
+                angularExecute(executeObj, function (err, returnArray) { });
             }
 
             dataService.storeData(result, scope, undefined, function (dataset) {
@@ -119,7 +120,9 @@ if (typeof angular !== 'undefined') {
                         scope.activewid = dataset.wid;
                     }
 
-                    widAppHelper.processHtml(dataset, scope, $compile);
+                    etProcessScreenWid(dataset, scope, function () {
+                        widAppHelper.processHtml(dataset, scope, $compile);
+                    });
                 } else if (dataset.script) { widAppHelper.processJS(dataset, scope, $compile); }
                 else if (dataset.css) { widAppHelper.processCSS(dataset, scope, $compile); }
             });
@@ -132,17 +135,15 @@ if (typeof angular !== 'undefined') {
                     delete parameters['wid'];
                 }
 
-                var env = new DriEnvironment(parameters.command ? parameters.command.environment : {});
-
-                env.execute(parameters, function (err, result) {
-                    if (Array.isArray(result)) {
-                        for (var i = 0; i < result.length; i++) {
-                            processExecuteResult(result[i], scope);
+                execute(parameters, function (err, results) {
+                    if (Array.isArray(results)) {
+                        for (var i = 0; i < results.length; i++) {
+                            processExecuteResult(results[i], scope);
                         }
-                    } else { processExecuteResult(result, scope); }
+                    } else { processExecuteResult(results, scope); }
 
                     // send array to callback
-                    if (callback instanceof Function) { callback(err, result); }
+                    if (callback instanceof Function) { callback(err, results); }
                 });
             }
         }
@@ -189,20 +190,24 @@ if (typeof angular !== 'undefined') {
             var querystring = window.location.search,
                 urlParameters = widAppHelper.queryStrToObj(querystring.substring(1));
 
-            // default wid to 'startwid'
-            if (!urlParameters.wid) { urlParameters.wid = 'startwid'; }
+            // get urlparams wid and extend them into urlParmeters
+            execute({executethis:'urlparams'}, function (err, urlparamswid) {
+                extend(true, urlParameters, urlparamswid);
 
-            // package url parameters into model
-            if (Object.size(urlParameters) > 0) { $scope.urlparams = extend(true, urlParameters); }
+                // default wid to 'startwid'
+                if (!urlParameters.wid) { urlParameters.wid = 'startwid'; }
 
-            // process url parameters with angularExecute
-            executeService.executeThis(urlParameters, $scope, function (err, resultset) { });
+                // package url parameters into model
+                $scope.urlparams = extend(true, {}, urlParameters);
+
+                // process url parameters with angularExecute
+                executeService.executeThis(urlParameters, $scope, function (err, resultset) { });
+            });
 
             // general use submit function which propegates data model changes to localStorage and mongoDB
             $scope.etsubmit = function(widName) {
-                var etObj = extend(true, $scope[widName], {executethis:"addwidmaster"}),
-                    env = new DriEnvironment({});
-                env.execute(etObj, function (err, results) { });
+                var etObj = extend(true, $scope[widName], {executethis:"addwidmaster"});
+                execute(etObj, function (err, results) { });
             };
 
             // general use back button function
@@ -299,6 +304,102 @@ if (typeof angular !== 'undefined') {
         return obj;
     }
 
+    // mostly processes wid names found in execute results
+    // TODO : remove this as all of these variables are depricated and no longer used
+    exports.etProcessScreenWid = etProcessScreenWid = function etProcessScreenWid(parameters, scope, callback) {
+        var widforview = [],
+            widforbase = [],
+            widforbackground = [],
+            links = [],
+            dataforview = {},
+            all_wids= [];
+
+        scope = scope || $('body').scope();
+
+        if (parameters.widforview) { widforview = parameters.widforview.split(','); delete parameters['widforview']; }
+        else if (typeof widForView !== 'undefined') { widforview = widForView.split(','); }
+
+        if (widforview.length > 0) { scope.widforview = widforview; }
+
+        if (parameters.widforbase) { widforbase = parameters.widforbase.split(','); delete parameters['widforbase']; }
+        else if (typeof widForBase !== 'undefined') { widforbase = widForBase.split(','); }
+
+        if (widforbase.length > 0) { scope.widforbase = widforbase; }
+
+        if (parameters.widforbackground) { widforbackground = parameters.widforbackground.split(','); delete parameters['widforbackground']; }
+        else if (typeof widForBackground !== 'undefined') { widforbackground = widForBackground.split(','); }
+
+        if (widforbackground.length > 0) { scope.widforbackground = widforbackground; }
+
+        if (parameters.links) {
+            links = JSON.parse(parameters.links);
+            delete parameters['links'];
+            scope.links = links;
+        }
+
+        // handle action binding from links variable
+        for (var i = 0; i < links.length; i++) {
+            var identifier = links[i].id  // get jquery identifier bassed on id or class passsed in
+                    ? '#' + links[i].id
+                    : links[i].class
+                    ? '.' + links[i].class
+                    : 'idAndClassMissing',
+                eventParams = {};
+
+            if (identifier === 'idAndClassMissing') {
+                console.log('links object must contain an id or class property. => ' + JSON.stringify(links[i]));
+            }
+
+            // check if the executethis property is an object
+            if (widAppHelper.isJsonStr(links[i].executethis)) { eventParams = JSON.parse(links[i].executethis); }
+            else { eventParams.executethis = links[i].executethis; }
+
+            if (links[i].id) {
+                // add event attributes to element
+                $(identifier).attr('etparams', JSON.stringify(eventParams));
+
+                // add event listener to element
+                $(identifier).attr('on' + links[i].trigger, 'callExecute(this)');
+            } else if (links[i].class) {  // if class was passed in, apply links logic to all elemenets with class
+                $(identifier).each(function (i, ele) {
+                    // add event attributes to element
+                    $(ele).attr('etparams', JSON.stringify(eventParams));
+
+                    // add event listener to element
+                    $(ele).attr('on' + links[i].trigger, 'callExecute(this)');
+                });
+            }
+        }
+
+        if (parameters.dataforview) {
+            dataforview = JSON.parse(parameters.dataforview);
+
+            angular.injector(['ng', 'widApp'])
+                .get('dataService')
+                .storeData(dataforview, scope, 'dataforview');
+
+            delete parameters['dataforview'];
+        }
+
+        for (var a = 0; a < widforview.length; a++) { all_wids.push({executethis:widforview[a].trim()}); }
+        for (var b = 0; b < widforbase.length; b++) { all_wids.push({executethis:widforbase[b].trim()}); }
+        for (var c = 0; c < widforbackground.length; c++) { all_wids.push({executethis:widforbackground[c].trim()}); }
+
+        async.eachSeries(all_wids,
+            function(executeObj, cb) {
+                execute(executeObj, function (err, resultArray) {
+                    angular.injector(['ng', 'widApp'])
+                        .get('dataService')
+                        .storeData(resultArray, scope, '', function() {
+                            cb();
+                        });
+                });
+            },
+            function(err) {
+                if (callback instanceof Function) { callback(); }
+            });
+    };
+
     // adds the passed in object to the current angularJS scope (model) under the passed in name
     exports.addToAngular = addToAngular = function addToAngular(name, obj) {
         var scope = $('body').scope();
@@ -341,8 +442,8 @@ if (typeof angular !== 'undefined') {
         var scope = $('body').scope();
         angular.injector(['ng', 'widApp'])
             .get('executeService')
-            .executeThis(parameters, scope, function (err, result) {
-                if (callback instanceof Function) { callback(err, result); }
+            .executeThis(parameters, scope, function (err, resultArray) {
+                if (callback instanceof Function) { callback(err, resultArray); }
             });
     };
 
@@ -457,8 +558,8 @@ if (typeof angular !== 'undefined') {
 
             if (executeObj.etparams) { executeObj = JSON.parse(executeObj.etparams); }
 
-            execute(executeObj, function(err, results) {
-//                var results = widAppHelper.mergeNestedArray(result);
+            execute(executeObj, function(err, resultArr) {
+                var results = widAppHelper.mergeNestedArray(resultArr);
                 angular.injector(['ng', 'widApp'])
                     .get('dataService')
                     .storeData(results, scope, '', function() {
@@ -528,18 +629,19 @@ if (typeof angular !== 'undefined') {
 
 // pulls object from scope (model) by wid name
 exports.getfromangular = getfromangular = function getfromangular(parameters, callback) {
-    if ($ && $('body').scope && $('body').scope() !== undefined) { callback(null, $('body').scope()[parameters.wid]); }
+    if ($ && $('body').scope) { callback(null, $('body').scope()[parameters.wid]); }
     else { callback(null); }
 };
 
 exports.gethtmlbyid = gethtmlbyid = function gethtmlbyid(params, callback) {
     execute({executethis:'getwidmaster',wid:params.fromwid},
-        function (err, results) {
-            var html = result.html || '',
+        function (err, resultsArray) {
+            var results = widAppHelper.mergeNestedArray(resultsArray),
+                html = result.html || '',
                 foundHtml = $('<div>' + html + '</div>').find('#' + results.fromid)[0].outerHTML;
 
             execute({executethis:'addwidmaster',wid:results.towid,html:foundHtml},
-                function (err, result) {
+                function (err, returnArray) {
                     callback(null, foundHtml);
                 });
         });
@@ -559,11 +661,11 @@ exports.htmlToScreenwid = htmlToScreenwid = function htmlToScreenwid(screenWidNa
         if (params.links) { newScreenwid.links = JSON.stringify(links); }
     }
 
-    execute(newScreenwid, function (err, result) {
+    execute(newScreenwid, function (err, resultArray) {
         if (err && Object.size(err) > 0) {
             console.log('htmlToScreenwid addwidmaster error => ' + JSON.stringify(err));
         }
-        if (callback instanceof Function) { callback(result); }
+        if (callback instanceof Function) { callback(resultArray); }
     });
 };
 
@@ -575,11 +677,13 @@ exports.screenwidToHtml = screenwidToHtml = function screenwidToHtml(screenWid, 
     function addToElement(ele, cb) {
         var executeObj = NNMtoObj(ele.attributes);
 
-        execute(executeObj, function (err, result) {
+        execute(executeObj, function (err, resultArray) {
             if (err && Object.size(err) > 0) {
                 console.log('screenwidToHtml execute error => ' + JSON.stringify(err));
             } else {
-                if (result.html) { $(ele).append(result.html); }
+                for (var i = 0; i < resultArray.length; i++) {
+                    if (resultArray[i].html) { $(ele).append(resultArray[i].html); }
+                }
             }
 
             cb(null);
