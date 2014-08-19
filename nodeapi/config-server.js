@@ -483,7 +483,7 @@ exports.publishtestdelay = publishtestdelay = function publishtestdelay(paramete
 
 exports.publishtest = publishtest = function publishtest(parameters, callback) { 
         // listToDo, eventname, callback) {
-        console.log('---- publishtest??-');
+        proxyprinttodiv('---- publishtest??-', parameters, 99);
         console.log(JSON.stringify(parameters));
 
         var pusher_name = "Unknown";
@@ -506,7 +506,7 @@ exports.publishtest = publishtest = function publishtest(parameters, callback) {
         var dadata = parameters["command"];
         for (key in dadata)
         {
-            console.log("Key: " + key + " : " + dadata[key]);
+            proxyprinttodiv("Key: " + key + " : " + dadata[key], key, 99);
         }
 
         var pass_on_object = {
@@ -514,8 +514,8 @@ exports.publishtest = publishtest = function publishtest(parameters, callback) {
             "repo_name" : repo_name,
             "ref" : ref
         }
-        console.log('>-->>>');
-        console.log('--- calling sendPostCall ---');
+        proxyprinttodiv('>-->>>', {}, 99);
+        proxyprinttodiv('--- calling sendPostCall ---', {}, 99);
 
         // TODO: Create a function that given the REF of the COMMIT
         //       from GITHUB.COM Webhook it will return it will return
@@ -550,10 +550,12 @@ exports.publishtest = publishtest = function publishtest(parameters, callback) {
             } else {
                 passfail = "Fail";
             } 
+            var sendbody = 'publishtest - status: ' + passfail + ', user: ' + pusher_name + 
+                    ", repo name: " + repo_name + ', ref: ' + ref ; 
+            proxyprinttodiv(sendbody, text2number, 99);
             sendsms({
                 'to': text2number,
-                'body': 'publishtest - status: ' + passfail + ', user: ' + pusher_name + 
-                    ", repo name: " + repo_name + ', ref: ' + ref  
+                'body': sendbody
                 }, 
                 function (err, result) {
                     callback(err, result);
