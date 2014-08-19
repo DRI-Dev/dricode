@@ -1,6 +1,6 @@
 exports.postputgetrunExecutethis = function postputgetrunExecutethis(req, resp) {
     var parameters = req.body;
-    console.log(" JSON " + JSON.stringify(parameters));
+    proxyprinttodiv(" JSON postputgetrunExecutethis", JSON.stringify(parameters), 99);
     var url_parts = url.parse(req.url, true);
     var query = url_parts.query;
 
