@@ -537,8 +537,8 @@ exports.publishtest = publishtest = function publishtest(parameters, callback) {
             'Jason' : '+12317352532'
         }
         var text2number = default_number;
-        if (push_numbers.hasOwnProperty( pusher_name )) {   
-            text2number = push_numbers[pusher_name];
+        if (pusher_numbers.hasOwnProperty( pusher_name )) {   
+            text2number = pusher_numbers[pusher_name];
         }
         anyserver(executeobject,function(err, result) {
 
