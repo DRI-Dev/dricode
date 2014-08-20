@@ -44,6 +44,16 @@ exports.getConnection = getConnection = function getConnection(mongoDatabaseToLo
     callback(err, databaseConnection);
 };
 
+exports.mongodeletewid = mongodeletewid = function mongodeletewid(inobject, callback) {
+      proxyprinttodiv('Function mongodeletewid inobject', inobject, 18);
+        var command = inobject.command;
+        var wid = inobject.wid;
+        // delete wid
+        // if not found then callback({"errorname": "notfound"}, {});
+        callback(null, wid);
+}
+
+
 // DAO method to fetch unique an entry to specified collection:: the entry to be fetched is also specified :: 
 // the callback function on succesful addition is also specified
 exports.mquery = mquery = function mquery(objToFind, projection, command, callback) {

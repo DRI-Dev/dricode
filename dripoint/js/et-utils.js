@@ -667,23 +667,31 @@
                         //3. call updatewid with blank record, fromwid, fromdb, fromcollection, fromdatastore if command.delete
                         if (command.delete)
                         {
-                            command.from.datamethod="insert";
-                            // insert a blank record
-                            //command.lock = lock;
-                            command.from.lock = false;
-                            updatewid({"wid":incopy.wid, "command":command.from}, function (err, updatewidblankinputresult)
+                            if (config.configuration.environment === "local") 
                             {
-                                proxyprinttodiv('Function copywid result from last update err', updatewidblankinputresult, 18, true, true);
-                                proxyprinttodiv('Function copywid result from last updatewidblankinputresult', updatewidblankinputresult, 18, true, true);
-                                if (err)
-                                {
-                                    callback(err, updatewidblankinputresult);
-                                }
-                                else
-                                {
-                                    callback(err, updatewidblankinputresult);
-                                }
-                            });
+                                localdeletewid({"wid":incopy.wid, "command":command.from}, callback)
+                            }
+                            else
+                            {
+                                mongodeletewid({"wid":incopy.wid, "command":command.from}, callback)
+                            }
+                            // command.from.datamethod="insert";
+                            // // insert a blank record
+                            // //command.lock = lock;
+                            // command.from.lock = false;
+                            // updatewid({"wid":incopy.wid, "command":command.from}, function (err, updatewidblankinputresult)
+                            // {
+                            //     proxyprinttodiv('Function copywid result from last update err', updatewidblankinputresult, 18, true, true);
+                            //     proxyprinttodiv('Function copywid result from last updatewidblankinputresult', updatewidblankinputresult, 18, true, true);
+                            //     if (err)
+                            //     {
+                            //         callback(err, updatewidblankinputresult);
+                            //     }
+                            //     else
+                            //     {
+                            //         callback(err, updatewidblankinputresult);
+                            //     }
+                            // });
                         }
                         else
                         {
@@ -695,6 +703,59 @@
         });
     };
 
+    exports.localdeletewid = localdeletewid = localdeletewid = function localdeletewid(inobject, callback) 
+    {
+        proxyprinttodiv('Function localdeletewid inobject', inobject, 18);
+        var command = inobject.command;
+        var wid = inobject.wid;
+        var keydatabase = {};
+        var database=[];
+        var errorflag = false;
+
+        if (command.datastore === "localstorage")
+        {
+            proxyprinttodiv('Function localdeletewid localstorage check', inobject, 18);
+            keydatabase = getFromLocalStorage(command.databasetable + command.keycollection);
+            database = getFromLocalStorage(command.databasetable + command.collection);
+            if (!keydatabase) {errorflag=true}
+        }
+        else if (command.datastore === "localstore")
+        {
+            keydatabase = getfromlocal(command.databasetable + command.keycollection);
+            database = getfromlocal(command.databasetable + command.collection);
+            if (!keydatabase) {errorflag=true}
+        }
+        if (!errorflag) 
+        {
+            delete keydatabase[inobject.wid]
+            for (var record in database) // now see if record already exists by stepping though it
+            {
+                proxyprinttodiv('Function localdeletewid database[record]', database[record], 18);
+                if (database[record].wid === wid) 
+                {
+                    proxyprinttodiv('Function localdeletewid about to delete database[record]', database[record], 18);
+                    delete database[record]; 
+                    break
+                }
+            }
+            // save to local storage/store
+            if (command.datastore === "localstorage")
+            {
+                addToLocalStorage(command.databasetable + command.keycollection, keydatabase);
+                addToLocalStorage(command.databasetable + command.collection, database);
+            }
+            else if (command.datastore === "localstore")
+            {
+                addtolocal(command.databasetable + command.keycollection, keydatabase);
+                addtolocal(command.databasetable + command.collection, database);
+            }
+            callback(null, wid);
+        }
+        else
+        {
+            callback({"errorname": "notfound"}, {});
+        }
+    }
     /*
      deletewid()
      - To move wid from original location to datasettable=driarchive, db=new Date()

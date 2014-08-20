@@ -3659,7 +3659,6 @@ function setup_dri_account(callback) {
 			"userwid": driuser,
 			"securityac": "driuserac"
 			}, function(err, resp) {
-				//proxyprinttodiv('Function addsecurity done --  for johnny -- ', resp, 39, true);
 				callback(err, resp);
 			});
 	});
@@ -3891,6 +3890,10 @@ function create_basic_permissions(callback) {
 
 
 function test_security_scheme(params, callback) {
+var driuserconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'createcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"driuserac","command.enviromment.userid":"driuser"};
+var response = "";
+		
 	async.series([
 		function (cb) {
 			setup_dri_account(function (err, res) {
@@ -3928,16 +3931,17 @@ function test_security_scheme(params, callback) {
 				proxyprinttodiv("create permissions res --", res, 99);
 				cb(err);
 			});
-		}/*,
+		},
 		function(cb) {
             // perform the securitycheck for the createcurrency action, with organization user user ac
-            sc(johnnyconfig, function(err, resp) {
+            sc(driuserconfig, function(err, resp) {
                 //proxyprinttodiv('Security check done 1 --  johnnyconfig -   response  -- ', resp, 39);
-				johnny_result.createcurrency = resp.authstatus;				
+				response = resp.authstatus;				
                 cb(err);
             });
-        }*/],
+        }],
 		function (err1, resp1) {
+			proxyprinttodiv('security response res --', response, 99);
 			callback(err1, resp1);
 		});
 	
