@@ -4,7 +4,10 @@ exports.postputgetrunExecutethis = function postputgetrunExecutethis(req, resp) 
     var url_parts = url.parse(req.url, true);
     var query = url_parts.query;
 
+    proxyprinttodiv(" before extend - parameters ", JSON.stringify(parameters), 99);
+    proxyprinttodiv(" after extend - query ", JSON.stringify(query), 99);
     extend(true, parameters, query);
+    proxyprinttodiv(" after extend", JSON.stringify(parameters), 99);
     runExecuteThis(parameters, resp);
 }
 
