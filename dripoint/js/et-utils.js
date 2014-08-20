@@ -138,6 +138,9 @@
             var incopy = {};
             extend(true, incopy, inobject);
             var command = incopy.command || config.configuration.d.default;  // should always get command
+            if (!command.keycollection) {
+                command.keycollection = command.collection +  "key";
+            }
             delete incopy.command;
 
             // if record is not locked then okatoupdate = true, else false
@@ -347,7 +350,7 @@
             {
                 for (var record in database) // now see if record already exists by stepping though it
                 {
-                    proxyprinttodiv('Function addtomongo database[record]', database[record], 12);
+                    proxyprinttodiv('Function addtolocal database[record]', database[record], 12);
                     if (database[record].wid === currentrecord.wid) {
                         database[record] = currentrecord;
                         break;
@@ -623,6 +626,7 @@
                 var updatewidinput = {
                     "wid": command.to.wid,
                     "command": {
+                        "lock":false,
                         "db": command.to.db,
                         "collection": command.to.collection,
                         "datastore": command.to.datastore,
@@ -645,9 +649,10 @@
                         //3. call updatewid with blank record, fromwid, fromdb, fromcollection, fromdatastore if command.delete
                         if (command.delete)
                         {
-                            getwidinput.command.datamethod="insert";
+                            command.datamethod="insert";
                             // insert a blank record
-                            command.lock = lock;
+                            //command.lock = lock;
+                            command.lock = false;
                             updatewid({"wid":incopy.wid, "command":command}, function (err, updatewidblankinputresult)
                             {
                                 if (err)
@@ -707,10 +712,10 @@
 
     exports.convertfromdriformatenhanced = convertfromdriformatenhanced = function convertfromdriformatenhanced(output, command, originalarguments) {
         output = convertfromdriformat(output, command);
-        if (output && Object.size(output) > 0) {
+        if (output && Object.keys(output).length > 0) {
             output = extend(true, {}, originalarguments, output);
         }
-        if (Object.size(output) > 0 && command.convert === 'todot') {
+        if (Object.keys(output).length > 0 && command.convert === 'todot') {
             output = ConvertToDOTdri(output);
         }
         return output
@@ -727,7 +732,7 @@
             db = command.db;
         }
 
-        if ((widobject) && (Object.size(widobject) > 0)) {
+        if ((widobject) && (Object.keys(widobject).length > 0)) {
             if (isArray(widobject[db])) {
                 outobject = widobject[db][0];
             } else {
@@ -878,9 +883,9 @@
 
 
             if(expanddefault){
-                printText +='<div class="span4 collapse in" id="myDiv'+ exports.cnt +'">';
+                printText +='<div collapse in" id="myDiv'+ exports.cnt +'">';
             }else{
-                printText +='<div class="span4 collapse" id="myDiv'+ exports.cnt +'">';
+                printText +='<div collapse" id="myDiv'+ exports.cnt +'">';
             }
 
             printText += syntaxHighlight(jsonPretty) +'</div></pre>';

@@ -9341,13 +9341,15 @@ exports.testdltwid1 = testdltwid1 = function testdltwid1(params, callback) {
         }, {
             "executethis": "deletewid",
             "wid": "testdeletewid1"
-        }, {
-            "executethis": "getwid",
-            "wid": "testdeletewid1"
         }],
         function (err, res) {
-            proxyprinttodiv('testdeletewid1 result: ', res, 99);
-            callback(err, res);
+			execute({
+            "executethis": "getwid",
+            "wid": "testdeletewid1"
+			}, function (err1, res1) {
+				proxyprinttodiv('testdeletewid1 result: ', res1, 99);
+				callback(err, res);
+			});
         });
 }
 // To test with copywid, command.environment debugging
