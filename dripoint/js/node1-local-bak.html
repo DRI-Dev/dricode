@@ -31,8 +31,9 @@ copyright (c) 2014 DRI
     <script src="./async.js"></script>
     <script src="config-local.js"></script>
     <script src="et-utils.js"></script>
-    <!--<script src="et-sec.js"></script>-->
-    <script src="et-security.js"></script>
+    <script src="et-dto.js"></script>
+    <script src="et-sec.js"></script>
+    <!-- // <script src="et-security.js"></script> -->
     <script src="executethis.js"></script>
     <script src="et-query.js"></script>
     <script src="et-test.js"></script>
@@ -43,14 +44,17 @@ copyright (c) 2014 DRI
 
     <script src="et-utils-test.js"></script>
 
-    <script src="test-addhoc.js"></script>
+	<script src="test-addhoc.js"></script>
     <script src="test-execute.js"></script>
+    <script src="test-main.js"></script>
     <script src="test-query.js"></script>
     <script src="test-dto.js"></script>
     <script src="test-inherit.js"></script>
     <script src="test-namespace.js"></script>
     <script src="test-security.js"></script>
-    <script src="test-functions.js"></script>
+    <script src="test-et-utils.js"></script>
+    <script src="cody.js"></script>
+    <script src="addhoc.js"></script>
     <script src="ngWidApp.js"></script>
     <script src="et-htmlprocessor.js"></script>
 
@@ -146,7 +150,7 @@ copyright (c) 2014 DRI
             <input id='function_to_run' size='20' value=''>
             <input id='reload_page' class='btn btn-danger' type='button' value='Reload Page' />
             <label>Clean local storage?</label>
-            <input type='checkbox' id='localStorageClean' checked="true">&nbsp&nbsp
+            <input type='checkbox' id='localStorageClean' checked="false">&nbsp&nbsp
             <input id='domain_switch' class='btn btn-primary' type='button' value='Server View' />
             <!--
         <label>Server call ? </label><input type='checkbox' id='server_caller'>
@@ -168,7 +172,8 @@ copyright (c) 2014 DRI
                     <label>Debug?</label>
                     <input type='checkbox' id='debugon'>
                     <label>Destination: Print?</label>
-                    <input type='checkbox' id='dest_print' checked>
+                    <input type='checkbox' id='dest_print'>
+                    <!-- <input type='checkbox' id='dest_print' checked> -->
                     <label>Google?</label>
                     <input type='checkbox' id='dest_google'>
                     <label>Debug Level?</label>
@@ -295,10 +300,6 @@ $('#debugon').change(function() {
     }
 })
 
-$("#dbug_level").change(function () {
-    $("#debugon").prop('checked', true);
-});
-
 $("#domain_switch").click(function() {
     var here = document.URL;
     var path = "";
@@ -323,9 +324,10 @@ $(document).ready(function() {
 
     //eventdeviceready({}, function (err, res) {
     eventappinstall ({}, function (err, res) {
+        loaddefaults({}, function (err, res) {
         $('dest_print').prop("checked", true);
         //alert(document.URL);
-
+    })
     });
 
 });
@@ -375,7 +377,7 @@ function execute_stuff(isTest, isServer, servername) {
     if ($("#localStorageClean").is(':checked')) {
         // and the clearlocalstoraget ...check box >>  function etappinstall()
         //eventdeviceready();
-        eventappinstall();
+        eventappinstall({},function(err, res){});
     }
 
     eventnewpage({}, function (err, res) {
@@ -451,7 +453,7 @@ function execute_stuff(isTest, isServer, servername) {
         //         my_execute_object['command']={'server':servername};
         //     }
         // }
-        // Change the Clean local storage checkbox to 'unchecked'
+        // Change the Clean local storage   proxyprinttodiv("createhtml step3 p", p, 100, true, true); to 'unchecked'
         $("#localStorageClean").prop('checked', false);
         // ******** This actually executes the function and show the output ********
         // alert('ex-object:\n' + JSON.stringify(my_execute_object,'-', 4));
@@ -846,7 +848,7 @@ function display_Local_Storage() {
 
 function display_local_wid() {
 
-    document.getElementById("local_data").innerHTML = "";
+        document.getElementById("local_data").innerHTML = "";
         // for (var collection_key in localStorage) {
         for (var collection_key in localStorage){
             var html = "";

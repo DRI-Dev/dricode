@@ -3509,11 +3509,11 @@ exports.testdltwid123 = testdltwid123 = function testdltwid123(params, callback)
             "a": "b"
         })
     proxyprinttodiv('testdeletewid1 params: ', params, 99);
-    execute(params, 
+    execute([params, 
         {
             "executethis": "deletewid",
             "wid": "testdeletewid1"
-        }
+        }]
         , 
         //{
         //     "executethis": "getwid",

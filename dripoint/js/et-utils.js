@@ -245,7 +245,9 @@
             if (!command.newrecord)
             {
                 // set up recordtoadd ready for addition
+                proxyprinttodiv('Function updatewid currentrecord before convert', currentrecord, 12, true, true);
                 recordtoadd = convertfromdriformatenhanced(currentrecord, command);
+                proxyprinttodiv('Function updatewid currentrecord after convert', currentrecord, 12, true, true);
                 // flatten out record -- normal : {wid:wid1 a:b c:d}, driformat: {wid:wid1 data:{a:b c:d}}
                 if (command.datamethod === "insert")
                 {
@@ -255,8 +257,10 @@
                 {
                     recordtoadd = extend(true, recordtoadd, incopy);
                 }
+                proxyprinttodiv('Function updatewid calculaterecordtoadd command', command, 12, true, true);
                 if (command.hasOwnProperty("lock")) // set the right property to save
                 {
+                    if (!recordtoadd.metadata) {recordtoadd.metadata={}};
                     recordtoadd.metadata.lock = command.lock;
                 }
             }
@@ -286,9 +290,17 @@
 
             if (!command) { command = {}; }
 
-            if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock)
+            if ((command.hasOwnProperty("lock") && !command.lock) 
+                || command.getwidflag) 
             {
-                currentlock = true;
+                currentlock=false
+            }
+            else 
+            {
+                if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock)
+                {
+                    currentlock = true;
+                }
             }
 
             proxyprinttodiv('Function datastore command', command, 12,99, true);
@@ -312,8 +324,10 @@
 
             if (!restriction.currentlock && restriction.shouldupdate)
             {
-                var convertedrecord = converttodriformat(recordtoadd, command); // get it ready to store
+                var convertedrecord = converttodriformat(recordtoadd, command); // get it ready to store\
+                proxyprinttodiv('Function updatewid currentrecord I', currentrecord, 12);
                 proxyprinttodiv('Function updatewid convertedrecord II', convertedrecord, 12);
+                currentrecord[command.db] = {};
                 extend(true, currentrecord, convertedrecord); // merge with existing record
                 proxyprinttodiv('Function updatewid currentrecord III', currentrecord, 12);
 
@@ -582,7 +596,7 @@
 
     exports.copywid = copywid = copywid = function copywid(inobject, callback) {
 
-        proxyprinttodiv('Function delete inobject', inobject, 18, true);
+        proxyprinttodiv('Function copywid inobject', inobject, 18, true, true);
         if (!inobject.command.from) {inobject.command.from={}}
         if (!inobject.command.to) {inobject.command.to={}}
         var incopy = {};
@@ -591,13 +605,16 @@
         var lock = false;
         if (command.delete) {lock=true}
 
+        // maybe delete incopy.command;
+
         //fromwid, fromdb, fromcollection, fromdatastore, towid, todb, tocollection, todatastore, command,
         //1. call getwid fn with fromwid, fromdb, fromcollection, fromdatastore
 
+        proxyprinttodiv('Function copywid command before', command, 18, true, true);
         // first get from/to from all the different possible places
-        extend(true, command.from, config.configuration.d.default, incopy.command.from);
-        extend(true, command.to, config.configuration.d.default, incopy.command.to);
-
+        command.from = extend(false, command.from, config.configuration.d.default, command.from);
+        command.to = extend(false, command.to, config.configuration.d.default, command.to);
+        proxyprinttodiv('Function copywid command', command, 18, true, true);
         // ** GET **
         // in the case of from it might have been sent it at root of command
         var getwidinput = {
@@ -610,7 +627,7 @@
                 "lock" : lock // lock it if delete until it is copied
             }
         };
-        proxyprinttodiv('Function copywid getwidinput', getwidinput, 18);
+        proxyprinttodiv('Function copywid getwidinput', getwidinput, 18, true, true);
         getwid(getwidinput, function (err, getwidresult)
         {
             if (err)
@@ -619,7 +636,7 @@
             }
             else
             {
-                proxyprinttodiv('Function copywid getwidresult', getwidresult, 18);
+                proxyprinttodiv('Function copywid update result', getwidresult, 18, true, true);
 
                 // ** UPDATE **
                 //2. call updatewid fn with get result wid, towid, todb, tocollection, todatastore
@@ -633,8 +650,8 @@
                         "databasetable": command.to.databasetable
                     }
                 };
-                updatewidinput = extend(true, {}, inobject, getwidresult, updatewidinput); // combine the result + original incoming + update record
-                proxyprinttodiv('Function copywid updatewidinput', updatewidinput, 18);
+                updatewidinput = extend(true, {}, getwidresult, updatewidinput); // combine the result + original incoming + update record
+                proxyprinttodiv('Function copywid updatewidinput', updatewidinput, 18, true, true);
                 updatewid(updatewidinput, function (err, updatewidresult)
                 {
                     if (err)
@@ -643,25 +660,27 @@
                     }
                     else
                     {
-                        proxyprinttodiv('Function copywid updatewidresult', updatewidresult, 18);
+                        proxyprinttodiv('Function copywid RESULT updatewidresult', updatewidresult, 18, true, true);
 
+                        proxyprinttodiv('Function copywid command.delete', command.delete, 18, true, true);
                         // ** UPDATE and unlock **
                         //3. call updatewid with blank record, fromwid, fromdb, fromcollection, fromdatastore if command.delete
                         if (command.delete)
                         {
-                            command.datamethod="insert";
+                            command.from.datamethod="insert";
                             // insert a blank record
                             //command.lock = lock;
-                            command.lock = false;
-                            updatewid({"wid":incopy.wid, "command":command}, function (err, updatewidblankinputresult)
+                            command.from.lock = false;
+                            updatewid({"wid":incopy.wid, "command":command.from}, function (err, updatewidblankinputresult)
                             {
+                                proxyprinttodiv('Function copywid result from last update err', updatewidblankinputresult, 18, true, true);
+                                proxyprinttodiv('Function copywid result from last updatewidblankinputresult', updatewidblankinputresult, 18, true, true);
                                 if (err)
                                 {
                                     callback(err, updatewidblankinputresult);
                                 }
                                 else
                                 {
-                                    proxyprinttodiv('Function copywid updatewidblankinputresult', updatewidblankinputresult, 27);
                                     callback(err, updatewidblankinputresult);
                                 }
                             });
@@ -681,7 +700,7 @@
      - To move wid from original location to datasettable=driarchive, db=new Date()
      */
     exports.deletewid = deletewid = deletewid = function deletewid(inobject, callback) {
-        proxyprinttodiv('Function deletewid inobject', inobject, 27);
+        proxyprinttodiv('Function deletewid inobject', inobject, 27, true, true);
         if (inobject.wid) {
 
             if (!inobject.command.from) { inobject.command.from={}; }
@@ -692,7 +711,7 @@
             inobject.command.from.databasetable = inobject.command.from.databasetable || inobject.command.databasetable || config.configuration.d.default.databasetable;
             extend(true, inobject.command.to, config.configuration.delete, inobject.command.to);
             inobject.command.delete=true;
-            proxyprinttodiv('Function deletewid inobject before copywid', inobject, 27);
+            proxyprinttodiv('Function deletewid inobject before copywid', inobject, 27, true, true);
             copywid(inobject, function (err, copiedobject) {
                 if (err)
                 {
@@ -700,7 +719,7 @@
                 }
                 else
                 {
-                    proxyprinttodiv('Function deletewid copiedobject ', copiedobject, 27);
+                    proxyprinttodiv('Function deletewid copiedobject ', copiedobject, 27, true, true);
                     callback(null, copiedobject);
                 }
             });
@@ -710,9 +729,11 @@
     };
 
 
-    exports.convertfromdriformatenhanced = convertfromdriformatenhanced = function convertfromdriformatenhanced(output, command, originalarguments) {
+    exports.convertfromdriformatenhanced = convertfromdriformatenhanced = function convertfromdriformatenhanced(obj, command, originalarguments) {
+        var output={}
+        extend(true, output, obj);
         output = convertfromdriformat(output, command);
-        if (output && Object.keys(output).length > 0) {
+        if (output && Object.keys(output).length > 0 && originalarguments && Object.keys(originalarguments).length > 0) {
             output = extend(true, {}, originalarguments, output);
         }
         if (Object.keys(output).length > 0 && command.convert === 'todot') {
