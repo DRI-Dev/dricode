@@ -3616,7 +3616,7 @@ var useractionstable = {
 					"getoffer": "",
 					"getcurrency": ""
 					};
-
+					
 var actiongroupstable = {
 						"alluseractions": "",
 						"allmerchantactions": ""
@@ -3654,46 +3654,64 @@ function setup_actions(callback)
 {	
 	err_obj = {};
 	
-	// merchantactions
-	for (var key in merchantactionstable) {
-		createaction({
-			"creator": driuser,
-			"actiontype": key
-			}, function (err, resp) {
-				err_obj[key] = err;
-				if (!err) { merchantactionstable[key] = resp.wid };
-				//proxyprinttodiv('createaction for ' + key + ' generated the following response --', resp, 39, true);
+	async.series([
+		function (cb) {
+			// merchantactions
+			async.forEach(Object.keys(merchantactionstable), function (key, callback) {
+				createaction({
+						"creator": driuser,
+						"actiontype": key
+						}, function (err, resp) {
+							err_obj[key] = err;
+							if (!err) { merchantactionstable[key] = resp.wid };
+							proxyprinttodiv('createaction for ' + key + ' generated the following response --', resp, 99, true);
+							callback(err, resp);
+					});	
+			}, function (err, res) {
+				proxyprinttodiv('res --', res, 99);
+				proxyprinttodiv('err --', err, 99);
+				cb(err, res);
 			});
-	};
-	
-	// useractions
-	for (var key in useractionstable) {
-		createaction({
-			"creator": driuser,
-			"actiontype": key
-			}, function (err, resp) {
-				err_obj[key] = err;
-				if (!err) { useractionstable[key] = resp.wid };
-				//proxyprinttodiv('createaction for ' + key + ' generated the following response --', resp, 39, true);
+		},
+		function (cb) {
+			// useractions
+			async.forEach(Object.keys(useractionstable), function (key, callback) {
+				createaction({
+						"creator": driuser,
+						"actiontype": key
+						}, function (err, resp) {
+							err_obj[key] = err;
+							if (!err) { useractionstable[key] = resp.wid };
+							proxyprinttodiv('createaction for ' + key + ' generated the following response --', resp, 99, true);
+							callback(err, resp);
+					});	
+			}, function (err, res) {
+				proxyprinttodiv('res --', res, 99);
+				proxyprinttodiv('err --', err, 99);
+				cb(err, res);
 			});
-	};	
-	
-	callback(null, err_obj);
+		}], function (err, res) {
+				callback(err, err_obj);
+		});
 }
+
 	
 function setup_user_groups(callback) {	
 	err_obj = {};
-	
-	for (var key in usergroupstable) {
+	async.forEach(Object.keys(usergroupstable), function (key, callback) {
 		creategroup({
 			"grouptype": key
 			}, function (err, resp) {
 				err_obj[key] = err;
 				usergroupstable[key] = resp.wid;
-			});
-	};
-	
-	callback(err_obj);
+				proxyprinttodiv('creategroup for ' + key + ' generated the following response --', resp, 99, true);
+				callback(err, resp);
+			});	
+	}, function (err, res) {
+		proxyprinttodiv('res --', res, 99);
+		proxyprinttodiv('err --', err, 99);
+		callback(null,err_obj);
+		});	
 }
 
 
@@ -3764,6 +3782,12 @@ function test_security_scheme(params, callback) {
 			setup_actions(function (err, res) {
 				proxyprinttodiv("actions setup res --", res, 99);
 				cb(err);
+			});
+		},
+		function (cb) {
+			setup_user_groups(function (err, res) {
+				proxyprinttodiv("user groups setup res --", res, 99);
+				cb(err)
 			});
 		}],
 		function (err1, resp1) {

@@ -3501,19 +3501,25 @@ exports.mq2_test = mq2_test = function mq2_test(inputobj, callback) {
 
 // deletewid() test 
 // To test wid copied to command.datasettable="driarchive" or not
-exports.testdltwid1 = testdltwid1 = function testdltwid1(params, callback) {
-    debuglevel = 17;
-    execute([{
+exports.testdltwid123 = testdltwid123 = function testdltwid123(params, callback) {
+    proxyprinttodiv('testdeletewid1 params: ', params, 99);
+    extend(true, params, {
             "executethis": "updatewid",
             "wid": "testdeletewid1",
             "a": "b"
-        }, {
+        })
+    proxyprinttodiv('testdeletewid1 params: ', params, 99);
+    execute(params, 
+        {
             "executethis": "deletewid",
             "wid": "testdeletewid1"
-        }, {
-            "executethis": "getwid",
-            "wid": "testdeletewid1"
-        }],
+        }
+        , 
+        //{
+        //     "executethis": "getwid",
+        //     "wid": "testdeletewid1"
+        // }
+        
         function (err, res) {
             proxyprinttodiv('testdeletewid1 result: ', res, 99);
             callback(err, res);

@@ -23,7 +23,7 @@ function config123() {
     var configuration = {};   
     // what environment and what defaults should be used
     configuration.environment = 'local';
-    configuration.syncrule = 'sync_local_server';
+    configuration.syncrule = 'sync_local';
     configuration.machinename = 'browser'; //'phonegap';
     configuration.startwid = 'startwid';
     configuration.collection = 'dricollection';
@@ -61,11 +61,11 @@ function config123() {
     configuration.defaultenvironment[configuration.db] = configuration.d;
 
     configuration.delete = {};
-    configuration.delete.collection = 'dricollection';
+    configuration.delete.collection = 'deletecollection';
     configuration.delete.db = 'data';
     configuration.delete.datastore = 'localstorage';
     configuration.delete.keycollection = configuration.collection+'key';
-    configuration.delete.databasetable = 'deletedatabasetable';
+    configuration.delete.databasetable = 'dricluster';
 
     return {
         "configuration": configuration
@@ -175,7 +175,7 @@ function executeAjax(allConfig, executeItem, callback, returnCallback) {
     $.ajax({
         type: 'PUT',
         dataType: 'json',
-        url: '/executethis',
+        url: 'http://test3.dripoint.com/executethis',
         headers: {
             'content-type': 'application/json'
         },
