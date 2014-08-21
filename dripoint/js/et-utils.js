@@ -791,9 +791,14 @@
 
 
     exports.convertfromdriformatenhanced = convertfromdriformatenhanced = function convertfromdriformatenhanced(obj, command, originalarguments) {
-        var output={}
+        var output = {};
         extend(true, output, obj);
         output = convertfromdriformat(output, command);
+
+        if (typeof output != 'Object') {
+            debugger;
+        }
+
         if (output && Object.keys(output).length > 0 && originalarguments && Object.keys(originalarguments).length > 0) {
             output = extend(true, {}, originalarguments, output);
         }

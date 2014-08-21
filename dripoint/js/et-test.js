@@ -4231,18 +4231,20 @@ exports.lukesdatatest = lukesdatatest = function lukesdatatest(params, callback)
     var etEvironment = new DriEnvironment(params.command.environment);
     etEvironment.execute({
         "executethis": "querywidmaster",
-        "command.result": "queryresult",
-        "mongorawquery": {
-            "metadata.method": {
-                "$exists": true
-            }
-        },
         "command": {
             "environment": {
                 "syncrule": "sync_server"
-            }
+            },
+            "result": "data"
+        },
+        "mongorawquery": {
+            "$and": [
+                {
+                    "metadata.method": "defaultdto"
+                }
+            ]
         }
-    }, function (err, result) {
+    } , function (err, result) {
         callback(err, result);
     })
 };
