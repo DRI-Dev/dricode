@@ -795,7 +795,7 @@
         extend(true, output, obj);
         output = convertfromdriformat(output, command);
 
-        if (typeof output != 'Object') {
+        if (typeof output != 'object') {
             debugger;
         }
 
