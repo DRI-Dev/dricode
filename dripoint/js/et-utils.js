@@ -1017,6 +1017,7 @@
 
 
 
+// ok to change this sort to match mongos way
 // http://stackoverflow.com/questions/1129216/sorting-objects-in-an-array-by-a-field-value-in-javascript
 // use: People.sort(dynamicsort("Name"));
 // use: People.sort(dynamicsortmultiple("Name", "-Surname"));

@@ -386,8 +386,8 @@
         // if the incoming relationship is one to one
         async.series([
                 function step1(step1_callback) {
-                    proxyprinttodiv("addrecord inputrecord", inputrecord, 99, true,true);
-                    proxyprinttodiv("addrecord inputrecord.wid", inputrecord.wid, 99, true,true);
+                    proxyprinttodiv("addrecord inputrecord", inputrecord, 17, true,true);
+                    proxyprinttodiv("addrecord inputrecord.wid", inputrecord.wid, 17, true,true);
                     if (parentwid && inputrecord.wid && ((relationshiptype === "onetoone") || (relationshiptype === "manytoone"))) { //|| (relationshiptype === "manytomany")
 
                         if (parentwid && inputrecord.wid) {
