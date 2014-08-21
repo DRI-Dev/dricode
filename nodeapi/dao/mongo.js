@@ -68,87 +68,41 @@ exports.mquery = mquery = function mquery(objToFind, projection, command, callba
     } 
     else if (projection === "") { projection = {}; } // default projection to an empty object
 
-    // var pagenumber = command.pagenumber || 1;
-    // var perpage = command.perpage; // || 50;
-    // var skipval = command.skip || pagenumber > 0 ? (pagenumber-1)*perpage : 0;
-    // var limitval = command.limit || perpage || 0;  // 0 is all 
-    // var sortobj = command.sort || {};
-    // var count = command.count || false;
+    var pagenumber = command.pagenumber || 1;
+    var perpage = command.perpage; // || 50;
+    var skipval = command.skip || pagenumber > 0 ? (pagenumber-1)*perpage : 0;
+    var limitval = command.limit || perpage || 0;  // 0 is all
+    var sortobj = command.sort || {};
+//    var count = command.count || false;
 
-    // if (count)
-    // {
-    //      getConnection(mongoDatabaseToLookup, function(err, db) 
-    //         {
-    //         db.collection(schemaToLookup).count(objToFind) 
-    //             {
-    //                 if (err) 
-    //                 {
-    //                     callback({"errorname":"queryerror"}, []);
-    //                 } 
-    //                 else 
-    //                 {
-    //                     if (res) 
-    //                     {
-    //                         callback(err, res);
-    //                     } 
-    //                     else 
-    //                     {
-    //                         callback({"errorname":"queryerror"}, []);
-    //                     }
-    //                 }
-    //             });
-    //         });
-    // }
-    // else // if real query
-    // {
-    //     getConnection(mongoDatabaseToLookup, function(err, db) 
-    //     {
-    //         db.collection(schemaToLookup).
-    //             find(objToFind, projection).
-    //             sort(sortobj).
-    //             skip(skipval).
-    //             limit(limitval).
-    //             toArray(function(err, res) 
-    //         {
-    //         if (err) 
-    //         {
-    //             callback({"errorname":"queryerror"}, []);
-    //         } 
-    //         else 
-    //         {
-    //             if (res) 
-    //             {
-    //                 callback(err, res);
-    //             } 
-    //             else 
-    //             {
-    //                 callback({"errorname":"queryerror"}, []);
-    //             }
-    //         }
-    //         });
-    //     });
-    // }
-
-    getConnection(mongoDatabaseToLookup, function(err, db) 
-    {
-        db.collection(schemaToLookup).find(objToFind, projection).toArray(function(err, res) 
-        {
-            if (err) 
-            {
-                callback({"errorname":"queryerror"}, []);
-            } 
-            else 
-            {
-                if (res) 
-                {
-                    callback(err, res);
-                } 
-                else 
-                {
-                    callback({"errorname":"queryerror"}, []);
-                }
-            }
-        });
+    getConnection(mongoDatabaseToLookup, function(err, db) {
+//        if (count)
+//        {
+//             db.collection(schemaToLookup).count(objToFind) {
+//                 if (err) {
+//                     callback({"errorname":"queryerror"}, []);
+//                 } else {
+//                     if (res) { callback(err, res); }
+//                     else { callback({"errorname":"queryerror"}, []); }
+//                 }
+//             });
+//        }
+//        else // if real query
+//        {
+             db.collection(schemaToLookup).
+                 find(objToFind, projection).
+                 sort(sortobj).
+                 skip(skipval).
+                 limit(limitval).
+                 toArray(function(err, res)
+             {
+                 if (err) { callback({"errorname":"queryerror: " + err}, []); }
+                 else {
+                     if (res) { callback(err, res); }
+                     else { callback({"errorname":"no_query_result"}, []); }
+                 }
+             });
+//        }
     });
 };
 
