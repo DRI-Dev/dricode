@@ -23,7 +23,7 @@ function config123() {
     var configuration = {};   
     // what environment and what defaults should be used
     configuration.environment = 'local';
-    configuration.syncrule = 'sync_local';
+    configuration.syncrule = 'sync_local_server';
     configuration.machinename = 'browser'; //'phonegap';
     configuration.startwid = 'startwid';
     configuration.collection = 'dricollection';
