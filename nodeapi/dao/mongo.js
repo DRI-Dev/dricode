@@ -73,22 +73,22 @@ exports.mquery = mquery = function mquery(objToFind, projection, command, callba
     var skipval = command.skip || pagenumber > 0 ? (pagenumber-1)*perpage : 0;
     var limitval = command.limit || perpage || 0;  // 0 is all
     var sortobj = command.sort || {};
-//    var count = command.count || false;
+    var count = command.count || false;
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
-//        if (count)
-//        {
-//             db.collection(schemaToLookup).count(objToFind) {
-//                 if (err) {
-//                     callback({"errorname":"queryerror"}, []);
-//                 } else {
-//                     if (res) { callback(err, res); }
-//                     else { callback({"errorname":"queryerror"}, []); }
-//                 }
-//             });
-//        }
-//        else // if real query
-//        {
+        if (count)
+        {
+             db.collection(schemaToLookup).count(objToFind, function (err, count) {
+                 if (err) {
+                     callback({"errorname":"query_count_error"}, []);
+                 } else {
+                     if (count) { callback(err, {count: count}); }
+                     else { callback({"errorname":"queryerror"}, []); }
+                 }
+             });
+        }
+        else // if real query
+        {
              db.collection(schemaToLookup).
                  find(objToFind, projection).
                  sort(sortobj).
@@ -102,7 +102,7 @@ exports.mquery = mquery = function mquery(objToFind, projection, command, callba
                      else { callback({"errorname":"no_query_result"}, []); }
                  }
              });
-//        }
+        }
     });
 };
 
