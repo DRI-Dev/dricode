@@ -44,15 +44,6 @@ exports.getConnection = getConnection = function getConnection(mongoDatabaseToLo
     callback(err, databaseConnection);
 };
 
-exports.mongodeletewid = mongodeletewid = function mongodeletewid(inobject, callback) {
-      proxyprinttodiv('Function mongodeletewid inobject', inobject, 18);
-        var command = inobject.command;
-        var wid = inobject.wid;
-        // delete wid
-        // if not found then callback({"errorname": "notfound"}, {});
-        callback(null, wid);
-}
-
 
 // DAO method to fetch unique an entry to specified collection:: the entry to be fetched is also specified :: 
 // the callback function on succesful addition is also specified
@@ -187,13 +178,17 @@ exports.wget = wget = function wget(objToFind, command, callback) {
     });
 };
 
-exports.wgettest = wgettest = function wgettest(objToFind, callback) {
-    if (typeof objToFind === "string") { objToFind = JSON.parse(objToFind); }
-
-    getConnection(mongoDatabaseToLookup, function(err, db) {
-        db.collection(schemaToLookup).find({wid:objToFind.wid}).toArray(function(err, result) {
-            callback(null, result ? result[0] || null : null);
-        });
+exports.mongodeletewid = mongodeletewid = function mongodeletewid(inobject, callback) {
+    proxyprinttodiv('Function mongodeletewid inobject', inobject, 18);
+    wget({wid:inobject.wid}, inobject.command || {}, function (err, results) {
+        if (results && Object.size(results) > 0) {
+            getConnection(mongoDatabaseToLookup, function(err, db) {
+                db.collection(schemaToLookup).remove({_id: results._id}, function (err) {
+                    if (err) { callback({errorname:err}, {}); }
+                    else { callback(null, {}); }
+                });
+            });
+        } else { callback({errorname:"notfound"}, {}); }
     });
 };
 
