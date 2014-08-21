@@ -52,7 +52,7 @@ copyright (c) 2014 DRI
     <script src="test-security.js"></script>
     <script src="test-functions.js"></script>
     <script src="ngWidApp.js"></script>
-    <script src="et-htmlprocessor.js"></script>
+
 
     <!-- <script src="et-testing.js" type="text/javascript"></script> -->
     <style type="text/css">
@@ -61,12 +61,10 @@ copyright (c) 2014 DRI
             padding-bottom: 20px;
             background-color: #fce7bd;
         }
-/*
         #storageSpaceBar {
             background-color: #000000;
             color:#FFFFFF;
         }
-*/
         #storageSpaceValue {
             padding: 3px;
             margin-bottom: 5px;
@@ -233,8 +231,8 @@ copyright (c) 2014 DRI
 
     <div class='row'>
         <div class='col-md-1 col-lg-1'>
-<!--             <input id='data_local_storage' type='radio' Name='data_type' value='storage'>&nbspLocal
-            <br> -->
+            <input id='data_local_storage' type='radio' Name='data_type' value='storage'>&nbspLocal
+            <br>
             <input id='data_store' type='radio' Name='data_type' value='store'>&nbspStore
             <br>
             <input id='data_wid' type='radio' Name='data_type' value='wid'>&nbspWid
@@ -294,10 +292,6 @@ $('#debugon').change(function() {
         Debug = 'false';
     }
 })
-
-$("#dbug_level").change(function () {
-    $("#debugon").prop('checked', true);
-});
 
 $("#domain_switch").click(function() {
     var here = document.URL;
@@ -812,18 +806,16 @@ function displaylocalStore() {
     document.getElementById("divwidsdisplay_from_memory").innerHTML = html;
 }
 
-// Store radio button function
 function display_Store() {
     document.getElementById("local_data").innerHTML = "";
     var html = "";
     var wid_storage = localStore.json;
-    console.log("\nLOCAL STORE\n\n" + JSON.stringify(localStore, null, 4));
     for (var key in wid_storage) {
-        html += document.getElementById("local_data").innerHTML;
+        html += document.getElementById("divwidsdisplay_from_memory").innerHTML;
         html += "<label style='color: red; font-size: 85%;'>" + key + "</label>   ";
         var value = wid_storage[key];
 
-        html += "<label style='color: purple; font-size: 85%;'>" + JSON.stringify(value, null, 4) + "</label><br>";
+        html += "<label style='color: purple; font-size: 85%;'>" + JSON.stringify(value) + "</label><br>";
 
         html += "<br>";
     }
@@ -847,52 +839,14 @@ function display_Local_Storage() {
 function display_local_wid() {
 
     document.getElementById("local_data").innerHTML = "";
-        // for (var collection_key in localStorage) {
-        for (var collection_key in localStorage){
-            var html = "";
-            // debugger;
-            if (collection_key !== "") {
-                console.log("COLLECTION KEY " + collection_key);
-                var data_set = JSON.parse(localStorage.getItem(collection_key));
-                // if (typeof data_set === "object") {
-                    
-                // }
-                //     debugger;
-                // console.log("DATA SET " + JSON.stringify(data_set, null, 4));
-                // console.log("*** " + collection_key.substring(collection_key.length - 3));
-
-                if (collection_key.substring(collection_key.length - 3) !== "key" && collection_key !== "") {
-                    console.log("\n\nGOOD COLLECTION\n\n");
-                    console.log("\nDATA SET\n" + JSON.stringify(data_set, null, 4));
-                    html += document.getElementById("local_data").innerHTML;
-                    html += "<br>------------------------------------------<br>";
-                    html += collection_key + "<br>";
-                    html += "------------------------------------------<br><br>";
-
-                    for (var key in data_set) {
-
-                        // html += "<p><label style='color: red; font-size: 85%;'>" + data_set[key]["wid"] + "</label></p>";
-                        html += "<label style='color: purple; font-size: 85%;'><pre>" + JSON.stringify(data_set[key], null, 4) + "</pre></label><br>";
-                        html += "<br>";
-                    }
-                    document.getElementById("local_data").innerHTML = html;
-                }
-                // debugger;
-            }
-        }
-
-
-
-
-    // document.getElementById("local_data").innerHTML = "";
-    // var html = "";
-    // for (var key in localStorage) {
-    //     html += document.getElementById("local_data").innerHTML;
-    //     html += "<p><label style='color: red; font-size: 85%;'>" + key + "</label></p>";
-    //     html += "<label style='color: purple; font-size: 85%;'><pre>" + JSON.stringify(JSON.parse(localStorage.getItem(key)), '-', 4) + "</pre></label><br>";
-    //     html += "<br>";
-    // }
-    // document.getElementById("local_data").innerHTML = html;
+    var html = "";
+    for (var key in localStorage) {
+        html += document.getElementById("local_data").innerHTML;
+        html += "<p><label style='color: red; font-size: 85%;'>" + key + "</label></p>";
+        html += "<label style='color: purple; font-size: 85%;'><pre>" + JSON.stringify(JSON.parse(localStorage.getItem(key)), '-', 4) + "</pre></label><br>";
+        html += "<br>";
+    }
+    document.getElementById("local_data").innerHTML = html;
 
 
 
@@ -922,9 +876,9 @@ $("input[name='output_type']").change(function() {
 
 $("input[name='data_type']").change(function() {
     $("#local_data").hide('fast');
-    // if (document.getElementById('data_local_storage').checked) {
-    //     display_Local_Storage();
-    // }
+    if (document.getElementById('data_local_storage').checked) {
+        display_Local_Storage();
+    }
     if (document.getElementById('data_store').checked) {
         display_Store();
     }

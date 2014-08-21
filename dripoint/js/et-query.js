@@ -105,7 +105,8 @@ function mapreducelocal(map, reduce, p, cb)
     
     if (p.sort) // sort input based on eg {dim0: 1} +1 ascending
     {
-        globalresultobject.sortBy(p.sort);
+        // dynamicsort in utils -- may need to be changed
+        globalresultobject.sort(dynamicsortmultiple(p.sort));
     }
 
     if (p.finalize) // Optional. FN Follows the reduce method and modifies the output
@@ -232,7 +233,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
             "mongosetfieldsexclude": {},
             "mongosinglequery": "",
             "mongomultiplequery": "",
-            "monogoprojection":"",
+            "monogoprojection":{},
             "queryresult": null
         },
         {
@@ -509,7 +510,7 @@ proxyprinttodiv('querywid mQueryString multiple IV', mQueryString, 28);
             function step03(cb3) {
 
                 // Relationship Section **********
-                // Skip if there are no relParams
+                // skip if there are no relParams
 
                 if ((qparms.mongorelationshipdirection
                      || qparms.mongorelationshiptype
@@ -616,71 +617,14 @@ proxyprinttodiv('querywid mQueryString multiple IV', mQueryString, 28);
     } // else
 };
 
-
-function finalformat(output, relationshipoutput, qparms, extracommands, projection, command, callback) {
-    proxyprinttodiv('querywid finalformat qparms', qparms, 28, true);
-    var queryconvertmethod = extracommands.queryconvertmethod;
-    var excludeparameters = qparms.mongosetfieldsexclude;
-    var db = command.db;
-    var finaloutput = [];
-    proxyprinttodiv('finalformat top output', output, 28, true);
-    proxyprinttodiv('finalformat top relationshipoutput', relationshipoutput, 28, true);
-    proxyprinttodiv('querywid finalformat excludeparameters', excludeparameters, 28);
-
-    for (var eachout in output)
-    {
-        var wid = output[eachout][db] ? output[eachout][db].wid : output[eachout].wid;
-        proxyprinttodiv('querywid finalforma wid', wid, 28);
-        // only proceed if current paramter is not in exclude parameter set
-        proxyprinttodiv('querywid finalformat', output[eachout], 28);
-        proxyprinttodiv('querywid finalformat excludeparameters[wid]', excludeparameters[wid], 28);
-        if (!excludeparameters[wid])
-        {
-            // first search for wid in relationshipoutput
-            var foundrecord;
-            for (var eachrecord in relationshipoutput)
-            {
-                if (relationshipoutput[eachrecord][db].primarywid===wid ||
-                    relationshipoutput[eachrecord][db].secondarywid===wid )
-                {
-                    foundrecord = relationshipoutput[eachrecord][db];
-                    break;
-                }
-            }
-
-            // then change and enhance the strucutre of the result
-            var enhancedrecord = convertfromdriformatenhanced(output[eachout], command, foundrecord);
-            proxyprinttodiv('querywid finalformat enhancedrecord', enhancedrecord, 28, true);
-            proxyprinttodiv('querywid queryconvertmethod', queryconvertmethod, 28);
-//            var projectionrecord = getprojectionresult(enhancedrecord, {});
-            // now convert teach record based on query convertmethod
-            if (queryconvertmethod === "object")
-            {
-                finaloutput.push(enhancedrecord);
-                proxyprinttodiv('querywid finaloutput after queryconvertmethod = ' + queryconvertmethod, finaloutput, 28);
-            }
-            else if (queryconvertmethod === "each")
-            {
-                var temp = {};
-                temp[output[eachout].wid]=enhancedrecord;
-                finaloutput.push(temp);
-                proxyprinttodiv('querywid finaloutput after queryconvertmethod = ' + queryconvertmethod, finaloutput, 28);
-            }
-        }
-    }
-    var temp = {};
-    if (extracommands.queryresult) {temp[extracommands.queryresult] = finaloutput} else {temp=finaloutput}
-    proxyprinttodiv('querywid finaloutput', temp, 28, true);
-    callback(null, temp);
-} // final format
-
-///
 // getprojectionresult
+// getprojectionresult( {"a":"apple", "b":"banana", "c":"cherry"}, {"a":1, "b": 0} );
 // - sourcerecord - an object of some kind
 // - projectiondef - a mongodb compatible projection definition object.
 // 
 function getprojectionresult( sourcerecord, projectiondef ) {
     // remove properties
+        proxyprinttodiv('querywid getprojectionresult *****', sourcerecord, 99, true, true);
     for( var prop in projectiondef ) {
         if (projectiondef[prop] == 0) {
             delete(sourcerecord[prop]);
@@ -702,7 +646,104 @@ function getprojectionresult( sourcerecord, projectiondef ) {
     return result;
 }
 
-// getprojectionresult( {"a":"apple", "b":"banana", "c":"cherry"}, {"a":1, "b": 0} );
+
+
+
+
+function finalformat(output, relationshipoutput, qparms, extracommands, projection, command, callback) {
+    proxyprinttodiv('querywid finalformat qparms', qparms, 28, true);
+    var queryconvertmethod = extracommands.queryconvertmethod;
+    var excludeparameters = qparms.mongosetfieldsexclude;
+    var db = command.db;
+    var finaloutput = [];
+    proxyprinttodiv('finalformat top output', output, 28, true);
+    proxyprinttodiv('finalformat top relationshipoutput', relationshipoutput, 28, true);
+    proxyprinttodiv('querywid finalformat excludeparameters', excludeparameters, 28);
+
+    if (config.configuration.environment==="local")
+    {
+        // server handles these normally
+        var pagenumber = extracommands.finalpagenumber || extracommands.pagenumber || 1;
+        var perpage = extracommands.finalperpage || extracommands.perpage; // || 50;
+        var skipval = extracommands.finalskip || extracommands.skip || pagenumber > 0 ? (pagenumber-1)*perpage : 0;
+        var limitval = extracommands.finallimit || extracommands.limit || perpage || 0;  // 0 is all 
+        var sortobj = extracommands.finalsort || extracommands.sort || {};
+        var count = extracommands.finalcount || extracommands.count || false;
+        
+        if (count)
+        {
+            proxyprinttodiv('querywid finalformat count *******', sortobj, 99, true, true);
+            callback(null, {"n":resultlist.length, "ok":1}); // { "n" : 13, "ok" : 1 }
+        }
+        else // if real query
+        {
+            if (!skipval) {skipval=0}
+            proxyprinttodiv('querywid finalformat sortobj', sortobj, 28, true, true);
+            proxyprinttodiv('querywid finalformat limitval', limitval, 28, true, true);
+            proxyprinttodiv('querywid finalformat skipval', skipval, 28, true, true);
+            if (Object.keys(sortobj).length > 0) {output.sort(dynamicsortmultiple(sortobj))};
+            if (limitval===0 && skipval !==0) {output = output.slice(skipval);}
+            if (limitval!==0 && skipval !==0) {output = output.slice(skipval, limitval);}
+        }
+    }
+    proxyprinttodiv('finalformat top output MIDDLE', output, 28, true, true);
+
+    for (var eachout in output)
+    {
+        var wid = output[eachout][db].wid || output[eachout].wid;
+        //var wid = output[eachout][db] ? output[eachout][db].wid : output[eachout].wid;
+        proxyprinttodiv('querywid finalforma wid', wid, 28);
+        // only proceed if current paramter is not in exclude parameter set
+        proxyprinttodiv('querywid finalformat', output[eachout], 28);
+        proxyprinttodiv('querywid finalformat excludeparameters[wid]', excludeparameters[wid], 28);
+        if (!excludeparameters[wid])
+        {
+            // first search for wid in relationshipoutput
+            var foundrecord;
+            for (var eachrecord in relationshipoutput)
+            {
+                if (relationshipoutput[eachrecord][db].primarywid===wid ||
+                    relationshipoutput[eachrecord][db].secondarywid===wid )
+                {
+                    foundrecord = relationshipoutput[eachrecord][db];
+                    break;
+                }
+            }
+
+            // then change and enhance the strucutre of the result
+            var enhancedrecord = convertfromdriformatenhanced(output[eachout], command, foundrecord);
+
+            if (config.configuration.environment==="local" && Object.keys(projection).length > 0) // server handles projection
+            {
+                proxyprinttodiv('querywid finalformat projection *****', sortobj, 99, true, true);
+                enhancedrecord = getprojectionresult(enhancedrecord, projection);
+            }
+
+            proxyprinttodiv('querywid finalformat enhancedrecord', enhancedrecord, 28, true);
+            proxyprinttodiv('querywid queryconvertmethod', queryconvertmethod, 28);
+
+
+            // now convert teach record based on query convertmethod
+            if (queryconvertmethod === "object")
+            {
+                finaloutput.push(enhancedrecord);
+                proxyprinttodiv('querywid finaloutput after queryconvertmethod = ' + queryconvertmethod, finaloutput, 28);
+            }
+            else if (queryconvertmethod === "each")
+            {
+                var temp = {};
+                temp[output[eachout].wid]=enhancedrecord;
+                finaloutput.push(temp);
+                proxyprinttodiv('querywid finaloutput after queryconvertmethod = ' + queryconvertmethod, finaloutput, 28);
+            }
+        }
+    }
+    var temp = {};
+    if (extracommands.queryresult) {temp[extracommands.queryresult] = finaloutput} else {temp=finaloutput}
+    proxyprinttodiv('querywid finaloutput', temp, 28, true);
+    callback(null, temp);
+} // final format
+
 
 function distilllist(inlist, field, environmentdb) {
     var outlist = [];
@@ -714,6 +755,8 @@ function distilllist(inlist, field, environmentdb) {
     }
     return outlist;
 }
+
+
 
 
 //in: key, value, preamble

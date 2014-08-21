@@ -44,6 +44,7 @@ exports.getConnection = getConnection = function getConnection(mongoDatabaseToLo
     callback(err, databaseConnection);
 };
 
+
 // DAO method to fetch unique an entry to specified collection:: the entry to be fetched is also specified :: 
 // the callback function on succesful addition is also specified
 exports.mquery = mquery = function mquery(objToFind, projection, command, callback) {
@@ -51,38 +52,57 @@ exports.mquery = mquery = function mquery(objToFind, projection, command, callba
                 JSON.stringify(objToFind, '-', 4) + '\nCommand: \n' +
                 JSON.stringify(command, '-', 4));
     console.log("\nPROJECTION in mongo.js mquery: " + JSON.stringify(projection));
+
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-    if (typeof objToFind === "string" && objToFind !== "") {
+    if (typeof objToFind === "string" && objToFind !== "") 
+    {
         objToFind = JSON.parse(objToFind);
     }
 
-    if (typeof projection === "string" && projection !== "") {
+    if (typeof projection === "string" && projection !== "") 
+    {
         projection = JSON.parse(projection);
-    } else if (projection === "") { projection = {}; } // default projection to an empty object
+    } 
+    else if (projection === "") { projection = {}; } // default projection to an empty object
+
+    var pagenumber = command.pagenumber || 1;
+    var perpage = command.perpage; // || 50;
+    var skipval = command.skip || pagenumber > 0 ? (pagenumber-1)*perpage : 0;
+    var limitval = command.limit || perpage || 0;  // 0 is all
+    var sortobj = command.sort || {};
+//    var count = command.count || false;
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
-        db.collection(schemaToLookup).find(objToFind, projection).toArray(function(err, res) {
-
-            if (err) {
-                printLogs('mquery', objToFind, err);
-                callback(err, {
-                    etstatus: {
-                        status: 'queryerror'
-                    }
-                });
-            } else {
-                if (res) {
-                    printLogs('mquery', objToFind, res);
-                    callback(err, res);
-                } else {
-                    printLogs('mquery', objToFind, []);
-                    callback(err, []);
-                }
-            }
-        });
+//        if (count)
+//        {
+//             db.collection(schemaToLookup).count(objToFind) {
+//                 if (err) {
+//                     callback({"errorname":"queryerror"}, []);
+//                 } else {
+//                     if (res) { callback(err, res); }
+//                     else { callback({"errorname":"queryerror"}, []); }
+//                 }
+//             });
+//        }
+//        else // if real query
+//        {
+             db.collection(schemaToLookup).
+                 find(objToFind, projection).
+                 sort(sortobj).
+                 skip(skipval).
+                 limit(limitval).
+                 toArray(function(err, res)
+             {
+                 if (err) { callback({"errorname":"queryerror: " + err}, []); }
+                 else {
+                     if (res) { callback(err, res); }
+                     else { callback({"errorname":"no_query_result"}, []); }
+                 }
+             });
+//        }
     });
 };
 
@@ -118,51 +138,6 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(map, reduce
     });
 };
 
-// exports.mquery2 = mquery2 = function mquery2(objToFind, projection, command, callback) {
-//     console.log('-->>-->> Inputs to mquery2 objToFind:\n' + 
-//                 JSON.stringify(objToFind, '-', 4) + '\nCommand: \n' +
-//                 JSON.stringify(command, '-', 4));
-//     console.log("\nPROJECTION in mongo.js mquery2: " + JSON.stringify(projection));
-//     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
-//     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
-//     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
-
-//     if (typeof objToFind === "string") {
-//         objToFind = JSON.parse(objToFind);
-//     }
-
-//     if (typeof projection === "string") {
-//         projection = JSON.parse(projection);
-//     }
-
-//                 // console.log('-]-]-]-] Inputs to mquery2 objToFind:\n' + 
-//                 // JSON.stringify(objToFind, '-', 4));
-//                 // console.log('\n-]-] Inputs to mquery2 projection:\n' + 
-//                 // JSON.stringify(projection, '-', 4));
-
-//     getConnection(mongoDatabaseToLookup, function(err, db) {
-//         db.collection(schemaToLookup).find(objToFind, projection).toArray(function(err, res) {
-
-//             if (err) {
-//                 printLogs('mquery2', objToFind, err);
-//                 callback(err, {
-//                     etstatus: {
-//                         status: 'queryerror'
-//                     }
-//                 });
-//             } else {
-//                 if (res) {
-//                     printLogs('mquery2', objToFind, res);
-//                     callback(err, res);
-//                 } else {
-//                     printLogs('mquery2', objToFind, []);
-//                     callback(err, []);
-//                 }
-//             }
-//         });
-//     });
-// };
-
 exports.wget = wget = function wget(objToFind, command, callback) {
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
@@ -177,114 +152,19 @@ exports.wget = wget = function wget(objToFind, command, callback) {
     });
 };
 
-exports.wgettest = wgettest = function wgettest(objToFind, callback) {
-    if (typeof objToFind === "string") { objToFind = JSON.parse(objToFind); }
-
-    getConnection(mongoDatabaseToLookup, function(err, db) {
-        db.collection(schemaToLookup).find({wid:objToFind.wid}).toArray(function(err, result) {
-            callback(null, result ? result[0] || null : null);
-        });
+exports.mongodeletewid = mongodeletewid = function mongodeletewid(inobject, callback) {
+    proxyprinttodiv('Function mongodeletewid inobject', inobject, 18);
+    wget({wid:inobject.wid}, inobject.command || {}, function (err, results) {
+        if (results && Object.size(results) > 0) {
+            getConnection(mongoDatabaseToLookup, function(err, db) {
+                db.collection(schemaToLookup).remove({_id: results._id}, function (err) {
+                    if (err) { callback({errorname:err}, {}); }
+                    else { callback(null, {}); }
+                });
+            });
+        } else { callback({errorname:"notfound"}, {}); }
     });
 };
-
-// exports.mget = mget = function mget(objToFind, command, callback) {
-//     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
-//     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
-//     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
-
-//     if (objToFind.command) { delete objToFind.command; }
-
-//     madd(objToFind, command, function (err, result) {
-//         callback(err, result);
-//     });
-// };
-
-// exports.madd = madd = function madd(incopy, command, callback) {
-//      (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
-//      (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
-//      (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
-
-//      var widVal = {"wid":(incopy.wid)};
-
-//      getConnection(mongoDatabaseToLookup, function(err, db) {
-//          wget(widVal, command, function (err, currentrecord) {
-
-//              var recordtoadd,
-//                  found = false;
-
-//              if (currentrecord)
-//              {
-//                  // this is the update process for wids
-//                  // set up recordtoadd ready for addition
-//                  recordtoadd = convertfromdriformatenhanced(currentrecord, command);
-//                  // flatten out record -- normal : {wid:wid1 a:b c:d}, driformat: {wid:wid1 data:{a:b c:d}}
-//                  found = true;       // mark that the record was found
-//                  // mark that current record exists
-//                  if (command.datamethod === "insert")
-//                  {
-//                      recordtoadd = incopy; // current record does not matter
-//                  }
-//                  else // (command.datamethod === "upsert") // default
-//                  {
-//                      recordtoadd = extend(true, recordtoadd, incopy);
-//                  }
-//                  if (command.hasOwnProperty("lock")) // set the right property to save
-//                  {
-//                      recordtoadd.metadata.lock = command.lock;
-//                  }
-//              }
-//              else
-//              {
-//                  recordtoadd = incopy;
-//              }
-
-//              var currentlock = false;
-//              if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock)
-//              {
-//                   currentlock = true;
-//              }
-
-//              var shouldupdate = false;
-//              if (!err &&
-//                   ((command.getwidflag && command.hasOwnProperty("lock")) || (!command.getwidflag)))
-//              {
-//                   shouldupdate = true;
-//              }
-
-//              if (!currentlock && shouldupdate)
-//              {
-//                  if (!currentrecord) { currentrecord = {}; }
-//                  var convertedrecord = converttodriformat(recordtoadd, command); // get it ready to store
-//                  extend(true, currentrecord, convertedrecord); // merge with existing record
-
-//                  if (currentrecord._id) { delete currentrecord._id; }
-
-//                  if (command.getwidflag === true && !found) { err = {"errorname": "notfound"}; }
-
-//                  // update list of objects database
-//                  if (!found)
-//                  {
-//                      db.collection(schemaToLookup).insert(currentrecord, function(error, insertedWid) {
-//                          // if this was actually a getwid call and nothing found then err
-//                          callback(err || error, recordtoadd);
-//                      });
-//                  }
-//                  else
-//                  {
-//                      db.collection(schemaToLookup).update(widVal, {$set:currentrecord}, {}, function (error, boolresult) {
-//                          // if this was actually a getwid call and nothing found then err
-//                          callback(err || error, recordtoadd);
-//                      });
-//                  }
-//              }
-
-//                 if (command.getwidflag === true && !found) { err = {"errorname": "notfound"}; }
-//                 if (currentlock && shouldupdate){ err = {"errorname":"locked"}; }
-
-//              callback(err, recordtoadd);
-//          })
-//     });
-// };
 
 // DAO method to add an entry to specified schema:: the entry to be added is also specified :: 
 // the callback function on succesful addition is also specified

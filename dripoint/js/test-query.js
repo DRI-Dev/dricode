@@ -3598,7 +3598,7 @@ widtests.addwidtomongo11.description = "this does a test";
 
 /***** SECURITY DEFAULTS *****/
 
-var driuser = "";
+var driuser = ""; // wid of drisuer
 
 var merchantactionstable = {
 					"createcurrency": "",
@@ -3616,6 +3616,11 @@ var useractionstable = {
 					"getoffer": "",
 					"getcurrency": ""
 					};
+
+var actiontables = {
+					"alluseractions": useractionstable,
+					"allmerchantactions": merchantactionstable
+					};
 					
 var actiongroupstable = {
 						"alluseractions": "",
@@ -3625,6 +3630,13 @@ var actiongroupstable = {
 var usergroupstable = {
 						"allusers": "",
 						"allmerchants": ""
+					};
+var usergroupsinherit = {}; // allmerchants : [group1,group2,group3...]
+var actiongroupsinherit = {}; // allmerchantactions : [group1,group2,group3...] 					
+
+var permissionstable = {
+						"allusers": ["alluseractions"],
+						"allmerchants": ["allmerchantactions"]
 					};
 					
 function setup_dri_account(callback) {
@@ -3643,8 +3655,12 @@ function setup_dri_account(callback) {
 		"country": "US"
 	}, function(err, resp) {
 		driuser = resp.wid;
-		//proxyprinttodiv('Function createuser done --  for  driuser -- ', resp, 39, true);
-		callback(err, resp);
+		addsecurity({
+			"userwid": driuser,
+			"securityac": "driuserac"
+			}, function(err, resp) {
+				callback(err, resp);
+			});
 	});
         
 }
@@ -3718,59 +3734,166 @@ function setup_user_groups(callback) {
 function setup_action_groups(callback)
 {	
 	err_obj = {};
-	
-	for (var key in actiongroupstable) {
+	async.forEach(Object.keys(actiongroupstable), function (key, callback) {
 		creategroup({
 			"grouptype": key
 			}, function (err, resp) {
 				err_obj[key] = err;
 				actiongroupstable[key] = resp.wid;
-			});
-	};
-	callback(err_obj);
+				proxyprinttodiv('creategroup for ' + key + ' generated the following response --', resp, 99, true);
+				callback(err, resp);
+			});	
+	}, function (err, res) {
+		//proxyprinttodiv('res --', res, 99);
+		//proxyprinttodiv('err --', err, 99);
+		callback(err, err_obj);
+		});
 }
 
+function add_driuser_to_groups(callback) {
+	var err_obj = {};
+	async.forEach(Object.keys(usergroupstable), function (key, callback) {
+		config = {
+			"currentwid": usergroupstable[key],
+			"currentwidmethod": "groupdto",
+			"targetwid": driuser,
+			"targetwidmethod": "userdto",
+			"linktype": "manytomany"
+		};
+		addtargetwidtocurrentwid(config, function (err, resp) {
+				err_obj[key] = err;
+				//merchantactionstable[key] = resp.wid;
+				proxyprinttodiv('addtargetwidtocurrentwid for ' + key + ' : allmerchantactions generated the following response --', resp, 99, true);
+				callback(err, resp);
+			});
+	}, function (err, res) {
+		callback(err, err_obj);
+	});
+}
 
 function relate_actions_actiongroups(callback) {
 
 	err_obj = {};
-	var merchconfig = {};
-	var usrconfig = {};
+	var config;
 	
-	// relate actions to allmerchants group
-	for (var merchkey in merchantactionstable) {
-		merchconfig = {
-				"currentwid": actiongroupstable.allmerchantactions,
-				"currentwidmethod": "groupdto",
-				"targetwid": merchantactionstable[merchkey],
-				"targetwidmethod": "actiondto",
-				"linktype": "manytomany"
-			};
-		addtargetwidtocurrentwid(merchconfig, function(err, res) {
-			//proxyprinttodiv('attach actiondto to groupdto, createoffer to parentactions   -- ', res, 39);
-			err_obj[merchkey] = err;
-		});			
-	};
-
-	// relate actions to allmerchants group
-	for (var usrkey in useractionstable) {
-		usrconfig = {
-				"currentwid": actiongroupstable.alluseractions,
-				"currentwidmethod": "groupdto",
-				"targetwid": useractionstable[usrkey],
-				"targetwidmethod": "actiondto",
-				"linktype": "manytomany"
-			};
-		addtargetwidtocurrentwid(usrconfig, function(err, res) {
-			//proxyprinttodiv('attach actiondto to groupdto, createoffer to parentactions   -- ', res, 39);
-			err_obj[usrkey] = err;
-		});			
-	};
-	
-	callback(err_obj);
+	async.series([
+		function (cb) {
+			async.forEach(Object.keys(merchantactionstable), function (key, callback) {
+				config = {
+                    "currentwid": actiongroupstable.allmerchantactions,
+                    "currentwidmethod": "groupdto",
+                    "targetwid": merchantactionstable[key],
+                    "targetwidmethod": "actiondto",
+                    "linktype": "manytomany"
+                };
+				addtargetwidtocurrentwid(config, function (err, resp) {
+						err_obj[key] = err;
+						//merchantactionstable[key] = resp.wid;
+						proxyprinttodiv('addtargetwidtocurrentwid for ' + key + ' : allmerchantactions generated the following response --', resp, 99, true);
+						callback(err, resp);
+					});	
+			}, function (err, res) {
+				//proxyprinttodiv('res --', res, 99);
+				//proxyprinttodiv('err --', err, 99);
+				cb(err,res);
+				});
+		},
+		function (cb) {
+			async.forEach(Object.keys(useractionstable), function (key, callback) {
+				config = {
+                    "currentwid": actiongroupstable.alluseractions,
+                    "currentwidmethod": "groupdto",
+                    "targetwid": useractionstable[key],
+                    "targetwidmethod": "actiondto",
+                    "linktype": "manytomany"
+                };
+				addtargetwidtocurrentwid(config, function (err, resp) {
+						err_obj[key] = err;
+						//merchantactionstable[key] = resp.wid;
+						proxyprinttodiv('addtargetwidtocurrentwid for ' + key + ' : alluseractions generated the following response --', resp, 99, true);
+						callback(err, resp);
+					});	
+			}, function (err, res) {
+				//proxyprinttodiv('res --', res, 99);
+				//proxyprinttodiv('err --', err, 99);
+				cb(err,res);
+				});
+		}], function (err, res) {
+				callback(err, err_obj);
+		});
 }
 
+function create_basic_permissions(callback) {
+	var driuser_permission = "";
+	var created_permissions = {};
+	var config = {};
+	var err_obj = {};
+	
+	async.series([
+		// DRI  {  kidactions, kidgroup }
+		// add group create to actiongroup and usergroup
+		function(cb) {
+			async.forEach(Object.keys(permissionstable), function (key, callback) {		
+				addpermission({
+					"permission.userwid": driuser,
+					"onfailwid": "",
+					"permission.level": 99, // TODO :: REMOVE HARDCODING
+					"description": "DRI created permission for " + key
+				}, function(err, resp) {
+					//proxyprinttodiv('Function addpermission done --    for  kidpermission -- ', resp, 39);
+					created_permissions[key] = resp.wid;
+					callback(err, resp);
+				});
+			}, function (err, res) {
+				cb(err, res);
+			});
+		},
+		function (cb) {
+			async.forEach(Object.keys(permissionstable), function (key, callback) {
+				config = {
+					"currentwid": created_permissions[key],
+					"currentwidmethod": "permissiondto",
+					"targetwid": usergroupstable[key],
+					"targetwidmethod": "groupdto",
+					"linktype": "manytomany"
+					};
+				addtargetwidtocurrentwid(config, function (err, resp) {
+						err_obj[key] = err;
+						//merchantactionstable[key] = resp.wid;
+						proxyprinttodiv('addtargetwidtocurrentwid for ' + key + ' : ' + created_permissions[key] + ' generated the following response --', resp, 99, true);
+						async.map(permissionstable[key], function (val, callback) {						
+							config = {
+							"currentwid": created_permissions[key],
+							"currentwidmethod": "permissiondto",
+							"targetwid": actiongroupstable[val],
+							"targetwidmethod": "groupdto",
+							"linktype": "manytomany"
+							};
+							addtargetwidtocurrentwid(config, function (err, resp) {
+								err_obj[val] = err;
+								//merchantactionstable[key] = resp.wid;
+								proxyprinttodiv('addtargetwidtocurrentwid for ' + key + ' : ' + val + ' generated the following response --', resp, 99, true);
+								callback(err, resp);
+							});
+					}, function (err, res) {
+							callback(err, res);
+					});
+				});	
+			}, function (err, res) {
+				cb(err, res);
+			});
+		}], function (err, res) {
+				proxyprinttodiv('all finished with res --', res, 99);
+				callback(err, err_obj);
+		});
+}
+
+
 function test_security_scheme(params, callback) {
+var driuserconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'createcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"driuserac","command.enviromment.userid":"driuser"};
+var response = "";
+		
 	async.series([
 		function (cb) {
 			setup_dri_account(function (err, res) {
@@ -3787,10 +3910,38 @@ function test_security_scheme(params, callback) {
 		function (cb) {
 			setup_user_groups(function (err, res) {
 				proxyprinttodiv("user groups setup res --", res, 99);
-				cb(err)
+				cb(err);
 			});
-		}],
+		},
+		function (cb) {
+			setup_action_groups(function (err, res) {
+				proxyprinttodiv("action groups setup res --", res, 99);
+				proxyprinttodiv("merchant actions table res --", merchantactionstable, 99, true);
+				cb(err);
+			});
+		},
+		function (cb) {
+			relate_actions_actiongroups(function (err, res) {
+				proxyprinttodiv("relating actions to actiongroups res --", res, 99);
+				cb(err);
+			});
+		},
+		function (cb) {
+			create_basic_permissions(function (err, res) {
+				proxyprinttodiv("create permissions res --", res, 99);
+				cb(err);
+			});
+		},
+		function(cb) {
+            // perform the securitycheck for the createcurrency action, with organization user user ac
+            sc(driuserconfig, function(err, resp) {
+                //proxyprinttodiv('Security check done 1 --  johnnyconfig -   response  -- ', resp, 39);
+				response = resp.authstatus;				
+                cb(err);
+            });
+        }],
 		function (err1, resp1) {
+			proxyprinttodiv('security response res --', response, 99);
 			callback(err1, resp1);
 		});
 	
