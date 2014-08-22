@@ -648,7 +648,7 @@
                         proxyprinttodiv("GetWidMongo start processOverride", parameterobject, 38);
 
                         listToDo = parameterobject.metadata.inherit;
-                        listToDo.reverse(); // they are processed in reverse order
+                        if (listToDo.length > 0) {listToDo.reverse();} // they are processed in reverse order
                         var wid = parameterobject.wid;
                         var mm = extend(true, {}, parameterobject.metadata);
 

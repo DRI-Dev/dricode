@@ -596,9 +596,11 @@ exports.pu1 = widtests.pu1 = pu1 = function pu1(params, callback) {
     };
     var err;
     var result = {};
-
+	var expectedresult = {"Alpha":"1","Beta":"2","Charlie":"3","Delta":"4"};
+	
     result = pack_up_params(params, command, "somefunction");
-    callback(err, result);
+	var resobj = logverify("logverify",result,expectedresult);
+    callback(err, resobj);
 }
 widtests.pu1.category = "redaily";
 widtests.pu1.subcategory = "addhoc";
@@ -701,13 +703,16 @@ exports.testhtmladd = testhtmladd = function testhtmladd(params, callback) {
             "executethis": "addwidmaster",
             "wid": "wid1",
             "addthis.command.htmlcleartargetid": "body"
-        }, {
-            "executethis": "getwidmaster",
-            "wid": "wid1"
         }],
         function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
-            callback(err, res);
+			execute({
+            "executethis": "getwidmaster",
+            "wid": "wid1"
+			}, function (err1, res1) {
+				proxyprinttodiv('wid1 res --', res1, 99);
+				callback(err, res);
+			});
         });
 }
 
@@ -725,50 +730,41 @@ exports.testhtmladd2 = testhtmladd2 = function testhtmladd2(params, callback) {
 
 exports.testcache1 = testcache1 = function testcache1(params, callback) {
     execute([{
-            "executethis": "updatewid",
+            "executethis": "addwidmaster",
             "wid": "codydto",
-            "metadata": {
-                "method": "codydto"
-            },
-            "month": "string",
-            "day": "string"
-        }, {
-            "executethis": "updatewid",
-            "wid": "cody1",
-            "metadata": {
-                "method": "codydto"
-            },
-            "month": "June",
-            "day": "9th",
-            "command": {
-                "cache": "true"
-            }
-        }, {
-            "executethis": "updatewid",
-            "wid": "cody1",
-            "metadata": {
-                "method": "codydto"
-            },
-            //"command":{"databasetable":"insert"},
-            "month": "August"
-        }, {
-            "executethis": "getwidmaster",
-            "wid": "cody1",
-            "metadata": {
-                "method": "codydto"
-            }
-        }],
+            "metadata.method": "persondto",
+			"name": "string"
+			}, {
+			"executethis": "addwidmaster",
+			"wid": "cody1",
+			"metadata.method": "persondto",
+			"name": "Cody",
+			"skipcache": false,
+			"cachetime": 9999,
+			"updatecache": true
+			}, {
+			"executethis": "addwidmaster",
+			"wid": "cody1",
+			"metadata.method": "persondto",
+			"name": "Cory",
+			"updatecache": false
+			}],
         function (err, res) {
             proxyprinttodiv('cody1 cache: ', res[1], 99);
             proxyprinttodiv('cody1 update: ', res[2], 99);
-            proxyprinttodiv('cody1 result: ', res[3], 99);
-            var result = logverify("cody1_result", res[3], [{
-                "wid": "cody1",
-                "metadata.method": "codydto",
-                "month": "June",
-                "day": "9th"
-            }]);
-            callback(err, result);
+            execute({
+            "executethis": "getwidmaster",
+            "wid": "cody1",
+            "metadata.method": "persondto"
+			}, function (err, res) {
+				proxyprinttodiv('cody1 get: ', res, 99);
+				var result = logverify("cody1_result", res, [{
+					"wid": "cody1",
+					"metadata.method": "codydto",
+					"name": "Cody"
+				}]);
+				callback(err, result);
+			});
         });
 }
 

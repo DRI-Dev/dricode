@@ -597,25 +597,27 @@ exports.testinheritdefault0 = testinheritdefault0 = function testinheritdefault0
             "wid": "author1",
             "age": "10",
             "metadata.method": "authordto"
-        }, {
-            "executethis": "getwidmaster",
-            "wid": "author1"
         }],
         function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
-            proxyprinttodiv('The author1 record: ', res[3], 99);
+			execute({
+            "executethis": "getwidmaster",
+            "wid": "author1"
+			}, function (err, res) {
+				proxyprinttodiv('The author1 record: ', res, 99);
 
-            var result = logverify("testinheritdefault0_result", res[3], [{
-                "wid": "author1",
-                "metadata": {
-                    "method": "authordto",
-                },
-                "name": "Alex",
-                "age": "10"
-            }]);
+				var result = logverify("testinheritdefault0_result", res, [{
+					"wid": "author1",
+					"metadata": {
+						"method": "authordto",
+					},
+					"name": "Alex",
+					"age": "10"
+				}]);
 
-            callback(err, result);
+				callback(err, result);
         });
+	});
 };
 
 // This tests inherit.default at the wid level. author1 inherits from authordefault and 
@@ -645,30 +647,26 @@ exports.testinheritdefault1 = testinheritdefault1 = function testinheritdefault1
                     "adopt": "default"
                 }
             }
-        }, {
-            "executethis": "getwidmaster",
-            "wid": "author1"
         }],
         function (err, res) {
             proxyprinttodiv('Full results: ', res, 99);
-            proxyprinttodiv('The author1 record: ', res[3], 99);
-            var result = logverify("testinheritdefault0_result", res[3], [{
-                "wid": "author1",
-                "metadata": {
-                    "method": "authordto",
-                    "inherit": [{
-                        "wid": "authordefault",
-                        "command": {
-                            "dtotype": "",
-                            "adopt": "default"
-                        }
-                    }]
-                },
-                "name": "Alex",
-                "age": "42"
-            }]);
+            execute({
+            "executethis": "getwidmaster",
+            "wid": "author1"
+			}, function (err, res) {
+				proxyprinttodiv('The author1 record: ', res, 99);
+				var result = logverify("testinheritdefault1_result", res, [{
+						"wid": "author1",
+						"metadata": {
+							"method": "authordto",
+						},
+						"name": "Alex",
+						"age": "42"
+					}]
+				);
 
-            callback(err, result);
+				callback(err, result);
+			});
         });
 };
 
@@ -710,12 +708,22 @@ exports.testinheritdefault2 = testinheritdefault2 = function testinheritdefault2
 
             debuglevel = 0;
             execute({
-                "executethis": "getwidmaster",
-                "wid": "author1"
-            }, function (err, res1) {
-                proxyprinttodiv("getwidmaster author1 result: ", res1, 99);
-                callback(err, res);
-            });
+            "executethis": "getwidmaster",
+            "wid": "author1"
+			}, function (err, res) {
+				proxyprinttodiv('The author1 record: ', res, 99);
+				var result = logverify("testinheritdefault1_result", res, [{
+						"wid": "author1",
+						"metadata": {
+							"method": "authordto",
+						},
+						"name": "Tom",
+						"age": "42"
+					}]
+				);
+
+				callback(err, result);
+			});
         });
 }
 
