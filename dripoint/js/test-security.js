@@ -144,6 +144,37 @@ exports.allowsec1test4setupusers = 	allowsec1test4setupusers = function allowsec
                     //proxyprinttodiv('Function addsecurity done --  for johnny -- ', resp, 39, true);
                     cb(err);
                 });
+            },
+			// create user Tom
+            function(cb) {
+                createuserdata({
+                    "wid": "tom",
+                    "fname": "Tom",
+                    "lname": "P",
+                    "phone": "555-555-5515",
+                    "email": "tom@fake.com",
+                    "address": "115 W. River St.",
+                    "address2": "",
+                    "city": "Syracuse",
+                    "state": "NY",
+                    "zip": "13244",
+                    "country": "US",
+					"metadata.security.usergroups": ["kidgroup"]
+                }, function(err, resp) {
+                    users.tom = resp.wid;
+                    //proxyprinttodiv('Function createuser done --    for  johnny -- ', resp, 39, true);
+                    cb(err);
+                });
+            },
+            function(cb) {
+                // add access token for Tom
+                addsecurity({
+                    "userwid": users.tom,
+                    "securityac": "tomac"
+                }, function(err, resp) {
+                    //proxyprinttodiv('Function addsecurity done --  for johnny -- ', resp, 39, true);
+                    cb(err);
+                });
             }], function (err, res) {
 				proxyprinttodiv('allowsec1test4setupusers_result',res,39);
 				callback(err,users);
@@ -1661,6 +1692,69 @@ var sarahconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency',"
         });
     }	
 	
+
+exports.setest_usergroupinmetadata1 =
+setest_usergroupinmetadata1 = 
+function setest_usergroupinmetadata1(params, callback) {
+
+
+var tomconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"tomac","command.enviromment.userid":"driuser"};	
+
+	var tom_expected = {
+						"getcurrency":true
+						};
+
+        var tom_result = {};
+
+
+        async.series([
+
+            function(cb) {
+                // creates the allowances security scheme data. Creates users, actions, groups, and permissions.
+                if (params.setup === false) { cb(null) };                
+				allowsec1test4setup({}, function(err, resp) {
+                    proxyprinttodiv('Data entered  -   response  -- ', resp, 39);
+                    cb(err);
+                });
+
+            },
+			function(cb) {
+				execute({"executethis": "addwidmaster",
+						"wid": "tom",
+						"metadata.method": "userdto",
+						"metadata.security.usergroups": ["kidgroup"]
+						}, function (err, res) {
+							proxyprinttodiv('updating tom record with metadata.security.usergroup = [kidgroup] res --', res, 99);
+							proxyprinttodiv('updating tom record with metadata.security.usergroup = [kidgroup] err --', err, 99);
+							cb(err);
+						});
+			},
+		// check that tom can perform the getcurrency action
+        function(cb) {
+            // perform the securitycheck for the getcurrency action, with organization user user ac
+            sc(tomconfig, function(err, resp) {
+                proxyprinttodiv('Security check done 11 --  tomconfig11 -   response  -- ', resp, 39);
+				tom_result.getcurrency = resp.authstatus;
+                cb(err);
+            });
+        }		
+
+        ], function(err, resp) {
+            // final callback
+            proxyprinttodiv('Function setest_allowsec1tests5 done --  response  -- ', resp, 99);
+
+            var expected_result = [tom_expected];
+            var result = [tom_result];
+
+            proxyprinttodiv('Function setest_allowsec1tests5 expected_result -- ', expected_result, 99, true);
+            proxyprinttodiv('Function setest_allowsec1tests5 result -- ', result, 99, true);
+
+            var final_obj = logverify('allowsec1tests5_result', result, expected_result);
+            callback(err, final_obj);
+        });
+    }
+
 	
 	exports.setest_testnestedgroups1 = setest_testnestedgroups1 = function setest_testnestedgroups1 (params, callback) {
 

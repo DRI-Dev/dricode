@@ -358,6 +358,132 @@ widtests.qutest_reduced1.description = "this does a test";
 
 
 
+// this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
+exports.qutest_reduced1 =  
+widtests.qutest_reduced1 = 
+qutest_reduced1 = 
+function qutest_reduced1 (executeobject, callback) {
+
+	  if (!executeobject.command) {
+		  executeobject.command={};
+		  executeobject.command.environment={};
+		  executeobject.command.environment.run={};
+	  }
+	  executeobject.command.xrun=[
+									{
+									"executethis":"addwidmaster",
+									"metadata.method": "purchasedto",
+									"wid":"roger1",
+									"name": "Roger",
+									"status":"completed",
+									"amount": "100"
+									}, {
+									"executethis":"addwidmaster",
+									"metadata.method": "purchasedto",									
+									"wid":"roger2",
+									"name": "Roger",									
+									"status":"completed",
+									"amount": "400"
+									}, {
+									"executethis":"addwidmaster",
+									"metadata.method": "purchasedto",									
+									"wid":"roger3",
+									"name": "Roger",									
+									"status":"completed",
+									"amount": "500"
+									}, {
+									"executethis":"addwidmaster",
+									"metadata.method": "purchasedto",									
+									"wid":"roger4",
+									"name": "Roger",									
+									"status":"completed",
+									"amount": "1000"
+									}, {
+									"executethis":"addwidmaster",
+									"metadata.method": "purchasedto",									
+									"wid":"roger5",
+									"name": "Roger",									
+									"status":"shipped",
+									"amount": "100"
+									}, {
+									"executethis":"addwidmaster",
+									"metadata.method": "purchasedto",									
+									"wid":"cody1",
+									"name": "Cody",									
+									"status":"completed",
+									"amount": "500"
+									}, {
+									"executethis":"addwidmaster",
+									"metadata.method": "purchasedto",									
+									"wid":"cody2",
+									"name": "Cody",									
+									"status":"completed",
+									"amount": "400"
+									}, {
+									"executethis": "addwidmaster",
+									"metadata.method": "selldto",
+									"wid": "bill1",
+									"name": "Bill",
+									"status": "completed",
+									"amount": "1000",
+									"customer": "Roger"
+									}/*, {
+									"executethis":"mapreduce",									
+									"map": "map1",
+									"reduce": "reduce1",
+									"query": {
+											"$or": [{
+											"status":"completed"
+											}]
+										}
+									}
+									*/
+								];
+
+	var expectedresult = [
+							{
+								"wid1":{
+									"color":"red",
+									"wid":"wid1",
+									"metadata": {
+										"date":{"exception":["created","changed","unchanged","updated"]}
+									}
+								}
+							}];
+							
+	var queryobj = [{
+					"executethis":"mapreduce",
+					"map": "map1",
+					"reduce": "reduce1",
+					"out": "queryresult",
+					"query": {
+							"$and": [{
+							"data.status":"completed"
+							}, {
+							"metadata.method": "purchasedto"
+							}]
+							 }
+					}];						
+	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
+	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+	  {     
+			proxyprinttodiv('add results', result_obj, 99, true);
+			etEnvironment.execute(queryobj, function (err, res) {
+				proxyprinttodiv('expected result', expectedresult, 99);
+				proxyprinttodiv('actual result', res, 99);
+
+				var composite_obj=logverify("simpleonewidquery1", res, expectedresult);
+				//proxyprinttodiv('composite_obj', composite_obj, 99);
+				callback(null, composite_obj);
+			});
+	  });
+}
+widtests.qutest_reduced1.category = "redaily";
+widtests.qutest_reduced1.subcategory = "push";
+widtests.qutest_reduced1.js = exports.qutest_reduced1;
+widtests.qutest_reduced1.description = "this does a test";
+
+
 exports.etmttest2 = widtests.etmttest2 = etmttest2 = function etmttest2(params, callback) {
     debuglevel = 17;
     console.log("<< mongoquery_two_test >>");
@@ -3924,6 +4050,12 @@ var response = "";
 			relate_actions_actiongroups(function (err, res) {
 				proxyprinttodiv("relating actions to actiongroups res --", res, 99);
 				cb(err);
+			});
+		},
+		function (cb) {
+			add_driuser_to_groups(function (err, res) {
+				proxyprinttodiv("adding driuser to all groups res --", res, 99);
+				cb(err)
 			});
 		},
 		function (cb) {
