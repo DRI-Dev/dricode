@@ -158,8 +158,7 @@ exports.allowsec1test4setupusers = 	allowsec1test4setupusers = function allowsec
                     "city": "Syracuse",
                     "state": "NY",
                     "zip": "13244",
-                    "country": "US",
-					"metadata.security.usergroups": ["kidgroup"]
+                    "country": "US"
                 }, function(err, resp) {
                     users.tom = resp.wid;
                     //proxyprinttodiv('Function createuser done --    for  johnny -- ', resp, 39, true);
@@ -1736,6 +1735,79 @@ var tomconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency',"_d
             sc(tomconfig, function(err, resp) {
                 proxyprinttodiv('Security check done 11 --  tomconfig11 -   response  -- ', resp, 39);
 				tom_result.getcurrency = resp.authstatus;
+                cb(err);
+            });
+        }		
+
+        ], function(err, resp) {
+            // final callback
+            proxyprinttodiv('Function setest_allowsec1tests5 done --  response  -- ', resp, 99);
+
+            var expected_result = [tom_expected];
+            var result = [tom_result];
+
+            proxyprinttodiv('Function setest_allowsec1tests5 expected_result -- ', expected_result, 99, true);
+            proxyprinttodiv('Function setest_allowsec1tests5 result -- ', result, 99, true);
+
+            var final_obj = logverify('allowsec1tests5_result', result, expected_result);
+            callback(err, final_obj);
+        });
+    }
+
+
+
+exports.setest_actiongroupinmetadata1 =
+setest_actiongroupinmetadata1 = 
+function setest_actiongroupinmetadata1(params, callback) {
+
+
+var tomconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'playgames',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"tomac","command.enviromment.userid":"driuser"};	
+
+	var tom_expected = {
+						"playgames":true
+						};
+
+        var tom_result = {};
+		var playgames = "";
+
+        async.series([
+
+            function(cb) {
+                // creates the allowances security scheme data. Creates users, actions, groups, and permissions.
+                if (params.setup === false) { cb(null) };                
+				allowsec1test4setup({}, function(err, resp) {
+                    proxyprinttodiv('Data entered  -   response  -- ', resp, 39);
+                    cb(err);
+                });
+
+            },
+				// DRI creates getcurrency
+            function(cb) {
+                createaction({
+                    "creator": "driuser",
+                    "actiontype": "playgames"
+                }, function(err, resp) {
+                    playgames = resp.wid;
+                    //proxyprinttodiv('Function createaction done --    for getcurrency  -- ', resp, 39, true);
+                    cb(err);
+                });
+            },
+			function(cb) {
+				execute({"executethis": "addwidmaster",
+						"wid": playgames,
+						"metadata.method": "actiondto",
+						"metadata.security.action": ["kidactions"]
+						}, function (err, res) {
+							cb(err);
+						});
+			},
+		// check that tom can perform the getcurrency action
+        function(cb) {
+            // perform the securitycheck for the getcurrency action, with organization user user ac
+            sc(tomconfig, function(err, resp) {
+                proxyprinttodiv('Security check done 11 --  tomconfig11 -   response  -- ', resp, 39);
+				tom_result.playgames = resp.authstatus;
                 cb(err);
             });
         }		

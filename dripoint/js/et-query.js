@@ -279,7 +279,13 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     "db":"",
                     "databasetable":"",
                     "convert":"",
-                    "keepaddthis":""
+                    "keepaddthis":"",
+                    "pagenumber":"",
+                    "perpage":"",
+                    "skip":"",
+                    "limit":"",
+                    "sort":"",
+                    "count":""
                 }
             },
             true);
