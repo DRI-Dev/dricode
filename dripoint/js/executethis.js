@@ -403,7 +403,7 @@
             trycount = 0,
             incomingparams = {};
 
-
+            proxyprinttodiv('execute before try series input ',input, 11, true, true);
         // fish out from converted results
         var command = converttocommand(input);    // call main conversion
         var executionpreferences = command.resulttable.executionpreferences,
@@ -430,9 +430,9 @@
             delete executionpreferences.command;
         }
 
-        ////--proxyprinttodiv('execute before try series incomingparams ',incomingparams, 11);
+       
         proxyprinttodiv('execute before try series command ',command, 11, true);
-        ////--proxyprinttodiv('execute before try series executionpreferences', executionpreferences, 11, true);
+        ////--proxyprinttodiv('execute before try series executionprefernces', executionpreferences, 11, true);
         ////--proxyprinttodiv('execute before try series tryset', tryset, 11, true);
         saveglobal('debuglevel', executionpreferences.command.environment.run.executelevel);
 
@@ -1295,11 +1295,11 @@
             params.command.processparameterfn = "execute_nothing";
             params.command.processfn = "execute_function";
             params.command.keepaddthis=false;
-            proxyprinttodiv('execute end of execute_get_wid 0 params', params, 99, true);
+            proxyprinttodiv('execute end of execute_get_wid 0 params', params, 11, true);
             execute(params, function (err, res) {
-                proxyprinttodiv('execute end of execute_get_wid 0-I params', params, 99, true);
-                proxyprinttodiv('execute end of execute_get_wid I', inparams, 99, true);
-                proxyprinttodiv('execute end of execute_get_wid I res', res, 99, true);
+                proxyprinttodiv('execute end of execute_get_wid 0-I params', params, 11, true);
+                proxyprinttodiv('execute end of execute_get_wid I', inparams, 11, true);
+                proxyprinttodiv('execute end of execute_get_wid I res', res, 11, true);
                 if (!res) { res = {}; }
                 if (!res.command) { res.command = {}; }
 

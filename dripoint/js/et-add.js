@@ -80,9 +80,9 @@
     exports.cleanadd = cleanadd = function cleanadd(object, dtoobject, command, callback) {
         var inbound_parameters = {};
 
-        var tempflag
-        if (object && object.sounddto && object.sounddto.note==="A flat") {tempflag=true;}
-        if (tempflag) {debuglevel=17;}
+        //var tempflag
+        //if (object && object.sounddto && object.sounddto.note==="A flat") {tempflag=true;}
+        //if (tempflag) {debuglevel=17;}
 
         proxyprinttodiv("cleanadd object", object, 17);
         //if (object.wid==="wid1") {debuglevel=38;}
@@ -145,7 +145,7 @@
                                     output.dtoobj = dtoobject;
                                     proxyprinttodiv("cleanadd getdtoobject res------- if ", dtoobject, 17);
 
-                                    if (tempflag) {tempflag=false; debuglevel=0}
+                                    //if (tempflag) {tempflag=false; debuglevel=0}
 
 
                                     callback(null, output);
@@ -162,7 +162,7 @@
                         output.obj = result_obj;
                         output.dtoobj = dtoobject;
 
-                        if (tempflag) {tempflag=false; debuglevel=0}
+                        //if (tempflag) {tempflag=false; debuglevel=0}
 
                         callback(null, output);
                     });

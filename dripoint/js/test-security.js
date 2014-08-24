@@ -12,7 +12,9 @@ function setest_allexecute(executeobject, callback)
     function (cb1) {setest_testnestedgroups1({}, function (err, res) {cb1(null, res)})},
     function (cb1) {setest_allowsec1tests4({}, function (err, res) {cb1(null, res)})},
     function (cb1) {setest_allowsec1tests5({"setup":false}, function (err, res) {cb1(null, res)})},
-	function (cb1) {setest_allowsec1tests6({"setup":false}, function (err, res) {cb1(null, res)})}
+	function (cb1) {setest_allowsec1tests6({"setup":false}, function (err, res) {cb1(null, res)})},
+	function (cb1) {setest_usergroupinmetadata1({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {setest_actiongroupinmetadata1({}, function (err, res) {cb1(null, res)})}
     ],
     function (err, res) {
       proxyprinttodiv('result from many array', res, 99);
@@ -1756,7 +1758,7 @@ var tomconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency',"_d
 
 
 
-exports.setest_actiongroupinmetadata1 =
+exports.setest_actiongroupinmetadata1 = 
 setest_actiongroupinmetadata1 = 
 function setest_actiongroupinmetadata1(params, callback) {
 
@@ -1827,6 +1829,277 @@ var tomconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'playgames',"_dbg
         });
     }
 
+
+
+exports.setest_perminmetadata1 = 
+setest_perminmetadata1 = 
+function setest_perminmetadata1(params, callback) {
+
+
+var tomconfig={"_mygroup":'',
+				"_myphone":'9873838958',
+				"_action":'getcurrency',
+				"_dbgroup":'data',
+				"_collection":'wikiwallettesting',
+				"_server":'server1',
+				"_datastore":'main',
+				"command.result":"result",
+				"command.enviromment.accesstoken":"tomac",
+				"command.enviromment.userid":"driuser",
+				"permissions": [{
+					"usergroup": "kidgroup", "actiongroup": "kidactions", "level":99
+					}]
+				};	
+
+	var tom_expected = {
+						"getcurrency":true
+						};
+	var tom_result = {};
+	
+    var getcurrency = "";
+	var kidgroup = "";
+	var kidactions = "";
+
+        async.series([
+
+            function(cb) {
+				createuserdata({
+					"wid": "driuser",
+					"fname": "driuser",
+					"lname": "driuser",
+					"phone": "",
+					"email": "",
+					"address": "161 E. Front St.",
+					"address2": "",
+					"city": "Traverse City",
+					"state": "MI",
+					"zip": "49684",
+					"country": "US"
+				}, function(err, resp) {
+					cb(err, resp);
+				});
+            },
+			function (cb) {
+				createuserdata({
+					"wid": "tom",
+					"fname": "Tom",
+					"lname": "Payne",
+					"phone": "",
+					"email": "",
+					"address": "161 E. Front St.",
+					"address2": "",
+					"city": "Traverse City",
+					"state": "MI",
+					"zip": "49684",
+					"country": "US"
+				}, function(err, resp) {
+					driuser = resp.wid;
+					addsecurity({
+						"userwid": "tom",
+						"securityac": "tomac"
+						}, function(err, resp) {
+							cb(err, resp);
+						});
+				});
+			},
+			// DRI creates getcurrency
+            function(cb) {
+                createaction({
+                    "creator": "driuser",
+                    "actiontype": "getcurrency"
+                }, function(err, resp) {
+                    getcurrency = resp.wid;
+                    proxyprinttodiv('Function createaction done --    for getcurrency  -- ', resp, 99, true);
+                    cb(err);
+                });
+            },
+			function (cb) {
+				creategroup({
+							"grouptype": "kidgroup"
+							}, function (err, res) {
+								kidgroup = res.wid;
+								proxyprinttodiv('kidgroup res --', res.wid, 99);
+								cb(err, res);
+					});
+			},
+			function (cb) {
+				creategroup({
+							"grouptype": "kidactions"
+							}, function (err, res) {
+								kidactions = res.wid;
+								proxyprinttodiv('kidactions res --', res.wid, 99);
+								cb(err, res);
+					});
+			},
+			function (cb) {
+				var config = {
+                    "currentwid": kidgroup,
+                    "currentwidmethod": "groupdto",
+                    "targetwid": "tom",
+                    "targetwidmethod": "userdto",
+                    "linktype": "manytomany"
+                };
+                // attach userdto to groupdto, johnny to kidgroup           
+                addtargetwidtocurrentwid(config, function(err, res) {
+                    //proxyprinttodiv('attach userdto to groupdto, johnny to kidgroup   -- ', res, 39);
+
+                    cb(err);
+                })
+            },
+			function(cb) {
+                var config = {
+                    "currentwid": kidactions,
+                    "currentwidmethod": "groupdto",
+                    "targetwid": getcurrency,
+                    "targetwidmethod": "actiondto",
+                    "linktype": "manytomany"
+                };
+                // attach userdto to groupdto, johnny to kidgroup           
+                addtargetwidtocurrentwid(config, function(err, res) {
+                    //proxyprinttodiv('attach userdto to groupdto, johnny to kidgroup   -- ', res, 39);
+
+                    cb(err);
+                })
+            },
+			function(cb) {
+            // perform the securitycheck for the getcurrency action, with organization user user ac
+            sc(tomconfig, function(err, resp) {
+                proxyprinttodiv('Security check done 11 --  tomconfig11 -   response  -- ', resp, 99);
+				tom_result.getcurrency = resp.authstatus;
+                cb(err);
+            });
+        }		
+
+        ], function(err, resp) {
+            // final callback
+            proxyprinttodiv('Function setest_allowsec1tests5 done --  response  -- ', resp, 99);
+
+            var expected_result = [tom_expected];
+            var result = [tom_result];
+
+            proxyprinttodiv('Function setest_allowsec1tests5 expected_result -- ', expected_result, 99, true);
+            proxyprinttodiv('Function setest_allowsec1tests5 result -- ', result, 99, true);
+
+            var final_obj = logverify('allowsec1tests5_result', result, expected_result);
+            callback(err, final_obj);
+        });
+    }
+
+
+exports.setest_perminmetadata2 = 
+setest_perminmetadata2 = 
+function setest_perminmetadata2(params, callback) {
+
+
+var tomconfig={"_mygroup":'',"_myphone":'9873838958',"_action":'getcurrency',"_dbgroup":'data',"_collection":'wikiwallettesting',"_server":'server1',"_datastore":'main',
+		"command.result":"result","command.enviromment.accesstoken":"tomac","command.enviromment.userid":"driuser"};	
+
+	var tom_expected = {
+						"getcurrency":true
+						};
+	var tom_result = {};
+	
+    var getcurrency = "";
+
+        async.series([
+
+            function(cb) {
+				createuserdata({
+					"wid": "driuser",
+					"fname": "driuser",
+					"lname": "driuser",
+					"phone": "",
+					"email": "",
+					"address": "161 E. Front St.",
+					"address2": "",
+					"city": "Traverse City",
+					"state": "MI",
+					"zip": "49684",
+					"country": "US"
+				}, function(err, resp) {
+					cb(err, resp);
+				});
+            },
+			function (cb) {
+				createuserdata({
+					"wid": "tom",
+					"fname": "Tom",
+					"lname": "Payne",
+					"phone": "",
+					"email": "",
+					"address": "161 E. Front St.",
+					"address2": "",
+					"city": "Traverse City",
+					"state": "MI",
+					"zip": "49684",
+					"country": "US"
+				}, function(err, resp) {
+					driuser = resp.wid;
+					addsecurity({
+						"userwid": "tom",
+						"securityac": "tomac"
+						}, function(err, resp) {
+							cb(err, resp);
+						});
+				});
+			},
+			function (cb) {
+				execute({
+						"executethis": "addwidmaster",
+						"wid": "tom",
+						"metadata.method": "persondto",
+						//"metadata.permission": [{"usergroup":"kidgroup","actiongroup":"kidactions","level":99,"onfail":""}],
+						"metadata.security.user": ["kidgroup"]
+						}, function (err, res) {
+							proxyprinttodiv('add security metadata to tom result --', res, 99);
+							cb(err, res);
+						});
+			},
+				// DRI creates getcurrency
+            function(cb) {
+                createaction({
+                    "creator": "driuser",
+                    "actiontype": "getcurrency"
+                }, function(err, resp) {
+                    getcurrency = resp.wid;
+                    proxyprinttodiv('Function createaction done --    for getcurrency  -- ', resp, 99, true);
+                    cb(err);
+                });
+            },
+			function(cb) {
+				execute({"executethis": "addwidmaster",
+						"wid": getcurrency,
+						"metadata.method": "actiondto",
+						"metadata.security.action": ["kidactions"]
+						}, function (err, res) {
+							cb(err);
+						});
+			},
+				
+		// check that tom can perform the getcurrency action
+        function(cb) {
+            // perform the securitycheck for the getcurrency action, with organization user user ac
+            sc(tomconfig, function(err, resp) {
+                proxyprinttodiv('Security check done 11 --  tomconfig11 -   response  -- ', resp, 99);
+				tom_result.getcurrency = resp.authstatus;
+                cb(err);
+            });
+        }		
+
+        ], function(err, resp) {
+            // final callback
+            proxyprinttodiv('Function setest_allowsec1tests5 done --  response  -- ', resp, 99);
+
+            var expected_result = [tom_expected];
+            var result = [tom_result];
+
+            proxyprinttodiv('Function setest_allowsec1tests5 expected_result -- ', expected_result, 99, true);
+            proxyprinttodiv('Function setest_allowsec1tests5 result -- ', result, 99, true);
+
+            var final_obj = logverify('allowsec1tests5_result', result, expected_result);
+            callback(err, final_obj);
+        });
+    }
 	
 	exports.setest_testnestedgroups1 = setest_testnestedgroups1 = function setest_testnestedgroups1 (params, callback) {
 

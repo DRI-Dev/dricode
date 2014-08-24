@@ -2788,7 +2788,7 @@ widtests.etd19.description = "this does a test";
 
 
 function testDeepFilterTests(command, callback) {
-    debuglevel = 0;
+    //debuglevel = 0;
     async.series([
         function(cb1) {
             var dtoObjOpt = {
@@ -2894,9 +2894,9 @@ function testDeepFilterTests(command, callback) {
                               };    
                   */
             deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
-                proxyprinttodiv("after etd16 deepfilter in", inputObj, 17);
-                proxyprinttodiv("after etd16 deepfilter dto", dtoObjOpt, 17);
-                proxyprinttodiv("after etd16 deepfilter res", res, 17);
+                proxyprinttodiv("after etd16 deepfilter in", inputObj, 17, true, true);
+                proxyprinttodiv("after etd16 deepfilter dto", dtoObjOpt, 17, true, true);
+                proxyprinttodiv("after etd16 deepfilter res", res, 17, true, true);
                 cb1(err, res);
             });
         }
