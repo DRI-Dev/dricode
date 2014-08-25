@@ -1400,7 +1400,6 @@
 
         switch (dataType)
         {
-            debugger;
             case "shortguid": //to create 5 digit alphanumeric string
                 result = inpVal;
                 break;
