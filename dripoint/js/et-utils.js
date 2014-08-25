@@ -1393,6 +1393,7 @@
 
     function deepfilterobject (inpKey, inpVal, dataType, command, callback)
     {
+        debuglevel = 41;
         // if none of the cases touch it then it will remain invalidflag;
         var result='notprocessedflag';
         // if rightside exists (and string)
