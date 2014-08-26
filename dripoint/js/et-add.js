@@ -100,9 +100,12 @@
                 var result_obj = {};
                 var output = {};
 
-                if (!command) { command = {deepfilter:{convert:false}}; }
-                else if (!command.deepfilter) { command.deepfilter = {convert:false}; }
-                else if (!command.deepfilter.convert) { command.deepfilter.convert = false; }
+                // if (!command) {command={}};
+                // if (!command.deepfilter) {command.deepfilter={}}
+                // if (!command.deepfilter.convert) {command.deepfilter.totype=true}
+                // if (!command) { command = {deepfilter:{convert:false}}; }
+                // else if (!command.deepfilter) { command.deepfilter = {convert:false}; }
+                // else if (!command.deepfilter.convert) { command.deepfilter.convert = false; }
 
                 output.obj = object;
                 output.dtoobj = dtoobject;
@@ -847,19 +850,20 @@
                 }
             },
             function step2(step2_callback) { // deepfilter step...should create a guid for an empty wid
-                if (!command) { command = {}; }
-                if (!command.deepfilter) { command.deepfilter = {}; }
-
-                command.deepfilter.convert = true;
+                // if (!command) { command = {}; }
+                // if (!command.deepfilter) { command.deepfilter = {}; }
+                // command.deepfilter.totype = true;
 
                 // if (!command.deepfilter.keepaddthis) { command.deepfilter.keepaddthis = true; }
                 
                 // add wid = guid if its missing in input
-                if (!object.hasOwnProperty("wid")) {
+                if (!object.hasOwnProperty("wid")) 
+                {
                     object["wid"] = "undefined";
                 }
                 // set wid = guid if its missing in dto
-                if(!dtoobject["wid"] || dtoobject["wid"] === 'string'){
+                if(!dtoobject["wid"] || dtoobject["wid"] === 'string')
+                {
                     dtoobject["wid"]="guid";
                 }
 

@@ -302,7 +302,7 @@
 
 
         // based on potential dto, dtotable, recursive dto flag create a new dto
-        function createdto(params, dtotable, createcommand_and_dtotable_flag) {
+        function createdto(params, dtotable, createcommand_and_dtotable_flag, isdto) {
             //proxyprinttodiv("getdtoobject createdto -- params", params, 93);
             //proxyprinttodiv("getdtoobject createdto dtotable", dtotable, 93);
             proxyprinttodiv("getdtoobject createdto arguments", arguments, 93, true);
@@ -325,7 +325,9 @@
                         } 
                         else 
                         {
-                            extend(true, mergedObj, createdto(inobj[i]));
+                            //extend(true, mergedObj, createdto(inobj[i]));
+                            extend(true, mergedObj, createdto(inobj[i], dtotable, createcommand_and_dtotable_flag, isdto));
+                            // above changed added 8-26 for no good reason
                         }
                     }
                 }
@@ -362,7 +364,7 @@
                             //proxyprinttodiv("getdtoobject --is-- switch inobj[eachparam]", inobj[eachparam], 93);
                             if (dtotable && dtotable.hasOwnProperty(eachparam)) 
                             {   // recuse if table entry
-                                dtoobj[eachparam] = createdto(inobj[eachparam], dtotable, createcommand_and_dtotable_flag); // recurse 
+                                dtoobj[eachparam] = createdto(inobj[eachparam], dtotable, createcommand_and_dtotable_flag, isdto); // recurse 
                                 proxyprinttodiv("getdtoobject createdto AFTER eachparam", eachparam, 93, true, true);
                                 proxyprinttodiv("getdtoobject createdto AFTER inobj[eachparam]", inobj[eachparam], 93);
                                 proxyprinttodiv("getdtoobject createdto AFTER dtoobj[eachparam]", dtoobj[eachparam], 93, true);
@@ -440,7 +442,14 @@
                                 } 
                                 else 
                                 {
-                                    dtoobj[eachparam] = "string"
+                                    if (isdto) // if dto then we keep its value
+                                    {
+                                        dtoobj[eachparam]=inobj[eachparam];
+                                    }
+                                    else
+                                    {
+                                        dtoobj[eachparam] = "string";
+                                    }
                                 }
                                 proxyprinttodiv("getdtoobject createdto AFTER SPECIAL dtoobj[eachparam]", dtoobj[eachparam], 93, true);
                             }
@@ -456,7 +465,7 @@
             } // else
         } // end fn recurse
 
-        function createdtofromresults(obj, dtoobject, dtotype) {
+        function createdtofromresults(obj, dtoobject, dtotype, isdto) {
             var dtotable = {};
             generatedtotablelist(dtoobject, dtotable, dtotype); // create dtotable from dtoobject
 
@@ -469,12 +478,12 @@
                 
                 if (!obj.command) { obj.command = {}; }
                 obj.command.recursive = true; // this is set when getwidmaster creates object
-                dtoobject = createdto(obj, dtotable, true); // dtotable is basically representation of dto now
+                dtoobject = createdto(obj, dtotable, true, isdto); // dtotable is basically representation of dto now
             } 
             else 
             {
                 proxyprinttodiv("getdtoobject after createdtotable, dtotable, not recurse", dtotable, 93, true);
-                dtoobject = createdto(dtoobject, dtotable, false); 
+                dtoobject = createdto(dtoobject, dtotable, false, isdto); 
             }
 
             proxyprinttodiv("getdtoobject after createdto dtoobject", dtoobject, 93);
@@ -521,7 +530,9 @@
                 obj.metadata.method === obj.wid ||
                 obj.metadata.method === "relationshipdto") 
             {
-                var out = createdto(obj, {}, true);
+                var isdto = false;
+                if (obj.metadata.method === obj.wid) {isdto=true};
+                var out = createdto(obj, {}, true, isdto);
                 proxyprinttodiv("getdtoobject obj ", obj, 93);
                 proxyprinttodiv("getdtoobject out ", out, 93);
                 callback(null, out); // create dto from object with no dtotable
@@ -560,7 +571,7 @@
                         if (!res || (Object.keys(res).length === 0)) 
                         {
                             // if no results then proceed with same logi c as default
-                            out = createdto(obj, {}, true); // send no dtotable, set create command flag to true
+                            out = createdto(obj, {}, true, false); // send no dtotable, set create command flag to true
                             proxyprinttodiv("getdtoobject obj ", obj, 93);
                             proxyprinttodiv("getdtoobject out ", out, 93);
                             callback(null, out);
@@ -568,7 +579,7 @@
                         else 
                         {
                             proxyprinttodiv("getdtoobject before createdtotable dtoobject res", res, 93);
-                            out = createdtofromresults(obj, res, dtotype); // fix dto based on recursion / wid=guid, etc
+                            out = createdtofromresults(obj, res, dtotype, true); // fix dto based on recursion / wid=guid, etc
                             proxyprinttodiv("getdtoobject obj ", obj, 93);
                             proxyprinttodiv("getdtoobject res ", res, 93);
                             proxyprinttodiv("getdtoobject out ", out, 93);
@@ -1307,15 +1318,10 @@
                 else
                 {
 
-                    if (!command) {
-                        command = {};
-                    }
-                    if (!command.deepfilter) {
-                        command.deepfilter = {};
-                    }
-                    if (!command.deepfilter.convert) {
-                        command.deepfilter.convert = true;
-                    }
+                    if (!command) {command = {};}
+                    if (!command.deepfilter) {command.deepfilter = {};}
+                    if (!command.deepfilter.totype) {command.deepfilter.totype = true;}
+                    // false means we want stuff as strings coming back
                    
                     proxyprinttodiv('<<< Get_Clean before call back beforedeepfilter dtoobject >>>', dtoobject, 38);
                     proxyprinttodiv('<<< Get_Clean before call back beforedeepfilter resultObj >>>', resultObj, 38);                    

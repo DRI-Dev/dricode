@@ -1189,8 +1189,9 @@
     }
 
     exports.deepfilter = deepfilter = function deepfilter(inputobj, dtoObjOpt, command, callback) {
-        proxyprinttodiv("deepfilter inputobj", inputobj, 41, true, true);
-        proxyprinttodiv("deepfilter dtoObjOpt", dtoObjOpt, 41, true, true);
+        proxyprinttodiv("deepfilter command", command, 43, true, true);
+        proxyprinttodiv("deepfilter inputobj", inputobj, 43, true, true);
+        proxyprinttodiv("deepfilter dtoObjOpt", dtoObjOpt, 43, true, true);
         // proxyprinttodiv("deepfilter command", command, 99);
         var modifiedObj = {};
         extend(true, modifiedObj, inputobj);     // copying inputobj into modifiedObj
@@ -1199,27 +1200,43 @@
         // -- Convert --
         if (!command) {command={}};
         if (!command.deepfilter) {command.deepfilter={}};
-        if (command && command.deepfilter && !command.deepfilter.convert){ //} === undefined) { //if command.deepfilter.convert undefined
-            convert = false; //default value
-        } else {
-            convert = command.deepfilter.convert;
+        if (command && command.deepfilter && !command.deepfilter.hasOwnProperty(convert)) 
+        { 
+            convert = true; //default value
+        } 
+        else 
+        {
+            convert = command.deepfilter.convert || false;
         }
         // -- totype --
-        if (command && command.deepfilter && !command.deepfilter.totype){ //} === undefined) { //if command.deepfilter.totype undefined
-            totype = false; //default value
-        } else {
-            totype = command.deepfilter.totype;
+        if (command && command.deepfilter && !command.deepfilter.hasOwnProperty(totype)) 
+        { 
+            totype = true; //default value
+        } 
+        else 
+        {
+            totype = command.deepfilter.totype || false;
+        }
+
+        // case for adding / getting methods, then we do not want to convert
+        if (modifiedObj.wid && dtoObjOpt.metadata && dtoObjOpt.metadata.method && modifiedObj.wid === dtoObjOpt.wid)
+        {
+            convert=false;
         }
 
         if (dtoObjOpt)
         {
-            recurseModObj(modifiedObj, dtoObjOpt, convert, totype, command, function (err, res) {
+            recurseModObj(modifiedObj, dtoObjOpt, convert, totype, command, function (err, res) 
+            {
                 proxyprinttodiv("deepfilter inputobj *", inputobj, 42, true, true);
                 proxyprinttodiv("deepfilter dtoObjOpt *", dtoObjOpt, 42, true, true);
                 proxyprinttodiv("deepfilter result end res *", res, 42, true, true);
-                if (err && Object.keys(err).length > 0) {
+                if (err && Object.keys(err).length > 0) 
+                {
                     callback(err, res);
-                } else {
+                } 
+                else 
+                {
                     callback(null, res);
                 }
             });
@@ -1393,7 +1410,6 @@
 
     function deepfilterobject (inpKey, inpVal, dataType, convert, totype, command, callback)
     {
-        debuglevel = 41;
         // if none of the cases touch it then it will remain invalidflag;
         var result='notprocessedflag';
         // if rightside exists (and string)
@@ -1426,10 +1442,10 @@
                 else {result=null};
                 break;
             case "string":
-                if (isString(inpVal)) {result = inpVal;} else {result=null};
+                if (isString(inpVal)) {result = inpVal;} else {result=inpVal.toString()};
                 break;
             case "number":
-                if (isString(inpVal)) {inpVal = Number(inpVal)}
+                if (isString(inpVal)) {inpVal = Number(inpVal)};
                 if (!isNaN(inpVal))
                 {
                     if (totype === true)
