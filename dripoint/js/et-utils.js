@@ -1309,7 +1309,7 @@
                         else 
                         {
                             proxyprinttodiv("recurseModObj before deepfilterobject inpVal", inpVal, 41);
-                            deepfilterobject(inpKey, inpVal, dataType, command, function (err, res) 
+                            deepfilterobject(inpKey, inpVal, dataType, convert, totype, command, function (err, res) 
                             {
                                 proxyprinttodiv("recurseModObj after deepfilterobject inpVal returnfromprocess", res, 41);
                                 if ((err && Object.keys(err).length > 0)||(res===null && res===undefined)) {cbMap(null);}
@@ -1391,7 +1391,7 @@
         });
     }
 
-    function deepfilterobject (inpKey, inpVal, dataType, command, callback)
+    function deepfilterobject (inpKey, inpVal, dataType, convert, totype, command, callback)
     {
         debuglevel = 41;
         // if none of the cases touch it then it will remain invalidflag;
