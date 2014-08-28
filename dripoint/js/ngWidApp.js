@@ -120,9 +120,7 @@ if (typeof angular !== 'undefined') {
                         scope.activewid = dataset.wid;
                     }
 
-                    etProcessScreenWid(dataset, scope, function () {
-                        widAppHelper.processHtml(dataset, scope, $compile);
-                    });
+                    widAppHelper.processHtml(dataset, scope, $compile);
                 } else if (dataset.script) { widAppHelper.processJS(dataset, scope, $compile); }
                 else if (dataset.css) { widAppHelper.processCSS(dataset, scope, $compile); }
             });
@@ -558,8 +556,7 @@ if (typeof angular !== 'undefined') {
 
             if (executeObj.etparams) { executeObj = JSON.parse(executeObj.etparams); }
 
-            execute(executeObj, function(err, resultArr) {
-                var results = widAppHelper.mergeNestedArray(resultArr);
+            execute(executeObj, function(err, results) {
                 angular.injector(['ng', 'widApp'])
                     .get('dataService')
                     .storeData(results, scope, '', function() {
@@ -649,17 +646,9 @@ exports.gethtmlbyid = gethtmlbyid = function gethtmlbyid(params, callback) {
 
 // passed in html and parameters become a screenWid with the passed in name
 // and saved as a screenWid object using addWidMaster
-exports.htmlToScreenwid = htmlToScreenwid = function htmlToScreenwid(screenWidName, html, params, callback) {
+exports.htmlToScreenwid = htmlToScreenwid = function htmlToScreenwid(screenWidName, html, callback) {
     var newScreenwid = {executethis:'addwidmaster',wid:screenWidName,html:html},
         htmlDom = $(html);
-
-    if (params) {
-        if (params.widforview) { newScreenwid.widforview = widforview; }
-        if (params.widforbase) { newScreenwid.widforbase = widforbase; }
-        if (params.widforbackground) { newScreenwid.widforbackground = widforbackground; }
-        if (params.dataforview) { newScreenwid.dataforview = JSON.stringify(dataforview); }
-        if (params.links) { newScreenwid.links = JSON.stringify(links); }
-    }
 
     execute(newScreenwid, function (err, resultArray) {
         if (err && Object.size(err) > 0) {
