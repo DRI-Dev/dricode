@@ -225,11 +225,16 @@ widtests.qutest_map1.subcategory = "push";
 widtests.qutest_map1.js = exports.qutest_map1;
 widtests.qutest_map1.description = "this does a test";
 
-
+exports.map1 =  
+widtests.map1 = 
+map1 = 
 function map1 () {
 	emit(this.name,this.amount);
 }
 
+exports.reduce1 =  
+widtests.reduce1 = 
+reduce1 = 
 function reduce1 (key, values) {
 	proxyprinttodiv('values for ' + key, values, 99);
 	var amt = 0;
