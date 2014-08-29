@@ -7650,7 +7650,6 @@ widtests.ettestag2s.description = "this does a test";
 
 // This is a 2 level test of the dtos...instantiate song1 with a songdto, and some sounddto values
 // failing due to a command object being sent back
-//exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
 exports.ettestag3s = widtests.ettestag3s = ettestag3s = function ettestag3s(params, callback) {
 
     var executeobject = {
