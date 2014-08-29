@@ -262,7 +262,8 @@
         ////--proxyprinttodiv("converttocommand after string inparams", inparams, 11);
 
         // if array then load array into parameter command.xrun...not it is an object again
-        if (isArray(inparams)) { inparams = {command:{xrun:inparams.slice(0)}}; }
+        if (isArray(inparams) && inparams.length == 1) { inparams = inparams[0]; }
+        else if (isArray(inparams) && inparams.length > 1) { inparams = {command:{xrun:inparams.slice(0)}}; }
 
         ////--proxyprinttodiv("converttocommand - inparams I", inparams, 11);
         // *** now it is converted to an object ***
