@@ -21,10 +21,10 @@ function tftest_allexecute(executeobject, callback)
     })
 	console.log('end tftest_allexecute');
 };
-widtests.ettest_allexecute.category = "redaily";
-widtests.ettest_allexecute.subcategory = "push";
-widtests.ettest_allexecute.js = ettest_allexecute;
-widtests.ettest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing execute.";
+widtests.tftest_allexecute.category = "redaily";
+widtests.tftest_allexecute.subcategory = "push";
+widtests.tftest_allexecute.js = tftest_allexecute;
+widtests.tftest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing execute.";
 
 
 //*********************************************
