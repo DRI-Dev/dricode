@@ -86,7 +86,7 @@ function setdefaultparm() {
 
 // these are executed before other files load
 global.config = config = config123();
-//config.setdefaultparm = setdefaultparm;
+config.setdefaultparm = setdefaultparm;
 //setdefaultparm();
 global.environment = "server";
 
