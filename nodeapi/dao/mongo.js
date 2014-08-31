@@ -141,11 +141,10 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
             //"nonatomic":"",
             //"outputcollection",
             "out":""
-        }
-    },
+        },
     true);
 
-    var thirdparm =filter_data.filteredobject;
+    var thirdparm = filter_data.filteredobject;
     var xtra = filter_data.output;
 
     // if output = queryresult then inline
