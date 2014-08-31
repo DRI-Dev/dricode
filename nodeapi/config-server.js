@@ -61,6 +61,7 @@ function config123() {
     configuration.defaultenvironment = {};
     configuration.defaultenvironment[configuration.db] = configuration.d;
     //configuration.defaultenvironment[configuration.db].wid = configuration.e;
+    configuration.d.defaultoutputcollection = "defaultoutputcollection";
     
     return {
         "configuration": configuration
@@ -70,8 +71,8 @@ function config123() {
 // this is called from eventdeviceready after all files are loaded
 function setdefaultparm() {
     saveglobal("debuglevel", 0);
-    saveglobal("Debug", 'false');
-    saveglobal("debugon", false);
+    //saveglobal("Debug", 'false');
+    //saveglobal("debugon", false);
     saveglobal("debugname", "");
     saveglobal("debugsubcat", "");
     saveglobal("debugcat", "");
@@ -89,10 +90,10 @@ config.setdefaultparm = setdefaultparm;
 global.environment = "server";
 
 // the line below determines if all the prints are enabled or not
-global.Debug = 'true';
+//global.Debug = 'true';
 
-global.debuglevel = 0;
-global.debugon = false;
+global.debuglevel = -1;
+//global.debugon = false;
 //var consolere = require('console-remote-client').connect('console.re','80','dev-dri');
 //console.re.log('remote log test');
 //global.localStorage = exports.localStorage = {};

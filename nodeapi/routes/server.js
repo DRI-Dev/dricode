@@ -10,21 +10,21 @@ exports.postputgetrunExecutethis = function postputgetrunExecutethis(req, resp) 
 
 function runExecuteThis(parameters, resp) {
     proxyprinttodiv(" JSON runExecutethis", JSON.stringify(parameters), 99);
-    if (parameters.Debug || parameters.debuglevel)
+    if (parameters.debuglevel) {
+    debuglevel = parameters.debuglevel;
+    delete parameters.debuglevel;
+
+    }
+    if (debuglevel && debuglevel!==-1)
     {
         fs.writeFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', '');
     }
 
-    Debug = false;
-    if (parameters.Debug) {
-        Debug = "true";
-        delete parameters.Debug;
-    }
-
-    if (parameters.debuglevel) {
-        debuglevel = parameters.debuglevel;
-        delete parameters.debuglevel;
-    }
+    // Debug = false;
+    // if (parameters.Debug) {
+    //     Debug = "true";
+    //     delete parameters.Debug;
+    // }
 
     if (parameters.command) {
         // grab server defaults
@@ -60,24 +60,24 @@ function runExecuteThis(parameters, resp) {
     }
 
     execute(parameters, function (err, results) {
-        if (Debug === 'true') {
-            var tempoutput = {};
-            tempoutput.command = {};
-            tempoutput.command.angularexeucute = {};
-            tempoutput.command.angularexeucute.parameters = {};
-            extend(true, tempoutput.command.angularexeucute.parameters, localStore);
-            // extend(true, executeobject, postResults);
-            if (Array.isArray(results)) { results.push(tempoutput); }
-            else {
-                var newArray = [];
-                newArray.push(results);
-                newArray.push(tempoutput);
-                results = newArray;
-            }
+        // if (Debug === 'true') {
+        //     var tempoutput = {};
+        //     tempoutput.command = {};
+        //     tempoutput.command.angularexeucute = {};
+        //     tempoutput.command.angularexeucute.parameters = {};
+        //     extend(true, tempoutput.command.angularexeucute.parameters, localStore);
+        //     // extend(true, executeobject, postResults);
+        //     if (Array.isArray(results)) { results.push(tempoutput); }
+        //     else {
+        //         var newArray = [];
+        //         newArray.push(results);
+        //         newArray.push(tempoutput);
+        //         results = newArray;
+        //     }
 
-            localStore.clear();
-        }
-        debuglinenum = 0;
+        //     localStore.clear();
+        // }
+        // debuglinenum = 0;
 
         if (!results) { results = {}; }
 

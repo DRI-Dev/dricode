@@ -8,15 +8,15 @@ if (!config) {
     var config = {};
 }
 
-if (!Debug) { // printdiv
-    var Debug = 'false';
-}
+// if (!Debug) { // printdiv
+//     var Debug = 'false';
+// }
 if (!debuglevel) { // printdiv
-    var debuglevel = 0;
+    var debuglevel = -1;
 }
-if (!debugon) { // debugfn
-    var debugon = false;
-}
+// if (!debugon) { // debugfn
+//     var debugon = false;
+// }
 
 
 function config123() {
@@ -49,6 +49,7 @@ function config123() {
     configuration.d.var = {};
     configuration.d.platform = configuration.environment;
     configuration.d.syncrule = configuration.syncrule;
+    configuration.d.defaultoutputcollection = "defaultoutputcollection";
 
     configuration.d.run = {};
     configuration.d.run.executelevel=0;
@@ -75,8 +76,8 @@ function config123() {
 function setdefaultparm() {
 
     saveglobal("debuglevel", 0);
-    saveglobal("Debug", 'false');
-    saveglobal("debugon", false);
+    // saveglobal("Debug", 'false');
+    // saveglobal("debugon", false);
     saveglobal("debugname", "");
     saveglobal("debugsubcat", "");
     saveglobal("debugcat", "");
@@ -87,7 +88,7 @@ function setdefaultparm() {
     saveglobal("debuglinenum", 0);
 
     exports.environment = "local";
-    exports.Debug = Debug;
+    //exports.Debug = Debug;
     exports.debuglevel = 0 || debuglevel;
 
 }

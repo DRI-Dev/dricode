@@ -106,17 +106,60 @@ exports.mquery = mquery = function mquery(objToFind, projection, command, callba
     });
 };
 
-exports.mapreduceserver = mapreduceserver = function mapreduceserver(map, reduce, p, callback) {
+exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, reducefn, p, callback) {
     var command = p.command;
     console.log("\nPROJECTION in mongo.js mapreduceserver: " + JSON.stringify(p));
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-    var mapfn = window[map];
-    var reducefn = window[reduce];
-    var thirdparm = {};
-    thirdparm.out = p.out; 
+	proxyprinttodiv('mapfn = ',mapfn,99);
+	proxyprinttodiv('reducefn = ',reducefn,99);
+	proxyprinttodiv('window[mapfn] = ',window[mapfn],99);
+	proxyprinttodiv('window[reducefn] = ',window[reducefn],99);
+	proxyprinttodiv('mapreduceserver params = ',p,99);
+	
+    if (!(mapfn instanceof Function)) {mapfn = window[mapfn]};
+    if (!(reducefn instanceof Function)) {reducefn = window[reducefn]};
+
+    var filter_data = getcommand(p, 
+        {   // defaults
+        },
+        {
+            "sort":"",
+            "finalize":"",
+            "scope":"",
+            "limit":"",
+            "jsmode":"",
+            "verbose":"",
+            "query":"",
+            //"replace":"",
+            //"merge":"",
+            //"reduce":"",
+            //"db":"",
+            //"sharded":"",
+            //"nonatomic":"",
+            //"outputcollection",
+            "out":""
+        }
+    },
+    true);
+
+    var thirdparm =filter_data.filteredobject;
+    var xtra = filter_data.output;
+
+    // if output = queryresult then inline
+    
+    if (!thirdparm.out) 
+    {
+        var action = xtra.replace || xtra.merge || xtra.reduce || "replace";
+        thirdparm.out={};
+        // *** warning whatever collection is listed below will be overritten ****
+        thirdparm.out[action]=xtra.outputcollection || config.configuration.d.defaultoutputcollection;
+        thirdparm.out.db = xtra.db || config.configuration.d.default.databasetable;
+        thirdparm.out.sharded = xtra.sharded || false;
+        thirdparm.out.nonAtomic = xtra.nonatomic || true;
+    }
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
         db.collection(schemaToLookup).mapReduce(mapfn, reducefn, thirdparm, function(err, res) {

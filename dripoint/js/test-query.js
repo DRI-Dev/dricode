@@ -178,8 +178,8 @@ function qutest_map1 (executeobject, callback) {
                                         "sat": "black-sat"
                                      }, {
                                         "executethis": "mapreduce",
-                                        "map": "mapreducetest1",
-                                        "reduce": "reducetest1",
+                                        "mapfn": "mapreducetest1",
+                                        "reducefn": "reducetest1",
                                         "out": "queryresult",
                                         "query":   {
                                                         "$or": [{
@@ -335,8 +335,8 @@ function qutest_reduced1 (executeobject, callback) {
 							
 	var queryobj = [{
 					"executethis":"mapreduce",
-					"map": "map1",
-					"reduce": "reduce1",
+					"mapfn": "map1",
+					"reducefn": "reduce1",
 					"out": "queryresult",
 					"query": {
 							"$and": [{
@@ -445,8 +445,8 @@ function qutest_reduced_avg1 (executeobject, callback) {
 	
 	var queryobj = [{
 					"executethis":"mapreduce",
-					"map": "map1",
-					"reduce": "reduceAvg1",
+					"mapfn": "map1",
+					"reducefn": "reduceAvg1",
 					"out": "queryresult",
 					"query": {
 							"$and": [{
@@ -562,8 +562,8 @@ function qutest_reduced_sort1 (executeobject, callback) {
 							
 	var queryobj = [{
 					"executethis":"mapreduce",
-					"map": "map1",
-					"reduce": "reduce1",
+					"mapfn": "map1",
+					"reducefn": "reduce1",
 					"out": "queryresult",
 					"sort": true,
 					"query": {
@@ -677,8 +677,8 @@ function qutest_reduced_finalize1 (executeobject, callback) {
 							
 	var queryobj = [{
 					"executethis":"mapreduce",
-					"map": "map1",
-					"reduce": "reduce1",
+					"mapfn": "map1",
+					"reducefn": "reduce1",
 					"out": "queryresult",
 					"finalize": "finalize1",
 					"query": {
@@ -796,8 +796,8 @@ function qutest_reduced_out_collection1 (executeobject, callback) {
 							
 	var queryobj = [{
 					"executethis":"mapreduce",
-					"map": "map1",
-					"reduce": "reduce1",
+					"mapfn": "map1",
+					"reducefn": "reduce1",
 					"out": "purchase_collection",
 					"query": {
 							"$and": [{
@@ -920,8 +920,8 @@ function qutest_pagenumber1 (executeobject, callback) {
 							
 	var queryobj = [{
 					"executethis":"querywid",
-					//"map": "map1",
-					//"reduce": "reduce1",
+					//"mapfn": "map1",
+					//"reducefn": "reduce1",
 					"command.pagenumber": 3,
 					"command.perpage": 2,
 					//"out": "queryresult",
@@ -1036,8 +1036,8 @@ function qutest_count1 (executeobject, callback) {
 							
 	var queryobj = [{
 					"executethis":"querywid",
-					//"map": "map1",
-					//"reduce": "reduce1",
+					//"mapfn": "map1",
+					//"reducefn": "reduce1",
 					"command.count": true,
 					//"out": "queryresult",
 					"mongorawquery": {
@@ -1159,8 +1159,8 @@ function qutest_limit1 (executeobject, callback) {
 							
 	var queryobj = [{
 					"executethis":"querywid",
-					//"map": "map1",
-					//"reduce": "reduce1",
+					//"mapfn": "map1",
+					//"reducefn": "reduce1",
 					"command.limit": 3,
 					//"out": "queryresult",
 					"mongorawquery": {
@@ -1283,8 +1283,8 @@ function qutest_sort1 (executeobject, callback) {
 							
 	var queryobj = [{
 					"executethis":"querywid",
-					//"map": "map1",
-					//"reduce": "reduce1",
+					//"mapfn": "map1",
+					//"reducefn": "reduce1",
 					"command.sort": {"name":1},
 					//"out": "queryresult",
 					"mongorawquery": {
@@ -1407,8 +1407,8 @@ function qutest_skip1 (executeobject, callback) {
 							
 	var queryobj = [{
 					"executethis":"querywid",
-					//"map": "map1",
-					//"reduce": "reduce1",
+					//"mapfn": "map1",
+					//"reducefn": "reduce1",
 					"skip": 1,
 					//"out": "queryresult",
 					"mongorawquery": {
@@ -1596,7 +1596,7 @@ exports.etmttest2 = widtests.etmttest2 = etmttest2 = function etmttest2(params, 
 widtests.etmttest2.category = "execute";
 widtests.etmttest2.subcategory = "daily";
 widtests.etmttest2.js = exports.etmttest2;
-widtests.etmttest2.description = "this does a test";
+widtests.etmttest2.description = "this tests query";
 
 
 /*

@@ -931,7 +931,7 @@
 
         if (getglobal('expanddefault')) {expanddefault=true}
 
-        if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
+        if ((debuglevel == debugone) || (debugone == 99)) {
             var displaycolor = color_list[getglobal("debugcolor")];
             var indent = getglobal("debugindent");
             indent=indent*5;
@@ -987,14 +987,19 @@
 
     exports.proxyprinttodiv = proxyprinttodiv = function proxyprinttodiv(text, obj, debugone, pretty,expanddefault) { // **** making code node compatible
 
-        if (!debugone) {
+        if (!debugone) 
+        {
             debugone = -1;
         }
-        if (debuglevel!==-1) {
-            if (config.configuration.environment === "local") {
+        if (debuglevel!==-1) 
+        {
+            if (config.configuration.environment === "local") 
+            {
                 printToDiv(text, obj, debugone, pretty,expanddefault);
-            } else {
-                if ((Debug == 'true') || (debuglevel == debugone) || (debugone == 99)) {
+            } 
+            else 
+            {
+                if ((debuglevel == debugone) || (debugone == 99)) {
                     var prettystring = stringifyObject(obj, {
                         indent: '     ',
                         singleQuotes: false

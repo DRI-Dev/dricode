@@ -1,18 +1,81 @@
 // copyright (c) 2014 DRI
 // to do make functions return objects, not strings
 
+
+//     var filter_data = getcommand(incomingparams, {
+//         "command": {
+//             "convertmethod": "toobject",
+//             "adopt": null,
+
+//         }
+//     }, {
+//         "command": {
+//             "convertmethod": "x",
+//             "adopt": "x",
+
+//         }
+//     },
+//     true);
+
+// // keep command.environment/command.run.executeid as part of parameter
+// ////--proxyprinttodiv('>>>> execute filter_data', filter_data, 11, true);
+// var command = filter_data.filteredobject.command;
+// var inboundparams = filter_data.output;
+// var objkey = null;
+//     thirdparm.out = {"out": p.out, 
+//     sort
+//     finalize
+//     scope
+//     limit
+//     jsmode
+//     verbose
+//     query
+
+//     http://docs.mongodb.org/manual/reference/command/mapReduce/
+//     mapReduce: <collection>,
+//     map: <function>,
+//     reduce: <function>,
+//     out: <output>,  // { inline: 1 }
+//     query: <document>,
+//     sort: <document>,
+//     limit: <number>,
+//     finalize: <function>, // function(key, reducedValue) {...return modifiedObject;}
+//     scope: <document>,
+//     jsMode: <boolean>,
+//     verbose: <boolean>
+
+//     http://docs.mongodb.org/manual/reference/command/mapReduce/#mapreduce-out-cmd
+//         {
+//             "results" : [
+//                {
+//                   "_id" : <key>,
+//                   "value" :<reduced or finalizedValue for key>
+//                },
+//                ...
+//             ],
+//             "timeMillis" : <int>,
+//             "counts" : {
+//                "input" : <int>,
+//                "emit" : <int>,
+//                "reduce" : <int>,
+//                "output" : <int>
+//             },
+//             "ok" : <int>
+//         }
+//     out: { <action>: <collectionName>   // replace, merge, reduce
+//     [, db: <dbName>]
+//     [, sharded: <boolean> ]
+//     [, nonAtomic: <boolean> ]
+
+
 exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     // mapreducemongo should receive: map, reduce, query, output, command into query
     var p = {};
     extend(true, p, inparameters);
-    var map = p.map;
-    var reduce = p.reduce;
-    delete p.map;
-    delete p.reduce;
-    if (!p.out) 
-    {
-        p.out = p.command.collection || config.configuration.d.default.collection
-    }
+    var mapfn = p.mapfn;
+    var reducefn = p.reducefn;
+    delete p.mapfn;
+    delete p.reducefn;
 
     proxyprinttodiv('mapreduce p', p, 99,true, true);
 
@@ -20,7 +83,8 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     {
         // if p.queryresult then save the collection so mapreduceserver can get it
         // mapreduceserver also shoudl be able to process p.query
-        mapreduceserver(map, reduce, p, callback);
+        mapreduceserver(mapfn, reducefn, p, callback);
+		proxyprinttodiv('mapreduce going to server now', 'server',99);
     }
     else 
     {
@@ -33,12 +97,12 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
             {
                 proxyprinttodiv('mapreduce after query', res, 99,true, true);
                 p.queryresult = res.queryresult;
-                mapreducelocal(map, reduce, p, callback);
+                mapreducelocal(mapfn, reducefn, p, callback);
             })
         }
         else // if queryresult sent in
         {
-            mapreducelocal(map, reduce, p, callback);
+            mapreducelocal(mapfn, reducefn, p, callback);
         }
     }
 }
@@ -57,38 +121,65 @@ exports.emit = emit = function emit(k, v)
 
 
 
-function mapreducelocal(map, reduce, p, cb)
+function mapreducelocal(mapfn, reducefn, p, cb)
 {
-    proxyprinttodiv('mapreduce map', map, 99,true, true);
-    proxyprinttodiv('mapreduce reduce', reduce, 99,true, true);
-    proxyprinttodiv('mapreduce p', p, 99,true, true);
 
+    proxyprinttodiv('mapreduce mapfn', mapfn, 99,true, true);
+    proxyprinttodiv('mapreduce reducefn', reducefn, 99,true, true);
+    proxyprinttodiv('mapreduce p', p, 99,true, true);
+    if (!(mapfn instanceof Function)) {mapfn = window[mapfn]};
+    if (!(reducefn instanceof Function)) {reducefn = window[reducefn]};
     // mapper step
     globalresultobject = {};
 
+    // var filter_data = getcommand(p, 
+    //     {   // defaults
+    //     },
+    //     {
+    //         "sort":"",
+    //         "finalize":"",
+    //         "scope":"",
+    //         "limit":"",
+    //         "jsmode":"",
+    //         "verbose":"",
+    //         "query":"",
+    //         //"replace":"",
+    //         //"merge":"",
+    //         //"reduce":"",
+    //         //"db":"",
+    //         //"sharded":"",
+    //         //"nonatomic":"",
+    //         //"outputcollection",
+    //         "out":""
+    //     }
+    // },
+    // true);
+
+    // var thirdparm =filter_data.filteredobject;
+    // var xtra = filter_data.output;
+
+    // if (!thirdparm.out) 
+    // {
+    //     var action = xtra.replace || xtra.merge || xtra.reduce || "replace";
+    //     thirdparm.out={};
+    //     // *** warning whatever collection is listed below will be overritten ****
+    //     thirdparm.out[action]=xtra.outputcollection || config.configuration.d.defaultoutputcollection;
+    //     thirdparm.out.db = xtra.db || config.configuration.d.default.databasetable;
+    //     thirdparm.out.sharded = xtra.sharded || false;
+    //     thirdparm.out.nonAtomic = xtra.nonatomic || true;
+    // }
 
     for (var eachitem in p.queryresult) // example map: function () {emit(this.gender, 1);};
     {
-        // var parmarray = [];
-        // for (var eachprop in p.queryresult[eachitem])
-        // {
-        //     var temp={};
-        //     temp[eachprop] = p.queryresult[eachitem][eachprop];
-        //     parmarray.push(temp)
-        // }
         proxyprinttodiv('mapreduce p.queryresult[eachitem]', p.queryresult[eachitem], 99,true, true);
-        // window[map].apply(this, parmarray);
-        //window[map](p.queryresult[eachitem]);
-        // had to hard code for now
-        // window[map](p.queryresult[eachitem]);
-        window[map].apply(p.queryresult[eachitem]);
+        mapfn.apply(p.queryresult[eachitem]);
     } 
     proxyprinttodiv('mapreduce globalresultobject I', globalresultobject, 99,true, true);
 
     // reduce step
     for (var eachitem in globalresultobject) // example reduce: function(gender, count){return Array.sum(count);};
     {
-        globalresultobject[eachitem] = window[reduce](eachitem, globalresultobject[eachitem]);
+        globalresultobject[eachitem] = reducefn(eachitem, globalresultobject[eachitem]);
     }
     proxyprinttodiv('mapreduce globalresultobject II', globalresultobject, 99,true, true);
 
