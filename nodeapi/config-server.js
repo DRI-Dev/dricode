@@ -92,7 +92,7 @@ global.environment = "server";
 // the line below determines if all the prints are enabled or not
 //global.Debug = 'true';
 
-global.debuglevel = -1;
+global.debuglevel = 38;
 //global.debugon = false;
 //var consolere = require('console-remote-client').connect('console.re','80','dev-dri');
 //console.re.log('remote log test');
