@@ -113,14 +113,14 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-	proxyprinttodiv('mapfn = ',mapfn,99);
-	proxyprinttodiv('reducefn = ',reducefn,99);
-	proxyprinttodiv('window[mapfn] = ',window[mapfn],99);
-	proxyprinttodiv('window[reducefn] = ',window[reducefn],99);
 	proxyprinttodiv('mapreduceserver params = ',p,99);
 	
+    // convert string to fn
     if (!(mapfn instanceof Function)) {mapfn = window[mapfn]};
     if (!(reducefn instanceof Function)) {reducefn = window[reducefn]};
+
+    proxyprinttodiv('mapfn = ',mapfn,99);
+    proxyprinttodiv('reducefn = ',reducefn,99);
 
     var filter_data = getcommand(p, 
         {   // defaults
@@ -133,13 +133,6 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
             "jsmode":"",
             "verbose":"",
             "query":"",
-            //"replace":"",
-            //"merge":"",
-            //"reduce":"",
-            //"db":"",
-            //"sharded":"",
-            //"nonatomic":"",
-            //"outputcollection",
             "out":""
         },
     true);
@@ -151,10 +144,33 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
     
     if (!thirdparm.out) 
     {
-        var action = xtra.replace || xtra.merge || xtra.reduce || "replace";
+        //"replace":"",
+        //"merge":"",
+        //"reduce":"",
+        //"db":"",
+        //"sharded":"",
+        //"nonatomic":"",
         thirdparm.out={};
-        // *** warning whatever collection is listed below will be overritten ****
-        thirdparm.out[action]=xtra.outputcollection || config.configuration.d.defaultoutputcollection;
+        if (xtra.merge)
+        {
+                                              // *** warning whatever collection is listed below will be overritten ****
+            thirdparm.out.merge=xtra.merge || config.configuration.d.defaultoutputcollection;
+        }
+        else if (xtra.reduce)
+        {
+                                                // *** warning whatever collection is listed below will be overritten ****
+            thirdparm.out.reduce=xtra.reduce || config.configuration.d.defaultoutputcollection;
+        }
+        else if (xtra.replace)
+        {
+                                                  // *** warning whatever collection is listed below will be overritten ****
+            thirdparm.out.replace=xtra.replace || config.configuration.d.defaultoutputcollection;
+        }
+        else 
+        {
+            thirdparm.output.inline=1;
+        }
+
         thirdparm.out.db = xtra.db || config.configuration.d.default.databasetable;
         thirdparm.out.sharded = xtra.sharded || false;
         thirdparm.out.nonAtomic = xtra.nonatomic || true;
@@ -206,6 +222,16 @@ exports.mongodeletewid = mongodeletewid = function mongodeletewid(inobject, call
         } else { callback({errorname:"notfound"}, {}); }
     });
 };
+
+exports.serverdeletecollection = serverdeletecollection = function serverdeletecollection(inobject, callback)
+{
+    // deletes collection in command.collection etc
+}
+
+exports.serverupdatecollection = serverupdatecollection = function serverupdatecollection(datalist, command, cb)
+{
+    // update collection from datalist
+}
 
 // DAO method to add an entry to specified schema:: the entry to be added is also specified :: 
 // the callback function on succesful addition is also specified

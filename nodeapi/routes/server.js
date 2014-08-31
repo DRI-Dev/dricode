@@ -10,11 +10,15 @@ exports.postputgetrunExecutethis = function postputgetrunExecutethis(req, resp) 
 
 function runExecuteThis(parameters, resp) {
     proxyprinttodiv(" JSON runExecutethis", JSON.stringify(parameters), 99);
-    if (parameters.debuglevel) {
-    debuglevel = parameters.debuglevel;
-    delete parameters.debuglevel;
 
+    debuglevel = Number(getglobal('debuglevel')); // get currently stored debuglevel
+    if (parameters.debuglevel) 
+    {
+        debuglevel = parameters.debuglevel;
+        saveglobal("debuglevel", debuglevel); // make it stickly for next time
+        delete parameters.debuglevel;
     }
+
     if (debuglevel && debuglevel!==-1)
     {
         fs.writeFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', '');

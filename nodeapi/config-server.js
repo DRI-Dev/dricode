@@ -70,7 +70,7 @@ function config123() {
 
 // this is called from eventdeviceready after all files are loaded
 function setdefaultparm() {
-    saveglobal("debuglevel", 0);
+    saveglobal("debuglevel", -1);
     //saveglobal("Debug", 'false');
     //saveglobal("debugon", false);
     saveglobal("debugname", "");
@@ -86,13 +86,15 @@ function setdefaultparm() {
 
 // these are executed before other files load
 global.config = config = config123();
-config.setdefaultparm = setdefaultparm;
+//config.setdefaultparm = setdefaultparm;
+setdefaultparm();
 global.environment = "server";
 
 // the line below determines if all the prints are enabled or not
 //global.Debug = 'true';
 
-global.debuglevel = 38;
+global.debuglevel = -1;
+debuglevel = -1
 //global.debugon = false;
 //var consolere = require('console-remote-client').connect('console.re','80','dev-dri');
 //console.re.log('remote log test');

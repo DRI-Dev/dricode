@@ -972,18 +972,43 @@
 
 
 
+                                    // if (command.result)
+                                    //     {   // if the work has already been done then do not do it again
+                                    //         if (resultparameters.queryresult 
+                                    //             && Object.keys(resultparameters).length == 1)
+                                    //         {
+                                    //             resultparameters = resultparameters.queryresult;
+                                    //         }
+                                    //         var json = {};
+                                    //         json[command.result] = resultparameters;
+                                    //         resultparameters = json;
+                                    //     }
+
                                     if (command.result)
-                                        {   // if the work has already been done then do not do it again
-                                            if (resultparameters.queryresult 
-                                                && Object.keys(resultparameters).length == 1)
+                                    {   // if the work has already been done then do not do it again
+                                        if (resultparameters.queryresult 
+                                            && Object.keys(resultparameters).length == 1)
+                                        {
+                                            resultparameters = resultparameters.queryresult;
+                                        }
+                                        // special case for mapreduce inline results
+                                        if (resultparameters.results)
+                                        {
+                                            if (command.result!=="results")
                                             {
-                                                resultparameters = resultparameters.queryresult;
+                                                var json = resultparameters.results;
+                                                delete resultparameters.results;
+                                                resultparameters[command.result]=json;
                                             }
+                                        }
+                                        else // normal case
+                                        {
                                             var json = {};
                                             json[command.result] = resultparameters;
                                             resultparameters = json;
                                         }
-
+                                    }
+                                        
                                     if (command.convertmethod === "todot")
                                     {
                                         resultparameters = ConvertToDOTdri(resultparameters);

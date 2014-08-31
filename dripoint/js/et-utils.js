@@ -137,7 +137,9 @@
             var err;
             var incopy = {};
             extend(true, incopy, inobject);
-            var command = incopy.command || config.configuration.d.default;  // should always get command
+            var command = incopy.command;
+            //extend(true, {}, config.configuration.d.default, incopy.command)
+            //var command = incopy.command || config.configuration.d.default;  // should always get command
             if (!command.keycollection) {
                 command.keycollection = command.collection +  "key";
             }
@@ -788,6 +790,38 @@
             callback({"errorname":"nowid", "errorfn":"deletewid"}, {});
         }
     };
+
+
+    function localdeletecollection(inobject, callback) 
+    {
+        if (command.datastore === "localstorage")
+        {
+            localStorage.removeItem(command.databasetable + command.keycollection);
+            localStorage.removeItem(command.databasetable + command.collection);
+        }
+        else (command.datastore === "localstore")
+        {
+            localstore.remove(command.databasetable + command.keycollection);
+            localstore.remove(command.databasetable + command.collection);
+        }
+        callback(null, null)
+    }
+
+
+    exports.deletecollection = deletecollection = deletecollection= function deletecollection(p, cb)
+    {
+        var command = {};
+        extend(true, command, config.configuration.d.default, p.command)
+        var datalist = p.queryresult || p.results;
+        if (config.configuration.environment==="local")
+        {
+            localdeletecollection(command,cb);
+        }
+        else // if server
+        {
+            serverdeletecollection(command,cb);
+        }
+    }
 
 
     exports.convertfromdriformatenhanced = convertfromdriformatenhanced = function convertfromdriformatenhanced(obj, command, originalarguments) {
