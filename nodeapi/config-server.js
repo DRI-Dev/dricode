@@ -87,7 +87,7 @@ function setdefaultparm() {
 // these are executed before other files load
 global.config = config = config123();
 //config.setdefaultparm = setdefaultparm;
-setdefaultparm();
+//setdefaultparm();
 global.environment = "server";
 
 // the line below determines if all the prints are enabled or not
