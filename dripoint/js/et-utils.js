@@ -4648,7 +4648,7 @@
                         proxyprinttodiv("getwid / lock callback - execobj_get1", execobj_get1, 99);
                         proxyprinttodiv("getwid / lock callback - res", res, 99);
 
-                        var contained_object = res.container[0];
+                        var contained_object = res.container; // res.container[0];
                         contained_object.executethis=contained_object.addthis.executethis;
                         delete contained_object.addthis.executethis;
 
