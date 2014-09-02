@@ -1,3 +1,5 @@
+var widtests = widtests || {};
+
 /*
 function run_cat1_tests(params, callback)
 {

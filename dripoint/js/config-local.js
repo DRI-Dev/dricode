@@ -7,23 +7,17 @@ if (!exports) {
 if (!config) { 
     var config = {};
 }
-
-if (!Debug) { // printdiv
-    var Debug = 'false';
-}
 if (!debuglevel) { // printdiv
-    var debuglevel = 0;
+    var debuglevel = 0; // local side printdivs are enabled
 }
-if (!debugon) { // debugfn
-    var debugon = false;
-}
+
 
 
 function config123() {
     var configuration = {};   
     // what environment and what defaults should be used
     configuration.environment = 'local';
-    configuration.syncrule = 'sync_local';
+    configuration.syncrule = 'sync_local_server';
     configuration.machinename = 'browser'; //'phonegap';
     configuration.startwid = 'startwid';
     configuration.collection = 'dricollection';
@@ -49,6 +43,7 @@ function config123() {
     configuration.d.var = {};
     configuration.d.platform = configuration.environment;
     configuration.d.syncrule = configuration.syncrule;
+    configuration.d.defaultoutputcollection = "defaultoutputcollection";
 
     configuration.d.run = {};
     configuration.d.run.executelevel=0;
@@ -74,9 +69,8 @@ function config123() {
 
 function setdefaultparm() {
 
-    saveglobal("debuglevel", 0);
-    saveglobal("Debug", 'false');
-    saveglobal("debugon", false);
+    //saveglobal("debuglevel", 0);
+
     saveglobal("debugname", "");
     saveglobal("debugsubcat", "");
     saveglobal("debugcat", "");
@@ -87,8 +81,8 @@ function setdefaultparm() {
     saveglobal("debuglinenum", 0);
 
     exports.environment = "local";
-    exports.Debug = Debug;
-    exports.debuglevel = 0 || debuglevel;
+    //exports.Debug = Debug;
+    //exports.debuglevel = 0 || debuglevel;
 
 }
 

@@ -21,10 +21,10 @@ function tftest_allexecute(executeobject, callback)
     })
 	console.log('end tftest_allexecute');
 };
-widtests.ettest_allexecute.category = "redaily";
-widtests.ettest_allexecute.subcategory = "push";
-widtests.ettest_allexecute.js = ettest_allexecute;
-widtests.ettest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing execute.";
+widtests.tftest_allexecute.category = "redaily";
+widtests.tftest_allexecute.subcategory = "push";
+widtests.tftest_allexecute.js = tftest_allexecute;
+widtests.tftest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing execute.";
 
 
 //*********************************************
@@ -2788,7 +2788,7 @@ widtests.etd19.description = "this does a test";
 
 
 function testDeepFilterTests(command, callback) {
-    debuglevel = 0;
+    //debuglevel = 0;
     async.series([
         function(cb1) {
             var dtoObjOpt = {
@@ -2894,9 +2894,9 @@ function testDeepFilterTests(command, callback) {
                               };    
                   */
             deepfilter(inputObj, dtoObjOpt, command, function(err, res) {
-                proxyprinttodiv("after etd16 deepfilter in", inputObj, 17);
-                proxyprinttodiv("after etd16 deepfilter dto", dtoObjOpt, 17);
-                proxyprinttodiv("after etd16 deepfilter res", res, 17);
+                proxyprinttodiv("after etd16 deepfilter in", inputObj, 17, true, true);
+                proxyprinttodiv("after etd16 deepfilter dto", dtoObjOpt, 17, true, true);
+                proxyprinttodiv("after etd16 deepfilter res", res, 17, true, true);
                 cb1(err, res);
             });
         }

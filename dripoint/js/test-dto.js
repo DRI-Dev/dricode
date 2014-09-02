@@ -7437,7 +7437,7 @@ widtests.ettestag2.description = "this does a test";
 // failing due to a command object being sent back
 //exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
 exports.ettestag3 = widtests.ettestag3 = ettestag3 = function ettestag3(params, callback) {
-	//debuglevel = 28;
+	//debuglevel = 38;
 
 	var expectedresult = {
                 "title": "Highway to Hell",
@@ -7534,13 +7534,13 @@ exports.ettestag3 = widtests.ettestag3 = ettestag3 = function ettestag3(params, 
             proxyprinttodiv('Function ag3 actual result ', res, 99, true);
             proxyprinttodiv('Function ag3 expected result ', expectedresult, 99, true);
             res = logverify("ettestag3_result", res, expectedresult);
-            // debuglevel=111;
-            // proxyprinttodiv('Function ag3 starting song1 ', expectedresult, 99, true);
-            // execute({"executethis": "getwidmaster", "wid": "song1"}, function (err, res1) {
-            //     proxyprinttodiv("Ag3  result last of song1 ", res1, 99,true);
+            //debuglevel=38;
+            //proxyprinttodiv('Function ag3 starting song1 ', expectedresult, 99, true);
+            //execute({"executethis": "getwidmaster", "wid": "song1"}, function (err, res1) {
+                //proxyprinttodiv("Ag3  result last of song1 ", res1, 99,true);
                 callback(null, res)
-            })
-        //});
+            //})
+        });
     };
 
 widtests.ettestag3.category = "redaily";
@@ -7650,7 +7650,6 @@ widtests.ettestag2s.description = "this does a test";
 
 // This is a 2 level test of the dtos...instantiate song1 with a songdto, and some sounddto values
 // failing due to a command object being sent back
-//exports.ettestag3 = ettestag3 = function ettestag3(params, callback) {
 exports.ettestag3s = widtests.ettestag3s = ettestag3s = function ettestag3s(params, callback) {
 
     var executeobject = {
@@ -10607,3 +10606,188 @@ widtests.ettss2.category = "redaily";
 widtests.ettss2.subcategory = "adhoc";
 widtests.ettss2.js = exports.ettss2;
 widtests.ettss2.description = "this does a test";
+
+
+
+
+
+
+
+// uses addwidmaster
+exports.simpledeepfiltertest0 = widtests.simpledeepfiltertest0 = simpledeepfiltertest0 = function simpledeepfiltertest0(executeobject, callback) {
+    
+      if (!executeobject.command) {
+          executeobject.command={};
+          executeobject.command.environment={};
+          executeobject.command.environment.run={};
+      } 
+    executeobject.command.xrun = [{
+        "executethis": "addwidmaster",
+        "metadata.method": "authordto",
+        "wid": "authordto",
+        "name": "string",
+        "age": "string",
+        "b1": "boolean",
+        "s1": "string",
+        "n1": "number"
+    }
+    , 
+    {
+        "executethis": "addwidmaster",
+        "metadata.method": "authordto",
+        "wid": "elizabeth_heart",
+        "name": "Elizabeth Heart",
+        "age": "50",
+        "b1": "false",
+        "s1": "hello",
+        "n1": "30"
+    }
+    , {
+    "executethis": "getwidmaster",
+    "wid": "elizabeth_heart",
+    "command.deepfilter.convert":true,
+    "command.deepfilter.totype":true
+    }
+    ];
+    
+    var expectedresult = {
+
+                        };
+    
+    var etEnvironment = new DriEnvironment(executeobject.command.environment);
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {                       
+            proxyprinttodiv('result', result_obj, 99, true, true);
+            var result = logverify('simpledeepfiltertest0_result', result_obj, expectedresult);
+            callback(null, result);
+      });
+}
+widtests.simpledeepfiltertest0.category = "redaily";
+widtests.simpledeepfiltertest0.subcategory = "push";
+widtests.simpledeepfiltertest0.js = exports.simpledeepfiltertest0;
+widtests.simpledeepfiltertest0.description = "this does a test";
+
+
+
+// uses addwidmaster
+exports.simpledeepfiltertest1 = widtests.simpledeepfiltertest1 = simpledeepfiltertest1 = function simpledeepfiltertest1(executeobject, callback) {
+    //debuglevel=-1;
+      if (!executeobject.command) {
+          executeobject.command={};
+          executeobject.command.environment={};
+          executeobject.command.environment.run={};
+      } 
+    executeobject.command.xrun = [{
+        "executethis": "addwidmaster",
+        "metadata.method": "authordto",
+        "wid": "authordto",
+        "name": "string",
+        "age": "string",
+        "b1": "boolean",
+        "s1": "string",
+        "n1": "number",
+        "i1": "integer",
+        "d1": "date",
+        "sg1": "shortguid",
+        "g1": "guid",
+        //"h1": "hash",
+        "p1": "phone",
+        "r1": "random4",
+    }, {
+        "executethis": "addwidmaster",
+        "metadata.method": "authordto",
+        "wid": "wid_entered_as_strings",
+        "name": "Elizabeth Heart",
+        "age": "50",
+        "b1": "false",
+        "s1": "hello",
+        "n1": "30",
+        "i1": "40",
+        "d1": "2/27/2014",
+        "sg1":"",
+        "g1":"",
+        //"h1": "ff00ff",
+        "p1": "19998887777",
+        "r1": ""
+    }, {
+        "executethis": "addwidmaster",
+        "metadata.method": "authordto",
+        "wid": "wid_entered_as_data",
+        "name": "Elizabeth Heart",
+        "age": "50",
+        "b1": false,
+        "s1": "hello",
+        "n1": 30,
+        "i1": 40,
+        "d1": "2014-02-27T18:30:00.000Z",
+        "sg1": null,
+        "g1": null,
+    //"h1": "ff00ff",
+        "p1": 19998887777,
+        "r1": null
+    }, {
+        "executethis": "addwidmaster",
+        "metadata.method": "authordto",
+        "wid": "wid_entered_as_blanks",
+        "name": "Elizabeth Heart",
+        "age": "50",
+        "b1": "",
+        "s1": "",
+        "n1": "",
+        "i1": "",
+        "d1": "",
+        "sg1":"",
+        "g1":"",
+        //"h1": "ff00ff",
+        "p1": "",
+        "r1": ""
+    }, {
+        "executethis": "addwidmaster",
+        "metadata.method": "authordto",
+        "wid": "wid_entered_as_x",
+        "name": "Elizabeth Heart",
+        "age": "50",
+        "b1": "x",
+        "s1": "x",
+        "n1": "x",
+        "i1": "x",
+        "d1": "x",
+        "sg1":"x",
+        "g1":"x",
+        //"h1": "ff00ff",
+        "p1": "x",
+        "r1": "x"
+    }, {
+    "executethis": "getwidmaster",
+    "wid": "wid_entered_as_strings"
+    }, {
+    "executethis": "getwidmaster",
+    "wid": "wid_entered_as_data"
+    }, {
+    "executethis": "getwidmaster",
+    "wid": "wid_entered_as_blanks"
+    }, {
+    "executethis": "getwidmaster",
+    "wid": "wid_entered_as_x"
+    }
+    ];
+    
+    var expectedresult = {
+
+                        };
+    
+    var etEnvironment = new DriEnvironment(executeobject.command.environment);
+      etEnvironment.execute(executeobject, function (error_obj, result_obj) 
+      {                       
+            proxyprinttodiv('result', result_obj, 99, true, true);
+            var result = logverify('simpledeepfiltertest1_result', result_obj, expectedresult);
+            callback(null, result);
+      });
+}
+widtests.simpledeepfiltertest1.category = "redaily";
+widtests.simpledeepfiltertest1.subcategory = "push";
+widtests.simpledeepfiltertest1.js = exports.simpledeepfiltertest1;
+widtests.simpledeepfiltertest1.description = "this does a test";
+
+
+

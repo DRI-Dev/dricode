@@ -73,22 +73,22 @@ exports.mquery = mquery = function mquery(objToFind, projection, command, callba
     var skipval = command.skip || pagenumber > 0 ? (pagenumber-1)*perpage : 0;
     var limitval = command.limit || perpage || 0;  // 0 is all
     var sortobj = command.sort || {};
-//    var count = command.count || false;
+    var count = command.count || false;
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
-//        if (count)
-//        {
-//             db.collection(schemaToLookup).count(objToFind) {
-//                 if (err) {
-//                     callback({"errorname":"queryerror"}, []);
-//                 } else {
-//                     if (res) { callback(err, res); }
-//                     else { callback({"errorname":"queryerror"}, []); }
-//                 }
-//             });
-//        }
-//        else // if real query
-//        {
+        if (count)
+        {
+             db.collection(schemaToLookup).count(objToFind, function (err, count) {
+                 if (err) {
+                     callback({"errorname":"query_count_error"}, []);
+                 } else {
+                     if (count) { callback(err, {count: count}); }
+                     else { callback({"errorname":"queryerror"}, []); }
+                 }
+             });
+        }
+        else // if real query
+        {
              db.collection(schemaToLookup).
                  find(objToFind, projection).
                  sort(sortobj).
@@ -102,25 +102,82 @@ exports.mquery = mquery = function mquery(objToFind, projection, command, callba
                      else { callback({"errorname":"no_query_result"}, []); }
                  }
              });
-//        }
+        }
     });
 };
 
-exports.mapreduceserver = mapreduceserver = function mapreduceserver(map, reduce, p, callback) {
+exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, reducefn, p, callback) {
     var command = p.command;
     console.log("\nPROJECTION in mongo.js mapreduceserver: " + JSON.stringify(p));
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-    var mapfn = window[map];
-    var reducefn = window[reduce];
-    var thirdparm = {};
-    thirdparm.out = p.out; 
+	proxyprinttodiv('mapreduceserver params = ',p,99);
+	
+    // convert string to fn
+    if (!(mapfn instanceof Function) && window[mapfn]) {mapfn = window[mapfn]};
+    if (!(reducefn instanceof Function) && window[reducefn]) {reducefn = window[reducefn]};
+
+    proxyprinttodiv('mapfn = ',mapfn,99);
+    proxyprinttodiv('reducefn = ',reducefn,99);
+
+    var filter_data = getcommand(p, 
+        {   // defaults
+        },
+        {
+            "sort":"",
+            "finalize":"",
+            "scope":"",
+            "limit":"",
+            "jsmode":"",
+            "verbose":"",
+            "query":"",
+            "out":""
+        },
+    true);
+
+    var thirdparm = filter_data.filteredobject;
+    var xtra = filter_data.output;
+
+    // if output = queryresult then inline
+    
+    if (!thirdparm.out) 
+    {
+        //"replace":"",
+        //"merge":"",
+        //"reduce":"",
+        //"db":"",
+        //"sharded":"",
+        //"nonatomic":"",
+        thirdparm.out={};
+        if (xtra.merge)
+        {
+                                              // *** warning whatever collection is listed below will be overritten ****
+            thirdparm.out.merge=xtra.merge || config.configuration.d.defaultoutputcollection;
+        }
+        else if (xtra.reduce)
+        {
+                                                // *** warning whatever collection is listed below will be overritten ****
+            thirdparm.out.reduce=xtra.reduce || config.configuration.d.defaultoutputcollection;
+        }
+        else if (xtra.replace)
+        {
+                                                  // *** warning whatever collection is listed below will be overritten ****
+            thirdparm.out.replace=xtra.replace || config.configuration.d.defaultoutputcollection;
+        }
+        else 
+        {
+            thirdparm.output.inline=1;
+        }
+
+        thirdparm.out.db = xtra.db || config.configuration.d.default.databasetable;
+        thirdparm.out.sharded = xtra.sharded || false;
+        thirdparm.out.nonAtomic = xtra.nonatomic || true;
+    }
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
-        db.collection(schemaToLookup).mapReduce(mapfn, reducefn, thirdparm).toArray(function(err, res) {
-
+        db.collection(schemaToLookup).mapReduce(mapfn, reducefn, thirdparm, function(err, res) {
             if (err) {
                 callback(err, {
                     etstatus: {
@@ -165,6 +222,16 @@ exports.mongodeletewid = mongodeletewid = function mongodeletewid(inobject, call
         } else { callback({errorname:"notfound"}, {}); }
     });
 };
+
+exports.serverdeletecollection = serverdeletecollection = function serverdeletecollection(inobject, callback)
+{
+    // deletes collection in command.collection etc
+}
+
+exports.serverupdatecollection = serverupdatecollection = function serverupdatecollection(datalist, command, cb)
+{
+    // update collection from datalist
+}
 
 // DAO method to add an entry to specified schema:: the entry to be added is also specified :: 
 // the callback function on succesful addition is also specified

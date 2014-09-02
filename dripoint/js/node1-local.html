@@ -164,9 +164,10 @@ copyright (c) 2014 DRI
             <div class="col-md-12">
                 <span class="label label-default well_hider">Debug</span>
                 <div class="well" style='display: none;'>
-
+<!--
                     <label>Debug?</label>
-                    <input type='checkbox' id='debugon'>
+                    <input type='checkbox' id='debugon'> 
+                -->
                     <label>Destination: Print?</label>
                     <input type='checkbox' id='dest_print' checked>
                     <label>Google?</label>
@@ -284,20 +285,20 @@ $('#runAllTests').click(function() {
     RerunPassingTests();
 });
 
-$('#debugon').change(function() {
-    //alert('The checkbox changed');
-    if ($('#debugon').is(':checked')) {
-        //alert('true');
-        Debug = 'true';
-    } else {
-        //alert('false');
-        Debug = 'false';
-    }
-})
+// $('#debugon').change(function() {
+//     //alert('The checkbox changed');
+//     if ($('#debugon').is(':checked')) {
+//         //alert('true');
+//         Debug = 'true';
+//     } else {
+//         //alert('false');
+//         Debug = 'false';
+//     }
+// })
 
-$("#dbug_level").change(function () {
-    $("#debugon").prop('checked', true);
-});
+// $("#dbug_level").change(function () {
+//     $("#debugon").prop('checked', true);
+// });
 
 $("#domain_switch").click(function() {
     var here = document.URL;
@@ -315,7 +316,7 @@ $("#domain_switch").click(function() {
 $(document).ready(function() {
     // page loaded, on ready  >>     function etappstarted()
 
-    Debug = 'false';
+    //Debug = 'false';
     //bootprocess();
 
     $('#function_to_run').val(sessionStorage.getItem("function"));

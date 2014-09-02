@@ -18,13 +18,51 @@
 //
 // line 461 for test htest17
 
+
+// wid1
+// a:b
+// c:d
+// htmltemplate: "abc [[wid2]] def [wid3]] ghi"
+// e: {g:h, i:j}
+// command.htmlremap.wid2 = {a:x, e:y}
+// command.htmlremap.wid3 = {a:y, e:x}
+// command.htmlremap.e = {a:p, e:q}
+//
+// when we run this wid2 will get parms {x:b y:c}
+// 					wid3 will get parms {y:b x:c}
+//					e    will get parms {p:b q:c}
+
+
+function reducemethod1(key, count) { 
+    return Array.sum(count); 
+}
+
+function mapmethod1() { 
+    emit(this.metadata.method, 1); 
+}
+
+function querymapmethod1()
+{
+	var executeobj = {
+					"executethis":"mapreduce",
+					"map": "mapmethod1",
+					"reduce": "reducemethod1",
+					"out": "queryresult",
+					"query": { "wid": {"$exists": "true"}}
+					};	
+	execute(executeobj, function (err, res){
+
+	})
+}
+
+
 function parameterremap(p)
 {
 	// this call remaps parameter names and filters
 	// {a:b c:d e:f command.remap={a:x e:y}} will return {x:b, y:f}
 	if (!p.command) {p.command={}};
 	var remap = p.command.remap;
-	delete p.remap;
+	//delete p.remap;
 	var newobj = {};
 	for (var eachproperty in remap)
 	{
@@ -39,11 +77,11 @@ function cleanoriginalparm(originalparam, queryresult)
 {
 	proxyprinttodiv("createhtml BEGIN originalparam", originalparam, 100, true, true);
     if (!originalparam.command) {originalparam.command = {};}
-	originalparam.command.htmlshallow = originalparam.command.htmlshallow || false;
+	originalparam.command.htmlshallow = originalparam.command.htmlshallow || originalparam.htmlshallow || false;
 
 	if (originalparam.command.htmlshallow)
-		{
-		originalparam.command.html =    		   originalparam.command.html
+	{
+		originalparam.command.html =    		originalparam.command.html
 												//|| originalparam.html;
 		if (!originalparam.command.html)  		   {originalparam.command.html = "";}
 
@@ -52,12 +90,18 @@ function cleanoriginalparm(originalparam, queryresult)
 								                || originalparam.command.html 
 								                //|| originalparam.html
 								                || "[[html]]";
-		originalparam.command.htmlpreamble =       originalparam.command.htmlpreamble
+		originalparam.command.htmlpreamble =    originalparam.command.htmlpreamble
 												//|| originalparam.htmlpreamble
 												|| "";
 		originalparam.command.htmlsharedtemplate = originalparam.command.htmlsharedtemplate
 												//|| originalparam.htmlsharedtemplate
-												|| false;	
+												|| false;
+		originalparam.command.htmloutertemplate = originalparam.command.htmloutertemplate
+												//|| originalparam.htmloutertemplate
+												|| "";	
+		originalparam.command.htmlremap = originalparam.command.htmlremap
+												//|| originalparam.htmlremap
+												|| {};	
 	}
 	else 
 	{
@@ -75,14 +119,22 @@ function cleanoriginalparm(originalparam, queryresult)
 												|| "";
 		originalparam.command.htmlsharedtemplate = originalparam.command.htmlsharedtemplate
 												|| originalparam.htmlsharedtemplate
-												|| false;				
+												|| false;	
+		originalparam.command.htmloutertemplate = originalparam.command.htmloutertemplate
+												|| originalparam.htmloutertemplate
+												|| "";	
+		originalparam.command.htmlremap = 		   originalparam.command.htmlremap
+												|| originalparam.htmlremap
+												|| {};				
 	}
 
+	// dont think these are needed
 	delete originalparam.command.wid;
 	delete originalparam.html;
 	delete originalparam.htmlshallow;
-	delete originalparam.htmlpreamble;				// can be taken out with others
+	delete originalparam.htmlpreamble;				
 	delete originalparam.htmlsharedtemplate;
+
 	proxyprinttodiv("createhtml END originalparam", originalparam, 100, true, true);
 }
 
@@ -125,7 +177,7 @@ exports.createhtml = createhtml = function createhtml(param, callback)
         			{
         				currentdata.wid = originalparam.command.wid || originalparam["command.wid"];
         				//proxyprinttodiv("createhtml step1 currentdata wid", currentdata.wid, 100, true, true);
-                        extend(true, originalparam, res); // merge res with originalparam
+                        originalparam = extend(true, {}, res, originalparam); // merge res with originalparam
             			cb1(null, null);	
         			}
         		})
@@ -168,11 +220,20 @@ exports.createhtml = createhtml = function createhtml(param, callback)
 			}
 			else 
 			{
-				var commondata = {};
-	    		extend(true, commondata, originalparam);
-	    		delete commondata.htmltemplate;
-	    		delete commondata.html;
-	    		delete commondata.command;
+				
+				// no commondata
+
+				// var commondata = {};
+	   //  		extend(true, commondata, originalparam);
+	   //  		delete commondata.htmltemplate;
+	   //  		delete commondata.html;
+	   //  		delete commondata.command;
+	   //  		commondata.command={};
+	   //  		commondata.command.htmloutertemplate=originalparam.command.htmloutertemplate;
+	   			var parmcopy = {};
+	   			//parmcopy.command={};
+	   			extend(true, parmcopy, originalparam);
+
 	    		var listofproperties = [];
 	    		for (var eachproperty in originalparam) // make a list of properties
 	    		{
@@ -193,12 +254,26 @@ exports.createhtml = createhtml = function createhtml(param, callback)
 	    				eachrow.template = "[[html]]";
 	    				eachrow.executelist = [];
 	    				var eachexecute = {};
-	    					eachexecute.result = "html";
-	    					eachexecute.executeobject = {};
-	    					extend(true, eachexecute.executeobject, originalparam[eachproperty]);
+    					eachexecute.result = "html";
+    					eachexecute.executeobject = {};
+						// see what extra parameters should be sent as we get each bracket
+						if (originalparam.command.htmlremap && originalparam.command.htmlremap[eachproperty] 
+							&& Object.keys(originalparam.command.htmlremap[eachproperty]).length > 0)
+						{
+							parmcopy.command.remap=originalparam.command.htmlremap[eachproperty];
+							eachexecute.executeobject=parameterremap(parmcopy);
+							// for (var eachremap in originalparam.command.htmlremap[eachproperty])
+							// {
+							// 	// add remapped parameter to the common data
+							// 	var keyinparent = eachremap;
+							// 	var keyinchild = originalparam.command.htmlremap[eachbracket][eachremap];
+							// 	eachexecute.executeobject[keyinchild] = originalparam[keyinparent];
+							// }
+						}
+    					//extend(true, eachexecute.executeobject, originalparam[eachproperty]);
 	    				eachrow.executelist.push(eachexecute);
 						listofproperties.push(eachrow);
-						delete commondata[eachproperty];
+						//delete commondata[eachproperty];
                 	}
                 	if (isString(originalparam[eachproperty]) 
                 		)
@@ -225,8 +300,26 @@ exports.createhtml = createhtml = function createhtml(param, callback)
 			    			else
 			    			{
 			    				var bracket = {};
+
 			    				bracket.executeobject={};
-			    				bracket.executeobject["command.wid"]=bracketlist[eachbracket]; // put in execute format
+			    				bracket.executeobject.command={};
+			    				bracket.executeobject.command.wid=bracketlist[eachbracket]; // put in execute format
+
+								// see what extra parameters should be sent as we get each bracket
+								if (originalparam.command.htmlremap && originalparam.command.htmlremap[eachbracket] 
+									&& Object.keys(originalparam.command.htmlremap[eachbracket]).length > 0)
+								{
+									parmcopy.command.remap=originalparam.command.htmlremap[eachproperty];
+									bracket.executeobject=parameterremap(parmcopy);
+									// for (var eachremap in originalparam.command.htmlremap[eachbracket])
+									// {
+									// 	// add remapped parameter to the common data
+									// 	var keyinparent = eachremap;
+									// 	var keyinchild = originalparam.command.htmlremap[eachbracket][eachremap];
+									// 	bracket.executeobject[keyinchild] = originalparam[keyinparent];
+									// }
+								}
+
 			    				bracket.result=bracketlist[eachbracket]
 			    				listtodo.push(bracket);
 		    				}
@@ -239,12 +332,12 @@ exports.createhtml = createhtml = function createhtml(param, callback)
 		    				eachrow.executelist = [];
 		    				eachrow.executelist = listtodo;
 							listofproperties.push(eachrow);
-							delete commondata[eachproperty];
+							//delete commondata[eachproperty];
 			    		}
 			    	}
 				}
 
-				proxyprinttodiv("step2 commondata before  ***", commondata, 100, true, true);
+				//proxyprinttodiv("step2 commondata before  ***", commondata, 100, true, true);
 
 				proxyprinttodiv("step2 listofproperties", listofproperties, 100, true);
 				proxyprinttodiv("step2 BEFORE asynch originalparam ", originalparam, 100, true);
@@ -267,7 +360,7 @@ exports.createhtml = createhtml = function createhtml(param, callback)
 			                	proxyprinttodiv("step2 middle of Asynch originalparam ", originalparam, 100, true);
 			                	var executeobject = eachexecute.executeobject;
 			                	var eachresult = eachexecute.result;
-			                	extend(true, executeobject, commondata);
+			                	//extend(true, executeobject, commondata);
 								proxyprinttodiv("step2 about to recurse eachexecute", eachexecute, 100, true);
 					        	var color = Number(getglobal('debugcolor')); if (!color || color >= 15) { color = 0; } color++; saveglobal('debugcolor', color);
 					        	var indent  = Number(getglobal('debugindent')); indent++; saveglobal('debugindent', indent);
@@ -281,14 +374,16 @@ exports.createhtml = createhtml = function createhtml(param, callback)
 			                		{     
 			                			// only save resolved value
 			                			// ** add error checking
-			                			htmldata[eachresult] = res.command.html;
+			                			
 			                			if (property==="htmltemplate" || property==="html")
 											{
 												var tempobj = {};	
 												tempobj = res;																									
 												currentdata.queryresult.push(tempobj);
 							            		currentdata.widlist.push(res.wid);
+							            		res.command.html = res.command.html + String.fromCharCode(10);
 							            	}
+							            htmldata[eachresult] = res.command.html;
 			                			cbMap(null);
 			                		}
 			                		else // if no result then go to next one
@@ -309,6 +404,8 @@ exports.createhtml = createhtml = function createhtml(param, callback)
 		        				proxyprinttodiv("createhtml before merge step2 template ", template, 100, true);
 								originalparam[property] = merge(htmldata, template, "[[", "]]");
 								proxyprinttodiv("createhtml step2 htmldata loop ", originalparam, 100, true);
+
+
 								if (   property === "htmltemplate" 
 									|| property === "html" 
 									|| property === "htmlsharedtemplate"
@@ -336,6 +433,15 @@ exports.createhtml = createhtml = function createhtml(param, callback)
     	// produce originalparam w defaults/w enhanced html via minus queryresult
 		function step3(cb3) 
 		{ 
+
+			if ((!originalparam.command.htmlshallow) 
+		    	&& (originalparam.command.htmloutertemplate))
+			{
+				var temp = {};
+				extend(true, temp, originalparam);
+				temp.html = originalparam.command.htmltemplate;
+				originalparam.command.htmltemplate = merge(temp, originalparam.command.htmloutertemplate, "[[", "]]");
+			} 
 			// load up more from step2?
 			var usedparentflag=false;
 			proxyprinttodiv("step3 command.htmltemplate", originalparam.command.htmltemplate, 100, true);
@@ -422,7 +528,11 @@ exports.createhtml = createhtml = function createhtml(param, callback)
 							{
 								currentdata.command.html = merge(temp, originalparam.command.htmltemplate, "[[", "]]");
 							}
-						}				
+						}	
+						// if ((!originalparam.command.htmlshallow) && (originalparam.command.htmloutertemplate)) 
+						// {
+						// 	currentdata.command.html = merge(currentdata, originalparam.command.htmloutertemplate, "[[", "]]");
+						// } 			
 						proxyprinttodiv("createhtml with child currentdata", currentdata, 100, true); 
 						//proxyprinttodiv("createhtml step3 html after in call back", originalparam.html, 100, true); 
 						cb3(null, null)
@@ -439,7 +549,10 @@ exports.createhtml = createhtml = function createhtml(param, callback)
 				extend(true, temp, originalparam, originalparam.command);
 
 				currentdata.command.html = merge(temp, originalparam.command.htmltemplate, "[[", "]]");
-
+				// if ((!originalparam.command.htmlshallow) && (originalparam.command.htmloutertemplate)) 
+				// {
+				// 	currentdata.command.html = merge(currentdata, originalparam.command.htmloutertemplate, "[[", "]]");
+				// } 
 				proxyprinttodiv("createhtml NO CHILD currentdata", currentdata, 100, true);  
 				cb3(null, null);
 			}
@@ -450,7 +563,7 @@ exports.createhtml = createhtml = function createhtml(param, callback)
         {
         	// only internally render it if not shallow
 	        if (!originalparam.command.htmlshallow) 
-	        {
+	        {	
 	        	proxyprinttodiv("createhtml step4currentdata", currentdata, 100, true);
 	        	if (exports.environment === 'local') // we need to clear dom each time
 	        	{
@@ -478,12 +591,17 @@ exports.createhtml = createhtml = function createhtml(param, callback)
     	}
     ], function (err, results) 
     {	
-       	
+    
         delete originalparam.command;
         delete originalparam.htmlparent;
         proxyprinttodiv("createhtml END originalparam", originalparam, 100, true, true);
         currentdata = extend(true, {}, originalparam, currentdata);
         currentdata.originalobject=escape(JSON.stringify(currentdata));
+
+        currentdata.htmlwidname = currentdata.widname || currentdata.wid+'name'+'               ';
+        currentdata.htmlwidname = currentdata.htmlwidname.substr(0, 15);
+
+        currentdata.htmlwiddescription = currentdata.widdescription || currentdata.htmlwidname+' no description';
 
  		proxyprinttodiv("createhtml END currentdata", currentdata, 100, true, true);
 		callback(err, currentdata);
@@ -638,15 +756,17 @@ function findbrackets(str)
 	}
 }
 
-
 // sample data
-function loaddefaults(p, c){
+exports.loaddefaults = loaddefaults  = function loaddefaults(p, c){
     proxyprinttodiv('config', config, 100, true, true);
-    debuglevel = -1;
+    //debuglevel = -1;
     execute({
         "command.xrun": [{
             "executethis": "addwidmaster",
-                    "wid": "nest_300",
+            "wid": "nest_300",
+            "widname": "nest_300test",
+            "widdescription": "nest_300 test description",
+            "id": "nest_300",
             "target_prop": "target_value",
             // "metadata.method": "test_method",
             "metadata.namespace.category": "test_category_1",
@@ -665,6 +785,9 @@ function loaddefaults(p, c){
         }, {
             "executethis": "addwidmaster",
             "wid": "nest_200",
+            "widname": "nest_200test",
+            "widdescription": "nest_200 test description",
+            "id": "nest_200",
             "target_prop": "target_value",
             // "metadata.method": "test_method",
             "metadata.namespace.category": "test_category_1",
@@ -683,6 +806,9 @@ function loaddefaults(p, c){
         }, {
             "executethis": "addwidmaster",
             "wid": "nest_100",
+            "widname": "nest_100test",
+            "widdescription": "nest_100 test description",
+            "id": "nest_100",
             "target_prop": "target_value",
             // "metadata.method": "test_method",
             "metadata.namespace.category": "test_category_1",
@@ -701,6 +827,9 @@ function loaddefaults(p, c){
         },{
             "executethis": "addwidmaster",
             "wid": "nest_500",
+            "widname": "nest_500test",
+            "widdescription": "nest_500 test description",
+            "id": "nest_500",
             "target_prop": "target_value",
             // "metadata.method": "test_method",
             "metadata.namespace.category": "test_category_2",
@@ -719,6 +848,9 @@ function loaddefaults(p, c){
         }, {
             "executethis": "addwidmaster",
             "wid": "nest_800",
+            "widname": "nest_800test",
+            "widdescription": "nest_800 test description",
+            "id": "nest_800",
             "target_prop": "target_value",
             // "metadata.method": "test_method",
             "metadata.namespace.category": "test_category_2",
@@ -734,9 +866,13 @@ function loaddefaults(p, c){
                     }
                 }
             }
-        }, {
+        }
+        ,{
             "executethis": "addwidmaster",
             "wid": "nest_10",
+            "widname": "nest_10test",
+            "widdescription": "nest_10 test description",
+            "id": "nest_10",
             "target_prop": "target_value",
             // "metadata.method": "test_method",
             "metadata.namespace.category": "test_category_2",
@@ -752,29 +888,13 @@ function loaddefaults(p, c){
                     }
                 }
             }
-        },
-        {
-            "executethis": "addwidmaster",
-            "wid": "wid1",
-            "target_prop": "target_value",
-            // "metadata.method": "test_method",
-            "metadata.namespace.category": "test_category",
-            // "metadata.namespace.subcategory": "test_sub_category",
-            // "metadata.namespace.subdto": "test_subdto",
-            "htmltemplate": "abc from wid1 >2 [[wid2]] def >3 [[wid3]] ghi",
-            "metadata.htmlattributes.widtype": ["csselement","scriptelement"],
-            "command": {
-                "executetype": "series",
-                "processparameterfn": "execute_nothing",
-                "environment": {
-                    "run": {
-                        "executelevel": 1
-                    }
-                }
-            }
-        }, {
+        }
+        ,{
             "executethis": "addwidmaster",
             "wid": "hello_world",
+            "htmlwidname": "hello_worldtest",
+            "widdescription": "hello_world test description",
+            "id": "hello_world",
             "a":"b",
             "html": "<h1>Hello World</h1>",
             "metadata.namespace.category": "test_hello",
@@ -789,9 +909,12 @@ function loaddefaults(p, c){
                 }
             }
         }
-        , {
+        ,{
             "executethis": "addwidmaster",
             "wid": "green_wid",
+            "htmlwidname": "green_widtest",
+            "widdescription": "green_wid test description",
+            "id": "green_wid",
             "a":"b",
             // "html": '<style type="text/css">body {background: green;}</style>',
             "htmltemplate": '<style type="text/css">body {background: green;}</style>',
@@ -807,16 +930,53 @@ function loaddefaults(p, c){
                 }
             }
         }
-        , {
+        ,{
+            "executethis": "addwidmaster",
+            "wid": "wid1",
+            "widname": "wid1test",
+            "widdescription": "wid1 test description",
+            "id":"wid1",
+            "target_prop": "target_value",
+            "a":"b",
+            "c":"d",
+            "e":"f",
+            "g":"h",
+            //"htmlremap":{"wid2":{"c":"e2"}},
+            // "metadata.method": "test_method",
+            "metadata.namespace.category": "test_category",
+            // "metadata.namespace.subcategory": "test_sub_category",
+            // "metadata.namespace.subdto": "test_subdto",
+            //"htmltemplate": '<div data-wid="wid1" class="textclass">abc from wid1 >2 [[wid2]] def >3 [[wid3]] ghi</div>',
+            "htmltemplate": '<div id=xyzwid1>1 inside wid1 calling wid2=[[wid2]]=now calling wid3=[[wid3]]=end of wid1 1</div>',
+            "metadata.htmlattributes.widtype": ["csselement","scriptelement"],
+            "command": {
+                "executetype": "series",
+                "processparameterfn": "execute_nothing",
+                "environment": {
+                    "run": {
+                        "executelevel": 1
+                    }
+                }
+            }
+        }
+        ,{
             "executethis": "addwidmaster",
             "wid": "wid2",
-            "target_prop": "target_value",
+            "widname": "wid2test",
+            "widdescription": "wid2 test description",
+            "id": "wid2",
+            "target_prop2": "target_value2",
+            "a2":"b2",
+            "c2":"d2",
+            "e2":"f2",
+            "g2":"h2",
             // "metadata.method": "test_method",
                     "metadata.namespace.category": "test_category",
             // "metadata.namespace.subcategory": "test_sub_category",
             // "metadata.namespace.subdto": "test_subdto",
-                    "htmltemplate": "xyz from wid2 >4 [[wid4]] qwe",
-                    "metadata.htmlattributes.widtype": ["csselement","scriptelement"],
+            //"htmltemplate": '<div data-wid="wid2" class="textclass"> xyz from wid2 >4 [[wid4]] qwe</div>',
+            "htmltemplate": '<br><div id=xyzwid2>2 inside wid2 calling wid4=[[wid4]]=end of wid2 2</div>',
+            "metadata.htmlattributes.widtype": ["csselement","scriptelement"],
             "command": {
                 "executetype": "series",
                 "processparameterfn": "execute_nothing",
@@ -829,12 +989,16 @@ function loaddefaults(p, c){
         }, {
             "executethis": "addwidmaster",
             "wid": "wid3",
+            "widname": "wid3test",
+            "widdescription": "wid3 test description",
+            "id": "wid3",
             "target_prop": "target_value",
             // "metadata.method": "test_method",
             "metadata.namespace.category": "test_category",
             // "metadata.namespace.subcategory": "test_sub_category",
             // "metadata.namespace.subdto": "test_subdto",
-            "htmltemplate": "hi from 3",
+            //"htmltemplate": '<div data-wid="wid3" class="textclass">  hi from 3</div>',
+            "htmltemplate": '<br><div id=xyzwid3>3 inside wid 3 3</div>',
             "metadata.htmlattributes.widtype": ["abcelement","wwwelement"],
             "command": {
                 "executetype": "series",
@@ -848,13 +1012,17 @@ function loaddefaults(p, c){
         }, {
             "executethis": "addwidmaster",
             "wid": "wid4",
+            "widname": "wid4test",
+            "widdescription": "wid4 test description",
+            "id": "wid4",
             "target_prop": "target_value",
             // "metadata.method": "test_method",
                     "metadata.namespace.category": "test_category",
             // "metadata.namespace.subcategory": "test_sub_category",
             // "metadata.namespace.subdto": "test_subdto",
-                    "htmltemplate": "hi from 4",
-                    "metadata.htmlattributes.widtype": ["abcelement", "wwwelement"],
+            //"htmltemplate": '<div data-wid="wid4" class="textclass">hi from 4</div>',
+            "htmltemplate": '<br><div id=xyzwid4>4 inside wid4 4</div>',
+            "metadata.htmlattributes.widtype": ["abcelement", "wwwelement"],
             "command": {
                 "executetype": "series",
                 "processparameterfn": "execute_nothing",
@@ -868,6 +1036,9 @@ function loaddefaults(p, c){
         {
             "executethis": "addwidmaster",
             "wid": "wid5",
+            "widname": "wid5test",
+            "widdescription": "wid5 test description",
+            "id": "wid5",
             "target_prop": "target_value555",
             // "metadata.method": "test_method",
                     "metadata.namespace.category": "test_category",
@@ -887,30 +1058,56 @@ function loaddefaults(p, c){
         }
         ,
         {
+        	"wid": "defaultwideditorvalues",
             "executethis": "addwidmaster",
+
+            "debuglevel":"-1",
+            "syncrule": "sync_local",
             "execute_output": "debugger",
-            "execute_set_1": "",
-            "execute_set_2": "",
+            "set_1": "",
+            "set_2": "",
+            "params_1": "",
+            "params_2": "",
+
+            "element":"",
+            "start":"",
+            "length":"",
+            
+            // ** I want to comment execute_parameters
             "execute_parameters": {},
-            "wid": "defaultwideditorvalues",
+
             "lastwidlist_clicked": "",
             "lastwiddesigner_clicked": "",
-            "last_method": "",
+            "parent": "",
+            // category, etc consitent name
+            "method":"",
             "category": "",
             "subcategory": "",
-            "subdto_searched": "",
-            "last_selected_htmltemplate": "",
-            "debuglevel": "",
-            "last_onchange_data": "",
-            "save_tolocal": "",
-            "delete_tolocal":"",
-            "should_query_mongo": "false",
-            "syncrule": "sync_local",
-            "leftitem":
-            	{"getwid"          : { "name": "get wid",           "description":"abcde", "fn":"getwid" }
-            	,"save_highlighted": { "name": "save highlighted",  "description":"abrrrcde", "fn":"getrrrrwid" }
-        		,"add_to_set_1"    : { "name": "asdfasdf", 			"description":"abcde", "fn":"getwid" }
-        		,"add_to_set_2"    : { "name": "fdsafdsa", 			"description":"abcde", "fn":"getwid" }}
+            "subdto": "",
+
+            "leftitem": {
+            	  "getwid": { "name": "get selected wid", "will get a wid": "abcde", "fn": "editorgetwid" }
+        	    , "save_highlighted_wid": { "name": "save highlighted wid", "description": "will save selected text as a wid", "fn": "editorsaveselectedtext" }
+        	    , "save_highlighted_property": { "name": "save highlighted property", "description": "will save selected text as a property", "fn": "editorsaveselectedtextproperty" }
+        	    , "save_current_wid": { "name": "save current json wid", "description": "will save current wid in json tab", "fn": "editorsavecurrentwid" }
+        	    , "search": { "name": "search", "description": "base search", "fn": "editorshowpopup" }
+       	    	, "search_properties": { "name": "search properties", "description": "search by properties", "fn": "editorsearchbyproperties" }
+                , "search_similar_wids": { "name": "search similar wids", "description": "will search for similar wids", "fn": "editorsearchforsimilarwids" }
+                , "execute": { "name": "execute", "description": "will execute using set1&2 and parm 1&2", "fn": "editoradminexecute" }
+    			, "wid_set_1": { "name": "--link wid to set_1", "description":"link selected wid to set 1", "fn":"editorlinktoset1" }
+    			, "wid_set_2": { "name": "--link wid to set_2", "description": "link selected wid to set 2", "fn": "editorlinktoset2" }
+                , "add_to_parm_1": { "name": "--add to param_1", "description": "take wid's parameters and add to param1", "fn": "editoraddtoparm1" }
+                , "add_to_parm_2": { "name": "--add to param_2", "description": "take wid's parameters and add to param2", "fn": "editoraddtoparm2" }
+                , "create_using_dto": { "name": "create wid using this dto", "description": "Set up to save using this dto", "fn": "editorcreateusingdto" }
+                , "create_new_wid": { "name": "create new wid", "description": "create new wid using default dto", "fn": "editorcreatenewwid" }
+                , "delete_wid": { "name": "delete wid", "description": "deletewid", "fn": "editordeletewid" }
+                , "copy_wid": { "name": "copy wid", "description": "copywid", "fn": "editorcopywid" }
+				, "update_db": { "name": "update_db", "description": "get categories", "fn": "editorgetcategories" }
+				, "set_to_local": { "name": "set to local ", "description": "set to local ", "fn": "editorsettolocal" }
+				, "set_to_server": { "name": "set to server ", "description": "set to server ", "fn": "editorsettoserver" }
+				, "add_wid_ref": { "name": "add remap ", "description": "add a remap parameter", "fn": "editorhtmlremapscreen" }
+        	}
+
 	        	
         	,"command": {
                "executetype": "series",
@@ -1201,6 +1398,21 @@ exports.htest15 = htest15 = function htest15(param, callback) {
 	var obj = {}
 	obj.command={};
 	obj.command.wid="wid1";
+	proxyprinttodiv('after createhtml before', obj, 100);
+	createhtml(obj, function (err, res){
+		debuglevel = 100;
+		proxyprinttodiv('after createhtml res -- ', res, 100, true, true);
+	})
+}
+
+exports.htest15a = htest15a = function htest15a(param, callback) {
+	console.log("MERGE TEST 1");
+	debuglevel = 100;
+// }
+	var obj = {}
+	obj.command={};
+	obj.command.wid="wid1";
+	obj.command.htmloutertemplate = '<div data-wid="[[wid]]" class="textclass">[[html]]</div>';
 	proxyprinttodiv('after createhtml before', obj, 100);
 	createhtml(obj, function (err, res){
 		debuglevel = 100;
@@ -1643,5 +1855,3 @@ exports.htest4_luke = htest4_luke = function htest4_luke (param, callback) {
 		callback(err, res);
 	});
 }
-
-

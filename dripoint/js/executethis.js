@@ -262,7 +262,8 @@
         ////--proxyprinttodiv("converttocommand after string inparams", inparams, 11);
 
         // if array then load array into parameter command.xrun...not it is an object again
-        if (isArray(inparams)) { inparams = {command:{xrun:inparams.slice(0)}}; }
+        if (isArray(inparams) && inparams.length == 1) { inparams = inparams[0]; }
+        else if (isArray(inparams) && inparams.length > 1) { inparams = {command:{xrun:inparams.slice(0)}}; }
 
         ////--proxyprinttodiv("converttocommand - inparams I", inparams, 11);
         // *** now it is converted to an object ***
@@ -403,7 +404,7 @@
             trycount = 0,
             incomingparams = {};
 
-
+            proxyprinttodiv('execute before try series input ',input, 11, true, true);
         // fish out from converted results
         var command = converttocommand(input);    // call main conversion
         var executionpreferences = command.resulttable.executionpreferences,
@@ -430,9 +431,9 @@
             delete executionpreferences.command;
         }
 
-        ////--proxyprinttodiv('execute before try series incomingparams ',incomingparams, 11);
+       
         proxyprinttodiv('execute before try series command ',command, 11, true);
-        ////--proxyprinttodiv('execute before try series executionpreferences', executionpreferences, 11, true);
+        ////--proxyprinttodiv('execute before try series executionprefernces', executionpreferences, 11, true);
         ////--proxyprinttodiv('execute before try series tryset', tryset, 11, true);
         saveglobal('debuglevel', executionpreferences.command.environment.run.executelevel);
 
@@ -971,18 +972,43 @@
 
 
 
+                                    // if (command.result)
+                                    //     {   // if the work has already been done then do not do it again
+                                    //         if (resultparameters.queryresult 
+                                    //             && Object.keys(resultparameters).length == 1)
+                                    //         {
+                                    //             resultparameters = resultparameters.queryresult;
+                                    //         }
+                                    //         var json = {};
+                                    //         json[command.result] = resultparameters;
+                                    //         resultparameters = json;
+                                    //     }
+
                                     if (command.result)
-                                        {   // if the work has already been done then do not do it again
-                                            if (resultparameters.queryresult 
-                                                && Object.keys(resultparameters).length == 1)
+                                    {   // if the work has already been done then do not do it again
+                                        if (resultparameters.queryresult 
+                                            && Object.keys(resultparameters).length == 1)
+                                        {
+                                            resultparameters = resultparameters.queryresult;
+                                        }
+                                        // special case for mapreduce inline results
+                                        if (resultparameters.results)
+                                        {
+                                            if (command.result!=="results")
                                             {
-                                                resultparameters = resultparameters.queryresult;
+                                                var json = resultparameters.results;
+                                                delete resultparameters.results;
+                                                resultparameters[command.result]=json;
                                             }
+                                        }
+                                        else // normal case
+                                        {
                                             var json = {};
                                             json[command.result] = resultparameters;
                                             resultparameters = json;
                                         }
-
+                                    }
+                                        
                                     if (command.convertmethod === "todot")
                                     {
                                         resultparameters = ConvertToDOTdri(resultparameters);
@@ -1295,11 +1321,11 @@
             params.command.processparameterfn = "execute_nothing";
             params.command.processfn = "execute_function";
             params.command.keepaddthis=false;
-            proxyprinttodiv('execute end of execute_get_wid 0 params', params, 99, true);
+            proxyprinttodiv('execute end of execute_get_wid 0 params', params, 11, true);
             execute(params, function (err, res) {
-                proxyprinttodiv('execute end of execute_get_wid 0-I params', params, 99, true);
-                proxyprinttodiv('execute end of execute_get_wid I', inparams, 99, true);
-                proxyprinttodiv('execute end of execute_get_wid I res', res, 99, true);
+                proxyprinttodiv('execute end of execute_get_wid 0-I params', params, 11, true);
+                proxyprinttodiv('execute end of execute_get_wid I', inparams, 11, true);
+                proxyprinttodiv('execute end of execute_get_wid I res', res, 11, true);
                 if (!res) { res = {}; }
                 if (!res.command) { res.command = {}; }
 

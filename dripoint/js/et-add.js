@@ -80,9 +80,9 @@
     exports.cleanadd = cleanadd = function cleanadd(object, dtoobject, command, callback) {
         var inbound_parameters = {};
 
-        var tempflag
-        if (object && object.sounddto && object.sounddto.note==="A flat") {tempflag=true;}
-        if (tempflag) {debuglevel=17;}
+        //var tempflag
+        //if (object && object.sounddto && object.sounddto.note==="A flat") {tempflag=true;}
+        //if (tempflag) {debuglevel=17;}
 
         proxyprinttodiv("cleanadd object", object, 17);
         //if (object.wid==="wid1") {debuglevel=38;}
@@ -100,9 +100,12 @@
                 var result_obj = {};
                 var output = {};
 
-                if (!command) { command = {deepfilter:{convert:false}}; }
-                else if (!command.deepfilter) { command.deepfilter = {convert:false}; }
-                else if (!command.deepfilter.convert) { command.deepfilter.convert = false; }
+                // if (!command) {command={}};
+                // if (!command.deepfilter) {command.deepfilter={}}
+                // if (!command.deepfilter.convert) {command.deepfilter.totype=true}
+                // if (!command) { command = {deepfilter:{convert:false}}; }
+                // else if (!command.deepfilter) { command.deepfilter = {convert:false}; }
+                // else if (!command.deepfilter.convert) { command.deepfilter.convert = false; }
 
                 output.obj = object;
                 output.dtoobj = dtoobject;
@@ -145,7 +148,7 @@
                                     output.dtoobj = dtoobject;
                                     proxyprinttodiv("cleanadd getdtoobject res------- if ", dtoobject, 17);
 
-                                    if (tempflag) {tempflag=false; debuglevel=0}
+                                    //if (tempflag) {tempflag=false; debuglevel=0}
 
 
                                     callback(null, output);
@@ -162,7 +165,7 @@
                         output.obj = result_obj;
                         output.dtoobj = dtoobject;
 
-                        if (tempflag) {tempflag=false; debuglevel=0}
+                        //if (tempflag) {tempflag=false; debuglevel=0}
 
                         callback(null, output);
                     });
@@ -847,19 +850,20 @@
                 }
             },
             function step2(step2_callback) { // deepfilter step...should create a guid for an empty wid
-                if (!command) { command = {}; }
-                if (!command.deepfilter) { command.deepfilter = {}; }
-
-                command.deepfilter.convert = true;
+                // if (!command) { command = {}; }
+                // if (!command.deepfilter) { command.deepfilter = {}; }
+                // command.deepfilter.totype = true;
 
                 // if (!command.deepfilter.keepaddthis) { command.deepfilter.keepaddthis = true; }
                 
                 // add wid = guid if its missing in input
-                if (!object.hasOwnProperty("wid")) {
+                if (!object.hasOwnProperty("wid")) 
+                {
                     object["wid"] = "undefined";
                 }
                 // set wid = guid if its missing in dto
-                if(!dtoobject["wid"] || dtoobject["wid"] === 'string'){
+                if(!dtoobject["wid"] || dtoobject["wid"] === 'string')
+                {
                     dtoobject["wid"]="guid";
                 }
 
