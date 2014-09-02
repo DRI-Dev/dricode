@@ -4703,6 +4703,10 @@
         delete p.command.queuename;
         // queuename = "eventonemin";
         var itemtobesaved=p;
+
+        itemtobesaved.addthis.executethis = itemtobesaved.executethis;
+        delete itemtobesaved.executethis;        
+
         //itemtobesaved = [
         //    { "executethis": "printhello", "to": "+12313133930", "body":"This is a text" }
         //]
@@ -4710,6 +4714,7 @@
             // "wid":"russ112",
             "executethis": "addwidmaster",
             "container":itemtobesaved,   // no wid ... let system make it for you
+            
             "metadata" : {
                 "queuename": queuename,
                 "queueflag" : "true"
