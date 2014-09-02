@@ -4804,7 +4804,8 @@
         }
         else
         {
-            eventnormalstart(params, callback);
+            eventappinstall(params, callback);
+            // eventnormalstart(params, callback);
         }
     }
 
