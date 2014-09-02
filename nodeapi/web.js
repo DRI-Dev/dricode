@@ -52,7 +52,7 @@ imageService = require('./routes/images.js');
 app.configure(function() {
     app.enable('trust proxy');
     app.use(express.logger('dev'));
-    app.use(express.bodyParser());
+    app.use(express.bodyParser({limit: '20mb'}));
     app.use(express.methodOverride());
 
     // Add headers
