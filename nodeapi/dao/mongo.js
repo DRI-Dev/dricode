@@ -116,8 +116,8 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
 	proxyprinttodiv('mapreduceserver params = ',p,99);
 	
     // convert string to fn
-    if (!(mapfn instanceof Function)) {mapfn = window[mapfn]};
-    if (!(reducefn instanceof Function)) {reducefn = window[reducefn]};
+    if (!(mapfn instanceof Function) && window[mapfn]) {mapfn = window[mapfn]};
+    if (!(reducefn instanceof Function) && window[reducefn]) {reducefn = window[reducefn]};
 
     proxyprinttodiv('mapfn = ',mapfn,99);
     proxyprinttodiv('reducefn = ',reducefn,99);

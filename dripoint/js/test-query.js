@@ -50,6 +50,122 @@ widtests.qutest_allexecute.metadata.namespace.subcategory = "push";
 widtests.qutest_allexecute.js = qutest_allexecute;
 widtests.qutest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing querywid and querywidmaster.";
 
+function mapreducefinddistinct () 
+{ 
+	proxyprinttodiv('mapreducefinddistinct distinct this', this, 99,true, true);
+	if (this && this.metadata && this.metadata.method) 
+		{emit("method"+this.metadata.method, 
+			{type:"metadata.method", fieldname: this.metadata.method}) }
+	if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.category) 
+		{emit("category"+this.metadata.namespace.category, 
+			{type:"metadata.namespace.category", fieldname: this.metadata.namespace.category}) }
+	if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.subcategory) 
+		{emit("subcategory"+this.metadata.namespace.subcategory, 
+			{type:"metadata.namespace.subcategory",fieldname: this.metadata.namespace.subcategory}) }
+	if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.subdto) 
+		{emit("subdto"+this.metadata.namespace.subdto, 
+			{type:"metadata.namespace.subdto", fieldname: this.metadata.namespace.subdto}) }
+	if (this && this.metadata && this.metadata.htmlattributes && this.metadata.htmlattributes.widtype) 
+	{ 
+		for (var eachtype in this.metadata.htmlattributes.widtype)
+		{
+			{emit("widtype"+this.metadata.htmlattributes.widtype[eachtype], 
+				{type:"metadata.htmlattributes.widtype",fieldname: this.metadata.htmlattributes.widtype[eachtype]}) }
+		}
+	}
+};
+
+function reducedistinctfield(wid, values){
+	proxyprinttodiv('reducetest1 wid', wid, 99,true, true);
+    proxyprinttodiv('reducetest1 value', values, 99,true, true);
+    var result = {count : 0, fieldname: ""}
+    var c=0; 
+    values.forEach(function(value) 
+    {
+    	c++;
+    	result.count = c;
+    	result.fieldname = value.fieldname;
+    	if (value.type) {result.type = value.type};
+    })
+
+    proxyprinttodiv('reducetest1 result', result, 99,true, true);
+    return result;
+};
+
+ettestmap2 = function ettestmap2(p, callback) 
+{
+	debuglevel = 21;
+	loaddefaults(null, function (err, res)
+	{
+		execute(
+			{
+			// since not specified will go to defaults: collection dricollection, etc
+	        "executethis": "mapreduce",
+	        "mapfn": "mapreducefinddistinct",
+	        "reducefn": "reducedistinctfield",
+	        "replace" : "distinctitemscollection" // will store results here
+	    	}, function (err, res) 
+	    	{
+	    		proxyprinttodiv('MIDDLE', res, 99, true, true);
+	    		//debuglevel=28;
+				execute([
+					{
+			        "executethis": "mapreduce",
+			        "mapreduce":"distinctitemscollection", // will mapreduce from this collection
+			        "command.db":"value", // will map reduce from this "small db" inisde collection
+			        "query": {"$and": [{"value.type":"metadata.method"}]},
+			        "mapfn": "mapbyfieldname",
+			        "reducefn": "reducedistinctfield",
+			        "replace" : "uniquemethods" // will produce this new collection
+			    	},
+			    	{
+			        "executethis": "mapreduce",
+			        "mapreduce":"distinctitemscollection", // will mapreduce from this collection
+			        "command.db":"value", // will map reduce from this "small db" inisde collection
+			        "query": {"$and": [{"value.type":"metadata.namespace.category"}]},
+			        "mapfn": "mapbyfieldname",
+			        "reducefn": "reducedistinctfield",
+			        "replace" : "uniquecategories" // will produce this new collection
+			    	},
+			    	{
+			        "executethis": "mapreduce",
+			        "mapreduce":"distinctitemscollection", // will mapreduce from this collection
+			        "command.db":"value", // will map reduce from this "small db" inisde collection
+			        "query": {"$and": [{"value.type":"metadata.namespace.subcategory"}]},
+			        "mapfn": "mapbyfieldname",
+			        "reducefn": "reducedistinctfield",
+			        "replace" : "uniquesubcategories" // will produce this new collection
+			    	},
+			    	{
+			        "executethis": "mapreduce",
+			        "mapreduce":"distinctitemscollection", // will mapreduce from this collection
+			        "command.db":"value", // will map reduce from this "small db" inisde collection
+			        "query": {"$and": [{"value.type":"metadata.namespace.subdto"}]},
+			        "mapfn": "mapbyfieldname",
+			        "reducefn": "reducedistinctfield",
+			        "replace" : "uniquesubdtos" // will produce this new collection
+			    	},
+			    	{
+			        "executethis": "mapreduce",
+			        "mapreduce":"distinctitemscollection", // will mapreduce from this collection
+			        "command.db":"value", // will map reduce from this "small db" inisde collection
+			        "query": {"$and": [{"value.type":"metadata.htmlattributes.widtype"}]},
+			        "mapfn": "mapbyfieldname",
+			        "reducefn": "reducedistinctfield",
+			        "replace" : "uniquewidtypes" // will produce this new collection
+			    	}
+			    	], function (err, res) 
+			    	{
+		    		callback(null, res);
+		    		})
+					//callback(null, res);
+	    	})
+	})
+}
+
+function mapbyfieldname() { 
+    emit(this.fieldname, this); 
+}
 
 
 function reducemethod1(key, count) { 
@@ -88,20 +204,6 @@ function mapreducedistilledmethod ()
 		{emit(this.fieldname, this) }
 };
 
-function reducedistinctfield(wid, values){
-    proxyprinttodiv('reducetest1 wid', wid, 99,true, true);
-    proxyprinttodiv('reducetest1 value', values, 99,true, true);
-    var result = {count : 0, fieldname: ""}
-    var c=0; 
-    values.forEach(function(value) 
-    {
-    	c++;
-    	result.count = c;
-    	result.fieldname = value.fieldname;
-    })
-
-    return result;
-};
 
 ettestmap1 = function ettestmap1(p, callback) 
 {
@@ -110,10 +212,11 @@ ettestmap1 = function ettestmap1(p, callback)
 	{
 		execute(
 			{
+			// since not specified will go to defaults: collection dricollection, etc
 	        "executethis": "mapreduce",
 	        "mapfn": "mapreducedistinctmethod",
 	        "reducefn": "reducedistinctfield",
-	        "replace" : "distinctmethodscollection"
+	        "replace" : "distinctmethodscollection" // will store results here
 	    	}, function (err, res) 
 	    	{
 	    		proxyprinttodiv('MIDDLE', res, 99, true, true);
@@ -121,11 +224,11 @@ ettestmap1 = function ettestmap1(p, callback)
 				execute(
 					{
 			        "executethis": "mapreduce",
-			        "mapreduce":"distinctmethodscollection",
-			        "command.db":"value",
+			        "mapreduce":"distinctmethodscollection", // will mapreduce from this collection
+			        "command.db":"value", // will map reduce from this "small db" inisde collection
 			        "mapfn": "mapreducedistilledmethod",
 			        "reducefn": "reducedistinctfield",
-			        "replace" : "distilledmethodscollection"
+			        "replace" : "distilledmethodscollection" // will produce this new collection
 			    	}, function (err, res) 
 			    	{
 		    		callback(null, res);

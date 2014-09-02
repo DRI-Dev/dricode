@@ -94,6 +94,11 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
 
     if (config.configuration.environment!=="local" && !p.command.queryresult) // if sent in database then like local
     {
+        p.command = p.command || {};
+        p.command.databasetable = p.db || p.command.databasetable || config.configuration.d.default.databasetable;
+        p.command.collection = p.mapreduce ||  p.command.collection || config.configuration.d.default.collection;
+        p.command.keycollection = p.command.collection+'key';
+        p.mongorawquery = p.mongorawquery || p.query || {"$or" : [{"_id": {"$exists": true}}, {"wid": {"$exists": true}}]};
         // if p.queryresult then save the collection so mapreduceserver can get it
         // mapreduceserver also shoudl be able to process p.query
         mapreduceserver(mapfn, reducefn, p, callback);
@@ -142,8 +147,8 @@ function mapreducelocal(mapfn, reducefn, p, cb)
     proxyprinttodiv('mapreduce mapfn', mapfn, 21,true, true);
     proxyprinttodiv('mapreduce reducefn', reducefn, 21,true, true);
     proxyprinttodiv('mapreduce p', p, 21,true, true);
-    if (!(mapfn instanceof Function)) {mapfn = window[mapfn]};
-    if (!(reducefn instanceof Function)) {reducefn = window[reducefn]};
+    if (!(mapfn instanceof Function) && window[mapfn]) {mapfn = window[mapfn]};
+    if (!(reducefn instanceof Function) && window[reducefn]) {reducefn = window[reducefn]};
     // mapper step
     globalresultobject = {};
     for (var eachitem in p.queryresult) // example map: function () {emit(this.gender, 1);};
