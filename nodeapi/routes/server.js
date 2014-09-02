@@ -11,11 +11,11 @@ exports.postputgetrunExecutethis = function postputgetrunExecutethis(req, resp) 
 function runExecuteThis(parameters, resp) {
     proxyprinttodiv(" JSON runExecutethis", JSON.stringify(parameters), 99);
 
-    debuglevel = Number(getglobal('debuglevel')); // get currently stored debuglevel
+    //debuglevel = Number(getglobal('debuglevel')); // get currently stored debuglevel
     if (parameters.debuglevel) 
     {
         debuglevel = parameters.debuglevel;
-        saveglobal("debuglevel", debuglevel); // make it stickly for next time
+        //saveglobal("debuglevel", debuglevel); // make it stickly for next time
         delete parameters.debuglevel;
     }
 

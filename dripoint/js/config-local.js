@@ -7,16 +7,10 @@ if (!exports) {
 if (!config) { 
     var config = {};
 }
-
-// if (!Debug) { // printdiv
-//     var Debug = 'false';
-// }
 if (!debuglevel) { // printdiv
-    var debuglevel = -1;
+    var debuglevel = 0; // local side printdivs are enabled
 }
-// if (!debugon) { // debugfn
-//     var debugon = false;
-// }
+
 
 
 function config123() {
@@ -75,9 +69,8 @@ function config123() {
 
 function setdefaultparm() {
 
-    saveglobal("debuglevel", 0);
-    // saveglobal("Debug", 'false');
-    // saveglobal("debugon", false);
+    //saveglobal("debuglevel", 0);
+
     saveglobal("debugname", "");
     saveglobal("debugsubcat", "");
     saveglobal("debugcat", "");
@@ -89,7 +82,7 @@ function setdefaultparm() {
 
     exports.environment = "local";
     //exports.Debug = Debug;
-    exports.debuglevel = 0 || debuglevel;
+    //exports.debuglevel = 0 || debuglevel;
 
 }
 

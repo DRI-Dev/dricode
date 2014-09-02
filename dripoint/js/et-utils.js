@@ -944,7 +944,7 @@
     };
 
 
-    exports.cnt = 0;
+    //exports.cnt = 0;
     exports.printToDiv = printToDiv = function printToDiv(text, outobject, debugone, pretty, expanddefault) {
         var inbound_parameters = arguments;
         var color_list = [
@@ -961,7 +961,7 @@
             "green",
             "MediumBlue"
         ];
-        exports.cnt = exports.cnt + 1;
+        //exports.cnt = exports.cnt + 1;
 
         if (getglobal('expanddefault')) {expanddefault=true}
 
@@ -969,9 +969,9 @@
             var displaycolor = color_list[getglobal("debugcolor")];
             var indent = getglobal("debugindent");
             indent=indent*5;
-            var z = getglobal('debuglinenum');
-            z++;
-            saveglobal('debuglinenum', z);
+            var linenum = getglobal('debuglinenum');
+            //z++;
+            saveglobal('debuglinenum', linenum);
 
             if (displaycolor == "") {
                 displaycolor = "brown";
@@ -985,28 +985,28 @@
                 jsonPretty = JSON.stringify(outobject);
             }
 
-            var linenum = getglobal('debuglinenum');
-            exports.cnt++;
+            //var linenum = getglobal('debuglinenum');
+            //exports.cnt++;
 
             printText =  '<pre>';
             if (indent > 0) {
                 printText +='<div style="color:' + displaycolor + '; padding-left:' + (1 * indent) + 'em;">';
-                printText +='<button type="button" class="btn collapsiblebtn" data-toggle="collapse" data-target="#myDiv'+ exports.cnt + '"data-open-text="+" data-close-text="-">+</button> <'+ linenum + '> -' + indent/5 + '-';
+                printText +='<button type="button" class="btn collapsiblebtn" data-toggle="collapse" data-target="#myDiv'+ linenum + '"data-open-text="+" data-close-text="-">+</button> <'+ linenum + '> -' + indent/5 + '-';
                 printText += text;
 
                 printText +='</div>';
             } else {
                 printText +='<div style="color:' + displaycolor + '";">';
-                printText +='<button type="button" class="btn collapsiblebtn" data-toggle="collapse" data-target="#myDiv'+ exports.cnt +'" data-open-text="+" data-close-text="-">+</button> <'+ linenum + '> -' + indent/5 + '-';
+                printText +='<button type="button" class="btn collapsiblebtn" data-toggle="collapse" data-target="#myDiv'+ linenum +'" data-open-text="+" data-close-text="-">+</button> <'+ linenum + '> -' + indent/5 + '-';
                 printText += text;
                 printText +='</div>';
             }
 
 
             if(expanddefault){
-                printText +='<div collapse in" id="myDiv'+ exports.cnt +'">';
+                printText +='<div collapse in" id="myDiv'+ linenum +'">';
             }else{
-                printText +='<div collapse" id="myDiv'+ exports.cnt +'">';
+                printText +='<div collapse" id="myDiv'+ linenum +'">';
             }
 
             printText += syntaxHighlight(jsonPretty) +'</div></pre>';

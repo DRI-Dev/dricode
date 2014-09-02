@@ -51,6 +51,90 @@ widtests.qutest_allexecute.js = qutest_allexecute;
 widtests.qutest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing querywid and querywidmaster.";
 
 
+
+function reducemethod1(key, count) { 
+    return Array.sum(count); 
+}
+
+function mapmethod1() { 
+    emit(this.metadata.method, 1); 
+}
+
+function querymapmethod1()
+{
+	var executeobj = {
+					"executethis":"mapreduce",
+					"map": "mapmethod1",
+					"reduce": "reducemethod1",
+					"out": "queryresult",
+					"query": { "wid": {"$exists": "true"}}
+					};	
+	execute(executeobj, function (err, res){
+
+	})
+}
+
+function mapreducedistinctmethod () 
+{ 
+	proxyprinttodiv('mapreducetest1 distinct this', this, 99,true, true);
+	if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.category) 
+		{emit(this.metadata.namespace.category, {fieldname: this.metadata.namespace.category}) }
+};
+
+function mapreducedistilledmethod () 
+{ 
+	proxyprinttodiv('mapreduce distilled this', this, 99,true, true);
+	if (this && this.fieldname) 
+		{emit(this.fieldname, this) }
+};
+
+function reducedistinctfield(wid, values){
+    proxyprinttodiv('reducetest1 wid', wid, 99,true, true);
+    proxyprinttodiv('reducetest1 value', values, 99,true, true);
+    var result = {count : 0, fieldname: ""}
+    var c=0; 
+    values.forEach(function(value) 
+    {
+    	c++;
+    	result.count = c;
+    	result.fieldname = value.fieldname;
+    })
+
+    return result;
+};
+
+ettestmap1 = function ettestmap1(p, callback) 
+{
+	debuglevel = 21;
+	loaddefaults(null, function (err, res)
+	{
+		execute(
+			{
+	        "executethis": "mapreduce",
+	        "mapfn": "mapreducedistinctmethod",
+	        "reducefn": "reducedistinctfield",
+	        "replace" : "distinctmethodscollection"
+	    	}, function (err, res) 
+	    	{
+	    		proxyprinttodiv('MIDDLE', res, 99, true, true);
+	    		//debuglevel=28;
+				execute(
+					{
+			        "executethis": "mapreduce",
+			        "mapreduce":"distinctmethodscollection",
+			        "command.db":"value",
+			        "mapfn": "mapreducedistilledmethod",
+			        "reducefn": "reducedistinctfield",
+			        "replace" : "distilledmethodscollection"
+			    	}, function (err, res) 
+			    	{
+		    		callback(null, res);
+		    		})
+					//callback(null, res);
+	    	})
+	})
+}
+
 mapreducetest = function mapreducetest(mapfn, reducefn, querystring, callback) {
     // var mapfn = window[map];
     // var reducefn = window[reduce];
@@ -95,27 +179,8 @@ function testmapreduce1() {
     mapreducetest(map1, reduce1, query);
 }
 
-function mapreducetest1 () {
-    // proxyprinttodiv('mapreducetest1 obj', obj, 99,true, true);
-    // var wid = obj.wid;
-    // var hue = obj.hue; 
-    // proxyprinttodiv('mapreducetest1 arguments', arguments, 99,true, true);
-    // proxyprinttodiv('mapreducetest1 wid', wid, 99,true, true);
-    // proxyprinttodiv('mapreducetest1 hue', hue, 99,true, true);
-    //emit(this.wid, this.hue);
-    // emit(wid, hue);
-    emit(this.hue, 1);
-};
-function reducetest1(wid, hue){
-    debugger;
-    proxyprinttodiv('reducetest1 wid', wid, 99,true, true);
-    proxyprinttodiv('reducetest1 hue', hue, 99,true, true);
-    var s=""; 
-    for (var i in hue) {
-        s=s+hue[i]
-    }
-    return s
-};
+
+
 
 // this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
 exports.qutest_map1 =  

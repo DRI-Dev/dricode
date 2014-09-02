@@ -70,9 +70,7 @@ function config123() {
 
 // this is called from eventdeviceready after all files are loaded
 function setdefaultparm() {
-    saveglobal("debuglevel", -1);
-    //saveglobal("Debug", 'false');
-    //saveglobal("debugon", false);
+    //saveglobal("debuglevel", -1);
     saveglobal("debugname", "");
     saveglobal("debugsubcat", "");
     saveglobal("debugcat", "");
@@ -93,8 +91,9 @@ global.environment = "server";
 // the line below determines if all the prints are enabled or not
 //global.Debug = 'true';
 
-global.debuglevel = -1;
-debuglevel = -1
+global.debuglevel = -1;     // note I do not think this global workds as is
+debuglevel = -1;            // default is no printdivs
+
 //global.debugon = false;
 //var consolere = require('console-remote-client').connect('console.re','80','dev-dri');
 //console.re.log('remote log test');

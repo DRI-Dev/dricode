@@ -81,18 +81,16 @@
 
 exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     // mapreducemongo should receive: map, reduce, query, output, command into query
+
     var p = {};
     extend(true, p, inparameters);
+    proxyprinttodiv('mapreduce p', p, 21,true, true);
     var mapfn = p.mapfn;
     var reducefn = p.reducefn;
     delete p.mapfn;
     delete p.reducefn;
 
-    proxyprinttodiv('mapreduce p', p, 99,true, true);
-
     if (p.results) {p.queryresult = p.results; delete p.results}
-    p.command = p.command || {};
-    p.command.collection = p.command.collection || p.mapreduce || config.configuration.d.default.collection;
 
     if (config.configuration.environment!=="local" && !p.command.queryresult) // if sent in database then like local
     {
@@ -106,13 +104,15 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
         if (!p.queryresult) // if queryresult not sent in then go process p.mongorawquery
         {
             var temp={};
-            temp.command = {};
-            temp.command.collection = p.mapreduce;
-            temp.mongorawquery = p.mongorawquery || p.query;
-            proxyprinttodiv('mapreduce before querywid', temp, 99,true, true);
+            temp.command = p.command || {};
+            temp.command.databasetable = p.db || p.command.databasetable || config.configuration.d.default.databasetable;
+            temp.command.collection = p.mapreduce ||  p.command.collection || config.configuration.d.default.collection;
+            temp.command.keycollection = temp.command.collection+'key';
+            temp.mongorawquery = p.mongorawquery || p.query || {"$or" : [{"_id": {"$exists": true}}, {"wid": {"$exists": true}}]};
+            proxyprinttodiv('mapreduce before querywid', temp, 21,true, true);
             querywidmaster(temp, function (err, res) 
             {
-                proxyprinttodiv('mapreduce after query', res, 99,true, true);
+                proxyprinttodiv('mapreduce after query', res, 21,true, true);
                 p.queryresult = res.queryresult;
                 mapreducelocal(mapfn, reducefn, p, callback);
             })
@@ -130,8 +130,8 @@ var globalresultobject = {};
 exports.globalresultobject = {};
 exports.emit = emit = function emit(k, v)
     {
-        proxyprinttodiv('mapreduce emit k', k, 99,true, true);
-        proxyprinttodiv('mapreduce emit v', v, 99,true, true);
+        proxyprinttodiv('mapreduce emit k', k, 21,true, true);
+        proxyprinttodiv('mapreduce emit v', v, 21,true, true);
         if (!globalresultobject[k]) {globalresultobject[k] = []};
         globalresultobject[k].push(v);
     }
@@ -139,43 +139,51 @@ exports.emit = emit = function emit(k, v)
 
 function mapreducelocal(mapfn, reducefn, p, cb)
 {
-    proxyprinttodiv('mapreduce mapfn', mapfn, 99,true, true);
-    proxyprinttodiv('mapreduce reducefn', reducefn, 99,true, true);
-    proxyprinttodiv('mapreduce p', p, 99,true, true);
+    proxyprinttodiv('mapreduce mapfn', mapfn, 21,true, true);
+    proxyprinttodiv('mapreduce reducefn', reducefn, 21,true, true);
+    proxyprinttodiv('mapreduce p', p, 21,true, true);
     if (!(mapfn instanceof Function)) {mapfn = window[mapfn]};
     if (!(reducefn instanceof Function)) {reducefn = window[reducefn]};
     // mapper step
     globalresultobject = {};
     for (var eachitem in p.queryresult) // example map: function () {emit(this.gender, 1);};
     {
-        proxyprinttodiv('mapreduce p.queryresult[eachitem]', p.queryresult[eachitem], 99,true, true);
+        proxyprinttodiv('mapreduce p.queryresult[eachitem]', p.queryresult[eachitem], 21,true, true);
         mapfn.apply(p.queryresult[eachitem]);
     } 
-    proxyprinttodiv('mapreduce globalresultobject I', globalresultobject, 99,true, true);
+    // queryresultobject is global and should be {wid:[], wid:[], wid:[]}
+    proxyprinttodiv('mapreduce globalresultobject I', globalresultobject, 21,true, true);
 
     // reduce step
+    var outlist =[];
     for (var eachitem in globalresultobject) // example reduce: function(gender, count){return Array.sum(count);};
     {
-        globalresultobject[eachitem] = reducefn(eachitem, globalresultobject[eachitem]);
+            var temp={};
+            temp["_id"]=eachitem; 
+            temp["wid"]=eachitem; // set values that are unique to our system -- maybe take out since cannot be done on server
+            temp["metadata"]={};
+            temp["metadata"]["method"]="createdcollection"
+            temp.metadata.date = new Date();
+            temp["value"] = reducefn(eachitem, globalresultobject[eachitem]);
+            outlist.push(temp);
     }
-    proxyprinttodiv('mapreduce globalresultobject II', globalresultobject, 99,true, true);
+    // out should be: [{_id:, value:},{},{}]
+    proxyprinttodiv('mapreduce after reduce outlist', outlist, 21,true, true);
 
-    var outlist =[];
-    if (!p.limit) {p.limit = Object.keys(globalresultobject).length}
-    if (p.limit) // Optional. Specifies a maximum number of documents to return from the collection.
-    {
-        for (var eachitem in globalresultobject)
-        {
-            outlist.push(globalresultobject[eachitem]);
-        }  
-    } 
-    
     if (p.sort) // sort input based on eg {dim0: 1} +1 ascending
     {
         // dynamicsort in utils -- may need to be changed
-        globalresultobject.sort(dynamicsortmultiple(p.sort));
+        var sort = {};
+        sort.value = p.sort;
+        outlist.sort(dynamicsortmultiple(sort));
     }
+    proxyprinttodiv('mapreduce after sort outlist', outlist, 21,true, true);
+    if (!p.limit) {p.limit = outlist.length}
+    // p.limit specifies a maximum number of documents to return from the collection.
+    outlist=outlist.slice(0,p.limit)
+    proxyprinttodiv('mapreduce after limit outlist', outlist, 21,true, true);
 
+    // because of "value" needs to be rewritten:
     if (p.finalize) // Optional. FN Follows the reduce method and modifies the output
     {
         if (!(p.finalize instanceof Function)) {p.finalize = window[reducefn]};
@@ -185,30 +193,13 @@ function mapreducelocal(mapfn, reducefn, p, cb)
         }  
     }
 
-    if (p.scope) //Optional. Specifies global variables that are accessible in the map, reduce and finalize functions.
-    {
-        
-    } 
-
-    if (p.jsmode) //Optional. Specifies whether to convert intermediate data into BSON format between the execution of the map and reduce functions. Defaults to false.
-    {
-        
-    } 
-
-    if (p.verbose) // Optional. Specifies whether to include the timing information in the result information. The verbose defaults to true to include the timing information.
-    {
-        
-    } 
+    if (p.scope) {} //Optional. Specifies global variables that are accessible in the map, reduce and finalize functions.
+    if (p.jsmode) {} //Optional. Specifies whether to convert intermediate data into BSON format between the execution of the map and reduce functions. Defaults to false.
+    if (p.verbose) {} // Optional. Specifies whether to include the timing information in the result information. The verbose defaults to true to include the timing information.
 
     var command={};
-    if (!p.out) 
-    {
-        //"replace":"",
-        //"merge":"",
-        //"reduce":"",
-        //"db":"",
-        //"sharded":"",
-        //"nonatomic":"",
+    if (!p.out) // set up collectionmethod, collection, databasetable, etc based on different parameters
+    {   //"replace":"",//"merge":"",//"reduce":"",//"db":"",//"sharded":"",//"nonatomic":"",
         p.out={};
         if (p.merge)
         {                                              // *** warning whatever collection is listed below will be overritten ****
@@ -228,19 +219,19 @@ function mapreducelocal(mapfn, reducefn, p, cb)
             command.collectionmethod = "replace";
             command.collection = p.out.replace;
         }
-        else
-        {
-            p.out.inline=1;
-        }
-        p.out.db = p.db || config.configuration.d.default.databasetable;
+        else { p.out.inline=1 } // default send it to screen
+
+        //p.out.db = p.db || config.configuration.d.default.databasetable;
         p.out.sharded = p.sharded || false;
         p.out.nonAtomic = p.nonatomic || true;
-        command.databasetable = p.out.db;
+        //command.databasetable = p.out.db; // already done by this time
         command.reducefn = reducefn;
         command.keycollection = command.collection+'key';
     }
 
-    var out = 
+    proxyprinttodiv('mapreduce after command', command, 21,true, true);
+
+    var out = // values are not being calcualted today
         {
         "timeMillis" : 0,
         "counts" : 
@@ -252,7 +243,7 @@ function mapreducelocal(mapfn, reducefn, p, cb)
             },    
         "ok" : 1
         }
-    out.results=outlist;
+    out.results=outlist; // mongo returns in a parameter call "results"
     proxyprinttodiv('mapreduce in out', out, 99,true, true);
     if (p.out.inline === 1) 
     {
@@ -261,6 +252,7 @@ function mapreducelocal(mapfn, reducefn, p, cb)
     else // if not query result -- real save
     {
         out.command=command;
+        proxyprinttodiv('mapreduce callign updatecollection out', out, 21,true, true);
         updatecollection(out, cb);
     }
 }
@@ -271,18 +263,27 @@ function updatecollection(p, cb)
     extend(true, command, config.configuration.d.default, p.command)
     command.collectionmethod = command.collectionmethod || "replace"; // default is to replace, we have merge reduce
     var datalist = p.queryresult || p.results;
+    proxyprinttodiv('updatecollection datalist', datalist, 21,true, true);
+    proxyprinttodiv('updatecollection command', command, 21,true, true);
     if (config.configuration.environment==="local")
     {
         if (command.collectionmethod==="replace") 
         {
+            proxyprinttodiv('updatecollection replace', datalist, 21,true, true);
             var database=datalist;
             var keydatabase = {};
+            // create a keydatabased from database
             for (var eachrecord in database) 
             {
-                keydatabase[eachrecord.wid]=database[eachrecord];
+                proxyprinttodiv('updatecollection database[eachrecord].wid', database[eachrecord].wid, 21,true, true);
+                proxyprinttodiv('updatecollection database[eachrecord]', database[eachrecord], 21,true, true);
+                keydatabase[database[eachrecord].wid]=database[eachrecord];
             }
+            proxyprinttodiv('updatecollection command keydatabase', keydatabase, 21,true, true);
+            // now save both keydatabase and database -- overwrite
             if (command.datastore === "localstorage")
             {
+                proxyprinttodiv('updatecollection command localstorage STORE', command, 21,true, true);
                 addToLocalStorage(command.databasetable + command.keycollection, keydatabase);
                 addToLocalStorage(command.databasetable + command.collection, database);
             }
@@ -291,8 +292,12 @@ function updatecollection(p, cb)
                 addtolocal(command.databasetable + command.keycollection, keydatabase);
                 addtolocal(command.databasetable + command.collection, database);
             }
-        } else // merge or reduce
+            proxyprinttodiv('updatecollection done with replace database', database, 21,true, true);
+            cb(null, null);
+        } 
+        else // merge or reduce -- first get keydatabase
         {
+            proxyprinttodiv('updatecollection start merge/reduce', datalist, 21,true, true);
             if (command.datastore === "localstorage")
             {
                 keydatabase = getFromLocalStorage(command.databasetable + command.keycollection);
@@ -301,21 +306,25 @@ function updatecollection(p, cb)
             {
                 keydatabase = getfromlocal(command.databasetable + command.keycollection);
             }
-            for (var eachrecord in datalist) // step though new list
-            {   // based on merge or reduce extend or reducefn
+            // step though incoming datalist
+            for (var eachrecord in datalist) 
+            {   // based on merge or reduce extend or reducefn 
                 var currentrecord = datalist[eachrecord];
-                var currentwid = currentrecord.wid;
+                var currentwid = currentrecord.wid || currentrecord["_id"];
                 if (command.collectionmethod==="merge")
                 {
+                    // current record should be value : {}, either of statments should be ok
+                    //keydatabase[currentwid].value = extend(true, keydatabase[currentwid].value, currentrecord.value);
                     keydatabase[currentwid] = extend(true, keydatabase[currentwid], currentrecord);
                 }
                 if (command.collectionmethod==="reduce")
                 {
-                    keydatabase[currentwid] = command.reducefn(currentwid, keydatabase[currentwid]);
+                    // current record should be value : {}
+                    keydatabase[currentwid].value = command.reducefn(currentwid, keydatabase[currentwid].value);
                 }
             }
-            
-            // now create the databased from the keydatabase
+            proxyprinttodiv('updatecollection after merge/reduce', keydatabase, 21,true, true);
+            // now create the database from the keydatabase
             var database=[];
             for (var eachrecord in keydatabase)
             {
@@ -333,10 +342,13 @@ function updatecollection(p, cb)
                 addtolocal(command.databasetable + command.keycollection, keydatabase);
                 addtolocal(command.databasetable + command.collection, database);
             }
+            proxyprinttodiv('updatecollection END database', database, 21,true, true);
+            cb(null,null);
         }
     }
     else
     {
+        proxyprinttodiv('updatecollection going to server', datalist, 21,true, true);
         serverupdatecollection(datalist, command, cb)
     }
 }
