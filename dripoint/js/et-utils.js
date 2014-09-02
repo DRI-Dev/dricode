@@ -4735,6 +4735,7 @@
     // this shoud run the very first time an app is installed
     // it should not run again when machine is rebooted, unless local storage is cleared
     exports.eventappinstall = eventappinstall = function eventappinstall(params, callback) {
+        proxyprinttodiv("Eventappinstall started", params, 99);
         clearLocal();
         setdefaultparm();
         if (config.configuration.environment === 'local') {
