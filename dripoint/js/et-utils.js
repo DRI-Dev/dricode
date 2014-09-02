@@ -4737,7 +4737,7 @@
     exports.eventappinstall = eventappinstall = function eventappinstall(params, callback) {
         proxyprinttodiv("Eventappinstall started", params, 99);
         clearLocal();
-        setdefaultparm();
+        config.setdefaultparm();
         if (config.configuration.environment === 'local') {
             clearLocalStorage();
             if (config.configuration.machinename==='phonegap')
