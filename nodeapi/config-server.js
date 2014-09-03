@@ -477,7 +477,7 @@ exports.publishtestdelay = publishtestdelay = function publishtestdelay(paramete
         // publishtest(parameters, callback);
         parameters.command =  parameters.command || {};
         parameters.command.queuename = "eventonemin";
-        parameters["addthis.executethis"] = "publishtest";
+        parameters["executethis"] = "publishtest";
         savetoqueue(parameters, callback);
 };
 
