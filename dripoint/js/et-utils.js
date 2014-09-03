@@ -4587,12 +4587,6 @@
 
     exports.processqueue = processqueue = function processqueue(queuename, callback ) {
 
-        // params.command.eventname = "eventonemin";
-
-
-        //proxyprinttodiv("findparent inputobj", params, 99);
-        //var queuename = params.command.eventname;
-        // var wid = inputobj["wid"];
         var executeobject = {};
         executeobject["executethis"] = "querywidmaster"; // Can be querywidmaster or querywid
         executeobject["command"] = {
@@ -4608,14 +4602,13 @@
                 "metadata.queuename": queuename
             }]
         };
-        //var env = new DriEnvironment(params.command.environment);
-        //proxyprinttodiv("after environment", env, 99);
+
         proxyprinttodiv("after executeobject", executeobject, 99, true, true);
-        //env.execute(executeobject, function (err, res) {
+
         execute(executeobject, function (err, res) {
             proxyprinttodiv("findparent res2", res, 99);
-            // findwidbyqueryresult(res, "primarywid", function (err, res) {
-            if (res.hasOwnProperty('queryresult'))
+
+            if (res.hasOwnProperty('queryresult') && res.queryresult.length>0)
             {
                 var queuecount = res.queryresult.length;
                 proxyprinttodiv("Queuecount / result has this many records", queuecount, 99);
@@ -4639,27 +4632,44 @@
                         }
                     };
 
-                    //env.execute(execobj_get1, function(err, res) {
-                    execute(execobj_get1, function(err, res) {
+                    execute(execobj_get1, function (err, res) {
                         // Receive LOCKED object
                         // try to execute it
-                        // proxyprinttodiv("getwid / lock callback", widname, 99);
+
                         proxyprinttodiv("getwid / lock callback - widname", widname, 99);
                         proxyprinttodiv("getwid / lock callback - execobj_get1", execobj_get1, 99);
                         proxyprinttodiv("getwid / lock callback - res", res, 99);
 
-                        var contained_object = res.container; // res.container[0];
-                        contained_object.executethis=contained_object.addthis.executethis;
-                        delete contained_object.addthis.executethis;
+                        // system will automatically remove addthis 
+                        var executeattributes = res.metadata.executeattributes;
+                        var executecount = executeattributes.count;
+                        delete res.metadata;
+                        var contained_object = res; 
 
+                        // case below should not happen, but if it does just do not execute this but proceed to delete
+                        if (executecount <= 0) 
+                        {
+                            delete contained_object.executethis;
+                        }
+                        
                         // get object from res parameter
                         // execute the object from the result
-                        execute(contained_object, function(err, res) {
-                            // Pass or fail - Now DELETE this wid
+                        execute(contained_object, function (err, res) {
+
+                            if (executecount!=999) {executecount--} // if 999 then run forever
+                            {
+                                var executethis = "deletewid";  // assume we want to delete
+                                if (executecount!==0)           // but if count is not 0 then keep it
+                                {
+                                    executethis="addwidmaster"  // will upsert so data will still be there
+                                }
+                            }
+                            // Pass or fail - Now UPDATE or DELETE the wid
                             proxyprinttodiv("execute the object callback", res, 99);
                             var execobj_del1 = {
-                                "executethis" : "deletewid",
+                                "executethis" : executethis,
                                 "wid" : widname,
+                                "metadata":{"executeattributes":{"count":executecount}},
                                 "command": {
                                     "lock" : false,
                                     "datastore": config.configuration.datastore,
@@ -4675,16 +4685,19 @@
                                 proxyprinttodiv("Delete has finished / execobj_del1", execobj_del1, 99);
                                 if (queuecount > 1)
                                 {
-                                    // If there is anything else left to do,
-                                    // then do it now.
+                                    // If there is anything else left to do, then do it now.
                                     processqueue(queuename, callback);
-                                    //processqueue(params, callback);
                                 }
-                                callback(err, res);
+                                else 
+                                {
+                                    callback(err, res);
+                                }
                             });
                         });
                     });
-                } else {
+                } 
+                else 
+                {
                     // Nothing to do
                     proxyprinttodiv("No results from query, just calling callback", 0, 99);
                     callback(err, res);
@@ -4701,23 +4714,22 @@
         var queuename = p.command.queuename;
         proxyprinttodiv(" qname is ... ",  queuename, 99 );
         delete p.command.queuename;
-        // queuename = "eventonemin";
         var itemtobesaved=p;
 
+        itemtobesaved.addthis ={};
         itemtobesaved.addthis.executethis = itemtobesaved.executethis;
         delete itemtobesaved.executethis;        
 
-        //itemtobesaved = [
-        //    { "executethis": "printhello", "to": "+12313133930", "body":"This is a text" }
-        //]
         var recorddef = {
-            // "wid":"russ112",
             "executethis": "addwidmaster",
-            "container":itemtobesaved,   // no wid ... let system make it for you
-            
+            "addthis":itemtobesaved,   // no wid ... let system make it for you
+
             "metadata" : {
                 "queuename": queuename,
-                "queueflag" : "true"
+                "executeattributes" :
+                    {
+                    "count": 1
+                    } // number of times this should be executed
             },
             "command": {
                 "datastore": config.configuration.datastore,
@@ -4728,8 +4740,6 @@
             }
         };
         proxyprinttodiv("update cache **************", recorddef, 99);
-        // var recorddef = { "wid": "russ1", "key": "value1"};
-        //addwidmaster(recorddef, function (err, res) {
         execute(recorddef, function (err, res) {
             callback(null, res);
         });
