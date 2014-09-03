@@ -169,7 +169,7 @@ function executeAjax(allConfig, executeItem, callback, returnCallback) {
     $.ajax({
         type: 'PUT',
         dataType: 'json',
-        url: 'http://test3.dripoint.com/executethis',
+        url: 'http://demo.dripoint.com/executethis',
         headers: {
             'content-type': 'application/json'
         },
