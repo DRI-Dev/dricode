@@ -866,26 +866,7 @@ function finalformat(output, relationshipoutput, qparms, extracommands, projecti
 			if (limitval===0 && skipval !==0) {output = output.slice(skipval);}
             if (limitval!==0 && skipval !==0) {output = output.slice(skipval, limitval);}
 			*/
-			if (limitval && pagenumber == 1) { output = output.slice(limitval); }
-			else if (pagenumber > 1) {
-				if (!perpage || perpage < 0 || perpage > output.length) { perpage = (output.length / pagenumber); }
-
-				var temp_output = [];
-				var page = [];
-				
-				for (var i in output) {
-					page.push(output[i]);
-					if (i % perpage == 0) { 
-						temp_output.push(page.slice(page.length));
-						page = [];
-					}
-					if (i > limitval) { break; }
-				};
-				
-				if (page.length) { temp_output.push(page); }
-				output = temp_output;
-			};		
-				
+			if (limitval) { output = output.slice(limitval); }				
         }
     }
     proxyprinttodiv('finalformat top output MIDDLE', output, 28, true, true);
