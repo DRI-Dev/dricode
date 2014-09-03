@@ -66,7 +66,7 @@ function processExecuteTags($, callback) {
                 if (onbuild) {
                     console.log('**$$**  processing execute, onbuild true.  Execute params => ' + JSON.stringify(executeObj));
 
-                    execute(executeObj, function (err, resultArray) {
+                    execute(executeObj, function (err, results) {
                         if (err && Object.size(err) > 0) { console.log('** error found => ' + JSON.stringify(err)); }
                         else {
                             if (results.addthis) { results = removeAddThis(results); }
