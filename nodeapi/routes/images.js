@@ -1,5 +1,6 @@
 'use strict';
-var s3 = new aws.S3(),
+var aws = require('aws-sdk'),
+    s3 = new aws.S3(),
     saveBase64ToServer;
 
 exports.saveBase64ToServer = saveBase64ToServer = function saveBase64ToServer(req, res) {
