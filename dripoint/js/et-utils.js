@@ -4646,9 +4646,9 @@
                         // delete contained_object.addthis.executethis;
                         // system will automatically remove addthis 
                         var executeattributes = res.metadata.executeattributes;
-                        var executecount = executeattributes.count;
-                        delete res.metadata;
-                        var contained_object = res; 
+                        var executecount = executeattributes.count || 1;
+                        delete contained_object.metadata;
+                        // var contained_object = res; 
 
                         // case below should not happen, but if it does just do not execute this but proceed to delete
                         if (executecount <= 0) 
