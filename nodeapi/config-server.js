@@ -549,7 +549,7 @@ exports.publishtest = publishtest = function publishtest(parameters, callback) {
 
             //getuptime(null, function(err, result) {
             var passfail = "Unknown";
-            if (result.status) {
+            if (result && result.status) {
                 passfail = "Pass";
             } else {
                 passfail = "Fail";

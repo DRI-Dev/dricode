@@ -4507,21 +4507,21 @@
         });
     };
 
-    exports.eventtenmin = eventtenmin = function eventtenmin(params, cb) {
+    exports.eventtenmin = eventtenmin = function eventtenmin() {
         processqueue(arguments.callee.name, function (err, res) {
-            cb(err, res);
+            // cb(err, res);
         });
     };
 
-    exports.eventdaily = eventdaily = function eventdaily(params, cb) {
+    exports.eventdaily = eventdaily = function eventdaily() {
         processqueue(arguments.callee.name, function (err, res) {
-            cb(err, res);
+            // cb(err, res);
         });
     };
 
-    exports.eventmonthly = eventmonthly = function eventmonthly(params, cb) {
+    exports.eventmonthly = eventmonthly = function eventmonthly() {
         processqueue(arguments.callee.name, function (err, res) {
-            cb(err, res);
+            // cb(err, res);
         });
     };
 
@@ -4658,12 +4658,16 @@
                         
                         // get object from res parameter
                         // execute the object from the result
+                        proxyprinttodiv(" Executecount is ", executecount, 99);
+                        proxyprinttodiv(" -- -- --- ---- about to run contained_object.", JSON.stringify(contained_object), 99);
+                        proxyprinttodiv("   -- ++++===== contained_object is ", JSON.stringify(contained_object), 99);
                         execute(contained_object, function (err, res) {
 
+                            proxyprinttodiv(" Executecount is ", executecount, 99);
                             if (executecount!=999) {executecount--} // if 999 then run forever
                             {
                                 var executethis = "deletewid";  // assume we want to delete
-                                if (executecount!==0)           // but if count is not 0 then keep it
+                                if (executecount > 0)           // but if count is not 0 then keep it
                                 {
                                     executethis="addwidmaster"  // will upsert so data will still be there
                                 }
@@ -4702,12 +4706,17 @@
                 } 
                 else 
                 {
+                    // if !(queuecount > 0)
                     // Nothing to do
                     proxyprinttodiv("No results from query, just calling callback", 0, 99);
                     callback(err, res);
                 }
+            } else {
+                proxyprinttodiv("No queryresult property exists...", 0, 99);
+                callback(err, res);
             }
         });
+        proxyprinttodiv("processqueue complete...", 0, 99);
     };
 
     exports.savetoqueue = savetoqueue = function savetoqueue(p, callback) {
