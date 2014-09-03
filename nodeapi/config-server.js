@@ -310,6 +310,8 @@ exports.anyserver = anyserver = function anyserver(params, callback) {
     delete params.server
     var serverUrl = 'http://'+server+'/executethis';
 
+    console.log("serverUrl is " + serverUrl );
+
     var options = {
         headers: {
             "Content-Type": "application/json; charset=utf-8"
@@ -524,7 +526,7 @@ exports.publishtest = publishtest = function publishtest(parameters, callback) {
         //       the NAME of the server.  
         // 
         //      .  
-        var server = "";
+        var server = "localhost";
         if (repo_name ==="test3") {
             server=repo_name + ".dripoint.com";
         }
