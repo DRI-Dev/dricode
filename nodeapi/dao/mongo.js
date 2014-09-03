@@ -177,7 +177,7 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
     }
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
-        db.collection(schemaToLookup).mapReduce(mapfn, reducefn, thirdparm, function(err, res) {
+        db.collection(schemaToLookup).mapReduce(mapfn.toString(), reducefn.toString(), thirdparm, function(err, res) {
             if (err) {
                 callback(err, {
                     etstatus: {
