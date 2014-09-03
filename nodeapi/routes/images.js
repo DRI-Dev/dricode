@@ -19,7 +19,7 @@ exports.saveBase64ToServer = saveBase64ToServer = function saveBase64ToServer(re
     var s3Params = {
         Bucket: 'dripointImages',
         Key: filename,
-        Body: imageBuffer
+        Body: imageBuffer.data
     };
 
     s3.putObject(s3Params, function (err, data) {
