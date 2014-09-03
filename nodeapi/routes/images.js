@@ -1,5 +1,6 @@
 'use strict';
-var saveBase64ToServer;
+var s3 = new aws.S3(),
+    saveBase64ToServer;
 
 exports.saveBase64ToServer = saveBase64ToServer = function saveBase64ToServer(req, res) {
     var parameters = req.body,
@@ -8,23 +9,44 @@ exports.saveBase64ToServer = saveBase64ToServer = function saveBase64ToServer(re
         filename = path.substring(startIndex + 1),
         imageBuffer = decodeBase64Image(parameters.imagesrc);
 
-    console.log('** Image service is saving ' + filename + ' from base64 string **');
+    console.log('** Image service is saving ' + filename + ' from base64 string to s3 storage **');
 
-    fs.writeFile("C:\\Users\\Administrator\\Copy\\Live_Images\\created_by_browser\\" + filename + ".hstd", "", "utf8",
-        function(err) { console.log('** Image service created the ' + filename + '.hstd placeholder file in the copy folder **') });
+    fs.writeFile("C:\\sync\\Live_Images\\created_by_browser\\" + filename + ".hstd", "", "utf8",
+        function(err) { console.log('** Image service created the ' + filename + '.hstd placeholder file in the sync folder **') });
 
-    fs.writeFile("C:\\servers\\master\\dripoint\\images\\" + filename, imageBuffer.data, 'base64', function(err) {
+    // save to amazon s3 bucket
+    var s3Params = {
+        Bucket: 'dripointImages',
+        Key: filename,
+        Body: imageBuffer
+    };
+
+    s3.putObject(s3Params, function (err, data) {
         if (err) {
             console.log('** Image service error saving ' + filename + ' =>');
             console.log(err);
             res.send('failure');
         } else {
-            console.log('** Image service successfully saved dripoint/images/' + filename + ' **');
+//            console.log('** Image service successfully saved dripoint/images/' + filename + ' **');
+            console.log('** Image service successfully saved ' + filename + ' to s3 storage **');
             res.send('success');
         }
 
         res.end();
     });
+
+//    fs.writeFile("C:\\servers\\master\\dripoint\\images\\" + filename, imageBuffer.data, 'base64', function(err) {
+//        if (err) {
+//            console.log('** Image service error saving ' + filename + ' =>');
+//            console.log(err);
+//            res.send('failure');
+//        } else {
+//            console.log('** Image service successfully saved dripoint/images/' + filename + ' **');
+//            res.send('success');
+//        }
+//
+//        res.end();
+//    });
 };
 
 function decodeBase64Image(dataString) {

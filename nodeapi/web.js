@@ -47,6 +47,13 @@ server = require('./routes/server');
 convert = require('./routes/convert.js');
 imageService = require('./routes/images.js');
 
+/*  Amazon Web Service config section  */
+
+process.env.AWS_ACCESS_KEY_ID = "AKIAIQW5DRTCP7TGELSQ";
+process.env.AWS_SECRET_ACCESS_KEY = "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";
+aws = require('aws-sdk');
+
+/*  Amazon Web Service config section  */
 
 //// *********************** Express Application Configuration follows   *********************** 
 app.configure(function() {
