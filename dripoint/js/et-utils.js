@@ -4646,11 +4646,12 @@
                         // proxyprinttodiv("getwid / lock callback", widname, 99);
                         proxyprinttodiv("getwid / lock callback - widname", widname, 99);
                         proxyprinttodiv("getwid / lock callback - execobj_get1", execobj_get1, 99);
-                        proxyprinttodiv("getwid / lock callback - res", res, 99);
+                        proxyprinttodiv("getwid / lock callback - res", JSON.stringify(res), 99);
 
-                        var contained_object = res.container; // res.container[0];
-                        contained_object.executethis=contained_object.addthis.executethis;
-                        delete contained_object.addthis.executethis;
+                        console.log("RES-> " + JSON.stringify(res) );
+                        var contained_object = res.addthis;
+                        // contained_object.executethis=contained_object.addthis.executethis;
+                        // delete contained_object.addthis.executethis;
 
                         // get object from res parameter
                         // execute the object from the result
@@ -4704,8 +4705,8 @@
         // queuename = "eventonemin";
         var itemtobesaved=p;
 
-        itemtobesaved.addthis.executethis = itemtobesaved.executethis;
-        delete itemtobesaved.executethis;        
+        // itemtobesaved.addthis.executethis = itemtobesaved.executethis;
+        // delete itemtobesaved.executethis;        
 
         //itemtobesaved = [
         //    { "executethis": "printhello", "to": "+12313133930", "body":"This is a text" }
@@ -4713,7 +4714,8 @@
         var recorddef = {
             // "wid":"russ112",
             "executethis": "addwidmaster",
-            "container":itemtobesaved,   // no wid ... let system make it for you
+            // "container":itemtobesaved,   // no wid ... let system make it for you
+            "addthis":itemtobesaved,   // no wid ... let system make it for you
             
             "metadata" : {
                 "queuename": queuename,
