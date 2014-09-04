@@ -45,7 +45,7 @@ widtests.qutest_allexecute.metadata.namespace.subcategory = "push";
 widtests.qutest_allexecute.js = qutest_allexecute;
 widtests.qutest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing querywid and querywidmaster.";
 
-function mapreducefinddistinct () 
+exports.mapreducefinddistinct = mapreducefinddistinct = function mapreducefinddistinct () 
 { 
 	proxyprinttodiv('mapreducefinddistinct distinct this', this, 99,true, true);
 	if (this && this.metadata && this.metadata.method) 
@@ -87,7 +87,7 @@ exports.reducedistinctfield = reducedistinctfield = function reducedistinctfield
     return result;
 };
 
-ettestmap2 = function ettestmap2(p, callback) 
+exports.ettestmap2 = ettestmap2 = function ettestmap2(p, callback) 
 {
 	debuglevel = 21;
 	loaddefaults(null, function (err, res)
@@ -158,7 +158,7 @@ ettestmap2 = function ettestmap2(p, callback)
 	})
 }
 
-function mapbyfieldname() { 
+exports.mapbyfieldname= mapbyfieldname = function mapbyfieldname() { 
     emit(this.fieldname, this); 
 }
 
@@ -171,7 +171,7 @@ exports.mapmethod1 = mapmethod1 = function mapmethod1 () {
     emit(this.metadata.method, 1); 
 }
 
-function querymapmethod1()
+exports.querymapmethod1 = querymapmethod1 =  function querymapmethod1()
 {
 	var executeobj = {
 					"executethis":"mapreduce",
@@ -200,7 +200,7 @@ exports.mapreducedistilledmethod = mapreducedistilledmethod = function mapreduce
 };
 
 
-ettestmap2 = function ettestmap2(p, callback) 
+ettestmap3 = function ettestmap3(p, callback) 
 {
 	debuglevel = 21;
 	loaddefaults(null, function (err, res)
@@ -297,16 +297,16 @@ mapreducetest = function mapreducetest(mapfn, reducefn, querystring, callback) {
     });
 };
 
-function reduce1(key, count) { 
+exports.reduce1 = reduce1 = function reduce1(key, count) { 
     return Array.sum(count); 
 }
 
-function map1() { 
+exports.map1 = map1 = function map1() { 
     // emit the wid name as uniquq value
     emit(this.wid, 1); // this.data);
 }
 
-function testmapreduce1() {
+exports.testmapreduce1 = testmapreduce1 = function testmapreduce1() {
     var query = {}; 
     query.query = {"$and":[{"metadata.method": "defaultdto"}]}; 
 
