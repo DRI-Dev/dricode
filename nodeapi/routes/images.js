@@ -43,15 +43,15 @@ exports.deleteFromS3 = deleteFromS3 = function deleteFromS3(req, res) {
         Key: req.body.removeThis
     };
 
-    console.log('** Image service is deleting ' + filename + ' from s3 storage **');
+    console.log('** Image service is deleting ' + params.Key + ' from s3 storage **');
 
     s3.deleteObject(params, function (err, data) {
         if (err) {
-            console.log('** Image service error deleting ' + filename + ' from s3 storage =>');
+            console.log('** Image service error deleting ' + params.Key + ' from s3 storage =>');
             console.log(err);
             res.send('fail');
         } else {
-            console.log('** Image service successfully deleted ' + filename + ' from s3 storage **');
+            console.log('** Image service successfully deleted ' + params.Key + ' from s3 storage **');
             res.send('success');
         }
 
