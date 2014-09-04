@@ -321,7 +321,7 @@ function updatecollection(p, cb)
                 addtolocal(command.databasetable + command.collection, database);
             }
             proxyprinttodiv('updatecollection done with replace database', database, 21,true, true);
-            cb(null, null);
+            cb(null, database);
         } 
         else // merge or reduce -- first get keydatabase
         {
@@ -371,7 +371,7 @@ function updatecollection(p, cb)
                 addtolocal(command.databasetable + command.collection, database);
             }
             proxyprinttodiv('updatecollection END database', database, 21,true, true);
-            cb(null,null);
+            cb(null,database);
         }
     }
     else
