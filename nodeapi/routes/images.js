@@ -1,14 +1,15 @@
 'use strict';
 var aws = require('aws-sdk'),
     s3 = new aws.S3(),
-    saveBase64ToServer;
+    driImgBucket = 'dripointImages',
+    saveBase64ToServer,
+    deleteFromS3;
 
 exports.saveBase64ToServer = saveBase64ToServer = function saveBase64ToServer(req, res) {
-    var parameters = req.body,
-        path = parameters.path,
+    var path = req.body.path,
         startIndex = (path.indexOf('\\') >= 0 ? path.lastIndexOf('\\') : path.lastIndexOf('/')),
         filename = path.substring(startIndex + 1),
-        imageBuffer = decodeBase64Image(parameters.imagesrc);
+        imageBuffer = decodeBase64Image(req.body.imagesrc);
 
     console.log('** Image service is saving ' + filename + ' from base64 string to s3 storage **');
 
@@ -17,7 +18,7 @@ exports.saveBase64ToServer = saveBase64ToServer = function saveBase64ToServer(re
 
     // save to amazon s3 bucket
     var s3Params = {
-        Bucket: 'dripointImages',
+        Bucket: driImgBucket,
         Key: filename,
         Body: imageBuffer.data
     };
@@ -26,28 +27,36 @@ exports.saveBase64ToServer = saveBase64ToServer = function saveBase64ToServer(re
         if (err) {
             console.log('** Image service error saving ' + filename + ' =>');
             console.log(err);
-            res.send('failure');
+            res.send('fail');
         } else {
-//            console.log('** Image service successfully saved dripoint/images/' + filename + ' **');
             console.log('** Image service successfully saved ' + filename + ' to s3 storage **');
             res.send('success');
         }
 
         res.end();
     });
+};
 
-//    fs.writeFile("C:\\servers\\master\\dripoint\\images\\" + filename, imageBuffer.data, 'base64', function(err) {
-//        if (err) {
-//            console.log('** Image service error saving ' + filename + ' =>');
-//            console.log(err);
-//            res.send('failure');
-//        } else {
-//            console.log('** Image service successfully saved dripoint/images/' + filename + ' **');
-//            res.send('success');
-//        }
-//
-//        res.end();
-//    });
+exports.deleteFromS3 = deleteFromS3 = function deleteFromS3(req, res) {
+    var params = {
+        Bucket: driImgBucket,
+        Key: req.body.removeThis
+    };
+
+    console.log('** Image service is deleting ' + filename + ' from s3 storage **');
+
+    s3.deleteObject(params, function (err, data) {
+        if (err) {
+            console.log('** Image service error deleting ' + filename + ' from s3 storage =>');
+            console.log(err);
+            res.send('fail');
+        } else {
+            console.log('** Image service successfully deleted ' + filename + ' from s3 storage **');
+            res.send('success');
+        }
+
+        res.end();
+    });
 };
 
 function decodeBase64Image(dataString) {

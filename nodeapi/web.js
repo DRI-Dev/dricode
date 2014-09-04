@@ -101,6 +101,7 @@ app.get('/executethis', server.postputgetrunExecutethis);
 // app.put('/executethis', server.putrunExecutethis);
 app.put('/filetowid', convert.convertFileToWid);
 app.put('/base64toserver', imageService.saveBase64ToServer);
+app.put('/deleteFromS3', imageService.deleteFromS3);
 
 //console.log('server config is ' + serverconfig.SERVER_PORT);
 //exports.window = {"configuration":config.configuration};
