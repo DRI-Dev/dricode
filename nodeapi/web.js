@@ -15,6 +15,7 @@ require(DIR_TO_CORE_JS + 'et-utils.js');
 require(DIR_TO_CORE_JS + 'et-add.js');
 require(DIR_TO_CORE_JS + 'et-get.js');
 require(DIR_TO_CORE_JS + 'et-query.js');
+require(DIR_TO_CORE_JS + 'et-htmlprocessor.js');
 require(DIR_TO_CORE_JS + 'executethis.js');
 
 require(DIR_TO_CORE_JS + 'et-utils-test.js');

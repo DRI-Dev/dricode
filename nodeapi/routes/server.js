@@ -17,7 +17,10 @@ function runExecuteThis(parameters, resp) {
     //debuglevel = Number(getglobal('debuglevel')); // get currently stored debuglevel
     if (parameters.debuglevel) 
     {
-        debuglevel = parameters.debuglevel;
+        if (isString(parameters.debuglevel))
+            {debuglevel = Number(parameters.debuglevel)} 
+        else 
+            {debuglevel = parameters.debuglevel};
         //saveglobal("debuglevel", debuglevel); // make it stickly for next time
         delete parameters.debuglevel;
     }
