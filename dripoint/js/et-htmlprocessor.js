@@ -33,29 +33,6 @@
 //					e    will get parms {p:b q:c}
 
 
-function reducemethod1(key, count) { 
-    return Array.sum(count); 
-}
-
-function mapmethod1() { 
-    emit(this.metadata.method, 1); 
-}
-
-function querymapmethod1()
-{
-	var executeobj = {
-					"executethis":"mapreduce",
-					"map": "mapmethod1",
-					"reduce": "reducemethod1",
-					"out": "queryresult",
-					"query": { "wid": {"$exists": "true"}}
-					};	
-	execute(executeobj, function (err, res){
-
-	})
-}
-
-
 function parameterremap(p)
 {
 	// this call remaps parameter names and filters

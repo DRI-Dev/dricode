@@ -101,6 +101,9 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     if (mapfn instanceof Function) {mapfn=mapfn.toString()};
     if (reducefn instanceof Function) {reducefn=reducefn.toString()};
 
+    proxyprinttodiv('mapreduce mapfn II', mapfn, 21,true, true);
+    proxyprinttodiv('mapreduce reducefn II', reducefn, 21,true, true);
+
     if (p.results) {p.queryresult = p.results; delete p.results}
 
     if (config.configuration.environment!=="local" && !p.command.queryresult) // if sent in database then like local

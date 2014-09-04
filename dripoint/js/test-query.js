@@ -11,11 +11,6 @@ function qutest_allexecute(executeobject, callback)
     [   
     //function (cb1) {qutest_map1({}, function (err, res) {cb1(null, res)})},
     function (cb1) {etmttest2({}, function (err, res) {cb1(null, res)})},
-    function (cb1) {qutest_reduced1({}, function (err, res) {cb1(null, res)})},
-    function (cb1) {qutest_reduced_avg1({}, function (err, res) {cb1(null, res)})},
-    function (cb1) {qutest_reduced_sort1({}, function (err, res) {cb1(null, res)})},
-    function (cb1) {qutest_reduced_finalize1({}, function (err, res) {cb1(null, res)})},
-    function (cb1) {qutest_reduced_out_collection1({}, function (err, res) {cb1(null, res)})},
     function (cb1) {qutest_pagenumber1({}, function (err, res) {cb1(null, res)})},
     function (cb1) {qutest_count1({}, function (err, res) {cb1(null, res)})},
     function (cb1) {qutest_limit1({}, function (err, res) {cb1(null, res)})},
@@ -168,11 +163,11 @@ function mapbyfieldname() {
 }
 
 
-function reducemethod1(key, count) { 
+exports.reducemethod1 = reducemethod1 = function reducemethod1 (key, count) { 
     return Array.sum(count); 
 }
 
-function mapmethod1() { 
+exports.mapmethod1 = mapmethod1 = function mapmethod1 () { 
     emit(this.metadata.method, 1); 
 }
 
@@ -180,9 +175,9 @@ function querymapmethod1()
 {
 	var executeobj = {
 					"executethis":"mapreduce",
-					"map": "mapmethod1",
-					"reduce": "reducemethod1",
-					"out": "queryresult",
+					"mapfn": "mapmethod1",
+					"reducefn": "reducemethod1",
+					"out": { "inline": 1 },
 					"query": { "wid": {"$exists": "true"}}
 					};	
 	execute(executeobj, function (err, res){
@@ -204,6 +199,41 @@ exports.mapreducedistilledmethod = mapreducedistilledmethod = function mapreduce
 		{emit(this.fieldname, this) }
 };
 
+
+ettestmap2 = function ettestmap2(p, callback) 
+{
+	debuglevel = 21;
+	loaddefaults(null, function (err, res)
+	{
+		execute(
+			{
+			// since not specified will go to defaults: collection dricollection, etc
+	        "executethis": "mapreduce",
+	        "mapfn": "mapreducedistinctmethod",
+	        "reducefn": "reducedistinctfield",
+	        "out": { "inline": 1 }
+	        //"replace" : "distinctmethodscollection" // will store results here
+	    	}, function (err, res) 
+	    	{
+	    		proxyprinttodiv('MIDDLE', res, 99, true, true);
+	    		//debuglevel=28;
+				// execute(
+				// 	{
+			 //        "executethis": "mapreduce",
+			 //        "mapreduce":"distinctmethodscollection", // will mapreduce from this collection
+			 //        "command.db":"value", // will map reduce from this "small db" inisde collection
+			 //        "mapfn": "mapreducedistilledmethod",
+			 //        "reducefn": "reducedistinctfield",
+			 //        //"out": { "inline": 1 },
+			 //        "replace" : "distilledmethodscollection" // will produce this new collection
+			 //    	}, function (err, res) 
+			 //    	{
+		  //   		callback(null, res);
+		  //   		})
+					callback(null, res);
+	    	})
+	})
+}
 
 ettestmap1 = function ettestmap1(p, callback) 
 {
@@ -228,6 +258,7 @@ ettestmap1 = function ettestmap1(p, callback)
 			        "command.db":"value", // will map reduce from this "small db" inisde collection
 			        "mapfn": "mapreducedistilledmethod",
 			        "reducefn": "reducedistinctfield",
+			        //"out": { "inline": 1 },
 			        "replace" : "distilledmethodscollection" // will produce this new collection
 			    	}, function (err, res) 
 			    	{
@@ -392,609 +423,6 @@ widtests.qutest_map1.category = "redaily";
 widtests.qutest_map1.subcategory = "push";
 widtests.qutest_map1.js = exports.qutest_map1;
 widtests.qutest_map1.description = "this does a test";
-
-exports.map1 =  
-widtests.map1 = 
-map1 = 
-function map1 () {
-	emit(this.name,this.amount);
-}
-
-exports.reduce1 =  
-widtests.reduce1 = 
-reduce1 = 
-function reduce1 (key, values) {
-	proxyprinttodiv('values for ' + key, values, 99);
-	var amt = 0;
-	
-	for (var i in values) {
-		amt += parseInt(values[i]);
-	} 
-	
-	return amt
-}
-
-function reduceAvg1 (key, values) {
-	proxyprinttodiv('values for ' + key, values, 99);
-	var amt = 0;
-	
-	for (var i in values) {
-		amt += parseInt(values[i]);
-	} 
-	
-	amt = amt / values.length;
-	return amt
-}
-
-// this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
-exports.qutest_reduced1 =  
-widtests.qutest_reduced1 = 
-qutest_reduced1 = 
-function qutest_reduced1 (executeobject, callback) {
-
-	  if (!executeobject.command) {
-		  executeobject.command={};
-		  executeobject.command.environment={};
-		  executeobject.command.environment.run={};
-	  }
-	  executeobject.command.xrun=[
-									{
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",
-									"wid":"roger1",
-									"name": "Roger",
-									"status":"completed",
-									"amount": "100"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger2",
-									"name": "Roger",									
-									"status":"completed",
-									"amount": "400"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger3",
-									"name": "Roger",									
-									"status":"completed",
-									"amount": "500"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger4",
-									"name": "Roger",									
-									"status":"completed",
-									"amount": "1000"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger5",
-									"name": "Roger",									
-									"status":"shipped",
-									"amount": "100"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"cody1",
-									"name": "Cody",									
-									"status":"completed",
-									"amount": "500"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"cody2",
-									"name": "Cody",									
-									"status":"completed",
-									"amount": "400"
-									}, {
-									"executethis": "addwidmaster",
-									"metadata.method": "selldto",
-									"wid": "bill1",
-									"name": "Bill",
-									"status": "completed",
-									"amount": "1000",
-									"customer": "Roger"
-									}
-								];
-
-	var expectedresult = [2000,900];
-	var alt_expectedresult = [900,2000];
-							
-	var queryobj = [{
-					"executethis":"mapreduce",
-					"mapfn": "map1",
-					"reducefn": "reduce1",
-					"out": "queryresult",
-					"query": {
-							"$and": [{
-							"data.status":"completed"
-							}, {
-							"metadata.method": "purchasedto"
-							}]
-							 }
-					}];
-					
-	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
-	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
-	  {     
-			proxyprinttodiv('add results', result_obj, 99, true);
-			etEnvironment.execute(queryobj, function (err, res) {
-				proxyprinttodiv('expected result', expectedresult, 99);
-				proxyprinttodiv('actual result', res.queryresult, 99);
-
-				var composite_obj=logverify("qutest_reduced1", res.queryresult, expectedresult);
-				if (composite_obj.qutest_reduced1 === "FAIL") {	var composite_obj=logverify("qutest_reduced1", res.queryresult, alt_expectedresult); }
-				//proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj);
-			});
-	  });
-}
-widtests.qutest_reduced1.category = "redaily";
-widtests.qutest_reduced1.subcategory = "push";
-widtests.qutest_reduced1.js = exports.qutest_reduced1;
-widtests.qutest_reduced1.description = "this does a test";
-
-
-// this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
-exports.qutest_reduced_avg1 =  
-widtests.qutest_reduced_avg1 = 
-qutest_reduced_avg1 = 
-function qutest_reduced_avg1 (executeobject, callback) {
-
-	  if (!executeobject.command) {
-		  executeobject.command={};
-		  executeobject.command.environment={};
-		  executeobject.command.environment.run={};
-	  }
-	  executeobject.command.xrun=[
-									{
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",
-									"wid":"roger1",
-									"name": "Roger",
-									"status":"completed",
-									"amount": "100"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger2",
-									"name": "Roger",									
-									"status":"completed",
-									"amount": "400"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger3",
-									"name": "Roger",									
-									"status":"completed",
-									"amount": "500"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger4",
-									"name": "Roger",									
-									"status":"completed",
-									"amount": "1000"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger5",
-									"name": "Roger",									
-									"status":"shipped",
-									"amount": "100"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"cody1",
-									"name": "Cody",									
-									"status":"completed",
-									"amount": "500"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"cody2",
-									"name": "Cody",									
-									"status":"completed",
-									"amount": "400"
-									}, {
-									"executethis": "addwidmaster",
-									"metadata.method": "selldto",
-									"wid": "bill1",
-									"name": "Bill",
-									"status": "completed",
-									"amount": "1000",
-									"customer": "Roger"
-									}
-								];
-
-	var expectedresult = [500,450];
-	var alt_expectedresult = [450,500];
-	
-	var queryobj = [{
-					"executethis":"mapreduce",
-					"mapfn": "map1",
-					"reducefn": "reduceAvg1",
-					"out": "queryresult",
-					"query": {
-							"$and": [{
-							"data.status":"completed"
-							}, {
-							"metadata.method": "purchasedto"
-							}]
-							 }
-					}];						
-	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
-	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
-	  {     
-			proxyprinttodiv('avg results', result_obj, 99, true);
-			etEnvironment.execute(queryobj, function (err, res) {
-				proxyprinttodiv('expected result', expectedresult, 99);
-				proxyprinttodiv('actual result', res.queryresult, 99);
-
-				var composite_obj=logverify("qutest_reduced_avg1", res.queryresult, expectedresult);
-				if (composite_obj.qutest_reduced_avg1 === "FAIL") {	composite_obj=logverify("qutest_reduced_avg1", res.queryresult, alt_expectedresult); }
-				//proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj);
-			});
-	  });
-}
-widtests.qutest_reduced_avg1.category = "redaily";
-widtests.qutest_reduced_avg1.subcategory = "push";
-widtests.qutest_reduced_avg1.js = exports.qutest_reduced_avg1;
-widtests.qutest_reduced_avg1.description = "this does a test";
-
-
-// this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
-exports.qutest_reduced_sort1 =  
-widtests.qutest_reduced_sort1 = 
-qutest_reduced_sort1 = 
-function qutest_reduced_sort1 (executeobject, callback) {
-
-	  if (!executeobject.command) {
-		  executeobject.command={};
-		  executeobject.command.environment={};
-		  executeobject.command.environment.run={};
-	  }
-	  executeobject.command.xrun=[
-									{
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",
-									"wid":"roger1",
-									"name": "Roger",
-									"status":"completed",
-									"amount": "100"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger2",
-									"name": "Roger",									
-									"status":"completed",
-									"amount": "400"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger3",
-									"name": "Roger",									
-									"status":"completed",
-									"amount": "500"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger4",
-									"name": "Roger",									
-									"status":"completed",
-									"amount": "1000"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger5",
-									"name": "Roger",									
-									"status":"shipped",
-									"amount": "100"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"cody1",
-									"name": "Cody",									
-									"status":"completed",
-									"amount": "500"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"cody2",
-									"name": "Cody",									
-									"status":"completed",
-									"amount": "400"
-									}, {
-									"executethis": "addwidmaster",
-									"metadata.method": "selldto",
-									"wid": "bill1",
-									"name": "Bill",
-									"status": "completed",
-									"amount": "1000",
-									"customer": "Roger"
-									}
-								];
-
-	var expectedresult = [
-							{
-								"wid1":{
-									"color":"red",
-									"wid":"wid1",
-									"metadata": {
-										"date":{"exception":["created","changed","unchanged","updated"]}
-									}
-								}
-							}];
-							
-	var queryobj = [{
-					"executethis":"mapreduce",
-					"mapfn": "map1",
-					"reducefn": "reduce1",
-					"out": "queryresult",
-					"sort": true,
-					"query": {
-							"$and": [{
-							"data.status":"completed"
-							}, {
-							"metadata.method": "purchasedto"
-							}]
-							 }
-					}];
-					
-	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
-	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
-	  {     
-			proxyprinttodiv('add results', result_obj, 99, true);
-			etEnvironment.execute(queryobj, function (err, res) {
-				proxyprinttodiv('expected result', expectedresult, 99);
-				proxyprinttodiv('actual result', res, 99);
-
-				var composite_obj=logverify("qutest_reduced_sort1", res, expectedresult);
-				//proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj);
-			});
-	  });
-}
-widtests.qutest_reduced_sort1.category = "redaily";
-widtests.qutest_reduced_sort1.subcategory = "push";
-widtests.qutest_reduced_sort1.js = exports.qutest_reduced_sort1;
-widtests.qutest_reduced_sort1.description = "this does a test";
-
-
-function finalize1 (params) {
-	proxyprinttodiv('item --', params, 99);
-	var itm = params.toString() + " USD";
-	return itm;
-};
-
-// this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
-exports.qutest_reduced_finalize1 =  
-widtests.qutest_reduced_finalize1 = 
-qutest_reduced_finalize1 = 
-function qutest_reduced_finalize1 (executeobject, callback) {
-
-	  if (!executeobject.command) {
-		  executeobject.command={};
-		  executeobject.command.environment={};
-		  executeobject.command.environment.run={};
-	  }
-	  executeobject.command.xrun=[
-									{
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",
-									"wid":"roger1",
-									"name": "Roger",
-									"status":"completed",
-									"amount": "100"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger2",
-									"name": "Roger",									
-									"status":"completed",
-									"amount": "400"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger3",
-									"name": "Roger",									
-									"status":"completed",
-									"amount": "500"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger4",
-									"name": "Roger",									
-									"status":"completed",
-									"amount": "1000"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger5",
-									"name": "Roger",									
-									"status":"shipped",
-									"amount": "100"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"cody1",
-									"name": "Cody",									
-									"status":"completed",
-									"amount": "500"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"cody2",
-									"name": "Cody",									
-									"status":"completed",
-									"amount": "400"
-									}, {
-									"executethis": "addwidmaster",
-									"metadata.method": "selldto",
-									"wid": "bill1",
-									"name": "Bill",
-									"status": "completed",
-									"amount": "1000",
-									"customer": "Roger"
-									}
-								];
-
-	var expectedresult = ["2000 USD","900 USD"];
-							
-	var queryobj = [{
-					"executethis":"mapreduce",
-					"mapfn": "map1",
-					"reducefn": "reduce1",
-					"out": "queryresult",
-					"finalize": "finalize1",
-					"query": {
-							"$and": [{
-							"data.status":"completed"
-							}, {
-							"metadata.method": "purchasedto"
-							}]
-							 }
-					}];
-					
-	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
-	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
-	  {     
-			proxyprinttodiv('add results', result_obj, 99, true);
-			etEnvironment.execute(queryobj, function (err, res) {
-				proxyprinttodiv('expected result', expectedresult, 99);
-				proxyprinttodiv('actual result', res.queryresult, 99);
-
-				var composite_obj=logverify("qutest_reduced_sort1", res.queryresult, expectedresult);
-				//proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj);
-			});
-	  });
-}
-widtests.qutest_reduced_finalize1.category = "redaily";
-widtests.qutest_reduced_finalize1.subcategory = "push";
-widtests.qutest_reduced_finalize1.js = exports.qutest_reduced_finalize1;
-widtests.qutest_reduced_finalize1.description = "this does a test";
-
-
-
-// this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
-exports.qutest_reduced_out_collection1 =  
-widtests.qutest_reduced_out_collection1 = 
-qutest_reduced_out_collection1 = 
-function qutest_reduced_out_collection1 (executeobject, callback) {
-
-	  if (!executeobject.command) {
-		  executeobject.command={};
-		  executeobject.command.environment={};
-		  executeobject.command.environment.run={};
-	  }
-	  executeobject.command.xrun=[
-									{
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",
-									"wid":"roger1",
-									"name": "Roger",
-									"status":"completed",
-									"amount": "100"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger2",
-									"name": "Roger",									
-									"status":"completed",
-									"amount": "400"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger3",
-									"name": "Roger",									
-									"status":"completed",
-									"amount": "500"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger4",
-									"name": "Roger",									
-									"status":"completed",
-									"amount": "1000"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"roger5",
-									"name": "Roger",									
-									"status":"shipped",
-									"amount": "100"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"cody1",
-									"name": "Cody",									
-									"status":"completed",
-									"amount": "500"
-									}, {
-									"executethis":"addwidmaster",
-									"metadata.method": "purchasedto",									
-									"wid":"cody2",
-									"name": "Cody",									
-									"status":"completed",
-									"amount": "400"
-									}, {
-									"executethis": "addwidmaster",
-									"metadata.method": "selldto",
-									"wid": "bill1",
-									"name": "Bill",
-									"status": "completed",
-									"amount": "1000",
-									"customer": "Roger"
-									}
-								];
-
-	var expectedresult = [
-							{
-								"wid1":{
-									"color":"red",
-									"wid":"wid1",
-									"metadata": {
-										"date":{"exception":["created","changed","unchanged","updated"]}
-									}
-								}
-							}];
-							
-	var queryobj = [{
-					"executethis":"mapreduce",
-					"mapfn": "map1",
-					"reducefn": "reduce1",
-					"out": "purchase_collection",
-					"query": {
-							"$and": [{
-							"data.status":"completed"
-							}, {
-							"metadata.method": "purchasedto"
-							}]
-							 }
-					}];
-					
-	  var etEnvironment = new DriEnvironment(executeobject.command.environment);
-	  etEnvironment.execute(executeobject, function (error_obj, result_obj) 
-	  {     
-			proxyprinttodiv('add results', result_obj, 99, true);
-			etEnvironment.execute(queryobj, function (err, res) {
-				proxyprinttodiv('expected result', expectedresult, 99);
-				proxyprinttodiv('actual result', res, 99);
-
-				var composite_obj=logverify("qutest_reduced_out_collection1", res, expectedresult);
-				//proxyprinttodiv('composite_obj', composite_obj, 99);
-				callback(null, composite_obj);
-			});
-	  });
-}
-widtests.qutest_reduced_out_collection1.category = "redaily";
-widtests.qutest_reduced_out_collection1.subcategory = "push";
-widtests.qutest_reduced_out_collection1.js = exports.qutest_reduced_out_collection1;
-widtests.qutest_reduced_out_collection1.description = "this does a test";
-
 
 
 // this sets up 1 wid and then queries for color = red, which should return wid1 in the query result.
