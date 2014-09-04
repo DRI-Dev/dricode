@@ -90,10 +90,21 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     delete p.mapfn;
     delete p.reducefn;
 
+    // // is it a string pointing to a real fn?  get copy of fn
+    // if (!(mapfn instanceof Function) && window[mapfn]) {mapfn = window[mapfn]};
+    // if (!(reducefn instanceof Function) && window[reducefn]) {reducefn = window[reducefn]};
+
+
+
     if (p.results) {p.queryresult = p.results; delete p.results}
 
     if (config.configuration.environment!=="local" && !p.command.queryresult) // if sent in database then like local
     {
+        // is it a fn?  convert it to a string
+
+        if (mapfn instanceof Function) {mapfn=mapfn.toString()};
+        if (reducefn instanceof Function) {reducefn=reducefn.toString()};
+
         p.command = p.command || {};
         p.command.databasetable = p.db || p.command.databasetable || config.configuration.d.default.databasetable;
         p.command.collection = p.mapreduce ||  p.command.collection || config.configuration.d.default.collection;
@@ -141,37 +152,31 @@ exports.emit = emit = function emit(k, v)
         globalresultobject[k].push(v);
     }
 
-function functionName(fun) {
-  var ret = fun.toString();
-  ret = ret.substr('function '.length);
-  ret = ret.substr(0, ret.indexOf('('));
-  return ret;
-}
+// function functionName(fun) {
+//   var ret = fun.toString();
+//   ret = ret.substr('function '.length);
+//   ret = ret.substr(0, ret.indexOf('('));
+//   return ret;
+// }
 
 function mapreducelocal(mapfn, reducefn, p, cb)
 {
     proxyprinttodiv('mapreduce mapfn', mapfn, 21,true, true);
     proxyprinttodiv('mapreduce reducefn', reducefn, 21,true, true);
     proxyprinttodiv('mapreduce p', p, 21,true, true);
-
     // is it a string pointing to a real fn?  get copy of fn
     if (!(mapfn instanceof Function) && window[mapfn]) {mapfn = window[mapfn]};
     if (!(reducefn instanceof Function) && window[reducefn]) {reducefn = window[reducefn]};
-
-    // is it a fn?  convert it to a string
-    if (mapfn instanceof Function) {mapfn=mapfn.toString()};
-    if (reducefn instanceof Function) {reducefn=reducefn.toString()};
-    // mapper step
-    proxyprinttodiv('mapreduce mapfn II', mapfn, 21,true, true);
-    proxyprinttodiv('mapreduce reducefn II', reducefn, 21,true, true);
-
+    
     globalresultobject = {};
     for (var eachitem in p.queryresult) // example map: function () {emit(this.gender, 1);};
     {
         proxyprinttodiv('mapreduce p.queryresult[eachitem]', p.queryresult[eachitem], 21,true, true);
-        proxyprinttodiv('mapreduce p.queryresult[eachitem]', "("+mapfn + ".()apply(" + JSON.stringify(p.queryresult[eachitem]) + ")", 21,true, true);
-        eval("("+mapfn + ".appy(" + JSON.stringify(p.queryresult[eachitem]) + ")");
-        //mapfn.apply(p.queryresult[eachitem]);
+        //proxyprinttodiv('mapreduce p.queryresult[eachitem]', "("+mapfn + ".()apply(" + JSON.stringify(p.queryresult[eachitem]) + ")", 21,true, true);
+        //eval("("+mapfn + "(" + JSON.stringify(p.queryresult[eachitem]) + "))");
+        //var m = eval ("new function ("+mapfn + "(" + JSON.stringify(p.queryresult[eachitem]) + "))");
+
+        mapfn.apply(p.queryresult[eachitem]);
     } 
     // queryresultobject is global and should be {wid:[], wid:[], wid:[]}
     proxyprinttodiv('mapreduce globalresultobject I', globalresultobject, 21,true, true);
@@ -186,8 +191,8 @@ function mapreducelocal(mapfn, reducefn, p, cb)
             temp["metadata"]={};
             temp["metadata"]["method"]="createdcollection"
             temp.metadata.date = new Date();
-            //temp["value"] = reducefn(eachitem, globalresultobject[eachitem]);
-            temp["value"] = eval(reducefn)(eachitem, globalresultobject[eachitem]);
+            temp["value"] = reducefn(eachitem, globalresultobject[eachitem]);
+            //temp["value"] = eval(reducefn)(eachitem, globalresultobject[eachitem]);
             outlist.push(temp);
     }
     // out should be: [{_id:, value:},{},{}]

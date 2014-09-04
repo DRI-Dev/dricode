@@ -113,14 +113,10 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-	proxyprinttodiv('mapreduceserver params = ',p,99);
-	
-    // convert string to fn
-    if (!(mapfn instanceof Function) && window[mapfn]) {mapfn = window[mapfn]};
-    if (!(reducefn instanceof Function) && window[reducefn]) {reducefn = window[reducefn]};
+	proxyprinttodiv('mapreduceserver params = ',p,99, true, true);
 
-    proxyprinttodiv('mapfn = ',mapfn,99);
-    proxyprinttodiv('reducefn = ',reducefn,99);
+    proxyprinttodiv('mapreduceserver mapfn = ',mapfn,99, true, true);
+    proxyprinttodiv('mapreduceserver reducefn = ',reducefn,99, true, true);
 
     var filter_data = getcommand(p, 
         {   // defaults
@@ -140,6 +136,8 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
     var thirdparm = filter_data.filteredobject;
     var xtra = filter_data.output;
 
+    proxyprinttodiv('mapreduceserver thirdparm = ',thirdparm,99, true);
+    proxyprinttodiv('mapreduceserver xtra = ',xtra,99, true);
     // if output = queryresult then inline
     
     if (!thirdparm.out) 
@@ -176,8 +174,10 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
         thirdparm.out.nonAtomic = xtra.nonatomic || true;
     }
 
+    proxyprinttodiv('mapreduceserver thirdparm = ',thirdparm,99, true, true);
+    // mapfn and reducefn will be sent as strings from et-query
     getConnection(mongoDatabaseToLookup, function(err, db) {
-        db.collection(schemaToLookup).mapReduce(mapfn.toString(), reducefn.toString(), thirdparm, function(err, res) {
+        db.collection(schemaToLookup).mapReduce(mapfn, reducefn, thirdparm, function(err, res) {
             if (err) {
                 callback(err, {
                     etstatus: {
@@ -186,6 +186,7 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
                 });
             } else {
                 if (res) {
+                    proxyprinttodiv('res from mapreduceserver = ',reducefn,99, true, true);
                     callback(err, res);
                 } else {
                     callback(err, []);
