@@ -75,7 +75,7 @@ function mapreducefinddistinct ()
 	}
 };
 
-function reducedistinctfield(wid, values){
+exports.reducedistinctfield = reducedistinctfield = function reducedistinctfield(wid, values){
 	proxyprinttodiv('reducetest1 wid', wid, 99,true, true);
     proxyprinttodiv('reducetest1 value', values, 99,true, true);
     var result = {count : 0, fieldname: ""}
@@ -190,14 +190,14 @@ function querymapmethod1()
 	})
 }
 
-function mapreducedistinctmethod () 
+exports.mapreducedistinctmethod = mapreducedistinctmethod = function mapreducedistinctmethod () 
 { 
 	//proxyprinttodiv('mapreducetest1 distinct this', this, 99,true, true);
 	if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.category) 
 		{emit(this.metadata.namespace.category, {fieldname: this.metadata.namespace.category}) }
 };
 
-function mapreducedistilledmethod () 
+exports.mapreducedistilledmethod = mapreducedistilledmethod = function mapreducedistilledmethod () 
 { 
 	//proxyprinttodiv('mapreduce distilled this', this, 99,true, true);
 	if (this && this.fieldname) 
