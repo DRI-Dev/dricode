@@ -180,6 +180,7 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
         proxyprinttodiv('mapfn  ',mapfn,99, true, true);
         proxyprinttodiv('mapfn  ',reducefn,99, true, true);
         db.collection(schemaToLookup).mapReduce(mapfn, reducefn, thirdparm, function(err, res) {
+            proxyprinttodiv('mapfn err ',err,99, true, true);
             if (err) {
                 callback(err, {
                     etstatus: {
