@@ -95,6 +95,7 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     // if (!(reducefn instanceof Function) && window[reducefn]) {reducefn = window[reducefn]};
 
 
+    window = window || global;
     if (window[mapfn]) {mapfn=window[mapfn]};
     if (window[reducefn]) {reducefn=window[reducefn]};
     if (mapfn instanceof Function) {mapfn=mapfn.toString()};
