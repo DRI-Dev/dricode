@@ -24,7 +24,7 @@
 //
 //     shared:
 //     nonatomic:
-//     scope: <document>,
+//     scope: <document>,/
 //     jsMode: <boolean>,
 //     verbose: <boolean>
 //
