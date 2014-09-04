@@ -200,7 +200,7 @@ exports.mapreducedistilledmethod = mapreducedistilledmethod = function mapreduce
 };
 
 
-ettestmap3 = function ettestmap3(p, callback) 
+exports.ettestmap3 = ettestmap3 = function ettestmap3(p, callback) 
 {
 	debuglevel = 21;
 	loaddefaults(null, function (err, res)
@@ -235,7 +235,7 @@ ettestmap3 = function ettestmap3(p, callback)
 	})
 }
 
-ettestmap1 = function ettestmap1(p, callback) 
+exports.ettestmap1 = ettestmap1 = function ettestmap1(p, callback) 
 {
 	debuglevel = 21;
 	loaddefaults(null, function (err, res)
