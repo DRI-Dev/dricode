@@ -63,6 +63,23 @@ widtests.adtest_allexecute.js = adtest_allexecute;
 widtests.adtest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing addhoc.";
 
 
+exports.adtest_testsavetoqueue1 = 
+widtests.adtest_testsavetoqueue1 = 
+adtest_testsavetoqueue1 = 
+function adtest_testsavetoqueue1 (params, callback) {
+	executeobj = [{
+					"executethis": "addwidmaster",
+					"wid": "wid1",
+					"addthis.executethis": "wid2"
+				}, {
+					"executethis": "addwidmaster",
+					"wid": "wid2",
+					"addthis.executethis": "addwidmaster",
+					"addthis.wid": "wid3",
+					"addthis.field1": "a",
+					"addthis.field2": "b"
+				}];
+				
 // test to enter lots of data at once :: created to raise the Maximum range reached error in Chrome
 exports.ettss3 = widtests.ettss3 = ettss3 = function ettss3(params, callback) {
     debuglevel = 17;

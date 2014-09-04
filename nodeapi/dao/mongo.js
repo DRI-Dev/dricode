@@ -170,8 +170,8 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
         }
 
         thirdparm.out.db = xtra.db || config.configuration.d.default.databasetable;
-        thirdparm.out.sharded = xtra.sharded || false;
-        thirdparm.out.nonAtomic = xtra.nonatomic || true;
+        //thirdparm.out.sharded = xtra.sharded || false;
+        //thirdparm.out.nonAtomic = xtra.nonatomic || true;
     }
 
     proxyprinttodiv('mapreduceserver thirdparm = ',thirdparm,99, true, true);
