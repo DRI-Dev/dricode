@@ -76,8 +76,8 @@ function mapreducefinddistinct ()
 };
 
 exports.reducedistinctfield = reducedistinctfield = function reducedistinctfield(wid, values){
-	proxyprinttodiv('reducetest1 wid', wid, 99,true, true);
-    proxyprinttodiv('reducetest1 value', values, 99,true, true);
+//	proxyprinttodiv('reducetest1 wid', wid, 99,true, true);
+//    proxyprinttodiv('reducetest1 value', values, 99,true, true);
     var result = {count : 0, fieldname: ""}
     var c=0; 
     values.forEach(function(value) 
@@ -88,7 +88,7 @@ exports.reducedistinctfield = reducedistinctfield = function reducedistinctfield
     	if (value.type) {result.type = value.type};
     })
 
-    proxyprinttodiv('reducetest1 result', result, 99,true, true);
+ //   proxyprinttodiv('reducetest1 result', result, 99,true, true);
     return result;
 };
 
