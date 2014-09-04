@@ -63,12 +63,16 @@ function decodeBase64Image(dataString) {
     var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
         response = {};
 
-    if (matches.length !== 3) {
+    if (matches && matches.length !== 3) {
         return new Error('Invalid input string');
     }
 
-    response.type = matches[1];
-    response.data = new Buffer(matches[2], 'base64');
+    if (!matches && dataString.length > 0) {
+        response.data = new Buffer(dataString, 'base64');
+    } else {
+        response.type = matches[1];
+        response.data = new Buffer(matches[2], 'base64');
+    }
 
     return response;
 }
