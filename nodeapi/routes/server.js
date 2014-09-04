@@ -24,6 +24,10 @@ function runExecuteThis(parameters, resp) {
         //saveglobal("debuglevel", debuglevel); // make it stickly for next time
         delete parameters.debuglevel;
     }
+    else
+    {
+        debuglevel=-1;
+    }
 
     if (debuglevel && debuglevel!==-1)
     {
