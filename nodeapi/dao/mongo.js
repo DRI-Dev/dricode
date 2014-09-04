@@ -177,6 +177,8 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
     proxyprinttodiv('mapreduceserver thirdparm = ',thirdparm,99, true, true);
     // mapfn and reducefn will be sent as strings from et-query
     getConnection(mongoDatabaseToLookup, function(err, db) {
+        proxyprinttodiv('mapfn  ',mapfn,99, true, true);
+        proxyprinttodiv('mapfn  ',reducefn,99, true, true);
         db.collection(schemaToLookup).mapReduce(mapfn, reducefn, thirdparm, function(err, res) {
             if (err) {
                 callback(err, {
