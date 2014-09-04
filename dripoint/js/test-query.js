@@ -192,14 +192,14 @@ function querymapmethod1()
 
 function mapreducedistinctmethod () 
 { 
-	proxyprinttodiv('mapreducetest1 distinct this', this, 99,true, true);
+	//proxyprinttodiv('mapreducetest1 distinct this', this, 99,true, true);
 	if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.category) 
 		{emit(this.metadata.namespace.category, {fieldname: this.metadata.namespace.category}) }
 };
 
 function mapreducedistilledmethod () 
 { 
-	proxyprinttodiv('mapreduce distilled this', this, 99,true, true);
+	//proxyprinttodiv('mapreduce distilled this', this, 99,true, true);
 	if (this && this.fieldname) 
 		{emit(this.fieldname, this) }
 };

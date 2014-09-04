@@ -95,6 +95,10 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     // if (!(reducefn instanceof Function) && window[reducefn]) {reducefn = window[reducefn]};
 
 
+    if (window[mapfn]) {mapfn=window[mapfn]};
+    if (window[reducefn]) {reducefn=window[reducefn]};
+    if (mapfn instanceof Function) {mapfn=mapfn.toString()};
+    if (reducefn instanceof Function) {reducefn=reducefn.toString()};
 
     if (p.results) {p.queryresult = p.results; delete p.results}
 
@@ -102,8 +106,7 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     {
         // is it a fn?  convert it to a string
 
-        if (mapfn instanceof Function) {mapfn=mapfn.toString()};
-        if (reducefn instanceof Function) {reducefn=reducefn.toString()};
+
 
         p.command = p.command || {};
         p.command.databasetable = p.db || p.command.databasetable || config.configuration.d.default.databasetable;
@@ -140,17 +143,7 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     }
 }
 
-// through this. probably possible to create unique intance of this
-// this function should not exist server side
-var globalresultobject = {};
-exports.globalresultobject = {};
-exports.emit = emit = function emit(k, v)
-    {
-        proxyprinttodiv('mapreduce emit k', k, 21,true, true);
-        proxyprinttodiv('mapreduce emit v', v, 21,true, true);
-        if (!globalresultobject[k]) {globalresultobject[k] = []};
-        globalresultobject[k].push(v);
-    }
+
 
 // function functionName(fun) {
 //   var ret = fun.toString();
@@ -159,15 +152,37 @@ exports.emit = emit = function emit(k, v)
 //   return ret;
 // }
 
+    // through this. probably possible to create unique intance of this
+    // this function should not exist server side
+    var globalresultobject = {};
+    exports.globalresultobject = {};
+    exports.emit = emit = 
+    function emit(k, v)
+    {
+        proxyprinttodiv('mapreduce emit k', k, 21,true, true);
+        proxyprinttodiv('mapreduce emit v', v, 21,true, true);
+        if (!globalresultobject[k]) {globalresultobject[k] = []};
+        globalresultobject[k].push(v);
+    }
+
+
 function mapreducelocal(mapfn, reducefn, p, cb)
 {
+ 
+
     proxyprinttodiv('mapreduce mapfn', mapfn, 21,true, true);
     proxyprinttodiv('mapreduce reducefn', reducefn, 21,true, true);
     proxyprinttodiv('mapreduce p', p, 21,true, true);
     // is it a string pointing to a real fn?  get copy of fn
-    if (!(mapfn instanceof Function) && window[mapfn]) {mapfn = window[mapfn]};
-    if (!(reducefn instanceof Function) && window[reducefn]) {reducefn = window[reducefn]};
+    //if (!(mapfn instanceof Function) && window[mapfn]) {mapfn = window[mapfn]};
+    //if (!(reducefn instanceof Function) && window[reducefn]) {reducefn = window[reducefn]};
     
+
+    var functionname = mapfn.substr('function '.length);
+    functionname = functionname.substr(0, functionname.indexOf('('));
+    proxyprinttodiv('mapreduce functionname', functionname, 21,true, true);
+    eval(mapfn);
+        
     globalresultobject = {};
     for (var eachitem in p.queryresult) // example map: function () {emit(this.gender, 1);};
     {
@@ -176,13 +191,22 @@ function mapreducelocal(mapfn, reducefn, p, cb)
         //eval("("+mapfn + "(" + JSON.stringify(p.queryresult[eachitem]) + "))");
         //var m = eval ("new function ("+mapfn + "(" + JSON.stringify(p.queryresult[eachitem]) + "))");
 
-        mapfn.apply(p.queryresult[eachitem]);
+        //mapfn.apply(p.queryresult[eachitem]);
+
+        //var newfn = eval("mapfn" + return c )
+
+        window[functionname].apply(p.queryresult[eachitem]);
     } 
     // queryresultobject is global and should be {wid:[], wid:[], wid:[]}
     proxyprinttodiv('mapreduce globalresultobject I', globalresultobject, 21,true, true);
 
     // reduce step
     var outlist =[];
+    var functionname = reducefn.substr('function '.length);
+    functionname = functionname.substr(0, functionname.indexOf('('));
+    proxyprinttodiv('mapreduce functionname reduce', functionname, 21,true, true);
+
+    eval(mapfn);
     for (var eachitem in globalresultobject) // example reduce: function(gender, count){return Array.sum(count);};
     {
             var temp={};
@@ -191,7 +215,8 @@ function mapreducelocal(mapfn, reducefn, p, cb)
             temp["metadata"]={};
             temp["metadata"]["method"]="createdcollection"
             temp.metadata.date = new Date();
-            temp["value"] = reducefn(eachitem, globalresultobject[eachitem]);
+            //temp["value"] = reducefn(eachitem, globalresultobject[eachitem]);
+            temp["value"] = window[functionname](eachitem, globalresultobject[eachitem]);
             //temp["value"] = eval(reducefn)(eachitem, globalresultobject[eachitem]);
             outlist.push(temp);
     }
