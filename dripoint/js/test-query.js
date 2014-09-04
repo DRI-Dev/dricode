@@ -214,8 +214,8 @@ ettestmap1 = function ettestmap1(p, callback)
 			{
 			// since not specified will go to defaults: collection dricollection, etc
 	        "executethis": "mapreduce",
-	        "mapfn": "mapreducedistinctmethod",
-	        "reducefn": "reducedistinctfield",
+	        "mapfn": mapreducedistilledmethod.toString(),
+	        "reducefn": reducedistinctfield.toString(),
 	        "replace" : "distinctmethodscollection" // will store results here
 	    	}, function (err, res) 
 	    	{
