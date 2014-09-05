@@ -19,6 +19,7 @@ exports.saveBase64ToServer = saveBase64ToServer = function saveBase64ToServer(re
     // save to amazon s3 bucket
     var s3Params = {
         Bucket: driImgBucket,
+        ACL: "Public-read",
         Key: filename,
         Body: imageBuffer.data
     };
