@@ -74,34 +74,70 @@ exports.mquery = mquery = function mquery(objToFind, projection, command, callba
     var limitval = command.limit || perpage || 0;  // 0 is all
     var sortobj = command.sort || {};
     var count = command.count || false;
+    var distinct = command.distinct || null;
 
     getConnection(mongoDatabaseToLookup, function(err, db) {
-        if (count)
+        if (distinct) 
         {
-             db.collection(schemaToLookup).count(objToFind, function (err, count) {
-                 if (err) {
-                     callback({"errorname":"query_count_error"}, []);
-                 } else {
-                     if (count) { callback(err, {count: count}); }
-                     else { callback({"errorname":"queryerror"}, []); }
-                 }
-             });
+            if (count)
+            {
+                //db.collection(schemaToLookup).count(objToFind, function (err, count) {
+                db.collection(schemaToLookup).distinct(objToFind, function (err, res) {
+                     if (err) {
+                         callback({"errorname":"query_count_error"}, []);
+                     } else {
+                         if (res) { callback(err, {count: res.length }); }
+                         else { callback({"errorname":"queryerror"}, []); }
+                     }
+                 });
+            }
+            else // if real query
+            {
+                 db.collection(schemaToLookup).
+                     //find(objToFind, projection).
+                     distinct(objToFind, projection).
+                     sort(sortobj).
+                     skip(skipval).
+                     limit(limitval).
+                     toArray(function(err, res)
+                 {
+                     if (err) { callback({"errorname":"queryerror: " + err}, []); }
+                     else {
+                         if (res) { callback(err, res); }
+                         else { callback({"errorname":"no_query_result"}, []); }
+                     }
+                 });
+            }
         }
-        else // if real query
+        else
         {
-             db.collection(schemaToLookup).
-                 find(objToFind, projection).
-                 sort(sortobj).
-                 skip(skipval).
-                 limit(limitval).
-                 toArray(function(err, res)
-             {
-                 if (err) { callback({"errorname":"queryerror: " + err}, []); }
-                 else {
-                     if (res) { callback(err, res); }
-                     else { callback({"errorname":"no_query_result"}, []); }
-                 }
-             });
+            if (count)
+            {
+                 db.collection(schemaToLookup).count(objToFind, function (err, rescount) {
+                     if (err) {
+                         callback({"errorname":"query_count_error"}, []);
+                     } else {
+                         if (rescount) { callback(err, {count: rescount}); }
+                         else { callback({"errorname":"queryerror"}, []); }
+                     }
+                 });
+            }
+            else // if real query
+            {
+                 db.collection(schemaToLookup).
+                     find(objToFind, projection).
+                     sort(sortobj).
+                     skip(skipval).
+                     limit(limitval).
+                     toArray(function(err, res)
+                 {
+                     if (err) { callback({"errorname":"queryerror: " + err}, []); }
+                     else {
+                         if (res) { callback(err, res); }
+                         else { callback({"errorname":"no_query_result"}, []); }
+                     }
+                 });
+            }
         }
     });
 };
@@ -205,6 +241,8 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
     });
 };
 
+
+
 exports.wget = wget = function wget(objToFind, command, callback) {
     (command && command.db) ? databaseToLookup = command.db : databaseToLookup;
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
@@ -218,6 +256,7 @@ exports.wget = wget = function wget(objToFind, command, callback) {
         });
     });
 };
+
 
 exports.mongodeletewid = mongodeletewid = function mongodeletewid(inobject, callback) {
     proxyprinttodiv('Function mongodeletewid inobject', inobject, 18);
