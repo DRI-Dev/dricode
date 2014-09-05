@@ -19,9 +19,9 @@
 //     var exports = {};
 //}
 
-(function (window) {
-    
-    exports.localStore = localStore = function () {
+(function(window) {
+
+    exports.localStore = localStore = function() {
         var json = {};
 
         function clear() {
@@ -93,13 +93,13 @@
         // extend(true, initialwid, params);
         var db = config.configuration.db;
         if (command && command.db) {
-            db=command.db;
+            db = command.db;
         }
         initialwid.wid = "initialwid";
-        initialwid.metadata={};
-        initialwid.metadata.method="defaultdto";
+        initialwid.metadata = {};
+        initialwid.metadata.method = "defaultdto";
         initialwid.metadata.date = new Date();
-        initialwid[db]=params;
+        initialwid[db] = params;
         proxyprinttodiv('Function initialwid', initialwid, 12);
         return initialwid
     };
@@ -110,10 +110,12 @@
         extend(true, incopy, inobject);
         proxyprinttodiv('Function getwid incopy', incopy, 12);
 
-        if (!incopy.command) { incopy.command = {}; }
+        if (!incopy.command) {
+            incopy.command = {};
+        }
 
         incopy.command.convert = "toobject"; // converttodriformat
-        incopy.command.getwidflag=true;
+        incopy.command.getwidflag = true;
         //var command = incopy.command;
         proxyprinttodiv('Function datastore command -- get incopy', incopy, 12);
 
@@ -132,8 +134,7 @@
         // code begins at ***** below
 
         // internal fn to update wid sets up defaults and default operations common to get/add
-        function recordsetup(inobject, callback)
-        {
+        function recordsetup(inobject, callback) {
             var err;
             var incopy = {};
             extend(true, incopy, inobject);
@@ -141,33 +142,47 @@
             //extend(true, {}, config.configuration.d.default, incopy.command)
             //var command = incopy.command || config.configuration.d.default;  // should always get command
             if (!command.keycollection) {
-                command.keycollection = command.collection +  "key";
+                command.keycollection = command.collection + "key";
             }
             delete incopy.command;
 
             // if record is not locked then okatoupdate = true, else false
-            if(!incopy.metadata){ incopy.metadata={}; }
+            if (!incopy.metadata) {
+                incopy.metadata = {};
+            }
             if (!incopy.metadata.systemdto && command.environment &&
-                (command.environment.userid || command.environment.loggedinuserid)) { incopy.metadata.systemdto={}; }
-            if (!command.environment) { command.environment={}; }
-            if (command.environment.userid && !incopy.metadata.systemdto.userid)
-            { incopy.metadata.systemdto.userid=command.environment.userid; }
-            if (command.environment.loggedinuserid && !incopy.metadata.systemdto.loggeiduserid)
-            { incopy.metadata.systemdto.loggedinuserid=command.environment.loggedinuserid; }
+                (command.environment.userid || command.environment.loggedinuserid)) {
+                incopy.metadata.systemdto = {};
+            }
+            if (!command.environment) {
+                command.environment = {};
+            }
+            if (command.environment.userid && !incopy.metadata.systemdto.userid) {
+                incopy.metadata.systemdto.userid = command.environment.userid;
+            }
+            if (command.environment.loggedinuserid && !incopy.metadata.systemdto.loggeiduserid) {
+                incopy.metadata.systemdto.loggedinuserid = command.environment.loggedinuserid;
+            }
 
-            if(incopy && command && command.namespace)
-            {
+            if (incopy && command && command.namespace) {
                 // add namespace key:value pairs from command.namespace to metadata.namespace
-                if (!incopy.metadata.namespace) {incopy.metadata.namespace = {};}
-                for (var key in command.namespace)
-                {
+                if (!incopy.metadata.namespace) {
+                    incopy.metadata.namespace = {};
+                }
+                for (var key in command.namespace) {
                     incopy.metadata.namespace[key] = command.namespace[key];
                 }
             }
-            if (Object.keys(incopy.metadata).length === 0) { delete incopy.metadata; }
+            if (Object.keys(incopy.metadata).length === 0) {
+                delete incopy.metadata;
+            }
             proxyprinttodiv('Function datastore incopy', incopy, 12);
-            proxyprinttodiv('Function datastore command', command, 12,99, true);
-            if (!incopy.wid) { err = {"errorname":"nowid"}; }
+            proxyprinttodiv('Function datastore command', command, 12, 99, true);
+            if (!incopy.wid) {
+                err = {
+                    "errorname": "nowid"
+                };
+            }
             callback(err, incopy, command);
         }
 
@@ -175,99 +190,102 @@
         // This function will also create a new database if not currently present
         // based on datastore, get the current record...also get database and keydatabase, place globally
         // callback record as it sits in db or NULL
-        function getcurrentrecord(incopy, command, callback)
-        {
-            if (command.datastore === "localstore" || command.datastore === "localstorage")
-            {
-                getfromangular(incopy, function (angularerr, resultobject)
-                {
+        function getcurrentrecord(incopy, command, callback) {
+            if (command.datastore === "localstore" || command.datastore === "localstorage") {
+                getfromangular(incopy, function(angularerr, resultobject) {
                     // extend incopy based on what was in angular
-                    if (resultobject) { extend(true, incopy, resultobject); }
+                    if (resultobject) {
+                        extend(true, incopy, resultobject);
+                    }
 
                     // if not in memory then get it
                     // if empty then create them
-                    if (command.datastore === "localstorage")
-                    {
+                    if (command.datastore === "localstorage") {
                         proxyprinttodiv('Function updatewid in localstorage check', incopy, 12);
                         keydatabase = getFromLocalStorage(command.databasetable + command.keycollection);
                         database = getFromLocalStorage(command.databasetable + command.collection);
-                        if (!keydatabase)
-                        {
+                        if (!keydatabase) {
                             proxyprinttodiv('Function updatewid in localstorage check create', incopy, 12);
-                            addToLocalStorage(command.databasetable + command.keycollection, {"initialwid":setinitialwid(incopy, command)} );
-                            addToLocalStorage(command.databasetable + command.collection,[setinitialwid(incopy, command)]);
+                            addToLocalStorage(command.databasetable + command.keycollection, {
+                                "initialwid": setinitialwid(incopy, command)
+                            });
+                            addToLocalStorage(command.databasetable + command.collection, [setinitialwid(incopy, command)]);
                             keydatabase = getFromLocalStorage(command.databasetable + command.keycollection);
                             database = getFromLocalStorage(command.databasetable + command.collection);
                         }
                         var currentrecord = keydatabase[incopy.wid];
                         proxyprinttodiv('Function updatewid currentrecord', currentrecord, 12);
-                        if (!currentrecord) { currentrecord={}; command.newrecord=true; }
+                        if (!currentrecord) {
+                            currentrecord = {};
+                            command.newrecord = true;
+                        }
                         callback(null, currentrecord, command);
-                    }
-                    else if (command.datastore === "localstore")
-                    {
+                    } else if (command.datastore === "localstore") {
                         keydatabase = getfromlocal(command.databasetable + command.keycollection);
                         database = getfromlocal(command.databasetable + command.collection);
-                        if (!keydatabase)
-                        {
-                            addtolocal(command.databasetable + command.keycollection, {"initialwid":setinitialwid(incopy, command)});
+                        if (!keydatabase) {
+                            addtolocal(command.databasetable + command.keycollection, {
+                                "initialwid": setinitialwid(incopy, command)
+                            });
                             addtolocal(command.databasetable + command.collection, [setinitialwid(incopy, command)]);
                             keydatabase = getfromlocal(command.databasetable + command.keycollection);
                             database = getfromlocal(command.databasetable + command.collection);
                         }
                         var currentrecord = keydatabase[incopy.wid];
-                        if (!currentrecord) { currentrecord={}; command.newrecord=true; }
+                        if (!currentrecord) {
+                            currentrecord = {};
+                            command.newrecord = true;
+                        }
                         callback(null, currentrecord, command);
                     }
                 })
-            }
-            else if (command.datastore === "mongo")
-            {
-                wget(incopy, command, function (err, currentrecord) {
-                    if (!currentrecord) { currentrecord={}; command.newrecord=true; }
+            } else if (command.datastore === "mongo") {
+                wget(incopy, command, function(err, currentrecord) {
+                    if (!currentrecord) {
+                        currentrecord = {};
+                        command.newrecord = true;
+                    }
                     callback(err, currentrecord, command);
                 });
-            }
-            else
-            {
-                callback({"errorname":"wrong datastore"}, null);
+            } else {
+                callback({
+                    "errorname": "wrong datastore"
+                }, null);
             }
         }
 
         // internal fn to update wid
         // based on record existance, datamethod, lock, send back record to add and add flags
-        function calculaterecordtoadd(incopy, currentrecord, command, callback)
-        {
+        function calculaterecordtoadd(incopy, currentrecord, command, callback) {
             var recordtoadd = {};
             proxyprinttodiv('Function updatewid currentrecord I', currentrecord, 12);
 
-            if (!command) { command = {}; }
+            if (!command) {
+                command = {};
+            }
 
             // fix current wid as necessary
-            if (!command.newrecord)
-            {
+            if (!command.newrecord) {
                 // set up recordtoadd ready for addition
                 proxyprinttodiv('Function updatewid currentrecord before convert', currentrecord, 12, true, true);
                 recordtoadd = convertfromdriformatenhanced(currentrecord, command);
                 proxyprinttodiv('Function updatewid currentrecord after convert', currentrecord, 12, true, true);
                 // flatten out record -- normal : {wid:wid1 a:b c:d}, driformat: {wid:wid1 data:{a:b c:d}}
-                if (command.datamethod === "insert")
-                {
-                    recordtoadd=incopy; // current record does not matter
-                }
-                else // (command.datamethod === "upsert") // default
+                if (command.datamethod === "insert") {
+                    recordtoadd = incopy; // current record does not matter
+                } else // (command.datamethod === "upsert") // default
                 {
                     recordtoadd = extend(true, recordtoadd, incopy);
                 }
                 proxyprinttodiv('Function updatewid calculaterecordtoadd command', command, 12, true, true);
                 if (command.hasOwnProperty("lock")) // set the right property to save
                 {
-                    if (!recordtoadd.metadata) {recordtoadd.metadata={}};
+                    if (!recordtoadd.metadata) {
+                        recordtoadd.metadata = {}
+                    };
                     recordtoadd.metadata.lock = command.lock;
                 }
-            }
-            else
-            {
+            } else {
                 recordtoadd = incopy;
             }
             callback(null, recordtoadd);
@@ -285,47 +303,43 @@
         // update if:
         //    -current record is unlocked & updatewid
         //    -OR command.lock=false
-        function restrictioncheck(currentrecord, command)
-        {
+        function restrictioncheck(currentrecord, command) {
             var shouldupdate = false;
             var currentlock = false;
 
-            if (!command) { command = {}; }
-
-            if ((command.hasOwnProperty("lock") && !command.lock) 
-                || command.getwidflag) 
-            {
-                currentlock=false
+            if (!command) {
+                command = {};
             }
-            else 
-            {
-                if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock)
-                {
+
+            if ((command.hasOwnProperty("lock") && !command.lock) || command.getwidflag) {
+                currentlock = false
+            } else {
+                if (currentrecord && currentrecord.metadata && currentrecord.metadata.lock) {
                     currentlock = true;
                 }
             }
 
-            proxyprinttodiv('Function datastore command', command, 12,99, true);
+            proxyprinttodiv('Function datastore command', command, 12, 99, true);
 
-            if ((command.getwidflag && command.hasOwnProperty("lock")) || (!command.getwidflag))
-            {
+            if ((command.getwidflag && command.hasOwnProperty("lock")) || (!command.getwidflag)) {
                 shouldupdate = true;
             }
             proxyprinttodiv('Function updatewid currentlock', currentlock, 12, true, true);
             proxyprinttodiv('Function updatewid shouldupdate', shouldupdate, 12, true, true);
 
-            return {currentlock:currentlock, shouldupdate:shouldupdate}
+            return {
+                currentlock: currentlock,
+                shouldupdate: shouldupdate
+            }
         }
 
         // internal fn to update wid
         // process and save current record based on command.datastore
-        function processcurrentrecord(currentrecord, recordtoadd, command, callback)
-        {
+        function processcurrentrecord(currentrecord, recordtoadd, command, callback) {
             var err = null;
             var restriction = restrictioncheck(currentrecord, command);
 
-            if (!restriction.currentlock && restriction.shouldupdate)
-            {
+            if (!restriction.currentlock && restriction.shouldupdate) {
                 var convertedrecord = converttodriformat(recordtoadd, command); // get it ready to store\
                 proxyprinttodiv('Function updatewid currentrecord I', currentrecord, 12);
                 proxyprinttodiv('Function updatewid convertedrecord II', convertedrecord, 12);
@@ -333,37 +347,35 @@
                 extend(true, currentrecord, convertedrecord); // merge with existing record
                 proxyprinttodiv('Function updatewid currentrecord III', currentrecord, 12);
 
-                if (!command) { command = {}; }
+                if (!command) {
+                    command = {};
+                }
 
                 // delete code if empty
-                if (command.datastore === "mongo")
-                {
+                if (command.datastore === "mongo") {
                     wadd(currentrecord, command, callback);
-                }
-                else
-                {
+                } else {
                     waddlocal(currentrecord, command, callback);
                 }
-            }
-            else
-            {
-                if (restriction.currentlock && restriction.shouldupdate) { err = {"errorname":"locked"}; }
+            } else {
+                if (restriction.currentlock && restriction.shouldupdate) {
+                    err = {
+                        "errorname": "locked"
+                    };
+                }
                 callback(err, currentrecord);
             }
         }
 
         // internal fn to updatewid
-        function waddlocal(currentrecord, command, callback)
-        {
+        function waddlocal(currentrecord, command, callback) {
             // update key database
             keydatabase[currentrecord.wid] = currentrecord;
             // update list of objects database
             if (command.newrecord) // if did not exist then push it
             {
                 database.push(currentrecord);
-            }
-            else
-            {
+            } else {
                 for (var record in database) // now see if record already exists by stepping though it
                 {
                     proxyprinttodiv('Function addtolocal database[record]', database[record], 12);
@@ -374,13 +386,10 @@
                 }
             }
             // save to local storage/store
-            if (command.datastore === "localstorage")
-            {
+            if (command.datastore === "localstorage") {
                 addToLocalStorage(command.databasetable + command.keycollection, keydatabase);
                 addToLocalStorage(command.databasetable + command.collection, database);
-            }
-            else if (command.datastore === "localstore")
-            {
+            } else if (command.datastore === "localstore") {
                 addtolocal(command.databasetable + command.keycollection, keydatabase);
                 addtolocal(command.databasetable + command.collection, database);
             }
@@ -388,52 +397,55 @@
             // future addToAngular(widName, incopy);
 
             proxyprinttodiv('Function updatewid currentrecord IV', currentrecord, 12);
-            callback(null, currentrecord);  // return record as added
+            callback(null, currentrecord); // return record as added
         }
 
 
         // ****** START OF UPDATEWID *******
         // *********************************
-        proxyprinttodiv('Function updatewid inobject', inobject,12 , true, true);
+        proxyprinttodiv('Function updatewid inobject', inobject, 12, true, true);
         var database = [];
         var keydatabase = {};
 
-        recordsetup(inobject, function (err, incopy, command) // set up defaults, etc
-        {
-            proxyprinttodiv('Function updatewid err A ', err, 12, true, true);
-            proxyprinttodiv('Function updatewid incopy A ', incopy, 12, true, true);
-            proxyprinttodiv('Function updatewid command A ', command, 12, true, true);
-            if (err) { callback(err, incopy); }
-            else
+        recordsetup(inobject, function(err, incopy, command) // set up defaults, etc
             {
-                getcurrentrecord(incopy, command, function (err, currentrecord, command) // get it from local or mongo
-                {
-                    proxyprinttodiv('Function updatewid currentrecord B ', currentrecord, 12, true, true);
-                    proxyprinttodiv('Function updatewid command B ', command, 12, true, true);
-                    calculaterecordtoadd(incopy, currentrecord, command, function (err, recordtoadd){
-                        proxyprinttodiv('Function updatewid err C ', err, 12, true, true);
-                        proxyprinttodiv('Function updatewid recordtoadd C ', recordtoadd, 12, true, true);
-                        if (currentrecord)
+                proxyprinttodiv('Function updatewid err A ', err, 12, true, true);
+                proxyprinttodiv('Function updatewid incopy A ', incopy, 12, true, true);
+                proxyprinttodiv('Function updatewid command A ', command, 12, true, true);
+                if (err) {
+                    callback(err, incopy);
+                } else {
+                    getcurrentrecord(incopy, command, function(err, currentrecord, command) // get it from local or mongo
                         {
-                            processcurrentrecord(currentrecord, recordtoadd, command, function (err, currentrecord) // save to local or mongo
-                            {
-                                proxyprinttodiv('Function updatewid err D ', err, 12, true, true);
-                                proxyprinttodiv('Function updatewid currentrecord D ', currentrecord, 12, true, true);
-                                // if this was actually a getwid call and nothing found then err
-                                if (command.getwidflag === true && command.newrecord) {err = {"errorname": "notfound"};}
-                                proxyprinttodiv('Function updatewid err', err, 12);
-                                proxyprinttodiv('Function updatewid recordtoadd', recordtoadd, 12);
-                                callback(err, recordtoadd); // we return the pretty record
+                            proxyprinttodiv('Function updatewid currentrecord B ', currentrecord, 12, true, true);
+                            proxyprinttodiv('Function updatewid command B ', command, 12, true, true);
+                            calculaterecordtoadd(incopy, currentrecord, command, function(err, recordtoadd) {
+                                proxyprinttodiv('Function updatewid err C ', err, 12, true, true);
+                                proxyprinttodiv('Function updatewid recordtoadd C ', recordtoadd, 12, true, true);
+                                if (currentrecord) {
+                                    processcurrentrecord(currentrecord, recordtoadd, command, function(err, currentrecord) // save to local or mongo
+                                        {
+                                            proxyprinttodiv('Function updatewid err D ', err, 12, true, true);
+                                            proxyprinttodiv('Function updatewid currentrecord D ', currentrecord, 12, true, true);
+                                            // if this was actually a getwid call and nothing found then err
+                                            if (command.getwidflag === true && command.newrecord) {
+                                                err = {
+                                                    "errorname": "notfound"
+                                                };
+                                            }
+                                            proxyprinttodiv('Function updatewid err', err, 12);
+                                            proxyprinttodiv('Function updatewid recordtoadd', recordtoadd, 12);
+                                            callback(err, recordtoadd); // we return the pretty record
+                                        });
+                                } else {
+                                    callback({
+                                        "errorname": "notfound"
+                                    }, {});
+                                }
                             });
-                        }
-                        else
-                        {
-                            callback({"errorname": "notfound"}, {});
-                        }
-                    });
-                })
-            }// if error
-        })
+                        })
+                } // if error
+            })
     };
 
 
@@ -492,12 +504,24 @@
                     };
                 }
                 proxyprinttodiv('Function getrelatedrecords query', executeobject, 27);
-                executeobject["command"]= {
-                    "executetype":"series"
+                executeobject["command"] = {
+                    "executetype": "series"
                 };
 
+
+                /// add the filters 
+                if (command['metadata.owner']) {
+                    executeobject['metadata.owner'] = command['metadata.owner'];
+                }
+                if (command['metadata.group']) {
+                    executeobject['metadata.group'] = command['metadata.group'];
+                };
+                if (command['type']) {
+                    executeobject['type'] = command['type'];
+                }
+
                 var env = new DriEnvironment(command.environment);
-                env.execute(executeobject, function (err, res) {
+                env.execute(executeobject, function(err, res) {
                     proxyprinttodiv('Function getrelatedrecords query res', res, 27);
                     if (err && (Object.keys(err).length) > 0) {
                         callback({}, widlist);
@@ -508,7 +532,7 @@
                             var resultlist = res[0].queryresult;
                             proxyprinttodiv('Function getrelatedrecords resultlist', resultlist, 27);
                             if (resultlist && resultlist.length > 0) {
-                                async.each(resultlist, function (wid, callback1) {
+                                async.each(resultlist, function(wid, callback1) {
                                     proxyprinttodiv('Function getrelatedrecords wid', wid, 27);
                                     for (widkey in wid) {
                                         proxyprinttodiv('Function getrelatedrecords widkey', widkey, 27);
@@ -527,7 +551,7 @@
                                         widlist.push(eachwid);
                                         callback1();
                                     }
-                                }, function (err) {
+                                }, function(err) {
                                     if (err && (Object.keys(err).length) > 0) {
                                         callback({}, widlist);
                                     }
@@ -550,7 +574,7 @@
                                 };
 
                                 proxyprinttodiv('Function getrelatedrecords recurse object', executeobject, 27);
-                                getrelatedrecords(executeobject, function (err, returnlist) {
+                                getrelatedrecords(executeobject, function(err, returnlist) {
                                     if (err && (Object.keys(err).length) > 0) {
                                         callback({}, widlist);
                                     } else {
@@ -588,6 +612,348 @@
             }
         }
     }; //End of getrelatedwids
+    function getqueryexecuteobject(json) {
+
+        var widlist = json.widlist; // widlist
+        var widnamelist = json.widnamelist; // widnamelist
+        var primarywid = json.primarywid; // primarywid
+        var secondarywid = json.secondarywid; // secondarywid
+        var primarywidname = json.primarywidname; // primarywidname
+        var secondaywidname = json.secondaywidname; // secondayrwidname
+
+        var command = json.command || {};
+        delete json.command;
+        var reltype = command.reltype;
+        var recurse = command.recurse;
+
+        var andquerypartsarr = [];
+
+        var orqueries = [];
+
+
+        // if widlist is provided
+        if (widlist && widlist.length > 0) {
+            /// add $in for widlist
+            orqueries.push({
+                "wid": {
+                    "$in": widlist
+                }
+            });
+        }
+
+        // if widnamelist is provided
+        if (widnamelist && widnamelist.length > 0) {
+            /// add $in for widlist
+            orqueries.push({
+                "widname": {
+                    "$in": widnamelist
+                }
+            });
+        }
+
+        // if primarywid + secondarywid is provided
+        if (primarywid && secondarywid) {
+            /// add primarywid , and secondarywid condition
+            orqueries.push({
+                "primarywid": primarywid,
+                "secondarywid": secondarywid
+            });
+        }
+
+        // if secondaywidname + primarywidname is provided
+        if (secondaywidname && primarywidname) {
+            /// add secondaywidname , and primarywidname condition
+            orqueries.push({
+                "primarymethod": primarywidname,
+                "secondarymethod": secondaywidname
+
+            });
+        }
+
+        /// add the filters 
+        if (command['metadata.owner']) {
+            orqueries.push({
+                "metadata.owner": command['metadata.owner']
+
+            });
+        }
+        if (command['metadata.group']) {
+            orqueries.push({
+                "metadata.group": command['metadata.group']
+
+            });
+        };
+        // if (command['type']) {
+        //     orqueries.push({"metadata.owner":command['metadata.owner']}});
+        // }
+
+        // build up the query
+        var query = {
+            "$and": orqueries
+        };
+
+        var executeobject = {
+            widlist: widlist,
+            command: {
+                reltype: reltype,
+                recurse: recurse,
+                result: command.result
+            }
+        };
+
+        executeobject["executethis"] = "querywidmaster";
+        executeobject["command"] = {
+            "notfoundok": true,
+            "result": "queryresult"
+        };
+
+        /// add executetype as series
+        executeobject["command"] = {
+            "executetype": "series"
+        };
+
+        /// add executetype as series
+        executeobject["mongorawquery"] = query;
+
+        return executeobject;
+    }
+
+
+
+    //To get data based on a lot of inputs
+    // The goal is to return a list of primary or secondary wids based on a relationship recursive query
+    // we want to add to the results list
+    // [{wid: widname, wid: widname, wid: widname...
+
+
+
+    exports.getallrelatedwids = getallrelatedwids = function getallrelatedwids(inobject, callback) {
+        var obj = {};
+        extend(true, obj, inobject);
+        proxyprinttodiv('Function getrelatedrecords obj', obj, 27);
+
+
+        // 1 to get us started:
+        // wid or widlist or widname or widnamelist or (primarywid and secondarywid) or (primarywidname and secondayrwidname)
+        var command = obj.command;
+        delete obj.command;
+        var reltype = command.reltype;
+        var recurse = command.recurse;
+        var widlist = obj.widlist;
+
+        var executeobject = getqueryexecuteobject(obj);
+
+        proxyprinttodiv('Function getrelatedrecords executing obj', obj, 27);
+        var env = new DriEnvironment(command.environment);
+
+        env.execute(executeobject, function(err, res) {
+            proxyprinttodiv('Function getrelatedrecords query res', res, 27);
+            if (err && (Object.keys(err).length) > 0) {
+                callback({}, widlist);
+            } else {
+                if (res.queryresult && (Object.keys(res.queryresult).length) > 0) {
+                    var recurselist = [];
+                    proxyprinttodiv('Function getrelatedrecords res', res, 27);
+                    var resultlist = res.queryresult;
+                    proxyprinttodiv('Function getrelatedrecords resultlist', resultlist, 27);
+                    if (resultlist && resultlist.length > 0) {
+                        async.each(resultlist, function(wid, callback1) {
+                            proxyprinttodiv('Function getrelatedrecords wid', wid, 27);
+                            for (widkey in wid) {
+                                proxyprinttodiv('Function getrelatedrecords widkey', widkey, 27);
+                                var eachrecord = wid[widkey];
+                                proxyprinttodiv('Function getrelatedrecords eachrecord', eachrecord, 27);
+
+                                var eachwid;
+                                if (reltype === 'parent') {
+                                    eachwid = eachrecord.primarywid;
+                                } else {
+                                    eachwid = eachrecord.secondarywid;
+                                }
+
+                                proxyprinttodiv('Function getrelatedrecords eachwid **', eachwid, 27);
+                                recurselist.push(eachwid);
+                            }
+                            callback1();
+                        }, function(err) {
+                            if (err && (Object.keys(err).length) > 0) {
+                                callback({}, undefined);
+                            }
+                        });
+                    } else {
+                        var res = {};
+                        res[command.result] = widlist;
+                        proxyprinttodiv('Function getrelatedrecords callback1 with res', res, 27);
+                        callback(null, res);
+                    }
+
+
+
+                    if (recurselist && recurselist.length > 0 && (recurse === true)) {
+                        var recurseparamsobject = {};
+                        extend(true, recurseparamsobject, inobject);
+                        recurseparamsobject['widlist'] = recurselist;
+
+                        var executeobjectinner = getqueryexecuteobject(recurseparamsobject);
+
+                        proxyprinttodiv('Function getrelatedrecords recurse object', executeobject, 27);
+                        getallrelatedwids(executeobjectinner, function(err, returnlist) {
+                            if (err && (Object.keys(err).length) > 0) {
+                                callback({}, widlist);
+                            } else {
+                                if (res.queryresult && (Object.keys(res.queryresult).length) > 0) {
+                                    for (var eachitem in returnlist[command.result]) {
+                                        widlist.push(returnlist[command.result][eachitem]);
+                                    }
+                                    proxyprinttodiv('Function getrelatedrecords callback2 with returnlist', returnlist, 27);
+                                    var res = {};
+                                    res[command.result] = widlist;
+                                    proxyprinttodiv('Function getrelatedrecords callback2 with res', res, 27);
+                                    callback(null, res);
+                                } else {
+                                    var res = {};
+                                    res[command.result] = widlist;
+                                    proxyprinttodiv('Function getrelatedrecords callback2 with res', res, 27);
+                                    callback(null, res);
+                                }
+                            }
+                        });
+                    } else {
+                        var res = {};
+                        res[command.result] = widlist;
+                        proxyprinttodiv('Function getrelatedrecords callback4 with res', res, 27);
+                        callback(null, res);
+                    }
+                } else {
+                    var res = {};
+                    res[command.result] = widlist;
+                    proxyprinttodiv('Function getrelatedrecords callback5 with res', res, 27);
+                    callback(null, res);
+                }
+            }
+        })
+
+    }; //End of getrelatedwids
+
+
+    // function addrecord(inputrecord, dtoobject, parentwid, parentmethod, relationshiptype, command, callback) {
+    // addrelated (similar to addrecord in et-add)
+    // takes in - 
+    // -- primarywid and secondarywid 
+    // OR
+    // -- primarywidname and secondarywidname 
+    // -- and wid (opt)
+    // -- metadata.namespace.grouptype
+    // Data to be saved/updated
+    // add or update (update should do a query first like addrecord)
+    // First find out the record where data is to be added
+    // and then
+    // add the data over there
+    // 
+    // 
+    // {
+    //     "primarywid":"primarywid",
+    //     "secondarywid":"secondarywid",
+    //     "primarywidname":"primarywidname",
+    //     "secondarywidname":"secondarywidname",
+    //     "relationshiptype":"relationshiptype",
+    //     "data":{"key1":"val1","key2":"val2"}
+    // }
+    exports.addrelatedwids = addrelatedwids = function addrelatedwids(inobject, callback) {
+        var json = {};
+        extend(true, obj, inobject);
+        proxyprinttodiv('Function addrelatedwids obj', obj, 27);
+
+        var command = json.command;
+        delete json.command;
+
+        // get to the object to be updated
+        var primarywid = json.primarywid;
+        var secondarywid = json.secondarywid;
+        var primarywidname = json.primarywidname;
+        var secondarywidname = json.secondarywidname;
+        var datatobeupdated = json.data;
+        var reltype = json.relationshiptype;
+
+        // relationshipdto query executeobject
+        var executeobject = {
+            "executethis": "querywid"
+        };
+
+        var orqueryarr = [];
+
+        // if primarywid and secondarywid inputs
+        if (primarywid && secondarywid) {
+            orqueryarr.push({
+                "primarywid": primarywid,
+                "secondarywid": secondarywid
+            });
+        }
+
+        // if primarywid and secondarywid inputs
+        if (primarywidname && secondarywidname) {
+            orqueryarr.push({
+                "primarywidname": primarywidname,
+                "secondarywidname": secondarywidname
+            });
+        }
+
+        orqueryarr.push({
+            "linktype": reltype,
+            "relationshiptype": "attributes",
+            "metadata.method": "relationshipdto"
+        });
+
+        var queryjson = {
+            "$in": orqueryarr
+        };
+        executeobject["mongorawquery"] = queryjson;
+
+
+        var widtobeupdated;
+        async.series([
+
+            function(cb) {
+                proxyprinttodiv('Function addrelatedrecords ', executeobject, 27);
+                var env = new DriEnvironment(command.environment);
+                env.execute(executeobject, function(err, res) {
+                    // get the relationship object
+                    if (res && (Object.keys(res).length) > 0) {
+                        cb(err, res);
+                    } else {
+                        // no record found
+                        cb(err, res);
+                    }
+                });
+            },
+            function(cb) {
+                // if wid found, update existing data
+                var executeobject1 = {
+                    "executethis": "updatewid"
+                };
+                var env = new DriEnvironment(command.environment);
+                if (executeobject1) {
+                    executeobject1['wid'] = widtobeupdated; // add criteria
+                }
+
+                var clonedexecuteobject = executeobject1;
+                extend(true, clonedexecuteobject, datatobeupdated);
+
+                proxyprinttodiv('Function addrelatedrecords clonedexecuteobject', clonedexecuteobject, 27);
+                env.execute(clonedexecuteobject, function(err, res) {
+                    // get the relationship object
+                    // update done    
+                    proxyprinttodiv('Function addrelatedrecords clonedexecuteobject updatedone res', res, 27);
+                    cb(err, res);
+                });
+            }
+        ], function(e, r) {
+            // all updates done
+            proxyprinttodiv('Function addrelatedrecords updatedone r', r, 27);
+            callback(e, r);
+        });
+
+    }
 
     /*
      copywid fn steps :-
@@ -599,13 +965,19 @@
     exports.copywid = copywid = copywid = function copywid(inobject, callback) {
 
         proxyprinttodiv('Function copywid inobject', inobject, 18, true, true);
-        if (!inobject.command.from) {inobject.command.from={}}
-        if (!inobject.command.to) {inobject.command.to={}}
+        if (!inobject.command.from) {
+            inobject.command.from = {}
+        }
+        if (!inobject.command.to) {
+            inobject.command.to = {}
+        }
         var incopy = {};
         extend(true, incopy, inobject); // work from a copy
         var command = incopy.command;
         var lock = false;
-        if (command.delete) {lock=true}
+        if (command.delete) {
+            lock = true
+        }
 
         // maybe delete incopy.command;
 
@@ -626,18 +998,14 @@
                 "collection": command.collection || command.from.collection,
                 "datastore": command.datastore || command.from.datastore,
                 "databasetable": command.databasetable || command.from.databasetable,
-                "lock" : lock // lock it if delete until it is copied
+                "lock": lock // lock it if delete until it is copied
             }
         };
         proxyprinttodiv('Function copywid getwidinput', getwidinput, 18, true, true);
-        getwid(getwidinput, function (err, getwidresult)
-        {
-            if (err)
-            {
+        getwid(getwidinput, function(err, getwidresult) {
+            if (err) {
                 callback(err, getwidresult)
-            }
-            else
-            {
+            } else {
                 proxyprinttodiv('Function copywid update result', getwidresult, 18, true, true);
 
                 // ** UPDATE **
@@ -645,7 +1013,7 @@
                 var updatewidinput = {
                     "wid": command.to.wid,
                     "command": {
-                        "lock":false,
+                        "lock": false,
                         "db": command.to.db,
                         "collection": command.to.collection,
                         "datastore": command.to.datastore,
@@ -654,28 +1022,26 @@
                 };
                 updatewidinput = extend(true, {}, getwidresult, updatewidinput); // combine the result + original incoming + update record
                 proxyprinttodiv('Function copywid updatewidinput', updatewidinput, 18, true, true);
-                updatewid(updatewidinput, function (err, updatewidresult)
-                {
-                    if (err)
-                    {
+                updatewid(updatewidinput, function(err, updatewidresult) {
+                    if (err) {
                         callback(err, updatewidresult);
-                    }
-                    else
-                    {
+                    } else {
                         proxyprinttodiv('Function copywid RESULT updatewidresult', updatewidresult, 18, true, true);
 
                         proxyprinttodiv('Function copywid command.delete', command.delete, 18, true, true);
                         // ** UPDATE and unlock **
                         //3. call updatewid with blank record, fromwid, fromdb, fromcollection, fromdatastore if command.delete
-                        if (command.delete)
-                        {
-                            if (config.configuration.environment === "local") 
-                            {
-                                localdeletewid({"wid":incopy.wid, "command":command.from}, callback)
-                            }
-                            else
-                            {
-                                mongodeletewid({"wid":incopy.wid, "command":command.from}, callback)
+                        if (command.delete) {
+                            if (config.configuration.environment === "local") {
+                                localdeletewid({
+                                    "wid": incopy.wid,
+                                    "command": command.from
+                                }, callback)
+                            } else {
+                                mongodeletewid({
+                                    "wid": incopy.wid,
+                                    "command": command.from
+                                }, callback)
                             }
                             // command.from.datamethod="insert";
                             // // insert a blank record
@@ -694,9 +1060,7 @@
                             //         callback(err, updatewidblankinputresult);
                             //     }
                             // });
-                        }
-                        else
-                        {
+                        } else {
                             callback(err, updatewidresult);
                         }
                     }
@@ -705,57 +1069,52 @@
         });
     };
 
-    exports.localdeletewid = localdeletewid = localdeletewid = function localdeletewid(inobject, callback) 
-    {
+    exports.localdeletewid = localdeletewid = localdeletewid = function localdeletewid(inobject, callback) {
         proxyprinttodiv('Function localdeletewid inobject', inobject, 18);
         var command = inobject.command;
         var wid = inobject.wid;
         var keydatabase = {};
-        var database=[];
+        var database = [];
         var errorflag = false;
 
-        if (command.datastore === "localstorage")
-        {
+        if (command.datastore === "localstorage") {
             proxyprinttodiv('Function localdeletewid localstorage check', inobject, 18);
             keydatabase = getFromLocalStorage(command.databasetable + command.keycollection);
             database = getFromLocalStorage(command.databasetable + command.collection);
-            if (!keydatabase) {errorflag=true}
-        }
-        else if (command.datastore === "localstore")
-        {
+            if (!keydatabase) {
+                errorflag = true
+            }
+        } else if (command.datastore === "localstore") {
             keydatabase = getfromlocal(command.databasetable + command.keycollection);
             database = getfromlocal(command.databasetable + command.collection);
-            if (!keydatabase) {errorflag=true}
+            if (!keydatabase) {
+                errorflag = true
+            }
         }
-        if (!errorflag) 
-        {
+        if (!errorflag) {
             delete keydatabase[inobject.wid]
             for (var record in database) // now see if record already exists by stepping though it
             {
                 proxyprinttodiv('Function localdeletewid database[record]', database[record], 18);
-                if (database[record].wid === wid) 
-                {
+                if (database[record].wid === wid) {
                     proxyprinttodiv('Function localdeletewid about to delete database[record]', database[record], 18);
-                    delete database[record]; 
+                    delete database[record];
                     break
                 }
             }
             // save to local storage/store
-            if (command.datastore === "localstorage")
-            {
+            if (command.datastore === "localstorage") {
                 addToLocalStorage(command.databasetable + command.keycollection, keydatabase);
                 addToLocalStorage(command.databasetable + command.collection, database);
-            }
-            else if (command.datastore === "localstore")
-            {
+            } else if (command.datastore === "localstore") {
                 addtolocal(command.databasetable + command.keycollection, keydatabase);
                 addtolocal(command.databasetable + command.collection, database);
             }
             callback(null, wid);
-        }
-        else
-        {
-            callback({"errorname": "notfound"}, {});
+        } else {
+            callback({
+                "errorname": "notfound"
+            }, {});
         }
     }
     /*
@@ -766,41 +1125,41 @@
         proxyprinttodiv('Function deletewid inobject', inobject, 27, true, true);
         if (inobject.wid) {
 
-            if (!inobject.command.from) { inobject.command.from={}; }
-            if (!inobject.command.to) { inobject.command.to={}; }
+            if (!inobject.command.from) {
+                inobject.command.from = {};
+            }
+            if (!inobject.command.to) {
+                inobject.command.to = {};
+            }
             inobject.command.from.db = inobject.command.from.db || inobject.command.db || config.configuration.d.default.db;
             inobject.command.from.collection = inobject.command.from.collection || inobject.command.collection || config.configuration.d.default.collection;
             inobject.command.from.datastore = inobject.command.from.datastore || inobject.command.datastore || config.configuration.d.default.datastore;
             inobject.command.from.databasetable = inobject.command.from.databasetable || inobject.command.databasetable || config.configuration.d.default.databasetable;
             extend(true, inobject.command.to, config.configuration.delete, inobject.command.to);
-            inobject.command.delete=true;
+            inobject.command.delete = true;
             proxyprinttodiv('Function deletewid inobject before copywid', inobject, 27, true, true);
-            copywid(inobject, function (err, copiedobject) {
-                if (err)
-                {
+            copywid(inobject, function(err, copiedobject) {
+                if (err) {
                     callback(err, copiedobject);
-                }
-                else
-                {
+                } else {
                     proxyprinttodiv('Function deletewid copiedobject ', copiedobject, 27, true, true);
                     callback(null, copiedobject);
                 }
             });
         } else { // if no widName
-            callback({"errorname":"nowid", "errorfn":"deletewid"}, {});
+            callback({
+                "errorname": "nowid",
+                "errorfn": "deletewid"
+            }, {});
         }
     };
 
 
-    function localdeletecollection(inobject, callback) 
-    {
-        if (command.datastore === "localstorage")
-        {
+    function localdeletecollection(inobject, callback) {
+        if (command.datastore === "localstorage") {
             localStorage.removeItem(command.databasetable + command.keycollection);
             localStorage.removeItem(command.databasetable + command.collection);
-        }
-        else (command.datastore === "localstore")
-        {
+        } else if (command.datastore === "localstore") {
             localstore.remove(command.databasetable + command.keycollection);
             localstore.remove(command.databasetable + command.collection);
         }
@@ -808,18 +1167,15 @@
     }
 
 
-    exports.deletecollection = deletecollection = deletecollection= function deletecollection(p, cb)
-    {
+    exports.deletecollection = deletecollection = deletecollection = function deletecollection(p, cb) {
         var command = {};
         extend(true, command, config.configuration.d.default, p.command)
         var datalist = p.queryresult || p.results;
-        if (config.configuration.environment==="local")
+        if (config.configuration.environment === "local") {
+            localdeletecollection(command, cb);
+        } else // if server
         {
-            localdeletecollection(command,cb);
-        }
-        else // if server
-        {
-            serverdeletecollection(command,cb);
+            serverdeletecollection(command, cb);
         }
     }
 
@@ -865,7 +1221,7 @@
             }
 
             if (widobject.metadata && !outobject.metadata) {
-                outobject.metadata=widobject.metadata;
+                outobject.metadata = widobject.metadata;
             }
 
             // if (widobject['metadata']) {
@@ -907,7 +1263,9 @@
         proxyprinttodiv('Function updatewid in : inobject', inobject, 12);
         var saveobject = {};
 
-        if (!command) { command = {}; }
+        if (!command) {
+            command = {};
+        }
 
         var db = command.db || config.configuration.db;
         var wid;
@@ -917,7 +1275,9 @@
         //     db = command.db;
         // }
 
-        if (!inobject.metadata) { inobject.metadata={}; }
+        if (!inobject.metadata) {
+            inobject.metadata = {};
+        }
         inobject.metadata.date = date.toUTCString();
 
         //inobject['metadata.date'] = new Date();
@@ -963,12 +1323,14 @@
         ];
         //exports.cnt = exports.cnt + 1;
 
-        if (getglobal('expanddefault')) {expanddefault=true}
+        if (getglobal('expanddefault')) {
+            expanddefault = true
+        }
 
         if ((debuglevel == debugone) || (debugone == 99)) {
             var displaycolor = color_list[getglobal("debugcolor")];
             var indent = getglobal("debugindent");
-            indent=indent*5;
+            indent = indent * 5;
             var linenum = getglobal('debuglinenum');
             //z++;
             saveglobal('debuglinenum', linenum);
@@ -988,28 +1350,28 @@
             //var linenum = getglobal('debuglinenum');
             //exports.cnt++;
 
-            printText =  '<pre>';
+            printText = '<pre>';
             if (indent > 0) {
-                printText +='<div style="color:' + displaycolor + '; padding-left:' + (1 * indent) + 'em;">';
-                printText +='<button type="button" class="btn collapsiblebtn" data-toggle="collapse" data-target="#myDiv'+ linenum + '"data-open-text="+" data-close-text="-">+</button> <'+ linenum + '> -' + indent/5 + '-';
+                printText += '<div style="color:' + displaycolor + '; padding-left:' + (1 * indent) + 'em;">';
+                printText += '<button type="button" class="btn collapsiblebtn" data-toggle="collapse" data-target="#myDiv' + linenum + '"data-open-text="+" data-close-text="-">+</button> <' + linenum + '> -' + indent / 5 + '-';
                 printText += text;
 
-                printText +='</div>';
+                printText += '</div>';
             } else {
-                printText +='<div style="color:' + displaycolor + '";">';
-                printText +='<button type="button" class="btn collapsiblebtn" data-toggle="collapse" data-target="#myDiv'+ linenum +'" data-open-text="+" data-close-text="-">+</button> <'+ linenum + '> -' + indent/5 + '-';
+                printText += '<div style="color:' + displaycolor + '";">';
+                printText += '<button type="button" class="btn collapsiblebtn" data-toggle="collapse" data-target="#myDiv' + linenum + '" data-open-text="+" data-close-text="-">+</button> <' + linenum + '> -' + indent / 5 + '-';
                 printText += text;
-                printText +='</div>';
+                printText += '</div>';
             }
 
 
-            if(expanddefault){
-                printText +='<div collapse in" id="myDiv'+ linenum +'">';
-            }else{
-                printText +='<div collapse" id="myDiv'+ linenum +'">';
+            if (expanddefault) {
+                printText += '<div collapse in" id="myDiv' + linenum + '">';
+            } else {
+                printText += '<div collapse" id="myDiv' + linenum + '">';
             }
 
-            printText += syntaxHighlight(jsonPretty) +'</div></pre>';
+            printText += syntaxHighlight(jsonPretty) + '</div></pre>';
 
             if (document.getElementById('divprint')) {
                 document.getElementById('divprint').innerHTML = document.getElementById('divprint').innerHTML + printText; //append(printText);
@@ -1019,32 +1381,22 @@
 
     };
 
-    exports.proxyprinttodiv = proxyprinttodiv = function proxyprinttodiv(text, obj, debugone, pretty,expanddefault) { // **** making code node compatible
+    exports.proxyprinttodiv = proxyprinttodiv = function proxyprinttodiv(text, obj, debugone, pretty, expanddefault) { // **** making code node compatible
 
-        if (!debugone) 
-        {
+        if (!debugone) {
             debugone = -1;
         }
-        if (debuglevel!==-1) 
-        {
-            if (config.configuration.environment === "local") 
-            {
-                printToDiv(text, obj, debugone, pretty,expanddefault);
-            } 
-            else 
-            {
+        if (debuglevel !== -1) {
+            if (config.configuration.environment === "local") {
+                printToDiv(text, obj, debugone, pretty, expanddefault);
+            } else {
                 if ((debuglevel == debugone) || (debugone == 99)) {
                     var prettystring = stringifyObject(obj, {
                         indent: '     ',
                         singleQuotes: false
                     });
                     var currentdate = new Date();
-                    var printtime = "\nPRINT " + (currentdate.getMonth()+1) + "/"
-                        + currentdate.getDate() + "/"
-                        + currentdate.getFullYear() + " @ "
-                        + currentdate.getHours() + ":"
-                        + currentdate.getMinutes() + ":"
-                        + currentdate.getSeconds() + " >> ";
+                    var printtime = "\nPRINT " + (currentdate.getMonth() + 1) + "/" + currentdate.getDate() + "/" + currentdate.getFullYear() + " @ " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds() + " >> ";
 
 
                     console.log(text);
@@ -1061,42 +1413,43 @@
 
 
 
-// ok to change this sort to match mongos way
-// http://stackoverflow.com/questions/1129216/sorting-objects-in-an-array-by-a-field-value-in-javascript
-// use: People.sort(dynamicsort("Name"));
-// use: People.sort(dynamicsortmultiple("Name", "-Surname"));
-    exports.dynamicsort = window.dynamicsort = dynamicsort = function dynamicsort(property) 
-    {
+    // ok to change this sort to match mongos way
+    // http://stackoverflow.com/questions/1129216/sorting-objects-in-an-array-by-a-field-value-in-javascript
+    // use: People.sort(dynamicsort("Name"));
+    // use: People.sort(dynamicsortmultiple("Name", "-Surname"));
+    exports.dynamicsort = window.dynamicsort = dynamicsort = function dynamicsort(property) {
         var sortOrder = 1;
-        if(property[0] === "-") {
+        if (property[0] === "-") {
             sortOrder = -1;
             property = property.substr(1);
         }
-        return function (a,b) {
+        return function(a, b) {
             var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
             return result * sortOrder;
         }
     }
-    
+
     exports.dynamicsortmultiple = window.dynamicsortmultiple = dynamicsortmultiple = function dynamicsortmultiple() {
-    /*
-     * save the arguments object as it will be overwritten
-     * note that arguments object is an array-like object
-     * consisting of the names of the properties to sort by
-     */
-    var props = arguments;
-    return function (obj1, obj2) {
-        var i = 0, result = 0, numberOfProperties = props.length;
-        /* try getting a different result from 0 (equal)
-         * as long as we have extra properties to compare
+        /*
+         * save the arguments object as it will be overwritten
+         * note that arguments object is an array-like object
+         * consisting of the names of the properties to sort by
          */
-        while(result === 0 && i < numberOfProperties) {
-            result = dynamicsort(props[i])(obj1, obj2);
-            i++;
+        var props = arguments;
+        return function(obj1, obj2) {
+            var i = 0,
+                result = 0,
+                numberOfProperties = props.length;
+            /* try getting a different result from 0 (equal)
+             * as long as we have extra properties to compare
+             */
+            while (result === 0 && i < numberOfProperties) {
+                result = dynamicsort(props[i])(obj1, obj2);
+                i++;
+            }
+            return result;
         }
-        return result;
     }
-}
 
 
     //
@@ -1135,20 +1488,20 @@
             insertobj["metadata"]["method"] = dtoname;
             proxyprinttodiv("insertbydtotype setbyindex  insertobj:- ", insertobj, 38);
             proxyprinttodiv("insertbydtotype setbyindex  null inputobj:- I", inputobj, 38);
-            if (dtoindex === null)
-            { // create outside wrapper
+            if (dtoindex === null) { // create outside wrapper
                 proxyprinttodiv("insertbydtotype setbyindex  null insertobj:- II", insertobj, 38);
                 proxyprinttodiv("insertbydtotype setbyindex  null inputobj:- II", inputobj, 38);
                 proxyprinttodiv("insertbydtotype setbyindex  null command.inherit:- II", command.inherit, 38);
 
                 // this section handels the inherit types
-                if (command.inherit === "default") {inputobj = extend(true, insertobj, inputobj);}
-                else if (command.inherit === "override") {inputobj = extend(true, inputobj, insertobj);}
+                if (command.inherit === "default") {
+                    inputobj = extend(true, insertobj, inputobj);
+                } else if (command.inherit === "override") {
+                    inputobj = extend(true, inputobj, insertobj);
+                }
                 // notice the inputs are fliped
-                delete command.inherit;  // clean up the command object
-            }
-            else
-            {
+                delete command.inherit; // clean up the command object
+            } else {
                 setbyindex(inputobj, dtoindex, insertobj);
                 proxyprinttodiv("insertbydtotype setbyindex  inputobj:- ", inputobj, 38);
                 inputobj = ConvertFromDOTdri(inputobj);
@@ -1166,24 +1519,27 @@
         if (parameterobject["metadata"] && parameterobject["metadata"]["method"] && parameterobject["metadata"]["method"] === dtoname) {
             return "";
         } else {
-            for (var eachelement in parameterobject)
-            {
-                if (parameterobject.hasOwnProperty(eachelement))
-                {
+            for (var eachelement in parameterobject) {
+                if (parameterobject.hasOwnProperty(eachelement)) {
                     proxyprinttodiv('Function getindex eachelement', eachelement, 23);
                     if (eachelement === dtoname) {
-                        if (indexstring) {indexstring = indexstring + '.' + eachelement;}
-                        else {indexstring = eachelement;}
+                        if (indexstring) {
+                            indexstring = indexstring + '.' + eachelement;
+                        } else {
+                            indexstring = eachelement;
+                        }
                         proxyprinttodiv('Function indexstring FOUND', indexstring, 23);
                         break;
                     }
 
                     if (parameterobject[eachelement] instanceof Object) {
-                        if (indexstring) {potentialmap = indexstring + '.' + eachelement;}
-                        else {potentialmap = eachelement;}
+                        if (indexstring) {
+                            potentialmap = indexstring + '.' + eachelement;
+                        } else {
+                            potentialmap = eachelement;
+                        }
                         match = getindex(parameterobject[eachelement], dtoname, potentialmap);
-                        if (potentialmap !== match)
-                        {
+                        if (potentialmap !== match) {
                             indexstring = match;
                             proxyprinttodiv('Function match inside', match, 23);
                             break;
@@ -1233,54 +1589,45 @@
         proxyprinttodiv("deepfilter dtoObjOpt", dtoObjOpt, 43, true, true);
         // proxyprinttodiv("deepfilter command", command, 99);
         var modifiedObj = {};
-        extend(true, modifiedObj, inputobj);     // copying inputobj into modifiedObj
+        extend(true, modifiedObj, inputobj); // copying inputobj into modifiedObj
         var convert;
         var totype;
         // -- Convert --
-        if (!command) {command={}};
-        if (!command.deepfilter) {command.deepfilter={}};
-        if (command && command.deepfilter && !command.deepfilter.hasOwnProperty(convert)) 
-        { 
+        if (!command) {
+            command = {}
+        };
+        if (!command.deepfilter) {
+            command.deepfilter = {}
+        };
+        if (command && command.deepfilter && !command.deepfilter.hasOwnProperty(convert)) {
             convert = true; //default value
-        } 
-        else 
-        {
+        } else {
             convert = command.deepfilter.convert || false;
         }
         // -- totype --
-        if (command && command.deepfilter && !command.deepfilter.hasOwnProperty(totype)) 
-        { 
+        if (command && command.deepfilter && !command.deepfilter.hasOwnProperty(totype)) {
             totype = true; //default value
-        } 
-        else 
-        {
+        } else {
             totype = command.deepfilter.totype || false;
         }
 
         // case for adding / getting methods, then we do not want to convert
-        if (modifiedObj.wid && dtoObjOpt.metadata && dtoObjOpt.metadata.method && modifiedObj.wid === dtoObjOpt.wid)
-        {
-            convert=false;
+        if (modifiedObj.wid && dtoObjOpt.metadata && dtoObjOpt.metadata.method && modifiedObj.wid === dtoObjOpt.wid) {
+            convert = false;
         }
 
-        if (dtoObjOpt)
-        {
-            recurseModObj(modifiedObj, dtoObjOpt, convert, totype, command, function (err, res) 
-            {
+        if (dtoObjOpt) {
+            recurseModObj(modifiedObj, dtoObjOpt, convert, totype, command, function(err, res) {
                 proxyprinttodiv("deepfilter inputobj *", inputobj, 42, true, true);
                 proxyprinttodiv("deepfilter dtoObjOpt *", dtoObjOpt, 42, true, true);
                 proxyprinttodiv("deepfilter result end res *", res, 42, true, true);
-                if (err && Object.keys(err).length > 0) 
-                {
+                if (err && Object.keys(err).length > 0) {
                     callback(err, res);
-                } 
-                else 
-                {
+                } else {
                     callback(null, res);
                 }
             });
-        }
-        else // if not dtoObjOpt
+        } else // if not dtoObjOpt
         {
             proxyprinttodiv("deepfilter result NO DETOOBJ", inputobj, 42, true, true);
             callback(null, inputobj);
@@ -1289,8 +1636,7 @@
 
 
     // inpKey: inpKey --- DTO: inpKey: dataType >> modifiedObj
-    function recurseModObj(inputobject, dtoObject, convert, totype, command, callback) 
-    {
+    function recurseModObj(inputobject, dtoObject, convert, totype, command, callback) {
         proxyprinttodiv("recurseModObj - inputobject **", inputobject, 41, true, true);
         proxyprinttodiv("recurseModObj - dtoObject **", dtoObject, 41, true, true);
 
@@ -1298,108 +1644,103 @@
         var todolist = [];
 
         // create list based on dtoObject
-        if (dtoObject instanceof Object) {Object.keys(dtoObject).forEach(function (inpKey) {todolist.push(inpKey);});}
+        if (dtoObject instanceof Object) {
+            Object.keys(dtoObject).forEach(function(inpKey) {
+                todolist.push(inpKey);
+            });
+        }
 
         // step through list
         proxyprinttodiv("recurseModObj - todolist ", todolist, 41);
-        async.mapSeries(todolist, function (inpKey, cbMap) 
-        {
-            proxyprinttodiv("recurseModObj - top each inpKey", inpKey, 41, true, true);
-            async.nextTick(function () 
-            {
-                var inpVal = inputobject[inpKey];   // inpVal is the value of each inputobject
-                var dataType = dtoObject[inpKey];
+        async.mapSeries(todolist, function(inpKey, cbMap) {
+                proxyprinttodiv("recurseModObj - top each inpKey", inpKey, 41, true, true);
+                async.nextTick(function() {
+                    var inpVal = inputobject[inpKey]; // inpVal is the value of each inputobject
+                    var dataType = dtoObject[inpKey];
 
-                // if right side inpVal is undefined see if we can create it based on datatype
-                if (inpVal===undefined || inpVal===null || inpVal==="undefined") {inpVal=setfromdatatype(inpKey, inpVal, dataType)}
-
-                // if inpVal still undefined, then nothing to do
-                if (inpVal===null || inpVal===undefined) {cbMap(null)}
-                else
-                {
-                    // ** should we skip this iteration **
-                    proxyprinttodiv("recurseModObj top of mapseries - inpVal", inpVal, 41, true, true);
-                    if (convert===false || inpKey==="metadata"|| inpKey==="command")
-                    {   // if left side metadata or comamand (or been told to skip) then skip
-                        modifiedObj[inpKey]=inpVal;
-                        cbMap(null);
+                    // if right side inpVal is undefined see if we can create it based on datatype
+                    if (inpVal === undefined || inpVal === null || inpVal === "undefined") {
+                        inpVal = setfromdatatype(inpKey, inpVal, dataType)
                     }
-                    else
-                    {
-                        // set default wid dataType to guid
-                        if (inpKey==="wid" && (dataType!=="guid" || dataType!=="shortguid")) {dataType="guid"}
 
-                        // ** ARRAY ** if right side is an array then step and recurse (inside deepfilterarray)
-                        if (isArray(dataType)) 
-                        {
-                            proxyprinttodiv("recurseModObj array before inpVal", inpVal, 41, true, true);
-                            deepfilterarray(inpVal, dataType, convert, totype, command, function (err, res) 
-                            {
-                                proxyprinttodiv("recurseModObj array after res", res, 41, true, true);
-                                if (err && Object.keys(err).length > 0) {cbMap(null);}
-                                else
-                                {
-                                if (res!==null && res!==undefined) {modifiedObj[inpKey]=res};
-                                cbMap(null);
-                                }
-                            })
-                        }
-         
-                        // ** OBJECT ** if right side object then recurse
-                        else if (isObject(dataType))
-                        {
-                            proxyprinttodiv("recurseModObj OBJECT before inpVal", inpVal, 41, true, true);
-                            recurseModObj(inpVal, dataType, convert, totype, command, function (err, res) 
-                            {
-                                proxyprinttodiv("recurseModObj OBJECT after res", res, 41, true, true);
-                                if (err && Object.keys(err).length > 0) {cbMap(null);}
-                                else
-                                {
-                                if (res!==null && res!==undefined) {modifiedObj[inpKey]=res};
-                                cbMap(null);
-                                }
-                            })
-                        }
+                    // if inpVal still undefined, then nothing to do
+                    if (inpVal === null || inpVal === undefined) {
+                        cbMap(null)
+                    } else {
+                        // ** should we skip this iteration **
+                        proxyprinttodiv("recurseModObj top of mapseries - inpVal", inpVal, 41, true, true);
+                        if (convert === false || inpKey === "metadata" || inpKey === "command") { // if left side metadata or comamand (or been told to skip) then skip
+                            modifiedObj[inpKey] = inpVal;
+                            cbMap(null);
+                        } else {
+                            // set default wid dataType to guid
+                            if (inpKey === "wid" && (dataType !== "guid" || dataType !== "shortguid")) {
+                                dataType = "guid"
+                            }
 
-                        // ** STRING ** if right side string then process datatype via case statements first then getwidmaster
-                        else 
-                        {
-                            proxyprinttodiv("recurseModObj before deepfilterobject inpVal", inpVal, 41);
-                            deepfilterobject(inpKey, inpVal, dataType, convert, totype, command, function (err, res) 
-                            {
-                                proxyprinttodiv("recurseModObj after deepfilterobject inpVal returnfromprocess", res, 41);
-                                if ((err && Object.keys(err).length > 0)||(res===null && res===undefined)) {cbMap(null);}
-                                else
-                                {
-                                    modifiedObj[inpKey]=res;
-                                    cbMap(null);
-                                }
-                            });
-                        } // end of else (array, object, string)
-                    } // metadata/command
-                } // null/undefined
-            }); // nexttick
-        },
-        function (err, res) 
-        {
-            proxyprinttodiv("recurseModObj end mod", modifiedObj, 41, true, true);
-            if (err && Object.keys(err).length > 0)
-            {
-                callback(err, res);
-            }
-            else
-            {
-                callback(null, modifiedObj);
-            }
-        });
-    } 
+                            // ** ARRAY ** if right side is an array then step and recurse (inside deepfilterarray)
+                            if (isArray(dataType)) {
+                                proxyprinttodiv("recurseModObj array before inpVal", inpVal, 41, true, true);
+                                deepfilterarray(inpVal, dataType, convert, totype, command, function(err, res) {
+                                    proxyprinttodiv("recurseModObj array after res", res, 41, true, true);
+                                    if (err && Object.keys(err).length > 0) {
+                                        cbMap(null);
+                                    } else {
+                                        if (res !== null && res !== undefined) {
+                                            modifiedObj[inpKey] = res
+                                        };
+                                        cbMap(null);
+                                    }
+                                })
+                            }
+
+                            // ** OBJECT ** if right side object then recurse
+                            else if (isObject(dataType)) {
+                                proxyprinttodiv("recurseModObj OBJECT before inpVal", inpVal, 41, true, true);
+                                recurseModObj(inpVal, dataType, convert, totype, command, function(err, res) {
+                                    proxyprinttodiv("recurseModObj OBJECT after res", res, 41, true, true);
+                                    if (err && Object.keys(err).length > 0) {
+                                        cbMap(null);
+                                    } else {
+                                        if (res !== null && res !== undefined) {
+                                            modifiedObj[inpKey] = res
+                                        };
+                                        cbMap(null);
+                                    }
+                                })
+                            }
+
+                            // ** STRING ** if right side string then process datatype via case statements first then getwidmaster
+                            else {
+                                proxyprinttodiv("recurseModObj before deepfilterobject inpVal", inpVal, 41);
+                                deepfilterobject(inpKey, inpVal, dataType, convert, totype, command, function(err, res) {
+                                    proxyprinttodiv("recurseModObj after deepfilterobject inpVal returnfromprocess", res, 41);
+                                    if ((err && Object.keys(err).length > 0) || (res === null && res === undefined)) {
+                                        cbMap(null);
+                                    } else {
+                                        modifiedObj[inpKey] = res;
+                                        cbMap(null);
+                                    }
+                                });
+                            } // end of else (array, object, string)
+                        } // metadata/command
+                    } // null/undefined
+                }); // nexttick
+            },
+            function(err, res) {
+                proxyprinttodiv("recurseModObj end mod", modifiedObj, 41, true, true);
+                if (err && Object.keys(err).length > 0) {
+                    callback(err, res);
+                } else {
+                    callback(null, modifiedObj);
+                }
+            });
+    }
 
     // set default inpVal based on dataType
-    function setfromdatatype(inpKey, inpVal, dataType)
-    {                
+    function setfromdatatype(inpKey, inpVal, dataType) {
         proxyprinttodiv("setfromdatatype dataType", dataType, 41);
-        switch (dataType) 
-        {
+        switch (dataType) {
             case "shortguid": //to create 5 digit alphanumeric string
                 inpVal = createNewShortGuid();
                 break;
@@ -1414,12 +1755,10 @@
         return inpVal;
     }
 
-    function deepfilterarray(inpVal, dataType, convert, totype, command, callback)
-    {
+    function deepfilterarray(inpVal, dataType, convert, totype, command, callback) {
         // get first datatype in array, they really all have to be the same
         proxyprinttodiv("deepfilterarray inpVal ", inpVal, 41, true, true);
-        if (isArray(dataType))
-        {
+        if (isArray(dataType)) {
             dataType = dataType[0];
         }
         if (!isArray(inpVal)) // if inpVal not array then make it array so we can recurse though sets
@@ -1428,34 +1767,28 @@
             temparray.push(inpVal);
             inpVal = temparray;
         }
-        async.mapSeries(inpVal, function (eachinputval, cb1) 
-        {   // step through each inpVal
-            async.nextTick(function () 
-            {
-                proxyprinttodiv("deepfilterarray eachinputval", eachinputval, 41);
-                recurseModObj(eachinputval, dataType, convert, totype, command, function (err, res) 
-                {
-                    proxyprinttodiv("deepfilterarray after res", res, 41);
-                    cb1(err, res); // results being fed via asynch to arrayresult below
-                }); // recurse
-            }); // next tick
-        },
-        function (err, arrayresult) 
-        {
-            proxyprinttodiv("deepfilterarray arrayresult", arrayresult, 41, true,true);
-            callback(err, arrayresult);
-        });
+        async.mapSeries(inpVal, function(eachinputval, cb1) { // step through each inpVal
+                async.nextTick(function() {
+                    proxyprinttodiv("deepfilterarray eachinputval", eachinputval, 41);
+                    recurseModObj(eachinputval, dataType, convert, totype, command, function(err, res) {
+                        proxyprinttodiv("deepfilterarray after res", res, 41);
+                        cb1(err, res); // results being fed via asynch to arrayresult below
+                    }); // recurse
+                }); // next tick
+            },
+            function(err, arrayresult) {
+                proxyprinttodiv("deepfilterarray arrayresult", arrayresult, 41, true, true);
+                callback(err, arrayresult);
+            });
     }
 
-    function deepfilterobject (inpKey, inpVal, dataType, convert, totype, command, callback)
-    {
+    function deepfilterobject(inpKey, inpVal, dataType, convert, totype, command, callback) {
         // if none of the cases touch it then it will remain invalidflag;
-        var result='notprocessedflag';
+        var result = 'notprocessedflag';
         // if rightside exists (and string)
         proxyprinttodiv("deepfilterobject dataType", dataType, 41);
 
-        switch (dataType)
-        {
+        switch (dataType) {
             case "shortguid": //to create 5 digit alphanumeric string
                 result = inpVal;
                 break;
@@ -1466,131 +1799,140 @@
                 result = inpVal;
                 break;
             case "boolean":
-                if (isString(inpVal)) {inpVal = (inpVal==="true") ? true : false;}
-                if (inpVal===true || inpVal===false)
-                {
-                    if (totype===true)
-                    {
+                if (isString(inpVal)) {
+                    inpVal = (inpVal === "true") ? true : false;
+                }
+                if (inpVal === true || inpVal === false) {
+                    if (totype === true) {
                         result = inpVal;
-                    }
-                    else
-                    {
+                    } else {
                         result = inpVal.toString();
                     }
-                }
-                else {result=null};
+                } else {
+                    result = null
+                };
                 break;
             case "string":
-                if (isString(inpVal)) {result = inpVal;} else {result=inpVal.toString()};
+                if (isString(inpVal)) {
+                    result = inpVal;
+                } else {
+                    result = inpVal.toString()
+                };
                 break;
             case "number":
-                if (isString(inpVal)) {inpVal = Number(inpVal)};
-                if (!isNaN(inpVal))
-                {
-                    if (totype === true)
-                    {
+                if (isString(inpVal)) {
+                    inpVal = Number(inpVal)
+                };
+                if (!isNaN(inpVal)) {
+                    if (totype === true) {
                         result = inpVal;
-                    } 
-                    else
-                    {
+                    } else {
                         result = inpVal.toString();
-                    } 
-                } else {result=null};
+                    }
+                } else {
+                    result = null
+                };
                 break;
             case "integer":
-                if (isString(inpVal)) {inpVal = parseInt(inpVal)}
-                if (!isNaN(inpVal))
-                {
-                    if (totype === true)
-                    {
+                if (isString(inpVal)) {
+                    inpVal = parseInt(inpVal)
+                }
+                if (!isNaN(inpVal)) {
+                    if (totype === true) {
                         result = inpVal;
-                    } 
-                    else
-                    {
+                    } else {
                         result = inpVal.toString();
-                    } 
-                } else {result=null};
+                    }
+                } else {
+                    result = null
+                };
                 break;
             case "date":
-                if (isString(inpVal)) {inpVal = new Date(inpVal)};
-                if (!isNaN(inpVal) && inpVal !== "Invalid Date")
-                {
-                    if (totype === true)
-                    {
+                if (isString(inpVal)) {
+                    inpVal = new Date(inpVal)
+                };
+                if (!isNaN(inpVal) && inpVal !== "Invalid Date") {
+                    if (totype === true) {
                         result = inpVal;
-                    } 
-                    else
-                    {
+                    } else {
                         result = inpVal.toISOString();
-                    } 
-                } else {result=null};
+                    }
+                } else {
+                    result = null
+                };
                 break;
             case "hash":
-                if (isString(inpVal)) {inpVal = hashfunction(inpVal, command)}
-                if (inpVal!==false)
-                {
-                    if (totype === true)
-                    {
+                if (isString(inpVal)) {
+                    inpVal = hashfunction(inpVal, command)
+                }
+                if (inpVal !== false) {
+                    if (totype === true) {
                         result = inpVal;
-                    } 
-                    else
-                    {
+                    } else {
                         result = hashfunction(inpVal, command);
-                    } 
-                } else {result=null};
+                    }
+                } else {
+                    result = null
+                };
                 break;
             case "phone": //+9 129 129 1212
-                if (inpVal && inpVal.length >= 11) {inpVal=parsePhoneFormatToString(inpVal);}
-                if (inpVal.length ===11)
-                {
-                    if (totype === true)
-                    {
+                if (inpVal && inpVal.length >= 11) {
+                    inpVal = parsePhoneFormatToString(inpVal);
+                }
+                if (inpVal.length === 11) {
+                    if (totype === true) {
                         result = inpVal;
-                    } 
-                    else
-                    {
+                    } else {
                         result = parseToPhoneFormat(inpVal);
-                    } 
-                } else {result=null};
+                    }
+                } else {
+                    result = null
+                };
                 break;
             case "object":
-                if (inpVal && isObject(inpVal))
-                {
+                if (inpVal && isObject(inpVal)) {
                     result = inpVal;
-                } else {result=null};
+                } else {
+                    result = null
+                };
                 break;
             case "array":
-                if (inpVal && isArray(inpVal))
-                {
+                if (inpVal && isArray(inpVal)) {
                     result = inpVal;
-                } else {result=null};
+                } else {
+                    result = null
+                };
                 break;
         } // case
         proxyprinttodiv("deepfilterobject - result ", result, 41);
-        if (result!=="notprocessedflag") {callback(null, result)}
+        if (result !== "notprocessedflag") {
+            callback(null, result)
+        }
         // ** if we did not find anything in the case statements then try getwidmaster **
-        else
-        {
+        else {
             proxyprinttodiv("deepfiltergetwidmaster dataType", dataType, 41);
-            var executeobject = {"command": {"executetype":"series","notfoundok":true}};
+            var executeobject = {
+                "command": {
+                    "executetype": "series",
+                    "notfoundok": true
+                }
+            };
             var env = new DriEnvironment(command.environment);
-            executeobject.executethis=dataType;
-            env.execute(executeobject, function (err, widObj) 
-            {
-                if ((err && Object.keys(err).length > 0) || Object.keys(widObj).length === 0){widObj={};}
+            executeobject.executethis = dataType;
+            env.execute(executeobject, function(err, widObj) {
+                if ((err && Object.keys(err).length > 0) || Object.keys(widObj).length === 0) {
+                    widObj = {};
+                }
                 // if the inpVal exists in the object we just got then return inpVal
                 // i.e datatype: fiftystates = {texas:, florida: } -- see if inpVal is inside of this, if so then valid
-                if (widObj.hasOwnProperty(inpVal))
-                {
+                if (widObj.hasOwnProperty(inpVal)) {
                     proxyprinttodiv("deepfiltergetwidmaster property found ", inpVal, 41, true, true);
                     callback(null, inpVal);
-                }
-                else
-                {
+                } else {
                     callback(null, null);
                 }
-            });  
-        }   
+            });
+        }
     } // last case of getwidmaster
 
     //deepfilter dataType=shortguid - to create new 5 digit alphanumeric string
@@ -1644,22 +1986,19 @@
     }
 
     // should encode input based command.hash
-    function hashfunction(input, command)
-    {
+    function hashfunction(input, command) {
         // current user
         // current key
         // encode decode
         var plaintext = input;
-        var password=command.password;
+        var password = command.password;
         // if it starts with HASH then decode else encode
-        if (input.substr(0,4)==="HASH")
-        {
-            plaintext=input.substr(4,input.length)
+        if (input.substr(0, 4) === "HASH") {
+            plaintext = input.substr(4, input.length)
             return TEAdecrypt(plaintext, password);
         }
-        if (command.hash="encode") 
-        {
-            return "HASH"+TEAencrypt(plaintext, password);
+        if (command.hash = "encode") {
+            return "HASH" + TEAencrypt(plaintext, password);
         }
     }
     //
@@ -1678,79 +2017,83 @@
     //
     // Return encrypted text as string
     //
-    function TEAencrypt(plaintext, password)
-    {
-        if (plaintext.length == 0) return('');  // nothing to encrypt
+    function TEAencrypt(plaintext, password) {
+        if (plaintext.length == 0) return (''); // nothing to encrypt
         // 'escape' plaintext so chars outside ISO-8859-1 work in single-byte packing, but  
         // keep spaces as spaces (not '%20') so encrypted text doesn't grow too long, and 
         // convert result to longs
-        var v = strToLongs(escape(plaintext).replace(/%20/g,' '));
-        if (v.length <= 1) v[1] = 0;  // algorithm doesn't work for n<2 so fudge by adding nulls
+        var v = strToLongs(escape(plaintext).replace(/%20/g, ' '));
+        if (v.length <= 1) v[1] = 0; // algorithm doesn't work for n<2 so fudge by adding nulls
 
         // will(a)ndri.st: make password become a SHA 1 Hash of itself
         password = do_sha1(password);
-        var k = strToLongs(password.slice(0,16));  // simply convert first 16 chars of password as key
+        var k = strToLongs(password.slice(0, 16)); // simply convert first 16 chars of password as key
         var n = v.length;
 
-        var z = v[n-1], y = v[0], delta = 0x9E3779B9;
-        var mx, e, q = Math.floor(6 + 52/n), sum = 0;
+        var z = v[n - 1],
+            y = v[0],
+            delta = 0x9E3779B9;
+        var mx, e, q = Math.floor(6 + 52 / n),
+            sum = 0;
 
-        while (q-- > 0) {  // 6 + 52/n operations gives between 6 & 32 mixes on each word
+        while (q-- > 0) { // 6 + 52/n operations gives between 6 & 32 mixes on each word
             sum += delta;
-            e = sum>>>2 & 3;
-            for (var p = 0; p < n-1; p++) {
-                y = v[p+1];
-                mx = (z>>>5 ^ y<<2) + (y>>>3 ^ z<<4) ^ (sum^y) + (k[p&3 ^ e] ^ z)
+            e = sum >>> 2 & 3;
+            for (var p = 0; p < n - 1; p++) {
+                y = v[p + 1];
+                mx = (z >>> 5 ^ y << 2) + (y >>> 3 ^ z << 4) ^ (sum ^ y) + (k[p & 3 ^ e] ^ z)
                 z = v[p] += mx;
             }
             y = v[0];
-            mx = (z>>>5 ^ y<<2) + (y>>>3 ^ z<<4) ^ (sum^y) + (k[p&3 ^ e] ^ z)
-            z = v[n-1] += mx;
+            mx = (z >>> 5 ^ y << 2) + (y >>> 3 ^ z << 4) ^ (sum ^ y) + (k[p & 3 ^ e] ^ z)
+            z = v[n - 1] += mx;
         }
         // note use of >>> in place of >> due to lack of 'unsigned' type in JavaScript 
         // (thanks to Karsten Kraus @ swr3 for this)
 
         result = (longsToStr(v));
         // added by WA: Output is expected to be in Base64 encoding to support pocket Note formatting.
-        return encodeBase64(result);    
+        return encodeBase64(result);
     }
 
     //---------
     // TEAdecrypt: Use Corrected Block TEA to decrypt ciphertext using password
     //
-    function TEAdecrypt(ciphertext, password)
-    {
+    function TEAdecrypt(ciphertext, password) {
         // added by WA: Choose encrypted text from URL instead of input field 
-         var URLwert = do_URLcontent("" + document.URL);
-         if (URLwert == "-") {
-           ciphertext = ciphertext;
-         } else {
-           ciphertext = URLwert;
-         }
-        if (ciphertext.length == 0) return('');
+        var URLwert = do_URLcontent("" + document.URL);
+        if (URLwert == "-") {
+            ciphertext = ciphertext;
+        } else {
+            ciphertext = URLwert;
+        }
+        if (ciphertext.length == 0) return ('');
 
-         // added by WA: Input is expected to be in Base64 encoding
-          ciphertext = decodeBase64(ciphertext)
-          var v = strToLongs(unescCtrlCh(ciphertext));
+        // added by WA: Input is expected to be in Base64 encoding
+        ciphertext = decodeBase64(ciphertext)
+        var v = strToLongs(unescCtrlCh(ciphertext));
 
         // will(a)ndri.st: make password become a SHA 1 Hash of itself; 
-          password = do_sha1(password);
-        
-        var k = strToLongs(password.slice(0,16)); 
+        password = do_sha1(password);
+
+        var k = strToLongs(password.slice(0, 16));
         var n = v.length;
 
-        var z = v[n-1], y = v[0], delta = 0x9E3779B9;
-        var mx, e, q = Math.floor(6 + 52/n), sum = q*delta;
+        var z = v[n - 1],
+            y = v[0],
+            delta = 0x9E3779B9;
+        var mx, e, q = Math.floor(6 + 52 / n),
+            sum = q * delta;
 
         while (sum != 0) {
-            e = sum>>>2 & 3;
-            for (var p = n-1; p > 0; p--) {
-                z = v[p-1];
-                mx = (z>>>5 ^ y<<2) + (y>>>3 ^ z<<4) ^ (sum^y) + (k[p&3 ^ e] ^ z)
+            e = sum >>> 2 & 3;
+            for (var p = n - 1; p > 0; p--) {
+                z = v[p - 1];
+                mx = (z >>> 5 ^ y << 2) + (y >>> 3 ^ z << 4) ^ (sum ^ y) + (k[p & 3 ^ e] ^ z)
                 y = v[p] -= mx;
             }
-            z = v[n-1];
-            mx = (z>>>5 ^ y<<2) + (y>>>3 ^ z<<4) ^ (sum^y) + (k[p&3 ^ e] ^ z)
+            z = v[n - 1];
+            mx = (z >>> 5 ^ y << 2) + (y >>> 3 ^ z << 4) ^ (sum ^ y) + (k[p & 3 ^ e] ^ z)
             y = v[0] -= mx;
             sum -= delta;
         }
@@ -1764,48 +2107,51 @@
 
     // supporting functions
 
-    function strToLongs(s) {  // convert string to array of longs, each containing 4 chars
+    function strToLongs(s) { // convert string to array of longs, each containing 4 chars
         // note chars must be within ISO-8859-1 (with Unicode code-point < 256) to fit 4/long
-        var l = new Array(Math.ceil(s.length/4))
-        for (var i=0; i<l.length; i++) {
+        var l = new Array(Math.ceil(s.length / 4))
+        for (var i = 0; i < l.length; i++) {
             // note little-endian encoding - endianness is irrelevant as long as 
             // it is the same in longsToStr() 
-            l[i] = s.charCodeAt(i*4) + (s.charCodeAt(i*4+1)<<8) + 
-                   (s.charCodeAt(i*4+2)<<16) + (s.charCodeAt(i*4+3)<<24);
+            l[i] = s.charCodeAt(i * 4) + (s.charCodeAt(i * 4 + 1) << 8) +
+                (s.charCodeAt(i * 4 + 2) << 16) + (s.charCodeAt(i * 4 + 3) << 24);
         }
-        return l;  // note running off the end of the string generates nulls since 
-    }              // bitwise operators treat NaN as 0
+        return l; // note running off the end of the string generates nulls since 
+    } // bitwise operators treat NaN as 0
 
-    function longsToStr(l) {  // convert array of longs back to string
+    function longsToStr(l) { // convert array of longs back to string
         var a = new Array(l.length);
-        for (var i=0; i<l.length; i++) {
-            a[i] = String.fromCharCode(l[i] & 0xFF, l[i]>>>8 & 0xFF, 
-                                       l[i]>>>16 & 0xFF, l[i]>>>24 & 0xFF);
+        for (var i = 0; i < l.length; i++) {
+            a[i] = String.fromCharCode(l[i] & 0xFF, l[i] >>> 8 & 0xFF,
+                l[i] >>> 16 & 0xFF, l[i] >>> 24 & 0xFF);
         }
-        return a.join('');  // use Array.join() rather than repeated string appends for efficiency
+        return a.join(''); // use Array.join() rather than repeated string appends for efficiency
     }
 
-    function escCtrlCh(str) {  // escape control chars which might cause problems with encrypted texts
-        return str.replace(/[\0\n\v\f\r!]/g, function(c) { return '!' + c.charCodeAt(0) + '!'; });
+    function escCtrlCh(str) { // escape control chars which might cause problems with encrypted texts
+        return str.replace(/[\0\n\v\f\r!]/g, function(c) {
+            return '!' + c.charCodeAt(0) + '!';
+        });
     }
 
-    function unescCtrlCh(str) {  // unescape potentially problematic nulls and control characters
-        return str.replace(/!\d\d?!/g, function(c) { return String.fromCharCode(c.slice(1,-1)); });
+    function unescCtrlCh(str) { // unescape potentially problematic nulls and control characters
+        return str.replace(/!\d\d?!/g, function(c) {
+            return String.fromCharCode(c.slice(1, -1));
+        });
     }
 
     // ----------------- 
     // Read URL: Detect content of encrypted test, starting after  ...htm?e=....  
     // added by WA
     // -----------------
-    function do_URLcontent(URLx) 
-     {
+    function do_URLcontent(URLx) {
         fullurl = URLx;
         if (fullurl.indexOf('?') > 0) {
-          URLx = fullurl.substring(fullurl.indexOf('?')+3, fullurl.length); 
+            URLx = fullurl.substring(fullurl.indexOf('?') + 3, fullurl.length);
         } else {
-           URLx = "-";
+            URLx = "-";
         }
-      return (URLx);
+        return (URLx);
     }
 
 
@@ -1816,75 +2162,79 @@
     var END_OF_INPUT = -1;
 
     var base64Chars = new Array(
-        'A','B','C','D','E','F','G','H',
-        'I','J','K','L','M','N','O','P',
-        'Q','R','S','T','U','V','W','X',
-        'Y','Z','a','b','c','d','e','f',
-        'g','h','i','j','k','l','m','n',
-        'o','p','q','r','s','t','u','v',
-        'w','x','y','z','0','1','2','3',
-        '4','5','6','7','8','9','+','/'
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+        'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+        'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+        'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
+        'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+        'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+        'w', 'x', 'y', 'z', '0', '1', '2', '3',
+        '4', '5', '6', '7', '8', '9', '+', '/'
     );
 
     var reverseBase64Chars = new Array();
-    for (var i=0; i < base64Chars.length; i++){
+    for (var i = 0; i < base64Chars.length; i++) {
         reverseBase64Chars[base64Chars[i]] = i;
     }
 
     var base64Str;
     var base64Count;
-    function setBase64Str(str){
+
+    function setBase64Str(str) {
         base64Str = str;
         base64Count = 0;
     }
-    function readBase64(){    
+
+    function readBase64() {
         if (!base64Str) return END_OF_INPUT;
         if (base64Count >= base64Str.length) return END_OF_INPUT;
         var c = base64Str.charCodeAt(base64Count) & 0xff;
         base64Count++;
         return c;
     }
-    function encodeBase64(str){
+
+    function encodeBase64(str) {
         setBase64Str(str);
         var result = '';
         var inBuffer = new Array(3);
         var lineCount = 0;
         var done = false;
-        while (!done && (inBuffer[0] = readBase64()) != END_OF_INPUT){
+        while (!done && (inBuffer[0] = readBase64()) != END_OF_INPUT) {
             inBuffer[1] = readBase64();
             inBuffer[2] = readBase64();
-            result += (base64Chars[ inBuffer[0] >> 2 ]);
-            if (inBuffer[1] != END_OF_INPUT){
-                result += (base64Chars [(( inBuffer[0] << 4 ) & 0x30) | (inBuffer[1] >> 4) ]);
-                if (inBuffer[2] != END_OF_INPUT){
-                    result += (base64Chars [((inBuffer[1] << 2) & 0x3c) | (inBuffer[2] >> 6) ]);
-                    result += (base64Chars [inBuffer[2] & 0x3F]);
+            result += (base64Chars[inBuffer[0] >> 2]);
+            if (inBuffer[1] != END_OF_INPUT) {
+                result += (base64Chars[((inBuffer[0] << 4) & 0x30) | (inBuffer[1] >> 4)]);
+                if (inBuffer[2] != END_OF_INPUT) {
+                    result += (base64Chars[((inBuffer[1] << 2) & 0x3c) | (inBuffer[2] >> 6)]);
+                    result += (base64Chars[inBuffer[2] & 0x3F]);
                 } else {
-                    result += (base64Chars [((inBuffer[1] << 2) & 0x3c)]);
+                    result += (base64Chars[((inBuffer[1] << 2) & 0x3c)]);
                     result += ('=');
                     done = true;
                 }
             } else {
-                result += (base64Chars [(( inBuffer[0] << 4 ) & 0x30)]);
+                result += (base64Chars[((inBuffer[0] << 4) & 0x30)]);
                 result += ('=');
                 result += ('=');
                 done = true;
             }
             lineCount += 4;
-            if (lineCount >= 76){
+            if (lineCount >= 76) {
                 result += ('\n');
                 lineCount = 0;
             }
         }
         return result;
     }
-    function readReverseBase64(){   
+
+    function readReverseBase64() {
         if (!base64Str) return END_OF_INPUT;
-        while (true){      
+        while (true) {
             if (base64Count >= base64Str.length) return END_OF_INPUT;
             var nextCharacter = base64Str.charAt(base64Count);
             base64Count++;
-            if (reverseBase64Chars[nextCharacter]){
+            if (reverseBase64Chars[nextCharacter]) {
                 return reverseBase64Chars[nextCharacter];
             }
             if (nextCharacter == 'A') return 0;
@@ -1892,27 +2242,26 @@
         return END_OF_INPUT;
     }
 
-    function ntos(n){
-        n=n.toString(16);
-        if (n.length == 1) n="0"+n;
-        n="%"+n;
+    function ntos(n) {
+        n = n.toString(16);
+        if (n.length == 1) n = "0" + n;
+        n = "%" + n;
         return unescape(n);
     }
 
-    function decodeBase64(str){
+    function decodeBase64(str) {
         setBase64Str(str);
         var result = "";
         var inBuffer = new Array(4);
         var done = false;
-        while (!done && (inBuffer[0] = readReverseBase64()) != END_OF_INPUT
-            && (inBuffer[1] = readReverseBase64()) != END_OF_INPUT){
+        while (!done && (inBuffer[0] = readReverseBase64()) != END_OF_INPUT && (inBuffer[1] = readReverseBase64()) != END_OF_INPUT) {
             inBuffer[2] = readReverseBase64();
             inBuffer[3] = readReverseBase64();
-            result += ntos((((inBuffer[0] << 2) & 0xff)| inBuffer[1] >> 4));
-            if (inBuffer[2] != END_OF_INPUT){
-                result +=  ntos((((inBuffer[1] << 4) & 0xff)| inBuffer[2] >> 2));
-                if (inBuffer[3] != END_OF_INPUT){
-                    result +=  ntos((((inBuffer[2] << 6)  & 0xff) | inBuffer[3]));
+            result += ntos((((inBuffer[0] << 2) & 0xff) | inBuffer[1] >> 4));
+            if (inBuffer[2] != END_OF_INPUT) {
+                result += ntos((((inBuffer[1] << 4) & 0xff) | inBuffer[2] >> 2));
+                if (inBuffer[3] != END_OF_INPUT) {
+                    result += ntos((((inBuffer[2] << 6) & 0xff) | inBuffer[3]));
                 } else {
                     done = true;
                 }
@@ -1928,19 +2277,19 @@
     // added by WA, source ostermiller.org
     //-------------------------------------------------
 
-    function decodeHex(str){
+    function decodeHex(str) {
         str = str.replace(new RegExp("s/[^0-9a-zA-Z]//g"));
         var result = "";
         var nextchar = "";
-        for (var i=0; i<str.length; i++){
+        for (var i = 0; i < str.length; i++) {
             nextchar += str.charAt(i);
-            if (nextchar.length == 2){
-                result += ntos(eval('0x'+nextchar));
+            if (nextchar.length == 2) {
+                result += ntos(eval('0x' + nextchar));
                 nextchar = "";
             }
         }
         return result;
-        
+
     }
 
 
@@ -1954,237 +2303,214 @@
     var accumulated_output_info;
 
     // add a labeled value to the text area
-    function accumulate_output( str )
-    {
-       accumulated_output_info = accumulated_output_info + str + "\n";
+    function accumulate_output(str) {
+        accumulated_output_info = accumulated_output_info + str + "\n";
     }
 
     // convert a 32-bit value to a 8-char hex string
-    function cvt_hex( val )
-    {
-       var str="";
-       var i;
-       var v;
+    function cvt_hex(val) {
+        var str = "";
+        var i;
+        var v;
 
-       for( i=7; i>=0; i-- )
-       {
-          v = (val>>>(i*4))&0x0f;
-          str += v.toString(16);
-       }
-       return str;
+        for (i = 7; i >= 0; i--) {
+            v = (val >>> (i * 4)) & 0x0f;
+            str += v.toString(16);
+        }
+        return str;
     }
 
     // add a bit string to the output, inserting spaces as designated
-    function accumulate_val( label, val )
-    {
-       accumulated_output_info += label + cvt_hex(val) + "\n";
+    function accumulate_val(label, val) {
+        accumulated_output_info += label + cvt_hex(val) + "\n";
     }
 
     // return a hex value LSB first
-    function lsb_hex( val )
-    {
-       var str="";
-       var i;
-       var vh;
-       var vl;
+    function lsb_hex(val) {
+        var str = "";
+        var i;
+        var vh;
+        var vl;
 
-       for( i=0; i<=6; i+=2 )
-       {
-          vh = (val>>>(i*4+4))&0x0f;
-          vl = (val>>>(i*4))&0x0f;
-          str += vh.toString(16) + vl.toString(16);
-       }
-       return str;
+        for (i = 0; i <= 6; i += 2) {
+            vh = (val >>> (i * 4 + 4)) & 0x0f;
+            vl = (val >>> (i * 4)) & 0x0f;
+            str += vh.toString(16) + vl.toString(16);
+        }
+        return str;
     }
 
     // rotate left circular
-    function rotate_left( n, s )
-    {
-       var t4 = ( n<<s ) | (n>>>(32-s));
-    //   accumulate_output( "  "+cvt_hex(n)+"<<<"+s+"="+cvt_hex(t4) );
-       return t4;
+    function rotate_left(n, s) {
+        var t4 = (n << s) | (n >>> (32 - s));
+        //   accumulate_output( "  "+cvt_hex(n)+"<<<"+s+"="+cvt_hex(t4) );
+        return t4;
     }
 
     // calculate the hash
-    function do_sha1(msg)
-    {
-       var blockstart;          // which block of words from the dataare we using now?
-       var i, j;
-       var W = new Array(80);
-       // initial constants
-       var H0 = 0x67452301;
-       var H1 = 0xEFCDAB89;
-       var H2 = 0x98BADCFE;
-       var H3 = 0x10325476;
-       var H4 = 0xC3D2E1F0;
-       // working variables
-       var A, B, C, D, E;
-       var temp;
+    function do_sha1(msg) {
+        var blockstart; // which block of words from the dataare we using now?
+        var i, j;
+        var W = new Array(80);
+        // initial constants
+        var H0 = 0x67452301;
+        var H1 = 0xEFCDAB89;
+        var H2 = 0x98BADCFE;
+        var H3 = 0x10325476;
+        var H4 = 0xC3D2E1F0;
+        // working variables
+        var A, B, C, D, E;
+        var temp;
 
-       // initialize detail output string
-       accumulated_output_info="";
+        // initialize detail output string
+        accumulated_output_info = "";
 
-       // get message to hash
-       //var msg = document.stuff.inmsg.value;
+        // get message to hash
+        //var msg = document.stuff.inmsg.value;
 
-       // note current length
-       var msg_len = msg.length;
+        // note current length
+        var msg_len = msg.length;
 
-       // convert to a 32-bit word array
-       var word_array = new Array();
-       for( i=0; i<msg_len-3; i+=4 )
-       {
-          // convert 4 bytes to a word
-          j = msg.charCodeAt(i)<<24 | msg.charCodeAt(i+1)<<16 |
-            msg.charCodeAt(i+2)<<8 | msg.charCodeAt(i+3);
-          word_array.push( j );
-          accumulate_val( msg.substr(i, 4)+": ", j );
-       }
+        // convert to a 32-bit word array
+        var word_array = new Array();
+        for (i = 0; i < msg_len - 3; i += 4) {
+            // convert 4 bytes to a word
+            j = msg.charCodeAt(i) << 24 | msg.charCodeAt(i + 1) << 16 |
+                msg.charCodeAt(i + 2) << 8 | msg.charCodeAt(i + 3);
+            word_array.push(j);
+            accumulate_val(msg.substr(i, 4) + ": ", j);
+        }
 
-       // handle final bits, add beginning of padding: 1 bit, then 0 bits
-       switch( msg_len % 4 )
-       {
-          case 0:
-             // text length was a multiple of 4 bytes, start padding
-             i = 0x080000000;               // 4 bytes padding
-             break;
+        // handle final bits, add beginning of padding: 1 bit, then 0 bits
+        switch (msg_len % 4) {
+            case 0:
+                // text length was a multiple of 4 bytes, start padding
+                i = 0x080000000; // 4 bytes padding
+                break;
 
-          case 1:
-             // one byte of text left
-             i = msg.charCodeAt(msg_len-1)<<24 | 0x0800000; // 3 bytes padding
-             break;
+            case 1:
+                // one byte of text left
+                i = msg.charCodeAt(msg_len - 1) << 24 | 0x0800000; // 3 bytes padding
+                break;
 
-          case 2:
-             // two bytes of text left
-             i = msg.charCodeAt(msg_len-2)<<24 | msg.charCodeAt(msg_len-1)<<16
-            | 0x08000;              // 2 bytes padding
-             break;
+            case 2:
+                // two bytes of text left
+                i = msg.charCodeAt(msg_len - 2) << 24 | msg.charCodeAt(msg_len - 1) << 16 | 0x08000; // 2 bytes padding
+                break;
 
-          case 3:
-             // three bytes of text left
-             i = msg.charCodeAt(msg_len-3)<<24 | msg.charCodeAt(msg_len-2)<<16
-            | msg.charCodeAt(msg_len-1)<<8  | 0x80; // 1 byte padding
-             break;
+            case 3:
+                // three bytes of text left
+                i = msg.charCodeAt(msg_len - 3) << 24 | msg.charCodeAt(msg_len - 2) << 16 | msg.charCodeAt(msg_len - 1) << 8 | 0x80; // 1 byte padding
+                break;
 
-          default:
-             window.alert("Something went weird in the switch!")
-             return;
-       }
-       accumulate_output( "length="+msg_len );
-       accumulate_val( "length%4="+(msg_len%4)+", padding=", i );
+            default:
+                window.alert("Something went weird in the switch!")
+                return;
+        }
+        accumulate_output("length=" + msg_len);
+        accumulate_val("length%4=" + (msg_len % 4) + ", padding=", i);
 
-       // handle the end of the text and beginning of the padding
-       word_array.push( i );
+        // handle the end of the text and beginning of the padding
+        word_array.push(i);
 
-       // pad to 448 bits (mod 512 bits) = 14 words (mod 16 words)
-       while( (word_array.length % 16) != 14 )
-          word_array.push( 0 );
+        // pad to 448 bits (mod 512 bits) = 14 words (mod 16 words)
+        while ((word_array.length % 16) != 14)
+            word_array.push(0);
 
-       // add 64-bit message length (in bits)
-       word_array.push( msg_len>>>29 );
-       word_array.push( (msg_len<<3)&0x0ffffffff );
+        // add 64-bit message length (in bits)
+        word_array.push(msg_len >>> 29);
+        word_array.push((msg_len << 3) & 0x0ffffffff);
 
-       for( i=0; i<word_array.length; i++ )
-          accumulate_output( "msg[" + i + "]=" + cvt_hex( word_array[i] ) );  
+        for (i = 0; i < word_array.length; i++)
+            accumulate_output("msg[" + i + "]=" + cvt_hex(word_array[i]));
 
-       // Process each 16-word block.
-       for ( blockstart=0; blockstart<word_array.length; blockstart+=16 )
-       {
-          accumulate_output( "Starting block at word "+blockstart );
+        // Process each 16-word block.
+        for (blockstart = 0; blockstart < word_array.length; blockstart += 16) {
+            accumulate_output("Starting block at word " + blockstart);
 
-          // create entries in W array
-          for( i=0; i<16; i++ )
-             W[i] = word_array[blockstart+i];
-          for( i=16; i<=79; i++ )
-             W[i] = rotate_left(W[i-3] ^ W[i-8] ^ W[i-14] ^ W[i-16], 1);
-          for( i=0; i<=79; i++ )
-             accumulate_output( "W[" + i + "]=" + cvt_hex( W[i] ) );  
+            // create entries in W array
+            for (i = 0; i < 16; i++)
+                W[i] = word_array[blockstart + i];
+            for (i = 16; i <= 79; i++)
+                W[i] = rotate_left(W[i - 3] ^ W[i - 8] ^ W[i - 14] ^ W[i - 16], 1);
+            for (i = 0; i <= 79; i++)
+                accumulate_output("W[" + i + "]=" + cvt_hex(W[i]));
 
-          // copy state
-          A = H0;
-          B = H1;
-          C = H2;
-          D = H3;
-          E = H4;
+            // copy state
+            A = H0;
+            B = H1;
+            C = H2;
+            D = H3;
+            E = H4;
 
-          // note start of round values
-          accumulate_output("A=" + cvt_hex(A) + " B=" + cvt_hex(B) + " C=" + cvt_hex(C)
-            + " D=" + cvt_hex(D) + " E=" + cvt_hex(E) );
+            // note start of round values
+            accumulate_output("A=" + cvt_hex(A) + " B=" + cvt_hex(B) + " C=" + cvt_hex(C) + " D=" + cvt_hex(D) + " E=" + cvt_hex(E));
 
-          // update state variables
-          for( i= 0; i<=19; i++ )
-          {
-             temp = (rotate_left(A,5) + ((B&C) | (~B&D)) + E + W[i] + 0x5A827999) & 0x0ffffffff;
+            // update state variables
+            for (i = 0; i <= 19; i++) {
+                temp = (rotate_left(A, 5) + ((B & C) | (~B & D)) + E + W[i] + 0x5A827999) & 0x0ffffffff;
 
-             // update state
-             E = D;
-             D = C;
-             C = rotate_left(B,30);
-             B = A;
-             A = temp;
-             accumulate_output( "i="+i+" A=" + cvt_hex(A) + " B=" + cvt_hex(B) + " C=" + cvt_hex(C)
-            + " D=" + cvt_hex(D) + " E=" + cvt_hex(E) );
-          }
+                // update state
+                E = D;
+                D = C;
+                C = rotate_left(B, 30);
+                B = A;
+                A = temp;
+                accumulate_output("i=" + i + " A=" + cvt_hex(A) + " B=" + cvt_hex(B) + " C=" + cvt_hex(C) + " D=" + cvt_hex(D) + " E=" + cvt_hex(E));
+            }
 
-          for( i=20; i<=39; i++ )
-          {
-             temp = (rotate_left(A,5) + (B ^ C ^ D) + E + W[i] + 0x6ED9EBA1) & 0x0ffffffff;
+            for (i = 20; i <= 39; i++) {
+                temp = (rotate_left(A, 5) + (B ^ C ^ D) + E + W[i] + 0x6ED9EBA1) & 0x0ffffffff;
 
-             // update state
-             E = D;
-             D = C;
-             C = rotate_left(B,30);
-             B = A;
-             A = temp;
-             accumulate_output( "i="+i+" A=" + cvt_hex(A) + " B=" + cvt_hex(B) + " C=" + cvt_hex(C)
-            + " D=" + cvt_hex(D) + " E=" + cvt_hex(E) );
-          }
+                // update state
+                E = D;
+                D = C;
+                C = rotate_left(B, 30);
+                B = A;
+                A = temp;
+                accumulate_output("i=" + i + " A=" + cvt_hex(A) + " B=" + cvt_hex(B) + " C=" + cvt_hex(C) + " D=" + cvt_hex(D) + " E=" + cvt_hex(E));
+            }
 
-          for( i=40; i<=59; i++ )
-          {
-             temp = (rotate_left(A,5) + ((B&C) | (B&D) | (C&D)) + E + W[i] + 0x8F1BBCDC) & 0x0ffffffff;
+            for (i = 40; i <= 59; i++) {
+                temp = (rotate_left(A, 5) + ((B & C) | (B & D) | (C & D)) + E + W[i] + 0x8F1BBCDC) & 0x0ffffffff;
 
-             // update state
-             E = D;
-             D = C;
-             C = rotate_left(B,30);
-             B = A;
-             A = temp;
-             accumulate_output( "i="+i+" A=" + cvt_hex(A) + " B=" + cvt_hex(B) + " C=" + cvt_hex(C)
-            + " D=" + cvt_hex(D) + " E=" + cvt_hex(E) );
-          }
+                // update state
+                E = D;
+                D = C;
+                C = rotate_left(B, 30);
+                B = A;
+                A = temp;
+                accumulate_output("i=" + i + " A=" + cvt_hex(A) + " B=" + cvt_hex(B) + " C=" + cvt_hex(C) + " D=" + cvt_hex(D) + " E=" + cvt_hex(E));
+            }
 
-          for( i=60; i<=79; i++ )
-          {
-            temp = (rotate_left(A,5) + (B ^ C ^ D) + E + W[i] + 0x6CA62C1D6) & 0x0ffffffff;
+            for (i = 60; i <= 79; i++) {
+                temp = (rotate_left(A, 5) + (B ^ C ^ D) + E + W[i] + 0x6CA62C1D6) & 0x0ffffffff;
 
-             // update state
-             E = D;
-             D = C;
-             C = rotate_left(B,30);
-             B = A;
-             A = temp;
-             accumulate_output( "i="+i+" A=" + cvt_hex(A) + " B=" + cvt_hex(B) + " C=" + cvt_hex(C)
-            + " D=" + cvt_hex(D) + " E=" + cvt_hex(E) );
-          }
+                // update state
+                E = D;
+                D = C;
+                C = rotate_left(B, 30);
+                B = A;
+                A = temp;
+                accumulate_output("i=" + i + " A=" + cvt_hex(A) + " B=" + cvt_hex(B) + " C=" + cvt_hex(C) + " D=" + cvt_hex(D) + " E=" + cvt_hex(E));
+            }
 
-          H0 = (H0 + A) & 0x0ffffffff;
-          H1 = (H1 + B) & 0x0ffffffff;
-          H2 = (H2 + C) & 0x0ffffffff;
-          H3 = (H3 + D) & 0x0ffffffff;
-          H4 = (H4 + E) & 0x0ffffffff;
+            H0 = (H0 + A) & 0x0ffffffff;
+            H1 = (H1 + B) & 0x0ffffffff;
+            H2 = (H2 + C) & 0x0ffffffff;
+            H3 = (H3 + D) & 0x0ffffffff;
+            H4 = (H4 + E) & 0x0ffffffff;
 
-          accumulate_output( "H0=" + cvt_hex(H0) + " H1=" + cvt_hex(H1) + " H2=" + cvt_hex(H2)
-            + " H3=" + cvt_hex(H3) + " H4=" + cvt_hex(H4) );
-       } // of loop on i
+            accumulate_output("H0=" + cvt_hex(H0) + " H1=" + cvt_hex(H1) + " H2=" + cvt_hex(H2) + " H3=" + cvt_hex(H3) + " H4=" + cvt_hex(H4));
+        } // of loop on i
 
-       // process output
-       // document.stuff.outhash.value = cvt_hex(H0) + cvt_hex(H1) + cvt_hex(H2) + cvt_hex(H3) + cvt_hex(H4);
-       // document.stuff.details.value = accumulated_output_info;
-       result = cvt_hex(H0) + cvt_hex(H1) + cvt_hex(H2) + cvt_hex(H3) + cvt_hex(H4);
-       
-       // will(a)ndri.st returns two digit hex code into unicode single characters
-       return decodeHex(result);
+        // process output
+        // document.stuff.outhash.value = cvt_hex(H0) + cvt_hex(H1) + cvt_hex(H2) + cvt_hex(H3) + cvt_hex(H4);
+        // document.stuff.details.value = accumulated_output_info;
+        result = cvt_hex(H0) + cvt_hex(H1) + cvt_hex(H2) + cvt_hex(H3) + cvt_hex(H4);
+
+        // will(a)ndri.st returns two digit hex code into unicode single characters
+        return decodeHex(result);
     }
 
 
@@ -2214,7 +2540,7 @@
 
     /* lib.js functions */
 
-    var recurFunc = function (arr, val) {
+    var recurFunc = function(arr, val) {
         // stop condition
         if (arr.length <= 0) {
             return val;
@@ -2340,7 +2666,8 @@
     exports.ConvertFromDOTdri = ConvertFromDOTdri = function ConvertFromDOTdri(data) { //Expands to Real javascript object
         if (Object(data) !== data || Array.isArray(data))
             return data;
-        var result = {}, cur, prop, idx, last, temp;
+        var result = {},
+            cur, prop, idx, last, temp;
         for (var p in data) {
             if (data.hasOwnProperty(p)) {
                 cur = result;
@@ -2684,8 +3011,7 @@
         }
         return true;
     };
-    exports.logverifycomplex = logverifycomplex = function logverifycomplex(test_name, result_object, result_assertion, error_object, error_assertion)
-    {
+    exports.logverifycomplex = logverifycomplex = function logverifycomplex(test_name, result_object, result_assertion, error_object, error_assertion) {
         // step 1 - compare result objects
         // step 2 - compare error objects
         // step 3 - consolidate results
@@ -2701,8 +3027,7 @@
         proxyprinttodiv('logverifycomplex complex_result I ', complex_result, 91);
         // Step 2 - compare error objects
         var complex_error = {};
-        if (error_object)
-        {
+        if (error_object) {
             // Only check if the error matches if there are actual error objects passed in
             complex_error = logverify(test_name + '_err', error_object, error_assertion);
             proxyprinttodiv('logverifycomplex complex_error I ', complex_error, 91);
@@ -2719,28 +3044,22 @@
     };
 
 
-    function generatepropertylist(objin, objlist)
-    {
-        if (typeof objin !== "object")
-        {
+    function generatepropertylist(objin, objlist) {
+        if (typeof objin !== "object") {
             objlist = objin;
         } else {
-            for(var key in objin)
-            {
+            for (var key in objin) {
                 // if value is not an object, just place the key
                 // else transform and find keys
-                if(typeof objin[key] !== "object")
-                {
-                    objlist[key]=objin[key];
+                if (typeof objin[key] !== "object") {
+                    objlist[key] = objin[key];
                 } else {
                     // needs key fetching from object which is inside
-                    var objinplay =  objin[key];
-                    objlist[key]=objin[key];
-                    if(objinplay instanceof Array)
-                    {
+                    var objinplay = objin[key];
+                    objlist[key] = objin[key];
+                    if (objinplay instanceof Array) {
                         // handle arrays
-                        for(var idx in objinplay)
-                        {
+                        for (var idx in objinplay) {
                             generatepropertylist(objinplay[idx], objlist);
                         }
                     } else {
@@ -2752,28 +3071,22 @@
         }
     }
 
-    function logverifyresulttable(test_name, data_object, assertion_object)
-    {
-        var data_object_resulttable={};
-        var assertion_object_resulttable={};
-        var resulttable_result={};
+    function logverifyresulttable(test_name, data_object, assertion_object) {
+        var data_object_resulttable = {};
+        var assertion_object_resulttable = {};
+        var resulttable_result = {};
         if (assertion_object && assertion_object.command && assertion_object.command.resulttable &&
-            data_object.command && data_object.command.resulttable)
-        {
-            for (var eachresulttable in data_object.command.resulttable)
-            {
-                if (assertion_object.command.resulttable[eachresulttable])
-                {
-                    assertion_object_resulttable=assertion_object.command.resulttable[eachresulttable];
+            data_object.command && data_object.command.resulttable) {
+            for (var eachresulttable in data_object.command.resulttable) {
+                if (assertion_object.command.resulttable[eachresulttable]) {
+                    assertion_object_resulttable = assertion_object.command.resulttable[eachresulttable];
+                } else {
+                    assertion_object_resulttable = assertion_object.command.resulttable;
                 }
-                else
-                {
-                    assertion_object_resulttable=assertion_object.command.resulttable;
-                }
-                data_object_resulttable=data_object.command.resulttable[eachresulttable];
+                data_object_resulttable = data_object.command.resulttable[eachresulttable];
                 extend(true,
                     resulttable_result,
-                    logverify(test_name+'_RT'+eachresulttable, data_object_resulttable, assertion_object_resulttable));
+                    logverify(test_name + '_RT' + eachresulttable, data_object_resulttable, assertion_object_resulttable));
             }
             delete data_object.command.resulttable;
             delete assertion_object.command.resulttable;
@@ -2785,12 +3098,12 @@
     exports.logverify = logverify = function logverify(test_name, data_objectin, assertion_objectin) {
         if (test_name === undefined) test_name = "defaulttest";
 
-        var data_object={};
-        var assertion_object={};
+        var data_object = {};
+        var assertion_object = {};
         extend(true, data_object, data_objectin);
         extend(true, assertion_object, assertion_objectin);
         // check both objects...get a deep comparison
-        var resulttable_result=logverifyresulttable(test_name, data_object, assertion_object);
+        var resulttable_result = logverifyresulttable(test_name, data_object, assertion_object);
 
         //var result0 = deepDiffMapper.map(assertion_object, data_object);
         var result0 = deepDiffMapper.map(data_object, assertion_object);
@@ -2803,29 +3116,25 @@
         proxyprinttodiv('logverify result', result, 91);
         var xresults = distillresults(test_name, result);
         proxyprinttodiv('logverify x I', xresults, 91, true);
-        if (xresults[test_name] === "PASS")
-        {
+        if (xresults[test_name] === "PASS") {
             return xresults;
         } else {
             var exception_pass = 'PASS';
             var diff_obj = xresults[test_name + '_diff'];
             var match = undefined;
 
-            proxyprinttodiv('logverify diff_obj', diff_obj, 91,true);
+            proxyprinttodiv('logverify diff_obj', diff_obj, 91, true);
             // go through difference object
-            for (key_name in diff_obj)
-            {
+            for (key_name in diff_obj) {
                 proxyprinttodiv('logverify key_name', key_name, 91);
                 var diff_obj_item = diff_obj[key_name];
                 proxyprinttodiv('logverify diff_obj_item', diff_obj_item, 91);
                 // look for any objects with a type...those have comparisons
-                if (diff_obj_item && diff_obj_item['type']!==null && diff_obj_item['type'] !== "unchanged")
-                {
+                if (diff_obj_item && diff_obj_item['type'] !== null && diff_obj_item['type'] !== "unchanged") {
                     var diff_type = diff_obj_item['type'];
                     proxyprinttodiv('logverify diff_type', diff_type, 91);
                     // if data.execption exists then we want to study it
-                    if (diff_obj[key_name].data && diff_obj[key_name].data.exception)
-                    {
+                    if (diff_obj[key_name].data && diff_obj[key_name].data.exception) {
                         var exception_types = diff_obj[key_name].data.exception;
 
                         proxyprinttodiv('logverify exception_types', exception_types, 91);
@@ -2846,11 +3155,12 @@
                         proxyprinttodiv('logverify match', match, 91);
                     }
                 }
-                if (match===false){break;} // if one bad then we can stop
+                if (match === false) {
+                    break;
+                } // if one bad then we can stop
             }
 
-            if (match)
-            {
+            if (match) {
                 xresults[test_name] = 'PASS';
             } // it was already FAIL otherwise
         }
@@ -2862,7 +3172,7 @@
     };
 
 
-    exports.distillresults = distillresults = function distillresults( test_name, result) {
+    exports.distillresults = distillresults = function distillresults(test_name, result) {
         // result is expected to be the output of diffMapper
 
         // Assume UNKNOWN...
@@ -2873,8 +3183,7 @@
         // so for now, set the 'test_results' to PASS.
         if (temp_string.indexOf("unchanged") !== -1 ||
             temp_string === "PASS" ||
-            temp_string === "{}")
-        {
+            temp_string === "{}") {
             test_results = "PASS";
         }
 
@@ -3165,14 +3474,14 @@
             VALUE_UPDATED: 'updated',
             VALUE_DELETED: 'deleted',
             VALUE_UNCHANGED: 'unchanged',
-            map: function (obj1, obj2) {
+            map: function(obj1, obj2) {
                 if (this.isFunction(obj1) || this.isFunction(obj2)) {
                     throw 'Invalid argument. Function given, object expected.';
                 }
                 if (this.isValue(obj1) || this.isValue(obj2)) {
                     return {
                         type: this.compareValues(obj1, obj2),
-                        data: obj2     // obj1 || obj2 changed 8/4 for logverify
+                        data: obj2 // obj1 || obj2 changed 8/4 for logverify
                     };
                 }
                 var diff = {};
@@ -3187,7 +3496,7 @@
                             continue;
                         }
                         var value2 = undefined;
-                        if ('undefined' != typeof (obj2[key])) {
+                        if ('undefined' != typeof(obj2[key])) {
                             value2 = obj2[key];
                         }
                         diff[key] = this.map(obj1[key], value2);
@@ -3195,7 +3504,7 @@
                 }
                 for (var key2 in obj2) {
                     if (obj2.hasOwnProperty(key2)) {
-                        if (this.isFunction(obj2[key2]) || ('undefined' != typeof (diff[key2]))) {
+                        if (this.isFunction(obj2[key2]) || ('undefined' != typeof(diff[key2]))) {
                             continue;
                         }
                         diff[key2] = this.map(undefined, obj2[key2]);
@@ -3203,40 +3512,40 @@
                 }
                 return diff;
             },
-            compareValues: function (value1, value2) {
+            compareValues: function(value1, value2) {
                 //console.log("value1 : " + value1);
                 //console.log("value2 : " + value2);
 
                 if (value1 === value2) {
                     return this.VALUE_UNCHANGED;
                 }
-                if ('undefined' == typeof (value1)) {
+                if ('undefined' == typeof(value1)) {
                     return this.VALUE_CREATED;
                 }
-                if ('undefined' == typeof (value2)) {
+                if ('undefined' == typeof(value2)) {
                     return this.VALUE_DELETED;
                 }
                 return this.VALUE_UPDATED;
             },
-            isFunction: function (obj) {
+            isFunction: function(obj) {
                 return toString.apply(obj) === '[object Function]';
             },
-            isArray: function (obj) {
+            isArray: function(obj) {
                 return toString.apply(obj) === '[object Array]';
             },
-            isObject: function (obj) {
+            isObject: function(obj) {
                 return toString.apply(obj) === '[object Object]';
             },
-            isValue: function (obj) {
+            isValue: function(obj) {
                 return !this.isObject(obj) && !this.isArray(obj);
             }
         }
     }();
 
     exports.syntaxHighlight = syntaxHighlight = function syntaxHighlight(json) {
-        if(json){
+        if (json) {
             json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
                 var cls = 'number';
                 if (/^"/.test(match)) {
                     if (/:$/.test(match)) {
@@ -3268,7 +3577,7 @@
     /**
      */
 
-    var _convertDotToSubObject = function (keyParts, value) {
+    var _convertDotToSubObject = function(keyParts, value) {
 
         var subObject = {},
             currentValue = subObject;
@@ -3285,13 +3594,13 @@
     /**
      */
 
-    var _queryParser = new(function () {
+    var _queryParser = new(function() {
 
         /**
          * tests against data
          */
 
-        var priority = this.priority = function (statement, data) {
+        var priority = this.priority = function(statement, data) {
 
             var exprs = statement.exprs,
                 priority = 0;
@@ -3317,7 +3626,7 @@
          * parses a statement into something evaluable
          */
 
-        var parse = this.parse = function (statement, key) {
+        var parse = this.parse = function(statement, key) {
 
             //fixes sift(null, []) issue
             if (!statement) statement = {
@@ -3333,12 +3642,12 @@
                     if (statement.hasOwnProperty(k)) {
                         //find the apropriate operator. If one doesn't exist, then it's a property, which means
                         //we create a new statement (traversing)
-                        var operator = !! _testers[k] ? k : '$trav',
+                        var operator = !!_testers[k] ? k : '$trav',
 
-                        //value of given statement (the match)
+                            //value of given statement (the match)
                             value = statement[k],
 
-                        //default = match
+                            //default = match
                             exprValue = value;
 
                         //if we're working with a traversable operator, then set the expr value
@@ -3382,10 +3691,10 @@
             var stmt = {
                 exprs: testers,
                 k: key,
-                test: function (value) {
+                test: function(value) {
                     return !!~stmt.priority(value);
                 },
-                priority: function (value) {
+                priority: function(value) {
                     return priority(stmt, value);
                 }
             };
@@ -3422,42 +3731,42 @@
             /**
              */
 
-            $eq: function (a, b) {
+            $eq: function(a, b) {
                 return btop(a.test(b));
             },
 
             /**
              */
 
-            $ne: function (a, b) {
+            $ne: function(a, b) {
                 return btop(!a.test(b));
             },
 
             /**
              */
 
-            $lt: function (a, b) {
+            $lt: function(a, b) {
                 return btop(a > b);
             },
 
             /**
              */
 
-            $gt: function (a, b) {
+            $gt: function(a, b) {
                 return btop(a < b);
             },
 
             /**
              */
 
-            $lte: function (a, b) {
+            $lte: function(a, b) {
                 return btop(a >= b);
             },
 
             /**
              */
 
-            $gte: function (a, b) {
+            $gte: function(a, b) {
                 return btop(a <= b);
             },
 
@@ -3465,14 +3774,14 @@
             /**
              */
 
-            $exists: function (a, b) {
+            $exists: function(a, b) {
                 return btop(a === (b != null))
             },
 
             /**
              */
 
-            $in: function (a, b) {
+            $in: function(a, b) {
 
                 //intersecting an array
                 if (b instanceof Array) {
@@ -3492,7 +3801,7 @@
             /**
              */
 
-            $not: function (a, b) {
+            $not: function(a, b) {
                 if (!a.test) throw new Error("$not test should include an expression, not a value. Use $ne instead.");
                 return btop(!a.test(b));
             },
@@ -3500,7 +3809,7 @@
             /**
              */
 
-            $type: function (a, b, org) {
+            $type: function(a, b, org) {
 
                 //instanceof doesn't work for strings / boolean. instanceof works with inheritance
                 return org ? btop(org instanceof a || org.constructor == a) : -1;
@@ -3510,21 +3819,21 @@
              */
 
 
-            $nin: function (a, b) {
+            $nin: function(a, b) {
                 return~ _testers.$in(a, b) ? -1 : 0;
             },
 
             /**
              */
 
-            $mod: function (a, b) {
+            $mod: function(a, b) {
                 return b % a[0] == a[1] ? 0 : -1;
             },
 
             /**
              */
 
-            $all: function (a, b) {
+            $all: function(a, b) {
 
                 for (var i = a.length; i--;) {
                     if (b.indexOf(a[i]) == -1) return -1;
@@ -3536,14 +3845,14 @@
             /**
              */
 
-            $size: function (a, b) {
+            $size: function(a, b) {
                 return b ? btop(a == b.length) : -1;
             },
 
             /**
              */
 
-            $or: function (a, b) {
+            $or: function(a, b) {
 
                 var i = a.length,
                     p, n = i;
@@ -3560,7 +3869,7 @@
             /**
              */
 
-            $nor: function (a, b) {
+            $nor: function(a, b) {
 
                 var i = a.length,
                     n = i;
@@ -3577,7 +3886,7 @@
             /**
              */
 
-            $and: function (a, b) {
+            $and: function(a, b) {
 
                 for (var i = a.length; i--;) {
                     if (!~priority(a[i], b)) {
@@ -3591,7 +3900,7 @@
             /**
              */
 
-            $trav: function (a, b) {
+            $trav: function(a, b) {
 
 
 
@@ -3616,7 +3925,7 @@
             /**
              */
 
-            $eq: function (a) {
+            $eq: function(a) {
 
                 var fn;
 
@@ -3626,7 +3935,7 @@
                     fn = a;
                 } else {
 
-                    fn = function (b) {
+                    fn = function(b) {
                         if (b instanceof Array) {
                             return~ b.indexOf(a);
                         } else {
@@ -3644,14 +3953,14 @@
             /**
              */
 
-            $ne: function (a) {
+            $ne: function(a) {
                 return _prepare.$eq(a);
             }
         };
 
 
 
-        var _getExpr = function (type, key, value) {
+        var _getExpr = function(type, key, value) {
 
             var v = _comparable(value);
 
@@ -3672,11 +3981,11 @@
     })();
 
 
-    var getSelector = function (selector) {
+    var getSelector = function(selector) {
 
         if (!selector) {
 
-            return function (value) {
+            return function(value) {
                 return value;
             };
 
@@ -3688,13 +3997,13 @@
         throw new Error("Unknown sift selector " + selector);
     };
 
-    var sifter = function (query, selector) {
+    var sifter = function(query, selector) {
 
         //build the filter for the sifter
         var filter = _queryParser.parse(query);
 
         //the function used to sift through the given array
-        var self = function (target) {
+        var self = function(target) {
 
             var sifted = [],
                 results = [],
@@ -3718,7 +4027,7 @@
             }
 
             //sort the values
-            sifted.sort(function (a, b) {
+            sifted.sort(function(a, b) {
                 return a.priority > b.priority ? -1 : 1;
             });
 
@@ -3748,7 +4057,7 @@
      * @param rawSelector the selector for plucking data from the given target
      */
 
-    var sift = function (query, target, rawSelector) {
+    var sift = function(query, target, rawSelector) {
 
         //must be an array
         if (typeof target != "object") {
@@ -3768,11 +4077,11 @@
     };
 
 
-    sift.use = function (options) {
+    sift.use = function(options) {
         if (options.operators) sift.useOperators(options.operators);
     };
 
-    sift.useOperators = function (operators) {
+    sift.useOperators = function(operators) {
         for (var key in operators) {
             if (operators.hasOwnProperty(key)) {
                 sift.useOperator(key, operators[key]);
@@ -3780,7 +4089,7 @@
         }
     };
 
-    sift.useOperator = function (operator, optionsOrFn) {
+    sift.useOperator = function(operator, optionsOrFn) {
 
         var options = {};
 
@@ -3829,7 +4138,7 @@
         extend(true, c_assert, assert);
 
         // Call test_and_verify with the config parameters in the parameters
-        test_and_verify(testname, "execute", c_parameters, c_assert, database, command, function (err, res) {
+        test_and_verify(testname, "execute", c_parameters, c_assert, database, command, function(err, res) {
             // If error, bounce out
             if (err && Object.keys(err).length > 0) {
                 callback(err, result);
@@ -3849,7 +4158,7 @@
                 delete c_assert[0]["configuration"];
 
                 // Call test_and_verify with c_ verion -- actual config changed
-                test_and_verify("cc_" + testname, "execute", c_parameters, c_assert, database, command, function (err, res_2) {
+                test_and_verify("cc_" + testname, "execute", c_parameters, c_assert, database, command, function(err, res_2) {
                     // Add res to return data
                     results.push(res_2);
                     // Set the config back to normal
@@ -3872,7 +4181,7 @@
             addToLocalStorage("maincollection", JSON.parse(this_string));
         }
         if (parameters instanceof Array) {
-            parameters.push(function (err, res) {
+            parameters.push(function(err, res) {
                 // If error, bounce out
                 if (err && Object.keys(err).length > 0) {
                     cbMap(err, result);
@@ -3885,7 +4194,7 @@
         } else {
             window[fnname](
                 parameters,
-                function (err, res) {
+                function(err, res) {
                     // If error, bounce out
                     if (err && Object.keys(err).length > 0) {
                         cbMap(err, result);
@@ -4107,8 +4416,8 @@
 
                 if ( // if array or object then recurse
                     (isObject(obj1[eachelement] || isArray(obj1[eachelement]))) &&
-                        (obj2.hasOwnProperty(eachelement) && (isObject(obj2[eachelement]) || isArray(obj2[eachelement])))
-                    ) {
+                    (obj2.hasOwnProperty(eachelement) && (isObject(obj2[eachelement]) || isArray(obj2[eachelement])))
+                ) {
                     var recurse = {};
                     recurse = objectrelationships(obj1[eachelement], obj2[eachelement], type);
                     if (Object.keys(recurse.andobj).length !== 0) {
@@ -4199,7 +4508,7 @@
             }
         }
 
-        return r.sort(callback).reduce(function (obj, n) {
+        return r.sort(callback).reduce(function(obj, n) {
             obj[n.key] = n.value;
             return obj;
         }, {});
@@ -4222,21 +4531,21 @@
         var databasetable = command.databasetable;
         var commandObj = command.object;
         var objectSize = 0;
-        var db={};
+        var db = {};
 
         proxyprinttodiv('Function objectoperations command collection', collection, 18);
         proxyprinttodiv('Function objectoperations command databasetable', databasetable, 18);
 
-        if(!commandObj){
+        if (!commandObj) {
             if (command.datastore === "localstore") {
-                command.object=localStore;
+                command.object = localStore;
             } else {
-                command.object=localStorage;
+                command.object = localStorage;
             }
         }
         proxyprinttodiv('Function objectoperations command object', command.object, 27);
 
-        for(key in command.object) {
+        for (key in command.object) {
             proxyprinttodiv('Function objectoperations object key ----------', key, 27);
             var storedObj = command.object[key];
             var splittedKeys = key.split("_");
@@ -4244,42 +4553,42 @@
             var targetcollection = null;
             var targetdatabasetable = null;
 
-            for(index in splittedKeys) {
+            for (index in splittedKeys) {
                 splittedKey = splittedKeys[index];
                 var keyValues = splittedKey.split("-");
-                if( keyValues && keyValues.length==2 ){
-                    if( keyValues[0]=="collection" ) {
+                if (keyValues && keyValues.length == 2) {
+                    if (keyValues[0] == "collection") {
                         targetcollection = keyValues[1];
                     }
-                    if( keyValues[0]=="databasetable" ) {
+                    if (keyValues[0] == "databasetable") {
                         targetdatabasetable = keyValues[1];
                     }
                 }
             }
 
-            if( commandObj ) {
+            if (commandObj) {
                 var size = memorySizeOf(storedObj);
                 proxyprinttodiv('Function objectoperations size 1 ', size, 27);
-                objectSize+=size;
-            } else {  //If no command.object
-                if((collection && collection===targetcollection) || (databasetable && databasetable===targetdatabasetable)){ //To get particular collection/databasetable size
+                objectSize += size;
+            } else { //If no command.object
+                if ((collection && collection === targetcollection) || (databasetable && databasetable === targetdatabasetable)) { //To get particular collection/databasetable size
                     proxyprinttodiv('Function objectoperations targetcollection', targetcollection, 27);
                     proxyprinttodiv('Function objectoperations targetdatabasetable', targetdatabasetable, 27);
 
                     size = memorySizeOf(storedObj);
                     proxyprinttodiv('Function objectoperations size 2', size, 27);
-                    objectSize+=size;
+                    objectSize += size;
                 }
             }
 
             //3). if command.delete exists and true then delete from localstorage
-            if(command && command["delete"] && command["delete"]===true){
+            if (command && command["delete"] && command["delete"] === true) {
                 removeFromLocalStorage(key);
             }
         }
 
         var res = {};
-        res["objectsize"]=formatByteSize(objectSize);
+        res["objectsize"] = formatByteSize(objectSize);
         callback(null, res);
     };
 
@@ -4291,8 +4600,8 @@
         var bytes = 0;
 
         function sizeOf(obj) {
-            if(obj !== null && obj !== undefined) {
-                switch(typeof obj) {
+            if (obj !== null && obj !== undefined) {
+                switch (typeof obj) {
                     case 'number':
                         bytes += 8;
                         break;
@@ -4304,9 +4613,9 @@
                         break;
                     case 'object':
                         var objClass = Object.prototype.toString.call(obj).slice(8, -1);
-                        if(objClass === 'Object' || objClass === 'Array') {
-                            for(var key in obj) {
-                                if(!obj.hasOwnProperty(key)) continue;
+                        if (objClass === 'Object' || objClass === 'Array') {
+                            for (var key in obj) {
+                                if (!obj.hasOwnProperty(key)) continue;
                                 sizeOf(obj[key]);
                             }
                         } else bytes += obj.toString().length * 2;
@@ -4317,21 +4626,22 @@
         }
         return sizeOf(obj);
     }
+
     function formatByteSize(bytes) {
-        if(bytes < 1024) return bytes + " bytes";
-        else if(bytes < 1048576) return(bytes / 1024).toFixed(3) + " KiB";
-        else if(bytes < 1073741824) return(bytes / 1048576).toFixed(3) + " MiB";
-        else return(bytes / 1073741824).toFixed(3) + " GiB";
+        if (bytes < 1024) return bytes + " bytes";
+        else if (bytes < 1048576) return (bytes / 1024).toFixed(3) + " KiB";
+        else if (bytes < 1073741824) return (bytes / 1048576).toFixed(3) + " MiB";
+        else return (bytes / 1073741824).toFixed(3) + " GiB";
     }
 
     /*
      -- To calculate localstorage object size
      Reference -- http://glynrob.com/javascript/calculate-localstorage-space
      */
-    function memorySizeOfObjFromLocalStorage(key){
+    function memorySizeOfObjFromLocalStorage(key) {
         var objectValue = localStorage.getItem(key);
         objectSize = 0;
-        if(objectValue){
+        if (objectValue) {
             objectSize = lengthInUtf8Bytes(objectValue);
         }
         return formatByteSize(objectSize);
@@ -4339,7 +4649,8 @@
 
     // adding a size function to Object's prototype
     Object.size = function(obj) {
-        var size = 0, key;
+        var size = 0,
+            key;
         for (key in obj) {
             if (obj.hasOwnProperty(key)) size++;
         }
@@ -4347,19 +4658,20 @@
     };
 
     // To calculate the size in bytes of the data currently stored
-    function sizeofAllStorage(){
+    function sizeofAllStorage() {
         var size = 0;
         var eachObjectSize = 0;
         var eachObjectSizeInMB = 0;
-        for (i=0; i<=localStorage.length-1; i++) {
+        for (i = 0; i <= localStorage.length - 1; i++) {
             key = localStorage.key(i);
             eachObjectSize = lengthInUtf8Bytes(localStorage.getItem(key));
             size += eachObjectSize;
-            eachObjectSizeInMB = Math.ceil((eachObjectSize/1024/1024)*100)/100;
-            proxyprinttodiv("calculatespace size ("+ key +")", eachObjectSizeInMB, 27);
+            eachObjectSizeInMB = Math.ceil((eachObjectSize / 1024 / 1024) * 100) / 100;
+            proxyprinttodiv("calculatespace size (" + key + ")", eachObjectSizeInMB, 27);
         }
-        return Math.ceil((size/1024/1024)*100)/100; // get into MB
+        return Math.ceil((size / 1024 / 1024) * 100) / 100; // get into MB
     }
+
     function lengthInUtf8Bytes(str) {
         // Matches only the 10.. bytes that are non-initial characters in a multi-byte sequence.
         var m = encodeURIComponent(str).match(/%[89ABab]/g);
@@ -4367,23 +4679,23 @@
     }
 
     //To get total storage size
-    function totalStorageSize(){
+    function totalStorageSize() {
         var storeSpace = 0;
         var maxMBToTest = 10;
         localStorage.clear();
         var i = 0;
-        var testPacket = new Array( 1025 ).join( "a" ); // create 1024 characters so 1KB
-        while (i<maxMBToTest){ // MB level
+        var testPacket = new Array(1025).join("a"); // create 1024 characters so 1KB
+        while (i < maxMBToTest) { // MB level
             var t = 0;
-            while (t<1025){ // KB level
+            while (t < 1025) { // KB level
                 try {
-                    localStorage.setItem(i+"|"+t, testPacket);
-                } catch( error ) {
+                    localStorage.setItem(i + "|" + t, testPacket);
+                } catch (error) {
                     var kbsaved = Math.floor(((t / 1024) * 100)); // calculate percentage of 1024
-                    storeSpace = i+'.'+kbsaved; // add MB and KB values
-                    storeSpace =  (Math.floor(storeSpace*100))/100; // rounds down the value
+                    storeSpace = i + '.' + kbsaved; // add MB and KB values
+                    storeSpace = (Math.floor(storeSpace * 100)) / 100; // rounds down the value
                     t = 1025;
-                    i = maxMBToTest+1;
+                    i = maxMBToTest + 1;
                 }
                 t++;
             }
@@ -4393,7 +4705,7 @@
         return storeSpace;
     }
 
-    exports.copyEnvironmentCommands = copyEnvironmentCommands = function (inobject) {
+    exports.copyEnvironmentCommands = copyEnvironmentCommands = function(inobject) {
         //now repeat that code in getwid, copywod, and bottom of query
         var tempObj = {};
         extend(true, tempObj, inobject.command);
@@ -4412,28 +4724,42 @@
         this.execute = function(params, callback) {
             var executeobject = {};
 
-            if (!params.command) { params.command = {}; }
+            if (!params.command) {
+                params.command = {};
+            }
 
             if (isString(params)) {
-                executeobject = {executethis:params};
+                executeobject = {
+                    executethis: params
+                };
                 params = executeobject;
             } else if (Array.isArray(params)) {
-                executeobject = {command:{xrun:params}};
+                executeobject = {
+                    command: {
+                        xrun: params
+                    }
+                };
                 params = executeobject;
             }
 
             if (params.command.environment) {
                 params.command.environment = extend(true, this.environment, params.command.environment);
-            } else { params.command.environment = this.environment; }
+            } else {
+                params.command.environment = this.environment;
+            }
 
-            if (!params.command.environment.default) { params.command.environment.default = {}; }
+            if (!params.command.environment.default) {
+                params.command.environment.default = {};
+            }
 
             if (params.command.environment && params.command.environment.run && params.command.environment.run.type) {
                 params.command.environment.default.executetype = params.command.environment.run.type;
                 delete params.command.environment.run.type;
             }
 
-            execute(params, function (err, results) { callback(err, results); });
+            execute(params, function(err, results) {
+                callback(err, results);
+            });
         };
     };
 
@@ -4445,13 +4771,21 @@
         this.execute = function(params, callback) {
             var executeobject = {};
 
-            if (!params.command) { params.command = {}; }
+            if (!params.command) {
+                params.command = {};
+            }
 
             if (isString(params)) {
-                executeobject = {executethis:params};
+                executeobject = {
+                    executethis: params
+                };
                 params = executeobject;
             } else if (Array.isArray(params)) {
-                executeobject = {command:{xrun:params}};
+                executeobject = {
+                    command: {
+                        xrun: params
+                    }
+                };
                 params = executeobject;
             }
 
@@ -4459,9 +4793,13 @@
 
             //
             // we could set a lot more defaults here
-            if (!params.command.environment.default) { params.command.environment.default = {}; }
+            if (!params.command.environment.default) {
+                params.command.environment.default = {};
+            }
 
-            execute(params, function (err, results) { callback(err, results); });
+            execute(params, function(err, results) {
+                callback(err, results);
+            });
         };
     };
 
@@ -4481,110 +4819,110 @@
     // setInterval(eventdaily(), 1 * day);
 
     exports.eventnewpage = eventnewpage = function eventnewpage(params, cb) {
-        processqueue(arguments.callee.name, function (err, res) {
+        processqueue(arguments.callee.name, function(err, res) {
             cb(err, res);
         });
 
     };
 
     exports.eventonline = eventonline = function eventonline(params, cb) {
-        processqueue(arguments.callee.name, function (err, res) {
+        processqueue(arguments.callee.name, function(err, res) {
             cb(err, res);
         });
     };
 
     exports.eventoffline = eventoffline = function eventoffline(params, cb) {
-        processqueue(arguments.callee.name, function (err, res) {
+        processqueue(arguments.callee.name, function(err, res) {
             cb(err, res);
         });
     };
 
     exports.eventonemin = eventonemin = function eventonemin() {
         //    proxyprinttodiv("eventonemin", 'one sec', 30);
-        processqueue(arguments.callee.name, function (err, res) {
+        processqueue(arguments.callee.name, function(err, res) {
             //cb(err, res);
         });
     };
 
     exports.eventtenmin = eventtenmin = function eventtenmin(params, cb) {
-        processqueue(arguments.callee.name, function (err, res) {
+        processqueue(arguments.callee.name, function(err, res) {
             cb(err, res);
         });
     };
 
     exports.eventdaily = eventdaily = function eventdaily(params, cb) {
-        processqueue(arguments.callee.name, function (err, res) {
+        processqueue(arguments.callee.name, function(err, res) {
             cb(err, res);
         });
     };
 
     exports.eventmonthly = eventmonthly = function eventmonthly(params, cb) {
-        processqueue(arguments.callee.name, function (err, res) {
+        processqueue(arguments.callee.name, function(err, res) {
             cb(err, res);
         });
     };
 
     exports.eventlogineventsucess = eventlogineventsucess = function eventlogineventsucess(params, cb) {
-        processqueue(arguments.callee.name, function (err, res) {
+        processqueue(arguments.callee.name, function(err, res) {
             cb(err, res);
         });
     };
 
     exports.eventlogineventfail = eventlogineventfail = function eventlogineventfail(params, cb) {
-        processqueue(arguments.callee.name, function (err, res) {
+        processqueue(arguments.callee.name, function(err, res) {
             cb(err, res);
         });
     };
 
     exports.eventoutboundevent = eventoutboundevent = function eventoutboundevent(params, cb) {
-        processqueue(arguments.callee.name, function (err, res) {
+        processqueue(arguments.callee.name, function(err, res) {
             cb(err, res);
         });
     };
 
     exports.eventdeletewidevent = eventdeletewidevent = function eventdeletewidevent(params, cb) {
-        processqueue(arguments.callee.name, function (err, res) {
+        processqueue(arguments.callee.name, function(err, res) {
             cb(err, res);
         });
     };
 
     exports.eventgetwidevent = eventgetwidevent = function eventgetwidevent(params, cb) {
-        processqueue(arguments.callee.name, function (err, res) {
+        processqueue(arguments.callee.name, function(err, res) {
             cb(err, res);
         });
     };
 
     exports.eventupdatewidevent = eventupdatewidevent = function eventupdatewidevent(params, cb) {
-        processqueue(arguments.callee.name, function (err, res) {
+        processqueue(arguments.callee.name, function(err, res) {
             cb(err, res);
         });
     };
 
     exports.eventaddwidevent = eventaddwidevent = function eventaddwidevent(params, cb) {
-        processqueue(arguments.callee.name, function (err, res) {
+        processqueue(arguments.callee.name, function(err, res) {
             cb(err, res);
         });
     };
 
     exports.eventexecuteevent = eventexecuteevent = function eventexecuteevent(params, cb) {
-        processqueue(arguments.callee.name, function (err, res) {
+        processqueue(arguments.callee.name, function(err, res) {
             cb(err, res);
         });
     };
 
     exports.eventexecuteeachend = eventexecuteeachend = function eventexecuteeachend(params, cb) {
-        processqueue(arguments.callee.name, function (err, res) {
+        processqueue(arguments.callee.name, function(err, res) {
             cb(err, res);
         });
     };
 
     exports.eventexecuteend = eventexecuteend = function eventexecuteend(parameters, cb) {
-        processqueue(arguments.callee.name, function (err, res) {
+        processqueue(arguments.callee.name, function(err, res) {
             cb(err, res);
         });
     };
 
-    exports.processqueue = processqueue = function processqueue(queuename, callback ) {
+    exports.processqueue = processqueue = function processqueue(queuename, callback) {
 
         // params.command.eventname = "eventonemin";
 
@@ -4598,7 +4936,7 @@
             "result": "queryresult",
             "datastore": config.configuration.datastore,
             "collection": queuename,
-            "keycollection": queuename+"key",
+            "keycollection": queuename + "key",
             "db": config.configuration.db,
             "databasetable": config.configuration.databasetable
         };
@@ -4611,28 +4949,26 @@
         //proxyprinttodiv("after environment", env, 99);
         proxyprinttodiv("after executeobject", executeobject, 99, true, true);
         //env.execute(executeobject, function (err, res) {
-        execute(executeobject, function (err, res) {
+        execute(executeobject, function(err, res) {
             proxyprinttodiv("findparent res2", res, 99);
             // findwidbyqueryresult(res, "primarywid", function (err, res) {
-            if (res.hasOwnProperty('queryresult'))
-            {
+            if (res.hasOwnProperty('queryresult')) {
                 var queuecount = res.queryresult.length;
                 proxyprinttodiv("Queuecount / result has this many records", queuecount, 99);
-                if (queuecount > 0)
-                {
+                if (queuecount > 0) {
                     // Step 1 - Get the wid name from the first object from the results
                     var first_object = res.queryresult[0];
                     var widname = first_object.wid;
 
                     // Step 2 - Get and LOCK the object in the storage system
                     var execobj_get1 = {
-                        "wid" : widname,
-                        "executethis" : "getwid",
+                        "wid": widname,
+                        "executethis": "getwid",
                         "command": {
-                            "lock" : true,
+                            "lock": true,
                             "datastore": config.configuration.datastore,
                             "collection": queuename,
-                            "keycollection": queuename+"key",
+                            "keycollection": queuename + "key",
                             "db": config.configuration.db,
                             "databasetable": config.configuration.databasetable
                         }
@@ -4648,7 +4984,7 @@
                         proxyprinttodiv("getwid / lock callback - res", res, 99);
 
                         var contained_object = res.container[0];
-                        contained_object.executethis=contained_object.addthis.executethis;
+                        contained_object.executethis = contained_object.addthis.executethis;
                         delete contained_object.addthis.executethis;
 
                         // get object from res parameter
@@ -4657,13 +4993,13 @@
                             // Pass or fail - Now DELETE this wid
                             proxyprinttodiv("execute the object callback", res, 99);
                             var execobj_del1 = {
-                                "executethis" : "deletewid",
-                                "wid" : widname,
+                                "executethis": "deletewid",
+                                "wid": widname,
                                 "command": {
-                                    "lock" : false,
+                                    "lock": false,
                                     "datastore": config.configuration.datastore,
                                     "collection": queuename,
-                                    "keycollection": queuename+"key",
+                                    "keycollection": queuename + "key",
                                     "db": config.configuration.db,
                                     "databasetable": config.configuration.databasetable
                                 }
@@ -4672,8 +5008,7 @@
                                 // delete has happened, call the callback
                                 proxyprinttodiv("Delete has finished / result", res, 99);
                                 proxyprinttodiv("Delete has finished / execobj_del1", execobj_del1, 99);
-                                if (queuecount > 1)
-                                {
+                                if (queuecount > 1) {
                                     // If there is anything else left to do,
                                     // then do it now.
                                     processqueue(queuename, callback);
@@ -4698,25 +5033,25 @@
         //
         proxyprinttodiv("savetoqueue **************", 7, 99);
         var queuename = p.command.queuename;
-        proxyprinttodiv(" qname is ... ",  queuename, 99 );
+        proxyprinttodiv(" qname is ... ", queuename, 99);
         delete p.command.queuename;
         // queuename = "eventonemin";
-        var itemtobesaved=p;
+        var itemtobesaved = p;
         //itemtobesaved = [
         //    { "executethis": "printhello", "to": "+12313133930", "body":"This is a text" }
         //]
         var recorddef = {
             // "wid":"russ112",
             "executethis": "addwidmaster",
-            "container":itemtobesaved,   // no wid ... let system make it for you
-            "metadata" : {
+            "container": itemtobesaved, // no wid ... let system make it for you
+            "metadata": {
                 "queuename": queuename,
-                "queueflag" : "true"
+                "queueflag": "true"
             },
             "command": {
                 "datastore": config.configuration.datastore,
                 "collection": queuename,
-                "keycollection": queuename+"key",
+                "keycollection": queuename + "key",
                 "db": config.configuration.db,
                 "databasetable": config.configuration.databasetable
             }
@@ -4724,7 +5059,7 @@
         proxyprinttodiv("update cache **************", recorddef, 99);
         // var recorddef = { "wid": "russ1", "key": "value1"};
         //addwidmaster(recorddef, function (err, res) {
-        execute(recorddef, function (err, res) {
+        execute(recorddef, function(err, res) {
             callback(null, res);
         });
     }
@@ -4738,14 +5073,15 @@
         setdefaultparm();
         if (config.configuration.environment === 'local') {
             clearLocalStorage();
-            if (config.configuration.machinename==='phonegap')
-            {
+            if (config.configuration.machinename === 'phonegap') {
                 // copy files to wids
             }
-            if (typeof callback == 'function') { callback(null, null); } else {return}
-        }
-        else
-        {   // if server
+            if (typeof callback == 'function') {
+                callback(null, null);
+            } else {
+                return
+            }
+        } else { // if server
 
             // start eventonemin, eventtenmin and save the interval value so
             // you can use "clearInterval" in the future if desired to stop things
@@ -4757,16 +5093,15 @@
 
             var startTime = new Date().getTime();
             execute({
-                    "command.datastore":"localstore",
-                    "executethis":"addwidmaster",
-                    "wid":"bootwid",
-                    "starttime": startTime
-                    , "a": "ee"
-                }, function (err, res) {
-                    console.log("Res is " + res.toString() );
-                    callback(null,null);
-                }
-            );
+                "command.datastore": "localstore",
+                "executethis": "addwidmaster",
+                "wid": "bootwid",
+                "starttime": startTime,
+                "a": "ee"
+            }, function(err, res) {
+                console.log("Res is " + res.toString());
+                callback(null, null);
+            });
         }
     }
 
@@ -4781,48 +5116,46 @@
         clearLocal();
         config.setdefaultparm();
         // if the databases are not there then must be first time
-        if (config.configuration.environment === 'local')
-        {
-            getwid({wid: config.configuration.startwid}, function (err, startwid)
-            {
+        if (config.configuration.environment === 'local') {
+            getwid({
+                wid: config.configuration.startwid
+            }, function(err, startwid) {
                 // try to get the default startwid, if nothing there then eventappinstall
-                if (err)
-                {
-                    eventappinstall(params, function (err, res)
-                    {
+                if (err) {
+                    eventappinstall(params, function(err, res) {
                         eventnormalstart(params, callback); // proceed to normal start
                     })
-                }
-                else
-                {   // if startwid existed
+                } else { // if startwid existed
                     extend(true, params, startwid);
                     eventnormalstart(params, callback);
                 }
             })
-        }
-        else
-        {
+        } else {
             eventnormalstart(params, callback);
         }
     }
 
-    exports.eventnormalstart = eventnormalstart = function eventnormalstart(params, callback)
-    {
-        if (config.configuration.machinename!=='phonegap')
-        {
+    exports.eventnormalstart = eventnormalstart = function eventnormalstart(params, callback) {
+        if (config.configuration.machinename !== 'phonegap') {
             var executeobject = {};
-            extend(true, executeobject,
-                {"executethis":"getwidmaster",
-                    "wid":"startwid",
-                    "command.syncrule":"sync_server"});
-            execute(executeobject, function (err, res)
-            {
-                if (typeof callback == 'function') { callback(err, res); } else {return res;}
+            extend(true, executeobject, {
+                "executethis": "getwidmaster",
+                "wid": "startwid",
+                "command.syncrule": "sync_server"
+            });
+            execute(executeobject, function(err, res) {
+                if (typeof callback == 'function') {
+                    callback(err, res);
+                } else {
+                    return res;
+                }
             })
-        }
-        else
-        {
-            if (typeof callback == 'function') { callback(null, null); } else {return null;}
+        } else {
+            if (typeof callback == 'function') {
+                callback(null, null);
+            } else {
+                return null;
+            }
         }
     }
 

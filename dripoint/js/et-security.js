@@ -179,10 +179,18 @@ exports.dtox = dtox = function dtox(params, callback) {
     });
 }
 
+
+// command.securitytable: array with these fields loggedinuserid, userid, action, level, permission
+// then your code simply does a rawmongoquery on that table
+// note you can do rawmongoquereis on an incoming database by loading it into command.queryresutl =
 exports.sc = sc = function sc(accessconfig, callback) {
 
     // // ***********************************************************************************
     debuglevel = 39;
+    var inusergrp = accessconfig["_inusergrp"];
+    var inaction = accessconfig["_inaction"];
+    var userid = accessconfig["_userid"];
+
 
     var commandresult = accessconfig["command.result"]; // result to be wrapped as
     var _accesstoken = accessconfig["command.enviromment.accesstoken"]; // who the user is
@@ -250,7 +258,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
                                 async.mapSeries(res.queryresult, function(reljson, cbMap) {
                                         async.nextTick(function() {
                                             groupofactors.push(reljson.primarywid); // push each of the the group wid for the user
-/*
+                                            /*
                                             getrelatedwids("", "groupdto", reljson.primarywid, "groupdto", "", function(err, res) {
                                                 // addSavedGroupsDataIfNeeded(groupWid, actioncreatorgroups, function(e, actioncreatorgroups) {
                                                 async.mapSeries(res.queryresult, function(reljsonInner, cbMapInner) {
@@ -264,7 +272,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
                                                     });
                                                 // });
                                             });
-*/
+                                            */
 											getgroupsofgroups(reljson.primarywid,groupofactors, function (err1,res1) {
 												cbMap(err1);
 											});
@@ -282,14 +290,13 @@ exports.sc = sc = function sc(accessconfig, callback) {
                     });
 
                 } else {
-                    // get all groups from this group
+                    
                     actorGroup = _mygroup;
-
                     getrelatedwids("", "groupdto", actorGroup, "groupdto", {}, function(err, res) {
                         async.mapSeries(res.queryresult, function(reljson, cbMap) {
                             async.nextTick(function() {
                                     groupofactors.push(reljson.primarywid); // push each of the the group wid for the user
-/*
+                                    /*
                                     getrelatedwids("", "groupdto", reljson.primarywid, "groupdto", "", function(err, res) {
                                         // addSavedGroupsDataIfNeeded(groupWid, actioncreatorgroups, function(e, actioncreatorgroups) {
                                         async.mapSeries(res.queryresult, function(reljsonInner, cbMapInner) {
@@ -303,7 +310,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
                                             });
                                         // });
                                     });
-*/
+                                    */
 
 									getgroupsofgroups(reljson.primarywid, groupofactors, function (err1, res1) {
 										cbMap(err1);
@@ -319,6 +326,11 @@ exports.sc = sc = function sc(accessconfig, callback) {
             },
 
                 function(cb1) {
+                    // get all groups from this group
+                    if(inusergrp){
+                        groupofactors.push(inusergrp);
+                    }
+                    
                     // get      the owner of the original action(metadata.systemdto.creator)
                     var query = {
                         "executethis": "querywidmaster",
@@ -389,7 +401,7 @@ exports.sc = sc = function sc(accessconfig, callback) {
                 },
                 function(cb1) {
                     // match the 2 arrays for commonality
-                    checkSecurityPermissions(actionwid, actorGroup, actioncreatorgroups, actorgroups, function(err, resp) {
+                    checkSecurityPermissions(inaction, actionwid, actorGroup, actioncreatorgroups, actorgroups, function(err, resp) {
                         isMatch = resp;
                         //proxyprinttodiv('Function securitycheck auth status -- ', isMatch, 39);
                         securityCheckOutput = isMatch;
@@ -528,18 +540,31 @@ exports.sc = sc = function sc(accessconfig, callback) {
 
 	   // extensive check
     // get the 2 wids lists and check the security check output
-    function checkSecurityPermissions(_actionwid, _group, actioncreatorgroups, actorgroups, callback) {
+    function checkSecurityPermissions(inaction,_actionwid, _group, actioncreatorgroups, actorgroups, callback) {
         var isMatch = false;
 
         var allallowedactionsarr1 = [];
         var allallowedactionsarr2 = [];
 
+
         getAllActions(actioncreatorgroups, function(err, res) {
+
             allallowedactionsarr1 = res;
+
+            // push received action (in command.params)
+            if(inaction){
+                allallowedactionsarr1.push(inaction);
+            }
+
             if (allallowedactionsarr1.length > 0) {
                 getAllActions(actorgroups, function(err, res) {
 
                     allallowedactionsarr2 = res;
+
+                    // push received action (in command.params)
+                    if(inaction){
+                        allallowedactionsarr2.push(inaction);
+                    }
 
                     if (allallowedactionsarr2.length > 0) {
                         if (!isMatch) {

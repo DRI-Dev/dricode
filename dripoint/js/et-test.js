@@ -3774,10 +3774,11 @@ exports.testgetrelatedrecords2 = testgetrelatedrecords2 = function testgetrelate
         }, { //to get test1
             "executethis": "getwidmaster",
             "wid": "test1"
-            // }, {    //to get test1's children
-            //        "executethis":"getrelatedrecords",
-            //        "widlist": ["test1"],
-            //  "command": {"reltype": "child", "recurse":true}
+            }, 
+            {    //to get test1's children
+               "executethis":"getrelatedrecords",
+               "widlist": ["test1"],
+                "command": {"reltype": "child", "recurse":true}
         }
         /*, {    //test2
         "executethis":"addwidmaster",
@@ -3839,6 +3840,117 @@ exports.testgetrelatedrecords2 = testgetrelatedrecords2 = function testgetrelate
     });
 }
 
+
+// getrelatedrecords() test with one child
+// inputs - wid or widname (or list),owner,type
+// output -, it gives all the related wids, filtered by specifc owner or type
+
+exports.testgetrelatedrecords3 = testgetrelatedrecords3 = function testgetrelatedrecords3(params, callback) {
+    debuglevel = 17;
+
+    var executeList = [{ //testdto
+            "executethis": "addwidmaster",
+            "metadata.method": "testdto",
+            "wid": "testdto",
+            "a": "string"
+        }, { //rel testdto-testdto
+            "executethis": "addwidmaster",
+            "wid": "rel_testdto_testdto",
+            "metadata.method": "relationshipdto",
+            "relationshiptype": "attributes",
+            "linktype": "onetomany",
+            "primarywid": "testdto",
+            "primarymethod": "testdto",
+            "secondarywid": "testdto",
+            "secondarymethod": "testdto"
+        }, { //to add test2
+            "executethis": "addwidmaster",
+            "metadata.method": "testdto",
+            "wid": "test2",
+            "a": "2",
+            "testdto.a": "b1",
+            "metadata.owner":"driadmin",
+            "metadata.group":"driusers",
+            "type":"usergroup"// usergroup/actiongroup
+        }, { //to add test1
+            "executethis": "addwidmaster",
+            "metadata.method": "testdto",
+            "wid": "test1",
+            "a": "1",
+            "testdto.a": "b",
+            "metadata.owner":"driadmin",
+            "metadata.group":"driusers",
+            "type":"usergroup"// usergroup/actiongroup
+        }, { //to get test1
+            "executethis": "getwidmaster",
+            "wid": "test1",
+            "metadata.owner":"driadmin",
+            "metadata.group":"driusers",
+            "type":"usergroup"// usergroup/actiongroup
+            }, {    //to get test1's children
+                   "executethis":"getallrelatedwids",
+                   "widlist": ["test1"],
+              "command": {"reltype": "child", "recurse":true}
+        }
+        , {    //test2
+        "executethis":"addwidmaster",
+        "metadata.method": "testdto",
+        "wid": "test2",
+        "a": "2"
+    }, {    //test3
+        "executethis":"addwidmaster",
+        "metadata.method": "testdto",
+        "wid": "test3",
+        "testdto.a": "3"
+    }, {    //test4
+        "executethis":"addwidmaster",
+        "metadata.method": "testdto",
+        "wid": "test4",
+        "testdto.a": "4"
+    }, {    //test5
+        "executethis":"addwidmaster",
+        "metadata.method": "testdto",
+        "wid": "test5",
+        "testdto.a": "5"
+    }, {    //test6
+        "executethis":"addwidmaster",
+        "metadata.method": "testdto",
+        "wid": "test6",
+        "testdto.testdto.a": "6"
+    }, {    //test7
+        "executethis":"addwidmaster",
+        "metadata.method": "testdto",
+        "wid": "test7",
+        "testdto.testdto.a": "10"
+    }, {    //test8
+        "executethis":"addwidmaster",
+        "metadata.method": "testdto",
+        "wid": "test8",
+        "testdto.testdto.testdto.a": "11"
+    }, {    //test9
+        "executethis":"addwidmaster",
+        "metadata.method": "testdto",
+        "wid": "test9",
+        "testdto.testdto.testdto.a": "12"
+    }, {    
+        "executethis":"getallrelatedwids",
+        "wid": "test3"
+    }, {    
+        "executethis":"getallrelatedwids",
+        "wid": "test6"
+    }, {    
+        "executethis":"getallrelatedwids",
+        "wid": "test9"
+    }
+    ];
+    execute(executeList, function (err, res) {
+        proxyprinttodiv("testgetrelatedrecords1", res, 99);
+        proxyprinttodiv("testgetrelatedrecords1 res[2]", res[2], 17);
+        proxyprinttodiv("testgetrelatedrecords1 res[5]", res[5], 17);
+        proxyprinttodiv("testgetrelatedrecords1 res[8]", res[8], 17);
+        callback(err, res);
+    });
+}
 
 /*
     deepfilter should process command
