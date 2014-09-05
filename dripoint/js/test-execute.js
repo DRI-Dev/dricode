@@ -43,12 +43,13 @@ function ettest_allexecute(executeobject, callback)
 	function (cb1) {ettest_whattodo({}, function (err, res) {cb1(null, res)})},
 	function (cb1) {ettest_howtodo({}, function (err, res) {cb1(null, res)})},
 	function (cb1) {ettest_executemisc({}, function (err, res) {cb1(null, res)})},
-	function (cb1) {ettest_nestedtestslevel1({}, function (err, res) {cb1(null, res)})} // all work to this point if color>205
+	function (cb1) {ettest_nestedtestslevel1({}, function (err, res) {cb1(null, res)})}, // all work to this point if color>205
 	//function (cb1) {ettest_excutestringlist1({}, function (err, res) {cb1(null, res)})},
 	//function (cb1) {ettest_executewithattributes1({}, function (err, res) {cb1(null, res)})},
 	//function (cb1) {ettest_usernamespace1({}, function (err, res) {cb1(null, res)})},
 	//function (cb1) {ettest_appnamespace1({}, function (err, res) {cb1(null, res)})}
 	//function (cb1) {environment.sync({}, function (err, res) {cb1(null, res)})}
+	function (cb1) {ettest_executeresulttable1({}, function (err, res) {cb1(null, res)})}
 	
     ],
     function (err, res) {
@@ -3895,3 +3896,190 @@ widtests.ettest_testcache2.category = "test-daily";
 widtests.ettest_testcache2.subcategory = "push";
 widtests.ettest_testcache2.js = exports.ettest_testcache2;
 widtests.ettest_testcache2.description = "this does a test";
+
+
+exports.test_return_wida_result = 
+test_return_wida_result = 
+function test_return_wida_result (param, callback) 
+{
+    // debugger;
+    proxyprinttodiv('test_return_wida_result- incoming parm', param, 99);
+    var error_obj = null;
+    var env = param.command.environment.platform;
+    if (env==="server" && param.serverfn)     // if environment = server and serverfn parameter exist then redirect 
+                                              // to different function--that way we can on same machine pass locally and
+                                              // fail server
+    {
+      // var serverfn = window[param.serverfn]
+      // param.executethis=serverfn
+      param.command.xrun=param.serverfn;
+      // debugger;
+      delete param.serverfn;
+      proxyprinttodiv('test ***** calling server', param, 99);
+      // serverfn(param, callback)
+      execute(param, callback);
+
+    } else {
+      var result_obj = { 'x':'y', env: env };
+      callback( error_obj, result_obj );
+    }
+};
+
+
+// send execute a result table
+exports.ettest_executeresulttable1 = 
+ettest_executeresulttable1 = 
+widtests.ettest_executeresulttable1 = 
+function ettest_executeresulttable1(executeobject, callback) 
+{
+	var resulttable = {
+						"command": {
+							"resulttable": {
+								"70e9aa5c-3057-a177-3c91-56f63e198eb8": {
+									"detail": [
+										{
+											"outgoingparam": {
+												"command": {
+													"environment": {
+														"default": {
+															"collection": "dricollection",
+															"db": "data",
+															"datastore": "localstorage",
+															"keycollection": "dricollectionkey",
+															"databasetable": "dricluster",
+															"executetype": "series"
+														},
+														"global": {},
+														"var": {},
+														"platform": "local",
+														"syncrule": "sync_local",
+														"defaultoutputcollection": "defaultoutputcollection",
+														"run": {
+															"executelevel": 1,
+															"executeid": "70e9aa5c-3057-a177-3c91-56f63e198eb8"
+														},
+														"accesstoken": "134af24f-be4f-487e-9ece-6244440bf091",
+														"processfn": "execute_function"
+													},
+													"collection": "dricollection",
+													"db": "data",
+													"datastore": "localstorage",
+													"keycollection": "dricollectionkey",
+													"databasetable": "dricluster",
+													"executetype": "group"
+												},
+												"executethis": "test_return_noerror_result"
+											},
+											"err": null,
+											"res": {
+												"a": "b",
+												"env": "local"
+											},
+											"executeseq": 0
+										},
+										{
+											"outgoingparam": {
+												"command": {
+													"environment": {
+														"default": {
+															"collection": "dricollection",
+															"db": "data",
+															"datastore": "localstorage",
+															"keycollection": "dricollectionkey",
+															"databasetable": "dricluster",
+															"executetype": "series"
+														},
+														"global": {},
+														"var": {},
+														"platform": "local",
+														"syncrule": "sync_local",
+														"defaultoutputcollection": "defaultoutputcollection",
+														"run": {
+															"executelevel": 1,
+															"executeid": "70e9aa5c-3057-a177-3c91-56f63e198eb8"
+														},
+														"accesstoken": "134af24f-be4f-487e-9ece-6244440bf091",
+														"processfn": "execute_function"
+													},
+													"collection": "dricollection",
+													"db": "data",
+													"datastore": "localstorage",
+													"keycollection": "dricollectionkey",
+													"databasetable": "dricluster",
+													"executetype": "group"
+												},
+												"executethis": "test_return_wida_result"
+											},
+											"err": {
+												"errorname": "failnotfound"
+											},
+											"res": null,
+											"executeseq": 1
+										},
+										{
+											"res": {},
+											"outgoingparam": {
+												"executethis": "test_return_noerror_result"
+											},
+											"executeseq": 2,
+											"err": null
+										}
+									],
+									"overallresult": {
+										"a": "b",
+										"env": "local"
+									},
+									"overallerror": {
+										"errorname": "failnotfound"
+									}
+								},
+								"overallresult": {
+									"a": "b",
+									"env": "local"
+								},
+								"overallerror": {
+									"errorname": "failnotfound"
+								},
+								"executionpreferences": {
+									"command": {
+										"environment": {
+											"default": {
+												"collection": "dricollection",
+												"db": "data",
+												"datastore": "localstorage",
+												"keycollection": "dricollectionkey",
+												"databasetable": "dricluster",
+												"executetype": "series"
+											},
+											"global": {},
+											"var": {},
+											"platform": "local",
+											"syncrule": "sync_local",
+											"defaultoutputcollection": "defaultoutputcollection",
+											"run": {
+												"executelevel": 1,
+												"executeid": "70e9aa5c-3057-a177-3c91-56f63e198eb8"
+											},
+											"accesstoken": "134af24f-be4f-487e-9ece-6244440bf091",
+											"processfn": "execute_function"
+										}
+									}
+								}
+							}
+						}
+					};
+	
+	var expres = [{"a":"b","env":"local"},{"x":"y","env":"local"},{"a":"b","env":"local"}];
+
+	execute(resulttable, function (err1, res1) {
+		proxyprinttodiv('ettest_executeresulttable1 err --', err1, 99);
+		proxyprinttodiv('ettest_executeresulttable1 res --', res1, 99);
+		
+		var result = logverify('ettest_executeresulttable', res1, expres);
+		callback(err1, result);
+	});
+};
+widtests.ettest_executeresulttable1.category = "test-daily";
+widtests.ettest_executeresulttable1.subcategory = "push";
+widtests.ettest_executeresulttable1.js = exports.ettest_executeresulttable1;
+widtests.ettest_executeresulttable1.description = "Tests that execute can process a resulttable";

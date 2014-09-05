@@ -62,6 +62,18 @@ function config123() {
     configuration.defaultenvironment[configuration.db] = configuration.d;
     //configuration.defaultenvironment[configuration.db].wid = configuration.e;
     configuration.d.defaultoutputcollection = "defaultoutputcollection";
+
+    var default_number = '+12145644732'; // Text Roger by default
+    configuration.administration = {};
+    configuration.administration.users = {};
+    configuration.administration.users.phonetable =
+        {
+            'rogerjs' : '+12145644732',
+            'info@dri.com' : default_number,
+            'Jason' : '+12317352532'
+        }
+    configuration.defaultserver = "test3"
+
     
     return {
         "configuration": configuration
@@ -306,9 +318,12 @@ exports.server = server = function server(params, callback) {
 
 exports.anyserver = anyserver = function anyserver(params, callback) {
     // 
-    var server = params.server;
-    delete params.server
+    if (!params.command) {params.command={}};
+    var server = params.command.server || config.configuration.defaultserver;
+    delete params.command.server
     var serverUrl = 'http://'+server+'/executethis';
+
+    console.log("serverUrl is " + serverUrl );
 
     var options = {
         headers: {
@@ -477,7 +492,7 @@ exports.publishtestdelay = publishtestdelay = function publishtestdelay(paramete
         // publishtest(parameters, callback);
         parameters.command =  parameters.command || {};
         parameters.command.queuename = "eventonemin";
-        parameters["addthis.executethis"] = "publishtest";
+        parameters["executethis"] = "publishtest";
         savetoqueue(parameters, callback);
 };
 
@@ -524,21 +539,18 @@ exports.publishtest = publishtest = function publishtest(parameters, callback) {
         //       the NAME of the server.  
         // 
         //      .  
-        var server = "";
+        var server = "localhost";
         if (repo_name ==="test3") {
             server=repo_name + ".dripoint.com";
         }
         var executeobject = {};
         executeobject.executethis="getuptime"
-        executeobject.server = server;
+        executeobject.command = {};
+        executeobject.command.server = server;
         
-        var default_number = '+12145644732';
-        default_number = '+12313133930';
-        var pusher_numbers = {
-            'rogerjs' : '+12145644732',
-            'info@dri.com' : default_number,
-            'Jason' : '+12317352532'
-        }
+        // default_number = '+12313133930';
+        var pusher_numbers = config.configuration.administration.phonetable;
+
         var text2number = default_number;
         if (pusher_numbers.hasOwnProperty( pusher_name )) {   
             text2number = pusher_numbers[pusher_name];
@@ -547,7 +559,7 @@ exports.publishtest = publishtest = function publishtest(parameters, callback) {
 
             //getuptime(null, function(err, result) {
             var passfail = "Unknown";
-            if (result.status) {
+            if (result && result.status) {
                 passfail = "Pass";
             } else {
                 passfail = "Fail";

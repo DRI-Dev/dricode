@@ -24,7 +24,7 @@
 //
 //     shared:
 //     nonatomic:
-//     scope: <document>,
+//     scope: <document>,/
 //     jsMode: <boolean>,
 //     verbose: <boolean>
 //
@@ -90,10 +90,28 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     delete p.mapfn;
     delete p.reducefn;
 
+    // // is it a string pointing to a real fn?  get copy of fn
+    // if (!(mapfn instanceof Function) && window[mapfn]) {mapfn = window[mapfn]};
+    // if (!(reducefn instanceof Function) && window[reducefn]) {reducefn = window[reducefn]};
+
+
+    window = (typeof window == "undefined" ? global : window);
+    if (window[mapfn]) {mapfn=window[mapfn]};
+    if (window[reducefn]) {reducefn=window[reducefn]};
+    if (mapfn instanceof Function) {mapfn=mapfn.toString()};
+    if (reducefn instanceof Function) {reducefn=reducefn.toString()};
+
+    proxyprinttodiv('mapreduce mapfn II', mapfn, 21,true, true);
+    proxyprinttodiv('mapreduce reducefn II', reducefn, 21,true, true);
+
     if (p.results) {p.queryresult = p.results; delete p.results}
 
     if (config.configuration.environment!=="local" && !p.command.queryresult) // if sent in database then like local
     {
+        // is it a fn?  convert it to a string
+
+
+
         p.command = p.command || {};
         p.command.databasetable = p.db || p.command.databasetable || config.configuration.d.default.databasetable;
         p.command.collection = p.mapreduce ||  p.command.collection || config.configuration.d.default.collection;
@@ -129,11 +147,21 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     }
 }
 
-// through this. probably possible to create unique intance of this
-// this function should not exist server side
-var globalresultobject = {};
-exports.globalresultobject = {};
-exports.emit = emit = function emit(k, v)
+
+
+// function functionName(fun) {
+//   var ret = fun.toString();
+//   ret = ret.substr('function '.length);
+//   ret = ret.substr(0, ret.indexOf('('));
+//   return ret;
+// }
+
+    // through this. probably possible to create unique intance of this
+    // this function should not exist server side
+    var globalresultobject = {};
+    exports.globalresultobject = {};
+    exports.emit = emit = 
+    function emit(k, v)
     {
         proxyprinttodiv('mapreduce emit k', k, 21,true, true);
         proxyprinttodiv('mapreduce emit v', v, 21,true, true);
@@ -144,23 +172,45 @@ exports.emit = emit = function emit(k, v)
 
 function mapreducelocal(mapfn, reducefn, p, cb)
 {
+ 
+
     proxyprinttodiv('mapreduce mapfn', mapfn, 21,true, true);
     proxyprinttodiv('mapreduce reducefn', reducefn, 21,true, true);
     proxyprinttodiv('mapreduce p', p, 21,true, true);
-    if (!(mapfn instanceof Function) && window[mapfn]) {mapfn = window[mapfn]};
-    if (!(reducefn instanceof Function) && window[reducefn]) {reducefn = window[reducefn]};
-    // mapper step
+    // is it a string pointing to a real fn?  get copy of fn
+    //if (!(mapfn instanceof Function) && window[mapfn]) {mapfn = window[mapfn]};
+    //if (!(reducefn instanceof Function) && window[reducefn]) {reducefn = window[reducefn]};
+    
+
+    var functionname = mapfn.substr('function '.length);
+    functionname = functionname.substr(0, functionname.indexOf('('));
+    proxyprinttodiv('mapreduce functionname', functionname, 21,true, true);
+    eval(mapfn);
+        
     globalresultobject = {};
     for (var eachitem in p.queryresult) // example map: function () {emit(this.gender, 1);};
     {
         proxyprinttodiv('mapreduce p.queryresult[eachitem]', p.queryresult[eachitem], 21,true, true);
-        mapfn.apply(p.queryresult[eachitem]);
+        //proxyprinttodiv('mapreduce p.queryresult[eachitem]', "("+mapfn + ".()apply(" + JSON.stringify(p.queryresult[eachitem]) + ")", 21,true, true);
+        //eval("("+mapfn + "(" + JSON.stringify(p.queryresult[eachitem]) + "))");
+        //var m = eval ("new function ("+mapfn + "(" + JSON.stringify(p.queryresult[eachitem]) + "))");
+
+        //mapfn.apply(p.queryresult[eachitem]);
+
+        //var newfn = eval("mapfn" + return c )
+
+        window[functionname].apply(p.queryresult[eachitem]);
     } 
     // queryresultobject is global and should be {wid:[], wid:[], wid:[]}
     proxyprinttodiv('mapreduce globalresultobject I', globalresultobject, 21,true, true);
 
     // reduce step
     var outlist =[];
+    var functionname = reducefn.substr('function '.length);
+    functionname = functionname.substr(0, functionname.indexOf('('));
+    proxyprinttodiv('mapreduce functionname reduce', functionname, 21,true, true);
+
+    eval(mapfn);
     for (var eachitem in globalresultobject) // example reduce: function(gender, count){return Array.sum(count);};
     {
             var temp={};
@@ -169,7 +219,9 @@ function mapreducelocal(mapfn, reducefn, p, cb)
             temp["metadata"]={};
             temp["metadata"]["method"]="createdcollection"
             temp.metadata.date = new Date();
-            temp["value"] = reducefn(eachitem, globalresultobject[eachitem]);
+            //temp["value"] = reducefn(eachitem, globalresultobject[eachitem]);
+            temp["value"] = window[functionname](eachitem, globalresultobject[eachitem]);
+            //temp["value"] = eval(reducefn)(eachitem, globalresultobject[eachitem]);
             outlist.push(temp);
     }
     // out should be: [{_id:, value:},{},{}]
@@ -298,7 +350,7 @@ function updatecollection(p, cb)
                 addtolocal(command.databasetable + command.collection, database);
             }
             proxyprinttodiv('updatecollection done with replace database', database, 21,true, true);
-            cb(null, null);
+            cb(null, database);
         } 
         else // merge or reduce -- first get keydatabase
         {
@@ -348,7 +400,7 @@ function updatecollection(p, cb)
                 addtolocal(command.databasetable + command.collection, database);
             }
             proxyprinttodiv('updatecollection END database', database, 21,true, true);
-            cb(null,null);
+            cb(null,database);
         }
     }
     else
@@ -866,26 +918,7 @@ function finalformat(output, relationshipoutput, qparms, extracommands, projecti
 			if (limitval===0 && skipval !==0) {output = output.slice(skipval);}
             if (limitval!==0 && skipval !==0) {output = output.slice(skipval, limitval);}
 			*/
-			if (limitval && pagenumber == 1) { output = output.slice(limitval); }
-			else if (pagenumber > 1) {
-				if (!perpage || perpage < 0 || perpage > output.length) { perpage = (output.length / pagenumber); }
-
-				var temp_output = [];
-				var page = [];
-				
-				for (var i in output) {
-					page.push(output[i]);
-					if (i % perpage == 0) { 
-						temp_output.push(page.slice(page.length));
-						page = [];
-					}
-					if (i > limitval) { break; }
-				};
-				
-				if (page.length) { temp_output.push(page); }
-				output = temp_output;
-			};		
-				
+			if (limitval) { output = output.slice(limitval); }				
         }
     }
     proxyprinttodiv('finalformat top output MIDDLE', output, 28, true, true);

@@ -15,6 +15,7 @@ require(DIR_TO_CORE_JS + 'et-utils.js');
 require(DIR_TO_CORE_JS + 'et-add.js');
 require(DIR_TO_CORE_JS + 'et-get.js');
 require(DIR_TO_CORE_JS + 'et-query.js');
+require(DIR_TO_CORE_JS + 'et-htmlprocessor.js');
 require(DIR_TO_CORE_JS + 'executethis.js');
 
 require(DIR_TO_CORE_JS + 'et-utils-test.js');
@@ -52,7 +53,7 @@ imageService = require('./routes/images.js');
 app.configure(function() {
     app.enable('trust proxy');
     app.use(express.logger('dev'));
-    app.use(express.bodyParser());
+    app.use(express.bodyParser({limit: '20mb'}));
     app.use(express.methodOverride());
 
     // Add headers
