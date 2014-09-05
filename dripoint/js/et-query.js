@@ -507,7 +507,8 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     "skip":"",
                     "limit":"",
                     "sort":"",
-                    "count":""
+                    "count":"",
+                    "distinct":""
                 }
             },
             true);
@@ -957,14 +958,19 @@ function finalformat(output, relationshipoutput, qparms, extracommands, projecti
             proxyprinttodiv('querywid finalformat enhancedrecord', enhancedrecord, 28, true);
             proxyprinttodiv('querywid queryconvertmethod', queryconvertmethod, 28);
 
+            // if the property in command.distinct exist in the record we are about to return then 
+            if (command.distinct && enhancedrecord[command.distinct])
+            {   // then add it to the exclude set, so it will not be returned again
+                (excludeparameters[wid]=enhancedrecord.wid);
+            }
 
             // now convert teach record based on query convertmethod
-            if (queryconvertmethod === "object")
+            if (enhancedrecord && queryconvertmethod === "object")
             {
                 finaloutput.push(enhancedrecord);
                 proxyprinttodiv('querywid finaloutput after queryconvertmethod = ' + queryconvertmethod, finaloutput, 28);
             }
-            else if (queryconvertmethod === "each")
+            else if (enhancedrecord && queryconvertmethod === "each")
             {
                 var temp = {};
                 temp[output[eachout].wid]=enhancedrecord;
