@@ -47,7 +47,7 @@ widtests.qutest_allexecute.description = "This is the master test. this test cal
 
 exports.mapreducefinddistinct = mapreducefinddistinct = function mapreducefinddistinct () 
 { 
-	proxyprinttodiv('mapreducefinddistinct distinct this', this, 99,true, true);
+	//proxyprinttodiv('mapreducefinddistinct distinct this', this, 99,true, true);
 	if (this && this.metadata && this.metadata.method) 
 		{emit("method"+this.metadata.method, 
 			{type:"metadata.method", fieldname: this.metadata.method}) }
