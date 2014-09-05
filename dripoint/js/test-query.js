@@ -45,6 +45,59 @@ widtests.qutest_allexecute.metadata.namespace.subcategory = "push";
 widtests.qutest_allexecute.js = qutest_allexecute;
 widtests.qutest_allexecute.description = "This is the master test. this test calls all of the individual testing groups for testing querywid and querywidmaster.";
 
+
+exports.reducemethod1 = reducemethod1 = function reducemethod1 (key, values) { 
+	var result = {};
+	var c=0; 
+    values.forEach(function(value) 
+    {
+    	c++;
+    })
+    result.count = c;
+    return result; 
+}
+
+exports.mapmethod1 = mapmethod1 = function mapmethod1 () { 
+	if (this && this.metadata && this.metadata.method) {emit(this.metadata.method, 1)}; 
+}
+
+
+exports.querymapmethod1 = querymapmethod1 =  function querymapmethod1(p, cb)
+{
+	debuglevel = 21;
+	loaddefaults(null, function (err, res) {
+		proxyprinttodiv('querymapmethod1 start', p, 99,true, true);
+		var executeobj = {
+						"executethis":"mapreduce",
+						"mapfn": "mapmethod1",
+						"reducefn": "reducemethod1",
+						"out": { "inline": 1 }
+						};	
+		execute(executeobj, function (err, res){
+			cb(err, res);
+		})
+	})
+}
+
+
+exports.querymapmethod2 = querymapmethod2 =  function querymapmethod2(p, cb)
+{
+	debuglevel = 21;
+	loaddefaults(null, function (err, res) {
+		proxyprinttodiv('querymapmethod1 start', p, 99,true, true);
+		var executeobj = {
+						"executethis":"mapreduce",
+						"mapfn": "mapmethod1",
+						"reducefn": "reducemethod1",
+						"out": { "inline": 1 },
+						"reducefn": "reducedquerymapmethod2"
+						};	
+		execute(executeobj, function (err, res){
+			cb(err, res);
+		})
+	})
+}
+
 exports.mapreducefinddistinct = mapreducefinddistinct = function mapreducefinddistinct () 
 { 
 	//proxyprinttodiv('mapreducefinddistinct distinct this', this, 99,true, true);
@@ -70,16 +123,24 @@ exports.mapreducefinddistinct = mapreducefinddistinct = function mapreducefinddi
 	}
 };
 
+
+exports.mapreducedistilledmethod = mapreducedistilledmethod = function mapreducedistilledmethod () 
+{ 
+	//proxyprinttodiv('mapreduce distilled this', this, 99,true, true);
+	if (this && this.fieldname) 
+		{emit(this.fieldname, this) }
+};
+
 exports.reducedistinctfield = reducedistinctfield = function reducedistinctfield(wid, values){
 //	proxyprinttodiv('reducetest1 wid', wid, 99,true, true);
 //    proxyprinttodiv('reducetest1 value', values, 99,true, true);
-    var result = {count : 0, fieldname: ""}
+    var result = {count : 0, fieldname: "", type:""}
     var c=0; 
     values.forEach(function(value) 
     {
     	c++;
     	result.count = c;
-    	result.fieldname = value.fieldname;
+    	if (value.fieldname) {result.fieldname = value.fieldname};
     	if (value.type) {result.type = value.type};
     })
 
@@ -87,7 +148,68 @@ exports.reducedistinctfield = reducedistinctfield = function reducedistinctfield
     return result;
 };
 
+exports.mapbyfieldname= mapbyfieldname = function mapbyfieldname() { 
+    emit(this.fieldname, this); 
+}
+
+
+exports.ettestmap1 = ettestmap1 = function ettestmap1(p, callback) 
+{
+	debuglevel = 21;
+	loaddefaults(null, function (err, res)
+	{
+		execute(
+			{
+			// since not specified will go to defaults: collection dricollection, etc
+	        "executethis": "mapreduce",
+	        "mapfn": "mapreducefinddistinct",
+	        "reducefn": "reducedistinctfield",
+	        "out": { "inline": 1 }
+	        //"replace" : "distinctmethodscollection" // will store results here
+	    	}, function (err, res) 
+	    	{
+	    		proxyprinttodiv('MIDDLE', res, 99, true, true);
+
+					callback(null, res);
+	    	})
+	})
+}
+
 exports.ettestmap2 = ettestmap2 = function ettestmap2(p, callback) 
+{
+	debuglevel = 21;
+	loaddefaults(null, function (err, res)
+	{
+		execute(
+			{
+			// since not specified will go to defaults: collection dricollection, etc
+	        "executethis": "mapreduce",
+	        "mapfn": "mapreducefinddistinct",
+	        "reducefn": "reducedistinctfield",
+	        "replace" : "distinctmethodscollection" // will store results here
+	    	}, function (err, res) 
+	    	{
+	    		proxyprinttodiv('MIDDLE', res, 99, true, true);
+	    		//debuglevel=28;
+				execute(
+					{
+			        "executethis": "mapreduce",
+			        "mapreduce":"distinctmethodscollection", // will mapreduce from this collection
+			        "command.db":"value", // will map reduce from this "small db" inisde collection
+			        "mapfn": "mapreducedistilledmethod",
+			        "reducefn": "reducedistinctfield",
+			        //"out": { "inline": 1 },
+			        "replace" : "distilledmethodscollection" // will produce this new collection
+			    	}, function (err, res) 
+			    	{
+		    		callback(null, res);
+		    		})
+					//callback(null, res);
+	    	})
+	})
+}
+
+exports.ettestmap3 = ettestmap3 = function ettestmap3(p, callback) 
 {
 	debuglevel = 21;
 	loaddefaults(null, function (err, res)
@@ -158,116 +280,8 @@ exports.ettestmap2 = ettestmap2 = function ettestmap2(p, callback)
 	})
 }
 
-exports.mapbyfieldname= mapbyfieldname = function mapbyfieldname() { 
-    emit(this.fieldname, this); 
-}
 
 
-exports.reducemethod1 = reducemethod1 = function reducemethod1 (key, count) { 
-    return Array.sum(count); 
-}
-
-exports.mapmethod1 = mapmethod1 = function mapmethod1 () { 
-    emit(this.metadata.method, 1); 
-}
-
-exports.querymapmethod1 = querymapmethod1 =  function querymapmethod1()
-{
-	var executeobj = {
-					"executethis":"mapreduce",
-					"mapfn": "mapmethod1",
-					"reducefn": "reducemethod1",
-					"out": { "inline": 1 },
-					"query": { "wid": {"$exists": "true"}}
-					};	
-	execute(executeobj, function (err, res){
-
-	})
-}
-
-exports.mapreducedistinctmethod = mapreducedistinctmethod = function mapreducedistinctmethod () 
-{ 
-	//proxyprinttodiv('mapreducetest1 distinct this', this, 99,true, true);
-	if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.category) 
-		{emit(this.metadata.namespace.category, {fieldname: this.metadata.namespace.category}) }
-};
-
-exports.mapreducedistilledmethod = mapreducedistilledmethod = function mapreducedistilledmethod () 
-{ 
-	//proxyprinttodiv('mapreduce distilled this', this, 99,true, true);
-	if (this && this.fieldname) 
-		{emit(this.fieldname, this) }
-};
-
-
-exports.ettestmap3 = ettestmap3 = function ettestmap3(p, callback) 
-{
-	debuglevel = 21;
-	loaddefaults(null, function (err, res)
-	{
-		execute(
-			{
-			// since not specified will go to defaults: collection dricollection, etc
-	        "executethis": "mapreduce",
-	        "mapfn": "mapreducedistinctmethod",
-	        "reducefn": "reducedistinctfield",
-	        "out": { "inline": 1 }
-	        //"replace" : "distinctmethodscollection" // will store results here
-	    	}, function (err, res) 
-	    	{
-	    		proxyprinttodiv('MIDDLE', res, 99, true, true);
-	    		//debuglevel=28;
-				// execute(
-				// 	{
-			 //        "executethis": "mapreduce",
-			 //        "mapreduce":"distinctmethodscollection", // will mapreduce from this collection
-			 //        "command.db":"value", // will map reduce from this "small db" inisde collection
-			 //        "mapfn": "mapreducedistilledmethod",
-			 //        "reducefn": "reducedistinctfield",
-			 //        //"out": { "inline": 1 },
-			 //        "replace" : "distilledmethodscollection" // will produce this new collection
-			 //    	}, function (err, res) 
-			 //    	{
-		  //   		callback(null, res);
-		  //   		})
-					callback(null, res);
-	    	})
-	})
-}
-
-exports.ettestmap1 = ettestmap1 = function ettestmap1(p, callback) 
-{
-	debuglevel = 21;
-	loaddefaults(null, function (err, res)
-	{
-		execute(
-			{
-			// since not specified will go to defaults: collection dricollection, etc
-	        "executethis": "mapreduce",
-	        "mapfn": "mapreducedistinctmethod",
-	        "reducefn": "reducedistinctfield",
-	        "replace" : "distinctmethodscollection" // will store results here
-	    	}, function (err, res) 
-	    	{
-	    		proxyprinttodiv('MIDDLE', res, 99, true, true);
-	    		//debuglevel=28;
-				execute(
-					{
-			        "executethis": "mapreduce",
-			        "mapreduce":"distinctmethodscollection", // will mapreduce from this collection
-			        "command.db":"value", // will map reduce from this "small db" inisde collection
-			        "mapfn": "mapreducedistilledmethod",
-			        "reducefn": "reducedistinctfield",
-			        //"out": { "inline": 1 },
-			        "replace" : "distilledmethodscollection" // will produce this new collection
-			    	}, function (err, res) 
-			    	{
-		    		callback(null, res);
-		    		})
-					//callback(null, res);
-	    	})
-	})
-}
 
 mapreducetest = function mapreducetest(mapfn, reducefn, querystring, callback) {
     // var mapfn = window[map];
