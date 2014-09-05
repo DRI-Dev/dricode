@@ -8,30 +8,31 @@
 // if command.skipcache = false and no cache then fail
 // most queries should be command.skipcache = false
 //
-// execute_queue
-// how to save in cache command.recursive for example
 //
 // future we may need to support multiple executeids
+//
 // enhance params based on dto, appname, server, user
 // controlling collection based on dto: extend(true, currentparamters, config.dtolookup[currentparameters.metadata.method))
-// test synch
 //
-
-
-(function (window) {
-    // 'use strict';
-
-    var execute;
-
-    // called one perexecute in convertcommand, it get other command and command.environment parameters that might be for this function
-    //
-    // enhance params based on dto, appname, server, user -- these should be changed to ths form:
-    // controlling collection based on dto: extend(true, currentparamters, config.dtolookup[currentparameters.metadata.method))   
-    function enhanceparameters(inboundparams, callback) {
-        //proxyprinttodiv("enhanceparameters before checkenvironment", inboundparams, 11, true);
-        // note this could probably be moved to drienvrionment in utils
-        if (!inboundparams.command) {inboundparams.command={};}
-        if (!inboundparams.command.environment) {inboundparams.command.environment={};}
+// paramter adtoption:
+// convert - defaults, database stuff, global, userid, 
+// Step2 - parameter remap in step 2 when we know caller and callee, var
+// execute function - dto
+// *** save caller
+// preexecute can be in multiple places?????
+//
+// cache operations...load in config
+// server_local 
+//    if fail then try server
+//    if sucess then do server also 
+//        postexecute command.onsuccess.executethis
+//        postexecute command.onsuccess.waitforresult: false
+//        postexecute command.onsuccess.parameters
+//        postexecute command.onsuccess.addinitialparamters: true
+//        postexecute command.onsuccess.addresultparameters : false
+//
+//
+// support command .server
 
         // enhance params based on wid, dto (metadata.method), wid, appname, server, user
         // to parm level, command, command.environment
@@ -53,6 +54,49 @@
         // extend(true, inboundparams.command.environment, localusertable[inboundparams.command.environment.accesstoken)) 
         // save 
         // how to delete from them
+
+
+(function (window) {
+    // 'use strict';
+
+    var execute;
+
+    function parameterremap(p, r) // remap optional, can get from p.command
+    {
+        // this call remaps parameter names and filters
+        // {a:b c:d e:f command.remap={a:x e:y}} will return {x:b, y:f}
+        var remap=r;
+        var newobj = {};
+        var oldparm;
+        var newparm;
+        if (!remap)
+        {
+            if (!p.command) {p.command={}};
+            remap = p.command.remap;
+        }
+        //delete p.remap;
+        if (remap)
+        {
+            for (var eachproperty in remap)
+            {
+                oldparm = eachproperty;         // a
+                newparm = remap[eachproperty];  // x
+                newobj[newparm] = p[oldparm];       // newobj[x] = b
+            }
+        }
+        return newobj
+    }
+
+
+    // called one perexecute in convertcommand, it get other command and command.environment parameters that might be for this function
+    //
+    // enhance params based on dto, appname, server, user -- these should be changed to ths form:
+    // controlling collection based on dto: extend(true, currentparamters, config.dtolookup[currentparameters.metadata.method))   
+    function enhanceparameters(inboundparams, callback) {
+        //proxyprinttodiv("enhanceparameters before checkenvironment", inboundparams, 11, true);
+        // note this could probably be moved to drienvrionment in utils
+        if (!inboundparams.command) {inboundparams.command={};}
+        if (!inboundparams.command.environment) {inboundparams.command.environment={};}
 
         // first save and get from environment
         inboundparams.command.environment = checkenvironment(inboundparams.command.environment);
@@ -851,7 +895,8 @@
                 {
                     //--proxyprinttodiv('>>>> execute incomingparams ', incomingparams, 11);
                     var filter_data = getcommand(incomingparams, {
-                            "command": {
+                            "command": 
+                                {
                                 "convertmethod": "toobject",
                                 "adopt": null,
                                 "resultparameters": null,
@@ -860,10 +905,33 @@
                                 "updatecache" : false,
                                 "cachetime" : 0,
                                 "internalcall": true, // use action processor
-                                "notfoundok": false // should return an error if not found
+                                "notfoundok": false, // should return an error if not found
+                                "remap":null,
+                                //"preexecute": null
+                                "postexecute":
+                                    {
+                                    "onsucess": 
+                                        {
+                                        "executethis": null,
+                                        "waitforresult" : false,  //, asychronous -- wait for results or not
+                                        "parameters": {},
+                                        "addinitialparameters": true, // results of first call as input to second one
+                                        "addresultparameters": false
+                                        },
+                                    "onfail": 
+                                        {
+                                        "executethis": null,
+                                        "waitforresult":false,  //, asychronous -- wait for results or not
+                                        "parameters": {},
+                                        "addinitialparameters": true, // results of first call as input to second one
+                                        "addresultparameters": false
+                                        }
+                                    }
+                                }
                             }
-                        }, {
-                            "command": {
+                          , {
+                            "command": 
+                                {
                                 "convertmethod": "x",
                                 "adopt": "x",
                                 "resultparameters": "x",
@@ -872,25 +940,45 @@
                                 "updatecache": "x",
                                 "cachetime" : "x",
                                 "internalcall": "x",
-                                "notfoundok" : "x"
-                            }
-                        },
+                                "notfoundok" : "x",
+                                "remap":"x",
+                                //"preexecute":"x",
+                                "postexecute":"x"
+                                }
+                            },
                         true);
+
+
 
                     // keep command.environment/command.run.executeid as part of parameter
                     ////--proxyprinttodiv('>>>> execute filter_data', filter_data, 11, true);
                     var command = filter_data.filteredobject.command;
                     var inboundparams = filter_data.output;
-                    var objkey = null;
+
+                    // if there was a caller and there is a remap and there is a remap for both togeher
+                    if (command.caller && command.remap) 
+                    {   
+                        var remap;
+                        if (command.remap[targetfn]) 
+                            {remap = command.remap[targetfn]}
+                        else
+                            {remap = command.remap}
+                        inboundparams = parameterremap(inboundparams, remap)
+                    }
+
+                    // load up new caller 
+                    command.caller = targetfn;
+
+                    //var objkey = null;
                     //--proxyprinttodiv('>>>> execute command', command, 11, true);
                     //--proxyprinttodiv('>>>> execute inboundparams', inboundparams, 14, true);
 
-                    objkey = cacheoperations(inboundparams, command);
+                    command.objkey = cacheoperations(inboundparams, command);
                     //if (!command.skipcache || command.updatecache) { objkey = hashobj(inboundparams, command); }
                     //--proxyprinttodiv('execute returned objkey', objkey, 11, true);
                     delete inboundparams.executethis; // delete parameter executethis...we know the targetfn
 
-                    checkcache(objkey, function (err, res) {
+                    checkcache(command.objkey, function (err, res) {
                         if (res)
                         {
                             callback(err, res);
@@ -910,149 +998,30 @@
     //                            resultparameters.command.environment.run.executeid = incomingparams.command.environment.run.executeid;
                                 if (command.notfoundok && err && err.errorname==="notfound") { err = null; resultparameters = {}; }
                                 //--proxyprinttodiv("execute after do this resultparameters after", resultparameters, 11);
+
                                 if (err && Object.keys(err).length > 0)
                                 {
-                                    callback(err, resultparameters);
-                                }
-                                else
-                                {
-                                    ////--proxyprinttodiv("end resultparameters II", resultparameters, 11);
-                                    ////--proxyprinttodiv("execute - command **** I", resultparameters, 11);
-                                    if (resultparameters && resultparameters.command)
+                                    if (command.postexecute.onfail.executethis)
                                     {
-                                        if (resultparameters.command.environment)
-                                        {
-                                            delete resultparameters.command.environment;
-                                        }
-                                        if (Object.keys(resultparameters.command).length === 0)
-                                        {
-                                            delete resultparameters.command;
-                                        }
-                                    }
-
-                                    ////--proxyprinttodiv("execute - command.resultparameters ****", command.resultparameters, 11);
-                                    if (command.resultparameters)
-                                    {
-                                        if (!command.adopt) {command.adopt="default";}
-                                        var copyOfInheritData = {};
-                                        extend(true, copyOfInheritData, command.currentresult);
-
-                                        //--proxyprinttodiv("execute - command ****", command, 11);
-                                        //--proxyprinttodiv("execute - command ****", command.resultparameters, 11);
-                                        //--proxyprinttodiv("execute - command.adopt ****", command.adopt, 11);
-                                        //--proxyprinttodiv("execute - command.overallresult ****", resultparameters, 11);
-                                        //--proxyprinttodiv("execute - inboundparams ****", inboundparams, 11);
-
-                                        //delete incomingparams.command;
-                                        //we might want to save command.environment and then readd
-                                        if (command.adopt === "override")
-                                        {
-                                            resultparameters = extend(true, {}, command.resultparameters, command.currentresult); //[0]
-                                        }
-                                        if (command.adopt === "default")
-                                        {
-                                            resultparameters = extend(true, {}, command.currentresult, command.resultparameters); //[0]
-                                        }
-
-                                        if (!resultparameters.command)
-                                        {
-                                            resultparameters.command = {};
-                                        }
-                                        if (!resultparameters.command.inherit)
-                                        {
-                                            resultparameters.command.inherit = {};
-                                        }
-                                        if (!resultparameters.command.inherit.data)
-                                        {
-                                            resultparameters.command.inherit.data = {};
-                                        }
-                                        // load a copy of the what was inherited
-                                        resultparameters.command.inherit.data = copyOfInheritData;
-                                    }
-
-
-
-                                    // if (command.result)
-                                    //     {   // if the work has already been done then do not do it again
-                                    //         if (resultparameters.queryresult 
-                                    //             && Object.keys(resultparameters).length == 1)
-                                    //         {
-                                    //             resultparameters = resultparameters.queryresult;
-                                    //         }
-                                    //         var json = {};
-                                    //         json[command.result] = resultparameters;
-                                    //         resultparameters = json;
-                                    //     }
-
-                                    if (command.result)
-                                    {   // if the work has already been done then do not do it again
-                                        if (resultparameters.queryresult 
-                                            && Object.keys(resultparameters).length == 1)
-                                        {
-                                            resultparameters = resultparameters.queryresult;
-                                        }
-                                        // special case for mapreduce inline results
-                                        if (resultparameters.results)
-                                        {
-                                            if (command.result!=="results")
-                                            {
-                                                var json = resultparameters.results;
-                                                delete resultparameters.results;
-                                                resultparameters[command.result]=json;
-                                            }
-                                        }
-                                        else // normal case
-                                        {
-                                            var json = {};
-                                            json[command.result] = resultparameters;
-                                            resultparameters = json;
-                                        }
-                                    }
-                                        
-                                    if (command.convertmethod === "todot")
-                                    {
-                                        resultparameters = ConvertToDOTdri(resultparameters);
-                                    }
-                                    // if (command.convertmethod === "nocommand")
-                                    // {
-                                    //     delete resultparameters.command;
-                                    // }
-
-                                    //--proxyprinttodiv("execute - command **** II", resultparameters, 11);
-
-                                    if (!command.updatecache)
-                                    {
-                                        callback(null, resultparameters);
+                                        postexecute(inboundparams, resultparameters, command, "onfail", callback)
                                     }
                                     else
                                     {
-                                        var expirationdate = new Date();
-                                        expirationdate = new Date(expirationdate.getTime() + command.cachetime * 60000); // % of min
-                                        resultparameters.metadata.cache = "true";
-
-                                        var recorddef = {
-                                            "container":resultparameters,
-                                            "wid": objkey,
-                                            "metadata": {
-                                                "systemdto": {
-                                                    "expirationdate": expirationdate
-                                                }
-                                            },
-                                            "command": {
-                                                "skipcache": true,
-                                                "datastore": "localstore",
-                                                "collection": "cache",
-                                                "keycollection": "cachekey",
-                                                "db": config.configuration.db,
-                                                "databasetable": config.configuration.databasetable
-                                            }
-                                        };
-                                        //--proxyprinttodiv("update cache **************", recorddef, 11);
-                                        updatewid(recorddef, function (err, res) {
-                                            callback(null, resultparameters);
-                                        });
-                                    } // end else skip cache
-                                } // end else no error
+                                        callback(err, resultparameters);
+                                    }
+                                }
+                                else
+                                {
+                                    if  (command.postexecute.onsucess.executethis)
+                                    {
+                                        postexecute(inboundparams, resultparameters, command, "onsucess", callback)
+                                    }
+                                    else
+                                    {
+                                        finalexecuteprocess(resultparameters, command, callback);
+                                    }
+                                }
+                                   
                             }); // targetfn
                         } // else no cache
                     }); // check cache
@@ -1060,6 +1029,179 @@
             } // if no et
         } // executethis exists
     };
+
+    function postexecute(inboundparams, resultparameters, command, status, callback)
+    {
+        var executeobject = {};
+        if (command.postexecute[status].addinitialparameters) {extend(true, executeobject, inboundparams)};
+        if (command.postexecute[status].addresultparameters) {extend(true, executeobject, resultparameters)};
+        if (command.postexecute[status].parameters) {extend(true, executeobject, command.postexecute[status].parameters)};
+        executeobject.executethis = command.postexecute[status].executethis;
+
+        if (command.postexecute[status].waitforresult===true)
+        {
+            execute(executeobject, function (err, res) {
+                finalexecuteprocess (resultparameters, command, callback);
+            })
+        }
+        else 
+        {
+            execute(executeobject, function (err, res) {})
+            finalexecuteprocess (resultparameters, command, callback)
+        }
+    }
+
+        // cache order
+         // "postexecute":
+         //        {
+         //        "onsucess": 
+         //            {
+         //            "executethis": null,
+         //            "executemethod" : "synchronous",  //, asychronous -- wait for results or not
+         //            "parameters": {},
+         //            "waterfall": true, // results of first call as input to second one
+         //            "finalresult": "execute" // "postexecute" // what results are returned
+         //            },
+         //        }
+
+    function finalexecuteprocess (resultparameters, command, callback)
+    {
+        ////--proxyprinttodiv("end resultparameters II", resultparameters, 11);
+        ////--proxyprinttodiv("execute - command **** I", resultparameters, 11);
+        if (resultparameters && resultparameters.command)
+        {
+            if (resultparameters.command.environment)
+            {
+                delete resultparameters.command.environment;
+            }
+            if (Object.keys(resultparameters.command).length === 0)
+            {
+                delete resultparameters.command;
+            }
+        }
+
+        ////--proxyprinttodiv("execute - command.resultparameters ****", command.resultparameters, 11);
+        if (command.resultparameters)
+        {
+            if (!command.adopt) {command.adopt="default";}
+            var copyOfInheritData = {};
+            extend(true, copyOfInheritData, command.currentresult);
+
+            //--proxyprinttodiv("execute - command ****", command, 11);
+            //--proxyprinttodiv("execute - command ****", command.resultparameters, 11);
+            //--proxyprinttodiv("execute - command.adopt ****", command.adopt, 11);
+            //--proxyprinttodiv("execute - command.overallresult ****", resultparameters, 11);
+            //--proxyprinttodiv("execute - inboundparams ****", inboundparams, 11);
+
+            //delete incomingparams.command;
+            //we might want to save command.environment and then readd
+            if (command.adopt === "override")
+            {
+                resultparameters = extend(true, {}, command.resultparameters, command.currentresult); //[0]
+            }
+            if (command.adopt === "default")
+            {
+                resultparameters = extend(true, {}, command.currentresult, command.resultparameters); //[0]
+            }
+
+            if (!resultparameters.command)
+            {
+                resultparameters.command = {};
+            }
+            if (!resultparameters.command.inherit)
+            {
+                resultparameters.command.inherit = {};
+            }
+            if (!resultparameters.command.inherit.data)
+            {
+                resultparameters.command.inherit.data = {};
+            }
+            // load a copy of the what was inherited
+            resultparameters.command.inherit.data = copyOfInheritData;
+        }
+
+        // if (command.result)
+        //     {   // if the work has already been done then do not do it again
+        //         if (resultparameters.queryresult 
+        //             && Object.keys(resultparameters).length == 1)
+        //         {
+        //             resultparameters = resultparameters.queryresult;
+        //         }
+        //         var json = {};
+        //         json[command.result] = resultparameters;
+        //         resultparameters = json;
+        //     }
+
+        if (command.result)
+        {   // if the work has already been done then do not do it again
+            if (resultparameters.queryresult 
+                && Object.keys(resultparameters).length == 1)
+            {
+                resultparameters = resultparameters.queryresult;
+            }
+            // special case for mapreduce inline results
+            if (resultparameters.results)
+            {
+                if (command.result!=="results")
+                {
+                    var json = resultparameters.results;
+                    delete resultparameters.results;
+                    resultparameters[command.result]=json;
+                }
+            }
+            else // normal case
+            {
+                var json = {};
+                json[command.result] = resultparameters;
+                resultparameters = json;
+            }
+        }
+            
+        if (command.convertmethod === "todot")
+        {
+            resultparameters = ConvertToDOTdri(resultparameters);
+        }
+        // if (command.convertmethod === "nocommand")
+        // {
+        //     delete resultparameters.command;
+        // }
+
+        //--proxyprinttodiv("execute - command **** II", resultparameters, 11);
+
+        if (!command.updatecache)
+        {
+            callback(null, resultparameters);
+        }
+        else
+        {
+            var expirationdate = new Date();
+            expirationdate = new Date(expirationdate.getTime() + command.cachetime * 60000); // % of min
+            resultparameters.metadata.cache = "true";
+
+            var recorddef = {
+                "container":resultparameters,
+                "wid": command.objkey,
+                "metadata": {
+                    "systemdto": {
+                        "expirationdate": expirationdate
+                    }
+                },
+                "command": {
+                    "skipcache": true,
+                    "datastore": "localstore",
+                    "collection": "cache",
+                    "keycollection": "cachekey",
+                    "db": config.configuration.db,
+                    "databasetable": config.configuration.databasetable
+                }
+            };
+            //--proxyprinttodiv("update cache **************", recorddef, 11);
+            updatewid(recorddef, function (err, res) {
+                callback(null, resultparameters);
+            });
+        } // end else skip cache
+    }              
+
 
     function cacheoperations(inboundparams, command) {
         var table = {
