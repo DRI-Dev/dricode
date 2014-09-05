@@ -62,15 +62,15 @@ exports.mapmethod1 = mapmethod1 = function mapmethod1 () {
 }
 
 
-exports.querymapmethod1 = 
-widtests.querymapmethod1 =
-querymapmethod1 =  
-function querymapmethod1(p, cb)
+exports.ettestmapreduce1 = 
+widtests.ettestmapreduce1 =
+ettestmapreduce1 =  
+function ettestmapreduce1(p, cb)
 {
 	debuglevel = 21;
-	proxyprinttodiv('querymapmethod1 start I', p, 99,true, true);
+	proxyprinttodiv('ettestmapreduce1 start I', p, 99,true, true);
 	loaddefaults(null, function (err, res) {
-		proxyprinttodiv('querymapmethod1 startII ', p, 99,true, true);
+		proxyprinttodiv('ettestmapreduce1 startII ', p, 99,true, true);
 		var executeobj = {
 						"executethis":"mapreduce",
 						"mapfn": "mapmethod1",
@@ -82,23 +82,23 @@ function querymapmethod1(p, cb)
 		})
 	})
 }
-widtests.querymapmethod1.category = "redaily";
-widtests.querymapmethod1.subcategory = "push";
-widtests.querymapmethod1.js = exports.querymapmethod1;
-widtests.querymapmethod1.description = "map reduce test";
+widtests.ettestmapreduce1.category = "redaily";
+widtests.ettestmapreduce1.subcategory = "push";
+widtests.ettestmapreduce1.js = exports.ettestmapreduce1;
+widtests.ettestmapreduce1.description = "map reduce test";
 
 
-exports.querymapmethod2 = querymapmethod2 =  function querymapmethod2(p, cb)
+exports.ettestmapreduce2 = ettestmapreduce2 =  function ettestmapreduce2(p, cb)
 {
 	debuglevel = 21;
 	loaddefaults(null, function (err, res) {
-		proxyprinttodiv('querymapmethod2 start', p, 99,true, true);
+		proxyprinttodiv('ettestmapreduce2 start', p, 99,true, true);
 		var executeobj = {
 						"executethis":"mapreduce",
 						"mapfn": "mapmethod1",
 						"reducefn": "reducemethod1",
 						"out": { "inline": 1 },
-						"reducefn": "reducedquerymapmethod2"
+						"reducefn": "reducedettestmapreduce2"
 						};	
 		execute(executeobj, function (err, res){
 			cb(err, res);
@@ -4285,6 +4285,7 @@ var executeobj = [
 				];
 
 	execute(executeobj,function (err, res) {
+		callback(err, res);
 		proxyprinttodiv('full result --', res, 99);
 	});
 }
