@@ -98,7 +98,7 @@ exports.ettestmapreduce2 = ettestmapreduce2 =  function ettestmapreduce2(p, cb)
 						"mapfn": "mapmethod1",
 						"reducefn": "reducemethod1",
 						"out": { "inline": 1 },
-						"reducefn": "reducedettestmapreduce2"
+						"replace": "reducedettestmapreduce2"
 						};	
 		execute(executeobj, function (err, res){
 			cb(err, res);
@@ -172,8 +172,8 @@ exports.ettestmap1 = ettestmap1 = function ettestmap1(p, callback)
 	        "executethis": "mapreduce",
 	        "mapfn": "mapreducefinddistinct",
 	        "reducefn": "reducedistinctfield",
-	        "out": { "inline": 1 }
-	        //"replace" : "distinctmethodscollection" // will store results here
+	        // "out": { "inline": 1 }
+	        "replace" : "distinctmethodscollection" // will store results here
 	    	}, function (err, res) 
 	    	{
 	    		proxyprinttodiv('MIDDLE', res, 99, true, true);

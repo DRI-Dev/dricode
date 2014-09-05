@@ -133,14 +133,14 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
         },
     true);
 
-    var thirdparm = filter_data.filteredobject;
+    var thirdparam = filter_data.filteredobject;
     var xtra = filter_data.output;
 
-    proxyprinttodiv('mapreduceserver thirdparm = ',thirdparm,99, true);
+    proxyprinttodiv('mapreduceserver thirdparam = ',thirdparam,99, true);
     proxyprinttodiv('mapreduceserver xtra = ',xtra,99, true);
     // if output = queryresult then inline
     
-    if (!thirdparm.out) 
+    if (!thirdparam.out) 
     {
         //"replace":"",
         //"merge":"",
@@ -148,38 +148,39 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
         //"db":"",
         //"sharded":"",
         //"nonatomic":"",
-        thirdparm.out={};
+        thirdparam.out={};
         if (xtra.merge)
         {
                                               // *** warning whatever collection is listed below will be overritten ****
-            thirdparm.out.merge=xtra.merge || config.configuration.d.defaultoutputcollection;
+            thirdparam.out.merge=xtra.merge || config.configuration.d.defaultoutputcollection;
         }
         else if (xtra.reduce)
         {
                                                 // *** warning whatever collection is listed below will be overritten ****
-            thirdparm.out.reduce=xtra.reduce || config.configuration.d.defaultoutputcollection;
+            thirdparam.out.reduce=xtra.reduce || config.configuration.d.defaultoutputcollection;
         }
         else if (xtra.replace)
         {
                                                   // *** warning whatever collection is listed below will be overritten ****
-            thirdparm.out.replace=xtra.replace || config.configuration.d.defaultoutputcollection;
+            thirdparam.out.replace=xtra.replace || config.configuration.d.defaultoutputcollection;
         }
         else 
         {
-            thirdparm.output.inline=1;
+            thirdparam.output.inline=1;
         }
 
-        thirdparm.out.db = xtra.db || config.configuration.d.default.databasetable;
-        //thirdparm.out.sharded = xtra.sharded || false;
-        //thirdparm.out.nonAtomic = xtra.nonatomic || true;
+        thirdparam.out.db = xtra.db || config.configuration.d.default.databasetable;
+        //thirdparam.out.sharded = xtra.sharded || false;
+        //thirdparam.out.nonAtomic = xtra.nonatomic || true;
     }
 
-    proxyprinttodiv('mapreduceserver thirdparm = ',thirdparm,99, true, true);
+    proxyprinttodiv('mapreduceserver thirdparam = ',thirdparam,99, true, true);
     // mapfn and reducefn will be sent as strings from et-query
     getConnection(mongoDatabaseToLookup, function(err, db) {
         proxyprinttodiv('mapfn  ',mapfn,99, true, true);
-        proxyprinttodiv('mapfn  ',reducefn,99, true, true);
-        db.collection(schemaToLookup).mapReduce(mapfn, reducefn, thirdparm, function(err, res) {
+        proxyprinttodiv('reducefn  ',reducefn,99, true, true);
+        proxyprinttodiv('thirdparam  ',thirdparam,99, true, true);
+        db.collection(schemaToLookup).mapReduce(mapfn, reducefn, thirdparam, function(err, res) {
             proxyprinttodiv('mapfn err ',err,99, true, true);
             if (err) {
                 callback(err, {
@@ -189,8 +190,13 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
                 });
             } else {
                 if (res) {
-                    proxyprinttodiv('res from mapreduceserver = ',reducefn,99, true, true);
-                    callback(err, res);
+                    if (thirdparam.out.inline == 1)
+                    {
+                        proxyprinttodiv('res from mapreduceserver = ',reducefn,99, true, true);
+                        callback(err, res);
+                    } else {
+                        callback(null, null);
+                    }
                 } else {
                     callback(err, []);
                 }
