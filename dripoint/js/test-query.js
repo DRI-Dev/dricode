@@ -62,7 +62,10 @@ exports.mapmethod1 = mapmethod1 = function mapmethod1 () {
 }
 
 
-exports.querymapmethod1 = querymapmethod1 =  function querymapmethod1(p, cb)
+exports.querymapmethod1 = 
+widtests.querymapmethod1 =
+querymapmethod1 =  
+function querymapmethod1(p, cb)
 {
 	debuglevel = 21;
 	proxyprinttodiv('querymapmethod1 start I', p, 99,true, true);
@@ -79,13 +82,17 @@ exports.querymapmethod1 = querymapmethod1 =  function querymapmethod1(p, cb)
 		})
 	})
 }
+widtests.querymapmethod1.category = "redaily";
+widtests.querymapmethod1.subcategory = "push";
+widtests.querymapmethod1.js = exports.querymapmethod1;
+widtests.querymapmethod1.description = "map reduce test";
 
 
 exports.querymapmethod2 = querymapmethod2 =  function querymapmethod2(p, cb)
 {
 	debuglevel = 21;
 	loaddefaults(null, function (err, res) {
-		proxyprinttodiv('querymapmethod1 start', p, 99,true, true);
+		proxyprinttodiv('querymapmethod2 start', p, 99,true, true);
 		var executeobj = {
 						"executethis":"mapreduce",
 						"mapfn": "mapmethod1",
