@@ -501,14 +501,14 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     "db":"",
                     "databasetable":"",
                     "convert":"",
-                    "keepaddthis":"",
-                    "pagenumber":"",
-                    "perpage":"",
-                    "skip":"",
-                    "limit":"",
-                    "sort":"",
-                    "count":"",
-                    "distinct":""
+                    "keepaddthis":""
+                    // "pagenumber":"",  // will be in extra commands
+                    // "perpage":"",
+                    // "skip":"",
+                    // "limit":"",
+                    // "sort":"",
+                    // "count":"",
+                    // "distinct":""
                 }
             },
             true);
@@ -882,9 +882,10 @@ function getprojectionresult( sourcerecord, projectiondef ) {
 function finalformat(output, relationshipoutput, qparms, extracommands, projection, command, callback) {
     proxyprinttodiv('querywid finalformat qparms', qparms, 28, true);
     var queryconvertmethod = extracommands.queryconvertmethod;
-    var excludeparameters = qparms.mongosetfieldsexclude;
+    var excludeparameters = qparms.mongosetfieldsexclude || {};
     var db = command.db;
     var finaloutput = [];
+    var excludedistinct={};
     proxyprinttodiv('finalformat top output', output, 28, true);
     proxyprinttodiv('finalformat top relationshipoutput', relationshipoutput, 28, true);
     proxyprinttodiv('querywid finalformat excludeparameters', excludeparameters, 28);
@@ -899,6 +900,9 @@ function finalformat(output, relationshipoutput, qparms, extracommands, projecti
         var sortobj = extracommands.finalsort || extracommands.sort || {};
         var count = extracommands.finalcount || extracommands.count || false;
         
+
+        // note for sort to work right we should convert all records to dot first
+
         if (count)
         {
             proxyprinttodiv('querywid finalformat count *******', sortobj, 99, true, true);
@@ -913,6 +917,7 @@ function finalformat(output, relationshipoutput, qparms, extracommands, projecti
             proxyprinttodiv('querywid finalformat sortobj', sortobj, 28, true, true);
             proxyprinttodiv('querywid finalformat limitval', limitval, 28, true, true);
             proxyprinttodiv('querywid finalformat skipval', skipval, 28, true, true);
+            // note for sort to work right we should convert all records to dot first
             if (Object.keys(sortobj).length > 0) {output.sort(dynamicsortmultiple(sortobj))};
             
 			/* Changed by Cody 8-28-14
@@ -931,7 +936,8 @@ function finalformat(output, relationshipoutput, qparms, extracommands, projecti
         proxyprinttodiv('querywid finalforma wid', wid, 28);
         // only proceed if current paramter is not in exclude parameter set
         proxyprinttodiv('querywid finalformat', output[eachout], 28);
-        proxyprinttodiv('querywid finalformat excludeparameters[wid]', excludeparameters[wid], 28);
+        proxyprinttodiv('querywid finalformat excludeparameters', excludeparameters, 28, true, true);
+        proxyprinttodiv('querywid queryconvertmethod  excludedistinct', excludedistinct, 28, true, true);
         if (!excludeparameters[wid])
         {
             // first search for wid in relationshipoutput
@@ -958,10 +964,22 @@ function finalformat(output, relationshipoutput, qparms, extracommands, projecti
             proxyprinttodiv('querywid finalformat enhancedrecord', enhancedrecord, 28, true);
             proxyprinttodiv('querywid queryconvertmethod', queryconvertmethod, 28);
 
+
             // if the property in command.distinct exist in the record we are about to return then 
-            if (command.distinct && enhancedrecord[command.distinct])
-            {   // then add it to the exclude set, so it will not be returned again
-                (excludeparameters[wid]=enhancedrecord.wid);
+            if (extracommands.distinct)
+            {
+                enhancedrecord = ConvertToDOTdri(enhancedrecord);
+                if (enhancedrecord[extracommands.distinct] && !excludedistinct[enhancedrecord[extracommands.distinct]]) 
+                {
+                    // then add it to the exclude set, so it will not be returned again
+                    proxyprinttodiv('querywid queryconvertmethod  finalforma enhancedrecord.wid', enhancedrecord.wid, 28);
+                    excludedistinct[enhancedrecord[extracommands.distinct]]=enhancedrecord[extracommands.distinct];
+                    enhancedrecord - ConvertFromDOTdri(enhancedrecord);
+                }
+                else
+                {
+                    enhancedrecord=null;
+                }
             }
 
             // now convert teach record based on query convertmethod
