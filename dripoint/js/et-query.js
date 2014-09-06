@@ -79,6 +79,8 @@
 // mapReduce.ok
 // A value of 1 indicates the mapReduce command ran successfully. A value of 0 indicates an error.
 
+(function(window) {
+
 exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     // mapreducemongo should receive: map, reduce, query, output, command into query
 
@@ -98,7 +100,7 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     proxyprinttodiv('mapreduce reducefn I', reducefn, 21,true, true);
 
 
-    window = (typeof window == "undefined" ? global : window);
+    //window = (typeof window == "undefined" ? global : window);
     if (window[mapfn]) {mapfn=window[mapfn]};
     if (window[reducefn]) {reducefn=window[reducefn]};
     if (mapfn instanceof Function) {mapfn=mapfn.toString()};
@@ -1238,6 +1240,12 @@ function relationShipQuery(parameters, input, environmentdb) {
     proxyprinttodiv('relationShipQuery querystring', querystring, 28);
     return querystring;
 }
+
+
+
+})(typeof window == "undefined" ? global : window);
+
+
 
 //   function formatlist(inlist, parmnamein, parmnameout, environmentdb) {
 //         var inbound_parameters = JSON.parse(JSON.stringify(arguments));
