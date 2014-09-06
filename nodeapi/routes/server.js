@@ -23,6 +23,7 @@ function runExecuteThis(parameters, resp) {
             {debuglevel = parameters.debuglevel};
         //saveglobal("debuglevel", debuglevel); // make it stickly for next time
         delete parameters.debuglevel;
+        proxyprinttodiv("incoming api call", JSON.stringify(parameters), 99, true, true);
     }
     else
     {

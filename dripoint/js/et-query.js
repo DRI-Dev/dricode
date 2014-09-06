@@ -84,7 +84,7 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
 
     var p = {};
     extend(true, p, inparameters);
-    proxyprinttodiv('mapreduce p', p, 21,true, true);
+    proxyprinttodiv('mapreduce changed p', p, 21,true, true);
     var mapfn = p.mapfn;
     var reducefn = p.reducefn;
     delete p.mapfn;
@@ -93,6 +93,9 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     // // is it a string pointing to a real fn?  get copy of fn
     // if (!(mapfn instanceof Function) && window[mapfn]) {mapfn = window[mapfn]};
     // if (!(reducefn instanceof Function) && window[reducefn]) {reducefn = window[reducefn]};
+
+    proxyprinttodiv('mapreduce mapfn I', mapfn, 21,true, true);
+    proxyprinttodiv('mapreduce reducefn I', reducefn, 21,true, true);
 
 
     window = (typeof window == "undefined" ? global : window);
@@ -119,8 +122,8 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
         p.mongorawquery = p.mongorawquery || p.query || {"$or" : [{"_id": {"$exists": true}}, {"wid": {"$exists": true}}]};
         // if p.queryresult then save the collection so mapreduceserver can get it
         // mapreduceserver also shoudl be able to process p.query
+		proxyprinttodiv('mapreduce going to server now', 'server',21);
         mapreduceserver(mapfn, reducefn, p, callback);
-		proxyprinttodiv('mapreduce going to server now', 'server',28);
     }
     else 
     {
