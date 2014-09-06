@@ -77,7 +77,7 @@ function getuniquecollections(p, callback)
 		execute(
 			{
 			// since not specified will go to defaults: collection dricollection, etc
-	        "executethis": "mapreduce",
+	        "executethis": "mapreducemaster",
 	        "mapfn": "mapreducefinddistincthtml",
 	        "reducefn": "reducedistinctfieldhtml",
 	        "replace" : "distinctitemscollection" // will store results here

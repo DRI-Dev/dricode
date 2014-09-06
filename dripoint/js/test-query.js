@@ -72,7 +72,7 @@ function ettestmapreduce1(p, cb)
 	loaddefaults(null, function (err, res) {
 		proxyprinttodiv('ettestmapreduce1 startII ', p, 99,true, true);
 		var executeobj = {
-						"executethis":"mapreduce",
+						"executethis":"mapreducemaster",
 						"mapfn": "mapmethod1",
 						"reducefn": "reducemethod1",
 						"out": { "inline": 1 }
@@ -94,7 +94,7 @@ exports.ettestmapreduce2 = ettestmapreduce2 =  function ettestmapreduce2(p, cb)
 	loaddefaults(null, function (err, res) {
 		proxyprinttodiv('ettestmapreduce2 start', p, 99,true, true);
 		var executeobj = {
-						"executethis":"mapreduce",
+						"executethis":"mapreducemaster",
 						"mapfn": "mapmethod1",
 						"reducefn": "reducemethod1",
 						"out": { "inline": 1 },
@@ -169,7 +169,7 @@ exports.ettestmap1 = ettestmap1 = function ettestmap1(p, callback)
 		execute(
 			{
 			// since not specified will go to defaults: collection dricollection, etc
-	        "executethis": "mapreduce",
+	        "executethis": "mapreducemaster",
 	        "mapfn": "mapreducefinddistinct",
 	        "reducefn": "reducedistinctfield",
 	        // "out": { "inline": 1 }
@@ -191,7 +191,7 @@ exports.ettestmap2 = ettestmap2 = function ettestmap2(p, callback)
 		execute(
 			{
 			// since not specified will go to defaults: collection dricollection, etc
-	        "executethis": "mapreduce",
+	        "executethis": "mapreducemaster",
 	        "mapfn": "mapreducefinddistinct",
 	        "reducefn": "reducedistinctfield",
 	        "replace" : "distinctmethodscollection" // will store results here
@@ -201,7 +201,7 @@ exports.ettestmap2 = ettestmap2 = function ettestmap2(p, callback)
 	    		//debuglevel=28;
 				execute(
 					{
-			        "executethis": "mapreduce",
+			        "executethis": "mapreducemaster",
 			        "mapreduce":"distinctmethodscollection", // will mapreduce from this collection
 			        "command.db":"value", // will map reduce from this "small db" inisde collection
 			        "mapfn": "mapreducedistilledmethod",
@@ -225,7 +225,7 @@ exports.ettestmap3 = ettestmap3 = function ettestmap3(p, callback)
 		execute(
 			{
 			// since not specified will go to defaults: collection dricollection, etc
-	        "executethis": "mapreduce",
+	        "executethis": "mapreducemaster",
 	        "mapfn": "mapreducefinddistinct",
 	        "reducefn": "reducedistinctfield",
 	        "replace" : "distinctitemscollection" // will store results here
@@ -235,7 +235,7 @@ exports.ettestmap3 = ettestmap3 = function ettestmap3(p, callback)
 	    		//debuglevel=28;
 				execute([
 					{
-			        "executethis": "mapreduce",
+			        "executethis": "mapreducemaster",
 			        "mapreduce":"distinctitemscollection", // will mapreduce from this collection
 			        "command.db":"value", // will map reduce from this "small db" inisde collection
 			        "query": {"$and": [{"value.type":"metadata.method"}]},
@@ -244,7 +244,7 @@ exports.ettestmap3 = ettestmap3 = function ettestmap3(p, callback)
 			        "replace" : "uniquemethods" // will produce this new collection
 			    	},
 			    	{
-			        "executethis": "mapreduce",
+			        "executethis": "mapreducemaster",
 			        "mapreduce":"distinctitemscollection", // will mapreduce from this collection
 			        "command.db":"value", // will map reduce from this "small db" inisde collection
 			        "query": {"$and": [{"value.type":"metadata.namespace.category"}]},
@@ -253,7 +253,7 @@ exports.ettestmap3 = ettestmap3 = function ettestmap3(p, callback)
 			        "replace" : "uniquecategories" // will produce this new collection
 			    	},
 			    	{
-			        "executethis": "mapreduce",
+			        "executethis": "mapreducemaster",
 			        "mapreduce":"distinctitemscollection", // will mapreduce from this collection
 			        "command.db":"value", // will map reduce from this "small db" inisde collection
 			        "query": {"$and": [{"value.type":"metadata.namespace.subcategory"}]},
@@ -262,7 +262,7 @@ exports.ettestmap3 = ettestmap3 = function ettestmap3(p, callback)
 			        "replace" : "uniquesubcategories" // will produce this new collection
 			    	},
 			    	{
-			        "executethis": "mapreduce",
+			        "executethis": "mapreducemaster",
 			        "mapreduce":"distinctitemscollection", // will mapreduce from this collection
 			        "command.db":"value", // will map reduce from this "small db" inisde collection
 			        "query": {"$and": [{"value.type":"metadata.namespace.subdto"}]},
@@ -271,7 +271,7 @@ exports.ettestmap3 = ettestmap3 = function ettestmap3(p, callback)
 			        "replace" : "uniquesubdtos" // will produce this new collection
 			    	},
 			    	{
-			        "executethis": "mapreduce",
+			        "executethis": "mapreducemaster",
 			        "mapreduce":"distinctitemscollection", // will mapreduce from this collection
 			        "command.db":"value", // will map reduce from this "small db" inisde collection
 			        "query": {"$and": [{"value.type":"metadata.htmlattributes.widtype"}]},
@@ -398,7 +398,7 @@ function qutest_map1 (executeobject, callback) {
                                         "hue": "black",
                                         "sat": "black-sat"
                                      }, {
-                                        "executethis": "mapreduce",
+                                        "executethis": "mapreducemaster",
                                         "mapfn": "mapreducetest1",
                                         "reducefn": "reducetest1",
                                         "out": "queryresult",

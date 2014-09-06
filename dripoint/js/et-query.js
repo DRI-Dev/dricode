@@ -81,7 +81,7 @@
 
 (function (window) {
 
-exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
+exports.mapreducemaster = mapreducemaster = function mapreducemaster(inparameters, callback) {
     // mapreducemongo should receive: map, reduce, query, output, command into query
 
     var p = {};
