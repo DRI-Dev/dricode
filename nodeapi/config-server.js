@@ -70,7 +70,7 @@ function config123() {
     configuration.administration.users.phonetable =
         {
             'rogerjs' : '+12145644732',
-            'info@dri.com' : default_number,
+            'info@dri.com' : configuration.defaultnumber,
             'Jason' : '+12317352532'
         };
     configuration.defaultserver = "test3";
