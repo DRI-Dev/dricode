@@ -94,17 +94,17 @@ function getuniquecollections(p, callback)
 
 exports.reducedistinctfieldhtml = reducedistinctfieldhtml =
 function reducedistinctfieldhtml(wid, values){
-    var result = {count : 0, fieldname: ""}
+    var result = {count : 0, fieldname: ""};
     var c=0; 
     values.forEach(function(value) 
     {
     	c++;
     	result.count = c;
     	result.fieldname = value.fieldname;
-    	if (value.type) {result.type = value.type};
-    })
+    	if (value.type) {result.type = value.type;}
+    });
 
-    proxyprinttodiv('reducetest1 result', result, 100,true, true);
+//    proxyprinttodiv('reducetest1 result', result, 100,true, true);
     return result;
 };
 
