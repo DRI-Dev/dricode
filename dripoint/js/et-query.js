@@ -79,7 +79,7 @@
 // mapReduce.ok
 // A value of 1 indicates the mapReduce command ran successfully. A value of 0 indicates an error.
 
-(function(window) {
+(function (window) {
 
 exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     // mapreducemongo should receive: map, reduce, query, output, command into query

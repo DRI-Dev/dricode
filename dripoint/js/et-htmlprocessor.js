@@ -33,7 +33,7 @@
 //					e    will get parms {p:b q:c}
 // do htmltemplate merge only then step thought html template
 
-
+(function(window) {
 
 exports.mapreducefinddistincthtml = mapreducefinddistincthtml = function mapreducefinddistincthtml () 
 { 
@@ -2049,3 +2049,6 @@ exports.htest4_luke = htest4_luke = function htest4_luke (param, callback) {
 		callback(err, res);
 	});
 }
+
+
+})(typeof window == "undefined" ? global : window);
