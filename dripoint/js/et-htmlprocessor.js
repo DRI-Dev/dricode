@@ -24,13 +24,138 @@
 // c:d
 // htmltemplate: "abc [[wid2]] def [wid3]] ghi"
 // e: {g:h, i:j}
-// command.htmlremap.wid2 = {a:x, e:y}
-// command.htmlremap.wid3 = {a:y, e:x}
-// command.htmlremap.e = {a:p, e:q}
+// command.remap.wid2 = {a:x, e:y}
+// command.remap.wid3 = {a:y, e:x}
+// command.remap.e = {a:p, e:q}
 //
 // when we run this wid2 will get parms {x:b y:c}
 // 					wid3 will get parms {y:b x:c}
 //					e    will get parms {p:b q:c}
+// do htmltemplate merge only then step thought html template
+
+
+
+exports.mapreducefinddistincthtml = mapreducefinddistincthtml = function mapreducefinddistincthtml () 
+{ 
+    //proxyprinttodiv('mapreducefinddistinct distinct this', this, 99,true, true);
+    if (this && this.metadata && this.metadata.method) 
+        {emit("method"+this.metadata.method, 
+            {type:"metadata.method", fieldname: this.metadata.method}) }
+    if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.category) 
+        {emit("category"+this.metadata.namespace.category, 
+            {type:"metadata.namespace.category", fieldname: this.metadata.namespace.category}) }
+    if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.subcategory) 
+        {emit("subcategory"+this.metadata.namespace.subcategory, 
+            {type:"metadata.namespace.subcategory",fieldname: this.metadata.namespace.subcategory}) }
+    if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.subdto) 
+        {emit("subdto"+this.metadata.namespace.subdto, 
+            {type:"metadata.namespace.subdto", fieldname: this.metadata.namespace.subdto}) }
+    if (this && this.metadata && this.metadata.htmlattributes && this.metadata.htmlattributes.widtype) 
+    { 
+        for (var eachtype in this.metadata.htmlattributes.widtype)
+        {
+            {emit("widtype"+this.metadata.htmlattributes.widtype[eachtype], 
+                {type:"metadata.htmlattributes.widtype",fieldname: this.metadata.htmlattributes.widtype[eachtype]}) }
+        }
+    }
+};
+
+
+// exports.mapreducedistilledmethodhtml = mapreducedistilledmethodhtml = function mapreducedistilledmethodhtml () 
+// { 
+//     //proxyprinttodiv('mapreduce distilled this', this, 99,true, true);
+//     if (this && this.fieldname) 
+//         {emit(this.fieldname, this) }
+// };
+
+exports.getuniquecollections = getuniquecollections = 
+function getuniquecollections(p, callback) 
+{
+	//debuglevel = 21;
+	//loaddefaults(null, function (err, res)
+	//{
+		execute(
+			{
+			// since not specified will go to defaults: collection dricollection, etc
+	        "executethis": "mapreduce",
+	        "mapfn": "mapreducefinddistincthtml",
+	        "reducefn": "reducedistinctfieldhtml",
+	        "replace" : "distinctitemscollection" // will store results here
+	    	}, function (err, res) 
+	    	{
+	    		proxyprinttodiv('MIDDLE created distinctitemscollection', res, 100, true, true);
+					callback(null, res);
+	    	})
+}
+
+// function mapbyfieldnamehtml() { 
+//     emit(this.fieldname, this); 
+// }
+
+exports.reducedistinctfieldhtml = reducedistinctfieldhtml =
+function reducedistinctfieldhtml(wid, values){
+    var result = {count : 0, fieldname: ""}
+    var c=0; 
+    values.forEach(function(value) 
+    {
+    	c++;
+    	result.count = c;
+    	result.fieldname = value.fieldname;
+    	if (value.type) {result.type = value.type};
+    })
+
+    proxyprinttodiv('reducetest1 result', result, 100,true, true);
+    return result;
+};
+
+// function mapreducefinddistincthtml () 
+// { 
+// 	proxyprinttodiv('mapreducefinddistincthtml distinct this', this, 100,true, true);
+// 	if (this && this.metadata && this.metadata.method) 
+// 		{emit("method"+this.metadata.method, 
+// 			{type:"metadata.method", fieldname: this.metadata.method}) }
+// 	if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.category) 
+// 		{emit("category"+this.metadata.namespace.category, 
+// 			{type:"metadata.namespace.category", fieldname: this.metadata.namespace.category}) }
+// 	if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.subcategory) 
+// 		{emit("subcategory"+this.metadata.namespace.subcategory, 
+// 			{type:"metadata.namespace.subcategory",fieldname: this.metadata.namespace.subcategory}) }
+// 	if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.subdto) 
+// 		{emit("subdto"+this.metadata.namespace.subdto, 
+// 			{type:"metadata.namespace.subdto", fieldname: this.metadata.namespace.subdto}) }
+// 	if (this && this.metadata && this.metadata.systemdto && this.metadata.systemdto.widtype) 
+// 	{ 
+// 		for (var eachtype in this.metadata.systemdto.widtype)
+// 		{
+// 			{emit("widtype"+this.metadata.systemdto.widtype[eachtype], 
+// 				{type:"metadata.systemdto.widtype",fieldname: this.metadata.systemdto.widtype[eachtype]}) }
+// 		}
+// 	}
+// };
+
+
+
+// function reducemethod1(key, count) { 
+//     return Array.sum(count); 
+// }
+
+// function mapmethod1() { 
+//     emit(this.metadata.method, 1); 
+// }
+
+// function querymapmethod1()
+// {
+// 	var executeobj = {
+// 					"executethis":"mapreduce",
+// 					"map": "mapmethod1",
+// 					"reduce": "reducemethod1",
+// 					"out": "queryresult",
+// 					"query": { "wid": {"$exists": "true"}}
+// 					};	
+// 	execute(executeobj, function (err, res){
+
+// 	})
+// }
 
 
 function parameterremap(p)
@@ -76,8 +201,8 @@ function cleanoriginalparm(originalparam, queryresult)
 		originalparam.command.htmloutertemplate = originalparam.command.htmloutertemplate
 												//|| originalparam.htmloutertemplate
 												|| "";	
-		originalparam.command.htmlremap = originalparam.command.htmlremap
-												//|| originalparam.htmlremap
+		originalparam.command.remap = originalparam.command.remap
+												//|| originalparam.remap
 												|| {};	
 	}
 	else 
@@ -100,8 +225,8 @@ function cleanoriginalparm(originalparam, queryresult)
 		originalparam.command.htmloutertemplate = originalparam.command.htmloutertemplate
 												|| originalparam.htmloutertemplate
 												|| "";	
-		originalparam.command.htmlremap = 		   originalparam.command.htmlremap
-												|| originalparam.htmlremap
+		originalparam.command.remap = 		   originalparam.command.remap
+												|| originalparam.remap
 												|| {};				
 	}
 
@@ -233,17 +358,19 @@ exports.createhtml = createhtml = function createhtml(param, callback)
 	    				var eachexecute = {};
     					eachexecute.result = "html";
     					eachexecute.executeobject = {};
+    					eachexecute.executeobject.command={};
+    					eachexecute.executeobject.command.htmloutertemplate=originalparam.command.htmloutertemplate;
 						// see what extra parameters should be sent as we get each bracket
-						if (originalparam.command.htmlremap && originalparam.command.htmlremap[eachproperty] 
-							&& Object.keys(originalparam.command.htmlremap[eachproperty]).length > 0)
+						if (originalparam.command.remap && originalparam.command.remap[eachproperty] 
+							&& Object.keys(originalparam.command.remap[eachproperty]).length > 0)
 						{
-							parmcopy.command.remap=originalparam.command.htmlremap[eachproperty];
+							parmcopy.command.remap=originalparam.command.remap[eachproperty];
 							eachexecute.executeobject=parameterremap(parmcopy);
-							// for (var eachremap in originalparam.command.htmlremap[eachproperty])
+							// for (var eachremap in originalparam.command.remap[eachproperty])
 							// {
 							// 	// add remapped parameter to the common data
 							// 	var keyinparent = eachremap;
-							// 	var keyinchild = originalparam.command.htmlremap[eachbracket][eachremap];
+							// 	var keyinchild = originalparam.command.remap[eachbracket][eachremap];
 							// 	eachexecute.executeobject[keyinchild] = originalparam[keyinparent];
 							// }
 						}
@@ -281,18 +408,20 @@ exports.createhtml = createhtml = function createhtml(param, callback)
 			    				bracket.executeobject={};
 			    				bracket.executeobject.command={};
 			    				bracket.executeobject.command.wid=bracketlist[eachbracket]; // put in execute format
+			    				bracket.executeobject.command.htmloutertemplate=originalparam.command.htmloutertemplate;
 
 								// see what extra parameters should be sent as we get each bracket
-								if (originalparam.command.htmlremap && originalparam.command.htmlremap[eachbracket] 
-									&& Object.keys(originalparam.command.htmlremap[eachbracket]).length > 0)
+								if (originalparam.command.remap && originalparam.command.remap[eachbracket] 
+									&& Object.keys(originalparam.command.remap[eachbracket]).length > 0)
 								{
-									parmcopy.command.remap=originalparam.command.htmlremap[eachproperty];
+									parmcopy.command.remap=originalparam.command.remap[eachproperty];
 									bracket.executeobject=parameterremap(parmcopy);
-									// for (var eachremap in originalparam.command.htmlremap[eachbracket])
+					 				
+									// for (var eachremap in originalparam.command.remap[eachbracket])
 									// {
 									// 	// add remapped parameter to the common data
 									// 	var keyinparent = eachremap;
-									// 	var keyinchild = originalparam.command.htmlremap[eachbracket][eachremap];
+									// 	var keyinchild = originalparam.command.remap[eachbracket][eachremap];
 									// 	bracket.executeobject[keyinchild] = originalparam[keyinparent];
 									// }
 								}
@@ -670,8 +799,7 @@ function trynormalgetwid(p, callback)
 }
 
 
-function renderhtml(responseHtml)
-{
+function renderhtml(responseHtml){
 	var response={};
 	// create fake div
 	$("body").append('<div id="includedContent" style="display:none"></div>');
@@ -733,10 +861,10 @@ function findbrackets(str)
 	}
 }
 
+
 // sample data
 exports.loaddefaults = loaddefaults  = function loaddefaults(p, c){
     proxyprinttodiv('config', config, 100, true, true);
-    //debuglevel = -1;
     execute({
         "command.xrun": [{
             "executethis": "addwidmaster",
@@ -918,14 +1046,14 @@ exports.loaddefaults = loaddefaults  = function loaddefaults(p, c){
             "c":"d",
             "e":"f",
             "g":"h",
-            //"htmlremap":{"wid2":{"c":"e2"}},
+            //"remap":{"wid2":{"c":"e2"}},
             // "metadata.method": "test_method",
             "metadata.namespace.category": "test_category",
             // "metadata.namespace.subcategory": "test_sub_category",
             // "metadata.namespace.subdto": "test_subdto",
             //"htmltemplate": '<div data-wid="wid1" class="textclass">abc from wid1 >2 [[wid2]] def >3 [[wid3]] ghi</div>',
             "htmltemplate": '<div id=xyzwid1>1 inside wid1 calling wid2=[[wid2]]=now calling wid3=[[wid3]]=end of wid1 1</div>',
-            "metadata.htmlattributes.widtype": ["csselement","scriptelement"],
+            "metadata.systemdto.widtype": ["csselement","scriptelement"],
             "command": {
                 "executetype": "series",
                 "processparameterfn": "execute_nothing",
@@ -953,7 +1081,7 @@ exports.loaddefaults = loaddefaults  = function loaddefaults(p, c){
             // "metadata.namespace.subdto": "test_subdto",
             //"htmltemplate": '<div data-wid="wid2" class="textclass"> xyz from wid2 >4 [[wid4]] qwe</div>',
             "htmltemplate": '<br><div id=xyzwid2>2 inside wid2 calling wid4=[[wid4]]=end of wid2 2</div>',
-            "metadata.htmlattributes.widtype": ["csselement","scriptelement"],
+            "metadata.systemdto.widtype": ["csselement","scriptelement"],
             "command": {
                 "executetype": "series",
                 "processparameterfn": "execute_nothing",
@@ -976,7 +1104,7 @@ exports.loaddefaults = loaddefaults  = function loaddefaults(p, c){
             // "metadata.namespace.subdto": "test_subdto",
             //"htmltemplate": '<div data-wid="wid3" class="textclass">  hi from 3</div>',
             "htmltemplate": '<br><div id=xyzwid3>3 inside wid 3 3</div>',
-            "metadata.htmlattributes.widtype": ["abcelement","wwwelement"],
+            "metadata.systemdto.widtype": ["abcelement","wwwelement"],
             "command": {
                 "executetype": "series",
                 "processparameterfn": "execute_nothing",
@@ -999,7 +1127,7 @@ exports.loaddefaults = loaddefaults  = function loaddefaults(p, c){
             // "metadata.namespace.subdto": "test_subdto",
             //"htmltemplate": '<div data-wid="wid4" class="textclass">hi from 4</div>',
             "htmltemplate": '<br><div id=xyzwid4>4 inside wid4 4</div>',
-            "metadata.htmlattributes.widtype": ["abcelement", "wwwelement"],
+            "metadata.systemdto.widtype": ["abcelement", "wwwelement"],
             "command": {
                 "executetype": "series",
                 "processparameterfn": "execute_nothing",
@@ -1022,7 +1150,7 @@ exports.loaddefaults = loaddefaults  = function loaddefaults(p, c){
             // "metadata.namespace.subcategory": "test_sub_category",
             // "metadata.namespace.subdto": "test_subdto",
                     "htmltemplate": "hi from 5",
-                    "metadata.htmlattributes.widtype": ["csselement", "scriptelement"],
+                    "metadata.systemdto.widtype": ["csselement", "scriptelement"],
             "command": {
                 "executetype": "series",
                 "processparameterfn": "execute_nothing",
@@ -1038,7 +1166,7 @@ exports.loaddefaults = loaddefaults  = function loaddefaults(p, c){
         	"wid": "defaultwideditorvalues",
             "executethis": "addwidmaster",
 
-            "debuglevel":"-1",
+            "debuglevel":"0",
             "syncrule": "sync_local",
             "execute_output": "debugger",
             "set_1": "",
@@ -1061,30 +1189,116 @@ exports.loaddefaults = loaddefaults  = function loaddefaults(p, c){
             "category": "",
             "subcategory": "",
             "subdto": "",
+            "currenturl":"http://test3.dripoint.com",
 
-            "leftitem": {
-            	  "getwid": { "name": "get selected wid", "will get a wid": "abcde", "fn": "editorgetwid" }
-        	    , "save_highlighted_wid": { "name": "save highlighted wid", "description": "will save selected text as a wid", "fn": "editorsaveselectedtext" }
-        	    , "save_highlighted_property": { "name": "save highlighted property", "description": "will save selected text as a property", "fn": "editorsaveselectedtextproperty" }
-        	    , "save_current_wid": { "name": "save current json wid", "description": "will save current wid in json tab", "fn": "editorsavecurrentwid" }
-        	    , "search": { "name": "search", "description": "base search", "fn": "editorshowpopup" }
-       	    	, "search_properties": { "name": "search properties", "description": "search by properties", "fn": "editorsearchbyproperties" }
-                , "search_similar_wids": { "name": "search similar wids", "description": "will search for similar wids", "fn": "editorsearchforsimilarwids" }
-                , "execute": { "name": "execute", "description": "will execute using set1&2 and parm 1&2", "fn": "editoradminexecute" }
-    			, "wid_set_1": { "name": "--link wid to set_1", "description":"link selected wid to set 1", "fn":"editorlinktoset1" }
-    			, "wid_set_2": { "name": "--link wid to set_2", "description": "link selected wid to set 2", "fn": "editorlinktoset2" }
-                , "add_to_parm_1": { "name": "--add to param_1", "description": "take wid's parameters and add to param1", "fn": "editoraddtoparm1" }
-                , "add_to_parm_2": { "name": "--add to param_2", "description": "take wid's parameters and add to param2", "fn": "editoraddtoparm2" }
-                , "create_using_dto": { "name": "create wid using this dto", "description": "Set up to save using this dto", "fn": "editorcreateusingdto" }
-                , "create_new_wid": { "name": "create new wid", "description": "create new wid using default dto", "fn": "editorcreatenewwid" }
-                , "delete_wid": { "name": "delete wid", "description": "deletewid", "fn": "editordeletewid" }
-                , "copy_wid": { "name": "copy wid", "description": "copywid", "fn": "editorcopywid" }
-				, "update_db": { "name": "update_db", "description": "get categories", "fn": "editorgetcategories" }
-				, "set_to_local": { "name": "set to local ", "description": "set to local ", "fn": "editorsettolocal" }
-				, "set_to_server": { "name": "set to server ", "description": "set to server ", "fn": "editorsettoserver" }
-				, "add_wid_ref": { "name": "add remap ", "description": "add a remap parameter", "fn": "editorhtmlremapscreen" }
-        	}
+            //"leftitem": {
+            //	  "getwid": { "name": "get selected wid", "will get a wid": "abcde", "fn": "editorgetwid" }
+        	//    , "save_highlighted_wid": { "name": "save highlighted wid", "description": "will save selected text as a wid", "fn": "editorsaveselectedtext" }
+        	//    , "save_highlighted_property": { "name": "save highlighted property", "description": "will save selected text as a property", "fn": "editorsaveselectedtextproperty" }
+        	//    , "save_current_wid": { "name": "save current json wid", "description": "will save current wid in json tab", "fn": "editorsavecurrentwid" }
+        	//    , "search": { "name": "search", "description": "base search", "fn": "editorshowpopup" }
+       	    //	, "search_properties": { "name": "search properties", "description": "search by properties", "fn": "editorsearchbyproperties" }
+            //    , "search_similar_wids": { "name": "search similar wids", "description": "will search for similar wids", "fn": "editorsearchforsimilarwids" }
+            //    , "execute": { "name": "execute", "description": "will execute using set1&2 and parm 1&2", "fn": "editoradminexecute" }
+    		//	, "wid_set_1": { "name": "--link wid to set_1", "description":"link selected wid to set 1", "fn":"editorlinktoset1" }
+    		//	, "wid_set_2": { "name": "--link wid to set_2", "description": "link selected wid to set 2", "fn": "editorlinktoset2" }
+            //    , "add_to_parm_1": { "name": "--add to param_1", "description": "take wid's parameters and add to param1", "fn": "editoraddtoparm1" }
+            //    , "add_to_parm_2": { "name": "--add to param_2", "description": "take wid's parameters and add to param2", "fn": "editoraddtoparm2" }
+            //    , "create_using_dto": { "name": "create wid using this dto", "description": "Set up to save using this dto", "fn": "editorcreateusingdto" }
+            //    , "create_new_wid": { "name": "create new wid", "description": "create new wid using default dto", "fn": "editorcreatenewwid" }
+            //    , "delete_wid": { "name": "delete wid", "description": "deletewid", "fn": "editordeletewid" }
+            //    , "copy_wid": { "name": "copy wid", "description": "copywid", "fn": "editorcopywid" }
+			//	, "update_db": { "name": "update_db", "description": "get categories", "fn": "editorgetcategories" }
+			//	, "set_to_local": { "name": "set to local ", "description": "set to local ", "fn": "editorsettolocal" }
+			//	, "set_to_server": { "name": "set to server ", "description": "set to server ", "fn": "editorsettoserver" }
+			//	, "add_wid_ref": { "name": "add remap ", "description": "add a remap parameter", "fn": "editorremapscreen" }
+			//	, "insert_wid": { "name": "insert wid", "description": "insert wid parameter", "fn": "editorhtmlinsertwid" }
+        	//}
+"leftitem": {
+    "crud_menu": 					{	"name": "create update read del", 
+    									"items": {
+		  "getwid": 				{ 	"name": 		"get selected wid", 		
+									  	"description": 	"get selected wid and populate json tab",
+									  	"fn": 			"editorgetwid" }
+		, "save_current_wid": 		{ 	"name": 		"save current json wid",
+						              	"description": 	"will save current wid in json tab",
+						              	"fn": 			"editorsavecurrentwid"}
+		, "create_new_wid": 		{ 	"name": 		"create new wid", 
+										"description": 	"create new wid using default dto", 
+										"fn": 			"editorcreatenewwid" }
+		, "create_using_dto": 		{ 	"name": 		"create wid using this dto", 
+										"description": 	"Set up to save using this dto", 
+										"fn": 			"editorcreateusingdto" }
+		, "delete_wid": 			{ 	"name": 		"delete wid", 
+										"description": 	"deletewid", 
+										"fn": 			"editordeletewid" }
+		, "copy_wid": 				{ 	"name": 		"copy wid", 
+										"description": 	"copywid, take current wid, clear out wid property", 
+										"fn": 			"editorcopywid" }
+		// , "insert_wid": 			{ 	"name": 		"insert wid", 
+		// 								"description": 	"insert wid parameter", 
+		// 								"fn": 			"editorhtmlinsertwid" }
+     // },
+     // parent: function () {
+     //     return wid;
+         }
+     }
+  , "admin_menu":  					{	"name": 		"admin", 
+ 										"items": {
+ 		 "update_db": 				{ 	"name": 		"update_db", 
+										"description": 	"get categories", 
+										"fn": 			"editorgetcategories" }
+		, "set_to_local": 			{ 	"name": 		"set to local ", 
+										"description": 	"set to local ", 
+										"fn": 			"editorsettolocal" }
+		, "set_to_server": 			{ 	"name": 		"set to server ", 
+										"description": 	"set to server ", 
+										"fn": 			"editorsettoserver" }
+	}
+}
+ , "search_menu":  					{	"name": 		"search", 
+ 										"items": {
+          "search": 				{ 	"name": 		"search for wids", 
+      									"description": 	"base search", 
+      									"fn": 			"editorshowpopup" }
+        , "search_properties": 		{ 	"name": 		"search properties", 
+        								"description": 	"search by properties", 
+        								"fn": 			"editorsearchbyproperties" }
+        , "search_similar_wids": 	{	"name": 		"search similar wids", 
+        								"description": 	"will search for similar wids", 
+        								"fn": 			"editorsearchforsimilarwids" }
+    }                        
+}
+ , "execute_menu":  				{	"name": 		"execute options", 
+ 										"items": {
+		 "execute": 				{ 	"name": 		"execute", 
+										"description": 	"will execute using set1&2 and parm 1&2", 
+										"fn": 			"editoradminexecute" }
+		, "wid_set_1": 				{ 	"name": 		"--link wid to set_1", 
+										"description": 	"link selected wid to set 1", 
+										"fn": 			"editorlinktoset1" }
+		, "wid_set_2": 				{ 	"name": 		"--link wid to set_2", 
+										"description": 	"link selected wid to set 2", 
+										"fn": 			"editorlinktoset2" }
+		, "add_to_parm_1": 			{ 	"name": 		"--add to param_1", 
+										"description": 	"take wid's parameters and add to param1", 
+										"fn": 			"editoraddtoparm1" }
+		, "add_to_parm_2": 			{ 	"name": 		"--add to param_2", 
+										"description": 	"take wid's parameters and add to param2", 
+										"fn": 			"editoraddtoparm2" }
+	}
+}
 
+		, "add_wid_ref": 			{ 	"name": 		"add remap ", 
+										"description": 	"add a remap parameter", 
+										"fn": 			"editorremapscreen" }
+ 		, "save_highlighted_property": 	{ 	"name": "save highlighted property", 
+ 										"description": "will save selected text as a property", 
+ 										"fn": "editorsaveselectedtextproperty" }
+ 		, "save_highlighted_wid": 			{ 	"name": 		"save highlighted wid", 	
+									  	"description": 	"will save into a wid the selected text into property htmltemplate",
+									  	"fn": 			"editorsaveselectedtext" }
+		}
 	        	
         	,"command": {
                "executetype": "series",
@@ -1097,11 +1311,14 @@ exports.loaddefaults = loaddefaults  = function loaddefaults(p, c){
            }
         }
     ]}, function(err, res) {
-        //drop_down_inputs();
-        //populate_dropdowns();
-        c(err, res)
+    	getuniquecollections(null, function (err, res) {
+        	c(err, res)
+    	})
     });
 }
+
+
+
 
 exports.mergetest1 = mergetest1 = function mergetest1(param, callback) {
 	var currentdata= {"htmltargetdiv":"div2","placeholder":"B","html":"Hello this is B"};

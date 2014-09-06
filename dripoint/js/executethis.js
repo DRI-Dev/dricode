@@ -61,33 +61,6 @@
 
     var execute;
 
-    function parameterremap(p, r) // remap optional, can get from p.command
-    {
-        // this call remaps parameter names and filters
-        // {a:b c:d e:f command.remap={a:x e:y}} will return {x:b, y:f}
-        var remap=r;
-        var newobj = {};
-        var oldparm;
-        var newparm;
-        if (!remap)
-        {
-            if (!p.command) {p.command={}};
-            remap = p.command.remap;
-        }
-        //delete p.remap;
-        if (remap)
-        {
-            for (var eachproperty in remap)
-            {
-                oldparm = eachproperty;         // a
-                newparm = remap[eachproperty];  // x
-                newobj[newparm] = p[oldparm];       // newobj[x] = b
-            }
-        }
-        return newobj
-    }
-
-
     // called one perexecute in convertcommand, it get other command and command.environment parameters that might be for this function
     //
     // enhance params based on dto, appname, server, user -- these should be changed to ths form:

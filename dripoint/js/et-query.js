@@ -445,7 +445,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 "keepaddthis":true,
                 "queryconvertmethod":"each",
                 "namespaceflag":false,
-                "queryresult":"queryresult",
+                "queryresult":"queryresult",   // control output
                 "pagenumber":"",  
                 "perpage":"",
                 "skip":"",
@@ -464,7 +464,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
             "mongosinglequery": "",
             "mongomultiplequery": "",
             "monogoprojection":{},
-            "queryresult": null,
+            "queryresult": null, // control input
             "results":null
         },
         {
@@ -903,6 +903,7 @@ function getprojectionresult( sourcerecord, projectiondef ) {
 
 function finalformat(outputset, relationshipoutput, qparms, extracommands, projection, command, callback) {
     proxyprinttodiv('querywid finalformat qparms', qparms, 28, true);
+        proxyprinttodiv('querywid finalformat extracommands', extracommands, 28, true, true);
     var queryconvertmethod = extracommands.queryconvertmethod;
     var excludeparameters = qparms.mongosetfieldsexclude || {};
     var db = command.db;
@@ -976,6 +977,7 @@ function finalformat(outputset, relationshipoutput, qparms, extracommands, proje
                 if (command.distinct)
                 {
                     output[eachout] = ConvertToDOTdri(output[eachout]);
+                    proxyprinttodiv('finalformat distinct output[eachout]', output[eachout], 28, true, true);
                     if (output[eachout][command.distinct] && !excludedistinct[output[eachout][command.distinct]]) 
                     {
                         // then add it to the exclude set, so it will not be returned again
@@ -992,7 +994,6 @@ function finalformat(outputset, relationshipoutput, qparms, extracommands, proje
     }
     proxyprinttodiv('finalformat top output MIDDLE', finaloutput, 28, true, true);
 
-    extend(true,  finaloutput, output)
     var resultarray=[];
 
     // if mongo or not mongo:
@@ -1011,10 +1012,20 @@ function finalformat(outputset, relationshipoutput, qparms, extracommands, proje
     }
 
     proxyprinttodiv('finalformat output II', resultarray, 28, true, true);
-    var temp;
-    if (qparms.queryresult) {temp[qparms.queryresult] = output} else {temp=resultarray}
-    proxyprinttodiv('querywid finaloutput', temp, true);
-    callback(null, temp);
+    proxyprinttodiv('querywid finaloutput extracommands', extracommands, 28, true, true);
+    if (extracommands.queryresult) 
+    {
+        var temp={};
+        temp[extracommands.queryresult] = resultarray;
+        proxyprinttodiv('querywid finaloutput', temp, 28, true, true);
+        callback(null, temp);
+    } 
+    else 
+    {
+        proxyprinttodiv('querywid finaloutput', temp, 28, true, true);
+        callback(null, resultarray);
+    }
+
 } // final format
 
 

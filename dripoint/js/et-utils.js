@@ -86,6 +86,32 @@
         //potentialwid = 0;
     };
 
+    exports.parameterremap = parameterremap = function parameterremap(p, r) // remap optional, can get from p.command
+    {
+        // this call remaps parameter names and filters
+        // {a:b c:d e:f command.remap={a:x e:y}} will return {x:b, y:f}
+        var remap=r;
+        var newobj = {};
+        var oldparm;
+        var newparm;
+        if (!remap)
+        {
+            if (!p.command) {p.command={}};
+            remap = p.command.remap;
+        }
+        //delete p.remap;
+        if (remap)
+        {
+            for (var eachproperty in remap)
+            {
+                oldparm = eachproperty;         // a
+                newparm = remap[eachproperty];  // x
+                newobj[newparm] = p[oldparm];       // newobj[x] = b
+            }
+        }
+        return newobj
+    }
+
 
     // used to create the inital record for a database
     exports.setinitialwid = setinitialwid = function setinitialwid(params, command) {
