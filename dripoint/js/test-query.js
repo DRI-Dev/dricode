@@ -107,28 +107,29 @@ exports.ettestmapreduce2 = ettestmapreduce2 =  function ettestmapreduce2(p, cb)
 }
 
 exports.mapreducefinddistinct = mapreducefinddistinct = function mapreducefinddistinct () 
+//exports.mapreducefinddistincthtml = mapreducefinddistincthtml = function mapreducefinddistincthtml () 
 { 
-	//proxyprinttodiv('mapreducefinddistinct distinct this', this, 99,true, true);
-	if (this && this.metadata && this.metadata.method) 
-		{emit("method"+this.metadata.method, 
-			{type:"metadata.method", fieldname: this.metadata.method}) }
-	if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.category) 
-		{emit("category"+this.metadata.namespace.category, 
-			{type:"metadata.namespace.category", fieldname: this.metadata.namespace.category}) }
-	if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.subcategory) 
-		{emit("subcategory"+this.metadata.namespace.subcategory, 
-			{type:"metadata.namespace.subcategory",fieldname: this.metadata.namespace.subcategory}) }
-	if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.subdto) 
-		{emit("subdto"+this.metadata.namespace.subdto, 
-			{type:"metadata.namespace.subdto", fieldname: this.metadata.namespace.subdto}) }
-	if (this && this.metadata && this.metadata.htmlattributes && this.metadata.htmlattributes.widtype) 
-	{ 
-		for (var eachtype in this.metadata.htmlattributes.widtype)
-		{
-			{emit("widtype"+this.metadata.htmlattributes.widtype[eachtype], 
-				{type:"metadata.htmlattributes.widtype",fieldname: this.metadata.htmlattributes.widtype[eachtype]}) }
-		}
-	}
+    //proxyprinttodiv('mapreducefinddistinct distinct this', this, 99,true, true);
+    if (this && this.metadata && this.metadata.method) 
+        {emit("method"+this.metadata.method, 
+            {wid: this.wid, type:"metadata.method", fieldname: this.metadata.method}) }
+    if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.category) 
+        {emit("category"+this.metadata.namespace.category, 
+            {wid: this.wid, type:"metadata.namespace.category", fieldname: this.metadata.namespace.category}) }
+    if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.subcategory) 
+        {emit("subcategory"+this.metadata.namespace.subcategory, 
+            {wid: this.wid, type:"metadata.namespace.subcategory",fieldname: this.metadata.namespace.subcategory}) }
+    if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.subdto) 
+        {emit("subdto"+this.metadata.namespace.subdto, 
+            {wid: this.wid, type:"metadata.namespace.subdto", fieldname: this.metadata.namespace.subdto}) }
+    if (this && this.metadata && this.metadata.systemdto && this.metadata.systemdto.widtype) 
+    { 
+        for (var eachtype in this.metadata.systemdto.widtype)
+        {
+            {emit("widtype"+this.metadata.systemdto.widtype[eachtype], 
+                {wid: this.wid, type:"metadata.systemdto.widtype",fieldname: this.metadata.systemdto.widtype[eachtype]}) }
+        }
+    }
 };
 
 

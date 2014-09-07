@@ -19,81 +19,35 @@
 // line 461 for test htest17
 
 
-// wid1
-// a:b
-// c:d
-// htmltemplate: "abc [[wid2]] def [wid3]] ghi"
-// e: {g:h, i:j}
-// command.remap.wid2 = {a:x, e:y}
-// command.remap.wid3 = {a:y, e:x}
-// command.remap.e = {a:p, e:q}
-//
-// when we run this wid2 will get parms {x:b y:c}
-// 					wid3 will get parms {y:b x:c}
-//					e    will get parms {p:b q:c}
-// do htmltemplate merge only then step thought html template
-
-(function(window) {
+(function (window) {
 
 exports.mapreducefinddistincthtml = mapreducefinddistincthtml = function mapreducefinddistincthtml () 
 { 
     //proxyprinttodiv('mapreducefinddistinct distinct this', this, 99,true, true);
     if (this && this.metadata && this.metadata.method) 
         {emit("method"+this.metadata.method, 
-            {type:"metadata.method", fieldname: this.metadata.method}) }
+            {wid: this.wid, type:"metadata.method", fieldname: this.metadata.method}) }
     if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.category) 
         {emit("category"+this.metadata.namespace.category, 
-            {type:"metadata.namespace.category", fieldname: this.metadata.namespace.category}) }
+            {wid: this.wid, type:"metadata.namespace.category", fieldname: this.metadata.namespace.category}) }
     if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.subcategory) 
         {emit("subcategory"+this.metadata.namespace.subcategory, 
-            {type:"metadata.namespace.subcategory",fieldname: this.metadata.namespace.subcategory}) }
+            {wid: this.wid, type:"metadata.namespace.subcategory",fieldname: this.metadata.namespace.subcategory}) }
     if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.subdto) 
         {emit("subdto"+this.metadata.namespace.subdto, 
-            {type:"metadata.namespace.subdto", fieldname: this.metadata.namespace.subdto}) }
-    if (this && this.metadata && this.metadata.htmlattributes && this.metadata.htmlattributes.widtype) 
+            {wid: this.wid, type:"metadata.namespace.subdto", fieldname: this.metadata.namespace.subdto}) }
+    if (this && this.metadata && this.metadata.systemdto && this.metadata.systemdto.widtype) 
     { 
-        for (var eachtype in this.metadata.htmlattributes.widtype)
+        for (var eachtype in this.metadata.systemdto.widtype)
         {
-            {emit("widtype"+this.metadata.htmlattributes.widtype[eachtype], 
-                {type:"metadata.htmlattributes.widtype",fieldname: this.metadata.htmlattributes.widtype[eachtype]}) }
+            {emit("widtype"+this.metadata.systemdto.widtype[eachtype], 
+                {wid: this.wid, type:"metadata.systemdto.widtype",fieldname: this.metadata.systemdto.widtype[eachtype]}) }
         }
     }
 };
 
-
-// exports.mapreducedistilledmethodhtml = mapreducedistilledmethodhtml = function mapreducedistilledmethodhtml () 
-// { 
-//     //proxyprinttodiv('mapreduce distilled this', this, 99,true, true);
-//     if (this && this.fieldname) 
-//         {emit(this.fieldname, this) }
-// };
-
-exports.getuniquecollections = getuniquecollections = 
-function getuniquecollections(p, callback) 
-{
-	//debuglevel = 21;
-	//loaddefaults(null, function (err, res)
-	//{
-		execute(
-			{
-			// since not specified will go to defaults: collection dricollection, etc
-	        "executethis": "mapreducemaster",
-	        "mapfn": "mapreducefinddistincthtml",
-	        "reducefn": "reducedistinctfieldhtml",
-	        "replace" : "distinctitemscollection" // will store results here
-	    	}, function (err, res) 
-	    	{
-	    		proxyprinttodiv('MIDDLE created distinctitemscollection', res, 100, true, true);
-					callback(null, res);
-	    	})
-}
-
-// function mapbyfieldnamehtml() { 
-//     emit(this.fieldname, this); 
-// }
-
 exports.reducedistinctfieldhtml = reducedistinctfieldhtml =
-function reducedistinctfieldhtml(wid, values){
+function reducedistinctfieldhtml (wid, values){
     var result = {count : 0, fieldname: ""};
     var c=0; 
     values.forEach(function(value) 
@@ -102,78 +56,34 @@ function reducedistinctfieldhtml(wid, values){
     	result.count = c;
     	result.fieldname = value.fieldname;
     	if (value.type) {result.type = value.type;}
+    	result.wid = value.wid;
     });
 
 //    proxyprinttodiv('reducetest1 result', result, 100,true, true);
     return result;
 };
 
-// function mapreducefinddistincthtml () 
-// { 
-// 	proxyprinttodiv('mapreducefinddistincthtml distinct this', this, 100,true, true);
-// 	if (this && this.metadata && this.metadata.method) 
-// 		{emit("method"+this.metadata.method, 
-// 			{type:"metadata.method", fieldname: this.metadata.method}) }
-// 	if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.category) 
-// 		{emit("category"+this.metadata.namespace.category, 
-// 			{type:"metadata.namespace.category", fieldname: this.metadata.namespace.category}) }
-// 	if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.subcategory) 
-// 		{emit("subcategory"+this.metadata.namespace.subcategory, 
-// 			{type:"metadata.namespace.subcategory",fieldname: this.metadata.namespace.subcategory}) }
-// 	if (this && this.metadata && this.metadata.namespace && this.metadata.namespace.subdto) 
-// 		{emit("subdto"+this.metadata.namespace.subdto, 
-// 			{type:"metadata.namespace.subdto", fieldname: this.metadata.namespace.subdto}) }
-// 	if (this && this.metadata && this.metadata.systemdto && this.metadata.systemdto.widtype) 
-// 	{ 
-// 		for (var eachtype in this.metadata.systemdto.widtype)
-// 		{
-// 			{emit("widtype"+this.metadata.systemdto.widtype[eachtype], 
-// 				{type:"metadata.systemdto.widtype",fieldname: this.metadata.systemdto.widtype[eachtype]}) }
-// 		}
-// 	}
-// };
-
-
-
-// function reducemethod1(key, count) { 
-//     return Array.sum(count); 
-// }
-
-// function mapmethod1() { 
-//     emit(this.metadata.method, 1); 
-// }
-
-// function querymapmethod1()
+//exports.getuniquecollections = getuniquecollections = 
+// function getuniquecollections (p, callback) 
 // {
-// 	var executeobj = {
-// 					"executethis":"mapreduce",
-// 					"map": "mapmethod1",
-// 					"reduce": "reducemethod1",
-// 					"out": "queryresult",
-// 					"query": { "wid": {"$exists": "true"}}
-// 					};	
-// 	execute(executeobj, function (err, res){
-
-// 	})
+// 	//debuglevel = 21;
+// 	//loaddefaults(null, function (err, res)
+// 	//{
+// 		execute(
+// 			{
+// 			// since not specified will go to defaults: collection dricollection, etc
+// 	        "executethis": "mapreducemaster",
+// 	        "mapfn": "mapreducefinddistincthtml",
+// 	        "reducefn": "reducedistinctfieldhtml",
+// 	        "replace" : "distinctitemscollection" // will store results here
+// 	    	}, function (err, res) 
+// 	    	{
+// 	    		proxyprinttodiv('MIDDLE created distinctitemscollection', res, 100, true, true);
+// 					callback(null, res);
+// 	    	})
 // }
 
 
-function parameterremap(p)
-{
-	// this call remaps parameter names and filters
-	// {a:b c:d e:f command.remap={a:x e:y}} will return {x:b, y:f}
-	if (!p.command) {p.command={}};
-	var remap = p.command.remap;
-	//delete p.remap;
-	var newobj = {};
-	for (var eachproperty in remap)
-	{
-		var oldparm = eachproperty;			// a
-		var newparm = remap[eachproperty];  // x
-		newobj[newparm] = p[oldparm];       // newobj[x] = b
-	}
-	return newobj
-}
 
 function cleanoriginalparm(originalparam, queryresult)
 {
@@ -279,7 +189,8 @@ exports.createhtml = createhtml = function createhtml(param, callback)
         			{
         				currentdata.wid = originalparam.command.wid || originalparam["command.wid"];
         				//proxyprinttodiv("createhtml step1 currentdata wid", currentdata.wid, 100, true, true);
-                        originalparam = extend(true, {}, res, originalparam); // merge res with originalparam
+        				// merge res with originalparam (incoming), with incoming winning
+                        originalparam = extend(true, {}, res, originalparam); 
             			cb1(null, null);	
         			}
         		})
@@ -316,224 +227,90 @@ exports.createhtml = createhtml = function createhtml(param, callback)
 			proxyprinttodiv("createhtml step2 originalparam", originalparam, 100, true, true);
 			proxyprinttodiv("createhtml step2 queryresult", queryresult, 100, true, true);
 			
+			//var indent  = Number(getglobal('debugindent'))
+			//if (originalparam.command.htmlshallow || indent > 5)
 			if (originalparam.command.htmlshallow)
 			{
-				cb2(null, null)
+				//if (indent<5) {indent=null}
+				//cb2(indent)
+				cb2(null);
 			}
 			else 
 			{
-				
-				// no commondata
-
-				// var commondata = {};
-	   //  		extend(true, commondata, originalparam);
-	   //  		delete commondata.htmltemplate;
-	   //  		delete commondata.html;
-	   //  		delete commondata.command;
-	   //  		commondata.command={};
-	   //  		commondata.command.htmloutertemplate=originalparam.command.htmloutertemplate;
-	   			var parmcopy = {};
-	   			//parmcopy.command={};
-	   			extend(true, parmcopy, originalparam);
-
-	    		var listofproperties = [];
-	    		for (var eachproperty in originalparam) // make a list of properties
-	    		{
-	    			proxyprinttodiv("step2 listofproperties eachproperty", eachproperty, 100, true, true);
-                	var bracketlist = [];
-                	var listtodo = [];
-
-                	// if right side in an object then set up so it will be used to call createhtml
-                	// listofproperties = 
-                	// [{property:p1, template:v1,   executelist:[{executeobject:{}, result:}, 
-                	//	{property:p2, template:v2,   executelist:[{executeobject:{}, result:}, 
-                	//	{property:p3, template:v3,   executelist:[{executeobject:{}, result:}, 
-                	//	]
-                	if (isObject(originalparam[eachproperty]) && eachproperty!=="command")
-                	{
-	    				var eachrow = {};
-	    				eachrow.property = eachproperty;				// property "property"
-	    				eachrow.template = "[[html]]";
-	    				eachrow.executelist = [];
-	    				var eachexecute = {};
-    					eachexecute.result = "html";
-    					eachexecute.executeobject = {};
-    					eachexecute.executeobject.command={};
-    					eachexecute.executeobject.command.htmloutertemplate=originalparam.command.htmloutertemplate;
-						// see what extra parameters should be sent as we get each bracket
-						if (originalparam.command.remap && originalparam.command.remap[eachproperty] 
-							&& Object.keys(originalparam.command.remap[eachproperty]).length > 0)
-						{
-							parmcopy.command.remap=originalparam.command.remap[eachproperty];
-							eachexecute.executeobject=parameterremap(parmcopy);
-							// for (var eachremap in originalparam.command.remap[eachproperty])
-							// {
-							// 	// add remapped parameter to the common data
-							// 	var keyinparent = eachremap;
-							// 	var keyinchild = originalparam.command.remap[eachbracket][eachremap];
-							// 	eachexecute.executeobject[keyinchild] = originalparam[keyinparent];
-							// }
-						}
-    					//extend(true, eachexecute.executeobject, originalparam[eachproperty]);
-	    				eachrow.executelist.push(eachexecute);
-						listofproperties.push(eachrow);
-						//delete commondata[eachproperty];
-                	}
-                	if (isString(originalparam[eachproperty]) 
-                		)
-                	{
-						bracketlist = findbrackets(originalparam[eachproperty]);
-			    		proxyprinttodiv("step2 bracketlist", bracketlist, 100, true);
-
-			    		// do not add duplicate properties
-
-
-			    		for (var eachbracket in bracketlist)
-			    		{	// remove specific brackets that shoudl not be recursed on
-			    			// within right side, do not follow these wids
-			    			if (
-				    				bracketlist[eachbracket]==="wid" ||
-				    				bracketlist[eachbracket]==="htmltemplate" ||
-				    				bracketlist[eachbracket]==="html" ||
-				    				bracketlist[eachbracket]==="command"
-			    				)
-			    			{
-			    				listtodo = [];
-			    				break;
-			    			}
-			    			else
-			    			{
-			    				var bracket = {};
-
-			    				bracket.executeobject={};
-			    				bracket.executeobject.command={};
-			    				bracket.executeobject.command.wid=bracketlist[eachbracket]; // put in execute format
-			    				bracket.executeobject.command.htmloutertemplate=originalparam.command.htmloutertemplate;
-
-								// see what extra parameters should be sent as we get each bracket
-								if (originalparam.command.remap && originalparam.command.remap[eachbracket] 
-									&& Object.keys(originalparam.command.remap[eachbracket]).length > 0)
-								{
-									parmcopy.command.remap=originalparam.command.remap[eachproperty];
-									bracket.executeobject=parameterremap(parmcopy);
-					 				
-									// for (var eachremap in originalparam.command.remap[eachbracket])
-									// {
-									// 	// add remapped parameter to the common data
-									// 	var keyinparent = eachremap;
-									// 	var keyinchild = originalparam.command.remap[eachbracket][eachremap];
-									// 	bracket.executeobject[keyinchild] = originalparam[keyinparent];
-									// }
-								}
-
-			    				bracket.result=bracketlist[eachbracket]
-			    				listtodo.push(bracket);
-		    				}
-			    		}
-			    		if (listtodo.length>0)
-			    		{
-		    				var eachrow = {};
-		    				eachrow.property = eachproperty;				// property "property"
-		    				eachrow.template = originalparam[eachproperty];	// property "value"
-		    				eachrow.executelist = [];
-		    				eachrow.executelist = listtodo;
-							listofproperties.push(eachrow);
-							//delete commondata[eachproperty];
-			    		}
-			    	}
-				}
-
-				//proxyprinttodiv("step2 commondata before  ***", commondata, 100, true, true);
-
-				proxyprinttodiv("step2 listofproperties", listofproperties, 100, true);
-				proxyprinttodiv("step2 BEFORE asynch originalparam ", originalparam, 100, true);
-	    		// step over the list looking for brackets in right side (value)
-				async.mapSeries(listofproperties, function (eachproperty, cbMap2) 
+				// recurse on htmltemplate:
+				//    merget current properties into htmltemplate [[]] 
+				//    step through all brackets in htmltemplate, save results to htmldata
+				//    merge htmldata into htmltemplate
+				proxyprinttodiv("step2 originalparam.command.htmltemplate ", originalparam.command.htmltemplate, 100, true, true);
+				originalparam.command.htmltemplate = merge(originalparam, originalparam.command.htmltemplate, "[[", "]]");
+				proxyprinttodiv("step2 originalparam.command.htmltemplate  II", originalparam.command.htmltemplate, 100, true, true);
+				var htmldata={}; 
+				var bracketlist = findbrackets(originalparam.command.htmltemplate);
+				proxyprinttodiv("step2 middle bracketlist ", bracketlist, 100, true, true);
+	    		async.mapSeries(bracketlist, function (eachbracket, cbMap) 
 	    		{
 	                async.nextTick(function() 
 	                {
-	                	proxyprinttodiv("createhtml step2 each", eachproperty, 100, true, true);
-	                	var htmldata = {};
-	                	var executelist = eachproperty.executelist;
-	                	var property = eachproperty.property;
-	                	var template = eachproperty.template
-
-			    		// update htmldata with the value returned for each, so we can merge at end
-			    		async.mapSeries(executelist, function (eachexecute, cbMap) 
-			    		{
-			                async.nextTick(function() 
-			                {
-			                	proxyprinttodiv("step2 middle of Asynch originalparam ", originalparam, 100, true);
-			                	var executeobject = eachexecute.executeobject;
-			                	var eachresult = eachexecute.result;
-			                	//extend(true, executeobject, commondata);
-								proxyprinttodiv("step2 about to recurse eachexecute", eachexecute, 100, true);
-					        	var color = Number(getglobal('debugcolor')); if (!color || color >= 15) { color = 0; } color++; saveglobal('debugcolor', color);
-					        	var indent  = Number(getglobal('debugindent')); indent++; saveglobal('debugindent', indent);
-			                	createhtml(executeobject, function (err, res) // recursion
-			                	{
-			                		var color = Number(getglobal('debugcolor')); color--; saveglobal('debugcolor', color);
-		                    		var indent = Number(getglobal('debugindent')); indent--; saveglobal('debugindent', indent);
-			                		proxyprinttodiv("createhtml after step 2 res", res, 100, true);
-			                		// res will have the value of wid eachbracket
-			                		if (!err && res.command.html) 
-			                		{     
-			                			// only save resolved value
-			                			// ** add error checking
-			                			
-			                			if (property==="htmltemplate" || property==="html")
-											{
-												var tempobj = {};	
-												tempobj = res;																									
-												currentdata.queryresult.push(tempobj);
-							            		currentdata.widlist.push(res.wid);
-							            		res.command.html = res.command.html + String.fromCharCode(10);
-							            	}
-							            htmldata[eachresult] = res.command.html;
-			                			cbMap(null);
-			                		}
-			                		else // if no result then go to next one
-			                		{
-			                			cbMap(null);
-			                		}
-			                	})
-		                	})
-		            	}, 
-		            	function (err, res) 
-		            	{
-		            		proxyprinttodiv("createhtml before merge step2 htmldata", htmldata, 100, true);
-		        			// if htmldata then try to do a merge
-							if (Object.keys(htmldata).length > 0)
+	                	// do not try to get these wids: html (others?) && we have not already calculated
+	                	if (eachbracket ==="html" || htmldata[eachbracket]) {cbMap(null)}
+	                	else
+	                	{
+		                	proxyprinttodiv("step2 middle eachbracket II ", eachbracket, 100, true);
+		                	var executeobject={};
+							// what parms to send in executeobject determined by remap[eachbracket]
+		                	if (originalparam.command.remap && originalparam.command.remap[eachbracket] 
+								&& Object.keys(originalparam.command.remap[eachbracket]).length > 0)
 							{
-								proxyprinttodiv("createhtml before merge step2 htmldata", htmldata, 100, true);
-		        				proxyprinttodiv("createhtml before merge step2 template eachobject.value", property, 100, true);
-		        				proxyprinttodiv("createhtml before merge step2 template ", template, 100, true);
-								originalparam[property] = merge(htmldata, template, "[[", "]]");
-								proxyprinttodiv("createhtml step2 htmldata loop ", originalparam, 100, true);
-
-
-								if (   property === "htmltemplate" 
-									|| property === "html" 
-									|| property === "htmlsharedtemplate"
-									|| property === "htmlshallow"
-									|| property === "htmlpreamble") 
-								{
-									originalparam.command[property]=originalparam[property]
-									proxyprinttodiv("createhtml step2 HTMLTEMPLATE", originalparam.command.htmltemplate, 100, true);
-								}
+								proxyprinttodiv("step2 remap originalparam.command.remap[eachbracket] ",originalparam.command.remap[eachbracket] , 100, true);
+								executeobject=parameterremap(originalparam, originalparam.command.remap[eachbracket]);
 							}
-		            		cbMap2(null);
-			            })
-	                }) // next tick
-	            }, 
-	            function (err, res)
-	            {
-	            	proxyprinttodiv("createhtml step2 end originalparam ", originalparam, 100, true);
-	            	//cleanoriginalparm(originalparam);
-	            	cb2(null, null);
-	            })	// mapseries
+							if (!executeobject.command) {executeobject.command={}}
+		                	executeobject.command.wid = eachbracket;
+
+							proxyprinttodiv("step2 about to recurse eachbracket executeobject", executeobject, 100, true, true);
+				        	var color = Number(getglobal('debugcolor')); if (!color || color >= 5) { color = 0; } color++; saveglobal('debugcolor', color);
+				        	var indent  = Number(getglobal('debugindent')); indent++; saveglobal('debugindent', indent);
+		                	createhtml(executeobject, function (err, res) // recursion
+		                	{
+		                		var color = Number(getglobal('debugcolor')); color--; saveglobal('debugcolor', color);
+	                    		var indent = Number(getglobal('debugindent')); indent--; saveglobal('debugindent', indent);
+	                    		proxyprinttodiv("createhtml after createhtml executeobject", executeobject, 100, true, true);
+		                		proxyprinttodiv("createhtml after createhtml res", res, 100, true, true);
+		                		// res will have the value of wid eachbracket
+		                		if (!err && res.command.html) 
+		                		{     
+		                			var tempobj = {};	
+									tempobj = res;																									
+									currentdata.queryresult.push(tempobj);
+				            		currentdata.widlist.push(res.wid);
+				            		// not sure if line below needed in every case
+				            		res.command.html = res.command.html + String.fromCharCode(10);
+						            htmldata[eachbracket] = res.command.html;
+		                			cbMap(null);
+		                		}
+		                		else // if no result then go to next one
+		                		{
+		                			cbMap(null);
+		                		}
+		                	})
+						}
+                	})
+            	}, 
+            	function (err, res) 
+            	{
+            		proxyprinttodiv("createhtml before merge step2 htmldata", htmldata, 100, true);
+        			// if htmldata then try to do a merge to fix htmltemplate even more
+					if (Object.keys(htmldata).length > 0)
+					{
+						originalparam.command.htmltemplate = merge(htmldata, originalparam.command.htmltemplate, "[[", "]]");
+						proxyprinttodiv("createhtml step2 htmldata loop ", originalparam, 100, true);
+						proxyprinttodiv("createhtml step2 HTMLTEMPLATE", originalparam.command.htmltemplate, 100, true);
+					}
+            		cb2(err);
+	            })
 			}
 		},
+
     	// step3 to process the templates
     	// accepts originalparam + html, htmltemplate, htlm...
     	// produce originalparam w defaults/w enhanced html via minus queryresult
@@ -1191,29 +968,6 @@ exports.loaddefaults = loaddefaults  = function loaddefaults(p, c){
             "subdto": "",
             "currenturl":"http://test3.dripoint.com",
 
-            //"leftitem": {
-            //	  "getwid": { "name": "get selected wid", "will get a wid": "abcde", "fn": "editorgetwid" }
-        	//    , "save_highlighted_wid": { "name": "save highlighted wid", "description": "will save selected text as a wid", "fn": "editorsaveselectedtext" }
-        	//    , "save_highlighted_property": { "name": "save highlighted property", "description": "will save selected text as a property", "fn": "editorsaveselectedtextproperty" }
-        	//    , "save_current_wid": { "name": "save current json wid", "description": "will save current wid in json tab", "fn": "editorsavecurrentwid" }
-        	//    , "search": { "name": "search", "description": "base search", "fn": "editorshowpopup" }
-       	    //	, "search_properties": { "name": "search properties", "description": "search by properties", "fn": "editorsearchbyproperties" }
-            //    , "search_similar_wids": { "name": "search similar wids", "description": "will search for similar wids", "fn": "editorsearchforsimilarwids" }
-            //    , "execute": { "name": "execute", "description": "will execute using set1&2 and parm 1&2", "fn": "editoradminexecute" }
-    		//	, "wid_set_1": { "name": "--link wid to set_1", "description":"link selected wid to set 1", "fn":"editorlinktoset1" }
-    		//	, "wid_set_2": { "name": "--link wid to set_2", "description": "link selected wid to set 2", "fn": "editorlinktoset2" }
-            //    , "add_to_parm_1": { "name": "--add to param_1", "description": "take wid's parameters and add to param1", "fn": "editoraddtoparm1" }
-            //    , "add_to_parm_2": { "name": "--add to param_2", "description": "take wid's parameters and add to param2", "fn": "editoraddtoparm2" }
-            //    , "create_using_dto": { "name": "create wid using this dto", "description": "Set up to save using this dto", "fn": "editorcreateusingdto" }
-            //    , "create_new_wid": { "name": "create new wid", "description": "create new wid using default dto", "fn": "editorcreatenewwid" }
-            //    , "delete_wid": { "name": "delete wid", "description": "deletewid", "fn": "editordeletewid" }
-            //    , "copy_wid": { "name": "copy wid", "description": "copywid", "fn": "editorcopywid" }
-			//	, "update_db": { "name": "update_db", "description": "get categories", "fn": "editorgetcategories" }
-			//	, "set_to_local": { "name": "set to local ", "description": "set to local ", "fn": "editorsettolocal" }
-			//	, "set_to_server": { "name": "set to server ", "description": "set to server ", "fn": "editorsettoserver" }
-			//	, "add_wid_ref": { "name": "add remap ", "description": "add a remap parameter", "fn": "editorremapscreen" }
-			//	, "insert_wid": { "name": "insert wid", "description": "insert wid parameter", "fn": "editorhtmlinsertwid" }
-        	//}
 "leftitem": {
     "crud_menu": 					{	"name": "create update read del", 
     									"items": {
@@ -1245,8 +999,8 @@ exports.loaddefaults = loaddefaults  = function loaddefaults(p, c){
      }
   , "admin_menu":  					{	"name": 		"admin", 
  										"items": {
- 		 "update_db": 				{ 	"name": 		"update_db", 
-										"description": 	"get categories", 
+ 		 "update_db": 				{ 	"name": 		"reset pulldown values", 
+										"description": 	"will clear pulldown and reload on next search", 
 										"fn": 			"editorgetcategories" }
 		, "set_to_local": 			{ 	"name": 		"set to local ", 
 										"description": 	"set to local ", 
@@ -1311,13 +1065,12 @@ exports.loaddefaults = loaddefaults  = function loaddefaults(p, c){
            }
         }
     ]}, function(err, res) {
-    	getuniquecollections(null, function (err, res) {
-        	c(err, res)
-    	})
+    	// getuniquecollections(null, function (err, res) {
+     //    	c(err, res)
+    	//  })
+		c(err, res)
     });
 }
-
-
 
 
 exports.mergetest1 = mergetest1 = function mergetest1(param, callback) {

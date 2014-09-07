@@ -188,7 +188,7 @@ function mapreducelocal(mapfn, reducefn, p, cb)
     
 
     var functionname = mapfn.substr('function '.length);
-    functionname = functionname.substr(0, functionname.indexOf('('));
+    functionname = functionname.substr(0, functionname.indexOf(' (')) || functionname.substr(0, functionname.indexOf('('));
     proxyprinttodiv('mapreduce functionname', functionname, 21,true, true);
     eval(mapfn);
         
@@ -876,33 +876,67 @@ proxyprinttodiv('querywid mQueryString multiple IV', mQueryString, 28);
     } // else
 };
 
+// $elemMatch, $slice,
 // getprojectionresult
 // getprojectionresult( {"a":"apple", "b":"banana", "c":"cherry"}, {"a":1, "b": 0} );
 // - sourcerecord - an object of some kind
 // - projectiondef - a mongodb compatible projection definition object.
 // 
 function getprojectionresult( sourcerecord, projectiondef ) {
+    sourcerecord = ConvertToDOTdri(sourcerecord);
     // remove properties
-        proxyprinttodiv('querywid getprojectionresult *****', sourcerecord, 28, true, true);
+    proxyprinttodiv('querywid getprojectionresult *****', sourcerecord, 28, true, true);
     for( var prop in projectiondef ) {
         if (projectiondef[prop] == 0) {
             delete(sourcerecord[prop]);
         }
     }
-    // include only these properties
+
     var newobj = {};
-    var onlyIncludeCount = 0;
-    for (var prop in projectiondef ) {
-        onlyIncludeCount += 1;
-        if (projectiondef[prop] == 1) {
-            newobj[prop] = sourcerecord[prop];    
+
+    for (var prop in projectiondef ) 
+    {
+        var fieldname = prop;
+        var dollar = false;
+
+        // if projection = {a.$:1}, then just make fieldname into a
+        if (prop.charAt(prop.length)=='$')
+        {
+            fieldname=prop.substring(0,prop.length-2);
+            dollar=true;
+        }
+
+        // if not object/array on right side
+        if (!(isObject(projectiondef[prop]) || isArray(projectiondef[prop])))
+        {
+            if (projectiondef[prop].charAt(0) === '$') 
+            {   // if projection = {a: $b} then rename field a to b
+                fieldname = projectiondef[prop].substring(0,projectiondef[prop].length)
+            };
+            // if projecttions = {a:1}
+            if (projectiondef[prop] == 1) {fieldname=prop};
+            if (dollar) // only get first array position
+            {
+                if (sourcerecord[prop].length>0) {newobj[fieldname]=sourcerecord[prop][0]};
+            }
+            else
+            {
+                newobj[fieldname]=sourcerecord[prop];
+            }
+        }
+        else //(isObject(projectiondef[prop]) || isArray(projectiondef[prop])) 
+        {
+            var query = projectiondef[prop];
+            if (query["$elemmatch"] || query["$elemMatch"])
+            {
+                query=query["$elemmatch"] || query["$elemMatch"];
+            }
+            var result = sift(query, sourcerecord);
+            if (result.length>0) {newobj[fieldname] = result[0]}
         }
     }
-    var result = sourcerecord;
-    if (onlyIncludeCount > 0) {
-        result = newobj;
-    }
-    return result;
+    sourcerecord = ConvertFromDOTdri(sourcerecord);
+    return newobj;
 }
 
 
@@ -920,11 +954,12 @@ function finalformat(outputset, relationshipoutput, qparms, extracommands, proje
     proxyprinttodiv('finalformat top relationshipoutput', relationshipoutput, 28, true);
     proxyprinttodiv('querywid finalformat excludeparameters', excludeparameters, 28);
 
-    // if mongo or not mongo:
+    // if mongo or not mongo: make the records better from relationship stuff
     for (var eachout in outputset)
     {
-        var wid = outputset[eachout][db].wid || outputset[eachout].wid;
-        if (!excludeparameters[wid])
+        var wid = outputset[eachout].wid;
+        if (!wid && outputset[eachout][db]) {wid = outputset[eachout][db].wid}
+        if (wid && !excludeparameters[wid])
         {
             var foundrecord;
             for (var eachrecord in relationshipoutput)
@@ -966,28 +1001,40 @@ function finalformat(outputset, relationshipoutput, qparms, extracommands, proje
             proxyprinttodiv('querywid finalformat skipval', skipval, 28, true, true);
             if (Object.keys(sortobj)>0)
             {   // first convert to dot, then sort
-                for (var eachout in output){output[output]=ConvertToDOTdri(output[output])};
+                for (var eachout in output){output[output]=ConvertToDOTdri(output[eachout])};
                 output.sort(dynamicsortmultiple(sortobj));
             }
 	        // if skipval = 0 and limitval = 3 then 0,3 start at first post stop at third
             // 1,3 then second, fourth 
 			if (limitval) { output = output.slice(skipval, skipval + limitval); }
             
-        	// now convert back from dot
+        	// process each record going out
             for (var eachout in output)
             {
-                if (Object.keys(sortobj)>0) {output[eachout]=ConvertFromDOTdri(output[eachout])};
+                if (Object.keys(sortobj)>0) {output[eachout]=ConvertFromDOTdri(output[eachout])}; // now convert back from dot
                 if (Object.keys(projection).length > 0) {output[eachout] = getprojectionresult(output[eachout], projection)};
                 // if the property in command.distinct exist in the record we are about to return then 
                 if (command.distinct)
                 {
-                    output[eachout] = ConvertToDOTdri(output[eachout]);
+                    //output[eachout] = ConvertToDOTdri(output[eachout]);
                     proxyprinttodiv('finalformat distinct output[eachout]', output[eachout], 28, true, true);
-                    if (output[eachout][command.distinct] && !excludedistinct[output[eachout][command.distinct]]) 
+                    if (output[eachout][command.distinct])
                     {
-                        // then add it to the exclude set, so it will not be returned again
-                        excludedistinct[output[eachout][command.distinct]]=output[eachout][command.distinct];
-                        finaloutput.push(ConvertFromDOTdri(output[eachout]));
+                        var distinctvalue = string_to_ref(output[eachout], command.distinct);
+                        var distinctarray = [];
+                        if (isArray(distinctvalue)) {distinctarray=distinctvalue} else {distinctarray.push(distinctvalue)}
+                        for (eachvalue in distinctarray)
+                        {
+                            var currentdistinct = distinctarray[eachvalue];
+                            if (!excludedistinct[currentdistinct]) 
+                            {
+                                // then add it to the exclude set, so it will not be returned again
+                                excludedistinct[currentdistinct]=currentdistinct;
+                                output[eachout][command.distinct]=currentdistinct;
+                                output[eachout].wid = output[eachout].wid+currentdistinct;
+                                finaloutput.push(output[eachout])
+                            }
+                        }
                     }
                 }
                 else // if not distinct
