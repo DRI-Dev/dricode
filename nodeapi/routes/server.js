@@ -35,7 +35,10 @@ function runExecuteThis(parameters, resp) {
         fs.writeFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', '');
     }
 
-    delete parameters.command.processfn;
+    if (parameters.command) {} {delete parameters.command.processfn};
+    parameters.command = parameters.command || {};
+    parameters.command.environment = parameters.command.environment || {};
+    parameters.command.environment.run = parameters.command.environment.run || {};
     parameters.command.environment.run.executelevel=0;
     parameters.command.environment.syncrule = "create_what_to_do_list";
     // delete params.command.environment; // trust the system :)
