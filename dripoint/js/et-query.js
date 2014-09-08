@@ -112,10 +112,10 @@ exports.mapreducemaster = mapreducemaster = function mapreducemaster(inparameter
     if (p.results) {p.queryresult = p.results; delete p.results}
 
     if (p.command.datastore==="localstorage" && config.configuration.environment!=="local") {
-        p.command.datastore = "localstorage";
+        p.command.datastore = "mongo";
     }  
     if (p.command.datastore==="mongo" && config.configuration.environment!=="server") {
-        p.command.datastore = "mongo";
+        p.command.datastore = "localstorage";
     }
 
     if (p.command.datastore==="mongo" && !p.command.queryresult) // if sent in database then like local

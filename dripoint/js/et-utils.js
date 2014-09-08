@@ -170,10 +170,10 @@
                 command.keycollection = command.collection +  "key";
             }
             if (command.datastore==="localstorage" && config.configuration.environment!=="local") {
-                command.datastore = "localstorage"
+                command.datastore = "mongo"
             }  
             if (command.datastore==="mongo" && config.configuration.environment!=="server") {
-                command.datastore = "mongo"
+                command.datastore = "localstorage"
             }
             delete incopy.command;
 
@@ -1044,10 +1044,10 @@
                         if (command.delete)
                         {
                             if (command.datastore==="localstorage" && config.configuration.environment!=="local") {
-                                command.datastore = "localstorage"
+                                command.datastore = "mongo"
                             }  
                             if (command.datastore==="mongo" && config.configuration.environment!=="server") {
-                                command.datastore = "mongo"
+                                command.datastore = "localstorage"
                             }
                             if (config.configuration.environment === "local") 
                             {
@@ -1194,10 +1194,10 @@
     {
         var command = {};
         if (command.datastore==="localstorage" && config.configuration.environment!=="local") {
-            command.datastore = "localstorage"
+            command.datastore = "mongo"
         }  
         if (command.datastore==="mongo" && config.configuration.environment!=="server") {
-            command.datastore = "mongo"
+            command.datastore = "localstorage"
         }
         //extend(true, command, config.configuration.d.default, p.command) // trust the system :)
         var datalist = p.queryresult || p.results;
