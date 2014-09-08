@@ -35,7 +35,7 @@ function runExecuteThis(parameters, resp) {
         fs.writeFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', '');
     }
 
-    if (parameters.command) {} {delete parameters.command.processfn};
+    if (parameters && parameters.command && parameters.command.processfn) {delete parameters.command.processfn};
     parameters.command = parameters.command || {};
     parameters.command.environment = parameters.command.environment || {};
     parameters.command.environment.run = parameters.command.environment.run || {};
