@@ -301,6 +301,8 @@
 
         if (inparams.command.environment.run.executelevel === 0)
         {
+            // ** get environment here
+            // process synchrule
             inparams = window[inparams.command.environment.syncrule](inparams);
         }
 
@@ -974,6 +976,7 @@
 
                                 if (err && Object.keys(err).length > 0)
                                 {
+                                    proxyprinttodiv("execute fail resultparameters", resultparameters, 11);
                                     if (command.postexecute.onfail.executethis)
                                     {
                                         postexecute(inboundparams, resultparameters, command, "onfail", callback)
@@ -985,6 +988,7 @@
                                 }
                                 else
                                 {
+                                    proxyprinttodiv("execute sucess resultparameters", resultparameters, 11);
                                     if  (command.postexecute.onsucess.executethis)
                                     {
                                         postexecute(inboundparams, resultparameters, command, "onsucess", callback)
@@ -1011,6 +1015,7 @@
         if (command.postexecute[status].parameters) {extend(true, executeobject, command.postexecute[status].parameters)};
         executeobject.executethis = command.postexecute[status].executethis;
 
+        proxyprinttodiv("postexecute executeobject", executeobject, 11);
         if (command.postexecute[status].waitforresult===true)
         {
             execute(executeobject, function (err, res) {
@@ -1039,7 +1044,7 @@
 
     function finalexecuteprocess (resultparameters, command, callback)
     {
-        ////--proxyprinttodiv("end resultparameters II", resultparameters, 11);
+        proxyprinttodiv("end resultparameters II", resultparameters, 11);
         ////--proxyprinttodiv("execute - command **** I", resultparameters, 11);
         if (resultparameters && resultparameters.command)
         {

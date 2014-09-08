@@ -169,6 +169,12 @@
             if (!command.keycollection) {
                 command.keycollection = command.collection +  "key";
             }
+            if (command.datastore==="localstorage" && config.configuration.environment!=="local") {
+                command.datastore = "localstorage"
+            }  
+            if (command.datastore==="mongo" && config.configuration.environment!=="server") {
+                command.datastore = "mongo"
+            }
             delete incopy.command;
 
             // if record is not locked then okatoupdate = true, else false
@@ -1037,6 +1043,12 @@
                         //3. call updatewid with blank record, fromwid, fromdb, fromcollection, fromdatastore if command.delete
                         if (command.delete)
                         {
+                            if (command.datastore==="localstorage" && config.configuration.environment!=="local") {
+                                command.datastore = "localstorage"
+                            }  
+                            if (command.datastore==="mongo" && config.configuration.environment!=="server") {
+                                command.datastore = "mongo"
+                            }
                             if (config.configuration.environment === "local") 
                             {
                                 localdeletewid({"wid":incopy.wid, "command":command.from}, callback)
@@ -1143,6 +1155,8 @@
             extend(true, inobject.command.to, config.configuration.delete, inobject.command.to);
             inobject.command.delete=true;
             proxyprinttodiv('Function deletewid inobject before copywid', inobject, 27, true, true);
+
+
             copywid(inobject, function (err, copiedobject) {
                 if (err)
                 {
@@ -1179,7 +1193,13 @@
     exports.deletecollection = deletecollection = deletecollection= function deletecollection(p, cb)
     {
         var command = {};
-        extend(true, command, config.configuration.d.default, p.command)
+        if (command.datastore==="localstorage" && config.configuration.environment!=="local") {
+            command.datastore = "localstorage"
+        }  
+        if (command.datastore==="mongo" && config.configuration.environment!=="server") {
+            command.datastore = "mongo"
+        }
+        //extend(true, command, config.configuration.d.default, p.command) // trust the system :)
         var datalist = p.queryresult || p.results;
         if (config.configuration.environment==="local")
         {
@@ -1338,7 +1358,7 @@
             var indent = getglobal("debugindent");
             indent=indent*5;
             var linenum = getglobal('debuglinenum');
-            //z++;
+            linenum++;
             saveglobal('debuglinenum', linenum);
 
             if (displaycolor == "") {

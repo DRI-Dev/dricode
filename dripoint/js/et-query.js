@@ -111,7 +111,14 @@ exports.mapreducemaster = mapreducemaster = function mapreducemaster(inparameter
 
     if (p.results) {p.queryresult = p.results; delete p.results}
 
-    if (config.configuration.environment!=="local" && !p.command.queryresult) // if sent in database then like local
+    if (p.command.datastore==="localstorage" && config.configuration.environment!=="local") {
+        p.command.datastore = "localstorage";
+    }  
+    if (p.command.datastore==="mongo" && config.configuration.environment!=="server") {
+        p.command.datastore = "mongo";
+    }
+
+    if (p.command.datastore==="mongo" && !p.command.queryresult) // if sent in database then like local
     {
         // is it a fn?  convert it to a string
 
@@ -546,6 +553,14 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     var mQueryString;                                   // current query to be sent to mquery
     var environmentdb = command.db; 
     var projection = qparms.monogoprojection;
+
+    // not needed in this case since only the right mquery is accesible
+    // if (command.datastore==="localstorage" && config.configuration.environment!=="local") {
+    //     command.datastore = "localstorage";
+    // }  
+    // if (command.datastore==="mongo" && config.configuration.environment!=="server") {
+    //     command.datastore = "mongo";
+    // }
 
     // if queryresult was sent in (xparams.queryresult) then move it to command.indb
     // this will be the "database" that will be used for a search

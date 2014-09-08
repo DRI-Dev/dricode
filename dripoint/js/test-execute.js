@@ -49,7 +49,8 @@ function ettest_allexecute(executeobject, callback)
 	//function (cb1) {ettest_usernamespace1({}, function (err, res) {cb1(null, res)})},
 	//function (cb1) {ettest_appnamespace1({}, function (err, res) {cb1(null, res)})}
 	//function (cb1) {environment.sync({}, function (err, res) {cb1(null, res)})}
-	function (cb1) {ettest_executeresulttable1({}, function (err, res) {cb1(null, res)})}
+	function (cb1) {ettest_executeresulttable1({}, function (err, res) {cb1(null, res)})},
+	function (cb1) {ettest_postexecute1({}, function (err, res) {cb1(null, res)})}
 	
     ],
     function (err, res) {
@@ -4083,3 +4084,73 @@ widtests.ettest_executeresulttable1.category = "test-daily";
 widtests.ettest_executeresulttable1.subcategory = "push";
 widtests.ettest_executeresulttable1.js = exports.ettest_executeresulttable1;
 widtests.ettest_executeresulttable1.description = "Tests that execute can process a resulttable";
+
+exports.ettest_postexecute1 = 
+ettest_postexecute1 = 
+widtests.ettest_postexecute1 = 
+function ettest_postexecute1(params, callback) {
+
+	executeobject = {
+					"executethis": "addwidmaster",
+					"wid": "codywid2",
+					"addthis.executethis": "addwidmaster",
+					"addthis.wid": "codywid3",
+					"addthis.field1": "hello",
+					"command.postexecute.onsuccess.executethis": "codywid2",
+					"command.postexecute.onsuccess.waitforresult": true
+					};
+					
+	var expres = 	{"wid": "codywid3", "metadata": {"method": "defaultdto", "date": {"exception": ['created','changed','updated']}}, "field1": "hello"};
+	
+	execute(executeobject, function (err, res) {
+		execute({
+				"executethis": "getwidmaster",
+				"wid": "codywid3"
+				}, function (err, res) {
+					proxyprinttodiv('getting codywid3 resulted in --', res, 99);
+					var result = logverify('ettest_postexecute1', res, expres);
+					
+					callback(err, result);
+				});
+		});
+}
+widtests.ettest_postexecute1.category = "test-daily";
+widtests.ettest_postexecute1.subcategory = "push";
+widtests.ettest_postexecute1.js = exports.ettest_postexecute1;
+widtests.ettest_postexecute1.description = "Tests that ";
+
+
+function executequeue1_fail (params, callback) {
+	execute({
+			"executethis": "sendsms",
+			"to": "12315341764",
+			"body": "ettest_executequeue1 failed"
+			}, function (err, res) {
+				callback(null);
+			});
+}
+
+
+exports.ettest_executequeue1 = 
+ettest_executequeue1 = 
+widtests.ettest_executequeue1 = 
+function ettest_executequeue1(params, callback) {
+
+	executeobject = {
+					"executethis": "qutest_allexecute",
+					"command.queuename": "eventonemin",
+					"command.postexecute.onfail.executethis": "executequeue1_fail",
+					"command.postexecute.onfail.waitforresult": true,
+					"command.postexecute.onfail.addresultparameters": true				
+					};
+					
+	//var expres = 	{"wid": "codywid3", "metadata": {"method": "defaultdto", "date": {"exception": ['created','changed','updated']}}, "field1": "hello"};
+	
+	execute(executeobject, function (err, res) {			
+			callback(err,res);
+		});
+}
+widtests.ettest_executequeue1.category = "test-daily";
+widtests.ettest_executequeue1.subcategory = "push";
+widtests.ettest_executequeue1.js = exports.ettest_executequeue1;
+widtests.ettest_executequeue1.description = "Tests that ";
