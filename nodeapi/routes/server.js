@@ -23,6 +23,7 @@ function runExecuteThis(parameters, resp) {
             {debuglevel = parameters.debuglevel};
         //saveglobal("debuglevel", debuglevel); // make it stickly for next time
         delete parameters.debuglevel;
+        proxyprinttodiv("incoming api call", JSON.stringify(parameters), 99, true, true);
     }
     else
     {
@@ -34,44 +35,55 @@ function runExecuteThis(parameters, resp) {
         fs.writeFileSync('C:\\Users\\Administrator\\dropbox2\\Dropbox\\dripoint\\nodelogs\\nodelog.txt', '');
     }
 
-    // Debug = false;
-    // if (parameters.Debug) {
-    //     Debug = "true";
-    //     delete parameters.Debug;
+    if (parameters && parameters.command && parameters.command.processfn) {delete parameters.command.processfn};
+    parameters.command = parameters.command || {};
+    parameters.command.environment = parameters.command.environment || {};
+    parameters.command.environment.run = parameters.command.environment.run || {};
+    parameters.command.environment.run.executelevel=0;
+    parameters.command.environment.syncrule = "create_what_to_do_list";
+    // delete params.command.environment; // trust the system :)
+
+    // if (parameters.command) 
+    // {
+    //     extend(true, parameters.command, config.configuration.d.default);         // grab server defaults
     // }
 
-    if (parameters.command) {
-        // grab server defaults
-        extend(true, parameters.command, config.configuration.d.default);
+    //
+    // below code should not be needed now....the only offending parameters was datastore, this is now
+    // being check just before any crud operation
+    // 
+    // if (parameters.command) {
+    //     // grab server defaults
+    //     extend(true, parameters.command, config.configuration.d.default);
 
-        if (parameters.command.environment) {
-            extend(true, parameters.command.environment, config.configuration.d.default);
-        }
+    //     if (parameters.command.environment) {
+    //         extend(true, parameters.command.environment, config.configuration.d.default);
+    //     }
 
-        if (parameters.command.environment && parameters.command.environment.default) {
-            // overwrite current environment defaults with server defaults
-            parameters.command.environment.default = config.configuration.d.default;
-        }
-    }
+    //     if (parameters.command.environment && parameters.command.environment.default) {
+    //         // overwrite current environment defaults with server defaults
+    //         parameters.command.environment.default = config.configuration.d.default;
+    //     }
+    // }
 
-    // also grab server defaults for xrun objects
-    if (parameters.command && parameters.command.xrun) {
-        for (var index in parameters.command.xrun) {
-            if (parameters.command.xrun[index].command) {
-                extend(true, parameters.command.xrun[index].command, config.configuration.d.default);
+    // // also grab server defaults for xrun objects
+    // if (parameters.command && parameters.command.xrun) {
+    //     for (var index in parameters.command.xrun) {
+    //         if (parameters.command.xrun[index].command) {
+    //             extend(true, parameters.command.xrun[index].command, config.configuration.d.default);
 
-                if (parameters.command.xrun[index].command.environment) {
-                    extend(true, parameters.command.xrun[index].command.environment, config.configuration.d.default);
-                }
+    //             if (parameters.command.xrun[index].command.environment) {
+    //                 extend(true, parameters.command.xrun[index].command.environment, config.configuration.d.default);
+    //             }
 
-                if (parameters.command.xrun[index].command.environment
-                    && parameters.command.xrun[index].command.environment.default) {
-                    // overwrite current environment defaults with server defaults
-                    parameters.command.xrun[index].command.environment.default = config.configuration.d.default;
-                }
-            }
-        }
-    }
+    //             if (parameters.command.xrun[index].command.environment
+    //                 && parameters.command.xrun[index].command.environment.default) {
+    //                 // overwrite current environment defaults with server defaults
+    //                 parameters.command.xrun[index].command.environment.default = config.configuration.d.default;
+    //             }
+    //         }
+    //     }
+    // }
 
     execute(parameters, function (err, results) {
         // if (Debug === 'true') {

@@ -63,16 +63,17 @@ function config123() {
     //configuration.defaultenvironment[configuration.db].wid = configuration.e;
     configuration.d.defaultoutputcollection = "defaultoutputcollection";
 
-    var default_number = '+12145644732'; // Text Roger by default
+//    var default_number = '+12145644732'; // Text Roger by default
+    configuration.defaultnumber = '+12145644732';
     configuration.administration = {};
     configuration.administration.users = {};
     configuration.administration.users.phonetable =
         {
             'rogerjs' : '+12145644732',
-            'info@dri.com' : default_number,
+            'info@dri.com' : configuration.defaultnumber,
             'Jason' : '+12317352532'
-        }
-    configuration.defaultserver = "test3"
+        };
+    configuration.defaultserver = "test3";
 
     
     return {
@@ -318,9 +319,9 @@ exports.server = server = function server(params, callback) {
 
 exports.anyserver = anyserver = function anyserver(params, callback) {
     // 
-    if (!params.command) {params.command={}};
+    if (!params.command) {params.command={};}
     var server = params.command.server || config.configuration.defaultserver;
-    delete params.command.server
+    delete params.command.server;
     var serverUrl = 'http://'+server+'/executethis';
 
     console.log("serverUrl is " + serverUrl );
@@ -409,7 +410,7 @@ zapier_passthrough(
               executeobject.command.environment.run={};
           }
           
-          executeobject.command.environment.run.type="series"
+          executeobject.command.environment.run.type="series";
           executeobject.command.environment.run.executelevel=0;
           executeobject.command.environment.platform='server';          // used for server testing
           executeobject.command.environment.processfn="execute_function";          // what function handles functions
@@ -443,7 +444,7 @@ zapier_passthrough(
               executeobject.command.environment.run={};
           }
           
-          executeobject.command.environment.run.type="series"
+          executeobject.command.environment.run.type="series";
           executeobject.command.environment.run.executelevel=0;
           executeobject.command.environment.platform='server';          // used for server testing
           executeobject.command.environment.processfn="execute_function";          // what function handles functions
@@ -530,7 +531,7 @@ exports.publishtest = publishtest = function publishtest(parameters, callback) {
             "pusher_name" : pusher_name,
             "repo_name" : repo_name,
             "ref" : ref
-        }
+        };
         proxyprinttodiv('>-->>>', {}, 99);
         proxyprinttodiv('--- calling sendPostCall ---', {}, 99);
 
@@ -544,14 +545,15 @@ exports.publishtest = publishtest = function publishtest(parameters, callback) {
             server=repo_name + ".dripoint.com";
         }
         var executeobject = {};
-        executeobject.executethis="getuptime"
+        executeobject.executethis="getuptime";
         executeobject.command = {};
         executeobject.command.server = server;
         
         // default_number = '+12313133930';
         var pusher_numbers = config.configuration.administration.phonetable;
 
-        var text2number = default_number;
+//        var text2number = default_number;
+        var text2number = config.configuration.defaultnumber;
         if (pusher_numbers.hasOwnProperty( pusher_name )) {   
             text2number = pusher_numbers[pusher_name];
         }

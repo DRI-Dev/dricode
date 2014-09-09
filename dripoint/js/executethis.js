@@ -61,33 +61,6 @@
 
     var execute;
 
-    function parameterremap(p, r) // remap optional, can get from p.command
-    {
-        // this call remaps parameter names and filters
-        // {a:b c:d e:f command.remap={a:x e:y}} will return {x:b, y:f}
-        var remap=r;
-        var newobj = {};
-        var oldparm;
-        var newparm;
-        if (!remap)
-        {
-            if (!p.command) {p.command={}};
-            remap = p.command.remap;
-        }
-        //delete p.remap;
-        if (remap)
-        {
-            for (var eachproperty in remap)
-            {
-                oldparm = eachproperty;         // a
-                newparm = remap[eachproperty];  // x
-                newobj[newparm] = p[oldparm];       // newobj[x] = b
-            }
-        }
-        return newobj
-    }
-
-
     // called one perexecute in convertcommand, it get other command and command.environment parameters that might be for this function
     //
     // enhance params based on dto, appname, server, user -- these should be changed to ths form:
@@ -328,6 +301,8 @@
 
         if (inparams.command.environment.run.executelevel === 0)
         {
+            // ** get environment here
+            // process synchrule
             inparams = window[inparams.command.environment.syncrule](inparams);
         }
 
@@ -1001,6 +976,7 @@
 
                                 if (err && Object.keys(err).length > 0)
                                 {
+                                    proxyprinttodiv("execute fail resultparameters", resultparameters, 11);
                                     if (command.postexecute.onfail.executethis)
                                     {
                                         postexecute(inboundparams, resultparameters, command, "onfail", callback)
@@ -1012,6 +988,7 @@
                                 }
                                 else
                                 {
+                                    proxyprinttodiv("execute sucess resultparameters", resultparameters, 11);
                                     if  (command.postexecute.onsucess.executethis)
                                     {
                                         postexecute(inboundparams, resultparameters, command, "onsucess", callback)
@@ -1038,6 +1015,7 @@
         if (command.postexecute[status].parameters) {extend(true, executeobject, command.postexecute[status].parameters)};
         executeobject.executethis = command.postexecute[status].executethis;
 
+        proxyprinttodiv("postexecute executeobject", executeobject, 11);
         if (command.postexecute[status].waitforresult===true)
         {
             execute(executeobject, function (err, res) {
@@ -1066,7 +1044,7 @@
 
     function finalexecuteprocess (resultparameters, command, callback)
     {
-        ////--proxyprinttodiv("end resultparameters II", resultparameters, 11);
+        proxyprinttodiv("end resultparameters II", resultparameters, 11);
         ////--proxyprinttodiv("execute - command **** I", resultparameters, 11);
         if (resultparameters && resultparameters.command)
         {

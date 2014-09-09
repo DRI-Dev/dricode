@@ -79,12 +79,14 @@
 // mapReduce.ok
 // A value of 1 indicates the mapReduce command ran successfully. A value of 0 indicates an error.
 
-exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
+(function (window) {
+
+exports.mapreducemaster = mapreducemaster = function mapreducemaster(inparameters, callback) {
     // mapreducemongo should receive: map, reduce, query, output, command into query
 
     var p = {};
     extend(true, p, inparameters);
-    proxyprinttodiv('mapreduce p', p, 21,true, true);
+    proxyprinttodiv('mapreduce changed p', p, 21,true, true);
     var mapfn = p.mapfn;
     var reducefn = p.reducefn;
     delete p.mapfn;
@@ -94,8 +96,11 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
     // if (!(mapfn instanceof Function) && window[mapfn]) {mapfn = window[mapfn]};
     // if (!(reducefn instanceof Function) && window[reducefn]) {reducefn = window[reducefn]};
 
+    proxyprinttodiv('mapreduce mapfn I', mapfn, 21,true, true);
+    proxyprinttodiv('mapreduce reducefn I', reducefn, 21,true, true);
 
-    window = (typeof window == "undefined" ? global : window);
+
+    //window = (typeof window == "undefined" ? global : window);
     if (window[mapfn]) {mapfn=window[mapfn]};
     if (window[reducefn]) {reducefn=window[reducefn]};
     if (mapfn instanceof Function) {mapfn=mapfn.toString()};
@@ -106,7 +111,14 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
 
     if (p.results) {p.queryresult = p.results; delete p.results}
 
-    if (config.configuration.environment!=="local" && !p.command.queryresult) // if sent in database then like local
+    if (p.command.datastore==="localstorage" && config.configuration.environment!=="local") {
+        p.command.datastore = "mongo";
+    }  
+    if (p.command.datastore==="mongo" && config.configuration.environment!=="server") {
+        p.command.datastore = "localstorage";
+    }
+
+    if (p.command.datastore==="mongo" && !p.command.queryresult) // if sent in database then like local
     {
         // is it a fn?  convert it to a string
 
@@ -119,8 +131,8 @@ exports.mapreduce = mapreduce = function mapreduce(inparameters, callback) {
         p.mongorawquery = p.mongorawquery || p.query || {"$or" : [{"_id": {"$exists": true}}, {"wid": {"$exists": true}}]};
         // if p.queryresult then save the collection so mapreduceserver can get it
         // mapreduceserver also shoudl be able to process p.query
+		proxyprinttodiv('mapreduce going to server now', 'server',21);
         mapreduceserver(mapfn, reducefn, p, callback);
-		proxyprinttodiv('mapreduce going to server now', 'server',99);
     }
     else 
     {
@@ -183,7 +195,7 @@ function mapreducelocal(mapfn, reducefn, p, cb)
     
 
     var functionname = mapfn.substr('function '.length);
-    functionname = functionname.substr(0, functionname.indexOf('('));
+    functionname = functionname.substr(0, functionname.indexOf(' (')) || functionname.substr(0, functionname.indexOf('('));
     proxyprinttodiv('mapreduce functionname', functionname, 21,true, true);
     eval(mapfn);
         
@@ -301,7 +313,7 @@ function mapreducelocal(mapfn, reducefn, p, cb)
         "ok" : 1
         }
     out.results=outlist; // mongo returns in a parameter call "results"
-    proxyprinttodiv('mapreduce in out', out, 99,true, true);
+    proxyprinttodiv('mapreduce in out', out, 28,true, true);
     if (p.out.inline === 1) 
     {
         cb(null, out);
@@ -432,6 +444,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
 
     proxyprinttodiv('querywid parameters', parameters, 28,true);
 
+    // get all the possible named parameters / set defaults
     var filter_data = getcommand(parameters,
         {
             "command": {
@@ -444,7 +457,14 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 "keepaddthis":true,
                 "queryconvertmethod":"each",
                 "namespaceflag":false,
-                "queryresult":"queryresult"
+                "queryresult":"queryresult",   // control output
+                "pagenumber":"",  
+                "perpage":"",
+                "skip":"",
+                "limit":"",
+                "sort":"",
+                "count":null,
+                "distinct":null
             },
             "mongorawquery": "",
             "mongowid": "",
@@ -456,7 +476,8 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
             "mongosinglequery": "",
             "mongomultiplequery": "",
             "monogoprojection":{},
-            "queryresult": null
+            "queryresult": null, // control input
+            "results":null
         },
         {
             "command": {
@@ -466,7 +487,14 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 "db":"",
                 "databasetable":"",
                 "convert":"",
-                "keepaddthis":""
+                "keepaddthis":"",
+                "pagenumber":"",  
+                "perpage":"",
+                "skip":"",
+                "limit":"",
+                "sort":"",
+                "count":"",
+                "distinct":""
             },
             "mongorawquery": "",
             "mongowid": "",
@@ -478,7 +506,8 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
             "mongosinglequery": "",
             "mongomultiplequery": "",
             "monogoprojection":"",
-            "queryresult":""
+            "queryresult":"",
+            "results":""
         },
         true);
 
@@ -486,9 +515,10 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     proxyprinttodiv('querywid filteredobject', filter_data, 28, true);
     parameters = filter_data.filteredobject;
     var xparams = filter_data.output;  // xtra parameters will be left overs..will be used for further $ands to query
-    var extracommands=xparams.command; // any other commands in xtraparams to extracommands
+    var extracommands=xparams.command; // any other commands in xtraparams to extracommands, namespace, et 
     delete xparams.command;
 
+    // now get only the parameters that are native to mongo.js
     filter_data =
         getcommand(
             parameters, 
@@ -502,7 +532,7 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                     "databasetable":"",
                     "convert":"",
                     "keepaddthis":"",
-                    "pagenumber":"",
+                    "pagenumber":"",  
                     "perpage":"",
                     "skip":"",
                     "limit":"",
@@ -523,6 +553,14 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
     var mQueryString;                                   // current query to be sent to mquery
     var environmentdb = command.db; 
     var projection = qparms.monogoprojection;
+
+    // not needed in this case since only the right mquery is accesible
+    // if (command.datastore==="localstorage" && config.configuration.environment!=="local") {
+    //     command.datastore = "localstorage";
+    // }  
+    // if (command.datastore==="mongo" && config.configuration.environment!=="server") {
+    //     command.datastore = "mongo";
+    // }
 
     // if queryresult was sent in (xparams.queryresult) then move it to command.indb
     // this will be the "database" that will be used for a search
@@ -559,7 +597,9 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 if (qparms.mongosinglequery) 
                 {
                     var wid = qparms['mongosinglequery'];
-                    etEnvironment.execute({'executethis': 'getwid','wid': wid,'command.executetype':'series'}, function (err, widObject) {
+                    var executeobject = {'executethis': 'getwid','wid': wid,'command.executetype':'series'};
+                    extend(true, executeobject, command)
+                    etEnvironment.execute(executeobject, function (err, widObject) {
                         // If error, bounce out
                         if (err && Object.keys(err).length > 0) {cb1(err, widObject);}
                         else 
@@ -578,8 +618,10 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
                 } 
                 else if (qparms.mongomultiplequery) 
                 {
+                    var executeobject = {'executethis': 'getwid','wid': qparms['mongomultiplequery'],'command.executetype':'series'};
+                    extend(true, executeobject, command);
                     etEnvironment.execute(
-                        {'executethis': 'getwid','wid': qparms['mongomultiplequery'],'command.executetype':'series'},
+                        executeobject,
                         function (err, listOfWids) {
                             if (err && Object.keys(err).length > 0)
                             { cb1(err, listOfWids); }
@@ -597,8 +639,10 @@ exports.querywid = querywid = function querywid(inparameters, callback) { // can
 
                                 async.mapSeries(todolist, function (w, cbMap) {
                                     async.nextTick(function () {
+                                         var executeobject = {'executethis': 'getwid','wid': w,'command.executetype':'series'};
+                                        extend(true, executeobject, command);
                                         etEnvironment.execute(
-                                            {'executethis': 'getwid','wid': w,'command.executetype':'series'},
+                                        executeobject,
                                             function (err, res)
                                             {
                                                 if (err && Object.keys(err).length > 0)
@@ -831,13 +875,14 @@ proxyprinttodiv('querywid mQueryString multiple IV', mQueryString, 28);
         {
             if (err && Object.keys(err).length > 0) 
             {
-                proxyprinttodiv('querywid error **********', err, 99, true);
+                proxyprinttodiv('querywid error **********', err, 28, true);
                 callback(err, res);
             } 
             else 
             {
-                proxyprinttodiv('querywid just before finalformat output--', output, 28, true); 
+                proxyprinttodiv('querywid just before finalformat output--', output, 28, true, true); 
                 finalformat(output, relationshipoutput, qparms, extracommands, projection, command, function (err, res) {
+                    proxyprinttodiv('querywid just before finalformat output--res', res, 28, true, true); 
                     callback(err,res);
                 })
             } // else
@@ -846,95 +891,91 @@ proxyprinttodiv('querywid mQueryString multiple IV', mQueryString, 28);
     } // else
 };
 
+// $elemMatch, $slice,
 // getprojectionresult
 // getprojectionresult( {"a":"apple", "b":"banana", "c":"cherry"}, {"a":1, "b": 0} );
 // - sourcerecord - an object of some kind
 // - projectiondef - a mongodb compatible projection definition object.
 // 
 function getprojectionresult( sourcerecord, projectiondef ) {
+    sourcerecord = ConvertToDOTdri(sourcerecord);
     // remove properties
-        proxyprinttodiv('querywid getprojectionresult *****', sourcerecord, 99, true, true);
+    proxyprinttodiv('querywid getprojectionresult *****', sourcerecord, 28, true, true);
     for( var prop in projectiondef ) {
         if (projectiondef[prop] == 0) {
             delete(sourcerecord[prop]);
         }
     }
-    // include only these properties
+
     var newobj = {};
-    var onlyIncludeCount = 0;
-    for (var prop in projectiondef ) {
-        onlyIncludeCount += 1;
-        if (projectiondef[prop] == 1) {
-            newobj[prop] = sourcerecord[prop];    
+
+    for (var prop in projectiondef ) 
+    {
+        var fieldname = prop;
+        var dollar = false;
+
+        // if projection = {a.$:1}, then just make fieldname into a
+        if (prop.charAt(prop.length)=='$')
+        {
+            fieldname=prop.substring(0,prop.length-2);
+            dollar=true;
+        }
+
+        // if not object/array on right side
+        if (!(isObject(projectiondef[prop]) || isArray(projectiondef[prop])))
+        {
+            if (projectiondef[prop].charAt(0) === '$') 
+            {   // if projection = {a: $b} then rename field a to b
+                fieldname = projectiondef[prop].substring(0,projectiondef[prop].length)
+            };
+            // if projecttions = {a:1}
+            if (projectiondef[prop] == 1) {fieldname=prop};
+            if (dollar) // only get first array position
+            {
+                if (sourcerecord[prop].length>0) {newobj[fieldname]=sourcerecord[prop][0]};
+            }
+            else
+            {
+                newobj[fieldname]=sourcerecord[prop];
+            }
+        }
+        else //(isObject(projectiondef[prop]) || isArray(projectiondef[prop])) 
+        {
+            var query = projectiondef[prop];
+            if (query["$elemmatch"] || query["$elemMatch"])
+            {
+                query=query["$elemmatch"] || query["$elemMatch"];
+            }
+            var result = sift(query, sourcerecord);
+            if (result.length>0) {newobj[fieldname] = result[0]}
         }
     }
-    var result = sourcerecord;
-    if (onlyIncludeCount > 0) {
-        result = newobj;
-    }
-    return result;
+    sourcerecord = ConvertFromDOTdri(sourcerecord);
+    return newobj;
 }
 
 
-
-
-
-function finalformat(output, relationshipoutput, qparms, extracommands, projection, command, callback) {
+function finalformat(outputset, relationshipoutput, qparms, extracommands, projection, command, callback) {
     proxyprinttodiv('querywid finalformat qparms', qparms, 28, true);
+        proxyprinttodiv('querywid finalformat extracommands', extracommands, 28, true, true);
     var queryconvertmethod = extracommands.queryconvertmethod;
-    var excludeparameters = qparms.mongosetfieldsexclude;
+    var excludeparameters = qparms.mongosetfieldsexclude || {};
     var db = command.db;
     var finaloutput = [];
+    var excludedistinct={};
+    var output = {};
+    proxyprinttodiv('querywid finalformat projection', projection, 28, true);
     proxyprinttodiv('finalformat top output', output, 28, true);
     proxyprinttodiv('finalformat top relationshipoutput', relationshipoutput, 28, true);
     proxyprinttodiv('querywid finalformat excludeparameters', excludeparameters, 28);
 
-    if (config.configuration.environment==="local")
+    // if mongo or not mongo: make the records better from relationship stuff
+    for (var eachout in outputset)
     {
-        // server handles these normally
-        var pagenumber = extracommands.finalpagenumber || extracommands.pagenumber || 1;
-        var perpage = extracommands.finalperpage || extracommands.perpage; // || 50;
-        var skipval = extracommands.finalskip || extracommands.skip || pagenumber > 0 ? (pagenumber-1)*perpage : 0;
-        var limitval = extracommands.finallimit || extracommands.limit || perpage || 0;  // 0 is all 
-        var sortobj = extracommands.finalsort || extracommands.sort || {};
-        var count = extracommands.finalcount || extracommands.count || false;
-        
-        if (count)
+        var wid = outputset[eachout].wid;
+        if (!wid && outputset[eachout][db]) {wid = outputset[eachout][db].wid}
+        if (wid && !excludeparameters[wid])
         {
-            proxyprinttodiv('querywid finalformat count *******', sortobj, 99, true, true);
-			
-			// changed by Cody 8-28-14
-            //callback(null, {"n":resultlist.length, "ok":1}); // { "n" : 13, "ok" : 1 }
-            callback(null, {"n":output.length, "ok":1}); // { "n" : 13, "ok" : 1 }
-        }
-        else // if real query
-        {
-            if (!skipval) {skipval=0}
-            proxyprinttodiv('querywid finalformat sortobj', sortobj, 28, true, true);
-            proxyprinttodiv('querywid finalformat limitval', limitval, 28, true, true);
-            proxyprinttodiv('querywid finalformat skipval', skipval, 28, true, true);
-            if (Object.keys(sortobj).length > 0) {output.sort(dynamicsortmultiple(sortobj))};
-            
-			/* Changed by Cody 8-28-14
-			if (limitval===0 && skipval !==0) {output = output.slice(skipval);}
-            if (limitval!==0 && skipval !==0) {output = output.slice(skipval, limitval);}
-			*/
-			if (limitval) { output = output.slice(limitval); }				
-        }
-    }
-    proxyprinttodiv('finalformat top output MIDDLE', output, 28, true, true);
-
-    for (var eachout in output)
-    {
-        var wid = output[eachout][db].wid || output[eachout].wid;
-        //var wid = output[eachout][db] ? output[eachout][db].wid : output[eachout].wid;
-        proxyprinttodiv('querywid finalforma wid', wid, 28);
-        // only proceed if current paramter is not in exclude parameter set
-        proxyprinttodiv('querywid finalformat', output[eachout], 28);
-        proxyprinttodiv('querywid finalformat excludeparameters[wid]', excludeparameters[wid], 28);
-        if (!excludeparameters[wid])
-        {
-            // first search for wid in relationshipoutput
             var foundrecord;
             for (var eachrecord in relationshipoutput)
             {
@@ -945,44 +986,113 @@ function finalformat(output, relationshipoutput, qparms, extracommands, projecti
                     break;
                 }
             }
+                // then change and enhance the strucutre of the result
+            proxyprinttodiv('finalformat top outputset[eachout]', outputset[eachout], 28, true);
+            proxyprinttodiv('finalformat top foundrecord', foundrecord, 28, true);
+            output[eachout] = convertfromdriformatenhanced(outputset[eachout], command, foundrecord);
+            proxyprinttodiv('finalformat top output[eachout]', output[eachout], 28, true);
+        }
+    }
 
-            // then change and enhance the strucutre of the result
-            var enhancedrecord = convertfromdriformatenhanced(output[eachout], command, foundrecord);
-
-            if (config.configuration.environment==="local" && Object.keys(projection).length > 0) // server handles projection
-            {
-                proxyprinttodiv('querywid finalformat projection *****', sortobj, 99, true, true);
-                enhancedrecord = getprojectionresult(enhancedrecord, projection);
+    if (command.datastore!=="mongo")
+    {   // server handles these normally
+        var pagenumber = command.pagenumber || 1;
+        var perpage = command.perpage; // || 50;
+        var skipval = command.skip || pagenumber > 0 ? (pagenumber-1)*perpage : 0;
+        var limitval = command.limit || perpage || 0;  // 0 is all 
+        var sortobj = command.sort || {};
+        var count = command.count || false;
+        
+        if (count)
+        {
+            proxyprinttodiv('querywid finalformat count *******', sortobj, 28, true, true);
+            callback(null, {"n":output.length, "ok":1}); // { "n" : 13, "ok" : 1 }
+        }
+        else // if real query
+        {
+            if (!skipval) {skipval=0}
+            proxyprinttodiv('querywid finalformat sortobj', sortobj, 28, true, true);
+            proxyprinttodiv('querywid finalformat limitval', limitval, 28, true, true);
+            proxyprinttodiv('querywid finalformat skipval', skipval, 28, true, true);
+            if (Object.keys(sortobj)>0)
+            {   // first convert to dot, then sort
+                for (var eachout in output){output[output]=ConvertToDOTdri(output[eachout])};
+                output.sort(dynamicsortmultiple(sortobj));
             }
-
-            proxyprinttodiv('querywid finalformat enhancedrecord', enhancedrecord, 28, true);
-            proxyprinttodiv('querywid queryconvertmethod', queryconvertmethod, 28);
-
-            // if the property in command.distinct exist in the record we are about to return then 
-            if (command.distinct && enhancedrecord[command.distinct])
-            {   // then add it to the exclude set, so it will not be returned again
-                (excludeparameters[wid]=enhancedrecord.wid);
-            }
-
-            // now convert teach record based on query convertmethod
-            if (enhancedrecord && queryconvertmethod === "object")
+	        // if skipval = 0 and limitval = 3 then 0,3 start at first post stop at third
+            // 1,3 then second, fourth 
+			if (limitval) { output = output.slice(skipval, skipval + limitval); }
+            
+        	// process each record going out
+            for (var eachout in output)
             {
-                finaloutput.push(enhancedrecord);
-                proxyprinttodiv('querywid finaloutput after queryconvertmethod = ' + queryconvertmethod, finaloutput, 28);
-            }
-            else if (enhancedrecord && queryconvertmethod === "each")
-            {
-                var temp = {};
-                temp[output[eachout].wid]=enhancedrecord;
-                finaloutput.push(temp);
-                proxyprinttodiv('querywid finaloutput after queryconvertmethod = ' + queryconvertmethod, finaloutput, 28);
+                if (Object.keys(sortobj)>0) {output[eachout]=ConvertFromDOTdri(output[eachout])}; // now convert back from dot
+                if (Object.keys(projection).length > 0) {output[eachout] = getprojectionresult(output[eachout], projection)};
+                // if the property in command.distinct exist in the record we are about to return then 
+                if (command.distinct)
+                {
+                    //output[eachout] = ConvertToDOTdri(output[eachout]);
+                    proxyprinttodiv('finalformat distinct output[eachout]', output[eachout], 28, true, true);
+                    if (output[eachout][command.distinct])
+                    {
+                        var distinctvalue = string_to_ref(output[eachout], command.distinct);
+                        var distinctarray = [];
+                        if (isArray(distinctvalue)) {distinctarray=distinctvalue} else {distinctarray.push(distinctvalue)}
+                        for (eachvalue in distinctarray)
+                        {
+                            var currentdistinct = distinctarray[eachvalue];
+                            if (!excludedistinct[currentdistinct]) 
+                            {
+                                // then add it to the exclude set, so it will not be returned again
+                                excludedistinct[currentdistinct]=currentdistinct;
+                                output[eachout][command.distinct]=currentdistinct;
+                                output[eachout].wid = output[eachout].wid+currentdistinct;
+                                finaloutput.push(output[eachout])
+                            }
+                        }
+                    }
+                }
+                else // if not distinct
+                {
+                    finaloutput.push(output[eachout]);
+                }
             }
         }
     }
-    var temp = {};
-    if (extracommands.queryresult) {temp[extracommands.queryresult] = finaloutput} else {temp=finaloutput}
-    proxyprinttodiv('querywid finaloutput', temp, 28, true);
-    callback(null, temp);
+    proxyprinttodiv('finalformat top output MIDDLE', finaloutput, 28, true, true);
+
+    var resultarray=[];
+
+    // if mongo or not mongo:
+    for (var eachout in finaloutput)
+    {
+        if (queryconvertmethod === "each")
+        {
+            var temp = {};
+            temp[finaloutput[eachout].wid]=finaloutput[eachout];
+            resultarray.push(temp);
+        }
+        else // toobject
+        {
+            resultarray.push(finaloutput[eachout]);
+        }
+    }
+
+    proxyprinttodiv('finalformat output II', resultarray, 28, true, true);
+    proxyprinttodiv('querywid finaloutput extracommands', extracommands, 28, true, true);
+    if (extracommands.queryresult) 
+    {
+        var temp={};
+        temp[extracommands.queryresult] = resultarray;
+        proxyprinttodiv('querywid finaloutput', temp, 28, true, true);
+        callback(null, temp);
+    } 
+    else 
+    {
+        proxyprinttodiv('querywid finaloutput', temp, 28, true, true);
+        callback(null, resultarray);
+    }
+
 } // final format
 
 
@@ -1192,6 +1302,12 @@ function relationShipQuery(parameters, input, environmentdb) {
     proxyprinttodiv('relationShipQuery querystring', querystring, 28);
     return querystring;
 }
+
+
+
+})(typeof window == "undefined" ? global : window);
+
+
 
 //   function formatlist(inlist, parmnamein, parmnameout, environmentdb) {
 //         var inbound_parameters = JSON.parse(JSON.stringify(arguments));

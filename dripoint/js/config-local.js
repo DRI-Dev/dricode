@@ -87,29 +87,25 @@ function setdefaultparm() {
 }
 
 
-
+// these run on first loading file
 config = config123();
-config.setdefaultparm = setdefaultparm;
-
-
-
+config.setdefaultparm = setdefaultparm; // sets a variable to hold the function so eventdeviceready can call it
 
 
 exports.execute_server = window.execute_server = execute_server = function execute_server(params, callback) {
     proxyprinttodiv('Function server TO ------', params, 99, true);
 
-        //var inbound_parameters = {};
-        //extend(true, inbound_parameters, params);
-        //params =
-    var tempenvironment = params.command.environment;
-    delete params.command.processfn;
-    //var temp = params.command.environment.syncrule;
-    params.command.environment.run.executelevel=0;
-    params.command.environment.syncrule = "create_what_to_do_list";
+    var tempenvironment = params.command.environment; // for params.server can be delete in future
 
-    delete params.command.environment;
+    // moved to server.js
+    // delete params.command.processfn;
+    // params.command.environment.run.executelevel=0;
+    // params.command.environment.syncrule = "create_what_to_do_list";
+    // delete params.command.environment;
 
-    if (params.serverfn) // note the first par of if should be deleted...only for testing server locally
+
+    // below only for testing server locally --- ok to delete
+    if (params.serverfn) 
     {
         params.command.xrun = params.serverfn;
         delete params.serverfn;
@@ -119,12 +115,8 @@ exports.execute_server = window.execute_server = execute_server = function execu
         execute(params, function (err, res) {
             proxyprinttodiv('server results res',res, 99, true, true);
             // reset back to local
-            params.command.environment=tempenvironment;
-            // params.command.environment.platform = "local";
-            // params.command.environment.syncrule = temp;
-            // params.command.environment.run.executelevel = templevel;
-            // params.command.environment.run.executeid = tempexecuteid;            
-            checkenviornment(params.command.environment);
+            params.command.environment=tempenvironment;           
+            checkenviornment(params.command.environment); // reload environment
             callback(err, res);
         });
     }
@@ -140,24 +132,6 @@ exports.execute_server = window.execute_server = execute_server = function execu
     }
 };
 
-
-
-exports.getFromLocalStorage = window.getFromLocalStorage = getFromLocalStorage = function getFromLocalStorage(key) {
-    return JSON.parse(localStorage.getItem(key));
-};
-
-exports.addToLocalStorage = window.addToLocalStorage = addToLocalStorage = function addToLocalStorage(key, value) {
-    localStorage.setItem(key, JSON.stringify(value));
-};
-
-exports.clearLocalStorage = window.clearLocalStorage = clearLocalStorage = function clearLocalStorage() {
-    proxyprinttodiv('clear clearLocalStorage', 'hi', 99);
-    localStorage.clear();
-};
-
-exports.removeFromLocalStorage = window.removeFromLocalStorage = removeFromLocalStorage = function removeFromLocalStorage(key) {
-    localStorage.removeItem(key);
-};
 
 function executeAjax(allConfig, executeItem, callback, returnCallback) {
     var result;
@@ -198,13 +172,23 @@ function executeAjax(allConfig, executeItem, callback, returnCallback) {
     });
 }
 
-// Primary execute function called after dothis
 
-function test2(params, callback) {
-    callback(null, {
-        "test": "test2 on local called"
-    });
-}
+exports.getFromLocalStorage = window.getFromLocalStorage = getFromLocalStorage = function getFromLocalStorage(key) {
+    return JSON.parse(localStorage.getItem(key));
+};
+
+exports.addToLocalStorage = window.addToLocalStorage = addToLocalStorage = function addToLocalStorage(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+};
+
+exports.clearLocalStorage = window.clearLocalStorage = clearLocalStorage = function clearLocalStorage() {
+    proxyprinttodiv('clear clearLocalStorage', 'hi', 99);
+    localStorage.clear();
+};
+
+exports.removeFromLocalStorage = window.removeFromLocalStorage = removeFromLocalStorage = function removeFromLocalStorage(key) {
+    localStorage.removeItem(key);
+};
 
 
 exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, callback) {
@@ -266,6 +250,16 @@ exports.mquery = mquery = function mquery(inboundobj,projectionparams, command, 
         callback(null, resultlist);
 
 };
+
+
+// Primary execute function called after dothis
+
+function test2(params, callback) {
+    callback(null, {
+        "test": "test2 on local called"
+    });
+}
+
 
 exports.test_return_noerror_result_local = test_return_noerror_result_local = function test_return_noerror_result_local (param, callback) 
 {

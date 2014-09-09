@@ -86,6 +86,32 @@
         //potentialwid = 0;
     };
 
+    exports.parameterremap = parameterremap = function parameterremap(p, r) // remap optional, can get from p.command
+    {
+        // this call remaps parameter names and filters
+        // {a:b c:d e:f command.remap={a:x e:y}} will return {x:b, y:f}
+        var remap=r;
+        var newobj = {};
+        var oldparm;
+        var newparm;
+        if (!remap)
+        {
+            if (!p.command) {p.command={}};
+            remap = p.command.remap;
+        }
+        //delete p.remap;
+        if (remap)
+        {
+            for (var eachproperty in remap)
+            {
+                oldparm = eachproperty;         // a
+                newparm = remap[eachproperty];  // x
+                newobj[newparm] = p[oldparm];       // newobj[x] = b
+            }
+        }
+        return newobj
+    }
+
 
     // used to create the inital record for a database
     exports.setinitialwid = setinitialwid = function setinitialwid(params, command) {
@@ -142,6 +168,12 @@
             //var command = incopy.command || config.configuration.d.default;  // should always get command
             if (!command.keycollection) {
                 command.keycollection = command.collection +  "key";
+            }
+            if (command.datastore==="localstorage" && config.configuration.environment!=="local") {
+                command.datastore = "mongo"
+            }  
+            if (command.datastore==="mongo" && config.configuration.environment!=="server") {
+                command.datastore = "localstorage"
             }
             delete incopy.command;
 
@@ -1011,6 +1043,12 @@
                         //3. call updatewid with blank record, fromwid, fromdb, fromcollection, fromdatastore if command.delete
                         if (command.delete)
                         {
+                            if (command.datastore==="localstorage" && config.configuration.environment!=="local") {
+                                command.datastore = "mongo"
+                            }  
+                            if (command.datastore==="mongo" && config.configuration.environment!=="server") {
+                                command.datastore = "localstorage"
+                            }
                             if (config.configuration.environment === "local") 
                             {
                                 localdeletewid({"wid":incopy.wid, "command":command.from}, callback)
@@ -1117,6 +1155,8 @@
             extend(true, inobject.command.to, config.configuration.delete, inobject.command.to);
             inobject.command.delete=true;
             proxyprinttodiv('Function deletewid inobject before copywid', inobject, 27, true, true);
+
+
             copywid(inobject, function (err, copiedobject) {
                 if (err)
                 {
@@ -1153,7 +1193,13 @@
     exports.deletecollection = deletecollection = deletecollection= function deletecollection(p, cb)
     {
         var command = {};
-        extend(true, command, config.configuration.d.default, p.command)
+        if (command.datastore==="localstorage" && config.configuration.environment!=="local") {
+            command.datastore = "mongo"
+        }  
+        if (command.datastore==="mongo" && config.configuration.environment!=="server") {
+            command.datastore = "localstorage"
+        }
+        //extend(true, command, config.configuration.d.default, p.command) // trust the system :)
         var datalist = p.queryresult || p.results;
         if (config.configuration.environment==="local")
         {
@@ -1312,7 +1358,7 @@
             var indent = getglobal("debugindent");
             indent=indent*5;
             var linenum = getglobal('debuglinenum');
-            //z++;
+            linenum++;
             saveglobal('debuglinenum', linenum);
 
             if (displaycolor == "") {
@@ -1538,7 +1584,66 @@
         return indexstring;
     }
 
-    function setbyindex(obj, str, val) {
+// Test object style references
+// test("function string_to_ref", 8, function() {    
+//     var obj_1 = ["zero", [ "deep-zero", "deep-one", "deep-two" ], {two: "two"}, "three" ];
+//     var obj_2 = {
+//         inner: { deeper: { deepest: "got it!" } },
+//         shallow: [
+//             { zero: "shallow zero"},
+//             { one: "shallow one" },
+//             {
+//                 two: [
+//                     "deep zero", [
+//                         "deeper zero",
+//                         "deeper one",
+//                         "deeper two", {
+//                             deep: {deepest : "It Works!" }
+//                         }
+//                     ]
+//                 ]
+//             }
+//         ]
+//     };
+    
+//     strictEqual(string_to_ref(obj_2, ""), obj_2, "Empty string");
+//     strictEqual(string_to_ref(obj_2, "shallow"), obj_2.shallow, "Single string");
+//     strictEqual(string_to_ref(obj_2, "inner.deeper.deepest"), obj_2.inner.deeper.deepest, "Multiple dotted");
+//     strictEqual(string_to_ref(obj_1, "[1]"), obj_1[1], "Single array");
+//     strictEqual(string_to_ref(obj_1, "[1][2]"), obj_1[1][2], "Multiple array");
+//     strictEqual(string_to_ref(obj_2, "shallow[2]"), obj_2.shallow[2], "string then array");
+//     strictEqual(string_to_ref(obj_1, "[2].two"), obj_1[2].two, "array then string");
+//     strictEqual(string_to_ref(obj_2, "shallow[2].two[1][3].deep.deepest"), obj_2.shallow[2].two[1][3].deep.deepest, "Super Power Combo");
+// });
+    // http://scott.donnel.ly/javascript-function-to-convert-a-string-in-dot-andor-array-notation-into-a-reference/
+    exports.string_to_ref = string_to_ref = string_to_ref = function (object, reference) 
+    {
+        function arr_deref(o, ref, i) 
+        {
+            return !ref ? o : (o[ref.slice(0, i ? -1 : ref.length)]);
+        }
+        function dot_deref(o, ref) 
+        {
+            return !ref ? o : ref.split('[').reduce(arr_deref, o);
+        }
+        return reference.split('.').reduce(dot_deref, object);
+    };
+
+    // function replaceAll(str, obj)
+    // {
+    //     //Based on  http://jsfiddle.net/sc0ttyd/q7zyd/ and corresponding stackoverflow post
+
+    //     var findRegex = /\$\{(\S+)\}/;
+     
+    //     var result, str2;
+    //     str2 = str;
+    //     while ((result = findRegex.exec(str2)) != null){
+    //         str2 = str2.replace(result[0], stringToRef(obj, result[1]));
+    //     }
+    //     return str2;
+    // }
+
+    exports.setbyindex = setbyindex = function setbyindex(obj, str, val) {
         var keys, key;
         //make sure str is a string with length
         if (str === "") {
@@ -2718,8 +2823,7 @@
         }
     };
 
-    //http://scott.donnel.ly/javascript-function-to-convert-a-string-in-dot-andor-array-notation-into-a-reference/
-    // exports.ConvertToDOTdri = ConvertToDOTdri = function ConvertToDOTdri(obj) { //dotize
+     // exports.ConvertToDOTdri = ConvertToDOTdri = function ConvertToDOTdri(obj) { //dotize
     //     var res = {};
     //     (function recurse(obj, current) {
     //         for (var key in obj) {

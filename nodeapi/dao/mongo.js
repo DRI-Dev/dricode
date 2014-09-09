@@ -76,6 +76,7 @@ exports.mquery = mquery = function mquery(objToFind, projection, command, callba
     var count = command.count || false;
     var distinct = command.distinct || null;
 
+    proxyprinttodiv('mquery distinct ',distinct,99, true, true);
     getConnection(mongoDatabaseToLookup, function(err, db) {
         if (distinct) 
         {
@@ -86,13 +87,14 @@ exports.mquery = mquery = function mquery(objToFind, projection, command, callba
                      if (err) {
                          callback({"errorname":"query_count_error"}, []);
                      } else {
-                         if (res) { callback(err, {count: res.length }); }
+                         if (res) { callback(err, {"n": res.length, "ok":1  }); }  
                          else { callback({"errorname":"queryerror"}, []); }
                      }
                  });
             }
             else // if real query
             {
+                 proxyprinttodiv('mquery schemaToLookup',schemaToLookup,99, true, true);
                  db.collection(schemaToLookup).
                      //find(objToFind, projection).
                      distinct(objToFind, projection).
@@ -101,6 +103,7 @@ exports.mquery = mquery = function mquery(objToFind, projection, command, callba
                      limit(limitval).
                      toArray(function(err, res)
                  {
+                     proxyprinttodiv('mquery res',res,99, true, true);
                      if (err) { callback({"errorname":"queryerror: " + err}, []); }
                      else {
                          if (res) { callback(err, res); }
@@ -117,7 +120,7 @@ exports.mquery = mquery = function mquery(objToFind, projection, command, callba
                      if (err) {
                          callback({"errorname":"query_count_error"}, []);
                      } else {
-                         if (rescount) { callback(err, {count: rescount}); }
+                         if (rescount) { callback(err, {"n": rescount, "ok":1}); }
                          else { callback({"errorname":"queryerror"}, []); }
                      }
                  });
@@ -149,10 +152,10 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
     (command && command.databasetable) ? mongoDatabaseToLookup = command.databasetable : mongoDatabaseToLookup;
     (command && command.collection) ? schemaToLookup = command.collection : schemaToLookup;
 
-	proxyprinttodiv('mapreduceserver params = ',p,99, true, true);
+	proxyprinttodiv('mapreduceserver params = ',p,21, true, true);
 
-    proxyprinttodiv('mapreduceserver mapfn = ',mapfn,99, true, true);
-    proxyprinttodiv('mapreduceserver reducefn = ',reducefn,99, true, true);
+    proxyprinttodiv('mapreduceserver mapfn = ',mapfn,21, true, true);
+    proxyprinttodiv('mapreduceserver reducefn = ',reducefn,21, true, true);
 
     var filter_data = getcommand(p, 
         {   // defaults
@@ -172,8 +175,8 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
     var thirdparam = filter_data.filteredobject;
     var xtra = filter_data.output;
 
-    proxyprinttodiv('mapreduceserver thirdparam = ',thirdparam,99, true);
-    proxyprinttodiv('mapreduceserver xtra = ',xtra,99, true);
+    proxyprinttodiv('mapreduceserver thirdparam = ',thirdparam,21, true);
+    proxyprinttodiv('mapreduceserver xtra = ',xtra,21, true);
     // if output = queryresult then inline
     
     if (!thirdparam.out) 
@@ -210,14 +213,14 @@ exports.mapreduceserver = mapreduceserver = function mapreduceserver(mapfn, redu
         //thirdparam.out.nonAtomic = xtra.nonatomic || true;
     }
 
-    proxyprinttodiv('mapreduceserver thirdparam = ',thirdparam,99, true, true);
+    proxyprinttodiv('mapreduceserver thirdparam = ',thirdparam,21, true, true);
     // mapfn and reducefn will be sent as strings from et-query
     getConnection(mongoDatabaseToLookup, function(err, db) {
-        proxyprinttodiv('mapfn  ',mapfn,99, true, true);
-        proxyprinttodiv('reducefn  ',reducefn,99, true, true);
-        proxyprinttodiv('thirdparam  ',thirdparam,99, true, true);
+        proxyprinttodiv('mapfn  ',mapfn,21, true, true);
+        proxyprinttodiv('reducefn  ',reducefn,21, true, true);
+        proxyprinttodiv('thirdparam  ',thirdparam,21, true, true);
         db.collection(schemaToLookup).mapReduce(mapfn, reducefn, thirdparam, function(err, res) {
-            proxyprinttodiv('mapfn err ',err,99, true, true);
+            proxyprinttodiv('mapfn err ',err,21, true, true);
             if (err) {
                 callback(err, {
                     etstatus: {
