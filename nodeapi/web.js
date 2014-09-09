@@ -1,6 +1,6 @@
 // using common files at server side also ...
 // exports.async = async = require('async');
-
+console.log('--- web.js --- restart yerself ---');
 require('./create_config.js');
 require('./config.js');
 
